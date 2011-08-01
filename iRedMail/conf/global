@@ -357,14 +357,15 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
 
     # Syslog config: rsyslog.
     if [ X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${DISTRO_CODENAME}" == X"karmic" -o X"${DISTRO_CODENAME}" == X"lucid" ]; then
-            # Ubuntu 9.10, 10.04
-            export SYSLOG_CONF='/etc/rsyslog.d/openldap.conf'
-            export SYSLOG_POSTROTATE_CMD='reload rsyslog >/dev/null 2>&1 || true'
-        else
-            # Ubuntu 8.04, 9.04.
+        if [ X"${DISTRO_CODENAME}" == X"hardy" \
+            -o X"${DISTRO_CODENAME}" == X"intrepid" \
+            -o X"${DISTRO_CODENAME}" == X"jaunty" ]; then
             export SYSLOG_CONF='/etc/syslog.conf'
             export SYSLOG_POSTROTATE_CMD='invoke-rc.d sysklogd reload > /dev/null'
+        else
+            # Ubuntu >= 9.10
+            export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
+            export SYSLOG_POSTROTATE_CMD='reload rsyslog >/dev/null 2>&1 || true'
         fi
     fi
 
