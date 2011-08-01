@@ -1,0 +1,139 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+# ----------------------------------------
+# For Dovecot and dovecot-sieve. 
+# ----------------------------------------
+
+export ENABLE_DOVECOT="YES"
+export ENABLE_DOVECOT_SSL="YES"
+
+# Dovecot user & group.
+export DOVECOT_USER='dovecot'
+export DOVECOT_GROUP='dovecot'
+
+# Dovecot running directory, required by dovecot-2.x.
+export DOVECOT_BASE_DIR='/var/run/dovecot'
+
+# Enabled plugins for protocol 'lda' and 'imap'.
+export DOVECOT_LDA_PLUGINS='quota sieve autocreate'
+export DOVECOT_IMAP_PLUGINS='quota imap_quota autocreate'
+
+# Default quota type: maildir, dict:user::proxy::quotadict (quotadict).
+export DOVECOT_QUOTA_TYPE='dict:user::proxy::quotadict'
+
+if [ X"${DISTRO}" == X"RHEL" ]; then
+    export DOVECOT_VERSION='2'
+    export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
+    export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
+    export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
+    export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/used-quota.conf'
+    export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/share-folder.conf'
+
+    if [ X"${DISTRO_VERSION}" == X"5" ]; then
+        export DOVECOT_VERSION='1.2'
+        export DOVECOT_CONF='/etc/dovecot.conf'
+        export DOVECOT_LDAP_CONF='/etc/dovecot-ldap.conf'
+        export DOVECOT_MYSQL_CONF='/etc/dovecot-mysql.conf'
+        export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot-used-quota.conf'
+        export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot-share-folder.conf'
+    fi
+    export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
+elif [ X"${DISTRO}" == X"SUSE" ]; then
+    if [ X"${DISTRO_VERSION}" == X"11.1" ]; then
+        # OpenSuSE 11.1 ships dovecot-1.1.x
+        export DOVECOT_VERSION='1.1'
+    else
+        # OpenSuSE 11.2 and later versions ship dovecot-1.2.x
+        export DOVECOT_VERSION='1.2'
+    fi
+
+    export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
+    export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
+    export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
+    export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
+    export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
+    export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
+elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    export DOVECOT_VERSION='1.1'
+
+    # Debian 5 (with backports), Ubuntu 10.04 uses dovecot-1.2.x.
+    [ X"${DISTRO}" == X"DEBIAN" ] && export DOVECOT_VERSION='1.2'
+
+    # Ubuntu 10.04+
+    if [ X"${DISTRO_CODENAME}" == X"lucid" -o X"${DISTRO_CODENAME}" == X"natty" ]; then
+        export DOVECOT_VERSION='1.2'
+    fi
+
+    export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
+    export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
+    export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
+    export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
+    export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
+    export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
+elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    export DOVECOT_VERSION='1.2'
+    export DOVECOT_CONF='/usr/local/etc/dovecot.conf'
+    export DOVECOT_LDAP_CONF='/usr/local/etc/dovecot-ldap.conf'
+    export DOVECOT_MYSQL_CONF='/usr/local/etc/dovecot-mysql.conf'
+    export DOVECOT_REALTIME_QUOTA_CONF='/usr/local/etc/dovecot-used-quota.conf'
+    export DOVECOT_SHARE_FOLDER_CONF='/usr/local/etc/dovecot-share-folder.conf'
+    export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
+fi
+
+# Override enabled plugins for dovecot-1.1.
+if [ X"${DOVECOT_VERSION}" == X"1.1" ]; then
+    export DOVECOT_LDA_PLUGINS='cmusieve quota'
+    export DOVECOT_IMAP_PLUGINS='quota imap_quota'
+fi
+
+# Log & logrotate files.
+export DOVECOT_LOG_FILE='/var/log/dovecot.log'
+export SIEVE_LOG_FILE='/var/log/sieve.log'
+export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
+export SIEVE_LOGROTATE_FILE="${LOGROTATE_DIR}/sieve"
+
+# Dovecot auth socket.
+export DOVECOT_SOCKET_MUX='/var/spool/postfix/dovecot-auth'
+export DOVECOT_AUTH_SOCKET_PATH='/var/run/dovecot/auth-master'
+
+export DOVECOT_BIN='/usr/sbin/dovecot'
+export DOVECOT_SIEVEC='/usr/libexec/dovecot/sievec'
+
+# Do not starts with dot (.).
+export SIEVE_RULE_FILENAME='dovecot.sieve'
+export GLOBAL_SIEVE_FILE="${SIEVE_DIR}/${SIEVE_RULE_FILENAME}"
+
+# Dovecot plugin: Expire.
+# NOTE: dict process currently runs as root, so this file will be owned as root.
+export DOVECOT_EXPIRE_DICT_BDB='/var/lib/dovecot/expire/expire.db'
+
+# Dovecot quota warning.
+export DOVECOT_QUOTA_WARNING_SCRIPT='/usr/local/bin/dovecot-quota-warning.sh'
+export DOVECOT_REALTIME_QUOTA_SQLTYPE='mysql'
+export DOVECOT_SHARE_FOLDER_SQLTYPE='mysql'
+
+if [ X"${DOVECOT_VERSION}" == X"1.1" -o X"${DOVECOT_VERSION}" == X"1.2" ]; then
+    export DOVECOT_PROTOCOLS="pop3 pop3s imap imaps managesieve"
+else
+    export DOVECOT_PROTOCOLS="pop3 imap sieve"
+fi

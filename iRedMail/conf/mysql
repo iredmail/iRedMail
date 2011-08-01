@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+# Variables for MySQL database server and related.
+
+export MYSQL_SOCKET='/var/lib/mysql/mysql.sock'
+export MYSQL_ROOT_USER='root'
+
+# Use lowercase variable name for IP address.
+if [ X"${MYSQL_SERVER}" == X"localhost" ]; then
+    export mysql_server='127.0.0.1'
+else
+    export mysql_server="${MYSQL_SERVER}"
+fi
+
+# MySQL config file.
+if [ X"${DISTRO}" == X"RHEL" ]; then
+    export MYSQL_MY_CNF='/etc/my.cnf'
+    # RC script.
+    export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysqld"
+
+elif [ X"${DISTRO}" == X"SUSE" ]; then
+    export MYSQL_MY_CNF='/etc/my.cnf'
+    export MYSQL_SOCKET='/var/run/mysql/mysql.sock'
+    # RC script.
+    export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysql"
+
+elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
+    export MYSQL_MY_CNF='/etc/mysql/my.cnf'
+    # RC script.
+    export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysql"
+
+elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    # Override default socket location.
+    export MYSQL_SOCKET='/tmp/mysql.sock'
+
+    # Location of my.cnf.
+    export MYSQL_MY_CNF="/var/db/mysql/my.cnf"
+
+    # RC script.
+    export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysql-server"
+
+fi
+
+export MYSQL_INIT_SQL="${CONF_DIR}/mysql_init.sql"
+export MYSQL_VMAIL_SQL="${CONF_DIR}/mysql_vmail.sql"
+
+# MySQL database to store virtual hosts.
+export VMAIL_DB='vmail'
+export SAMPLE_SQL="${SAMPLE_DIR}/iredmail.sql"
+
+export BACKUP_DATABASES="${BACKUP_DATABASES} mysql"
+if [ X"${BACKEND}" == X"MySQL" ]; then
+    export BACKUP_DATABASES="${BACKUP_DATABASES} ${VMAIL_DB}"
+fi

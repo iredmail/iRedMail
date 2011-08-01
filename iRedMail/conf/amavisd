@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+# Warning: Please source 'conf/postfix' first.
+
+export AMAVISD_SYS_USER='amavis'
+export AMAVISD_SYS_GROUP='amavis'
+export AMAVISD_QUARANTINE_PORT='9998'
+export AMAVISD_LOGFILE='/var/log/amavisd.log'
+export AMAVISD_LOGROTATE_FILE="${LOGROTATE_DIR}/amavisd"
+export AMAVISD_DKIM_SELECTOR='dkim'
+export AMAVISD_DKIM_DIR='/var/lib/dkim'
+
+# Database used to store incoming & outgoing email related information.
+export AMAVISD_DB_NAME='amavisd'
+export AMAVISD_DB_USER='amavisd'
+export AMAVISD_DB_PASSWD="$(${RANDOM_STRING})"
+export AMAVISD_DB_SQL_TMPL="${SAMPLE_DIR}/amavisd.mysql"
+export BACKUP_DATABASES="${BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
+
+# Altermime.
+export DISCLAIMER_DIR="${POSTFIX_ROOTDIR}/disclaimer"
+if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    export ALTERMIME_BIN='/usr/local/bin/altermime'
+else
+    export ALTERMIME_BIN='/usr/bin/altermime'
+fi
+
+if [ X"${DISTRO}" == X"RHEL" ]; then
+    export AMAVISD_BIN='/usr/sbin/amavisd'
+    export AMAVISD_RC_SCRIPT_NAME='amavisd'
+    export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
+
+    if [ X"${DISTRO_VERSION}" == X"5" ]; then
+        export AMAVISD_CONF='/etc/amavisd.conf'
+        export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
+    elif [ X"${DISTRO_VERSION}" == X"6" ]; then
+        export AMAVISD_CONF='/etc/amavisd/amavisd.conf'
+    fi
+
+    export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
+    export AMAVISD_MYHOME='/var/spool/amavisd'
+    export AMAVISD_QUARANTINEDIR="${AMAVISD_MYHOME}/quarantine"
+    export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
+
+elif [ X"${DISTRO}" == X"SUSE" ]; then
+    # Override global setting: user/group.
+    export AMAVISD_SYS_USER='vscan'
+    export AMAVISD_SYS_GROUP='vscan'
+    export AMAVISD_DKIM_DIR='/var/spool/amavis/dkim'
+
+    export AMAVISD_BIN='/usr/sbin/amavisd'
+    export AMAVISD_CONF='/etc/amavisd.conf'
+    export AMAVISD_DKIM_CONF='/etc/amavisd.conf'
+    export AMAVISD_RC_SCRIPT_NAME='amavis'
+    export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
+    export AMAVISD_VIRUSMAILS_DIR='/var/spool/amavis/virusmails'
+
+elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    export AMAVISD_BIN='/usr/sbin/amavisd-new'
+    export AMAVISD_CONF_DIR='/etc/amavis/conf.d'
+    export AMAVISD_CONF='/etc/amavis/conf.d/50-user'
+    export AMAVISD_DKIM_CONF='/etc/amavis/conf.d/50-user'
+    export AMAVISD_RC_SCRIPT_NAME='amavis'
+    export AMAVISD_LDAP_SCHEMA_NAME='amavis.schema'
+    export AMAVISD_VIRUSMAILS_DIR='/var/lib/amavis/virusmails'
+
+elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    # Override global setting: user/group.
+    export AMAVISD_SYS_USER='vscan'
+    export AMAVISD_SYS_GROUP='vscan'
+
+    export AMAVISD_BIN='/usr/local/sbin/amavisd'
+    export AMAVISD_CONF='/usr/local/etc/amavisd.conf'
+    export AMAVISD_DKIM_CONF='/usr/local/etc/amavisd.conf'
+    export AMAVISD_RC_SCRIPT_NAME='amavisd'
+    export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
+    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
+else
+    :
+fi
+
+# Syslog setting, 'YES' or 'NO'
+export AMAVISD_SEPERATE_LOG='NO'

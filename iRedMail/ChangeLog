@@ -1,0 +1,677 @@
+iRedMail-0.7.3:
+    * Add enabledService=lda for newly created LDAP mail user. Required by
+      Dovecot 2.x.
+    * Works on CentOS 6.0, RHEL 6.x, Scientific Linux 6.x.
+    * Mbox format mailbox is not supported anymore.
+    * Add smtp-amavis_destination_recipient_limit=1 in Postfix for concurrency
+      per-recipient limit. Thanks beez <jason@indo.net.id>.
+    * Package update:
+        + iRedAdmin -> 0.1.6
+        + phpMyAdmin -> 3.4.3.1
+
+iRedMail-0.7.2:
+    * Works on Ubuntu 11.04.
+    * Enable LDAPS on FreeBSD by default. Thanks Markus Wyrsch <W-Chi@>.
+    * Improvements:
+        + Add alias domain support in postfix virtual_mailbox_domains (MySQL
+          backend special).
+    * Fixed:
+        + Set 'ServerTokens' to 'ProductOnly' in Apache on Debian/Ubuntu.
+          Thanks c33s@forum.
+    * Package update:
+        + Roundcube webmail -> 0.5.3
+        + phpLDAPadmin -> 1.2.1.1
+        + phpMyAdmin -> 3.4.1
+        + iRedAPD -> 1.3.6. Fix two issues for MySQL backend.
+        + iRedAdmin -> 0.1.5. Security fix edition.
+
+iRedMail-0.7.1:
+    * Fix incorrect icon path in awstats. Thanks <rannal@> for the feedback.
+    * Use 2048 as default SSL key length. Thanks mike.f@forum <m.fresel@>.
+    * Increase Postfix timeout seconds: smtp_data_init_timeout (120s -> 240s),
+      and smtp_data_xfer_timeout (180s -> 600s). Hope to avoid some timeout
+      issues. Thanks write4saini@forum, mbsouth@forum.
+    * Integrate Fail2ban. Note: It doesn't work on FreeBSD yet.
+    * Support domain alias in postfix relay_domains (MySQL backend special).
+      Thanks atros@forum.
+    * Support domain alias in mail alias, catch-all account.
+    * Package update/changes:
+        + Roundcube -> 0.5.2
+        + iRedAPD -> 1.3.5
+
+iRedMail-0.7.0:
+    * Append '-f /path/to/slapd.conf' to slapcat in tools/backup_openldap.sh.
+      Thanks Enrico Cotti <enrico.cotti@>.
+    * Save date of password last change while updating password in roundcube.
+
+iRedMail-0.7.0-rc3:
+    * Make IMAP share folder work with LDAP backend. Thanks alexp@forum.
+    * Update phpMyAdmin to 3.3.10.
+
+iRedMail-0.7.0-rc2:
+    * Check domain status in dovecot MySQL lookup and postfix
+      virtual_mailbox_maps, virtual_alias_maps, sender_login_maps, per-user
+      transport_maps, per-user sender_bcc_maps and recipient_bcc_maps (MySQL
+      backend).
+
+iRedMail-0.7.0-rc1:
+    * Make catch-all account work as expected with MySQL backend.
+    * Create indexes for some columns in MySQL backend.
+
+iRedMail-0.7.0-beta6:
+    * Enable iRedAPD for MySQL backend. Used for mail alias deliver
+      restrictions. Reference:
+      http://www.iredmail.org/wiki/index.php?title=Install/iRedAPD/MySQL
+
+iRedMail-0.7.0-beta5:
+    * Reverse Amavisd LDAP query base dn.
+    * Install python-xml on OpenSuSE 11.4.
+
+iRedMail-0.7.0-beta4:
+    * Works on OpenSuSE 11.4.
+    * Improvements:
+        + Alias domain support for catchall account in LDAP backend.
+
+    * Package update/changes:
+        + phpMyAdmin -> 3.3.9.2.
+
+iRedMail-0.7.0-beta3:
+    * New features:
+        + Enable personal LDAP address book for OpenLDAP backend.
+        + New column for MySQL backend: domain.defaultpasswordscheme. Used
+          to store per-domain password scheme.
+
+    * Improvements:
+        + Check domain status in virtual_mailbox_maps, virtual_alias_maps
+          for MySQL backend.
+        + Don't allow user to view ldap attributes: domainAdmin,
+          domainGlobalAdmin.
+
+    * Fixed:
+        + Remove unique index (primary key) on table amavisd.msgrcpt to avoid
+          duplicate entries.
+        + Incorrect path of phpLDAPadmin on Ubuntu 10.04.x/10.10.x.
+          Thanks xulingyun@bbs for the feedback.
+
+    * Package update/changes:
+        + PostfixAdmin -> Removed.
+        + iRedAdmin -> 0.1.4.
+        + Roundcube webmail -> 0.5.1. Remove 3rd-party plugin: imap_acl.
+
+iRedMail-0.7.0-beta2:
+    * Improvements:
+        + Auto create default IMAP folders with dovecot plugin: autocreate.
+        + Add plugin 'imap_acl' for roundcube to let users manage their
+          mailbox sharing, but disabled by default.
+        + Mailbox sharing support with dovecot 1.2. Disabled by default.
+        + Show realtime quota usage with dovecot-1.2 dict quota in
+          PostfixAdmin.
+        + Don't quarantine mails with bad header in Amavisd.
+          '$bad_header_quarantine_method=undef;'
+        + Increase dovecot "mail_process_size" to 1024MB by default. Hope to
+          avoid a dovecot "out of memory" issue when processing large mailbox.
+          Thanks James Kong.
+        + Enable whitelising sender (WHITELISTSENDER=1) in policyd by default.
+    * Fixed:
+        + Make sure apache wsgi module is loaded on RHEL/CentOS.
+          Thanks Murat Uğur Eminoğlu for the feedback.
+        + Fix incorrect file localtion of php.ini on OpenSuSE.
+    * Package Update:
+        + Roundcube webmail -> 0.5
+        + phpMyAdmin -> 3.3.9.1
+
+iRedMail-0.7.0-beta1:
+    * Works on OpenSuSE 11.3. Tested on 11.3, but it should work well on
+      11.2, 11.1 too.
+    * Improvements:
+        + Store realtime quota usage in MySQL with Dovecot-1.2. Reference:
+          http://www.iredmail.org/wiki/index.php?title=IRedMail/FAQ/Store.Realtime.Quota.In.MySQL
+        + Use repository 'backports.debian.org' on Debian 5.
+        + Bypass shadow address in postfix sender login checking.
+        + Improve postfix ldap lookup to make mail list of alias domain work.
+          Thanks for Andrea Di Dato's feedback and testing.
+        + Integrate MySQL in Amavisd: @storage_sql_dsn.
+        + Improve backup mx support with MySQL backend. Thanks tiangangnet@bbs
+        + Replaced ldap attribute:
+            - gn (old) -> givenName
+            - fax (old) -> facsimileTelephoneNumber
+    * New backup scripts: tools/backup_openldap.sh, tools/backup_mysql.sh.
+      Reference: http://www.iredmail.org/wiki/index.php?title=IRedMail/FAQ/Backup
+    * Upgrade packages:
+        + Dovecot -> 1.2.x. On RHEL/CentOS & Debian 5 (with backports).
+        + PostfixAdmin -> 2.3.2
+        + phpMyAdmin -> 3.3.7
+        + Roundcube webmail -> 0.4.2
+    * Fixed:
+        + Fix incorrect file location of awstats.pl on Debian/Ubuntu.
+
+iRedMail-0.6.1:
+    * Add missing mail log files (mail.info, mail.err, mail.warn) in logrotate.
+      Thanks to BigMichi1@forum.
+    * Catch-all account support in MySQL backend.
+    * Run iRedAdmin as a low privilege user (iredadmin).
+    * Improve Ubuntu 10.04 support.
+    * Update iRedAPD to 1.3.3. Run iRedAPD as a low privilege user (iredapd).
+
+iRedMail-0.6.0:
+    * Disallow to use multiple identities in postfix and roundcube.
+    * Update iRedAPD to 1.3.0.
+    * Add missing table on Debian 5 and Ubuntu 9.04:
+      postfixpolicyd.blacklist_dnsname.
+    * Upgrade phpMyAdmin to 2.11.10.
+    * Add 'enableinternal=1' in vmail.mailbox and 'enabledService: internal'
+      in OpenLDAP.
+    * Not allow to login with shadow address. It may cause login failed due
+      to duplicate ldap query result (normal user, another normal user with
+      shadow address).
+    * Fix shabang line of dovecot quota warning script. Thanks Alex Stanciu.
+    * Fix loading awstats issue on FreeBSD. Thanks dbetts22@forum.
+    * New LDAP attributes: mailWhitelistRecipient, mailBlacklistRecipient.
+      Used for per-user recipient restrictions.
+    * Fix: freshclam can't start after update to 0.96. Fixed by removing inline
+      comment in freshclam setting. Thanks wildweasel@forum.
+    * Fix incorrect path of policyd-cleanup on Debian & Ubuntu. Thanks
+      tkuntario@forum.
+    * Improve ldap scheme file to use 'sub' index.
+
+iRedMail-0.6.0-RC1:
+    * Add catch-all account support in LDAP backend.
+    * Fix amavisd startup issue on FreeBSD: run sa-update first.
+    * Patch to fix roundcube security issue: CVE-2010-0464, Disable DNS
+      prefetching.
+    * New LDAP attribute: userManager. Used to replace 'manager' attribute.
+    * Hide template warning in phpLDAPadmin.
+    * Update iRedAPD to 1.2.3.
+
+iRedMail-0.6.0-beta3:
+    * Fix incorrect symbol link of /usr/lib/sendmail on FreeBSD.
+    * Fix iRedAPD rc script on FreeBSD.
+    * Fix rc.conf setting for policyd on FreeBSD.
+
+iRedMail-0.6.0-beta2:
+    * Integrate iRedAPD-1.2 to provide mail list access management for LDAP
+      backend.
+    * Upgrade phpLDAPadmin to 1.2.0.5.
+    * Use yum repository to install all rpm packages on RHEL/CentOS.
+    * Move dovecot-quota-warning.sh to /usr/local/bin/. Thanks chunlinyao@bbs.
+    * Don't use 'mktemp' to generate random temp file. Thanks chunlinyao@bbs.
+
+iRedMail-0.6.0-beta1:
+    * Update dovecot to 1.1.20 on RHEL/CentOS.
+    * Update postfixadmin to 2.3.
+    * Add domain alias support in MySQL backend.
+    * Update phpMyAdmin to 2.11.9.6.
+    * New LDAP attribute: accountSetting.
+    * Update roundcube to 0.3.1.
+    * Add script used to generate new SSL keys: tools/generate_ssl_keys.sh.
+    * Add 'disclaimer' in mail user object, used to store per-user
+      disclaimer text.
+    * Allow ping from remote hosts in iptables rule.
+    * Update clamav to 0.95.3. Thanks http://dag.wieers.com.
+
+iRedMail-0.5.1:
+    * Remove three more unnecessary dialog pages.
+    * Use random password for ldap admin dn: cn=vmailadmin.
+    * Add domain alias support with new ldap attribute: domainAliasName.
+    * Ability to restrict POP3S & IMAPS in dovecot now.
+    * LDAP attribute 'domainName' now allow multi-value.
+    * Enable mod_deflate in apache by default.
+    * Update dovecot to 1.1.16 on Debian 5, patched to fix security holes in
+      CMU Sieve plugin. Reference:
+      http://marc.info/?l=dovecot&m=125288621404279&w=2
+    * Add script (tools/clear_iredmail.sh) to remove main components
+      installed by iRedMail.
+    * Use postfix proxymap(8) to reduce server load under high load.
+    * Update dovecot to 1.1.19 on RHEL/CentOS.
+    * Add 'preferredLanguage' in objectClass mailUser.
+    * Increase ldap server-side sizelimit to 1000.
+    * Add external user support in mail list.
+    * Allow to use multiple identities.
+    * Fix incorrect postfix setting which will cause mail forwarding and bcc
+      invalid after upgrade to 2.5.
+    * Make user can't change employeeNumber.
+    * Add more LDAP attributes: domainDefaultUserQuota,
+      domainMinPasswordLength, domainMaxPasswordLength.
+    * Add more sql columns: defaultuserquota, minpasswordlength, maxpasswordlength.
+    * Update postfix to 2.5.9.
+    * Replace sshd port number in default iptable rule by the current setting.
+    * Add @mynetworks in amavisd config for Debian/Ubuntu.
+    * Make file world-readable if ACL is not available.
+    * Add per-user shadow address support in LDAP backend, and it's allowed to
+      login with shadow address.
+    * Add missing pkg: altermime for RHEL/CentOS (i386). Thanks to
+      sdaniel@bbs.
+    * Remove php-eaccelerator, will abort installation process when php-5.2+
+      already installed.
+    * Add missing service control in postfix ldap lookup table.
+    * Fix per-user sieve setting in dovecot. Thanks Emidio Reggiani
+      and Caliban @forum.
+
+iRedMail-0.5.0:
+    * Fix mod_auth_mysql config issue on Ubuntu.
+    * Update: dovecot -> 1.1.18.
+    * Fix DKIM singing issue on Debian/Ubuntu. Thanks shake.chen@gmail.
+    * Add columns/attributes to store user last-login data.
+    * Support per-user transport maps, enabled by default.
+    * Remove unnecessary ldap lookup in postfix.
+    * Set storagebasedirectory in MySQL template.
+    * Add ldap attribute and mysql column 'disclaimer' to store disclaimer
+      text.
+    * Enable dovecot quota warning by default.
+    * Move default mail storage directory: /home/vmail -> /var/vmail/. Use
+      /var/vmail/vmail01 as default storage base directory. Thanks mbsouth
+      @forum.
+    * Only modify /etc/amavis/conf.d/50-user in debian & ubuntu.
+    * Fix DKIM singing issue: disable 'forward_method' in policy_bank
+      'ORIGINATING'. Thanks webstudio@forum.
+
+iRedMail-0.5.0-rc2:
+    * Add relay_domains & relay_recipient_maps in postfix, used for backup mx.
+    * Improve global ldap address book in roundcube, make it search accounts
+      which in the same domain.
+    * Fix dovecot setting for mysql backend.
+    * Update: clamav -> 0.95.2, awstats -> 6.9-2, dovecot -> 1.1.16.
+    * Add two more LDAP attributes in iredmail.schema:
+      domainMaxListNumber, domainCurrentListNumber.
+    * Add missing package vixie-cron & tmpwatch in RHEL/CentOS.
+    * Enable anti-spam & anti-virus on Debian & Ubuntu by default. Thanks
+      Falador@forum.
+    * Add quota warning report tool: tools/dovecot-quota-warning.sh.
+    * Automatically add a disclaimer to outgoing emails with Amavisd-new +
+      alterMIME (v0.3.10).
+    * Update Mail-DKIM to 0.36. Thanks to lidaobing@gmail for ubuntu 8.04 and
+      debian lenny packages.
+    * Add /extra/ directory for 3rd-party service integration.
+    * Improve tools/create_mail_user_OpenLDAP.sh to integrate pureftpd
+      schema.
+    * Hashed maildir string: hash_domain(), hash_maildir in conf/functions.
+    * Flexible storage base directory used to store users' mail data, easy
+      to change, useful for large-scale deployment. e.g.:
+        Your mail data are all stored in /home/vmail01, but disk storage is
+        nearly full, it's easy to make new users use new storage like
+        /home/vmail02, /home/vmail03 or whatever:
+            - Prevous maildir: /home/vmail01/z/zh/zha/zhang/
+            - Current maildir: /home/vmail02/h/hu/hua/huang/
+      You can set the storage base directory in either MySQL (column:
+      vmail.storagebasedirectory) or OpenLDAP backend (attribute:
+      storageBaseDirectory).
+
+      In addition, maildir and user's HOME directory are seperated (maildir
+      is $HOME/Maildir/ by default), so that you can integrate more
+      applications against LDAP user auth like OpenSSH, FTP service, SugarCRM
+      or whatever you want, data stored in disk storage of each service will
+      not be mixed.
+    * Add group 'all@domain.ltd' by default for ldap solution.
+    * Add 'enabledService=displayedInGlobalAddressBook' for ldap solution,
+      used to control mail address displayed in global ldap address book or
+      not.
+
+iRedMail-0.5.0-rc1:
+    * Update perl-Mail-DKIM to 0.35. hope to fix dkim issue in amavisd:
+      Reference: http://marc.info/?t=124300167400002&r=1&w=2
+    * Add new ldap attribute: memberOfGroup.
+    * Update SquirrelMail to 1.4.19.
+    * Works on Ubuntu 9.04 (Juanty) now.
+    * Add rc script for iptables used on Debian.
+    * Works on Debian (Lenny, 5.0.1) now.
+    * Add priority (=1) in iRedMail repo file. Thanks scrummie02@forum.
+    * Update phpLDAPadmin to 1.1.0.7.
+    * Add bcc control in postfix bcc lookup map.
+    * LDAP attribute 'domainStatus' is deprecated, use accountStatus instead.
+    * Add more ldap attributes: domainCurrentQuotaSize,
+      domainCurrentUserNumber, domainCurrentAliasNumber.
+    * Add objectclass mailAlias in ldap schema, sync postfix alias lookup
+      and roundcube global address book lookup, both will search mailList,
+      mailAlias, mailUser forwarding in one search filter.
+    * Add forwarding control in postfix alias lookup map.
+    * Update dovecot to 1.1.14.
+    * Add 'employeeID' in SQL template.
+    * Add robots.txt in web server document root to disallow search engines.
+    * POP3/IMAP are enabled by default, dialog page removed.
+    * Known issue: pysieved will cause a zombie process.
+    * Update clamav to 0.95.1.
+    * Update roundcube and related patches to 0.2.1-stable.
+    * managesieve service (pysieved) is now not a optional function.
+    * Add one more object to ldap user/admin: shadowAccount.
+    * Add ldap attribute to store user's backup mail address, used for
+      password reset or whatever.
+    * Add backup mx detect in virtual domain lookup.
+    * Update phpMyAdmin to 2.11.9.5.
+    * Address of mail group/list will be autocomplete while you type
+      recipients in roundcube now.
+    * Say goodbye to Horde.
+    * Add group mail/alias support for openldap backend.
+    * Add attribute for mail list access policy control.
+    * Add missing index attributes in OpenLDAP: listMember, listAllowedUser,
+      accessPolicy.
+    * userPassword & accountStatus are optional for objectclass mailAdmin.
+    * Fixed OpenLDAP ACL.
+    * Fixed: Make awstats access via https only.
+    * Create symbol link for all web-based programs, so that we don't have
+      to restart apache while upgrade them.
+    * Fix file permission: /etc/pysieved.ini, should be owned by vmail:vmail.
+    * Add max length limit for several ldap attributes, remove unnecessary
+      attribute.
+    * Adjust mail_location setting in dovecot, use home directory now.
+    * Replace 'gn' by 'givenName' in roundcube global ldap address book.
+      Thanks shake.chen@gmail.
+    * Add script for mysql database backup: tools/backup_MySQL.sh.
+
+iRedMail-0.4.0:
+    * Say goodbye to mailgraph.
+    * Say goodbye to ExtMail.
+    * Add two tool scripts for winwebmail and extmail mailbox migration.
+    * Change ${SIEVE_DIR} to ${VMAIL_USER_HOME_DIR}/sieve/.
+    * Add patch for roundcube-0.2 to change ldap password.
+    * Use mod_auth_mysql for user auth in awstats.
+    * Improve LDAP schema.
+    * Avoid quote in HOSTNAME variable. Thanks shake.chen@gmail.
+    * Update rrdtool to 1.2.30.
+    * Enable preview pane in roundcube by default.
+    * Remove phpLDAPadmin templates.
+    * Add shell script for creating ldap virtual user.
+    * Update amavisd-new to 2.6.2, dovecot to 1.1.11, lzo to 1.08-5, nomarch
+      to 1.4-2.
+    * Remove package: cyrus-sasl, mailman.
+    * Prompt to choose the default language for webmails.
+    * Update awstats to 6.9.
+    * Make webmail can be accessed via HTTPS (except horde).
+    * Use syslog as default log driver in roundcube.
+    * Directory renamed: tools/ => dialog/.
+    * Make phpLDAPadmin, phMyAdmin, PostfixAdmin can be accessed via HTTPS
+      only.
+    * Improve LDAP schema, use 'enabledService=XXX' instead of
+      enableXXXService.
+    * Make awstats use LDAP user auth if use OpenLDAP as backend.
+    * Update dovecot-sieve to 1.1.6.
+    * Use variable to control whether download packages from official yum
+      repository or not.
+    * Mark iptables as a must service.
+    * Update packages: Dovecot => 1.1.8, rrdtool => 1.2.29, postfix => 2.5.6.
+    * Fix incorrect parameter in postfix ldap lookup table: debug_level =>
+      debuglevel.
+    * Add <Directory> container to disable autoindex in apache. Thanks
+      muniao@gmail.
+    * Update Postfix to 2.5.5.
+    * Add one more helo pcre rule, prepend helo identifier in mail header.
+    * Add missing package 'perl-Encode-Detect', required by sa-update.
+    * Update phpLDAPadmin to 1.1.0.6.
+    * Fix crontab job for expire mail in dovecot. Thanks xcrossbow@gmail.
+    * Reduce postfix queue run retry time to '300s'.
+    * Add one more pcre expression for smtpd helo restriction to block client
+      which use dynamic ip address. Thanks muniao@gmail.
+    * Fix incorrect crontab job for vmail user. Thanks xcrossbow@gmail.
+    * Set maximal_queue_lifetime and bounce_queue_lifetime to '1d'. Thanks
+      muniao@gmail.
+    * Fix incorrect filename while attachment file with Chinese (non-ascii)
+      characters in Roundcube-0.1.1-stable. Thanks bruce.16899@gmail and
+      tao.xu.man@gmail.
+    * Fix postfix aliases file.
+
+iRedMail-0.3.2:
+    * Export PATH variable while switch to root user. Thanks xcrossbow@gmail.
+    * Update phpMyAdmin to 2.11.9.4.
+    * Fix MySQL password issue while contains special characters. Thanks
+      xcrossbow@gmail.
+    * Make some command operating system independent.
+    * Update Dovecot to 1.1.7.
+    * Update SquirrelMail to 1.4.17.
+    * Don't specify vmail uid/gid.
+    * Generate sieve global filter rule sample file.
+    * Use mail log config in awstats as default config file.
+    * Fix file permission for awstats if we use ExtMail at the same time.
+    * Remove two extra packages: roundcubemail-0.1.1-buttons-zh_CN.tar.bz2,
+      roundcubemail-0.1.1-skin-default-labels.tar.bz2.
+    * Update clamav to 0.94.2.
+    * Add patch for ExtMail to make it create user maildir automatic.
+    * Clear default account in ExtMail global address book.
+    * Fix change password issue in ExtMail-1.0.5. Thanks ilovell.pan@gmail.
+
+iRedMail-0.3.2-beta1:
+    * Fix missing php-mysql installation. Thanks webyuhang@hotmail.
+    * Add LDAP attrubites for service control: enableMailService,
+      enableFTPService, enableIMService.
+    * Split dialog config, make webmail program in a standlone page.
+    * Use unix socket to connect mysql server by default.
+    * Make Horde Ingo mail filter rules manager works with pysieved.
+    * Make horde sql database use utf8 as default charset. Thanks
+      bruce.16899@gmail for his remind.
+    * Add global ldap address book for horde when use OpenLDAP as backend.
+      Thanks bruce.16899@gmail for his remind.
+    * Initialize import php-eaccelerator.
+    * Update clamav to 0.94.1. Thanks to chenwei for his remind.
+    * Update php-rrdtool, rrdtool to 1.2.28.
+    * Initialize import awstats as web and mail log analyzer.
+    * Improve mailgraph, it can display greylist counter now. Merge css code
+      to mailgraph.cgi.
+    * Update phpMyAdmin to 2.11.9.3.
+    * Set default language to zh_CN in horde, roundcube, squirrelmail.
+    * Make Roundcube WebMail work while use OpenLDAP as backend, use OpenLDAP
+      as global ldap address book.
+      Note: Change password and forwarding setting are disabled yet.
+    * Remove postgrey, it's replaced by policyd.
+      Note: Due to this change, MySQL will be installed if you choose OpenLDAP
+      as backend.
+    * Fix mail attachment size in ExtMail. Thanks tongds@gmail.
+    * Add patch to fix login security issue. Reference:
+      https://sourceforge.net/mailarchive/forum.php?thread_name=49057E07.3060806%40gmail.com&forum_name=postfixadmin-devel
+    * Improve dovecot quota warning support.
+    * Add bzip2 as compress command in logrotate. Enabled by default.
+    * Integrate expire plugin support for Dovecot.
+    * Enable SSL support for MySQL.
+    * Fix issue of TERM variable. Thanks yao.xu at
+      http://bbs.iredmail.org.
+    * Improve support for exist amp.
+    * Add missing backup of postfix main.cf file.
+    * Remove some scripts:
+        - tools/backup_mysql_db.sh
+        - tools/convert_winmail_mailbox.sh
+        - tools/create_mail_user_ldap.sh
+        - tools/create_mail_user_mysql.sh
+        - tools/get_helo_count.sh
+        - tools/migrate_extmail_mailbox.sh
+        - tools/sysreport.sh
+
+iRedMail-0.3.1:
+    * Do not allow empty username while create first user. Thanks
+      edisonwang2007 <at> gmail.
+    * Make sieve.log logrotate setting file standalone. Thanks
+      chenwei1973 <at> gmail.
+    * Set file permission for phpldapadmin. Thanks ipostfix <at>
+      gmail.com
+    * Set TERM to 'pcconsole'.
+    * Remove folder prefix in SquirrelMail.
+    * Remove non-exist function call: openldap_tls_config. Thanks
+      ipostfix <at> gmail.com
+    * Add crontab job for vmail user to delete amavisd virus mail per
+      month. Thanks xcrossbow <at> gmail.
+    * Update packages:
+        - perl-Error => 0.17015-1.
+        - perl-Compress-Raw-Zlib => 2.015-1.
+        - perl-BerkeleyDB => 0.36-1.
+        - perl-IO-Multiplex => 1.10-1.
+        - perl-MailTools => 2.04-1.
+        - perl-Mail-SPF => 2.006-1.
+        - perl-Archive-Zip => 1.26-1.
+        - Horde WebMail => 1.2.
+        - Dovecot => 1.1.4.
+        - SquirrelMail => 1.4.16.
+        - phpMyAdmin => 2.11.9.2.
+    * Use unique SSL cert file in Postfix, Dovecot, Apache, OpenLDAP:
+      /etc/pki/iRedMail{Key,Cert}.pem.
+    * Disable pysieved service in xinetd.
+    * Fix 'killall' command path in dovecot logrotate file. Thanks
+      chenwei <at> gmail.com.
+
+iRedMail-0.3:
+    * Update ExtMail to 1.0.5.
+    * Enable submission in postfix.
+    * Bypass checks for internally generated mail: master.cf.
+    * Hide Apache + PHP version.
+    * Fix smtpd.conf file location on x86_64.
+    * Add SquirrelMail plugin: add_address.
+    * Update phpMyAdmin to '2.11.9.1'.
+    * Re-enable select_language plugin in SquirrelMail.
+    * Make managesieve as an optional component.
+
+iRedMail-0.3-beta1:
+    * Add plugin section for sieve in dovecot.conf, remove sample
+      sieve filter rule file.
+    * Hide SquirrelMail version number and other attributions in login
+      page.
+    * Set default language to English in all webmail program.
+    * Update Horde WebMail to 1.1.2.
+    * Add avelsieve plugin for SquirrelMail.
+    * Initialize import pysieved-1.0 for managesieve service.
+    * Use 'iredmail.org' as example, replace 'osspinc.com'.
+    * Update unrar to 3.8.2-1.
+    * Update perl-MailTools to 2.03-1.
+    * Update perl-Mail-DKIM to 0.32-1.
+    * Update perl-Error to 0.17014-1.
+    * Update perl-BerkeleyDB to 0.34-1.
+    * Update ClamAV to 0.94-1.
+    * Update Dovecot to 1.1.3-0_80.
+    * Change official package mirror to 'www.iredmail.org'.
+    * Add one more SquirrelMail plugin: login_auto, disable
+      'select_language' plugin.
+    * Bulk change ldap lookup filenames for postfix.
+    * Remove external iRedMail logo link.
+    * Update phpMyAdmin to '2.11.9'.
+    * Compaction 'smtpd_sender_login_maps' in postfix. Thanks shing.
+    * Correct 'local' and 'virtual' domains in Postfix. Thanks shing.
+    * Enable SMTP AUTH while sending email in SquirrelMail.
+    * Make SquirrelMail work with MySQL backend.
+    * Update SquirrelMail plugin 'compatibility' to '2.0.13-1.0'.
+    * Fix perl regular expression while modify ldap init script.
+      Thanks to ejzhang@www.iredmail.org/bbs/.
+    * Add script to backup mysql databases: 'tools/backup_mysql_db.sh'.
+    * Fix policyd crontab job, configuration file permission.
+    * Add 'default-character-set=utf8' in my.cnf.
+
+iRedMail-0.2:
+    * Add iRedMail logo in several web-base programs, used to track
+      how many users use them.
+    * Remove per-user restriction feature.
+    * Update postgrey to 1.32.
+    * Update postfix to 2.3.15. Reference:
+      http://groups.google.com/group/iredmail/t/d38f9d6a8c1e9cf0
+    * Add 'expired' field in SQL template for expired date, used for
+      per-domain, per-user, alias, domain bcc, user bcc.
+    * Add expire plugin in dovecot. Disabled by default.
+    * Enable zlib plugin in dovecot by default.
+    * Improve postfixadmin config dialog, fill with default domain
+      admin address.
+    * Sync LDAP schema.
+    * Fix postfix sender_access ldap lookup.
+    * Add pcre rule in header_checks(5) for postfix to replace
+      internal IP address by external IP address or whatever you 
+      want. Disabled default. Thanks muniao. :)
+    * Change 'virus_admin_maps' and 'spam_admin_maps' to
+      'root@mydomain' in amavisd.conf. Thanks hihihihi <at>
+      'www.osspinc.com/bbs/'.
+    * Make saslauthd disabled while we use dovecot sasl mechanism.
+
+iRedMail-0.2-rc3:
+    * Update postfixadmin to 2.2.1.1.
+    * New roundcubemail plugin: vacation. Created by KaraDog <at>
+      gmail.com. Thanks kara :)
+    * New feature: Protecting internal email addresses, such as mail
+      list addresses.
+    * Remove postfixadmin vacation table in mysql template, disable
+      vacation functions in postfixadmin.
+    * Disable mailman, it should be integrated more smoothly.
+    * New feature: Restricting what users can send mail to off-site
+      destinations.
+    * Add 'mail_name', 'mail_version' in postfix. Thanks muniao. :)
+    * Update dovecot to 1.1.2. Thanks atrpms.net.
+    * Update phpMyAdmin to 2.11.8.1.
+    * Add maillog analyze tool: tools/get_helo_count.sh.
+    * Fix sieve log file permission.
+    * Make maillog as standalone logrotated job.
+    * Disable blacklist_helo in policyd, replaced by pcre table in
+      postfix.
+    * Remove policyd_blacklist_helo.sql, it was merged into file:
+      samples/check_helo_access.pcre. We won't import blacklist_helo
+      records shipped within policyd by default.
+    * Enable smtpd_helo_restrictions in Postfix and sample pcre table.
+    * Replace reject_invalid_hostname by reject_invalid_helo_hostname.
+      Thanks muniao. :)
+    * Make saslauthd service disabled while we use dovecot as SASL
+      auth mechanism in Postfix.
+    * Add more blacklist helo records for policyd. Disabled by
+      default. Thanks for muniao & ipostfix's help.
+    * Fix mailgraph directory and cgi file permission for extmail.
+      Bug reported by ranjun. Thanks :)
+    * Make 'crond' as enabled services.
+    * Add default whitelist and blacklist records shipped within
+      policyd.
+    * Add another policyd instance for sender throttle feature,
+      sync init script, crontab job, pidfile. Disabled by default.
+    * Update ClamAV to 0.93.3.
+    * Update perl-Convert-UUlib to 1.11. Bug fix version.
+
+iRedMail-0.2-rc2:
+    * Add file: AUTHORS. include all members.
+    * Initialize import karadog@gmail's roundcubemail patch for
+      attachment name with Chinese characters. Thanks Kara. :)
+    * Initialize import karadog@gmail's roundcubemail patch for
+      national imap folder name. Good Job, Kara. :)
+    * Add optional package for Roundcubemail: php-pecl-fileinfo.
+    * Changed 'SENDER_QUOTA_REJECTION' msg, reduce SENDERMSGLIMIT to
+      60 msgs per hour. Thanks chenwei. :)
+    * Implement vacation via dovecot-sieve vacation feature, vacation
+      rule sample was added. We need a roundcubemail plugin now.
+    * Allow specify non-standard httpd port in 'conf/httpd' now.
+    * Mailgraph localtion changed to '/var/www/cgi-bin/mailgraph.cgi'.
+    * Add 'redirect' command in sieve rule file.
+    * Drop SPAM mail to INBOX, not Junk.
+    * Set policyd chroot directory to its home directory.
+    * Create HOME directory for policyd user. otherwise, crontabs will
+      failed. Thanks chenwei. :)
+    * Add 'SMTP_SERVER' for distribute deployment.
+    * Add iRedMail VERSION info in 'conf/global'.
+    * Set 'BLACKLIST_TEMP_REJECT=0'. Disabled by default. Thanks muniao.
+    * Add policyd blacklist_helo list. Thanks muniao. :)
+    * Improve tool/create_mail_user_mysql.sh, use username as password
+      by default.
+    * Make policyd reject 5xx code while user quota exceeded. Thanks
+      chenwei1973@gmail.
+    * Remove 'reject_unverified_recipient, reject_unlisted_recipient,'
+      in smtpd_recipient_restrictions.
+    * Remove INDEX on vmail.mailbox.
+    * Add 'smtpd_helo_required=yes' in Postfix.
+    * Add 'BLACKLIST_REJECTION', 'GREYLIST_REJECTION', 'SPAMTRAP_REJECTION'
+      in policyd, disabled by default.
+    * Add 'reject_unknown_sender_domain' in smtpd_recipient_restrictions.
+
+iRedMail-0.2-rc1:
+    * Add more amavisd options.
+    * Adjust mailgraph filter rule, add greylist graph.
+    * Fix quota config in dovecot for 1.1.x. Thanks chenwei. :)
+      Warning: we use '10' as '10M' now. please refer dovecot userbd
+      setting file: /etc/dovecot-{mysql,ldap}.conf.
+    * Make amavisd log to /var/log/maillog by default, so that
+      mailgraph will detect spam mails.
+    * Fix SQL while SITE_ADMIN_NAME equal to FIRST_DOMAIN_ADMIN_NAME.
+      Reported by muniao. Thanks :)
+    * Add script to convert WinMail user mailboxes to standard IMAP
+      directory structure.
+    * Fix ExtMail configuration about 'SYS_MAILDIR_BASE' in webmail.cf,
+      Thanks xcrossbow@gmail.
+    * Typo in Roundcubemail display_username.patch. remove 'dot' after
+      username, so that it won't make user confused. Thanks
+      xcrossbow@gmail.
+    * Fix typo error in 'create_mail_mysql_user.sh'. Thanks muniao.
+    * Remove roundcubemail version info in 'useragent' option in
+      'config/main.inc.php', less is more.
+    * Add 'signed_header_fields' in amavisd.conf.
+    * Update dovecot to 1.1.1.
+    * Update amavisd-new to 2.6.1.
+
+iRedMail-0.1:
+    * Add 'policy_time_limit=3600'. Reminded by Edison. Thanks :)
+    * Add 'delay_warning_time=30m'. Reminded by muniao. Thanks :)
+    * Add perl-Mail-SPF-Query.noarch as mandatory for SPF feature.
+    * Initialize version of iRedMail. based on rhms-0.5.0-rc2.
+      rhms ChangeLog please check:
+      http://rhms.googlecode.com/svn/trunk/rhms/ChangeLog

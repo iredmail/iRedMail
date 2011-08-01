@@ -1,0 +1,439 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+backup_file()
+{
+    # Usage: backup_file file1 [file2 file3 ... fileN]
+    if [ X"$#" != X"0" ]; then
+        for conf_file in $@; do
+            if [ -f ${conf_file} ]; then
+                if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+                    if [ X"${DEBUG}" == X"YES" ]; then
+                        echo -e "\033[43m${BACKUP_FLAG}\033[0m ${conf_file} -> $(basename ${conf_file}).${DATE}."
+                    fi
+                else
+                    if [ X"${DEBUG}" == X"YES" ]; then
+                        echo -e "${BACKUP_FLAG} ${conf_file} -> $(basename ${conf_file}).${DATE}."
+                    fi
+                fi
+
+                cp -f ${conf_file} ${conf_file}.${DATE}
+            else
+                :
+            fi
+        done
+    else
+        :
+    fi
+}
+
+check_user()
+{
+    # Check special user privilege to execute this script.
+    if [ X"$(id -u)" != X"$(id -u ${1})" ]; then
+        ECHO_ERROR "Please run this script as user: ${1}."
+        exit 255
+    else
+        if [ X"$(id -u)" == X"0" ]; then
+            export PATH="/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin"
+        else
+            :
+        fi
+    fi
+}
+
+check_hostname()
+{
+    echo ${HOSTNAME} | grep '\.' >/dev/null 2>&1
+    [ X"$?" != X"0" ] && \
+        ECHO_ERROR "Please configure a fully qualified domain name (FQDN) in /etc/hosts before we go further.\n\nExample:\n\n127.0.0.1   mail.iredmail.org mail localhost\n" && \
+        exit 255
+}
+
+check_pkg()
+{
+    # Usage: check_pkg <command> <package>
+    # It means: <package> owns <command>
+    cmd="$1"
+    pkg="$2"
+
+    ECHO_DEBUG "Checking necessary command/package: ${cmd}/${pkg} ..."
+    for i in $(echo $PATH|sed 's/:/ /g'); do
+        [ -x $i/${cmd} ] && export HAS_CMD='YES'
+    done
+
+    if [ X"${HAS_CMD}" != X'YES' ]; then
+        eval ${install_pkg} ${pkg}
+        if [ X"$?" != X"0" ]; then
+            ECHO_ERROR "Please install package ${pkg} first." && exit 255
+        else
+            :
+        fi
+    else
+        :
+    fi
+
+    unset HAS_CMD
+}
+
+# Check necessery privileges/files/dirs.
+check_env()
+{
+    # Check user privilege.
+    check_user root
+
+    # Check FQDN hostname.
+    check_hostname
+
+    # Check config tool: dialog.
+    check_pkg ${BIN_DIALOG} ${PKG_DIALOG}
+
+    ECHO_INFO -n "Check configuration file: ${CONFIG_FILE}..."
+    if [ -f ${CONFIG_FILE} ]; then
+        grep '^#EOF$' ${CONFIG_FILE} >/dev/null
+
+        if [ X"$?" == X"0" ]; then
+            echo -e "\tFound."
+            ECHO_QUESTION -n "Use it for mail server setting? [y|N]"
+            read ANSWER
+
+            case  $ANSWER in
+                Y|y )
+                    ECHO_INFO "Use config file: ${CONFIG_FILE} for mail server setting."
+                    . ${CONFIG_FILE}
+
+                    # Check installation status.
+                    # After each component installation was completed, there
+                    # should be a variable in ${STATUS_FILE}, e.g.
+                    #
+                    #   export STATUS_PHP_INSTALLATION='DONE'
+                    #   export STATUS_PHP_CONFIGURATION='DONE'
+                    #
+                    if [ -e ${STATUS_FILE} ]; then
+                        ECHO_INFO "Import installation process status from file: ${STATUS_FILE}."
+                        . ${STATUS_FILE}
+                    else
+                        echo '' > ${STATUS_FILE}
+                    fi
+
+                    # Initialize tip file.
+                    if [ ! -e ${TIP_FILE} ]; then
+                        cat > ${TIP_FILE} <<EOF
+${CONF_MSG}
+If you consider here should be put some more infomation, please contact us:
+    - http://www.iredmail.org/contact.html
+
+EOF
+                    else
+                        :
+                    fi
+                    ;;
+                N|n|* )
+                    echo "Skip configuration file: ${CONFIG_FILE}."
+                    . ${CONFIG_VIA_DIALOG}
+                    ;;
+            esac
+        else
+            echo -e "\tFound, but not finished."
+            . ${CONFIG_VIA_DIALOG}
+        fi
+    else
+        echo -e "\tNone."
+        . ${CONFIG_VIA_DIALOG}
+    fi
+}
+
+extract_pkg()
+{
+    if [ X"$2" = X"" ]; then
+        DST='.'
+    else
+        DST="$2"
+    fi
+
+    if echo $1 | grep '.tar.gz$' >/dev/null 2>&1 ; then
+        ECHO_DEBUG "Extracting: $1 -> ${DST}"
+        tar zxf $1 -C $DST
+    elif echo $1 | grep '.tgz$' >/dev/null 2>&1 ; then
+        ECHO_DEBUG "Extracting: $1 -> ${DST}"
+        tar zxf $1 -C $DST
+    elif echo $1 | grep '.tar.bz2$' >/dev/null 2>&1 ; then
+        # Install bzip2 first.
+        check_pkg ${BIN_BZIP2} ${PKG_BZIP2}
+
+        ECHO_DEBUG "Extracting: $1 -> ${DST}"
+        tar xjf $1 -C $DST
+    else
+        ECHO_ERROR "Unknown archive format."
+    fi
+}
+
+check_status_before_run()
+{
+    #
+    # Every function will append status info to ${STATUS_FILE}.
+    # Format is:
+    #   function_name() {:}
+    # Status info:
+    #   export status_function_name='DONE'
+    #
+    _status="status_$1"
+    if [ X"$(eval echo \$${_status})" != X"DONE" ]; then
+        $1
+    else
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -e "\033[46m<<< SKIP >>>\033[0m Skip function: $1."
+        else
+            echo -e "<<< SKIP >>> Skip function: $1."
+        fi
+    fi
+}
+
+hash_domain()
+{
+    # Usage: hash_domain domain
+    domain="$( echo $1 | tr [A-Z] [a-z] )"
+
+    # Different domain style: hashed, normal.
+    #if [ X"${MAILDIR_STYLE}" == X"hashed" ]; then
+    #    length="$(echo ${domain} | wc -L)"
+    #    str1="$(echo ${domain} | cut -c1)"
+    #    str2="$(echo ${domain} | cut -c2)"
+
+    #    if [ X"${length}" == X"1" ]; then
+    #        str2="${str1}"
+    #    elif [ X"${length}" == X"2" ]; then
+    #        str2="${str2}"
+    #    else
+    #        :
+    #    fi
+
+        # Use mbox, will be changed later.
+    #    domain="${str1}/${str1}${str2}/${domain}"
+    #else
+        # Use mbox, will be changed later.
+    #    domain="${domain}"
+    #fi
+
+    echo ${domain}
+}
+
+# Hash maildir string.
+hash_maildir()
+{
+    # Usage: hash_maildir username
+    username="$( echo $1 | tr [A-Z] [a-z] )"
+
+    # Different maildir style: hashed, normal.
+    if [ X"${MAILDIR_STYLE}" == X"hashed" ]; then
+        length="$(echo ${username} | wc -L)"
+        str1="$(echo ${username} | cut -c1)"
+        str2="$(echo ${username} | cut -c2)"
+        str3="$(echo ${username} | cut -c3)"
+
+        if [ X"${length}" == X"1" ]; then
+            str2="${str1}"
+            str3="${str1}"
+        elif [ X"${length}" == X"2" ]; then
+            str3="${str2}"
+        else
+            :
+        fi
+
+        # Use mbox, will be changed later.
+        maildir="${str1}/${str2}/${str3}/${username}-${DATE}"
+    else
+        # Use mbox, will be changed later.
+        maildir="${username}-${DATE}"
+    fi
+
+    # For maildir format.
+    [ X"${MAILBOX_FORMAT}" == X"Maildir" ] && maildir="${maildir}/"
+
+    echo ${maildir}
+}
+
+# -----------------------------------------------------------------
+# - OS/OS_Version/Arch dependent.
+# -----------------------------------------------------------------
+enable_service_rh()
+{
+    services="$@"
+    for i in $services; do
+        if [ -x /etc/init.d/$i ]; then
+            ECHO_DEBUG "Enable service: $i."
+            /sbin/chkconfig --level 2345 $i on
+        fi
+    done
+}
+
+disable_service_rh()
+{
+    services="$@"
+    for i in $services; do
+        if [ -x /etc/init.d/$i ]; then
+            ECHO_DEBUG "Disable service: $i."
+            /sbin/chkconfig --level 2345 $i off
+        fi
+    done
+}
+
+enable_service_debian()
+{
+    services="$@"
+    for i in $services; do
+        if [ -x /etc/init.d/$i ]; then
+            ECHO_DEBUG "Enable service: $i."
+            update-rc.d $i defaults
+        fi
+    done
+}
+
+disable_service_debian()
+{
+    services="$@"
+    for i in $services; do
+        if [ -x /etc/init.d/$i ]; then
+            ECHO_DEBUG "Disable service: $i."
+            update-rc.d -f $i remove
+        fi
+    done
+}
+
+# TODO
+enable_service_freebsd()
+{
+    :
+}
+
+# TODO
+disable_service_freebsd()
+{
+    :
+}
+
+service_control()
+{
+    service="$1"
+    action="$2"
+    tmp_rc_script="${DIR_RC_SCRIPTS}/${service}"
+    if [ -x ${tmp_rc_script} ]; then
+        ${tmp_rc_script} ${action}
+    else
+        ECHO_ERROR "File not exist or not executable: ${tmp_rc_script}."
+    fi
+}
+
+gen_ldap_passwd()
+{
+    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+        SLAPPASSWD='/usr/local/sbin/slappasswd'
+    else
+        SLAPPASSWD='/usr/sbin/slappasswd'
+    fi
+    ${SLAPPASSWD} -h {SSHA} -s "${1}"
+}
+
+# Install/Remove binary packages on RHEL/CentOS.
+install_pkg_rhel()
+{
+    ECHO_INFO "Installing package(s): $@"
+    ${YUM} -y install $@
+    if [ X"$?" != X"0" ]; then
+        ECHO_ERROR "Installation failed, please check the terminal output."
+        ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
+        ECHO_ERROR "forum: http://www.iredmail.org/forum/"
+        exit 255
+    else
+        :
+    fi
+}
+
+remove_pkg_rhel()
+{
+    ECHO_INFO "Removing package(s): $@"
+    ${YUM} remove -y $@
+    [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
+}
+
+# Install/Remove binary packages on OpenSuSE.
+install_pkg_suse()
+{
+    ECHO_INFO "Installing package(s): $@"
+    zypper --non-interactive install -y $@
+    if [ X"$?" != X"0" ]; then
+        ECHO_ERROR "Installation failed, please check the terminal output."
+        exit 255
+    else
+        :
+    fi
+}
+
+remove_pkg_suse()
+{
+    ECHO_INFO "Removing package(s): $@"
+    zypper --non-interactive remove -y $@
+    [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
+}
+
+# Install/Remove binary packages on Debian/Ubuntu.
+install_pkg_debian()
+{
+    ECHO_INFO "Installing package(s): $@"
+    ${APTGET} install -y --force-yes $@
+    if [ X"$?" != X"0" ]; then
+        ECHO_ERROR "Installation failed, please check the terminal output."
+        exit 255
+    else
+        :
+    fi
+}
+
+remove_pkg_debian()
+{
+    ECHO_INFO "Removing package(s): $@"
+    ${APTGET} purge -y $@
+    [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
+}
+
+# Create SSL certs/private files.
+gen_pem_key()
+{
+    # Create necessary directories.
+    mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} 2>/dev/null
+
+    openssl req \
+        -x509 -nodes -days 3650 -newkey rsa:${SSL_KEY_SIZE} \
+        -subj "/C=${TLS_COUNTRY}/ST=${TLS_STATE}/L=${TLS_CITY}/O=${TLS_COMPANY}/OU=${TLS_DEPARTMENT}/CN=${TLS_HOSTNAME}/emailAddress=${TLS_ADMIN}/" \
+        -out ${SSL_CERT_FILE} -keyout ${SSL_KEY_FILE} >/dev/null 2>&1
+
+    # Set correct file permission.
+    chmod +r ${SSL_CERT_FILE}
+    chmod +r ${SSL_KEY_FILE}
+
+    cat >> ${TIP_FILE} <<EOF
+
+SSL cert keys (size: ${SSL_KEY_SIZE}):
+    - ${SSL_CERT_FILE}
+    - ${SSL_KEY_FILE}
+EOF
+}

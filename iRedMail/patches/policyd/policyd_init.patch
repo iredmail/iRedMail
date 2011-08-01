@@ -1,0 +1,75 @@
+--- etc/rc.d/init.d/policyd	2008-07-21 13:56:05.000000000 -0400
++++ /etc/rc.d/init.d/policyd	2008-07-21 14:23:06.000000000 -0400
+@@ -12,28 +12,54 @@
+ 
+ RETVAL=0
+ prog='policyd'
++
++ENABLE_SENDER_THROTTLE="NO"
++
+ POLICYD="/usr/sbin/policyd"
+ CONF="/etc/policyd.conf"
++CONF_SENDER_THROTTLE="/etc/policyd_sender_throttle.conf"
++POLICYD_PIDFILE='/var/run/policyd.pid'
++POLICYD_SENDER_THROTTLE_PIDFILE='/var/run/policyd_sender_throttle.pid'
+ 
+ [ -f $POLICYD ] || exit 0
+ [ -f $CONF ] || exit 0
+ 
+ start()
+ {
+-    echo -n $"Starting $prog:"
++    echo -n $"Starting policyd:"
+     daemon "$POLICYD -c $CONF"
+     RETVAL=$?
+     [ "$RETVAL" = 0 ] && touch /var/lock/subsys/policyd
+     echo
++
++    if [ X"${ENABLE_SENDER_THROTTLE}" != X"NO" ]; then
++        echo -n $"Starting policyd (sender throttle):"
++        daemon "$POLICYD -c ${CONF_SENDER_THROTTLE}"
++        RETVAL=$?
++        [ "$RETVAL" = 0 ] && touch /var/lock/subsys/policyd_sender_throttle
++        echo
++    else
++        :
++    fi
+ }
+ 
+ stop()
+ {
+-    echo -n $"Stopping $prog:"
+-    killproc policyd
++    echo -n $"Stopping policyd:"
++    killproc -p ${POLICYD_PIDFILE}
+     RETVAL=$?
+     [ "$RETVAL" = 0 ] && rm -f /var/lock/subsys/policyd
+     echo
++
++    if [ X"${ENABLE_SENDER_THROTTLE}" != X"NO" ]; then
++        echo -n $"Stopping policyd (sender throttle):"
++        killproc -p ${POLICYD_SENDER_THROTTLE_PIDFILE}
++        RETVAL=$?
++        [ "$RETVAL" = 0 ] && rm -f /var/lock/subsys/policyd_sender_throttle
++        echo
++    else
++        :
++    fi
+ }
+ 
+ restart()
+@@ -54,7 +80,13 @@
+         restart
+         ;;
+     status)
+-        status policyd
++        status -p /var/run/policyd.pid policyd
++
++        if [ X"${ENABLE_SENDER_THROTTLE}" != X"NO" ]; then
++            status -p /var/run/policyd_sender_throttle.pid "policyd (sender throttle)"
++        else
++            :
++        fi
+         ;;
+     *)
+         echo $"Usage: $0 {start|stop|restart|status}"

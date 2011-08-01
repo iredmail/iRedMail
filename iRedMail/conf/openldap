@@ -1,0 +1,249 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+# Variables for OpenLDAP and related. Refer to 'dialog/ldap_config.sh'.
+
+# LDAP service info.
+export LDAP_SERVER_HOST='127.0.0.1'
+export LDAP_SERVER_PORT='389'
+export LDAP_USE_TLS='NO'
+export LDAP_BIND='yes'
+export LDAP_BIND_VERSION='3'
+
+# Database backend type.
+# Note:
+#   * We use the same database type on all distributions to reduce our
+#     workflow, and users migrate their mail server between supported
+#     OS will be more comfortable.
+#   * Performance of bdb backend is good enough. but Debian/Ubuntu can
+#     also use 'hdb' for OpenLDAP-2.4.x.
+export OPENLDAP_DEFAULT_DBTYPE='bdb'    # bdb, hdb(used for OpenLDAP-2.4.x)
+
+# Default LDAP data directory.
+export OPENLDAP_DATA_DIR='/var/lib/ldap'    # Do *NOT* end with '/'.
+
+# Configure.
+if [ X"${DISTRO}" == X"RHEL" ]; then
+    # OpenLDAP version.
+    if [ X"${DISTRO_VERSION}" == X"5" ]; then
+        export OPENLDAP_VERSION='2.3'
+        export LDAP_RC_SCRIPT_NAME='ldap'
+    else
+        export OPENLDAP_VERSION='2.4'
+        export LDAP_RC_SCRIPT_NAME='slapd'
+    fi
+
+    # LDAP daemon user & group.
+    export LDAP_USER='ldap'
+    export LDAP_GROUP='ldap'
+
+    # Configuration files.
+    export OPENLDAP_CONF_ROOT="/etc/openldap"
+    export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
+
+    export OPENLDAP_PID_FILE='/var/run/openldap/slapd.pid'
+    export OPENLDAP_ARGS_FILE='/var/run/openldap/slapd.args'
+
+    export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/ldap"
+
+    # RC script.
+    export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/${LDAP_RC_SCRIPT_NAME}"
+
+    # Module related.
+    export OPENLDAP_MODULE_PATH='/usr/lib/openldap'
+
+elif [ X"${DISTRO}" == X"SUSE" ]; then
+    # OpenLDAP version.
+    export OPENLDAP_VERSION='2.4'
+
+    # LDAP daemon user & group.
+    export LDAP_USER='ldap'
+    export LDAP_GROUP='ldap'
+
+    # Configuration files.
+    export OPENLDAP_CONF_ROOT="/etc/openldap"
+    export OPENLDAP_DB_CONFIG_SAMPLE='/var/lib/ldap/DB_CONFIG.example'
+
+    export OPENLDAP_PID_FILE='/var/run/slapd/slapd.pid'
+    export OPENLDAP_ARGS_FILE='/var/run/slapd/slapd.args'
+
+    export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/openldap"
+
+    # RC script.
+    export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/ldap"
+
+elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    # OpenLDAP version.
+    export OPENLDAP_VERSION='2.4'
+
+    # LDAP daemon user & group.
+    export LDAP_USER='openldap'
+    export LDAP_GROUP='openldap'
+
+    # Configuration files.
+    export OPENLDAP_CONF_ROOT="/etc/ldap"
+    export OPENLDAP_DB_CONFIG_SAMPLE="/usr/share/slapd/DB_CONFIG"
+
+    export OPENLDAP_PID_FILE='/var/run/slapd/slapd.pid'
+    export OPENLDAP_ARGS_FILE='/var/run/slapd/slapd.args'
+
+    export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/slapd"
+
+    # Module related.
+    export OPENLDAP_MODULE_PATH='/usr/lib/ldap'
+
+    # RC script.
+    export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/slapd"
+
+elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    # OpenLDAP version.
+    export OPENLDAP_VERSION='2.4'
+
+    # LDAP daemon user & group.
+    export LDAP_USER='ldap'
+    export LDAP_GROUP='ldap'
+
+    # Configuration files.
+    export OPENLDAP_CONF_ROOT='/usr/local/etc/openldap'
+    export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
+
+    export OPENLDAP_PID_FILE='/var/run/openldap/slapd.pid'
+    export OPENLDAP_ARGS_FILE='/var/run/openldap/slapd.args'
+
+    # Module related.
+    export OPENLDAP_MODULE_PATH='/usr/local/libexec/openldap'
+
+    # RC script.
+    export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/slapd"
+
+    # Override default setting.
+    export OPENLDAP_DATA_DIR='/var/db/openldap-data'    # Do *NOT* end with '/'.
+else
+    :
+fi
+
+export OPENLDAP_SCHEMA_DIR="${OPENLDAP_CONF_ROOT}/schema"
+export OPENLDAP_SLAPD_CONF="${OPENLDAP_CONF_ROOT}/slapd.conf"
+export OPENLDAP_LDAP_CONF="${OPENLDAP_CONF_ROOT}/ldap.conf"
+export OPENLDAP_LOGFILE='/var/log/openldap.log'
+export OPENLDAP_LOGROTATE_FILE="${LOGROTATE_DIR}/openldap"
+
+# LDAP data directory.
+export LDAP_DATA_DIR="${OPENLDAP_DATA_DIR}/${dn2dnsname}"
+
+# Setting for one instance. You can edit ${OPENLDAP_SLAPD_CONF} manually to hold
+# multi instances.
+export LDAP_INIT_LDIF="${CONF_DIR}/ldap_init.ldif"
+
+##################################################
+# iRedMail LDAP schema related
+#
+# objectClass
+export LDAP_OBJECTCLASS_OU='organizationalUnit'
+export LDAP_OBJECTCLASS_MAILDOMAIN='mailDomain'
+export LDAP_OBJECTCLASS_MAILUSER='mailUser'
+export LDAP_OBJECTCLASS_MAILALIAS='mailAlias'
+export LDAP_OBJECTCLASS_MAILGROUP='mailList'
+export LDAP_OBJECTCLASS_MAILADMIN='mailAdmin'
+export LDAP_OBJECTCLASS_MAIL_EXTERNAL_USER='mailExternalUser'
+
+# Common attribute.
+export LDAP_ENABLED_SERVICE='enabledService'
+
+# Values of service name.
+export LDAP_SERVICE_DOMAIN_ALIAS='domainalias'
+export LDAP_SERVICE_MAIL='mail'
+export LDAP_SERVICE_INTERNAL='internal'
+export LDAP_SERVICE_SMTP='smtp'
+export LDAP_SERVICE_SMTPS='smtpsecured'
+export LDAP_SERVICE_POP3='pop3'
+export LDAP_SERVICE_POP3S='pop3secured'
+export LDAP_SERVICE_IMAP='imap'
+export LDAP_SERVICE_IMAPS='imapsecured'
+export LDAP_SERVICE_DELIVER='deliver'
+export LDAP_SERVICE_LDA='lda'
+export LDAP_SERVICE_FORWARD='forward'
+export LDAP_SERVICE_SENDER_BCC='senderbcc'
+export LDAP_SERVICE_RECIPIENT_BCC='recipientbcc'
+export LDAP_SERVICE_MANAGESIEVE='managesieve'
+export LDAP_SERVICE_MANAGESIEVES='managesievesecured'
+export LDAP_SERVICE_SIEVE='sieve'
+export LDAP_SERVICE_SIEVES='sievesecured'
+export LDAP_SERVICE_WEBMAIL='webmail'
+export LDAP_SERVICE_AWSTATS='awstats'
+export LDAP_SERVICE_SHADOW_ADDRESS='shadowaddress'
+export LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK='displayedInGlobalAddressBook'
+
+# Shared attributes.
+export LDAP_ATTR_ACCOUNT_STATUS='accountStatus'
+export LDAP_ATTR_MTA_TRANSPORT='mtaTransport'
+
+# Domain admin related.
+export LDAP_ATTR_DOMAINADMIN_DN_NAME='domainAdmins'
+
+# Domain related attributes.
+export LDAP_ATTR_DOMAIN_RDN='domainName'
+export LDAP_ATTR_DOMAIN_ALIAS_NAME='domainAliasName'
+export LDAP_ATTR_DOMAIN_ADMIN='domainAdmin'
+export LDAP_ATTR_DOMAIN_GLOBALADMIN='domainGlobalAdmin'
+export LDAP_ATTR_DOMAIN_BACKUPMX='domainBackupMX'
+export LDAP_ATTR_DOMAIN_MAX_QUOTA_SIZE='domainMaxQuotaSize'
+export LDAP_ATTR_DOMAIN_MAX_USER_NUMBER='domainMaxUserNumber'
+export LDAP_ATTR_DOMAIN_SENDER_BCC_ADDRESS='domainSenderBccAddress'
+export LDAP_ATTR_DOMAIN_RECIPIENT_BCC_ADDRESS='domainRecipientBccAddress'
+# Values of domain related attributes.
+export LDAP_VALUE_DOMAIN_GLOBALADMIN='yes'
+export LDAP_VALUE_DOMAIN_BACKUPMX='yes'
+
+# Group related.
+export LDAP_ATTR_GROUP_RDN='ou'
+export LDAP_ATTR_GROUP_USERS='Users'
+export LDAP_ATTR_GROUP_GROUPS='Groups'
+export LDAP_ATTR_GROUP_ALIASES='Aliases'
+export LDAP_ATTR_GROUP_EXTERNALS='Externals'
+
+# Attributes of group object.
+export LDAP_ATTR_GROUP_ACCESSPOLICY='accessPolicy'
+export LDAP_ATTR_GROUP_HASMEMBER='hasMember'
+export LDAP_ATTR_GROUP_MEMBER='mailForwardingAddress'
+export LDAP_ATTR_GROUP_ALLOWED_USER='listAllowedUser'
+# Values of group related attributes.
+export LDAP_VALUE_GROUP_HASMEMBER='yes'
+
+# Attributes of user object.
+export LDAP_ATTR_USER_RDN='mail'
+export LDAP_ATTR_USER_PASSWD='userPassword'
+export LDAP_ATTR_USER_HOME_DIRECTORY='homeDirectory'
+export LDAP_ATTR_USER_STORAGE_BASE_DIRECTORY='storageBaseDirectory'
+export LDAP_ATTR_USER_SENDER_BCC_ADDRESS='userSenderBccAddress'
+export LDAP_ATTR_USER_RECIPIENT_BCC_ADDRESS='userRecipientBccAddress'
+export LDAP_ATTR_USER_BACKUP_MAIL_ADDRESS='backupMailAddress'
+export LDAP_ATTR_USER_QUOTA='mailQuota'
+export LDAP_ATTR_USER_FORWARD='mailForwardingAddress'
+export LDAP_ATTR_USER_RESTRICTION_CLASS='restrictionClass'
+export LDAP_ATTR_USER_RESTRICTED_DOMAIN='restrictedDomain'
+export LDAP_ATTR_USER_MEMBER_OF_GROUP='memberOfGroup'
+export LDAP_ATTR_USER_SHADOW_ADDRESS='shadowAddress'
+# Values of user related attributes.
+export LDAP_STATUS_ACTIVE='active'
+
+#### END LDAP schema ####

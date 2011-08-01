@@ -1,0 +1,121 @@
+#!/usr/bin/env bash
+
+# Author: Zhang Huangbin <zhb(at)iredmail.org>
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+# Variables for Postfix and related.
+
+#
+# You do *NOT* need to modify them.
+#
+# ---- Postfix ----
+export POSTFIX_DAEMON_USER='postfix'
+export POSTFIX_DAEMON_GROUP='postfix'
+
+# Mail log files.
+if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" ]; then
+    # RHEL, CentOS, FreeBSD
+    export MAILLOG='/var/log/maillog'
+    export MAILLOG_INFO=''
+    export MAILLOG_ERROR=''
+    export MAILLOG_WARN=''
+elif [ X"${DISTRO}" == X"SUSE" ]; then
+    export MAILLOG='/var/log/mail'
+    export MAILLOG_INFO='/var/log/mail.info'
+    export MAILLOG_ERROR='/var/log/mail.err'
+    export MAILLOG_WARN='/var/log/mail.warn'
+    export POSTFIX_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/postfix"
+elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    # Debian, Ubuntu
+    export MAILLOG='/var/log/mail.log'
+    export MAILLOG_INFO='/var/log/mail.info'
+    export MAILLOG_ERROR='/var/log/mail.err'
+    export MAILLOG_WARN='/var/log/mail.warn'
+else
+    :
+fi
+
+if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    export POSTFIX_ROOTDIR='/usr/local/etc/postfix'
+else
+    export POSTFIX_ROOTDIR='/etc/postfix'
+fi
+
+# You do *NOT* need to modify them.
+export POSTFIX_CHROOT_DIR='/var/spool/postfix'
+
+export POSTFIX_FILE_MAIN_CF="${POSTFIX_ROOTDIR}/main.cf"
+export POSTFIX_FILE_MASTER_CF="${POSTFIX_ROOTDIR}/master.cf"
+export POSTFIX_FILE_ALIASES="${POSTFIX_ROOTDIR}/aliases"
+export POSTFIX_FILE_HEADER_CHECKS="${POSTFIX_ROOTDIR}/header_checks.pcre"
+export POSTFIX_FILE_HELO_ACCESS="${POSTFIX_ROOTDIR}/helo_access.pcre"
+
+# Default transport or LDA (local deliver agent).
+# We use dovecot deliver program as default transport.
+export TRANSPORT='dovecot'
+
+# Set 'message_size_limit', in 'byte'. Default is 10M.
+export MESSAGE_SIZE_LIMIT='15728640'
+
+# virtual_maildir_limit_message.
+export MAILDIR_LIMIT_MESSAGE="Sorry, the user's maildir has overdrawn the disk quota, please notice the user and try again later."
+
+# LDAP/MYSQL lookup configuration files.
+# LDAP lookup.
+export POSTFIX_LOOKUP_DIR_LDAP="${POSTFIX_ROOTDIR}/ldap"
+export ldap_virtual_mailbox_domains_cf="${POSTFIX_LOOKUP_DIR_LDAP}/virtual_mailbox_domains.cf"
+export ldap_transport_maps_user_cf="${POSTFIX_LOOKUP_DIR_LDAP}/transport_maps_user.cf"
+export ldap_transport_maps_domain_cf="${POSTFIX_LOOKUP_DIR_LDAP}/transport_maps_domain.cf"
+export ldap_virtual_mailbox_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/virtual_mailbox_maps.cf"
+export ldap_virtual_alias_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/virtual_alias_maps.cf"
+export ldap_virtual_group_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/virtual_group_maps.cf"
+export ldap_virtual_maillist_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/virtual_maillist_maps.cf"
+export ldap_sender_login_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/sender_login_maps.cf"
+export ldap_recipient_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR_LDAP}/recipient_bcc_maps_domain.cf"
+export ldap_recipient_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR_LDAP}/recipient_bcc_maps_user.cf"
+export ldap_sender_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR_LDAP}/sender_bcc_maps_domain.cf"
+export ldap_sender_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR_LDAP}/sender_bcc_maps_user.cf"
+export ldap_relay_domains_cf="${POSTFIX_LOOKUP_DIR_LDAP}/relay_domains.cf"
+export ldap_catch_all_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/catchall_maps.cf"
+
+# MySQL lookup.
+export POSTFIX_LOOKUP_DIR_MYSQL="${POSTFIX_ROOTDIR}/mysql"
+export mysql_virtual_mailbox_domains_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/virtual_mailbox_domains.cf"
+export mysql_transport_maps_user_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/transport_maps_user.cf"
+export mysql_transport_maps_domain_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/transport_maps_domain.cf"
+export mysql_virtual_mailbox_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/virtual_mailbox_maps.cf"
+export mysql_virtual_alias_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/virtual_alias_maps.cf"
+export mysql_catchall_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/catchall_maps.cf"
+export mysql_domain_alias_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/domain_alias_maps.cf"
+export mysql_domain_alias_catchall_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/domain_alias_catchall_maps.cf"
+export mysql_sender_login_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/sender_login_maps.cf"
+export mysql_sender_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/sender_bcc_maps_domain.cf"
+export mysql_sender_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/sender_bcc_maps_user.cf"
+export mysql_recipient_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/recipient_bcc_maps_domain.cf"
+export mysql_recipient_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/recipient_bcc_maps_user.cf"
+export mysql_relay_domains_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/relay_domains.cf"
+
+if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    export POSTFIX_LOOKUP_DIR="${POSTFIX_LOOKUP_DIR_LDAP}"
+elif [ X"${BACKEND}" == X"MySQL" ]; then
+    export POSTFIX_LOOKUP_DIR="${POSTFIX_LOOKUP_DIR_MYSQL}"
+else
+    export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/lookups"
+fi

@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+export CLAMAV_USER='clamav'
+export CLAMAV_GROUP='clamav'
+
+# Clamav.
+if [ X"${DISTRO}" == X"RHEL" ]; then
+    export CLAMD_CONF='/etc/clamd.conf'
+
+    # Freshclam.
+    export FRESHCLAM_CONF='/etc/freshclam.conf'
+    export FRESHCLAM_INIT_FILE_SAMPLE="${SAMPLE_DIR}/freshclam.init"
+
+elif [ X"${DISTRO}" == X"SUSE" ]; then
+    export CLAMD_CONF='/etc/clamd.conf'
+    export FRESHCLAM_CONF='/etc/freshclam.conf'
+
+elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    export CLAMD_CONF='/etc/clamav/clamd.conf'
+    export FRESHCLAM_CONF='/etc/clamav/freshclam.conf'
+
+elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    export CLAMD_CONF='/usr/local/etc/clamd.conf'
+    export FRESHCLAM_CONF='/usr/local/etc/freshclam.conf'
+else
+    :
+fi
+
+# Clamd.
+export CLAMD_LISTEN_ADDR='127.0.0.1'            # Used to override default setting.
+
+# Clamd local socket.
+if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    export CLAMD_LOCAL_SOCKET='/var/run/clamav/clamd.sock'
+else
+    export CLAMD_LOCAL_SOCKET='/tmp/clamd.socket'   # Used to override default setting.
+fi
+export CLAMD_LOGFILE='/var/log/clamav/clamd.log'
+export FRESHCLAM_LOGFILE='/var/log/clamav/freshclam.log'
+
+# Freshclam.
+export FRESHCLAM_PID_FILE='/var/run/clamav/freshclam.pid'   # Used to override default setting.
+export FRESHCLAM_DATABASE_MIRROR='db.us.clamav.net'     # db.cn.clamav.net is broken.

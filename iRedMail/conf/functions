@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+ECHO_INFO()
+{
+    if [ X"$1" == X"-n" ]; then
+        shift 1
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -ne "\033[42m${INFO_FLAG}\033[0m $@"
+        else
+            echo -ne "${INFO_FLAG} $@"
+        fi
+    else
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -e "\033[42m${INFO_FLAG}\033[0m $@"
+        else
+            echo -e "${INFO_FLAG} $@"
+        fi
+    fi
+}
+
+ECHO_QUESTION()
+{
+    if [ X"$1" == X"-n" ]; then
+        shift 1
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -ne "\033[45m${QUESTION_FLAG}\033[0m $@"
+        else
+            echo -ne "${QUESTION_FLAG} $@"
+        fi
+    else
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -e "\033[45m${QUESTION_FLAG}\033[0m $@"
+        else
+            echo -e "${QUESTION_FLAG} $@"
+        fi
+    fi
+}
+
+ECHO_ERROR()
+{
+    if [ X"$1" == X"-n" ]; then
+        shift 1
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -ne "\033[41m${ERROR_FLAG}\033[0m $@"
+        else
+            echo -ne "${ERROR_FLAG} $@"
+        fi
+    else
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -e "\033[41m${ERROR_FLAG}\033[0m $@"
+        else
+            echo -e "${ERROR_FLAG} $@"
+        fi
+    fi
+}
+
+ECHO_DEBUG()
+{
+    if [ X"${DEBUG}" == X"YES" ]; then
+        if [ X"$1" == X"-n" ]; then
+            shift 1
+            if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+                echo -ne "\033[42m${DEBUG_FLAG}\033[0m $@"
+            else
+                echo -ne "${DEBUG_FLAG} $@"
+            fi
+        else
+            if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+                echo -e "\033[42m${DEBUG_FLAG}\033[0m $@"
+            else
+                echo -e "${DEBUG_FLAG} $@"
+            fi
+        fi
+    else
+        :
+    fi
+}

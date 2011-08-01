@@ -1,0 +1,374 @@
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+#
+# This schema is shipped within iRedMail project:
+#   http://www.iredmail.org/
+#
+# It should be localed at:
+#   - RHEL/CentOS/OpenSuSE: /etc/openldap/schema/iredmail.schema
+#   - Debian: /etc/ldap/schema/iredmail.schema
+#   - FreeBSD: /usr/local/etc/openldap/schema/
+#
+#--------------------------------------------------------------------
+# The offical iredmail OID assigned by IANA is 32349, you can find it in url:
+# http://www.iana.org/assignments/enterprise-numbers
+#
+# 1.3.6.1.4.1.32349         OID of iRedMail.org
+# 1.3.6.1.4.1.32349.1       iRedMail
+# 1.3.6.1.4.1.32349.1.2     iRedMail LDAP Elements
+# 1.3.6.1.4.1.32349.1.2.1   AttributeTypes
+# 1.3.6.1.4.1.32349.1.2.2   ObjectClasses
+#--------------------------------------------------------------------
+#
+# This schema depends on:
+#       - core.schema
+#       - cosine.schema
+#
+
+#
+# Mail Service: Domain related attributes.
+#
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.1 NAME 'domainName'
+    DESC 'Virtual Domain Name'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{255}
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.2 NAME 'mtaTransport'
+    DESC 'Transport program for Postfix'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.3 NAME 'domainStatus'
+    DESC 'Deprecated since iRedMail-0.4.1, use accountStatus instead'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.4 NAME 'domainAdmin'
+    DESC 'Domain admin'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.5 NAME 'domainGlobalAdmin'
+    DESC 'Site wide domin admin: yes'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.6 NAME 'domainBackupMX'
+    DESC 'Backup MX: yes, no'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.7 NAME 'domainSenderBccAddress'
+    DESC 'Sender BCC address for whole domain'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320}
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.8 NAME 'domainRecipientBccAddress'
+    DESC 'Recipient BCC address for whole domain'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320}
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.9 NAME 'domainMaxQuotaSize'
+    DESC 'Obsoleted. Max quota size limit for single domain'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.10 NAME 'domainCurrentQuotaSize'
+    DESC 'Current quota size limit for single domain'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.11 NAME 'domainMaxUserNumber'
+    DESC 'Obsoleted. Max user number limit for single domain'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.12 NAME 'domainCurrentUserNumber'
+    DESC 'Current user number limit for single domain'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.13 NAME 'domainMaxAliasNumber'
+    DESC 'Obsoleted. Max alias number limit for single domain'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.14 NAME 'domainCurrentAliasNumber'
+    DESC 'Current alias number limit for single domain'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.15 NAME 'domainMaxListNumber'
+    DESC 'Obsoleted. Max mail list number limit for single domain'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.16 NAME 'domainCurrentListNumber'
+    DESC 'Current mail list number limit for single domain'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.17 NAME 'disclaimer'
+    DESC 'Disclaimer text'
+    EQUALITY caseIgnoreMatch
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.18 NAME 'domainDefaultUserQuota'
+    DESC 'Default quota for new user'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.19 NAME 'domainAliasName'
+    DESC 'Domain Alias Name'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{255} )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.20 NAME 'domainWhitelistIP'
+    DESC 'Whitelist IP address'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.21 NAME 'domainWhitelistSender'
+    DESC 'Whitelist sender address'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.22 NAME 'domainBlacklistIP'
+    DESC 'Whitelist IP address'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.23 NAME 'domainBlacklistSender'
+    DESC 'Whitelist sender address'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+#
+# Mail Service: User related attributes.
+#
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.1 NAME 'mailUID'
+    DESC 'UID of the user on the mailsystem'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.2 NAME 'mailGID'
+    DESC 'GID of the user on the mailsystem'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.3 NAME 'storageBaseDirectory'
+    DESC 'Path to mail storage base directory'
+    EQUALITY caseExactIA5Match
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.4 NAME 'mailMessageStore'
+    DESC 'Path to the maildir/mbox on the mail system'
+    EQUALITY caseExactIA5Match
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.5 NAME 'mailQuota'
+    DESC 'The amount of space the user can use until all further messages get bounced'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.6 NAME 'mailQuotaMessageLimit'
+    DESC 'Quota limit in number of messages, 0 means unlimited'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.7 NAME 'mailHost'
+    DESC 'On which mail server the messagestore of this user is located'
+    EQUALITY caseIgnoreIA5Match
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.8 NAME 'mailForwardingAddress'
+    DESC 'Address(es) to forward all incoming messages to.'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreIA5SubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.9 NAME 'accountStatus'
+    DESC 'The status of a user account: active, disabled'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.10 NAME 'userRecipientBccAddress'
+    DESC 'Recipient BCC address for single user: must be a valid email address'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320}
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.11 NAME 'userSenderBccAddress'
+    DESC 'Sender BCC address for single user: must be a valid email address'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320}
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.12 NAME 'backupMailAddress'
+    DESC 'Backup mail address, used to reset password or whatever'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320}
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.13 NAME 'enabledService'
+    DESC 'Enabled service: mail, smtp, imap, pop3, deliver, forward, senderbcc, recipientbcc, displayedInGlobalAddressBook'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.14 NAME 'memberOfGroup'
+    DESC 'Group/List name which user belong to, MUST be a valid email address'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.15 NAME 'lastLoginDate'
+    DESC 'Last login date.'
+    EQUALITY generalizedTimeMatch
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.16 NAME 'lastLoginIP'
+    DESC 'Last login ip address.'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.17 NAME 'lastLoginProtocol'
+    DESC 'Mail protocol used in last login: pop3, imap'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.18 NAME 'expiredDate'
+    DESC 'Account expired date.'
+    EQUALITY generalizedTimeMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.19 NAME 'shadowAddress'
+    DESC 'Shadow address for mail user'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.20 NAME 'accountSetting'
+    DESC 'Account setting. Default format: var:value'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.21 NAME 'userManager'
+    DESC 'Mail address of manager'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.22 NAME 'mailWhitelistRecipient'
+    DESC 'Whitelist recipient'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.23 NAME 'mailBlacklistRecipient'
+    DESC 'Blacklist recipient'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+#
+# Mail Service: Mail List related attributes.
+#
+attributetype ( 1.3.6.1.4.1.32349.1.2.3.1 NAME 'accessPolicy'
+    DESC 'Mail list access policy: open, domain, allowedOnly, memberOnly'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.3.2 NAME 'hasMember'
+    DESC 'Group has members: yes, no'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+    SINGLE-VALUE )
+attributetype ( 1.3.6.1.4.1.32349.1.2.3.3 NAME 'listAllowedUser'
+    DESC 'User allowed to mail to list: must be a valid email address for mail deliver'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
+
+#
+# Object Class Definitions
+#
+objectclass ( 1.3.6.1.4.1.32349.1.2.4.1 NAME 'mailDomain'
+    DESC 'Mail Domain' SUP top STRUCTURAL
+    MUST ( domainName )
+    MAY ( cn $ mtaTransport $ domainAdmin $ enabledService $
+        domainBackupMX $ domainStatus $ accountStatus $ mailHost $
+        domainSenderBccAddress $ domainRecipientBccAddress $
+        domainMaxQuotaSize $ domainCurrentQuotaSize $
+        domainMaxUserNumber $ domainCurrentUserNumber $
+        domainMaxAliasNumber $ domainCurrentAliasNumber $
+        domainMaxListNumber $ domainCurrentListNumber $
+        domainDefaultUserQuota $ domainAliasName $ disclaimer $
+        description $ street $ telephoneNumber $
+        facsimileTelephoneNumber $ expiredDate $ accountSetting $
+        domainWhitelistIP $ domainWhitelistSender $
+        domainBlacklistIP $ domainBlacklistSender ))
+objectclass ( 1.3.6.1.4.1.32349.1.2.4.2 NAME 'mailAdmin'
+    DESC 'Mail Domain Admin' SUP top STRUCTURAL
+    MUST ( mail )
+    MAY ( domainGlobalAdmin $ description $ enabledService $
+        userPassword $ accountStatus $ cn $ sn $ givenName $
+        preferredLanguage $ givenName $ expiredDate $
+        mailHost $ lastLoginDate $ accountSetting $ shadowLastChange ))
+objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
+    DESC 'Mail User' SUP top AUXILIARY
+    MUST ( mail $ uid )
+    MAY ( storageBaseDirectory $ mailMessageStore $ homeDirectory $
+        userPassword $ mailHost $ mailUID $ mailGID $
+        mailQuota $ mailQuotaMessageLimit $
+        mailForwardingAddress $ shadowAddress $ accountStatus $
+        userRecipientBccAddress $ userSenderBccAddress $
+        enabledService $ telephoneNumber $ backupMailAddress $
+        mtaTransport $ memberOfGroup $ expiredDate $
+        lastLoginDate $ lastLoginIP $ lastLoginProtocol $
+        preferredLanguage $ disclaimer $ accountSetting $
+        title $ userManager $
+        mailWhitelistRecipient $ mailBlacklistRecipient ))
+objectclass ( 1.3.6.1.4.1.32349.1.2.4.4 NAME 'mailAlias'
+    DESC 'Mail Alias' SUP top STRUCTURAL
+    MUST ( mail )
+    MAY ( enabledService $ accountStatus $ description $ cn $
+        mailForwardingAddress $ shadowAddress $ expiredDate $
+        accountSetting $ mailHost ))
+objectclass ( 1.3.6.1.4.1.32349.1.2.4.5 NAME 'mailList'
+    DESC 'Mail Domain Admin' SUP top STRUCTURAL
+    MUST ( mail )
+    MAY ( accountStatus $ description $ accessPolicy $
+        enabledService $ hasMember $ listAllowedUser $ cn $
+        expiredDate $ accountSetting $ mailHost ))
+objectclass ( 1.3.6.1.4.1.32349.1.2.4.6 NAME 'mailExternalUser'
+    DESC 'Mail External User' SUP top STRUCTURAL
+    MUST ( memberOfGroup )
+    MAY ( accountStatus $ mail $ enabledService $ description $
+        cn $ mailHost $ accountSetting ))

@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+# For phpLDAPadmin.
+export PLA_VERSION='1.2.1.1'
+export PLA_TARBALL="phpldapadmin-${PLA_VERSION}.tgz"
+
+# Install phpLDAPadmin with source tarball.
+export PHPLDAPADMIN_USE_SOURCE='YES'
+
+if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    # Install phpLDAPadmin via ports tree.
+    export PHPLDAPADMIN_USE_SOURCE='NO'
+
+    export PLA_HTTPD_ROOT="${HTTPD_SERVERROOT}/phpldapadmin/htdocs"
+    export PLA_HTTPD_ROOT_SYMBOL_LINK="${PLA_HTTPD_ROOT}"
+    export PLA_CONF_DIR="${HTTPD_SERVERROOT}/phpldapadmin/config"
+else
+    export PLA_HTTPD_ROOT="${HTTPD_SERVERROOT}/phpldapadmin-${PLA_VERSION}"
+    export PLA_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/phpldapadmin"
+    export PLA_CONF_DIR="${PLA_HTTPD_ROOT_SYMBOL_LINK}/config"
+fi
+
+# Debian 6, Ubuntu 10.04, 10.10.
+if [ X"${DISTRO_CODENAME}" == X"squeeze" -o X"${DISTRO_CODENAME}" == X"lucid" ]; then
+    export PHPLDAPADMIN_USE_SOURCE='NO'
+
+    export PLA_HTTPD_ROOT="/usr/share/phpldapadmin"
+    export PLA_HTTPD_ROOT_SYMBOL_LINK="${PLA_HTTPD_ROOT}"
+    export PLA_CONF_DIR="${PLA_HTTPD_ROOT}/config"
+fi

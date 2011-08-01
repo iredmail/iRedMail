@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+export IREDADMIN_VERSION='0.1.6'
+export IREDADMIN_TARBALL="iRedAdmin-${IREDADMIN_VERSION}.tar.bz2"
+export IREDADMIN_URL="http://iredmail.googlecode.com/files/${IREDADMIN_TARBALL}"
+export IREDADMIN_HTTPD_ROOT="${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}"
+
+# Run iRedAdmin with Apache + mod_wsgi, but as a low privilege user/group.
+export IREDADMIN_HOME_DIR='/home/iredadmin'
+export IREDADMIN_HTTPD_USER='iredadmin'
+export IREDADMIN_HTTPD_GROUP='iredadmin'
+
+# MySQL database name, username and password.
+export IREDADMIN_DB_NAME='iredadmin'
+export IREDADMIN_DB_USER='iredadmin'
+export IREDADMIN_DB_PASSWD="$(${RANDOM_STRING})"

@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+# Variables for Apache & PHP and related.
+
+# ---- Apache ----
+
+export HTTPD_PORT='80'
+
+if [ X"${DISTRO}" == X"RHEL" ]; then
+    # Apache configuration files.
+    export HTTPD_CONF_ROOT="/etc/httpd"
+    export HTTPD_CONF="${HTTPD_CONF_ROOT}/conf/httpd.conf"
+    export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
+    export HTTPD_SSL_CONF="${HTTPD_CONF_DIR}/ssl.conf"
+    export HTTPD_WSGI_CONF="${HTTPD_CONF_DIR}/wsgi.conf"
+
+    # Web data.
+    export HTTPD_SERVERROOT='/var/www'
+    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/html"
+
+    # Daemon user.
+    export HTTPD_USER='apache'
+    export HTTPD_GROUP='apache'
+
+    # Log file location.
+    export HTTPD_LOG_ACCESSLOG='/var/log/httpd/access_log'
+    export HTTPD_LOG_ERRORLOG='/var/log/httpd/error_log'
+
+    # ---- PHP ----
+    export PHP_INI='/etc/php.ini'
+
+elif [ X"${DISTRO}" == X"SUSE" ]; then
+    # Apache configuration files.
+    export HTTPD_CONF_ROOT="/etc/apache2"
+    export HTTPD_CONF="${HTTPD_CONF_ROOT}/vhosts.d/vhost.conf"
+    export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
+    export HTTPD_SSL_CONF_SAMPLE="${HTTPD_CONF_ROOT}/vhosts.d/vhost-ssl.template"
+    # Copy ${HTTPD_SSL_CONF_SAMPLE} as ${HTTPD_SSL_CONF}.
+    export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/vhosts.d/vhost-ssl.conf"
+    # /etc/sysconfig/apache2
+    export HTTPD_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/apache2"
+
+    # Web data.
+    export HTTPD_SERVERROOT='/srv/www'
+    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/htdocs"
+
+    # Daemon user.
+    export HTTPD_USER='wwwrun'
+    export HTTPD_GROUP='www'
+
+    # Log file location.
+    export HTTPD_LOG_ACCESSLOG='/var/log/apache2/access_log'
+    export HTTPD_LOG_ERRORLOG='/var/log/apache2/error_log'
+
+    # ---- PHP ----
+    export PHP_INI='/etc/php5/apache2/php.ini'
+
+elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    # Apache configuration files.
+    export HTTPD_CONF_ROOT="/etc/apache2"
+    export HTTPD_CONF="${HTTPD_CONF_ROOT}/apache2.conf"
+    export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
+    export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/sites-available/default-ssl"
+
+    # Web data.
+    export HTTPD_SERVERROOT='/usr/share/apache2'
+    export HTTPD_DOCUMENTROOT="/var/www"
+
+    # Daemon user.
+    export HTTPD_USER='www-data'
+    export HTTPD_GROUP='www-data'
+
+    # Log file location.
+    export HTTPD_LOG_ACCESSLOG='/var/log/apache2/access.log'
+    export HTTPD_LOG_ERRORLOG='/var/log/apache2/error.log'
+
+    # ---- PHP ----
+    export PHP_INI='/etc/php5/apache2/php.ini'
+    export PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
+
+elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    # Apache configuration files.
+    export HTTPD_CONF_ROOT="/usr/local/etc/apache22"
+    export HTTPD_CONF="${HTTPD_CONF_ROOT}/httpd.conf"
+    export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/Includes"
+
+    # Copy from example: /usr/local/share/examples/apache22/extra/httpd-ssl.conf
+    export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/extra/httpd-ssl.conf"
+
+    # Web data.
+    export HTTPD_SERVERROOT='/usr/local/www'
+    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache22/data"
+
+    # Daemon user.
+    export HTTPD_USER='www'
+    export HTTPD_GROUP='www'
+
+    # Log file location.
+    export HTTPD_LOG_ACCESSLOG='/var/log/httpd-access.log'
+    export HTTPD_LOG_ERRORLOG='/var/log/httpd-error.log'
+
+    # ---- PHP ----
+    # Copy from example: /usr/local/etc/php.ini-production
+    export PHP_INI='/usr/local/etc/php.ini'
+
+else
+    :
+fi
+
+export HTTPD_CGIBIN_DIR="${HTTPD_SERVERROOT}/cgi-bin"
+
+# PHP connection type.
+if [ X"${DISTRO_CODENAME}" == X"lucid" ]; then
+    export PHP_CONN_TYPE='mysql'
+else
+    export PHP_CONN_TYPE='mysqli'
+fi
