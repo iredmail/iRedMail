@@ -37,7 +37,7 @@ Note:
 " 20 76 8 \
     "SPF Validation" "Sender Policy Framework" "on" \
     "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
-    "iRedAdmin" "Official web-based iRedMail Admin Panel" "on" \
+    "iRedAdmin" "Official web-based Admin Panel" "on" \
     "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
     "phpLDAPadmin" "Web-based OpenLDAP management tool" "on" \
     "phpMyAdmin" "Web-based MySQL management tool" "on" \
@@ -59,7 +59,7 @@ Note:
     "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
     "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
     "phpMyAdmin" "Web-based MySQL management tool" "on" \
-    "iRedAdmin" "Official web-based iRedMail Admin Panel" "on" \
+    "iRedAdmin" "Official web-based Admin Panel" "on" \
     "Awstats" "Advanced web and mail log analyzer" "on" \
     "Fail2ban" "Ban IP with too many password failures" "on" \
     2>${tmp_config_optional_components}

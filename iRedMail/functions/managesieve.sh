@@ -126,7 +126,6 @@ managesieve_config()
     if [ X"${USE_MANAGESIEVE}" == X"YES" ]; then
         if [ X"${DOVECOT_VERSION}" == X"1.1" ]; then
             # Dovecot is patched on Debian/Ubuntu, ships managesieve protocal.
-            perl -pi -e 's#^(protocols =.*)#${1} managesieve#' ${DOVECOT_CONF}
             cat >> ${DOVECOT_CONF} <<EOF
 protocol managesieve {
     # IP or host address where to listen in for connections.
@@ -156,7 +155,6 @@ protocol managesieve {
 }
 EOF
         elif [ X"${DOVECOT_VERSION}" == X"1.2" ]; then
-            perl -pi -e 's#^(protocols =.*)#${1} managesieve#' ${DOVECOT_CONF}
             cat >> ${DOVECOT_CONF} <<EOF
 # ManageSieve service. http://wiki.dovecot.org/ManageSieve
 protocol managesieve {
