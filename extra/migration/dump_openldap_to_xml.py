@@ -17,8 +17,40 @@ bind_pw = 'www'
 xml_file = 'accounts.xml'
 
 # ==== Do NOT modify below settings. ====
-filter = '(|(objectClass=mailDomain)(objectClass=mailAdmin)(objectClass=mailUser)(objectClass=mailAlias)(objectClass=mailList)(objectClass=mailExternalUser))'
-page_size = 100
+FILTER_IREDMAIL_ACCOUNTS = '(|(objectClass=mailDomain)(objectClass=mailAdmin)(objectClass=mailUser)(objectClass=mailAlias)(objectClass=mailList)(objectClass=mailExternalUser))'
+PAGE_SIZE = 100
+
+ATTRS_WITH_SINGLE_VALUE = ['accountStatus', 'cn', 'mtaTransport', \
+                           'street', 'expiredDate', 'disclaimer', 'description', \
+                           'domainName', \
+                           'domainBackupMX', \
+                           'domainMaxQuotaSize', 'domainMaxUserNumber', \
+                           'domainMaxAliasNumber', 'domainMaxListNumber', \
+                           'domainDefaultUserQuota',
+
+                           # User object.
+                           'mail', 'uid', \
+                           'storageBaseDirectory', 'mailMessageStore', 'homeDirectory', \
+                           'mailQuota', 'mailQuotaMessageLimit', 'userPassword', \
+                           'preferredLanguage', \
+
+                          ]
+
+ATTRS_WITH_MULTI_VALUES = ['enabledService', 'accountSetting', \
+                           'telephoneNumber', 'facsimileTelephoneNumber', \
+
+                           # Domain object.
+                           'domainAliasName',
+                           'domainSenderBccAddress', 'domainRecipientBccAddress', \
+                           'domainWhitelistIP', 'domainWhitelistSender', \
+                           'domainBlacklistIP', 'domainBlacklistSender', \
+
+                           # User object.
+                           'mailForwardingAddress', 'shadowAddress', 'memberOfGroup', \
+                           'title', \
+                           'userRecipientBccAddress', 'userSenderBccAddress', \
+                           'mailWhitelistRecipient', 'mailBlacklistRecipient', \
+                          ]
 
 # Dump object of mail domain in XML format.
 def dump_ldap_entry_in_xml(entry):
@@ -28,23 +60,12 @@ def dump_ldap_entry_in_xml(entry):
         f.write('\t\t<domain>\n')
 
         # Attributes with single value.
-        for attr in ['domainName', 'accountStatus', 'cn', 'mtaTransport', \
-                  'domainBackupMX', \
-                  'domainMaxQuotaSize', 'domainMaxUserNumber', \
-                  'domainMaxAliasNumber', 'domainMaxListNumber', \
-                  'domainDefaultUserQuota', 'disclaimer', 'description', \
-                  'street', 'expiredDate', \
-                 ]:
+        for attr in ATTRS_WITH_SINGLE_VALUE:
             if attr in entry:
                 f.write('\t\t\t<%s>%s</%s>\n' % (attr, entry.get(attr)[0], attr))
 
         # Attributes with multi value.
-        for attr in ['domainAliasName', 'enabledService', 'accountSetting', \
-                     'domainSenderBccAddress', 'domainRecipientBccAddress', \
-                     'telephoneNumber', 'facsimileTelephoneNumber', \
-                     'domainWhitelistIP', 'domainWhitelistSender', \
-                     'domainBlacklistIP', 'domainBlacklistSender', \
-                    ]:
+        for attr in ATTRS_WITH_MULTI_VALUES:
             if attr in entry:
                 f.write('\t\t\t<%s>\n' % attr)
                 for i in entry.get(attr):
@@ -54,32 +75,6 @@ def dump_ldap_entry_in_xml(entry):
         f.write('\t\t</domain>\n')
         f.close()
 
-        '''
-        f.write('\t<name>%s</name>\n' % entry.get('domainName')[0])
-
-        if 'accountStatus' in entry:
-            f.write('\t<status>%s</status>\n' % entry.get('accountStatus')[0])
-
-        if 'domainAliasName' in entry:
-            f.write('\t<aliases>\n')
-            for a in entry.get('domainAliasName'):
-                f.write('\t\t<name>%s</name>\n' % a)
-            f.write('\t</aliases>\n')
-
-        if 'domainAdmin' in entry:
-            f.write('\t<admins>\n')
-            for a in entry.get('domainAdmin'):
-                f.write('\t\t<mail>%s</mail>\n' % a)
-            f.write('\t</admins>\n')
-
-        if 'cn' in entry:
-            f.write('\t<company>%s</company>\n' % entry.get('cn')[0])
-
-        if 'mtaTransport' in entry:
-            f.write('\t<transport>%s</transport>\n' % entry.get('mtaTransport')[0])
-
-        '''
-
     elif 'mailAdmin' in objectClasses:
         pass
     elif 'mailUser' in objectClasses:
@@ -87,21 +82,12 @@ def dump_ldap_entry_in_xml(entry):
         f.write('\t\t<user>\n')
 
         # Attributes with single value.
-        for attr in ['mail', 'uid', 'accountStatus', 'cn', 'mtaTransport', \
-                     'storageBaseDirectory', 'mailMessageStore', 'homeDirectory', \
-                     'mailQuota', 'mailQuotaMessageLimit', 'userPassword', \
-                     'expiredDate', 'preferredLanguage', 'disclaimer', \
-                    ]:
+        for attr in ATTRS_WITH_SINGLE_VALUE:
             if attr in entry:
                 f.write('\t\t\t<%s>%s</%s>\n' % (attr, entry.get(attr)[0], attr))
 
         # Attributes with multi value.
-        for attr in ['enabledService', 'accountSetting', 'telephoneNumber', \
-                     'mailForwardingAddress', 'shadowAddress', 'memberOfGroup', \
-                     'telephoneNumber', 'title', \
-                     'userRecipientBccAddress', 'userSenderBccAddress', \
-                     'mailWhitelistRecipient', 'mailBlacklistRecipient', \
-                    ]:
+        for attr in ATTRS_WITH_MULTI_VALUES:
             if attr in entry:
                 f.write('\t\t\t<%s>\n' % attr)
                 for i in entry.get(attr):
@@ -127,10 +113,10 @@ conn.protocol_version = 3
 conn.bind_s(bind_dn, bind_pw)
 
 # Start paged control, 100 objects per page.
-paged_controller = SimplePagedResultsControl(ldap.LDAP_CONTROL_PAGE_OID, True, (page_size, ''))
+paged_controller = SimplePagedResultsControl(ldap.LDAP_CONTROL_PAGE_OID, True, (PAGE_SIZE, ''))
 
 # Send search request
-msgid = conn.search_ext(basedn, ldap.SCOPE_SUBTREE, filter, serverctrls=[paged_controller],)
+msgid = conn.search_ext(basedn, ldap.SCOPE_SUBTREE, FILTER_IREDMAIL_ACCOUNTS, serverctrls=[paged_controller],)
 
 pages = 0
 
@@ -146,7 +132,7 @@ while True:
     pages += 1
     print "Getting page %d" % (pages,)
     rtype, rdata, rmsgid, serverctrls = conn.result3(msgid)
-    print '%d results' % len(rdata)
+    print '%d accounts.' % len(rdata)
     for dn, entry in rdata:
         dump_ldap_entry_in_xml(entry)
 
@@ -154,8 +140,8 @@ while True:
     if pctrls:
         est, cookie = pctrls[0].controlValue
         if cookie:
-            paged_controller.controlValue = (page_size, cookie)
-            msgid = conn.search_ext(basedn, ldap.SCOPE_SUBTREE, filter, serverctrls=[paged_controller],)
+            paged_controller.controlValue = (PAGE_SIZE, cookie)
+            msgid = conn.search_ext(basedn, ldap.SCOPE_SUBTREE, FILTER_IREDMAIL_ACCOUNTS, serverctrls=[paged_controller],)
         else:
             break
     else:
