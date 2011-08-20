@@ -6,8 +6,9 @@ iRedMail-0.7.3:
     * Add smtp-amavis_destination_recipient_limit=1 in Postfix for concurrency
       per-recipient limit. Thanks beez <jason@indo.net.id>.
     * Package update:
+        + Roundcube webmail -> 0.5.4
         + iRedAdmin -> 0.1.6
-        + phpMyAdmin -> 3.4.3.1
+        + phpMyAdmin -> 3.4.3.2
 
 iRedMail-0.7.2:
     * Works on Ubuntu 11.04.

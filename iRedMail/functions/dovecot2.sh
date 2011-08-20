@@ -402,7 +402,7 @@ Dovecot:
 
 EOF
 
-    echo 'export status_enable_dovecot="DONE"' >> ${STATUS_FILE}
+    echo 'export status_dovecot2_config="DONE"' >> ${STATUS_FILE}
 }
 
 enable_dovecot2()

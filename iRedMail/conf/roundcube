@@ -23,7 +23,7 @@
 # ---------------------------------------
 # RoundcubeMail. http://roundcube.net
 # ---------------------------------------
-export RCM_VERSION='0.5.3'
+export RCM_VERSION='0.5.4'
 export RCM_TARBALL="roundcubemail-${RCM_VERSION}.tar.gz"
 
 # HTTPD related

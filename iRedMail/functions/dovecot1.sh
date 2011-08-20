@@ -695,5 +695,5 @@ dovecot_enable="YES"
 EOF
     fi
 
-    echo 'export status_enable_dovecot="DONE"' >> ${STATUS_FILE}
+    echo 'export status_enable_dovecot1="DONE"' >> ${STATUS_FILE}
 }
