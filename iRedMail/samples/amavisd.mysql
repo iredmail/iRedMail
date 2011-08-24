@@ -162,6 +162,10 @@ CREATE TABLE msgs (
 CREATE INDEX msgs_idx_sid      ON msgs (sid);
 CREATE INDEX msgs_idx_mess_id  ON msgs (message_id); -- useful with pen pals
 CREATE INDEX msgs_idx_time_num ON msgs (time_num);
+
+CREATE INDEX msgs_idx_mail_id   ON msgs (mail_id);
+CREATE INDEX msgs_idx_content_time_num ON msgs (content, time_num);
+
 -- alternatively when purging based on time_iso (instead of msgs_idx_time_num):
 -- CREATE INDEX msgs_idx_time_iso ON msgs (time_iso);
 
