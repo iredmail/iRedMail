@@ -1,4 +1,4 @@
-iRedMail-0.8.0:
+iRedMail-0.7.4:
     * Add missing INDEXes for Amavisd database: msgs.mail_id, (msgs.content,
       msgs.time_num), quarantine.mail_id.
       Thanks rjnena <rjnena@gmail>, David <dcharbonnier@gmail>.
