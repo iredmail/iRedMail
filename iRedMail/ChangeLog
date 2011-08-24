@@ -1,7 +1,7 @@
 iRedMail-0.8.0:
-    * Add missing INDEXes for Amavisd database: (msgs.mail_id), (msgs.content,
-      msgs.time_num).
-      Thanks David <dcharbonnier@gmail>.
+    * Add missing INDEXes for Amavisd database: msgs.mail_id, (msgs.content,
+      msgs.time_num), quarantine.mail_id.
+      Thanks rjnena <rjnena@gmail>, David <dcharbonnier@gmail>.
 
 iRedMail-0.7.3:
     * Add enabledService=lda for newly created LDAP mail user. Required by

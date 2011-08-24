@@ -202,6 +202,8 @@ CREATE TABLE quarantine (
 -- FOREIGN KEY (mail_id) REFERENCES msgs(mail_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
+CREATE INDEX quar_idx_mail_id   ON quarantine (mail_id);
+
 -- field msgrcpt.rs is primarily intended for use by quarantine management
 -- software; the value assigned by amavisd is a space;
 -- a short _preliminary_ list of possible values:
