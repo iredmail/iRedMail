@@ -120,6 +120,9 @@ CREATE TABLE maddr (
   CONSTRAINT part_email UNIQUE (partition_tag,email)
 ) ENGINE=InnoDB;
 
+CREATE INDEX maddr_idx_email ON maddr (email);
+CREATE INDEX maddr_idx_domain ON maddr (domain);
+
 -- information pertaining to each processed message as a whole;
 -- NOTE: records with NULL msgs.content should be ignored by utilities,
 --   as such records correspond to messages just being processes, or were lost
