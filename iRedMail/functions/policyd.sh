@@ -183,7 +183,6 @@ EOF
 
     # ---- BLACKLISTING ----
     perl -pi -e 's#^(BLACKLISTING=)(.*)#${1}1#' ${POLICYD_CONF}
-    perl -pi -e 's#^(BLACKLISTDNSNAME=)(.*)#${1}1#' ${POLICYD_CONF}
     perl -pi -e 's#^(BLACKLIST_TEMP_REJECT=)(.*)#${1}0#' ${POLICYD_CONF}
     perl -pi -e 's#^(AUTO_BLACK_LISTING=)(.*)#${1}1#' ${POLICYD_CONF}
     perl -pi -e 's#^(AUTO_WHITELIST_NUMBER=)(.*)#${1}10#' ${POLICYD_CONF}
