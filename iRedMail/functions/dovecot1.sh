@@ -276,7 +276,8 @@ plugin {
 # Per-user sieve mail filter.
 plugin {
     # For maildir format.
-    sieve = ${SIEVE_DIR}/%Ld/%Ln/${SIEVE_RULE_FILENAME}
+    #sieve = ${SIEVE_DIR}/%Ld/%Ln/${SIEVE_RULE_FILENAME}
+    sieve = /%Lh/sieve/${SIEVE_RULE_FILENAME}
 }
 EOF
     else
@@ -508,8 +509,8 @@ EOF
 namespace private {
     separator = /
     prefix =
-    #location defaults to mail_location.
     inbox = yes
+    # location defaults to mail_location.
 }
 
 namespace shared {

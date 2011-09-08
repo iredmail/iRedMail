@@ -294,17 +294,6 @@ EOF
         :
     fi
 
-    # pysieved.
-    # Warning: Do *NOT* add 'pysieved' service in 'ENABLED_SERVICES' here.
-    #          We don't have rc/init script under ${DIR_RC_SCRIPTS} till
-    #          package is installed.
-    #if [ X"${USE_MANAGESIEVE}" == X"YES" ]; then
-    #    # Note for Ubuntu & Debian:
-    #    # Dovecot shipped in Debian/Ubuntu has managesieve plugin patched.
-    #    [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} pysieved.noarch"
-    #else
-    #    :
-    #fi
 
     ############
     # iRedAPD.

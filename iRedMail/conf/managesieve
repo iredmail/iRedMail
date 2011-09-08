@@ -20,18 +20,8 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-# Variables for pysieved.
-export PYSIEVED_INI='/etc/pysieved.ini'
-export PYSIEVED_BINDADDR='127.0.0.1'
-export PYSIEVED_PORT='2000'    # default is '2000'
-
-# We will run pysieved service as vmail user/group, but they can't
-# write pid file under '/var/run/', so we create a subdirectory for
-# this purpose.
-export PYSIEVED_PIDFILE='/var/run/pysieved/pysieved.pid'
-
 # Variables for managesieve service.
-export MANAGESIEVE_BINDADDR="${PYSIEVED_BINDADDR}"
+export MANAGESIEVE_BINDADDR='127.0.0.1'
 export MANAGESIEVE_PORT='2000'
 
 if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X"6" ]; then
