@@ -120,7 +120,7 @@ plugin {
 
     # The path to the directory where the personal Sieve scripts are stored. For
     # ManageSieve this is where the uploaded scripts are stored.
-    sieve_dir = ${SIEVE_DIR}/%Ld/%Ln/
+    sieve_dir = ${SIEVE_DIR}/%Ld/%Ln
 }
 EOF
 

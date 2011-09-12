@@ -568,9 +568,13 @@ EOF
     # ---- IMAP shared folder ----
 
     ECHO_DEBUG "Copy sample sieve global filter rule file: ${GLOBAL_SIEVE_FILE}.sample."
-    cp -f ${SAMPLE_DIR}/dovecot.sieve ${GLOBAL_SIEVE_FILE}.sample
-    chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${GLOBAL_SIEVE_FILE}.sample
-    chmod 0500 ${GLOBAL_SIEVE_FILE}.sample
+    cp -f ${SAMPLE_DIR}/dovecot.sieve ${GLOBAL_SIEVE_FILE}
+    chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${GLOBAL_SIEVE_FILE}
+    chmod 0500 ${GLOBAL_SIEVE_FILE}
+
+    # Create symbol link of global sieve rule.
+    rm -f ${DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL} &>/dev/null
+    ln -s ${GLOBAL_SIEVE_FILE} ${DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL}
 
     ECHO_DEBUG "Create dovecot log file: ${DOVECOT_LOG_FILE}, ${SIEVE_LOG_FILE}."
     touch ${DOVECOT_LOG_FILE} ${SIEVE_LOG_FILE}
