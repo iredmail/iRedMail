@@ -108,7 +108,7 @@ generate_sql()
             fi
 
             # Use mbox, will be changed later.
-            maildir="${DOMAIN}/${str1}/${str1}${str2}/${str1}${str2}${str3}/${username}-${DATE}"
+            maildir="${DOMAIN}/${str1}/${str2}/${str3}/${username}-${DATE}"
         else
             # Use mbox, will be changed later.
             maildir="${DOMAIN}/${username}-${DATE}"
@@ -124,9 +124,9 @@ generate_sql()
         fi
 
         cat >> ${SQL} <<EOF
-INSERT INTO mailbox (username, password, name, storagebasedirectory, maildir, quota, domain, active)
-    VALUES ('${mail}', '${CRYPT_PASSWD}', '${username}', '${STORAGE_BASE_DIRECTORY}', '${maildir}', '${DEFAULT_QUOTA}', '${DOMAIN}', '1');
-INSERT INTO alias (address, goto, created, active) VALUES ('${mail}', '${mail}', NOW(), 1);
+INSERT INTO mailbox (username, password, name, storagebasedirectory,storagenode, maildir, quota, domain, active, local_part, created)
+    VALUES ('${mail}', '${CRYPT_PASSWD}', '${username}', '${STORAGE_BASE_DIRECTORY}','${STORAGE_NODE}', '${maildir}', '${DEFAULT_QUOTA}', '${DOMAIN}', '1','${username}', NOW());
+INSERT INTO alias (address, goto, domain, created, active) VALUES ('${mail}', '${mail}','${DOMAIN}', NOW(), 1);
 EOF
     done
 }
