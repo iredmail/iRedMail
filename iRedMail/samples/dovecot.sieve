@@ -34,7 +34,7 @@ require ["fileinto", "vacation"];
 # -------------------------------------------------
 
 # rule:[Move Spam to Junk Folder]
-if header :is "X-Spam-Flag" "YES"
+if false # header :is "X-Spam-Flag" "YES"
 {
     fileinto "Junk";
     stop;
