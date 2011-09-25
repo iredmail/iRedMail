@@ -27,31 +27,22 @@
 # For more information, please refer to official documentation:
 # http://wiki.dovecot.org/LDA/Sieve
 
-require "fileinto";
+require ["fileinto", "vacation"];
 
 # -------------------------------------------------
 # --------------- Global sieve rules --------------
 # -------------------------------------------------
 
 # rule:[Move Spam to Junk Folder]
-if header :matches ["X-Spam-Flag"] ["YES"] {
-    #
-    # If you want to copy this spam mail to other people, uncomment
-    # below line and set correct email address. One email one line.
-    #
-    #redirect "user1@domain.ltd";
-    #redirect "user2@domain.ltd";
-
-    # Keep this mail in INBOX.
-    #keep;
-
-    # If you ensure it is really a spam, drop it to 'Junk', and stop
-    # here so that we do not reply to spammers.
+if header :is "X-Spam-Flag" "YES"
+{
     fileinto "Junk";
-
-    # Do not waste resource on spam mail.
     stop;
+}
 
-    # If you ensure they are spam, you can discard it.
-    #discard;
+# Sample rule of vacation message, disabled by default.
+# rule:[Vacation]
+if false # true
+{
+    vacation :days 1 "I'm on vacation.";
 }
