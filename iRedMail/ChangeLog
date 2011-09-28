@@ -1,6 +1,9 @@
 iRedMail-0.7.4:
-    * Fixed: Incorrect per-user sieve_dir setting in Dovecot.
-      Thanks cetex <oskar @cetex.se>.
+    * Fixed:
+      + Incorrect per-user mailbox quota if loggin in with shadowAddress.
+        OpenLDAP backend only. Thanks tmihalicek <tomislav.mihalicek @gmail>.
+      + Incorrect per-user sieve_dir setting in Dovecot.
+        Thanks cetex <oskar @cetex.se>.
     * LDA (Dovecot deliver) now will move SPAM to Junk folder by default.
     * Add missing INDEXes for Amavisd database: msgs.mail_id, (msgs.content,
       msgs.time_num), quarantine.mail_id.
