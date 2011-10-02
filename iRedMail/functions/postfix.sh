@@ -183,7 +183,7 @@ EOF
 
 # Replace internal IP address by external IP address or whatever you
 # want. Required 'smtpd_sasl_authenticated_header=yes' in postfix.
-#/(^Received:.*\[).*(\].*Authenticated sender:.*by REPLACED_BE_YOUR_HOSTNAME.*iRedMail.*)/ REPLACE ${1}REPLACED_BE_YOUR_IP_ADDRESS${2}
+#/(^Received:.*\[).*(\].*Authenticated sender:.*by REPLACED_BY_YOUR_HOSTNAME.*iRedMail.*)/ REPLACE ${1}REPLACED_BY_YOUR_IP_ADDRESS${2}
 EOF
 
     cat >> ${TIP_FILE} <<EOF
