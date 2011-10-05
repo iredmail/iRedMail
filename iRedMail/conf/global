@@ -28,7 +28,7 @@ export PROG_VERSION='0.7.4'
 # ---- Generic ----
 # -----------------
 
-# Maildir format: mbox, Maildir.
+# Maildir format: Maildir. Mbox format was deprecated since version 0.7.3.
 export MAILBOX_FORMAT='Maildir'
 
 # Maildir style: hashed, normal.

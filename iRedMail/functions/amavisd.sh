@@ -347,16 +347,16 @@ amavisd_config_general()
     # force MTA conversion to 7-bit (e.g. before DKIM signing)
     smtpd_discard_ehlo_keywords => ['8BITMIME'],
 
-    # allow sending any file names and types
-    bypass_banned_checks_maps => [1],
-
     # don't remove NOTIFY=SUCCESS option
     terminate_dsn_on_notify_success => 0,
 
-    # don't perform spam/header/virus check.
+    # don't perform spam/virus/header check.
     #bypass_spam_checks_maps => [1],
-    #bypass_header_checks_maps => [1],
     #bypass_virus_checks_maps => [1],
+    #bypass_header_checks_maps => [1],
+
+    # allow sending any file names and types
+    bypass_banned_checks_maps => [1],
 };
 
 # regular incoming mail, originating from anywhere (usually from outside)
