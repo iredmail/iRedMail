@@ -545,6 +545,19 @@ EOF
     # Lookup agains MySQL, for MySQL backend only.
     if [ X"${BACKEND}" == X"MySQL" ]; then
         cat >> ${AMAVISD_CONF} <<EOF
+# Uncomment below two lines to lookup virtual mail domains from MySQL database.
+#@lookup_sql_dsn =  (
+    ['DBI:mysql:database=${VMAIL_DB};host=${MYSQL_SERVER};port=${MYSQL_PORT}', '${MYSQL_BIND_USER}', '${MYSQL_BIND_PW}'],
+);
+# For Amavisd-new-2.7.0 and later versions. Placeholder '%d' is available in Amavisd-2.7.0+.
+#\$sql_select_policy = "SELECT domain FROM domain WHERE domain='%d'";
+
+# For Amavisd-new-2.6.x.
+# WARNING: IN() may cause MySQL lookup performance issue.
+#\$sql_select_policy = "SELECT domain FROM domain WHERE CONCAT('@', domain) IN (%k)";
+EOF
+    elif [ X"${BACKEND}" == X"OpenLDAP" ]; then
+        cat >> ${AMAVISD_CONF} <<EOF
 #@lookup_sql_dsn = @storage_sql_dsn;
 EOF
     fi
