@@ -8,6 +8,9 @@ iRedMail-0.7.4:
     * Add missing INDEXes for Amavisd database: msgs.mail_id, (msgs.content,
       msgs.time_num), quarantine.mail_id.
       Thanks rjnena <rjnena@gmail>, David <dcharbonnier@gmail>.
+    * Package update:
+        + Roundcube webmail -> 0.6.0
+        + phpMyAdmin -> 3.4.6
 
 iRedMail-0.7.3:
     * Add enabledService=lda for newly created LDAP mail user. Required by

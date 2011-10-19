@@ -78,14 +78,25 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-    export DOVECOT_VERSION='1.1'
-
-    # Debian 5 (with backports), Ubuntu 10.04 uses dovecot-1.2.x.
-    [ X"${DISTRO}" == X"DEBIAN" ] && export DOVECOT_VERSION='1.2'
-
-    # Ubuntu 10.04+
-    if [ X"${DISTRO_CODENAME}" == X"lucid" -o X"${DISTRO_CODENAME}" == X"natty" ]; then
+    if [ X"${DISTRO}" == X"DEBIAN" ]; then
+        # Debian 5 (with backports), 6.
         export DOVECOT_VERSION='1.2'
+    elif [ X"${DISTRO}" == X"UBUNTU" ]; then
+        if [ X"${DISTRO_CODENAME}" == X"hardy" \
+            -o X"${DISTRO_CODENAME}" == X"intrepid" \
+            -o X"${DISTRO_CODENAME}" == X"jaunty" \
+            -o X"${DISTRO_CODENAME}" == X"karmic" \
+            ]; then
+            export DOVECOT_VERSION='1.1'
+        elif [ X"${DISTRO_CODENAME}" == X"lucid" \
+            -o X"${DISTRO_CODENAME}" == X"natty" \
+            ]; then
+            # Ubuntu 10.04, 10.10, 11.04
+            export DOVECOT_VERSION='1.2'
+        else:
+            # Ubuntu 11.10+
+            export DOVECOT_VERSION='2'
+        fi
     fi
 
     export DOVECOT_CONF='/etc/dovecot/dovecot.conf'

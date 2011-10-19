@@ -72,9 +72,16 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} apache2 apache2-mpm-prefork apache2.2-common libapache2-mod-php5 libapache2-mod-auth-mysql php5-cli php5-imap php5-gd php5-mcrypt php5-mysql php5-ldap php5-mhash"
+        ALL_PKGS="${ALL_PKGS} apache2 apache2-mpm-prefork apache2.2-common libapache2-mod-php5 libapache2-mod-auth-mysql php5-cli php5-imap php5-gd php5-mcrypt php5-mysql php5-ldap"
 
-        if [ X"${DISTRO_CODENAME}" == X"lucid" -o X"${DISTRO_CODENAME}" == X"natty" ]; then
+        if [ X"${DISTRO_CODENAME}" != X"oneiric" ]; then
+            ALL_PKGS="${ALL_PKGS} php5-mhash"
+        fi
+
+        if [ X"${DISTRO_CODENAME}" == X"lucid" \
+            -o X"${DISTRO_CODENAME}" == X"natty" \
+            -o X"${DISTRO_CODENAME}" == X"oneiric" \
+            ]; then
             if [ X"${BACKEND}" == X"OpenLDAP" ]; then
                 ALL_PKGS="${ALL_PKGS} php-net-ldap2"
             fi
@@ -200,8 +207,21 @@ install_all()
         ALL_PKGS="${ALL_PKGS} policyd"
         ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} postfix-policyd"
-        ENABLED_SERVICES="${ENABLED_SERVICES} postfix-policyd"
+        if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
+            # Policyd-2.x, code name "cluebringer".
+            ALL_PKGS="${ALL_PKGS} postfix-cluebringer"
+            ENABLED_SERVICES="${ENABLED_SERVICES} postfix-cluebringer"
+
+            if [ X"${BACKEND}" == X"OpenLDAP" -o X"${BACKEND}" == X"MySQL" ]; then
+                ALL_PKGS="${ALL_PKGS} postfix-cluebringer-mysql"
+            elif [ X"${BACKEND}" == X"PostgreSQL" ]; then
+                ALL_PKGS="${ALL_PKGS} postfix-cluebringer-pgsql"
+            fi
+        else
+            ALL_PKGS="${ALL_PKGS} postfix-policyd"
+            ENABLED_SERVICES="${ENABLED_SERVICES} postfix-policyd"
+        fi
+
 
         if [ X"${DISTRO_CODENAME}" == X"lucid" ]; then
             # Don't invoke dbconfig-common on Ubuntu.

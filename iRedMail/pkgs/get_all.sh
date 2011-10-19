@@ -291,6 +291,7 @@ Pin-Priority: 500
 EOF
 
             # Force 'apt-get update' to enable backports repo.
+            ECHO_INFO "Execute 'apt-get update'..."
             ${APTGET} update
 
             ${APTGET} install -y debian-archive-keyring
@@ -320,6 +321,7 @@ EOF
         fi
 
         # Force update
+        ECHO_INFO "Execute 'apt-get update'..."
         ${APTGET} update
     fi
 }
@@ -363,6 +365,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" ]; then
         create_repo_debian
     else
         # Force update.
+        ECHO_INFO "Execute 'apt-get update'..."
         ${APTGET} update
     fi
 fi

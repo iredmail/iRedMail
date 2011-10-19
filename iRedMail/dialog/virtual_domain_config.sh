@@ -33,7 +33,7 @@ EXAMPLE:
 
 WARNING:
 
-    * It can't be same as server hostname: ${HOSTNAME}.
+    * It cannot be the same as server hostname: ${HOSTNAME}.
 " 20 76 2>/tmp/first_domain
 
     FIRST_DOMAIN="$(cat /tmp/first_domain)"
