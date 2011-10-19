@@ -265,6 +265,18 @@ EOF
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d"
+
+        if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot-managesieved dovecot-sieve"
+
+            if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+                ALL_PKGS="${ALL_PKGS} dovecot-ldap"
+            elif [ X"${BACKEND}" == X"MySQL" ]; then
+                ALL_PKGS="${ALL_PKGS} dovecot-mysql"
+            elif [ X"${BACKEND}" == X"PostgreSQL" ]; then
+                ALL_PKGS="${ALL_PKGS} dovecot-pgsql"
+            fi
+        fi
     else
         :
     fi

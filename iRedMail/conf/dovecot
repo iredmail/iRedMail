@@ -93,7 +93,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ]; then
             # Ubuntu 10.04, 10.10, 11.04
             export DOVECOT_VERSION='1.2'
-        else:
+        else
             # Ubuntu 11.10+
             export DOVECOT_VERSION='2'
         fi
