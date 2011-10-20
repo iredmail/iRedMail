@@ -270,7 +270,7 @@ EOF
             ALL_PKGS="${ALL_PKGS} dovecot-managesieved dovecot-sieve"
 
             if [ X"${BACKEND}" == X"OpenLDAP" ]; then
-                ALL_PKGS="${ALL_PKGS} dovecot-ldap"
+                ALL_PKGS="${ALL_PKGS} dovecot-ldap dovecot-mysql"
             elif [ X"${BACKEND}" == X"MySQL" ]; then
                 ALL_PKGS="${ALL_PKGS} dovecot-mysql"
             elif [ X"${BACKEND}" == X"PostgreSQL" ]; then

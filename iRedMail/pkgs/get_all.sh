@@ -161,7 +161,7 @@ fetch_pkgs_debian()
                 url="${MIRROR}/debian/lenny/${i}"
             fi
 
-            ECHO_INFO "+ ${pkg_counter}/${pkg_total}: ${url}"
+            ECHO_INFO "+ ${pkg_counter} of ${pkg_total}: ${url}"
             ${FETCH_CMD} "${url}"
 
             pkg_counter=$((pkg_counter+1))
@@ -183,7 +183,7 @@ fetch_misc()
 
     for i in ${MISCLIST}; do
         url="${MIRROR}/misc/${i}"
-        ECHO_INFO "+ ${misc_count}/${misc_total}: ${url}"
+        ECHO_INFO "+ ${misc_count} of ${misc_total}: ${url}"
 
         ${FETCH_CMD} "${url}"
 

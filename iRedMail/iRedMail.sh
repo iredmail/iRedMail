@@ -68,6 +68,7 @@ check_env
 . ${CONF_DIR}/mysql
 . ${CONF_DIR}/postfix
 . ${CONF_DIR}/policyd
+. ${CONF_DIR}/cluebringer
 . ${CONF_DIR}/iredapd
 . ${CONF_DIR}/dovecot
 . ${CONF_DIR}/managesieve
@@ -112,7 +113,7 @@ fi
 . ${FUNCTIONS_DIR}/postfix.sh
 
 # Policy service: Policyd.
-. ${FUNCTIONS_DIR}/policyd.sh
+. ${FUNCTIONS_DIR}/policy_server.sh
 
 # iRedAPD.
 . ${FUNCTIONS_DIR}/iredapd.sh
@@ -176,7 +177,7 @@ check_status_before_run postfix_config_sasl && \
 check_status_before_run postfix_config_tls
 
 # Policy service for Postfix: Policyd.
-check_status_before_run policy_service_config
+check_status_before_run policy_server_config
 
 # Dovecot.
 check_status_before_run enable_dovecot
