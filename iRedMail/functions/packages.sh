@@ -307,23 +307,17 @@ EOF
         :
     fi
 
-    # SPF.
-    if [ X"${ENABLE_SPF}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X"RHEL" ]; then
-            # SPF implemention via perl-Mail-SPF.
-            ALL_PKGS="${ALL_PKGS} perl-Mail-SPF.noarch perl-Mail-SPF-Query.noarch"
+    # SPF verification.
+    if [ X"${DISTRO}" == X"RHEL" ]; then
+        # SPF implemention via perl-Mail-SPF.
+        ALL_PKGS="${ALL_PKGS} perl-Mail-SPF.noarch perl-Mail-SPF-Query.noarch"
 
-        elif [ X"${DISTRO}" == X"SUSE" ]; then
-            # SPF implemention via perl-Mail-SPF.
-            ALL_PKGS="${ALL_PKGS} perl-Mail-SPF"
+    elif [ X"${DISTRO}" == X"SUSE" ]; then
+        # SPF implemention via perl-Mail-SPF.
+        ALL_PKGS="${ALL_PKGS} perl-Mail-SPF"
 
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            ALL_PKGS="${ALL_PKGS} libmail-spf-perl"
-        else
-            :
-        fi
-    else
-        :
+    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        ALL_PKGS="${ALL_PKGS} libmail-spf-perl"
     fi
 
 

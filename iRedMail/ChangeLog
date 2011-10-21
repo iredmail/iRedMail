@@ -1,5 +1,6 @@
 iRedMail-0.7.4:
     * It now works on Ubuntu 11.10.
+    * SPF verification is now enabled by default.
     * Add Policyd-2.0.x (code name "cluebringer") support on Ubuntu 11.10.
     * LDA (Dovecot deliver) will move SPAM to Junk folder by default.
     * Add missing INDEXes for Amavisd database: msgs.mail_id, (msgs.content,

@@ -31,11 +31,11 @@ if [ X"${BACKEND}" == X"OpenLDAP" ]; then
     --checklist "\
 Note:
     * DKIM is recommended.
+    * SPF validation (Sender Policy Framework) is enabled by default.
     * DNS records (TXT type) are required for both SPF and DKIM.
     * Refer to file for more detail after installation:
       ${TIP_FILE}
 " 20 76 8 \
-    "SPF Validation" "Sender Policy Framework" "on" \
     "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
     "iRedAdmin" "Official web-based Admin Panel" "on" \
     "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
@@ -51,11 +51,11 @@ elif [ X"${BACKEND}" == X"MySQL" ]; then
     --checklist "\
 Note:
     * DKIM is recommended.
+    * SPF validation (Sender Policy Framework) is enabled by default.
     * DNS record (TXT type) are required for both SPF and DKIM.
     * Please refer to file for more detail after installation:
       ${TIP_FILE}
 " 20 76 8 \
-    "SPF Validation" "Sender Policy Framework" "on" \
     "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
     "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
     "phpMyAdmin" "Web-based MySQL management tool" "on" \
