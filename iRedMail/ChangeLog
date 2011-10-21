@@ -1,13 +1,14 @@
 iRedMail-0.7.4:
+    * Add Policyd-2.0.x support on Ubuntu 11.10.
+    * LDA (Dovecot deliver) now will move SPAM to Junk folder by default.
+    * Add missing INDEXes for Amavisd database: msgs.mail_id, (msgs.content,
+      msgs.time_num), quarantine.mail_id.
+      Thanks rjnena <rjnena@gmail>, David <dcharbonnier@gmail>.
     * Fixed:
       + Incorrect per-user mailbox quota if loggin in with shadowAddress.
         OpenLDAP backend only. Thanks tmihalicek <tomislav.mihalicek @gmail>.
       + Incorrect per-user sieve_dir setting in Dovecot.
         Thanks cetex <oskar @cetex.se>.
-    * LDA (Dovecot deliver) now will move SPAM to Junk folder by default.
-    * Add missing INDEXes for Amavisd database: msgs.mail_id, (msgs.content,
-      msgs.time_num), quarantine.mail_id.
-      Thanks rjnena <rjnena@gmail>, David <dcharbonnier@gmail>.
     * Package update:
         + Roundcube webmail -> 0.6.0
         + phpMyAdmin -> 3.4.6

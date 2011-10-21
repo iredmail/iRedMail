@@ -731,10 +731,11 @@ postfix_config_sasl()
     #
     # **** End HELO related ****
 
-    if [ X"${USE_IREDAPD}" == X"YES" ]; then
-        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, check_policy_service inet:${IREDAPD_LISTEN_ADDR}:${IREDAPD_LISTEN_PORT}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${POLICYD_BINDHOST}:${POLICYD_BINDPORT}"
+    if [ X"${USE_CLUEBRINGER}" == X"YES" ]; then
+        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, check_policy_service inet:${IREDAPD_LISTEN_ADDR}:${IREDAPD_LISTEN_PORT}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${CLUEBRINGER_BINDHOST}:${CLUEBRINGER_BINDPORT}"
+        postconf -e smtpd_end_of_data_restrictions="check_policy_service inet:${CLUEBRINGER_BINDHOST}:${CLUEBRINGER_BINDPORT}"
     else
-        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${POLICYD_BINDHOST}:${POLICYD_BINDPORT}"
+        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, check_policy_service inet:${IREDAPD_LISTEN_ADDR}:${IREDAPD_LISTEN_PORT}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${POLICYD_BINDHOST}:${POLICYD_BINDPORT}"
     fi
 
     echo 'export status_postfix_config_sasl="DONE"' >> ${STATUS_FILE}

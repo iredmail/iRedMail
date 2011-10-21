@@ -418,6 +418,8 @@ remove_pkg_debian()
 # Create SSL certs/private files.
 gen_pem_key()
 {
+    ECHO_INFO "Create SSL certification files."
+
     # Create necessary directories.
     mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} 2>/dev/null
 

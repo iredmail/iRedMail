@@ -60,7 +60,7 @@ cluebringer_config()
     perl -pi -e 's/^#(group=).*/${1}$ENV{CLUEBRINGER_GROUP}/' ${CLUEBRINGER_CONF}
 
     # Filename to store pid of parent process
-    perl -pi -e 's/^(pid_file=).*/${1}"$ENV{CLUEBRINGER_PID_FILE}"/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^(pid_file=).*/${1}$ENV{CLUEBRINGER_PID_FILE}/' ${CLUEBRINGER_CONF}
 
     # Log level
     # 0 - Errors only
@@ -81,6 +81,9 @@ cluebringer_config()
     #
     # Configure '[database]' section.
     #
+    # DSN
+    perl -pi -e 's/^#(DSN=DBI:mysql:).*/${1}host=$ENV{MYSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+    # Database
     perl -pi -e 's/^(DB_Type=).*/${1}mysql/' ${CLUEBRINGER_CONF}
     perl -pi -e 's/^(DB_Host=).*/${1}$ENV{MYSQL_SERVER}/' ${CLUEBRINGER_CONF}
     perl -pi -e 's/^(DB_Port=).*/${1}$ENV{MYSQL_PORT}/' ${CLUEBRINGER_CONF}
@@ -102,13 +105,19 @@ EOF
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         cat > ${tmp_sql} <<EOF
-# Reset password.
+# Reset root password.
 USE mysql;
-CREATE DATABASE ${CLUEBRINGER_DB_NAME};
 UPDATE user SET Password=password("${CLUEBRINGER_DB_PASSWD}") WHERE User="${CLUEBRINGER_DB_USER}";
 FLUSH PRIVILEGES;
+CREATE DATABASE ${CLUEBRINGER_DB_NAME};
+USE ${CLUEBRINGER_DB_NAME};
 EOF
-        gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.mysql.gz > ${tmp_sql}
+
+        if [ X"${BACKEND}" == X"OpenLDAP" -o X"${BACKEND}" == X"MySQL" ]; then
+            gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.mysql.gz >> ${tmp_sql}
+        elif [ X"${BACKEND}" == X"PostgreSQL" ]; then
+            gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.pgsql.gz >> ${tmp_sql}
+        fi
 
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         # Template file will create database: policyd.
@@ -124,11 +133,6 @@ EOF
     else
         :
     fi
-
-    cat >> ${tmp_sql} <<EOF
-USE ${CLUEBRINGER_DB_NAME};
-SOURCE ${SAMPLE_DIR}/policyd_blacklist_helo.sql;
-EOF
 
     mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 $(cat ${tmp_sql})

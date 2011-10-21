@@ -27,6 +27,9 @@
 export CLUEBRINGER_BINDHOST='127.0.0.1'
 export CLUEBRINGER_BINDPORT='10031'
 
+# Database.
+export CLUEBRINGER_DB_NAME='cluebringer'
+export CLUEBRINGER_DB_USER='cluebringer'
 export CLUEBRINGER_DB_PASSWD="$(${RANDOM_STRING})"
 
 export CLUEBRINGER_USER='cluebringer'
@@ -49,10 +52,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='/var/run/cluebringer/cbpolicyd.pid'
 
-    # Database.
-    export CLUEBRINGER_DB_NAME='cluebringer'
-    export CLUEBRINGER_DB_USER='cluebringer'
-
     # Path of policyd-clean
     export CLUEBRINGER_CLEANUP_BIN='/usr/sbin/policyd-cleanup'
 
@@ -61,10 +60,6 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
-
-    # Database.
-    export CLUEBRINGER_DB_NAME='cluebringer'
-    export CLUEBRINGER_DB_USER='cluebringer'
 
     # Path of policyd-clean
     export CLUEBRINGER_CLEANUP_BIN='/usr/lib/policyd/cleanup'
@@ -78,10 +73,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/postfix-policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
 
-    # Database.
-    export CLUEBRINGER_DB_NAME='postfixcluebringer'
-    export CLUEBRINGER_DB_USER='postfix-cluebringer'
-
     # Path of policyd-clean
     export CLUEBRINGER_CLEANUP_BIN='/usr/lib/postfix-policyd/cleanup'
 
@@ -90,10 +81,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLUEBRINGER_CONF='/usr/local/etc/postfix-policyd-sf.conf'
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
-
-    # Database.
-    export CLUEBRINGER_DB_NAME='cluebringer'
-    export CLUEBRINGER_DB_USER='cluebringer'
 
     # Path of policyd-clean
     export CLUEBRINGER_CLEANUP_BIN='/usr/local/sbin/postfix-policyd-sf-cleanup'

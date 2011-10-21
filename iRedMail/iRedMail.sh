@@ -67,8 +67,7 @@ check_env
 . ${CONF_DIR}/phpldapadmin
 . ${CONF_DIR}/mysql
 . ${CONF_DIR}/postfix
-. ${CONF_DIR}/policyd
-. ${CONF_DIR}/cluebringer
+. ${CONF_DIR}/policy_server
 . ${CONF_DIR}/iredapd
 . ${CONF_DIR}/dovecot
 . ${CONF_DIR}/managesieve
@@ -156,7 +155,9 @@ fi
 # ************************************************************************
 
 # Install all packages.
-check_status_before_run install_all || (ECHO_INFO "Package installation error, please check the output log." && exit 255)
+check_status_before_run install_all || (ECHO_ERROR "Package installation error, please check the output log." && exit 255)
+
+ECHO_INFO "---- Start iRedMail Configurations ----"
 
 # Create SSL/TLS cert file.
 check_status_before_run gen_pem_key
