@@ -547,8 +547,8 @@ EOF
         cat >> ${AMAVISD_CONF} <<EOF
 # Uncomment below two lines to lookup virtual mail domains from MySQL database.
 #@lookup_sql_dsn =  (
-    ['DBI:mysql:database=${VMAIL_DB};host=${MYSQL_SERVER};port=${MYSQL_PORT}', '${MYSQL_BIND_USER}', '${MYSQL_BIND_PW}'],
-);
+#    ['DBI:mysql:database=${VMAIL_DB};host=${MYSQL_SERVER};port=${MYSQL_PORT}', '${MYSQL_BIND_USER}', '${MYSQL_BIND_PW}'],
+#);
 # For Amavisd-new-2.7.0 and later versions. Placeholder '%d' is available in Amavisd-2.7.0+.
 #\$sql_select_policy = "SELECT domain FROM domain WHERE domain='%d'";
 
