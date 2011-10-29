@@ -46,9 +46,18 @@ policyd_config()
     # Get SQL structure template file.
     tmp_sql="/tmp/policyd_config_tmp.${RANDOM}${RANDOM}"
     if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" ]; then
+        orig_policyd_sql_file="$(eval ${LIST_FILES_IN_PKG} ${PKG_POLICYD} | grep '/DATABASE.mysql$')"
+
+        # Convert 'TYPE=' to 'ENGINE=' while creating tables.
+        if [ X"${DISTRO}" == X"SUSE" ]; then
+            if [ X"${DISTRO_VERSION}" != X"11.3" -a X"${DISTRO_VERSION}" != X"11.4" ]; then
+                perl -pi -e 's#TYPE=#ENGINE=#g' ${orig_policyd_sql_file}
+            fi
+        fi
+
         cat > ${tmp_sql} <<EOF
 # Import SQL structure template.
-SOURCE $(eval ${LIST_FILES_IN_PKG} ${PKG_POLICYD} | grep '/DATABASE.mysql$');
+SOURCE ${orig_policyd_sql_file};
 
 # Grant privileges.
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}"@localhost IDENTIFIED BY "${POLICYD_DB_PASSWD}";

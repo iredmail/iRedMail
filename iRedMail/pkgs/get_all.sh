@@ -355,8 +355,8 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     create_repo_suse
 
-    ECHO_INFO "Refresh zypper repositories."
-    zypper clean --all
+    ECHO_INFO "Clean and refresh metadata of zypper repositories."
+    zypper clean --metadata --raw-metadata
     zypper refresh
 elif [ X"${DISTRO}" == X"UBUNTU" ]; then
     create_repo_ubuntu

@@ -349,7 +349,10 @@ EOF
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
             # Note: Web.py will be installed locally via 'easy_install'.
-            ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-mysql python-setuptools python-xml"
+            ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-mysql python-xml"
+            if [ X"${DISTRO_VERSION}" == X"11.3" -o X"${DISTRO_VERSION}" == X"11.4" ]; then
+                ALL_PKGS="${ALL_PKGS} python-setuptools"
+            fi
             [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
