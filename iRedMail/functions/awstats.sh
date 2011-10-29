@@ -36,6 +36,11 @@ awstats_config_basic()
     #    export AWSTATS_CGI_DIR="${AWSTATS_CGI_DIR}/awstats"
     #fi
 
+    # Assign Apache daemon user to group 'adm', so that Awstats cron job can read log files.
+    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        usermod -g adm ${HTTPD_USER} >/dev/null
+    fi
+
     cat > ${AWSTATS_HTTPD_CONF} <<EOF
 ${CONF_MSG}
 # Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
