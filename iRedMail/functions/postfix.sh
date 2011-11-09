@@ -518,6 +518,7 @@ postfix_config_mysql()
 
     # Per-domain transport maps.
     cat > ${mysql_transport_maps_domain_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -528,6 +529,7 @@ EOF
 
     # Per-user transport maps.
     cat > ${mysql_transport_maps_user_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -537,6 +539,7 @@ query       = SELECT mailbox.transport FROM mailbox,domain WHERE mailbox.usernam
 EOF
 
     cat > ${mysql_virtual_mailbox_domains_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -546,6 +549,7 @@ query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=0 AND act
 EOF
 
     cat > ${mysql_relay_domains_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -555,6 +559,7 @@ query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=1 AND act
 EOF
 
     cat > ${mysql_virtual_mailbox_maps_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -564,6 +569,7 @@ query       = SELECT CONCAT(mailbox.storagenode, '/', mailbox.maildir) FROM mail
 EOF
 
     cat > ${mysql_virtual_alias_maps_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -573,6 +579,7 @@ query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%s' AND a
 EOF
 
     cat > ${mysql_domain_alias_maps_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -582,6 +589,7 @@ query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domai
 EOF
 
     cat > ${mysql_catchall_maps_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -591,6 +599,7 @@ query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%d' AND a
 EOF
 
     cat > ${mysql_domain_alias_catchall_maps_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -600,6 +609,7 @@ query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domai
 EOF
 
     cat > ${mysql_sender_login_maps_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -609,6 +619,7 @@ query       = SELECT mailbox.username FROM mailbox,domain WHERE mailbox.username
 EOF
 
     cat > ${mysql_sender_bcc_maps_domain_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -618,6 +629,7 @@ query       = SELECT bcc_address FROM sender_bcc_domain WHERE domain='%d' AND ac
 EOF
 
     cat > ${mysql_sender_bcc_maps_user_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -627,6 +639,7 @@ query       = SELECT sender_bcc_user.bcc_address FROM sender_bcc_user,domain WHE
 EOF
 
     cat > ${mysql_recipient_bcc_maps_domain_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}
@@ -636,6 +649,7 @@ query       = SELECT bcc_address FROM recipient_bcc_domain WHERE domain='%d' AND
 EOF
 
     cat > ${mysql_recipient_bcc_maps_user_cf} <<EOF
+${CONF_MSG}
 user        = ${MYSQL_BIND_USER}
 password    = ${MYSQL_BIND_PW}
 hosts       = ${mysql_server}

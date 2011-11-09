@@ -45,7 +45,7 @@ fi
 
 # Welcome message.
 ${DIALOG} \
-    --title "Welcome and thanks for use" \
+    --title "Welcome and thanks for your use" \
     --yesno "\
 Thanks for your use of ${PROG_NAME}.
 Bug report, feedback, suggestion are always welcome.
