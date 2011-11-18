@@ -101,7 +101,7 @@ WSGIProcessGroup ${IREDADMIN_HTTPD_GROUP}
 AddType text/html .py
 
 <Directory ${HTTPD_SERVERROOT}/iredadmin/>
-    Order deny,allow
+    Order allow,deny
     Allow from all
 </Directory>
 EOF

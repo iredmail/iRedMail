@@ -367,6 +367,7 @@ EOF
 
         backup_file ${DOVECOT_MYSQL_CONF}
         cat > ${DOVECOT_MYSQL_CONF} <<EOF
+${CONF_MSG}
 driver = mysql
 default_pass_scheme = CRYPT
 connect = host=${MYSQL_SERVER} dbname=${VMAIL_DB} user=${MYSQL_BIND_USER} password=${MYSQL_BIND_PW}
