@@ -111,7 +111,7 @@ cleanup_replace_iptables_rule()
             if [ X"${DISTRO}" == X"SUSE" ]; then
                 # Below services are not accessable from external network:
                 #   - ldaps (636)
-                perl -pi -e 's/^(FW_SERVICES_EXT_TCP=)(.*)/${1}"$ENV{'HTTPD_PORT'} 443 25 465 110 995 143 993 587 465 $ENV{'sshd_port'}"\n#${2}/' ${IPTABLES_CONFIG}
+                perl -pi -e 's/^(FW_SERVICES_EXT_TCP=)(.*)/${1}"$ENV{'HTTPD_PORT'} 443 25 110 995 143 993 587 465 $ENV{'sshd_port'}"\n#${2}/' ${IPTABLES_CONFIG}
 
             elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
                 # Copy sample rc script for Debian.

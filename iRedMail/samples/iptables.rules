@@ -36,7 +36,7 @@
 -A INPUT -i lo -j ACCEPT
 
 # http/https, smtp/smtps, pop3/pop3s, imap/imaps, ssh
--A INPUT -p tcp -m multiport --dport 80,443,25,465,110,995,143,993,587,465,22 -j ACCEPT
+-A INPUT -p tcp -m multiport --dport 80,443,25,110,995,143,993,587,465,22 -j ACCEPT
 
 # Allow PING from remote hosts.
 -A INPUT -p icmp --icmp-type echo-request -j ACCEPT

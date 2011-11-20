@@ -52,7 +52,7 @@ ${CONF_MSG}
 <Directory ${AWSTATS_CGI_DIR}/>
     DirectoryIndex awstats.pl
     Options ExecCGI
-    order deny,allow
+    Order allow,deny
     allow from all
     #allow from 127.0.0.1
 
