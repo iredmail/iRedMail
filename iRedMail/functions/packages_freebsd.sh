@@ -638,11 +638,9 @@ EOF
     fi
 
     # iRedAdmin.
-    if [ X"${USE_IREDADMIN}" == X"YES" ]; then
-        # mod_wsgi.
-        ALL_PORTS="${ALL_PORTS} www/mod_wsgi www/webpy devel/py-Jinja2 databases/py-MySQLdb net/py-netifaces"
-        [ X"${USE_IREDAPD}" != X"YES" ] && ALL_PORTS="${ALL_PORTS} net/py-ldap2"
-    fi
+    # mod_wsgi.
+    ALL_PORTS="${ALL_PORTS} www/mod_wsgi www/webpy devel/py-Jinja2 databases/py-MySQLdb net/py-netifaces"
+    [ X"${USE_IREDAPD}" != X"YES" ] && ALL_PORTS="${ALL_PORTS} net/py-ldap2"
 
     # Fail2ban.
     #if [ X"${USE_FAIL2BAN}" == X"YES" ]; then

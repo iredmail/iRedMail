@@ -339,30 +339,25 @@ EOF
     fi
     #### End iRedAPD ####
 
-    #############
     # iRedAdmin.
-    #
-    if [ X"${USE_IREDADMIN}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} python-jinja2${PKG_ARCH} python-webpy.noarch MySQL-python${PKG_ARCH} mod_wsgi${PKG_ARCH}"
-            [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH}"
+    # Force install all dependence to help customers install iRedAdmin-Pro.
+    if [ X"${DISTRO}" == X"RHEL" ]; then
+        ALL_PKGS="${ALL_PKGS} python-jinja2${PKG_ARCH} python-webpy.noarch MySQL-python${PKG_ARCH} mod_wsgi${PKG_ARCH}"
+        [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH}"
 
-        elif [ X"${DISTRO}" == X"SUSE" ]; then
-            # Note: Web.py will be installed locally via 'easy_install'.
-            ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-mysql python-xml"
-            if [ X"${DISTRO_VERSION}" == X"11.3" -o X"${DISTRO_VERSION}" == X"11.4" ]; then
-                ALL_PKGS="${ALL_PKGS} python-setuptools"
-            fi
-            [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
-
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-mysqldb python-jinja2 python-netifaces python-webpy"
-            [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
+    elif [ X"${DISTRO}" == X"SUSE" ]; then
+        # Note: Web.py will be installed locally via 'easy_install'.
+        ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-mysql python-xml"
+        if [ X"${DISTRO_VERSION}" == X"11.3" -o X"${DISTRO_VERSION}" == X"11.4" ]; then
+            ALL_PKGS="${ALL_PKGS} python-setuptools"
         fi
-    else
-        :
+        [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
+
+    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-mysqldb python-jinja2 python-netifaces python-webpy"
+        [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
     fi
-    #### End iRedAdmin ####
+
 
     #### Fail2ban ####
     if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
