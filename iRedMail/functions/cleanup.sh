@@ -250,7 +250,7 @@ cleanup_backup_scripts()
 cleanup()
 {
     cat > /etc/${PROG_NAME_LOWERCASE}-release <<EOF
-${PROG_NAME}-${PROG_VERSION}
+${PROG_VERSION}
 EOF
 
     cat <<EOF
