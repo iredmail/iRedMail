@@ -1,4 +1,5 @@
 iRedMail-0.7.4:
+    * Store realtime mailbox quota in separate SQL table in MySQL backend.
     * It now works on Ubuntu 11.10, openSUSE 12.1.
     * SPF verification is now enabled by default.
     * Add Policyd-2.0.x (code name "cluebringer") support on Ubuntu 11.10.

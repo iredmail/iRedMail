@@ -442,12 +442,10 @@ EOF
 
         if [ X"${BACKEND}" == X"OpenLDAP" ]; then
             realtime_quota_db_name="${IREDADMIN_DB_NAME}"
-            realtime_quota_db_table="used_quota"
             realtime_quota_db_user="${IREDADMIN_DB_USER}"
             realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
         else
             realtime_quota_db_name="${VMAIL_DB}"
-            realtime_quota_db_table="mailbox"
             realtime_quota_db_user="${MYSQL_ADMIN_USER}"
             realtime_quota_db_passwd="${MYSQL_ADMIN_PW}"
         fi
@@ -457,13 +455,13 @@ ${CONF_MSG}
 connect = host=${MYSQL_SERVER} dbname=${realtime_quota_db_name} user=${realtime_quota_db_user} password=${realtime_quota_db_passwd}
 map {
     pattern = priv/quota/storage
-    table = ${realtime_quota_db_table}
+    table = ${DOVECOT_REALTIME_QUOTA_TABLE}
     username_field = username
     value_field = bytes
 }
 map {
     pattern = priv/quota/messages
-    table = ${realtime_quota_db_table}
+    table = ${DOVECOT_REALTIME_QUOTA_TABLE}
     username_field = username
     value_field = messages
 }

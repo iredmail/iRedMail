@@ -146,6 +146,7 @@ export DOVECOT_EXPIRE_DICT_BDB='/var/lib/dovecot/expire/expire.db'
 # Dovecot quota warning.
 export DOVECOT_QUOTA_WARNING_SCRIPT='/usr/local/bin/dovecot-quota-warning.sh'
 export DOVECOT_REALTIME_QUOTA_SQLTYPE='mysql'
+export DOVECOT_REALTIME_QUOTA_TABLE='used_quota'
 export DOVECOT_SHARE_FOLDER_SQLTYPE='mysql'
 
 if [ X"${DOVECOT_VERSION}" == X"1.1" -o X"${DOVECOT_VERSION}" == X"1.2" ]; then

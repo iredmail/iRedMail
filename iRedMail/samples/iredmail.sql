@@ -269,3 +269,16 @@ CREATE TABLE IF NOT EXISTS share_folder (
     INDEX (from_user),
     INDEX (to_user)
 );
+
+#
+# Table `used_quota`. Used to store realtime mailbox quota in Dovecot.
+#
+# WARNING:
+#   - Works only with Dovecot 1.2+.
+#
+CREATE TABLE IF NOT EXISTS `used_quota` (
+    `username` VARCHAR(255) NOT NULL,
+    `bytes` BIGINT NOT NULL DEFAULT 0,
+    `messages` BIGINT NOT NULL DEFAULT 0,
+    PRIMARY KEY (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
