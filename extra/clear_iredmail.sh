@@ -22,25 +22,25 @@ export DEBIAN_FRONTEND='noninteractive'
 . ${CONF_DIR}/core
 
 # Source configurations.
-. ${CONF_DIR}/apache_php
-. ${CONF_DIR}/openldap
-. ${CONF_DIR}/phpldapadmin
-. ${CONF_DIR}/mysql
-. ${CONF_DIR}/postfix
-. ${CONF_DIR}/policyd
-. ${CONF_DIR}/pypolicyd-spf
-. ${CONF_DIR}/dovecot
-. ${CONF_DIR}/managesieve
-. ${CONF_DIR}/procmail
-. ${CONF_DIR}/amavisd
-. ${CONF_DIR}/clamav
-. ${CONF_DIR}/spamassassin
-[ -f ${CONF_DIR}/squirrelmail ] && . ${CONF/squirrelmail
-. ${CONF_DIR}/roundcube
-. ${CONF_DIR}/postfixadmin
-. ${CONF_DIR}/phpmyadmin
-. ${CONF_DIR}/awstats
-. ${CONF_DIR}/iredadmin
+[ -f ${CONF_DIR}/apache_php ] && . ${CONF_DIR}/apache_php
+[ -f ${CONF_DIR}/openldap ] && . ${CONF_DIR}/openldap
+[ -f ${CONF_DIR}/phpldapadmin ] && . ${CONF_DIR}/phpldapadmin
+[ -f ${CONF_DIR}/mysql ] && . ${CONF_DIR}/mysql
+[ -f ${CONF_DIR}/postfix ] && . ${CONF_DIR}/postfix
+[ -f ${CONF_DIR}/policyd ] && . ${CONF_DIR}/policyd
+[ -f ${CONF_DIR}/dovecot ] && . ${CONF_DIR}/dovecot
+[ -f ${CONF_DIR}/managesieve ] && . ${CONF_DIR}/managesieve
+[ -f ${CONF_DIR}/procmail ] && . ${CONF_DIR}/procmail
+[ -f ${CONF_DIR}/amavisd ] && . ${CONF_DIR}/amavisd
+[ -f ${CONF_DIR}/clamav ] && . ${CONF_DIR}/clamav
+[ -f ${CONF_DIR}/spamassassin ] && . ${CONF_DIR}/spamassassin
+[ -f ${CONF_DIR}/squirrelmail ] && . ${CONF_DIR}/squirrelmail
+[ -f ${CONF_DIR}/roundcube ] && . ${CONF_DIR}/roundcube
+[ -f ${CONF_DIR}/postfixadmin ] && . ${CONF_DIR}/postfixadmin
+[ -f ${CONF_DIR}/phpmyadmin ] && . ${CONF_DIR}/phpmyadmin
+[ -f ${CONF_DIR}/awstats ] && . ${CONF_DIR}/awstats
+[ -f ${CONF_DIR}/iredadmin ] && . ${CONF_DIR}/iredadmin
+[ -f ${CONF_DIR}/iredapd ] && . ${CONF_DIR}/iredapd
 
 # Source user configurations of iRedMail.
 . ../config
@@ -102,7 +102,7 @@ get_all_pkgs()
     if [ X"${USE_EXIST_AMP}" != X"YES" ]; then
         # Apache & PHP.
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} httpd.${ARCH} mod_ssl.${ARCH} php.${ARCH} php-common.${ARCH} php-imap.${ARCH} php-gd.${ARCH} php-mbstring.${ARCH} libmcrypt.${ARCH} php-mcrypt.${ARCH} php-pear.noarch php-xml.${ARCH} php-pecl-fileinfo.${ARCH} php-mysql.${ARCH} php-ldap.${ARCH}"
+            ALL_PKGS="${ALL_PKGS} httpd mod_ssl php php-common php-imap php-gd php-mbstring libmcrypt php-mcrypt php-pear php-xml php-pecl-fileinfo php-mysql php-ldap"
             ENABLED_SERVICES="${ENABLED_SERVICES} httpd"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -117,7 +117,7 @@ get_all_pkgs()
 
     # Postfix.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} postfix.${ARCH}"
+        ALL_PKGS="${ALL_PKGS} postfix"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     else
@@ -129,7 +129,7 @@ get_all_pkgs()
     # Awstats.
     if [ X"${USE_AWSTATS}" == X"YES" ]; then
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} awstats.noarch"
+            ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         else
@@ -142,7 +142,7 @@ get_all_pkgs()
     # Note: mysql server is required, used to store extra data,
     #       such as policyd, roundcube webmail data.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} mysql-server.${ARCH} mysql.${ARCH}"
+        ALL_PKGS="${ALL_PKGS} mysql-server mysql"
         ENABLED_SERVICES="${ENABLED_SERVICES} mysqld"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         [ X"${DISTRO_CODENAME}" == X"jaunty" ] && ALL_PKGS="${ALL_PKGS} mysql-server-core-5.0"
@@ -156,7 +156,7 @@ get_all_pkgs()
     if [ X"${BACKEND}" == X"OpenLDAP" ]; then
         # OpenLDAP server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} openldap.${ARCH} openldap-clients.${ARCH} openldap-servers.${ARCH}"
+            ALL_PKGS="${ALL_PKGS} openldap-clients openldap-servers"
             ENABLED_SERVICES="${ENABLED_SERVICES} ldap"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -169,7 +169,7 @@ get_all_pkgs()
         # MySQL server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
             # For Awstats.
-            [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} mod_auth_mysql.${ARCH}"
+            [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} mod_auth_mysql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} postfix-mysql"
@@ -185,7 +185,7 @@ get_all_pkgs()
 
     # Policyd.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} policyd.${ARCH}"
+        ALL_PKGS="${ALL_PKGS} policyd"
         ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} postfix-policyd"
@@ -197,7 +197,7 @@ get_all_pkgs()
     # Dovecot.
     if [ X"${ENABLE_DOVECOT}" == X"YES" ]; then
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot.${ARCH} dovecot-sieve.${ARCH}"
+            ALL_PKGS="${ALL_PKGS} dovecot dovecot-sieve"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-common dovecot-imapd dovecot-pop3d"
@@ -213,7 +213,7 @@ get_all_pkgs()
 
     # Amavisd-new & ClamAV & Altermime.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new.${ARCH} clamd.${ARCH} clamav.${ARCH} clamav-db.${ARCH} spamassassin.${ARCH} altermime.${ARCH}"
+        ALL_PKGS="${ALL_PKGS} amavisd-new clamd clamav clamav-db spamassassin altermime"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} clamd"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav clamav-base clamav-freshclam clamav-daemon spamassassin altermime"
@@ -228,7 +228,7 @@ get_all_pkgs()
     if [ X"${ENABLE_SPF}" == X"YES" ]; then
         if [ X"${DISTRO}" == X"RHEL" ]; then
             # SPF implemention via perl-Mail-SPF.
-            ALL_PKGS="${ALL_PKGS} perl-Mail-SPF.noarch perl-Mail-SPF-Query.noarch"
+            ALL_PKGS="${ALL_PKGS} perl-Mail-SPF perl-Mail-SPF-Query"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} libmail-spf-perl"
@@ -246,14 +246,14 @@ get_all_pkgs()
     if [ X"${USE_MANAGESIEVE}" == X"YES" ]; then
         # Note for Ubuntu & Debian:
         # Dovecot shipped in Debian/Ubuntu has managesieve plugin patched.
-        [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} pysieved.noarch"
+        [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} pysieved"
     else
         :
     fi
 
     # SquirrelMail.
     if [ X"${USE_SM}" == X"YES" ]; then
-        [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} php-pear-db.noarch"
+        [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} php-pear-db"
         [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && \
             ALL_PKGS="${ALL_PKGS} php-db"
     else
@@ -263,7 +263,7 @@ get_all_pkgs()
     # iRedAdmin.
     if [ X"${USE_IREDADMIN}" == X"YES" ]; then
         [ X"${DISTRO}" == X"RHEL" ] && \
-        ALL_PKGS="${ALL_PKGS} python-jinja2.${ARCH} python-webpy.noarch python-ldap.${ARCH} MySQL-python.${ARCH} mod_wsgi.${ARCH}"
+        ALL_PKGS="${ALL_PKGS} python-jinja2.${ARCH} python-webpy python-ldap.${ARCH} MySQL-python.${ARCH} mod_wsgi.${ARCH}"
 
         [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && \
             ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-mysqldb python-ldap python-jinja2 python-netifaces python-webpy"
@@ -369,6 +369,14 @@ get_all_accounts()
     # ClamAV.
     #ALL_USERS="${ALL_USERS} ${CLAMAV_USER}"
     #ALL_GROUPS="${ALL_GROUPS} ${CLAMAV_GROUP}"
+
+    # iRedAPD.
+    ALL_USERS="${ALL_USERS} ${IREDAPD_DAEMON_USER}"
+    ALL_GROUPS="${ALL_GROUPS} ${IREDAPD_DAEMON_GROUP}"
+
+    # iRedAdmin.
+    ALL_USERS="${ALL_USERS} ${IREDADMIN_HTTPD_USER}"
+    ALL_GROUPS="${ALL_GROUPS} ${IREDADMIN_HTTPD_GROUP}"
 }
 
 get_all_pkgs
@@ -379,6 +387,10 @@ ECHO_INFO "=================== Stop services ================"
 for i in ${ENABLED_SERVICES}; do
     [ -x /etc/init.d/$i ] && /etc/init.d/$i stop
 done
+
+if [ X"${DISTRO}" == X"RHEL" ]; then
+    /usr/bin/killall -u ${IREDAPD_DAEMON_USER} python
+fi
 
 ECHO_INFO "=================== Remove binary packages ================"
 remove_pkg ${ALL_PKGS}
