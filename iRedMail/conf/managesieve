@@ -24,11 +24,15 @@
 export MANAGESIEVE_BINDADDR='127.0.0.1'
 export MANAGESIEVE_PORT='2000'
 
+# New Linux releases use port 4190.
+# RHEL 6.
 if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X"6" ]; then
     export MANAGESIEVE_PORT='4190'
 fi
 
-if [ X"${DISTRO_CODENAME}" == X"squeeze" ]; then
-    # Debian 6 changes default managesieve port to 4190.
+# Debian 6 (squeeze), Ubuntu 11.10 (oneiric).
+if [ X"${DISTRO_CODENAME}" == X"squeeze" \
+    -o X"${DISTRO_CODENAME}" == X"oneiric" \
+    ]; then
     export MANAGESIEVE_PORT='4190'
 fi
