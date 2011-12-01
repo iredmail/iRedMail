@@ -347,7 +347,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     fi
     # Package management.
     export install_pkg='install_pkg_debian'
-    export remove_pkg='removel_pkg_debian'
+    export remove_pkg='remove_pkg_debian'
     export LIST_ALL_PKGS="dpkg -l |awk '{print $2}'"
     export LIST_FILES_IN_PKG='dpkg -L'
 
@@ -400,7 +400,7 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
 
     # Package management.
     export install_pkg='install_pkg_freebsd'
-    export remove_pkg='removel_pkg_freebsd'
+    export remove_pkg='remove_pkg_freebsd'
     export LIST_ALL_PKGS="pkg_info | awk '{print $1}'"
     export LIST_FILES_IN_PKG='pkg_info -L'
 
