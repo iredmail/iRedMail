@@ -48,6 +48,7 @@ action      = iptables[name=ssh, port="ssh", protocol=tcp]
 #               sendmail-whois[name=ssh, dest=root, sender=fail2ban@mail.com]
 logpath     = ${FAIL2BAN_SSHD_LOGFILE}
 maxretry    = 5
+#ignoreip    = 127.0.0.1
 
 [roundcube-iredmail]
 enabled     = true
@@ -57,6 +58,7 @@ logpath     = ${RCM_LOGFILE}
 findtime    = 3600
 maxretry    = 5
 bantime     = 3600
+ignoreip    = 127.0.0.1
 
 [dovecot-iredmail]
 enabled     = true
@@ -66,7 +68,7 @@ logpath     = ${DOVECOT_LOG_FILE}
 maxretry    = 5
 findtime    = 300
 bantime     = 3600
-ignoreip    == 127.0.0.1
+ignoreip    = 127.0.0.1
 
 [postfix-iredmail]
 enabled     = true
