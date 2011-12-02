@@ -138,8 +138,6 @@ CREATE TABLE IF NOT EXISTS mailbox (
     storagenode VARCHAR(255) NOT NULL DEFAULT '',
     maildir VARCHAR(255) NOT NULL DEFAULT '',
     quota BIGINT(20) NOT NULL DEFAULT 0, -- Total mail quota size
-    bytes BIGINT(20) NOT NULL DEFAULT 0, -- Number of used quota size
-    messages BIGINT(20) NOT NULL DEFAULT 0, -- Number of current messages
     domain VARCHAR(255) NOT NULL DEFAULT '',
     transport VARCHAR(255) NOT NULL DEFAULT '',
     department VARCHAR(255) NOT NULL DEFAULT '',
@@ -168,6 +166,10 @@ CREATE TABLE IF NOT EXISTS mailbox (
     expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
     active TINYINT(1) NOT NULL DEFAULT 1,
     local_part VARCHAR(255) NOT NULL DEFAULT '', -- Required by PostfixAdmin
+    --- `bytes` and `messages` is obsoleting since iRedMail-0.7.4.
+    --- Use table `used_quota` instead.
+    bytes BIGINT(20) NOT NULL DEFAULT 0,
+    messages BIGINT(20) NOT NULL DEFAULT 0,
     PRIMARY KEY (username),
     INDEX (domain),
     INDEX (department),
@@ -272,9 +274,7 @@ CREATE TABLE IF NOT EXISTS share_folder (
 
 #
 # Table `used_quota`. Used to store realtime mailbox quota in Dovecot.
-#
-# WARNING:
-#   - Works only with Dovecot 1.2+.
+# WARNING: Works only with Dovecot 1.2+.
 #
 CREATE TABLE IF NOT EXISTS `used_quota` (
     `username` VARCHAR(255) NOT NULL,
