@@ -25,15 +25,16 @@ policy_server_config()
     if [ X"${DISTRO_CODENAME}" != X"oneiric" ]; then
         . ${FUNCTIONS_DIR}/policyd.sh
 
-        ECHO_INFO "Configure Policyd (postfix policy daemon)."
+        ECHO_INFO "Configure Policyd (postfix policy server, version 1.x)."
         check_status_before_run policyd_user
         check_status_before_run policyd_config
     else
         . ${FUNCTIONS_DIR}/cluebringer.sh
 
-        ECHO_INFO "Configure Policyd (postfix policy daemon, code name 'cluebringer')."
+        ECHO_INFO "Configure Policyd (postfix policy server, code name cluebringer)."
         check_status_before_run cluebringer_user
         check_status_before_run cluebringer_config
+        check_status_before_run cluebringer_webui_config
     fi
 
     # FreeBSD: Start policyd when system start up.

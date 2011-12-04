@@ -212,7 +212,7 @@ install_all()
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
             # Policyd-2.x, code name "cluebringer".
-            ALL_PKGS="${ALL_PKGS} postfix-cluebringer"
+            ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
             ENABLED_SERVICES="${ENABLED_SERVICES} postfix-cluebringer"
 
             if [ X"${BACKEND}" == X"OpenLDAP" -o X"${BACKEND}" == X"MySQL" ]; then

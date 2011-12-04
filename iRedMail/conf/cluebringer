@@ -35,6 +35,7 @@ export CLUEBRINGER_DB_PASSWD="$(${RANDOM_STRING})"
 export CLUEBRINGER_USER='cluebringer'
 export CLUEBRINGER_GROUP='cluebringer'
 export CLUEBRINGER_USER_HOME='/etc/cluebringer'
+export CLUEBRINGER_HTTPD_CONF="${HTTPD_CONF_DIR}/cluebringer.conf"
 
 #
 # Syslog setting.
@@ -72,6 +73,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/postfix-policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
+    export CLUEBRINGER_HTTPD_ROOT='/usr/share/postfix-cluebringer-webui/webui'
 
     # Path of policyd-clean
     export CLUEBRINGER_CLEANUP_BIN='/usr/lib/postfix-policyd/cleanup'
