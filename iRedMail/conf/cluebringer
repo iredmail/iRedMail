@@ -52,6 +52,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export CLUEBRINGER_CONF='/etc/policyd.conf'
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='/var/run/cluebringer/cbpolicyd.pid'
+    export CLUEBRINGER_HTTPD_ROOT=''
 
     # Path of policyd-clean
     export CLUEBRINGER_CLEANUP_BIN='/usr/sbin/policyd-cleanup'
@@ -61,6 +62,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
+    export CLUEBRINGER_HTTPD_ROOT=''
 
     # Path of policyd-clean
     export CLUEBRINGER_CLEANUP_BIN='/usr/lib/policyd/cleanup'
@@ -83,6 +85,7 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLUEBRINGER_CONF='/usr/local/etc/postfix-policyd-sf.conf'
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
+    export CLUEBRINGER_HTTPD_ROOT=''
 
     # Path of policyd-clean
     export CLUEBRINGER_CLEANUP_BIN='/usr/local/sbin/postfix-policyd-sf-cleanup'

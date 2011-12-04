@@ -210,13 +210,11 @@ EOF
 
 cluebringer_webui_config()
 {
-    ECHO_DEBUG "Configure cluebringer webui."
+    ECHO_DEBUG "Configure webui of Policyd (cluebringer)."
 
     backup_file ${CLUEBRINGER_CONF}
 
-    if [ X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
-            cat > ${CLUEBRINGER_HTTPD_CONF} <<EOF
+    cat > ${CLUEBRINGER_HTTPD_CONF} <<EOF
 ${CONF_MSG}
 # Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
 #Alias /cluebringer ${CLUEBRINGER_HTTPD_ROOT}/
@@ -231,10 +229,10 @@ ${CONF_MSG}
     AuthName "Authorization Required"
 EOF
 
-            ECHO_DEBUG "Setup user auth for cluebringer webui: ${CLUEBRINGER_HTTPD_CONF}."
-            if [ X"${BACKEND}" == X"OpenLDAP" ]; then
-                # Use LDAP auth.
-                cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+    ECHO_DEBUG "Setup user auth for cluebringer webui: ${CLUEBRINGER_HTTPD_CONF}."
+    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+        # Use LDAP auth.
+        cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthType Basic
 
     AuthBasicProvider ldap
@@ -246,13 +244,13 @@ EOF
     AuthLDAPBindPassword "${LDAP_BINDPW}"
 EOF
 
-                [ X"${LDAP_USE_TLS}" == X"YES" ] && \
-                    perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
+        [ X"${LDAP_USE_TLS}" == X"YES" ] && \
+            perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
 
-            elif [ X"${BACKEND}" == X"MySQL" ]; then
-                # Use mod_auth_mysql.
-                if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
-                    cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+    elif [ X"${BACKEND}" == X"MySQL" ]; then
+        # Use mod_auth_mysql.
+        if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
+            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthType Basic
 
     AuthMYSQLEnable On
@@ -265,19 +263,20 @@ EOF
     AuthMySQLNameField username
     AuthMySQLPasswordField password
 EOF
-                    # FreeBSD special.
-                    if [ X"${DISTRO}" == X"FREEBSD" ]; then
-                        # Enable mod_auth_mysql module in httpd.conf.
-                        perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
-                    fi
 
-                    # OpenSuSE & FreeBSD special.
-                    if [ X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
-                        echo "AuthBasicAuthoritative Off" >> ${CLUEBRINGER_HTTPD_CONF}
-                    fi
+            # FreeBSD special.
+            if [ X"${DISTRO}" == X"FREEBSD" ]; then
+                # Enable mod_auth_mysql module in httpd.conf.
+                perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
+            fi
 
-                elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-                    cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+            # OpenSuSE & FreeBSD special.
+            if [ X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
+                echo "AuthBasicAuthoritative Off" >> ${CLUEBRINGER_HTTPD_CONF}
+            fi
+
+        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthType Basic
 
     AuthMYSQL on
@@ -295,28 +294,25 @@ EOF
     Auth_MySQL_Authoritative On
 EOF
 
-                    # Set file permission.
-                    chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
+            # Set file permission.
+            chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
 
-                    cat >> ${HTTPD_CONF} <<EOF
+            cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server, username, password.
 Auth_MySQL_Info ${MYSQL_SERVER} ${MYSQL_BIND_USER} ${MYSQL_BIND_PW}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
-                else
-                    :
-                fi
+        else
+            :
+        fi
 
-                # Close <Directory> container.
-                cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+        # Close <Directory> container.
+        cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
 
     Require valid-user
 </Directory>
 EOF
-            fi
-
-        fi
     fi
 
     echo 'export status_cluebringer_webui_config="DONE"' >> ${STATUS_FILE}
