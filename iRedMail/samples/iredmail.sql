@@ -165,9 +165,10 @@ CREATE TABLE IF NOT EXISTS mailbox (
     modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
     active TINYINT(1) NOT NULL DEFAULT 1,
-    local_part VARCHAR(255) NOT NULL DEFAULT '', -- Required by PostfixAdmin
-    --- `bytes` and `messages` is obsoleting since iRedMail-0.7.4.
-    --- Use table `used_quota` instead.
+    -- Required by PostfixAdmin
+    local_part VARCHAR(255) NOT NULL DEFAULT '',
+    -- `bytes` and `messages` is obsoleting since iRedMail-0.7.4.
+    -- Use table `used_quota` instead.
     bytes BIGINT(20) NOT NULL DEFAULT 0,
     messages BIGINT(20) NOT NULL DEFAULT 0,
     PRIMARY KEY (username),
