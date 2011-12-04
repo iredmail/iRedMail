@@ -189,6 +189,11 @@ EOF
         -e "/\[policyd\]/,/\[/ s#\(^passwd =\).*#\1 ${POLICYD_DB_PASSWD}#" \
         settings.ini
 
+
+    # Ubuntu 11.10 uses Policyd-2 which is not yet supported in iRedAdmin.
+    if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
+        sed -i.tmp -e "/\[policyd\]/,/\[/ s#\(^enabled =\).*#\1 False#" settings.ini
+
     # Section [amavisd].
     ECHO_DEBUG "Configure Amavisd related settings."
     sed -i.tmp \
