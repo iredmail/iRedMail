@@ -133,6 +133,10 @@ EOF
 
     mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 $(cat ${tmp_sql})
+
+-- Delete default sample domains.
+-- DELETE FROM policy_group_members WHERE Member IN ('@example.com', '@example.org', '10.0.0.0/8');
+INSERT INTO `greylisting` (`PolicyID`, `Name`, `UseGreylisting`, `GreylistPeriod`, `Track`, `GreylistAuthValidity`, `GreylistUnAuthValidity`, `UseAutoWhitelist`, `AutoWhitelistPeriod`, `AutoWhitelistCount`, `AutoWhitelistPercentage`, `UseAutoBlacklist`, `AutoBlacklistPeriod`, `AutoBlacklistCount`, `AutoBlacklistPercentage`, `Comment`, `Disabled`) VALUES (3, 'Greylist Inbound Email', 1, 240, 'SenderIP:/24', 604800, 86400, 1, 604800, 100, 90, 1, 604800, 100, 20, '', 0);
 EOF
 
     rm -rf ${tmp_sql} 2>/dev/null
@@ -189,8 +193,13 @@ EOF
 Policyd (cluebringer):
     * Configuration files:
         - ${CLUEBRINGER_CONF}
+        - ${CLUEBRINGER_WEBUI_CONF}
     * RC script:
         - ${CLUEBRINGER_INIT_SCRIPT}
+    * Database:
+        - Database name: ${CLUEBRINGER_DB_NAME}
+        - Database user: ${CLUEBRINGER_DB_USER}
+        - Database password: ${CLUEBRINGER_DB_PASSWD}
 
 EOF
 
@@ -213,6 +222,14 @@ cluebringer_webui_config()
     ECHO_DEBUG "Configure webui of Policyd (cluebringer)."
 
     backup_file ${CLUEBRINGER_CONF}
+
+    # Make Cluebringer accessible via HTTPS.
+    perl -pi -e 's#(</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}
+
+    # Configure webui.
+    perl -pi -e 's#(.DB_DSN=).*#${1}"mysql:host=$ENV{MYSQL_SERVER};dbname=${CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
+    perl -pi -e 's#(.DB_USER=).*#${1}"$ENV{CLUEBRINGER_DB_USER}";#' ${CLUEBRINGER_WEBUI_CONF}
+    perl -pi -e 's#(.DB_PASS=).*#${1}"$ENV{CLUEBRINGER_DB_PASSWD}";#' ${CLUEBRINGER_WEBUI_CONF}
 
     cat > ${CLUEBRINGER_HTTPD_CONF} <<EOF
 ${CONF_MSG}
@@ -238,7 +255,7 @@ EOF
     AuthBasicProvider ldap
     AuthzLDAPAuthoritative   Off
 
-    AuthLDAPUrl   ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}/${LDAP_ADMIN_BASEDN}?${LDAP_ATTR_USER_RDN}?sub?(&(objectclass=${LDAP_OBJECTCLASS_MAILADMIN})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE}))
+    AuthLDAPUrl   ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}/${LDAP_ADMIN_BASEDN}?${LDAP_ATTR_USER_RDN}?sub?(&(objectclass=${LDAP_OBJECTCLASS_MAILADMIN})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ATTR_DOMAIN_GLOBALADMIN}=${LDAP_VALUE_DOMAIN_GLOBALADMIN}))
 
     AuthLDAPBindDN "${LDAP_BINDDN}"
     AuthLDAPBindPassword "${LDAP_BINDPW}"
@@ -305,7 +322,8 @@ Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
         else
             :
-        fi
+        fi  # DISTRO
+    fi  # BACKEND
 
         # Close <Directory> container.
         cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
@@ -313,7 +331,6 @@ EOF
     Require valid-user
 </Directory>
 EOF
-    fi
 
     echo 'export status_cluebringer_webui_config="DONE"' >> ${STATUS_FILE}
 }

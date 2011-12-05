@@ -50,6 +50,7 @@ export CLUEBRINGER_LOG_FILE='/var/log/cbpolicyd.log'
 if [ X"${DISTRO}" == X"RHEL" ]; then
     export PKG_CLUEBRINGER='policyd'
     export CLUEBRINGER_CONF='/etc/policyd.conf'
+    export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='/var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT=''
@@ -60,6 +61,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     export PKG_CLUEBRINGER='policyd'
     export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
+    export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT=''
@@ -73,6 +75,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export PKG_CLUEBRINGER='postfix-cluebringer'
     export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
+    export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/postfix-policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT='/usr/share/postfix-cluebringer-webui/webui'
@@ -83,6 +86,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export PKG_CLUEBRINGER='postfix-policyd-sf'
     export CLUEBRINGER_CONF='/usr/local/etc/postfix-policyd-sf.conf'
+    export CLUEBRINGER_WEBUI_CONF="/usr/local/etc/cluebringer/cluebringer-webui.conf"
     export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT=''

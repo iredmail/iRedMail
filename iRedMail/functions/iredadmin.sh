@@ -193,6 +193,7 @@ EOF
     # Ubuntu 11.10 uses Policyd-2 which is not yet supported in iRedAdmin.
     if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
         sed -i.tmp -e "/\[policyd\]/,/\[/ s#\(^enabled =\).*#\1 False#" settings.ini
+    fi
 
     # Section [amavisd].
     ECHO_DEBUG "Configure Amavisd related settings."
