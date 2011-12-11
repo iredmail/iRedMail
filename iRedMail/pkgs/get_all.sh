@@ -251,6 +251,7 @@ EOF
 
 create_repo_suse()
 {
+    ECHO_INFO "Create zypper repo file: ${ZYPPER_REPOS_DIR}/${PROG_NAME}.repo."
     cat > ${ZYPPER_REPOS_DIR}/${PROG_NAME}.repo <<EOF
 # Repository for packages:
 #   - apache-mod_auth_mysql, apache-mod_wsgi
