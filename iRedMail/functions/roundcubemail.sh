@@ -73,7 +73,7 @@ SOURCE ${RCM_HTTPD_ROOT}/SQL/mysql.initial.sql;
 /* Fixed bug where session ID's length was limited to 40 characters.
    Bug: http://trac.roundcube.net/ticket/1488196
 */
-ALTER TABLE `session` CHANGE `sess_id` `sess_id` VARCHAR(128) NOT NULL;
+ALTER TABLE session CHANGE sess_id sess_id VARCHAR(128) NOT NULL;
 
 FLUSH PRIVILEGES;
 EOF
