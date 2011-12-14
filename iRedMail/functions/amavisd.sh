@@ -239,8 +239,8 @@ chomp(\$mydomain = "${HOSTNAME}");
   virus_admin_maps => ["root\@\$mydomain"],
   spam_admin_maps  => ["root\@$mydomain"],
   warnbadhsender   => 0,
-  warnvirussender  => 1,
-  warnspamsender   => 1,
+  #warnvirussender  => 1,
+  #warnspamsender   => 1,
   # forward to a smtpd service providing DKIM signing service
   #forward_method => 'smtp:[127.0.0.1]:10027',
   # force MTA conversion to 7-bit (e.g. before DKIM signing)
@@ -338,8 +338,6 @@ amavisd_config_general()
     virus_admin_maps => ["root\@\$mydomain"],
     spam_admin_maps  => ["root\@\$mydomain"],
     warnbadhsender   => 0,
-    warnvirussender  => 1,
-    warnspamsender   => 1,
 
     # forward to a smtpd service providing DKIM signing service
     #forward_method => 'smtp:[127.0.0.1]:10027',
@@ -419,10 +417,10 @@ amavisd_config_general()
 #\$X_HEADER_LINE = "by amavisd at \$myhostname";
 
 # Notify virus sender?
-\$warnvirussender = 0;
+#\$warnvirussender = 0;
 
 # Notify spam sender?
-\$warnspamsender = 0;
+#\$warnspamsender = 0;
 
 # Notify sender of banned files?
 \$warnbannedsender = 0;

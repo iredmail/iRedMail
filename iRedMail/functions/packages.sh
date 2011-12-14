@@ -346,10 +346,13 @@ EOF
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH}"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        # Note: Web.py will be installed locally via 'easy_install'.
         ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-mysql python-xml"
+
+        # Note: Web.py will be installed locally with command 'easy_install'.
         if [ X"${DISTRO_VERSION}" == X"11.3" -o X"${DISTRO_VERSION}" == X"11.4" ]; then
             ALL_PKGS="${ALL_PKGS} python-setuptools"
+        else
+            ALL_PKGS="${ALL_PKGS} python-distribute"
         fi
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
 

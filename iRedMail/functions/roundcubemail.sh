@@ -398,7 +398,7 @@ rcm_plugin_password()
         perl -pi -e 's#(.*password_ldap_userDN_mask...=).*#${1} "$ENV{LDAP_ATTR_USER_RDN}=%login,$ENV{LDAP_ATTR_GROUP_RDN}=$ENV{LDAP_ATTR_GROUP_USERS},$ENV{LDAP_ATTR_DOMAIN_RDN}=%domain,$ENV{LDAP_BASEDN}";#' config.inc.php
 
         # Use 'md5crypt' instead of 'ssha', because SSHA requires PHP module
-        # 'mhash' which may be unavailable on all supported distros.
+        # 'mhash' which may be unavailable on some supported distros.
         perl -pi -e 's#(.*password_ldap_encodage.*=).*#${1} "md5crypt";#' config.inc.php
 
         perl -pi -e 's#(.*password_ldap_pwattr.*=).*#${1} "userPassword";#' config.inc.php
