@@ -16,7 +16,7 @@ iRedMail-0.7.4:
         Thanks cetex <oskar @cetex.se>.
     * Package update:
         + phpLDAPadmin -> 1.2.2
-        + Roundcube webmail -> 0.6.0
+        + Roundcube webmail -> 0.7.0
         + phpMyAdmin -> 3.4.8
 
 iRedMail-0.7.3:
