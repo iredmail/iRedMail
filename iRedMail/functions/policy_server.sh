@@ -25,7 +25,7 @@ policy_server_config()
     if [ X"${DISTRO_CODENAME}" != X"oneiric" ]; then
         . ${FUNCTIONS_DIR}/policyd.sh
 
-        ECHO_INFO "Configure Policyd (postfix policy server, version 1.x)."
+        ECHO_INFO "Configure Policyd (postfix policy server, version 1.8)."
         check_status_before_run policyd_user
         check_status_before_run policyd_config
     else

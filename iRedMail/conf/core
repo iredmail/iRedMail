@@ -112,7 +112,7 @@ check_env()
         grep '^#EOF$' ${CONFIG_FILE} >/dev/null
 
         if [ X"$?" == X"0" ]; then
-            echo -e "\tFound."
+            echo -e " [FOUND]"
             ECHO_QUESTION -n "Use it for mail server setting? [y|N]"
             read ANSWER
 

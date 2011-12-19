@@ -36,8 +36,6 @@ pla_install()
     cat > ${HTTPD_CONF_DIR}/phpldapadmin.conf <<EOF
 ${CONF_MSG}
 # Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
-#Alias /phpldapadmin "${PLA_HTTPD_ROOT_SYMBOL_LINK}/"
-#Alias /ldap "${PLA_HTTPD_ROOT_SYMBOL_LINK}/"
 <Directory "${PLA_HTTPD_ROOT_SYMBOL_LINK}/">
     Options -Indexes
 </Directory>

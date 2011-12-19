@@ -88,12 +88,6 @@ iredadmin_config()
     perl -pi -e 's#(</VirtualHost>)#Alias /iredadmin/static "$ENV{HTTPD_SERVERROOT}/iredadmin/static/"\n${1}#' ${HTTPD_SSL_CONF}
 
     cat > ${HTTPD_CONF_DIR}/iredadmin.conf <<EOF
-#
-# Note: Uncomment below two lines if you want to make iRedAdmin accessable via HTTP.
-#
-#WSGIScriptAlias /iredadmin ${HTTPD_SERVERROOT}/iredadmin/iredadmin.py/
-#Alias /iredadmin/static ${HTTPD_SERVERROOT}/iredadmin/static/
-
 WSGISocketPrefix /var/run/wsgi
 WSGIDaemonProcess iredadmin user=${IREDADMIN_HTTPD_USER} threads=15
 WSGIProcessGroup ${IREDADMIN_HTTPD_GROUP}

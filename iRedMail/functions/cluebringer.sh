@@ -138,7 +138,7 @@ $(cat ${tmp_sql})
 -- DELETE FROM policy_group_members WHERE Member IN ('@example.com', '@example.org', '10.0.0.0/8');
 
 -- Enable greylisting on all inbound emails by default.
-INSERT INTO `greylisting` (`PolicyID`, `Name`, `UseGreylisting`, `GreylistPeriod`, `Track`, `GreylistAuthValidity`, `GreylistUnAuthValidity`, `UseAutoWhitelist`, `AutoWhitelistPeriod`, `AutoWhitelistCount`, `AutoWhitelistPercentage`, `UseAutoBlacklist`, `AutoBlacklistPeriod`, `AutoBlacklistCount`, `AutoBlacklistPercentage`, `Comment`, `Disabled`) VALUES (1, 'Greylisting Inbound Emails', 1, 240, 'SenderIP:/24', 604800, 86400, 1, 604800, 100, 90, 1, 604800, 100, 20, '', 0);
+INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, GreylistAuthValidity, GreylistUnAuthValidity, UseAutoWhitelist, AutoWhitelistPeriod, AutoWhitelistCount, AutoWhitelistPercentage, UseAutoBlacklist, AutoBlacklistPeriod, AutoBlacklistCount, AutoBlacklistPercentage, Comment, Disabled) VALUES (1, 'Greylisting Inbound Emails', 1, 240, 'SenderIP:/24', 604800, 86400, 1, 604800, 100, 90, 1, 604800, 100, 20, '', 0);
 EOF
 
     rm -rf ${tmp_sql} 2>/dev/null
@@ -235,15 +235,20 @@ cluebringer_webui_config()
 
     cat > ${CLUEBRINGER_HTTPD_CONF} <<EOF
 ${CONF_MSG}
+#
+# SECURITY WARNING:
+#
+# Since libapache2-mod-auth-mysql doesn't support advance SQL query, both
+# global admins and normal domain admins are able to login to this webui.
+
 # Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
-#Alias /cluebringer ${CLUEBRINGER_HTTPD_ROOT}/
 
 <Directory ${CLUEBRINGER_HTTPD_ROOT}/>
     DirectoryIndex index.php
     Options ExecCGI
     Order allow,deny
-    allow from all
-    #allow from 127.0.0.1
+    allow from 127.0.0.1
+    #allow from all
 
     AuthName "Authorization Required"
 EOF

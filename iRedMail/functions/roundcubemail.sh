@@ -369,7 +369,7 @@ rcm_plugin_password()
     cp config.inc.php.dist config.inc.php
 
     perl -pi -e 's#(.*password_confirm_current.*=).*#${1} true;#' config.inc.php
-    perl -pi -e 's#(.*password_minimum_length.*=).*#${1} 6;#' config.inc.php
+    perl -pi -e 's#(.*password_minimum_length.*=).*#${1} 8;#' config.inc.php
     perl -pi -e 's#(.*password_require_nonalpha.*=).*#${1} false;#' config.inc.php
 
     if [ X"${BACKEND}" == X"MySQL" ]; then

@@ -27,7 +27,6 @@ phpmyadmin_install()
     cat > ${HTTPD_CONF_DIR}/phpmyadmin.conf <<EOF
 ${CONF_MSG}
 # Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
-#Alias /phpmyadmin "${PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK}"
 <Directory "${PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK}/">
     Options -Indexes
 </Directory>
