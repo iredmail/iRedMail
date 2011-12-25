@@ -1,4 +1,4 @@
--- MySQL template for Amavisd. Extracted from Amavisd docs/README.sql-mysql.
+-- MySQL template for Amavisd-new-2.7.0. Extracted from Amavisd docs/README.sql-mysql.
 -- Used by @lookup_sql_dsn and @storage_sql_dsn
 
 -- local users
@@ -33,27 +33,30 @@ CREATE TABLE policy (
                                     -- 'id' this is the _only_ required field
   policy_name      varchar(32),     -- not used by amavisd-new, a comment
 
-  virus_lover          char(1) default NULL,     -- Y/N
-  spam_lover           char(1) default NULL,     -- Y/N
-  banned_files_lover   char(1) default NULL,     -- Y/N
-  bad_header_lover     char(1) default NULL,     -- Y/N
+  virus_lover           char(1) default NULL,     -- Y/N
+  spam_lover            char(1) default NULL,     -- Y/N
+  unchecked_lovers_maps char(1) default NULL,     -- Y/N
+  banned_files_lover    char(1) default NULL,     -- Y/N
+  bad_header_lover      char(1) default NULL,     -- Y/N
 
-  bypass_virus_checks  char(1) default NULL,     -- Y/N
-  bypass_spam_checks   char(1) default NULL,     -- Y/N
-  bypass_banned_checks char(1) default NULL,     -- Y/N
-  bypass_header_checks char(1) default NULL,     -- Y/N
+  bypass_virus_checks   char(1) default NULL,     -- Y/N
+  bypass_spam_checks    char(1) default NULL,     -- Y/N
+  bypass_banned_checks  char(1) default NULL,     -- Y/N
+  bypass_header_checks  char(1) default NULL,     -- Y/N
 
-  spam_modifies_subj   char(1) default NULL,     -- Y/N
+  spam_modifies_subj    char(1) default NULL,     -- Y/N
 
   virus_quarantine_to      varchar(64) default NULL,
   spam_quarantine_to       varchar(64) default NULL,
   banned_quarantine_to     varchar(64) default NULL,
+  unchecked_quarantine_to  varchar(64) default NULL,
   bad_header_quarantine_to varchar(64) default NULL,
   clean_quarantine_to      varchar(64) default NULL,
-  other_quarantine_to      varchar(64) default NULL,
+  archive_quarantine_to    varchar(64) default NULL,
 
   spam_tag_level  float default NULL, -- higher score inserts spam info headers
   spam_tag2_level float default NULL, -- inserts 'declared spam' header fields
+  spam_tag3_level float default NULL, -- inserts 'blatant spam' header fields
   spam_kill_level float default NULL, -- higher score triggers evasive actions
                                       -- e.g. reject/drop, quarantine, ...
                                      -- (subject to final_spam_destiny setting)
@@ -75,11 +78,15 @@ CREATE TABLE policy (
   spam_admin          varchar(64) default NULL,
   spam_subject_tag    varchar(64) default NULL,
   spam_subject_tag2   varchar(64) default NULL,
+  spam_subject_tag3   varchar(64) default NULL,
   message_size_limit  integer     default NULL, -- max size in bytes, 0 disable
-  banned_rulenames    varchar(64) default NULL  -- comma-separated list of ...
+  banned_rulenames    varchar(64) default NULL, -- comma-separated list of ...
         -- names mapped through %banned_rules to actual banned_filename tables
+  disclaimer_options  varchar(64) default NULL,
+  forward_method      varchar(64) default NULL,
+  sa_userconf         varchar(64) default NULL,
+  sa_username         varchar(64) default NULL
 );
-
 
 
 -- R/W part of the dataset (optional)
@@ -130,15 +137,15 @@ CREATE INDEX maddr_idx_domain ON maddr (domain);
 --   time_iso TIMESTAMP NOT NULL DEFAULT 0,
 --   but the following MUST then be set in amavisd.conf: $timestamp_fmt_mysql=1
 CREATE TABLE msgs (
-  partition_tag integer    DEFAULT 0,   -- see $partition_tag
+  partition_tag integer     DEFAULT 0,   -- see $partition_tag
   mail_id     varbinary(16) NOT NULL,    -- long-term unique mail id, dflt 12 ch
   secret_id   varbinary(16) DEFAULT '',  -- authorizes release of mail_id, 12 ch
   am_id       varchar(20)   NOT NULL,    -- id used in the log
   time_num    integer unsigned NOT NULL, -- rx_time: seconds since Unix epoch
   time_iso    char(16)      NOT NULL,    -- rx_time: ISO8601 UTC ascii time
   sid         bigint unsigned NOT NULL,  -- sender: maddr.id
-  policy      varchar(255) DEFAULT '',   -- policy bank path (like macro %p)
-  client_addr varchar(255) DEFAULT '',   -- SMTP client IP address (IPv4 or v6)
+  policy      varchar(255)  DEFAULT '',  -- policy bank path (like macro %p)
+  client_addr varchar(255)  DEFAULT '',  -- SMTP client IP address (IPv4 or v6)
   size        integer unsigned NOT NULL, -- message size in bytes
   originating char(1) DEFAULT ' ' NOT NULL,  -- sender from inside or auth'd
   content     char(1),                   -- content type: V/B/U/S/Y/M/H/O/T/C
@@ -190,10 +197,10 @@ CREATE TABLE msgrcpt (
   wl         char(1)  DEFAULT ' ',       -- sender whitelisted by this recip
   bspam_level float,                     -- per-recipient (total) spam level
   smtp_resp  varchar(255)  DEFAULT '',   -- SMTP response given to MTA
-  KEY (mail_id),
-  KEY (rid)
+  PRIMARY KEY (partition_tag,mail_id,rseqnum)
+-- FOREIGN KEY (rid)     REFERENCES maddr(id)     ON DELETE RESTRICT,
+-- FOREIGN KEY (mail_id) REFERENCES msgs(mail_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
 CREATE INDEX msgrcpt_idx_mail_id  ON msgrcpt (mail_id);
 CREATE INDEX msgrcpt_idx_rid      ON msgrcpt (rid);
 
@@ -219,3 +226,4 @@ CREATE INDEX quar_idx_mail_id   ON quarantine (mail_id);
 --   'p' => pending (a status given to messages when the admin received the
 --                   request but not yet released; targeted to banned parts)
 --   'D' => marked for deletion; a cleanup script may delete it
+

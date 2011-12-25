@@ -38,12 +38,8 @@ export AMAVISD_DB_SQL_TMPL="${SAMPLE_DIR}/amavisd.mysql"
 export BACKUP_DATABASES="${BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
 
 # Altermime.
+export ALTERMIME_BIN='/usr/bin/altermime'
 export DISCLAIMER_DIR="${POSTFIX_ROOTDIR}/disclaimer"
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
-    export ALTERMIME_BIN='/usr/local/bin/altermime'
-else
-    export ALTERMIME_BIN='/usr/bin/altermime'
-fi
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd'
@@ -75,6 +71,12 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
     export AMAVISD_VIRUSMAILS_DIR='/var/spool/amavis/virusmails'
 
+    # Override default Amavisd MySQL template file
+    # openSUSE-12.1 ships Amavisd-new-2.7.0
+    if [ X"${DISTRO_VERSION}" != X"11.3" -a X"${DISTRO_VERSION}" != X"11.4" ]; then
+        export AMAVISD_DB_SQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
+    fi
+
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd-new'
     export AMAVISD_CONF_DIR='/etc/amavis/conf.d'
@@ -95,6 +97,9 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export AMAVISD_RC_SCRIPT_NAME='amavisd'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
     export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
+
+    # Override location of command 'altermime'
+    export ALTERMIME_BIN='/usr/local/bin/altermime'
 else
     :
 fi
