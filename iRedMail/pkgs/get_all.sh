@@ -43,7 +43,7 @@ else
     # -c: Continue getting a partially-downloaded file.
     # -q: Turn off Wget's output.
     # --referer: Include 'Referer: url' header in HTTP request.
-    FETCH_CMD="wget -cq --referer ${PROG_NAME}-${PROG_VERSION}-${DISTRO}-X${DISTRO_VERSION}-${ARCH}"
+    FETCH_CMD="wget -cq"
 fi
 
 #
