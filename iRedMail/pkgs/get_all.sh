@@ -176,6 +176,11 @@ fetch_misc()
     # Fetch all misc packages.
     cd ${MISC_DIR}
 
+    # Help track basic information, used to help iRedMail team understand
+    # which Linux/BSD distribution we should take more care of.
+    # iRedMail version number, OS distribution, release version, code name.
+    ${FETCH_CMD} "http://iredmail.org/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
+
     misc_total=$(( $(echo ${MISCLIST} | wc -w | awk '{print $1}') ))
     misc_count=1
 
