@@ -1,4 +1,6 @@
 iRedMail-0.7.4:
+    * Enable two sample dovecot sieve filters: Move spam to Junk, Vacation.
+      Both are disabled by default.
     * Store realtime mailbox quota in separate SQL table in MySQL backend.
     * It now works on Ubuntu 11.10, openSUSE 12.1.
     * SPF verification is now enabled by default.
