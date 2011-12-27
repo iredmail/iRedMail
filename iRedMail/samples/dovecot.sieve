@@ -33,6 +33,13 @@ require ["fileinto", "vacation"];
 # --------------- Global sieve rules --------------
 # -------------------------------------------------
 
+# Sample rule of vacation message, disabled by default.
+# rule:[Vacation]
+if false # true
+{
+    vacation :days 1 "I'm on vacation.";
+}
+
 # rule:[Move Spam to Junk Folder]
 if false # header :is "X-Spam-Flag" "YES"
 {
@@ -40,9 +47,3 @@ if false # header :is "X-Spam-Flag" "YES"
     stop;
 }
 
-# Sample rule of vacation message, disabled by default.
-# rule:[Vacation]
-if false # true
-{
-    vacation :days 1 "I'm on vacation.";
-}
