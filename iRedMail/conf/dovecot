@@ -41,8 +41,12 @@ export DOVECOT_IMAP_PLUGINS='quota imap_quota autocreate'
 # Default quota type: maildir, dict:user::proxy::quotadict (quotadict).
 export DOVECOT_QUOTA_TYPE='dict:user::proxy::quotadict'
 
+# Do not starts with dot (.).
+export SIEVE_RULE_FILENAME='dovecot.sieve'
+export DOVECOT_GLOBAL_SIEVE_FILE="/etc/dovecot/${SIEVE_RULE_FILENAME}"
+
 # A symbol link to global sieve rule file.
-export DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL='/etc/dovecot/dovecot.sieve'
+export DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL="${SIEVE_DIR}/${SIEVE_RULE_FILENAME}"
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     export DOVECOT_VERSION='2'
@@ -56,7 +60,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
         export DOVECOT_VERSION='1.2'
         export DOVECOT_CONF='/etc/dovecot.conf'
         export DOVECOT_LDAP_CONF='/etc/dovecot-ldap.conf'
-        export DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL='/etc/dovecot.sieve'
+        export DOVECOT_GLOBAL_SIEVE_FILE="/etc/${SIEVE_RULE_FILENAME}"
         export DOVECOT_MYSQL_CONF='/etc/dovecot-mysql.conf'
         export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot-used-quota.conf'
         export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot-share-folder.conf'
@@ -112,6 +116,7 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export DOVECOT_MYSQL_CONF='/usr/local/etc/dovecot-mysql.conf'
     export DOVECOT_REALTIME_QUOTA_CONF='/usr/local/etc/dovecot-used-quota.conf'
     export DOVECOT_SHARE_FOLDER_CONF='/usr/local/etc/dovecot-share-folder.conf'
+    export DOVECOT_GLOBAL_SIEVE_FILE="/usr/local/etc/${SIEVE_RULE_FILENAME}"
     export DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL='/usr/local/etc/dovecot.sieve'
     export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
 fi
@@ -134,10 +139,6 @@ export DOVECOT_AUTH_SOCKET_PATH='/var/run/dovecot/auth-master'
 
 export DOVECOT_BIN='/usr/sbin/dovecot'
 export DOVECOT_SIEVEC='/usr/libexec/dovecot/sievec'
-
-# Do not starts with dot (.).
-export SIEVE_RULE_FILENAME='dovecot.sieve'
-export GLOBAL_SIEVE_FILE="${SIEVE_DIR}/${SIEVE_RULE_FILENAME}"
 
 # Dovecot plugin: Expire.
 # NOTE: dict process currently runs as root, so this file will be owned as root.

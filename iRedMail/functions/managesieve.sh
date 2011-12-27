@@ -95,7 +95,7 @@ protocol managesieve {
 plugin {
     # If the user has no personal active script (i.e. if the file 
     # indicated in sieve= does not exist), use this one:
-    #sieve_global_path = ${GLOBAL_SIEVE_FILE}
+    #sieve_global_path = ${DOVECOT_GLOBAL_SIEVE_FILE}
 
     # The include extension fetches the :global scripts from this 
     # directory.
@@ -107,12 +107,12 @@ plugin {
     # (with the proper .sieve extension) are executed. The order of
     # execution is determined by the file names, using a normal 8bit
     # per-character comparison.
-    #sieve_before = ${GLOBAL_SIEVE_FILE}
+    #sieve_before = ${DOVECOT_GLOBAL_SIEVE_FILE}
 
     # Identical to sieve_before, only the specified scripts are
     # executed after the user's script (only when keep is still in
     # effect!).
-    #sieve_after = ${GLOBAL_SIEVE_FILE}
+    #sieve_after = ${DOVECOT_GLOBAL_SIEVE_FILE}
 
     # Location of the active script. When ManageSieve is used this is actually
     # a symlink pointing to the active script in the sieve storage directory.

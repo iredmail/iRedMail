@@ -98,7 +98,7 @@ EOF
     # Sieve.
     perl -pi -e 's#PH_SIEVE_DIR#$ENV{SIEVE_DIR}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_SIEVE_RULE_FILENAME#$ENV{SIEVE_RULE_FILENAME}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_GLOBAL_SIEVE_FILE#$ENV{GLOBAL_SIEVE_FILE}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_GLOBAL_SIEVE_FILE#$ENV{DOVECOT_GLOBAL_SIEVE_FILE}#' ${DOVECOT_CONF}
 
     # SSL.
     perl -pi -e 's#PH_ENABLE_SSL#yes#' ${DOVECOT_CONF}
@@ -297,10 +297,10 @@ EOF
     fi
     # ---- IMAP shared folder ----
 
-    ECHO_DEBUG "Copy sample sieve global filter rule file: ${GLOBAL_SIEVE_FILE}.sample."
-    cp -f ${SAMPLE_DIR}/dovecot.sieve ${GLOBAL_SIEVE_FILE}.sample
-    chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${GLOBAL_SIEVE_FILE}.sample
-    chmod 0500 ${GLOBAL_SIEVE_FILE}.sample
+    ECHO_DEBUG "Copy sample sieve global filter rule file: ${DOVECOT_GLOBAL_SIEVE_FILE}.sample."
+    cp -f ${SAMPLE_DIR}/dovecot.sieve ${DOVECOT_GLOBAL_SIEVE_FILE}.sample
+    chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOVECOT_GLOBAL_SIEVE_FILE}.sample
+    chmod 0500 ${DOVECOT_GLOBAL_SIEVE_FILE}.sample
 
     ECHO_DEBUG "Create dovecot log file: ${DOVECOT_LOG_FILE}, ${SIEVE_LOG_FILE}."
     touch ${DOVECOT_LOG_FILE} ${SIEVE_LOG_FILE}
@@ -396,7 +396,7 @@ Dovecot:
         - ${DOVECOT_LOG_FILE}
         - ${SIEVE_LOG_FILE}
     * See also:
-        - ${GLOBAL_SIEVE_FILE}
+        - ${DOVECOT_GLOBAL_SIEVE_FILE}
 
 EOF
 

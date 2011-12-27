@@ -290,7 +290,7 @@ protocol lda {
     postmaster_address = root
     auth_socket_path = ${DOVECOT_AUTH_SOCKET_PATH}
     mail_plugins = ${DOVECOT_LDA_PLUGINS}
-    sieve_global_path = ${GLOBAL_SIEVE_FILE}
+    sieve_global_path = ${DOVECOT_GLOBAL_SIEVE_FILE}
     log_path = ${SIEVE_LOG_FILE}
 }
 
@@ -566,14 +566,16 @@ EOF
     fi
     # ---- IMAP shared folder ----
 
-    ECHO_DEBUG "Copy sample sieve global filter rule file: ${GLOBAL_SIEVE_FILE}.sample."
-    cp -f ${SAMPLE_DIR}/dovecot.sieve ${GLOBAL_SIEVE_FILE}
-    chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${GLOBAL_SIEVE_FILE}
-    chmod 0500 ${GLOBAL_SIEVE_FILE}
+    ECHO_DEBUG "Copy sample sieve global filter rule file: ${DOVECOT_GLOBAL_SIEVE_FILE}.sample."
+    cp -f ${SAMPLE_DIR}/dovecot.sieve ${DOVECOT_GLOBAL_SIEVE_FILE}
+    chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOVECOT_GLOBAL_SIEVE_FILE}
+    chmod 0500 ${DOVECOT_GLOBAL_SIEVE_FILE}
 
     # Create symbol link of global sieve rule.
-    rm -f ${DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL} &>/dev/null
-    ln -s ${GLOBAL_SIEVE_FILE} ${DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL}
+    if [ X"${DOVECOT_GLOBAL_SIEVE_FILE}" != X"${DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL}" ]; then
+        rm -f ${DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL} &>/dev/null
+        ln -s ${DOVECOT_GLOBAL_SIEVE_FILE} ${DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL}
+    fi
 
     ECHO_DEBUG "Create dovecot log file: ${DOVECOT_LOG_FILE}, ${SIEVE_LOG_FILE}."
     touch ${DOVECOT_LOG_FILE} ${SIEVE_LOG_FILE}
@@ -673,7 +675,7 @@ Dovecot:
         - ${DOVECOT_LOG_FILE}
         - ${SIEVE_LOG_FILE}
     * See also:
-        - ${GLOBAL_SIEVE_FILE}
+        - ${DOVECOT_GLOBAL_SIEVE_FILE}
 
 EOF
 
