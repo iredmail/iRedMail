@@ -569,7 +569,7 @@ EOF
     ECHO_DEBUG "Copy sample sieve global filter rule file: ${DOVECOT_GLOBAL_SIEVE_FILE}.sample."
     cp -f ${SAMPLE_DIR}/dovecot.sieve ${DOVECOT_GLOBAL_SIEVE_FILE}
     chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOVECOT_GLOBAL_SIEVE_FILE}
-    chmod 0500 ${DOVECOT_GLOBAL_SIEVE_FILE}
+    chmod 0555 ${DOVECOT_GLOBAL_SIEVE_FILE}
 
     # Create symbol link of global sieve rule.
     if [ X"${DOVECOT_GLOBAL_SIEVE_FILE}" != X"${DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL}" ]; then
