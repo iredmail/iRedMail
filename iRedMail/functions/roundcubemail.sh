@@ -354,7 +354,7 @@ rcm_plugin_managesieve()
     perl -pi -e 's#(.*managesieve_port.*=).*#${1} $ENV{'MANAGESIEVE_PORT'};#' config.inc.php
     perl -pi -e 's#(.*managesieve_host.*=).*#${1} "$ENV{'MANAGESIEVE_BINDADDR'}";#' config.inc.php
     perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} false;#' config.inc.php
-    perl -pi -e 's#(.*managesieve_default.*=).*#${1} "$ENV{DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL}";#' config.inc.php
+    perl -pi -e 's#(.*managesieve_default.*=).*#${1} "$ENV{DOVECOT_GLOBAL_SIEVE_FILE}";#' config.inc.php
 
     echo 'export status_rcm_plugin_managesieve="DONE"' >> ${STATUS_FILE}
 }
@@ -364,6 +364,10 @@ rcm_plugin_password()
     ECHO_DEBUG "Enable and config plugin: password."
     cd ${RCM_HTTPD_ROOT}/config/ && \
     perl -pi -e 's#(.*rcmail_config.*plugins.*=.*array\()(.*\).*)#${1}"password",${2}#' main.inc.php
+
+    # Patch to use 'SSHA' with PHP-5.3.
+    cd ${RCM_HTTPD_ROOT}/ && \
+        patch -p0 < ${PATCH_DIR}/roundcube/ldap_simple.patch >/dev/null
 
     cd ${RCM_HTTPD_ROOT}/plugins/password/ && \
     cp config.inc.php.dist config.inc.php
@@ -376,7 +380,7 @@ rcm_plugin_password()
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
         perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{'PHP_CONN_TYPE'}://$ENV{'RCM_DB_USER'}:$ENV{'RCM_DB_PASSWD'}\@$ENV{'MYSQL_SERVER'}/$ENV{'VMAIL_DB'}";#' config.inc.php
         perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE $ENV{'VMAIL_DB'}.mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u LIMIT 1";#' config.inc.php
-        perl -pi -e 's#(.*password_hash_algorithm.*=).*#${1} "md5crypt";#' config.inc.php
+        perl -pi -e 's#(.*password_hash_algorithm.*=).*#${1} "ssha";#' config.inc.php
         perl -pi -e 's#(.*password_hash_base64.*=).*#${1} false;#' config.inc.php
 
     elif [ X"${BACKEND}" == X"OpenLDAP" ]; then
