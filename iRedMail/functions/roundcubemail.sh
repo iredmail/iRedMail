@@ -348,7 +348,7 @@ rcm_plugin_managesieve()
     cd ${RCM_HTTPD_ROOT}/config/ && \
     perl -pi -e 's#(.*rcmail_config.*plugins.*=.*array\()(.*)#${1}"managesieve",${2}#' main.inc.php
 
-    export MANAGESIEVE_BINDADDR MANAGESIEVE_PORT DOVECOT_GLOBAL_SIEVE_FILE_SYMBOL
+    export MANAGESIEVE_BINDADDR MANAGESIEVE_PORT
     cd ${RCM_HTTPD_ROOT}/plugins/managesieve/ && \
     cp config.inc.php.dist config.inc.php && \
     perl -pi -e 's#(.*managesieve_port.*=).*#${1} $ENV{'MANAGESIEVE_PORT'};#' config.inc.php
@@ -365,10 +365,6 @@ rcm_plugin_password()
     cd ${RCM_HTTPD_ROOT}/config/ && \
     perl -pi -e 's#(.*rcmail_config.*plugins.*=.*array\()(.*\).*)#${1}"password",${2}#' main.inc.php
 
-    # Patch to use 'SSHA' with PHP-5.3.
-    cd ${RCM_HTTPD_ROOT}/ && \
-        patch -p0 < ${PATCH_DIR}/roundcube/ldap_simple.patch >/dev/null
-
     cd ${RCM_HTTPD_ROOT}/plugins/password/ && \
     cp config.inc.php.dist config.inc.php
 
@@ -380,7 +376,7 @@ rcm_plugin_password()
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
         perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{'PHP_CONN_TYPE'}://$ENV{'RCM_DB_USER'}:$ENV{'RCM_DB_PASSWD'}\@$ENV{'MYSQL_SERVER'}/$ENV{'VMAIL_DB'}";#' config.inc.php
         perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE $ENV{'VMAIL_DB'}.mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u LIMIT 1";#' config.inc.php
-        perl -pi -e 's#(.*password_hash_algorithm.*=).*#${1} "ssha";#' config.inc.php
+        perl -pi -e 's#(.*password_hash_algorithm.*=).*#${1} "md5crypt";#' config.inc.php
         perl -pi -e 's#(.*password_hash_base64.*=).*#${1} false;#' config.inc.php
 
     elif [ X"${BACKEND}" == X"OpenLDAP" ]; then
@@ -398,7 +394,7 @@ rcm_plugin_password()
 
         # Use 'md5crypt' instead of 'ssha', because SSHA requires PHP module
         # 'mhash' which may be unavailable on some supported distros.
-        perl -pi -e 's#(.*password_ldap_encodage.*=).*#${1} "md5crypt";#' config.inc.php
+        perl -pi -e 's#(.*password_ldap_encodage.*=).*#${1} "ssha";#' config.inc.php
 
         perl -pi -e 's#(.*password_ldap_pwattr.*=).*#${1} "userPassword";#' config.inc.php
         perl -pi -e 's#(.*password_ldap_force_replace.*=).*#${1} false;#' config.inc.php
