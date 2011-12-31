@@ -29,8 +29,9 @@ rcm_install()
     cd ${RCM_HTTPD_ROOT}/config/
     cp -f db.inc.php.dist db.inc.php
     cp -f main.inc.php.dist main.inc.php
-    chown ${HTTPD_USER}:${HTTPD_GROUP} db.inc.php main.inc.php
-    chmod 0640 db.inc.php main.inc.php
+    cp -f ${SAMPLE_DIR}/dovecot.sieve ${RCM_SIEVE_SAMPLE_FILE}
+    chown ${HTTPD_USER}:${HTTPD_GROUP} db.inc.php main.inc.php ${RCM_SIEVE_SAMPLE_FILE}
+    chmod 0640 db.inc.php main.inc.php ${RCM_SIEVE_SAMPLE_FILE}
 
     echo 'export status_rcm_install="DONE"' >> ${STATUS_FILE}
 }
@@ -348,13 +349,13 @@ rcm_plugin_managesieve()
     cd ${RCM_HTTPD_ROOT}/config/ && \
     perl -pi -e 's#(.*rcmail_config.*plugins.*=.*array\()(.*)#${1}"managesieve",${2}#' main.inc.php
 
-    export MANAGESIEVE_BINDADDR MANAGESIEVE_PORT
+    export MANAGESIEVE_BINDADDR MANAGESIEVE_PORT RCM_SIEVE_SAMPLE_FILE
     cd ${RCM_HTTPD_ROOT}/plugins/managesieve/ && \
     cp config.inc.php.dist config.inc.php && \
-    perl -pi -e 's#(.*managesieve_port.*=).*#${1} $ENV{'MANAGESIEVE_PORT'};#' config.inc.php
-    perl -pi -e 's#(.*managesieve_host.*=).*#${1} "$ENV{'MANAGESIEVE_BINDADDR'}";#' config.inc.php
+    perl -pi -e 's#(.*managesieve_port.*=).*#${1} $ENV{MANAGESIEVE_PORT};#' config.inc.php
+    perl -pi -e 's#(.*managesieve_host.*=).*#${1} "$ENV{MANAGESIEVE_BINDADDR}";#' config.inc.php
     perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} false;#' config.inc.php
-    perl -pi -e 's#(.*managesieve_default.*=).*#${1} "$ENV{DOVECOT_GLOBAL_SIEVE_FILE}";#' config.inc.php
+    perl -pi -e 's#(.*managesieve_default.*=).*#${1} "$ENV{RCM_SIEVE_SAMPLE_FILE}";#' config.inc.php
 
     echo 'export status_rcm_plugin_managesieve="DONE"' >> ${STATUS_FILE}
 }
@@ -394,7 +395,7 @@ rcm_plugin_password()
 
         # Use 'md5crypt' instead of 'ssha', because SSHA requires PHP module
         # 'mhash' which may be unavailable on some supported distros.
-        perl -pi -e 's#(.*password_ldap_encodage.*=).*#${1} "ssha";#' config.inc.php
+        perl -pi -e 's#(.*password_ldap_encodage.*=).*#${1} "md5crypt";#' config.inc.php
 
         perl -pi -e 's#(.*password_ldap_pwattr.*=).*#${1} "userPassword";#' config.inc.php
         perl -pi -e 's#(.*password_ldap_force_replace.*=).*#${1} false;#' config.inc.php

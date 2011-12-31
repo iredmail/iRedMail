@@ -35,6 +35,9 @@ else
     export RCM_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/roundcubemail"
 fi
 
+# Sample sieve filter template
+export RCM_SIEVE_SAMPLE_FILE="${RCM_HTTPD_ROOT}/config/dovecot.sieve"
+
 # Syslog log file.
 export RCM_LOGFILE="${MAILLOG}"
 
