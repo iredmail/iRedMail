@@ -369,9 +369,14 @@ rcm_plugin_password()
     cd ${RCM_HTTPD_ROOT}/plugins/password/ && \
     cp config.inc.php.dist config.inc.php
 
+    # Determine whether current password is required to change password
     perl -pi -e 's#(.*password_confirm_current.*=).*#${1} true;#' config.inc.php
+
+    # Require the new password to be a certain length
     perl -pi -e 's#(.*password_minimum_length.*=).*#${1} 8;#' config.inc.php
-    perl -pi -e 's#(.*password_require_nonalpha.*=).*#${1} false;#' config.inc.php
+
+    # Require the new password to contain a letter and punctuation character
+    perl -pi -e 's#(.*password_require_nonalpha.*=).*#${1} true;#' config.inc.php
 
     if [ X"${BACKEND}" == X"MySQL" ]; then
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
