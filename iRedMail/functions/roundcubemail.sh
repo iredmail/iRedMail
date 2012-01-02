@@ -29,7 +29,7 @@ rcm_install()
     cd ${RCM_HTTPD_ROOT}/config/
     cp -f db.inc.php.dist db.inc.php
     cp -f main.inc.php.dist main.inc.php
-    cp -f ${SAMPLE_DIR}/dovecot.sieve ${RCM_SIEVE_SAMPLE_FILE}
+    cp -f ${SAMPLE_DIR}/dovecot.sieve.roundcube ${RCM_SIEVE_SAMPLE_FILE}
     chown ${HTTPD_USER}:${HTTPD_GROUP} db.inc.php main.inc.php ${RCM_SIEVE_SAMPLE_FILE}
     chmod 0640 db.inc.php main.inc.php ${RCM_SIEVE_SAMPLE_FILE}
 
