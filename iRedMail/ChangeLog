@@ -5,10 +5,6 @@ iRedMail-0.7.4:
     * It now works on Ubuntu 11.10, openSUSE 12.1.
     * SPF verification is now enabled by default.
     * Add Policyd-2.0.x (code name "cluebringer") support on Ubuntu 11.10.
-    * LDA (Dovecot deliver) will move SPAM to Junk folder by default.
-    * Add missing INDEXes for Amavisd database: msgs.mail_id, (msgs.content,
-      msgs.time_num), quarantine.mail_id.
-      Thanks rjnena <rjnena@gmail>, David <dcharbonnier@gmail>.
     * Fixed:
       + Apache daemon user doesn't have permission to read Apache log files in
         Awstats's cron job.
@@ -16,6 +12,9 @@ iRedMail-0.7.4:
         OpenLDAP backend only. Thanks tmihalicek <tomislav.mihalicek @gmail>.
       + Incorrect per-user sieve_dir setting in Dovecot.
         Thanks cetex <oskar @cetex.se>.
+      + Add missing INDEXes for Amavisd database: msgs.mail_id, (msgs.content,
+        msgs.time_num), quarantine.mail_id.
+        Thanks rjnena <rjnena@gmail>, David <dcharbonnier@gmail>.
     * Package update:
         + phpLDAPadmin -> 1.2.2
         + Roundcube webmail -> 0.7.0
