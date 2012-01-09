@@ -179,7 +179,9 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         # Ubuntu
         export DISTRO='UBUNTU'
 
-        # Code name:
+        # Ubuntu version number. e.g. 11.10.
+
+        # Ubuntu version number and code name:
         #   - 8.04: hardy
         #   - 8.10: intrepid
         #   - 9.04: jaunty
@@ -188,7 +190,9 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         #   - 10.10: maverick
         #   - 11.04: natty
         #   - 11.10: oneiric
-        export DISTRO_CODENAME="$( grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}' )"
+        export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
+        export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
+
         # Mark 10.10 (maverick) as 10.04 (lucid).
         if [ X"${DISTRO_CODENAME}" == X"maverick" ]; then
             export DISTRO_CODENAME='lucid'
