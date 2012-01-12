@@ -73,9 +73,9 @@ iredadmin_config()
     # Copy sample configure file.
     cd ${IREDADMIN_HTTPD_ROOT}/
 
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         cp settings.ini.ldap.sample settings.ini
-    elif [ X"${BACKEND}" == X"MySQL" ]; then
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
         cp settings.ini.mysql.sample settings.ini
     fi
 
@@ -114,7 +114,7 @@ FLUSH PRIVILEGES;
 EOF
 
     # Import addition tables.
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 USE ${IREDADMIN_DB_NAME};
 SOURCE ${SAMPLE_DIR}/used_quota.sql;
@@ -144,7 +144,7 @@ EOF
         settings.ini
 
     # Backend related settings.
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # Change backend.
         sed -i.tmp -e "/\[general\]/,/\[/ s#\(^backend =\).*#\1 ldap#" settings.ini
 
@@ -158,7 +158,7 @@ EOF
             -e "/\[ldap\]/,/\[/ s#\(^bind_pw =\).*#\1 ${LDAP_ADMIN_PW}#" \
             settings.ini
 
-    elif [ X"${BACKEND}" == X"MySQL" ]; then
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Change backend.
         sed -i.tmp -e "/\[general\]/,/\[/ s#\(^backend =\).*#\1 mysql#" settings.ini
 

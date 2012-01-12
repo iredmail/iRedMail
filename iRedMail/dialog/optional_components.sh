@@ -25,9 +25,9 @@
 # ----------------------------------------
 export tmp_config_optional_components="${ROOTDIR}/.optional_components"
 
-if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+if [ X"${BACKEND}" == X"OPENLDAP" ]; then
     ${DIALOG} \
-    --title "Optional Components for ${BACKEND} backend" \
+    --title "Optional Components for ${BACKEND_ORIG} backend" \
     --checklist "\
 Note:
     * DKIM is recommended.
@@ -45,9 +45,9 @@ Note:
     "Fail2ban" "Ban IP with too many password failures" "on" \
     2>${tmp_config_optional_components}
 
-elif [ X"${BACKEND}" == X"MySQL" ]; then
+elif [ X"${BACKEND}" == X"MYSQL" ]; then
     ${DIALOG} \
-    --title "Optional Components for ${BACKEND} backend" \
+    --title "Optional Components for ${BACKEND_ORIG} backend" \
     --checklist "\
 Note:
     * DKIM is recommended.

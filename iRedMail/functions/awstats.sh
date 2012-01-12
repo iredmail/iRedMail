@@ -60,7 +60,7 @@ ${CONF_MSG}
 EOF
 
     ECHO_DEBUG "Setup user auth for awstats: ${AWSTATS_HTTPD_CONF}."
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # Use LDAP auth.
         cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     AuthType Basic
@@ -77,7 +77,7 @@ EOF
         [ X"${LDAP_USE_TLS}" == X"YES" ] && \
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${AWSTATS_HTTPD_CONF}
 
-    elif [ X"${BACKEND}" == X"MySQL" ]; then
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Use mod_auth_mysql.
         if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
             cat >> ${AWSTATS_HTTPD_CONF} <<EOF

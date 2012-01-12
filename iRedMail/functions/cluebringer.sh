@@ -110,9 +110,9 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_
 USE ${CLUEBRINGER_DB_NAME};
 EOF
 
-        if [ X"${BACKEND}" == X"OpenLDAP" -o X"${BACKEND}" == X"MySQL" ]; then
+        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
             gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.mysql.gz >> ${tmp_sql}
-        elif [ X"${BACKEND}" == X"PostgreSQL" ]; then
+        elif [ X"${BACKEND}" == X"PGSQL" ]; then
             gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.pgsql.gz >> ${tmp_sql}
         fi
 
@@ -254,7 +254,7 @@ ${CONF_MSG}
 EOF
 
     ECHO_DEBUG "Setup user auth for cluebringer webui: ${CLUEBRINGER_HTTPD_CONF}."
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # Use LDAP auth.
         cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthType Basic
@@ -271,7 +271,7 @@ EOF
         [ X"${LDAP_USE_TLS}" == X"YES" ] && \
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
 
-    elif [ X"${BACKEND}" == X"MySQL" ]; then
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Use mod_auth_mysql.
         if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
             cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF

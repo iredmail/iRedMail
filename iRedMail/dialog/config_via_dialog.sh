@@ -92,23 +92,33 @@ ${DIALOG} \
     --radiolist "\
 We provide two backends and the homologous webmail programs:
 
-    +----------+---------------+---------------------------+
-    | Backend  | Web Mail      | Web-based management tool |
-    +----------+---------------+---------------------------+
-    | OpenLDAP |               | iRedAdmin, phpLDAPadmin   |
-    +----------+   Roundcube   +---------------------------+
-    | MySQL    |               | iRedAdmin, phpMyAdmin     |
-    +----------+---------------+---------------------------+
+    +------------+---------------+---------------------------+
+    | Backend    | Web Mail      | Web-based management tool |
+    +------------+---------------+---------------------------+
+    | OpenLDAP   |               | iRedAdmin, phpLDAPadmin   |
+    +------------+               +---------------------------+
+    | MySQL      | Roundcube     | iRedAdmin, phpMyAdmin     |
+    +------------+               +---------------------------+
+    | PostgreSQL |               | phpPGadmin                |
+    +------------+---------------+---------------------------+
 
 TIP:
-    * Use 'Space' key to select item.
+    * Use SPACE key to select item.
 
-" 20 76 2 \
-    "OpenLDAP" "An open source implementation of LDAP protocol. " "on" \
-    "MySQL" "The world's most popular open source database." "off" \
+" 20 76 3 \
+    'OpenLDAP' 'An open source implementation of LDAP protocol' 'on' \
+    'MySQL' "The world's most popular open source database" 'off' \
+    'PostgreSQL' 'powerful, open source object-relational database system' 'off' \
     2>/tmp/backend
 
-BACKEND="$(cat /tmp/backend)"
+BACKEND_ORIG="$(cat /tmp/backend)"
+if [ X"${BACKEND_ORIG}" == X'OpenLDAP' ]; then
+    export BACKEND='OPENLDAP'
+elif [ X"${BACKEND_ORIG}" == X'MySQL' ]; then
+    export BACKEND='MYSQL'
+elif [ X"${BACKEND_ORIG}" == X'PostgreSQL' ]; then
+    export BACKEND='PGSQL'
+fi
 echo "export BACKEND='${BACKEND}'" >> ${CONFIG_FILE}
 rm -f /tmp/backend
 
@@ -133,7 +143,7 @@ echo "export LDAP_ADMIN_PW='${LDAP_ADMIN_PW}'" >> ${CONFIG_FILE}
 echo "export RCM_DB_USER='${RCM_DB_USER}'" >> ${CONFIG_FILE}
 echo "export RCM_DB_PASSWD='${RCM_DB_PASSWD}'" >> ${CONFIG_FILE}
 
-if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+if [ X"${BACKEND}" == X"OPENLDAP" ]; then
     . ${DIALOG_DIR}/ldap_config.sh
 else
     :

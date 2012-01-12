@@ -691,9 +691,9 @@ EOF
 # Starting config.
 postfix_config_virtual_host()
 {
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         check_status_before_run postfix_config_ldap
-    elif [ X"${BACKEND}" == X"MySQL" ]; then
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
         check_status_before_run postfix_config_mysql
     else
         :

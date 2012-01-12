@@ -85,7 +85,7 @@ install_all()
             -o X"${DISTRO_CODENAME}" == X"natty" \
             -o X"${DISTRO_CODENAME}" == X"oneiric" \
             ]; then
-            if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+            if [ X"${BACKEND}" == X"OPENLDAP" ]; then
                 ALL_PKGS="${ALL_PKGS} php-net-ldap2"
             fi
         fi
@@ -153,7 +153,7 @@ install_all()
     #################################################
     # Backend: OpenLDAP or MySQL, and extra packages.
     #
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # OpenLDAP server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
             ALL_PKGS="${ALL_PKGS} openldap${PKG_ARCH} openldap-clients${PKG_ARCH} openldap-servers${PKG_ARCH}"
@@ -169,7 +169,7 @@ install_all()
         else
             :
         fi
-    elif [ X"${BACKEND}" == X"MySQL" ]; then
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
             # For Awstats.
@@ -203,9 +203,9 @@ install_all()
             ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
             ENABLED_SERVICES="${ENABLED_SERVICES} postfix-cluebringer"
 
-            if [ X"${BACKEND}" == X"OpenLDAP" -o X"${BACKEND}" == X"MySQL" ]; then
+            if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
                 ALL_PKGS="${ALL_PKGS} postfix-cluebringer-mysql"
-            elif [ X"${BACKEND}" == X"PostgreSQL" ]; then
+            elif [ X"${BACKEND}" == X"PGSQL" ]; then
                 ALL_PKGS="${ALL_PKGS} postfix-cluebringer-pgsql"
             fi
         else
@@ -260,11 +260,11 @@ EOF
         if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-managesieved dovecot-sieve"
 
-            if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+            if [ X"${BACKEND}" == X"OPENLDAP" ]; then
                 ALL_PKGS="${ALL_PKGS} dovecot-ldap dovecot-mysql"
-            elif [ X"${BACKEND}" == X"MySQL" ]; then
+            elif [ X"${BACKEND}" == X"MYSQL" ]; then
                 ALL_PKGS="${ALL_PKGS} dovecot-mysql"
-            elif [ X"${BACKEND}" == X"PostgreSQL" ]; then
+            elif [ X"${BACKEND}" == X"PGSQL" ]; then
                 ALL_PKGS="${ALL_PKGS} dovecot-pgsql"
             fi
         fi

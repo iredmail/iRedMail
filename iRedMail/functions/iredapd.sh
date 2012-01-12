@@ -79,7 +79,7 @@ iredapd_config()
     perl -pi -e 's#^(run_as_user).*#${1} = $ENV{IREDAPD_DAEMON_USER}#' iredapd.ini
     perl -pi -e 's#^(run_as_daemon).*#${1} = yes#' iredapd.ini
 
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # Set backend.
         perl -pi -e 's#^(backend).*#${1} = ldap#' iredapd.ini
 
@@ -92,7 +92,7 @@ iredapd_config()
         # Enable plugins.
         perl -pi -e 's#^(plugins).*#${1} = ldap_maillist_access_policy#' iredapd.ini
 
-    elif [ X"${BACKEND}" == X"MySQL" ]; then
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Set backend.
         perl -pi -e 's#^(backend).*#${1} = mysql#' iredapd.ini
 

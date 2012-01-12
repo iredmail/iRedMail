@@ -155,7 +155,7 @@ cleanup_replace_iptables_rule()
 
 cleanup_replace_mysql_config()
 {
-    if [ X"${BACKEND}" == X"MySQL" -o X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X"OPENLDAP" ]; then
         # Both MySQL and OpenLDAP will need MySQL database server, so prompt
         # this config file replacement.
         ECHO_QUESTION "Would you like to use MySQL configuration file shipped within iRedMail now?"

@@ -68,7 +68,7 @@ EOF
 
     # Virtual mail accounts.
     # Reference: http://wiki2.dovecot.org/AuthDatabase/LDAP
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         perl -pi -e 's#PH_USERDB_ARGS#$ENV{DOVECOT_LDAP_CONF}#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_USERDB_DRIVER#ldap#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_PASSDB_ARGS#$ENV{DOVECOT_LDAP_CONF}#' ${DOVECOT_CONF}
@@ -124,7 +124,7 @@ EOF
         perl -pi -e 's#(.*)/usr/bin/env bash.*#${1}/usr/local/bin/bash#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
     fi
 
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         backup_file ${DOVECOT_LDAP_CONF}
         cat > ${DOVECOT_LDAP_CONF} <<EOF
 ${CONF_MSG}
@@ -172,7 +172,7 @@ EOF
     fi
 
 
-        if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
             realtime_quota_db_name="${IREDADMIN_DB_NAME}"
             realtime_quota_db_user="${IREDADMIN_DB_USER}"
             realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
@@ -201,7 +201,7 @@ EOF
 
         # Create MySQL database ${IREDADMIN_DB_USER} and table 'used_quota'
         # which used to store realtime quota.
-        if [ X"${BACKEND}" == X"OpenLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
+        if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
             # If iRedAdmin is not used, create database and import table here.
             mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 # Create databases.
@@ -222,7 +222,7 @@ EOF
     if [ X"${DOVECOT_VERSION}" == X"1.2" ]; then
         backup_file ${DOVECOT_SHARE_FOLDER_CONF}
 
-        if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
             share_folder_db_name="${IREDADMIN_DB_NAME}"
             share_folder_db_table="share_folder"
             share_folder_db_user="${IREDADMIN_DB_USER}"
@@ -279,7 +279,7 @@ EOF
 
         # Create MySQL database ${IREDADMIN_DB_USER} and table 'share_folder'
         # which used to store realtime quota.
-        if [ X"${BACKEND}" == X"OpenLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
+        if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
             # If iRedAdmin is not used, create database and import table here.
             mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 # Create databases.

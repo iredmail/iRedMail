@@ -75,7 +75,7 @@ FLUSH PRIVILEGES;
 EOF
 
     # Do not grant privileges while backend is not MySQL.
-    if [ X"${BACKEND}" == X"MySQL" ]; then
+    if [ X"${BACKEND}" == X"MYSQL" ]; then
         mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 -- Grant privileges for Roundcubemail, so that user can change
 -- their own password and setting mail forwarding.
@@ -239,7 +239,7 @@ rcm_config()
     # after message delete/move, the next message will be displayed
     perl -pi -e 's#(.*display_next.*=).*#${1} true;#' main.inc.php
 
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         export LDAP_SERVER_HOST LDAP_SERVER_PORT LDAP_BIND_VERSION LDAP_BASEDN LDAP_ATTR_DOMAIN_RDN LDAP_ATTR_USER_RDN
         cd ${RCM_HTTPD_ROOT}/config/
         ECHO_DEBUG "Setting global LDAP address book in Roundcube."
@@ -309,7 +309,7 @@ EOF
         # Enable autocomplete for all address books.
         perl -pi -e 's#(.*autocomplete_addressbooks.*=)(.*)#${1} array("sql", "ldap_global");#' main.inc.php
 
-    #elif [ X"${BACKEND}" == X"MySQL" ]; then
+    #elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Set correct username, password and database name.
     #    perl -pi -e 's#(.*db_dsnw.*= )(.*)#${1}"$ENV{'PHP_CONN_TYPE'}://$ENV{'RCM_DB_USER'}:$ENV{'RCM_DB_PASSWD'}\@$ENV{'MYSQL_SERVER'}/$ENV{'VMAIL_DB'}";#' plugins/changepasswd/config.inc.php
     else
@@ -378,14 +378,14 @@ rcm_plugin_password()
     # Require the new password to contain a letter and punctuation character
     perl -pi -e 's#(.*password_require_nonalpha.*=).*#${1} true;#' config.inc.php
 
-    if [ X"${BACKEND}" == X"MySQL" ]; then
+    if [ X"${BACKEND}" == X"MYSQL" ]; then
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
         perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{'PHP_CONN_TYPE'}://$ENV{'RCM_DB_USER'}:$ENV{'RCM_DB_PASSWD'}\@$ENV{'MYSQL_SERVER'}/$ENV{'VMAIL_DB'}";#' config.inc.php
         perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE $ENV{'VMAIL_DB'}.mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u LIMIT 1";#' config.inc.php
         perl -pi -e 's#(.*password_hash_algorithm.*=).*#${1} "md5crypt";#' config.inc.php
         perl -pi -e 's#(.*password_hash_base64.*=).*#${1} false;#' config.inc.php
 
-    elif [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    elif [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # LDAP backend. Driver: ldap_simple.
         perl -pi -e 's#(.*password_driver.*=).*#${1} "ldap_simple";#' config.inc.php
         perl -pi -e 's#(.*password_ldap_host.*=).*#${1} "$ENV{LDAP_SERVER_HOST}";#' config.inc.php

@@ -510,7 +510,7 @@ EOF
     echo -e '\n----' > ${DISCLAIMER_DIR}/default.txt
 
     # Integrate LDAP.
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         cat >> ${AMAVISD_CONF} <<EOF
 # Integrate Amavisd-new with OpenLDAP.
 \$enable_ldap    = 1;    # 1 -> enable, 0 -> disable.
@@ -541,7 +541,7 @@ EOF
 EOF
 
     # Lookup agains MySQL, for MySQL backend only.
-    if [ X"${BACKEND}" == X"MySQL" ]; then
+    if [ X"${BACKEND}" == X"MYSQL" ]; then
         cat >> ${AMAVISD_CONF} <<EOF
 # Uncomment below two lines to lookup virtual mail domains from MySQL database.
 #@lookup_sql_dsn =  (
@@ -554,7 +554,7 @@ EOF
 # WARNING: IN() may cause MySQL lookup performance issue.
 #\$sql_select_policy = "SELECT domain FROM domain WHERE CONCAT('@', domain) IN (%k)";
 EOF
-    elif [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    elif [ X"${BACKEND}" == X"OPENLDAP" ]; then
         cat >> ${AMAVISD_CONF} <<EOF
 #@lookup_sql_dsn = @storage_sql_dsn;
 EOF

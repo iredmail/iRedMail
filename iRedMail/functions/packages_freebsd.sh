@@ -113,7 +113,7 @@ EOF
     ENABLED_SERVICES="${ENABLED_SERVICES} mysql-server"
 
     # OpenLDAP v2.4. REQUIRED for LDAP backend.
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         cat > /var/db/ports/openldap24/options <<EOF
 WITH_SASL=true
 WITH_FETCH=true
@@ -610,7 +610,7 @@ EOF
 
     # Awstats.
     if [ X"${USE_AWSTATS}" == X"YES" ]; then
-        if [ X"${BACKEND}" == X"MySQL" ]; then
+        if [ X"${BACKEND}" == X"MYSQL" ]; then
             ALL_PORTS="${ALL_PORTS} www/mod_auth_mysql_another"
         fi
 

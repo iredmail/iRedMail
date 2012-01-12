@@ -26,7 +26,7 @@
 
 . ${CONF_DIR}/awstats
 
-if [ X"${BACKEND}" == X"OpenLDAP" -o X"${BACKEND}" == X"MySQL" ]; then
+if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
     :
 else
     # Set username for awstats access.

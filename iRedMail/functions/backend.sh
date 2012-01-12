@@ -25,14 +25,14 @@
 # -------------------------------------------------------
 backend_install()
 {
-    if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # Install, config and initialize OpenLDAP.
         check_status_before_run openldap_config && \
         check_status_before_run openldap_data_initialize
 
         # Initialize MySQL database server.
         check_status_before_run mysql_initialize
-    elif [ X"${BACKEND}" == X"MySQL" ]; then
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Initialize MySQL.
         check_status_before_run mysql_initialize
         check_status_before_run mysql_import_vmail_users

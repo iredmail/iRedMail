@@ -112,9 +112,9 @@ export mysql_recipient_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/recipient
 export mysql_recipient_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/recipient_bcc_maps_user.cf"
 export mysql_relay_domains_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/relay_domains.cf"
 
-if [ X"${BACKEND}" == X"OpenLDAP" ]; then
+if [ X"${BACKEND}" == X"OPENLDAP" ]; then
     export POSTFIX_LOOKUP_DIR="${POSTFIX_LOOKUP_DIR_LDAP}"
-elif [ X"${BACKEND}" == X"MySQL" ]; then
+elif [ X"${BACKEND}" == X"MYSQL" ]; then
     export POSTFIX_LOOKUP_DIR="${POSTFIX_LOOKUP_DIR_MYSQL}"
 else
     export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/lookups"

@@ -185,8 +185,8 @@ EOF
         a2enmod ssl >/dev/null
         a2enmod deflate >/dev/null 2>&1
 
-        [ X"${BACKEND}" == X"OpenLDAP" ] && a2enmod authnz_ldap > /dev/null
-        [ X"${BACKEND}" == X"MySQL" ] && a2enmod auth_mysql > /dev/null
+        [ X"${BACKEND}" == X"OPENLDAP" ] && a2enmod authnz_ldap > /dev/null
+        [ X"${BACKEND}" == X"MYSQL" ] && a2enmod auth_mysql > /dev/null
 
         # Ubuntu 10.04.
         # Comments starting with '#' are deprecated.
@@ -201,11 +201,11 @@ EOF
         a2enmod ssl &>/dev/null
         perl -pi -e 's/#(Listen 443)/${1}/' ${HTTPD_CONF_ROOT}/listen.conf
 
-        [ X"${BACKEND}" == X"OpenLDAP" ] && \
+        [ X"${BACKEND}" == X"OPENLDAP" ] && \
             a2enmod authnz_ldap &>/dev/null && \
             a2enmod ldap &>/dev/null
 
-        [ X"${BACKEND}" == X"MySQL" ] && a2enmod auth_mysql &>/dev/null
+        [ X"${BACKEND}" == X"MYSQL" ] && a2enmod auth_mysql &>/dev/null
     else
         :
     fi

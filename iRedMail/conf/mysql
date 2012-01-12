@@ -69,6 +69,6 @@ export VMAIL_DB='vmail'
 export SAMPLE_SQL="${SAMPLE_DIR}/iredmail.sql"
 
 export BACKUP_DATABASES="${BACKUP_DATABASES} mysql"
-if [ X"${BACKEND}" == X"MySQL" ]; then
+if [ X"${BACKEND}" == X"MYSQL" ]; then
     export BACKUP_DATABASES="${BACKUP_DATABASES} ${VMAIL_DB}"
 fi
