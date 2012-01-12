@@ -35,17 +35,6 @@ export STATUS_FILE="${ROOTDIR}/../.${PROG_NAME}.installation.status"
 check_user root
 check_hostname
 
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
-    # -i: Turns off interactive prompting during multiple file transfers.
-    # -V: Disable verbose and progress
-    FETCH_CMD='ftp -iV'
-else
-    # -c: Continue getting a partially-downloaded file.
-    # -q: Turn off Wget's output.
-    # --referer: Include 'Referer: url' header in HTTP request.
-    FETCH_CMD="wget -cq"
-fi
-
 #
 # Mirror site.
 # Site directory structure:
@@ -175,13 +164,6 @@ fetch_misc()
 {
     # Fetch all misc packages.
     cd ${MISC_DIR}
-
-    # Help track basic information, used to help iRedMail team understand
-    # which Linux/BSD distribution we should take more care of.
-    # iRedMail version number, OS distribution, release version, code name.
-    ${FETCH_CMD} "http://iredmail.org/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
-
-    rm -f iredmail_os* &>/dev/null
 
     misc_total=$(( $(echo ${MISCLIST} | wc -w | awk '{print $1}') ))
     misc_count=1

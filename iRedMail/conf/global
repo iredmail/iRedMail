@@ -467,5 +467,17 @@ fi
 # Location of sshd_config
 export SSHD_CONFIG='/etc/ssh/sshd_config'
 
-# MySQL databases which need to be backed up.
+# SQL databases which need to be backed up.
 export BACKUP_DATABASES=''
+
+# Command use to fetch source tarballs.
+if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    # -i: Turns off interactive prompting during multiple file transfers.
+    # -V: Disable verbose and progress
+    FETCH_CMD='ftp -iV'
+else
+    # -c: Continue getting a partially-downloaded file.
+    # -q: Turn off Wget's output.
+    FETCH_CMD="wget -cq"
+fi
+
