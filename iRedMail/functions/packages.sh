@@ -409,17 +409,6 @@ EOF
 
     export ALL_PKGS ENABLED_SERVICES
 
-    track_iredmail_info()
-    {
-        # Help track basic information, used to help iRedMail team understand
-        # which Linux/BSD distribution we should take more care of.
-        # iRedMail version number, OS distribution, release version, code name, backend.
-        ${FETCH_CMD} "http://iredmail.org/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}&backend=${BACKEND}" &>/dev/null
-
-        rm -f iredmail_os* &>/dev/null
-        echo 'export status_track_iredmail_info="DONE"' >> ${STATUS_FILE}
-    }
-
     # Install all packages.
     install_all_pkgs()
     {
@@ -454,7 +443,6 @@ EOF
         echo 'export status_enable_all_services="DONE"' >> ${STATUS_FILE}
     }
 
-    check_status_before_run track_iredmail_info
     check_status_before_run install_all_pkgs
     check_status_before_run enable_all_services
 }

@@ -189,7 +189,7 @@ read ANSWER
 case ${ANSWER} in
     Y|y) : ;;
     N|n|*)
-        ECHO_INFO "Canceled, Exit."
+        ECHO_INFO "Cancelled, Exit."
         exit 255
         ;;
 esac

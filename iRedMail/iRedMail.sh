@@ -93,66 +93,35 @@ fi
 
 # User/Group: vmail. We will export vmail uid/gid here.
 . ${FUNCTIONS_DIR}/user_vmail.sh
-
-# Apache & PHP.
 . ${FUNCTIONS_DIR}/apache_php.sh
-
-# OpenLDAP.
 . ${FUNCTIONS_DIR}/openldap.sh
 . ${FUNCTIONS_DIR}/phpldapadmin.sh
-
-# MySQL.
 . ${FUNCTIONS_DIR}/mysql.sh
 . ${FUNCTIONS_DIR}/phpmyadmin.sh
 
-# Switch.
+# Switch backend
 . ${FUNCTIONS_DIR}/backend.sh
 
-# Postfix.
 . ${FUNCTIONS_DIR}/postfix.sh
-
-# Policy service: Policyd.
 . ${FUNCTIONS_DIR}/policy_server.sh
-
-# iRedAPD.
 . ${FUNCTIONS_DIR}/iredapd.sh
-
-# Dovecot.
 . ${FUNCTIONS_DIR}/dovecot.sh
-
-# Managesieve.
 . ${FUNCTIONS_DIR}/managesieve.sh
-
-# ClamAV.
 . ${FUNCTIONS_DIR}/clamav.sh
-
-# Amavisd-new.
 . ${FUNCTIONS_DIR}/amavisd.sh
-
-# SpamAssassin.
 . ${FUNCTIONS_DIR}/spamassassin.sh
-
-# Roundcubemail.
 . ${FUNCTIONS_DIR}/roundcubemail.sh
-
-# Awstats.
 . ${FUNCTIONS_DIR}/awstats.sh
-
-# Fail2ban.
 . ${FUNCTIONS_DIR}/fail2ban.sh
-
-# iRedAdmin.
 . ${FUNCTIONS_DIR}/iredadmin.sh
-
-# Optional components.
 . ${FUNCTIONS_DIR}/optional_components.sh
-
-# Misc.
 . ${FUNCTIONS_DIR}/cleanup.sh
 
 # ************************************************************************
 # *************************** Script Main ********************************
 # ************************************************************************
+
+check_status_before_run track_iredmail_info
 
 # Install all packages.
 check_status_before_run install_all || (ECHO_ERROR "Package installation error, please check the output log." && exit 255)
