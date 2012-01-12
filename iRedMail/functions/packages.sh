@@ -166,8 +166,6 @@ install_all()
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl"
             ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
-        else
-            :
         fi
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL server & client.
@@ -183,8 +181,17 @@ install_all()
 
             # For Awstats.
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
-        else
-            :
+        fi
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        # MySQL server & client.
+        if [ X"${DISTRO}" == X"RHEL" ]; then
+            ALL_PKGS="${ALL_PKGS} postgresql-server"
+
+        elif [ X"${DISTRO}" == X"SUSE" ]; then
+            ALL_PKGS="${ALL_PKGS} postgresql-server"
+
+        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client"
         fi
     else
         :
@@ -252,7 +259,13 @@ EOF
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} dovecot12 dovecot12-backend-mysql"
+        ALL_PKGS="${ALL_PKGS} dovecot12"
+
+        if [ X"${BACKEND}" == X"MYSQL" ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot12-backend-mysql"
+        elif [ X"${BACKEND}" == X"PGSQL" ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot12-backend-pgsql"
+        fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d"

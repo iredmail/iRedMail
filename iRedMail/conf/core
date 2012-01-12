@@ -20,6 +20,82 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
+ECHO_INFO()
+{
+    if [ X"$1" == X"-n" ]; then
+        shift 1
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -ne "\033[42m${INFO_FLAG}\033[0m $@"
+        else
+            echo -ne "${INFO_FLAG} $@"
+        fi
+    else
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -e "\033[42m${INFO_FLAG}\033[0m $@"
+        else
+            echo -e "${INFO_FLAG} $@"
+        fi
+    fi
+}
+
+ECHO_QUESTION()
+{
+    if [ X"$1" == X"-n" ]; then
+        shift 1
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -ne "\033[45m${QUESTION_FLAG}\033[0m $@"
+        else
+            echo -ne "${QUESTION_FLAG} $@"
+        fi
+    else
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -e "\033[45m${QUESTION_FLAG}\033[0m $@"
+        else
+            echo -e "${QUESTION_FLAG} $@"
+        fi
+    fi
+}
+
+ECHO_ERROR()
+{
+    if [ X"$1" == X"-n" ]; then
+        shift 1
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -ne "\033[41m${ERROR_FLAG}\033[0m $@"
+        else
+            echo -ne "${ERROR_FLAG} $@"
+        fi
+    else
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -e "\033[41m${ERROR_FLAG}\033[0m $@"
+        else
+            echo -e "${ERROR_FLAG} $@"
+        fi
+    fi
+}
+
+ECHO_DEBUG()
+{
+    if [ X"${DEBUG}" == X"YES" ]; then
+        if [ X"$1" == X"-n" ]; then
+            shift 1
+            if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+                echo -ne "\033[42m${DEBUG_FLAG}\033[0m $@"
+            else
+                echo -ne "${DEBUG_FLAG} $@"
+            fi
+        else
+            if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+                echo -e "\033[42m${DEBUG_FLAG}\033[0m $@"
+            else
+                echo -e "${DEBUG_FLAG} $@"
+            fi
+        fi
+    else
+        :
+    fi
+}
+
 backup_file()
 {
     # Usage: backup_file file1 [file2 file3 ... fileN]

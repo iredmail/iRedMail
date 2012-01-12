@@ -43,7 +43,6 @@ export PATCH_DIR="${ROOTDIR}/patches"
 export TOOLS_DIR="${ROOTDIR}/tools"
 
 . ${CONF_DIR}/global
-. ${CONF_DIR}/functions
 . ${CONF_DIR}/core
 
 # Check downloaded packages, pkg repository.

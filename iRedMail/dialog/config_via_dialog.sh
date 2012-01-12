@@ -20,10 +20,9 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-# Note: config file will be sourced in 'conf/functions', check_env().
+# Note: config file will be sourced in 'conf/core', check_env().
 
 . ${CONF_DIR}/global
-. ${CONF_DIR}/functions
 . ${CONF_DIR}/core
 . ${CONF_DIR}/openldap
 . ${CONF_DIR}/roundcube

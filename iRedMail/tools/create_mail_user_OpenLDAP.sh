@@ -40,7 +40,6 @@
 
 # Source functions.
 . ../conf/global
-. ../conf/functions
 . ../conf/core
 
 # ----------------------------------------------

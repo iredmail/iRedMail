@@ -25,7 +25,6 @@ ROOTDIR="$(pwd)"
 CONF_DIR="${ROOTDIR}/../conf"
 
 . ${CONF_DIR}/global
-. ${CONF_DIR}/functions
 . ${CONF_DIR}/core
 . ${CONF_DIR}/iredadmin
 
@@ -315,6 +314,18 @@ EOF
         ${APTGET} update
     fi
 }
+
+track_iredmail_info()
+{
+    # Help track basic information, used to help iRedMail team understand
+    # which Linux/BSD distribution we should take more care of.
+    # iRedMail version number, OS distribution, release version, code name, backend.
+    ${FETCH_CMD} "http://iredmail.org/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
+
+    rm -f iredmail_os* &>/dev/null
+    echo 'export status_track_iredmail_info="DONE"' >> ${STATUS_FILE}
+}
+
 echo_end_msg()
 {
     cat <<EOF
@@ -360,6 +371,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" ]; then
     fi
 fi
 
+check_status_before_run track_iredmail_info
 fetch_misc && \
 check_md5 && \
 check_pkg ${BIN_DIALOG} ${PKG_DIALOG} && \

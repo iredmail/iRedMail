@@ -22,7 +22,7 @@
 
 export PROG_NAME='iRedMail'
 export PROG_NAME_LOWERCASE='iredmail'
-export PROG_VERSION='0.7.4'
+export PROG_VERSION='0.8.0-beta'
 
 # -----------------
 # ---- Generic ----
@@ -216,7 +216,7 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
             # Debian 5
             export DISTRO_VERSION='5'
             export DISTRO_CODENAME='lenny'
-        elif grep '^6\.' /etc/debian_version &>/dev/null
+        elif grep '^6\.' /etc/debian_version &>/dev/null; then
             # Debian 6
             export DISTRO_VERSION='6'
             export DISTRO_CODENAME='squeeze'
