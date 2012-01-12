@@ -120,8 +120,6 @@ fi
 # *************************** Script Main ********************************
 # ************************************************************************
 
-check_status_before_run track_iredmail_info
-
 # Install all packages.
 check_status_before_run install_all || (ECHO_ERROR "Package installation error, please check the output log." && exit 255)
 

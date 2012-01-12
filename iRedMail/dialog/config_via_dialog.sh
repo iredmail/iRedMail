@@ -87,27 +87,23 @@ rm -f /tmp/vmail_user_home_dir
 # --------------------- Backend --------------------
 # --------------------------------------------------
 ${DIALOG} \
-    --title "Choose your preferred backend" \
+    --title "Choose your preferred backend used to store mail accounts" \
     --radiolist "\
 We provide two backends and the homologous webmail programs:
-
-    +------------+---------------+---------------------------+
-    | Backend    | Web Mail      | Web-based management tool |
-    +------------+---------------+---------------------------+
-    | OpenLDAP   |               | iRedAdmin, phpLDAPadmin   |
-    +------------+               +---------------------------+
-    | MySQL      | Roundcube     | iRedAdmin, phpMyAdmin     |
-    +------------+               +---------------------------+
-    | PostgreSQL |               | phpPGadmin                |
-    +------------+---------------+---------------------------+
-
-TIP:
-    * Use SPACE key to select item.
-
++------------+---------------+---------------------------+
+| Backend    | Web Mail      | Web-based management tool |
++------------+---------------+---------------------------+
+| OpenLDAP   |               | iRedAdmin, phpLDAPadmin   |
++------------+               +---------------------------+
+| MySQL      | Roundcube     | iRedAdmin, phpMyAdmin     |
++------------+               +---------------------------+
+| PostgreSQL |               | phpPgAdmin                |
++------------+---------------+---------------------------+
+TIP: Use SPACE key to select item.
 " 20 76 3 \
     'OpenLDAP' 'An open source implementation of LDAP protocol' 'on' \
     'MySQL' "The world's most popular open source database" 'off' \
-    'PostgreSQL' 'powerful, open source object-relational database system' 'off' \
+    'PostgreSQL' 'Powerful, open source database system' 'off' \
     2>/tmp/backend
 
 BACKEND_ORIG="$(cat /tmp/backend)"

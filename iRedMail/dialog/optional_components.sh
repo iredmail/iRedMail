@@ -63,13 +63,30 @@ Note:
     "Awstats" "Advanced web and mail log analyzer" "on" \
     "Fail2ban" "Ban IP with too many password failures" "on" \
     2>${tmp_config_optional_components}
+elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    ${DIALOG} \
+    --title "Optional Components for ${BACKEND_ORIG} backend" \
+    --checklist "\
+Note:
+    * DKIM is recommended.
+    * SPF validation (Sender Policy Framework) is enabled by default.
+    * DNS record (TXT type) are required for both SPF and DKIM.
+    * Please refer to file for more detail after installation:
+      ${TIP_FILE}
+" 20 76 8 \
+    "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
+    "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
+    "phpPgAdmin" "Web-based MySQL management tool" "on" \
+    "Awstats" "Advanced web and mail log analyzer" "on" \
+    "Fail2ban" "Ban IP with too many password failures" "on" \
+    2>${tmp_config_optional_components}
 else
     # No hook for other backend yet.
     :
 fi
 
 OPTIONAL_COMPONENTS="$(cat ${tmp_config_optional_components})"
-rm -f ${tmp_config_optional_components}
+rm -f ${tmp_config_optional_components} &>/dev/null
 
 echo ${OPTIONAL_COMPONENTS} | grep -i '\<SPF\>' >/dev/null 2>&1
 [ X"$?" == X"0" ] && export ENABLE_SPF='YES' && echo "export ENABLE_SPF='YES'" >>${CONFIG_FILE}

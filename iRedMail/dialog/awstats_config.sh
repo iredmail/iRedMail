@@ -26,7 +26,10 @@
 
 . ${CONF_DIR}/awstats
 
-if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+if [ X"${BACKEND}" == X"OPENLDAP" \
+    -o X"${BACKEND}" == X"MYSQL" \
+    -o X"${BACKEND}" == X"PGSQL" \
+    ]; then
     :
 else
     # Set username for awstats access.
