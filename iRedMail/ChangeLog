@@ -1,3 +1,7 @@
+iRedMail-0.8.0:
+    * Package update:
+        + Roundcube webmail -> 0.7.1
+
 iRedMail-0.7.4:
     * Enable two sample dovecot sieve filters in Roundcube webmail:
       Move spam to Junk, Vacation. Both are disabled by default.
