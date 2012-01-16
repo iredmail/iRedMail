@@ -29,18 +29,18 @@
 # Root password.
 while : ; do
     ${DIALOG} \
-    --title "Password for PostgreSQL administrator: root" \
+    --title "Password for PostgreSQL administrator: ${PGSQL_ROOT_USER}" \
     ${PASSWORDBOX} "\
-Please specify password for PostgreSQL administrator: root
+Please specify password for PostgreSQL administrator: ${PGSQL_ROOT_USER}
 
 WARNING:
 
     * EMPTY password is *NOT* permitted.
-" 20 76 2>/tmp/mysql_rootpw
+" 20 76 2>/tmp/pgsql_rootpw
 
-    PGSQL_ROOT_PASSWD="$(cat /tmp/mysql_rootpw)"
+    PGSQL_ROOT_PASSWD="$(cat /tmp/pgsql_rootpw)"
     [ X"${PGSQL_ROOT_PASSWD}" != X"" ] && break
 done
 
 echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${CONFIG_FILE}
-rm -f /tmp/mysql_rootpw
+rm -f /tmp/pgsql_rootpw

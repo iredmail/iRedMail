@@ -22,9 +22,11 @@
 
 # Variables for PostgreSQL database server and related.
 
-export PGSQL_SYS_USER='postgre'
-export PGSQL_SYS_GROUP='postgre'
+export PGSQL_SYS_USER='postgres'
+export PGSQL_SYS_GROUP='postgres'
+export PGSQL_ROOT_USER='postgres'
 export PGSQL_INIT_SCRIPT="${DIR_RC_SCRIPTS}/postgresql"
+export PGSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.pgsql"
 
 if [ X"${DISTRO}" == X"UBUNTU" ]; then
     export PGSQL_SYS_USER='postgres'

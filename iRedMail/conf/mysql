@@ -66,7 +66,7 @@ export MYSQL_VMAIL_SQL="${CONF_DIR}/mysql_vmail.sql"
 
 # MySQL database to store virtual hosts.
 export VMAIL_DB='vmail'
-export SAMPLE_SQL="${SAMPLE_DIR}/iredmail.sql"
+export MYSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.mysql"
 
 export BACKUP_DATABASES="${BACKUP_DATABASES} mysql"
 if [ X"${BACKEND}" == X"MYSQL" ]; then

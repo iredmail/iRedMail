@@ -78,38 +78,19 @@ pgsql_import_vmail_users()
 
     # Generate SQL.
     # Modify default SQL template, set storagebasedirectory.
-    perl -pi -e 's#(.*storagebasedirectory.*DEFAULT).*#${1} "$ENV{STORAGE_BASE_DIR}",#' ${SAMPLE_SQL}
-    perl -pi -e 's#(.*storagenode.*DEFAULT).*#${1} "$ENV{STORAGE_NODE}",#' ${SAMPLE_SQL}
+    #perl -pi -e 's#(.*storagebasedirectory.*DEFAULT).*#${1} "$ENV{STORAGE_BASE_DIR}",#' ${SAMPLE_SQL}
+    #perl -pi -e 's#(.*storagenode.*DEFAULT).*#${1} "$ENV{STORAGE_NODE}",#' ${SAMPLE_SQL}
 
     # Mailbox format is 'Maildir/' by default.
+    # TODO:
+    # - Create database to store mail accounts
+    # - Set correct privilege for both ROLEs: vmail, vmailadmin
+    # - Initialize database
+    # - Add first mail domain
+    # - Add first domain admin
+    # - Assign mail domain to admin
+    # - Add first mail user
     cat >> ${PGSQL_VMAIL_SQL} <<EOF
-/* Create database for virtual hosts. */
-CREATE DATABASE IF NOT EXISTS ${VMAIL_DB} CHARACTER SET utf8;
-
-/* Permissions. */
-GRANT SELECT ON ${VMAIL_DB}.* TO "${PGSQL_BIND_USER}"@localhost IDENTIFIED BY "${PGSQL_BIND_PW}";
-GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB}.* TO "${PGSQL_ADMIN_USER}"@localhost IDENTIFIED BY "${PGSQL_ADMIN_PW}";
-
-/* Initialize the database. */
-USE ${VMAIL_DB};
-SOURCE ${SAMPLE_SQL};
-
-/* Add your first domain. */
-INSERT INTO domain (domain,transport,created) VALUES ("${FIRST_DOMAIN}", "${TRANSPORT}", NOW());
-
-/* Add your first domain admin. */
-INSERT INTO admin (username,password,created) VALUES ("${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}","${DOMAIN_ADMIN_PASSWD}", NOW());
-INSERT INTO domain_admins (username,domain,created) VALUES ("${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}","ALL", NOW());
-
-/* Add domain admin. */
-/*
-INSERT INTO mailbox (username,password,name,maildir,quota,domain,created) VALUES ("${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}","${DOMAIN_ADMIN_PASSWD}","${DOMAIN_ADMIN_NAME}","${FIRST_DOMAIN}/${DOMAIN_ADMIN_NAME}/",0, "${FIRST_DOMAIN}",NOW());
-INSERT INTO alias (address,goto,domain,created) VALUES ("${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}", "${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}", "${FIRST_DOMAIN}", NOW());
-*/
-
-/* Add your first normal user. */
-INSERT INTO mailbox (username,password,name,maildir,quota,domain,created) VALUES ("${FIRST_USER}@${FIRST_DOMAIN}","${FIRST_USER_PASSWD}","${FIRST_USER}","$( hash_domain ${FIRST_DOMAIN})/$( hash_maildir ${FIRST_USER} )",100, "${FIRST_DOMAIN}", NOW());
-INSERT INTO alias (address,goto,domain,created) VALUES ("${FIRST_USER}@${FIRST_DOMAIN}", "${FIRST_USER}@${FIRST_DOMAIN}", "${FIRST_DOMAIN}", NOW());
 EOF
 
     ECHO_DEBUG "Import postfix virtual hosts/users: ${PGSQL_VMAIL_SQL}."
@@ -118,7 +99,7 @@ EOF
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:
     - ${PGSQL_VMAIL_SQL}
-    - ${SAMPLE_SQL}
+    - ${PGSQL_VMAIL_STRUCTURE_SAMPLE}
 
 EOF
 

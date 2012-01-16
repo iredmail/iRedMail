@@ -91,8 +91,8 @@ mysql_import_vmail_users()
 
     # Generate SQL.
     # Modify default SQL template, set storagebasedirectory.
-    perl -pi -e 's#(.*storagebasedirectory.*DEFAULT).*#${1} "$ENV{STORAGE_BASE_DIR}",#' ${SAMPLE_SQL}
-    perl -pi -e 's#(.*storagenode.*DEFAULT).*#${1} "$ENV{STORAGE_NODE}",#' ${SAMPLE_SQL}
+    perl -pi -e 's#(.*storagebasedirectory.*DEFAULT).*#${1} "$ENV{STORAGE_BASE_DIR}",#' ${MYSQL_VMAIL_STRUCTURE_SAMPLE}
+    perl -pi -e 's#(.*storagenode.*DEFAULT).*#${1} "$ENV{STORAGE_NODE}",#' ${MYSQL_VMAIL_STRUCTURE_SAMPLE}
 
     # Mailbox format is 'Maildir/' by default.
     cat >> ${MYSQL_VMAIL_SQL} <<EOF
@@ -105,7 +105,7 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB}.* TO "${MYSQL_ADMIN_USER}"@loca
 
 /* Initialize the database. */
 USE ${VMAIL_DB};
-SOURCE ${SAMPLE_SQL};
+SOURCE ${MYSQL_VMAIL_STRUCTURE_SAMPLE};
 
 /* Add your first domain. */
 INSERT INTO domain (domain,transport,created) VALUES ("${FIRST_DOMAIN}", "${TRANSPORT}", NOW());
@@ -134,7 +134,7 @@ EOF
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:
     - ${MYSQL_VMAIL_SQL}
-    - ${SAMPLE_SQL}
+    - ${MYSQL_VMAIL_STRUCTURE_SAMPLE}
 
 EOF
 

@@ -29,9 +29,9 @@
 # MySQL root password.
 while : ; do
     ${DIALOG} \
-    --title "Password for MySQL administrator: root" \
+    --title "Password for MySQL administrator: ${MYSQL_ROOT_USER}" \
     ${PASSWORDBOX} "\
-Please specify password for MySQL administrator: root
+Please specify password for MySQL administrator: ${MYSQL_ROOT_USER}
 
 WARNING:
 
