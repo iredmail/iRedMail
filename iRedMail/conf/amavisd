@@ -35,7 +35,7 @@ export AMAVISD_DB_NAME='amavisd'
 export AMAVISD_DB_USER='amavisd'
 export AMAVISD_DB_PASSWD="$(${RANDOM_STRING})"
 export AMAVISD_DB_SQL_TMPL="${SAMPLE_DIR}/amavisd.mysql"
-export BACKUP_DATABASES="${BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
+export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
 
 # Altermime.
 export ALTERMIME_BIN='/usr/bin/altermime'

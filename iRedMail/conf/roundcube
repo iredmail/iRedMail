@@ -45,7 +45,7 @@ export RCM_LOGFILE="${MAILLOG}"
 export RCM_DB="roundcubemail"
 export RCM_DB_USER="roundcube"
 export RCM_DB_PASSWD="$(${RANDOM_STRING})"
-export BACKUP_DATABASES="${BACKUP_DATABASES} ${RCM_DB}"
+export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${RCM_DB}"
 
 # this key is used to encrypt the users imap password which is stored
 # in the session record (and the client cookie if remember password is enabled).

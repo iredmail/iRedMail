@@ -40,11 +40,11 @@ EOF
 
     ${MYSQLD_INIT_SCRIPT} restart >/dev/null 2>&1
 
-    ECHO_DEBUG -n "Sleep 5 seconds for MySQL daemon initialize:"
+    ECHO_INFO -n "Sleep 5 seconds for MySQL daemon initialize:"
     for i in 5 4 3 2 1; do
-        ECHO_DEBUG -n " ${i}" && sleep 1
+        echo -n " ${i}" && sleep 1
     done
-    ECHO_DEBUG '.'
+    echo '.'
 
     echo '' > ${MYSQL_INIT_SQL}
 
@@ -68,9 +68,9 @@ EOF
     cat >> ${TIP_FILE} <<EOF
 MySQL:
     * Bind account (read-only):
-        - Name: ${MYSQL_BIND_USER}, Password: ${MYSQL_BIND_PW}
+        - Name: ${VMAIL_DB_BIND_USER}, Password: ${VMAIL_DB_BIND_PASSWD}
     * Vmail admin account (read-write):
-        - Name: ${MYSQL_ADMIN_USER}, Password: ${MYSQL_ADMIN_PW}
+        - Name: ${VMAIL_DB_ADMIN_USER}, Password: ${VMAIL_DB_ADMIN_PASSWD}
     * Database stored in: /var/lib/mysql
     * RC script: ${MYSQLD_INIT_SCRIPT}
     * Log file: /var/log/mysqld.log
@@ -100,8 +100,8 @@ mysql_import_vmail_users()
 CREATE DATABASE IF NOT EXISTS ${VMAIL_DB} CHARACTER SET utf8;
 
 /* Permissions. */
-GRANT SELECT ON ${VMAIL_DB}.* TO "${MYSQL_BIND_USER}"@localhost IDENTIFIED BY "${MYSQL_BIND_PW}";
-GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB}.* TO "${MYSQL_ADMIN_USER}"@localhost IDENTIFIED BY "${MYSQL_ADMIN_PW}";
+GRANT SELECT ON ${VMAIL_DB}.* TO "${VMAIL_DB_BIND_USER}"@localhost IDENTIFIED BY "${VMAIL_DB_BIND_PASSWD}";
+GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB}.* TO "${VMAIL_DB_ADMIN_USER}"@localhost IDENTIFIED BY "${VMAIL_DB_ADMIN_PASSWD}";
 
 /* Initialize the database. */
 USE ${VMAIL_DB};

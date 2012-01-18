@@ -26,7 +26,7 @@ iredadmin_config()
     ECHO_INFO "Configure iRedAdmin (official web-based admin panel)."
 
     # Backup database.
-    export BACKUP_DATABASES="${BACKUP_DATABASES} ${IREDADMIN_DB_NAME}"
+    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${IREDADMIN_DB_NAME}"
 
     # Create a low privilege user as httpd daemon user.
     if [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
@@ -167,8 +167,8 @@ EOF
             -e "/\[vmaildb\]/,/\[/ s#\(^host =\).*#\1 ${MYSQL_SERVER}#" \
             -e "/\[vmaildb\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_PORT}#" \
             -e "/\[vmaildb\]/,/\[/ s#\(^db =\).*#\1 ${VMAIL_DB}#" \
-            -e "/\[vmaildb\]/,/\[/ s#\(^user =\).*#\1 ${MYSQL_ADMIN_USER}#" \
-            -e "/\[vmaildb\]/,/\[/ s#\(^passwd =\).*#\1 ${MYSQL_ADMIN_PW}#" \
+            -e "/\[vmaildb\]/,/\[/ s#\(^user =\).*#\1 ${VMAIL_DB_ADMIN_USER}#" \
+            -e "/\[vmaildb\]/,/\[/ s#\(^passwd =\).*#\1 ${VMAIL_DB_ADMIN_PASSWD}#" \
             settings.ini
     fi
 

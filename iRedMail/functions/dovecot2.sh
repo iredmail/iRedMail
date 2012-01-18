@@ -152,7 +152,7 @@ EOF
         cat > ${DOVECOT_MYSQL_CONF} <<EOF
 driver = mysql
 default_pass_scheme = CRYPT
-connect = host=${MYSQL_SERVER} dbname=${VMAIL_DB} user=${MYSQL_BIND_USER} password=${MYSQL_BIND_PW}
+connect = host=${MYSQL_SERVER} dbname=${VMAIL_DB} user=${VMAIL_DB_BIND_USER} password=${VMAIL_DB_BIND_PASSWD}
 password_query = SELECT password FROM mailbox WHERE username='%u' AND active='1'
 user_query = SELECT \
 CONCAT(mailbox.storagebasedirectory, '/', mailbox.storagenode, '/', mailbox.maildir) AS home, \
@@ -178,8 +178,8 @@ EOF
             realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
         else
             realtime_quota_db_name="${VMAIL_DB}"
-            realtime_quota_db_user="${MYSQL_ADMIN_USER}"
-            realtime_quota_db_passwd="${MYSQL_ADMIN_PW}"
+            realtime_quota_db_user="${VMAIL_DB_ADMIN_USER}"
+            realtime_quota_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
         fi
 
         cat > ${DOVECOT_REALTIME_QUOTA_CONF} <<EOF
@@ -230,8 +230,8 @@ EOF
         else
             share_folder_db_name="${VMAIL_DB}"
             share_folder_db_table="share_folder"
-            share_folder_db_user="${MYSQL_ADMIN_USER}"
-            share_folder_db_passwd="${MYSQL_ADMIN_PW}"
+            share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
+            share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
         fi
 
         # Enable dict quota in dovecot.

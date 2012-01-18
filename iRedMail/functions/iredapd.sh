@@ -99,8 +99,8 @@ iredapd_config()
         # Configure MySQL server related stuffs.
         perl -pi -e 's#^(server).*#${1} = $ENV{MYSQL_SERVER}#' iredapd.ini
         perl -pi -e 's#^(db).*#${1} = $ENV{VMAIL_DB}#' iredapd.ini
-        perl -pi -e 's#^(user).*#${1} = $ENV{MYSQL_BIND_USER}#' iredapd.ini
-        perl -pi -e 's#^(password).*#${1} = $ENV{MYSQL_BIND_PW}#' iredapd.ini
+        perl -pi -e 's#^(user).*#${1} = $ENV{VMAIL_DB_BIND_USER}#' iredapd.ini
+        perl -pi -e 's#^(password).*#${1} = $ENV{VMAIL_DB_BIND_PASSWD}#' iredapd.ini
 
         # Enable plugins.
         perl -pi -e 's#^(plugins).*#${1} = sql_alias_access_policy#' iredapd.ini

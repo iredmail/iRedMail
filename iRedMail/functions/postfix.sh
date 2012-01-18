@@ -519,8 +519,8 @@ postfix_config_mysql()
     # Per-domain transport maps.
     cat > ${mysql_transport_maps_domain_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -530,8 +530,8 @@ EOF
     # Per-user transport maps.
     cat > ${mysql_transport_maps_user_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -540,8 +540,8 @@ EOF
 
     cat > ${mysql_virtual_mailbox_domains_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -550,8 +550,8 @@ EOF
 
     cat > ${mysql_relay_domains_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -560,8 +560,8 @@ EOF
 
     cat > ${mysql_virtual_mailbox_maps_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -570,8 +570,8 @@ EOF
 
     cat > ${mysql_virtual_alias_maps_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -580,8 +580,8 @@ EOF
 
     cat > ${mysql_domain_alias_maps_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -590,8 +590,8 @@ EOF
 
     cat > ${mysql_catchall_maps_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -600,8 +600,8 @@ EOF
 
     cat > ${mysql_domain_alias_catchall_maps_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -610,8 +610,8 @@ EOF
 
     cat > ${mysql_sender_login_maps_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -620,8 +620,8 @@ EOF
 
     cat > ${mysql_sender_bcc_maps_domain_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -630,8 +630,8 @@ EOF
 
     cat > ${mysql_sender_bcc_maps_user_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -640,8 +640,8 @@ EOF
 
     cat > ${mysql_recipient_bcc_maps_domain_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}
@@ -650,8 +650,8 @@ EOF
 
     cat > ${mysql_recipient_bcc_maps_user_cf} <<EOF
 ${CONF_MSG}
-user        = ${MYSQL_BIND_USER}
-password    = ${MYSQL_BIND_PW}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${mysql_server}
 port        = ${MYSQL_PORT}
 dbname      = ${VMAIL_DB}

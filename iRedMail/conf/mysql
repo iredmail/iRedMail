@@ -67,7 +67,7 @@ export MYSQL_VMAIL_SQL="${CONF_DIR}/mysql_vmail.sql"
 # SQL structure of MySQL vmail database.
 export MYSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.mysql"
 
-export BACKUP_DATABASES="${BACKUP_DATABASES} mysql"
+export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} mysql"
 if [ X"${BACKEND}" == X"MYSQL" ]; then
-    export BACKUP_DATABASES="${BACKUP_DATABASES} ${VMAIL_DB}"
+    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${VMAIL_DB}"
 fi

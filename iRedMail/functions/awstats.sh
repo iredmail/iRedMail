@@ -86,8 +86,8 @@ EOF
     AuthMYSQLEnable On
     AuthMySQLHost ${MYSQL_SERVER}
     AuthMySQLPort ${MYSQL_PORT}
-    AuthMySQLUser ${MYSQL_BIND_USER}
-    AuthMySQLPassword ${MYSQL_BIND_PW}
+    AuthMySQLUser ${VMAIL_DB_BIND_USER}
+    AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
     AuthMySQLDB ${VMAIL_DB}
     AuthMySQLUserTable admin
     AuthMySQLNameField username
@@ -130,7 +130,7 @@ EOF
             cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server, username, password.
-Auth_MySQL_Info ${MYSQL_SERVER} ${MYSQL_BIND_USER} ${MYSQL_BIND_PW}
+Auth_MySQL_Info ${MYSQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
         else

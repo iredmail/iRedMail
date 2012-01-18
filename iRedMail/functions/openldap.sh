@@ -413,11 +413,11 @@ openldap_data_initialize()
     ECHO_DEBUG "Starting OpenLDAP."
     ${LDAP_INIT_SCRIPT} restart >/dev/null
 
-    ECHO_DEBUG -n "Sleep 5 seconds for LDAP daemon initialize:"
+    ECHO_INFO -n "Sleep 5 seconds for LDAP daemon initialize:"
     for i in 5 4 3 2 1; do
-        ECHO_DEBUG -n " ${i}" && sleep 1
+        echo -n " ${i}" && sleep 1
     done
-    ECHO_DEBUG '.'
+    echo '.'
 
     ECHO_DEBUG "Initialize LDAP tree."
     # home_mailbox format is 'maildir/' by default.
@@ -441,9 +441,9 @@ dn: ${LDAP_ADMIN_DN}
 objectClass: person
 objectClass: shadowAccount
 objectClass: top
-cn: ${VMAIL_ADMIN_USER_NAME}
-sn: ${VMAIL_ADMIN_USER_NAME}
-uid: ${VMAIL_ADMIN_USER_NAME}
+cn: ${VMAIL_DB_ADMIN_USER}
+sn: ${VMAIL_DB_ADMIN_USER}
+uid: ${VMAIL_DB_ADMIN_USER}
 ${LDAP_ATTR_USER_PASSWD}: $(gen_ldap_passwd "${LDAP_ADMIN_PW}")
 
 dn: ${LDAP_BASEDN}

@@ -131,7 +131,8 @@ EOF
         :
     fi
 
-    mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+        mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 $(cat ${tmp_sql})
 
 -- Delete default sample domains.
@@ -140,6 +141,9 @@ $(cat ${tmp_sql})
 -- Enable greylisting on all inbound emails by default.
 INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, GreylistAuthValidity, GreylistUnAuthValidity, UseAutoWhitelist, AutoWhitelistPeriod, AutoWhitelistCount, AutoWhitelistPercentage, UseAutoBlacklist, AutoBlacklistPeriod, AutoBlacklistCount, AutoBlacklistPercentage, Comment, Disabled) VALUES (1, 'Greylisting Inbound Emails', 1, 240, 'SenderIP:/24', 604800, 86400, 1, 604800, 100, 90, 1, 604800, 100, 20, '', 0);
 EOF
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        su - ${PGSQL_SYS_USER} -c "psql -f ${tmp_sql}" >/dev/null 
+    fi
 
     rm -rf ${tmp_sql} 2>/dev/null
     unset tmp_sql
@@ -280,8 +284,8 @@ EOF
     AuthMYSQLEnable On
     AuthMySQLHost ${MYSQL_SERVER}
     AuthMySQLPort ${MYSQL_PORT}
-    AuthMySQLUser ${MYSQL_BIND_USER}
-    AuthMySQLPassword ${MYSQL_BIND_PW}
+    AuthMySQLUser ${VMAIL_DB_BIND_USER}
+    AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
     AuthMySQLDB ${VMAIL_DB}
     AuthMySQLUserTable admin
     AuthMySQLNameField username
@@ -324,7 +328,7 @@ EOF
             cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server, username, password.
-Auth_MySQL_Info ${MYSQL_SERVER} ${MYSQL_BIND_USER} ${MYSQL_BIND_PW}
+Auth_MySQL_Info ${MYSQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
         else

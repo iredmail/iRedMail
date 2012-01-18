@@ -57,8 +57,8 @@ phpMyAdmin:
         - ${PHPMYADMIN_CONFIG_FILE}
     * Login account:
         - Username: ${MYSQL_ROOT_USER}, password: ${MYSQL_ROOT_PASSWD}
-        - Username: ${MYSQL_ADMIN_USER}, password: ${MYSQL_ADMIN_PW}
-        - Username (read-only): ${MYSQL_BIND_USER}, password: ${MYSQL_BIND_PW}
+        - Username: ${VMAIL_DB_ADMIN_USER}, password: ${VMAIL_DB_ADMIN_PASSWD}
+        - Username (read-only): ${VMAIL_DB_BIND_USER}, password: ${VMAIL_DB_BIND_PASSWD}
     * URL:
         - https://${HOSTNAME}/phpmyadmin
     * See also:

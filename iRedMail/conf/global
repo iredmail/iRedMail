@@ -51,10 +51,12 @@ export USE_MANAGESIEVE='YES'    # Use managesieve service.
 # functions/user_vmail.sh
 export VMAIL_USER_NAME='vmail'
 export VMAIL_GROUP_NAME='vmail'
-export VMAIL_ADMIN_USER_NAME="${VMAIL_USER_NAME}admin"
+export VMAIL_DB_ADMIN_USER="${VMAIL_USER_NAME}admin"
 
 # Default SQL database name used to store mail accounts.
 export VMAIL_DB='vmail'
+export VMAIL_DB_BIND_USER='vmail'
+export VMAIL_DB_ADMIN_USER='vmailadmin'
 
 # Default virtual domain admin name without domain name (@example.com).
 export DOMAIN_ADMIN_NAME='postmaster'
@@ -71,7 +73,9 @@ export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
 export LC_ALL=C
 
 # Debug mode: YES, NO.
-export DEBUG='NO'
+if [ X"${DEBUG}" != X'YES' ]; then
+    export DEBUG='NO'
+fi
 
 # Genrate a random string.
 # Usage:
@@ -472,7 +476,7 @@ fi
 export SSHD_CONFIG='/etc/ssh/sshd_config'
 
 # SQL databases which need to be backed up.
-export BACKUP_DATABASES=''
+export MYSQL_BACKUP_DATABASES=''
 
 # Command use to fetch source tarballs.
 if [ X"${DISTRO}" == X"FREEBSD" ]; then

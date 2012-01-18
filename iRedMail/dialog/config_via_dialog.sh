@@ -117,17 +117,13 @@ fi
 echo "export BACKEND='${BACKEND}'" >> ${CONFIG_FILE}
 rm -f /tmp/backend
 
-# For virtual user query in Postfix, Dovecot.
-export MYSQL_BIND_USER="${VMAIL_USER_NAME}"
-export MYSQL_BIND_PW="$(${RANDOM_STRING})"
-echo "export MYSQL_BIND_USER='${MYSQL_BIND_USER}'" >> ${CONFIG_FILE}
-echo "export MYSQL_BIND_PW='${MYSQL_BIND_PW}'" >> ${CONFIG_FILE}
+# Read-only SQL user/role, used to query mail accounts in Postfix, Dovecot.
+export VMAIL_DB_BIND_PASSWD="$(${RANDOM_STRING})"
+echo "export VMAIL_DB_BIND_PASSWD='${VMAIL_DB_BIND_PASSWD}'" >> ${CONFIG_FILE}
 
 # For database management: vmail.
-export MYSQL_ADMIN_USER="${VMAIL_ADMIN_USER_NAME}"
-export MYSQL_ADMIN_PW="$(${RANDOM_STRING})"
-echo "export MYSQL_ADMIN_USER='${MYSQL_ADMIN_USER}'" >> ${CONFIG_FILE}
-echo "export MYSQL_ADMIN_PW='${MYSQL_ADMIN_PW}'" >> ${CONFIG_FILE}
+export VMAIL_DB_ADMIN_PASSWD="$(${RANDOM_STRING})"
+echo "export VMAIL_DB_ADMIN_PASSWD='${VMAIL_DB_ADMIN_PASSWD}'" >> ${CONFIG_FILE}
 
 # LDAP bind dn & password.
 export LDAP_BINDPW="$(${RANDOM_STRING})"
@@ -140,21 +136,21 @@ echo "export RCM_DB_PASSWD='${RCM_DB_PASSWD}'" >> ${CONFIG_FILE}
 
 if [ X"${BACKEND}" == X"OPENLDAP" ]; then
     . ${DIALOG_DIR}/ldap_config.sh
+
+    # MySQL server is used to store policyd/roundcube data.
+    . ${DIALOG_DIR}/mysql_config.sh
+elif [ X"${BACKEND}" == X"MYSQL" ]; then
+    . ${DIALOG_DIR}/mysql_config.sh
+elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    . ${DIALOG_DIR}/pgsql_config.sh
 else
     :
 fi
 
-# MySQL server is required as backend or used to store policyd/roundcube data.
-. ${DIALOG_DIR}/mysql_config.sh
-
-#
 # Virtual domain configuration.
-#
 . ${DIALOG_DIR}/virtual_domain_config.sh
 
-#
-# For optional components.
-#
+# Optional components.
 . ${DIALOG_DIR}/optional_components.sh
 
 # Append EOF tag in config file.

@@ -65,6 +65,7 @@ check_env
 . ${CONF_DIR}/openldap
 . ${CONF_DIR}/phpldapadmin
 . ${CONF_DIR}/mysql
+. ${CONF_DIR}/postgresql
 . ${CONF_DIR}/postfix
 . ${CONF_DIR}/policy_server
 . ${CONF_DIR}/iredapd
@@ -92,11 +93,19 @@ fi
 
 # User/Group: vmail. We will export vmail uid/gid here.
 . ${FUNCTIONS_DIR}/user_vmail.sh
+
 . ${FUNCTIONS_DIR}/apache_php.sh
+
+# LDAP
 . ${FUNCTIONS_DIR}/openldap.sh
 . ${FUNCTIONS_DIR}/phpldapadmin.sh
+
+# MySQL
 . ${FUNCTIONS_DIR}/mysql.sh
 . ${FUNCTIONS_DIR}/phpmyadmin.sh
+
+# PostgreSQL
+. ${FUNCTIONS_DIR}/postgresql.sh
 
 # Switch backend
 . ${FUNCTIONS_DIR}/backend.sh
