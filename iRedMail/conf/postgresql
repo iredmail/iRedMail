@@ -32,3 +32,8 @@ if [ X"${DISTRO}" == X"UBUNTU" ]; then
     export PGSQL_SYS_USER='postgres'
     export PGSQL_SYS_GROUP='postgres'
 fi
+
+export BACKUP_PGSQL_DATABASES="${BACKUP_PGSQL_DATABASES}"
+if [ X"${BACKEND}" == X"PGSQL" ]; then
+    export BACKUP_PGSQL_DATABASES="${BACKUP_PGSQL_DATABASES} ${VMAIL_DB}"
+fi

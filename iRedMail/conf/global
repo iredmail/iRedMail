@@ -53,6 +53,9 @@ export VMAIL_USER_NAME='vmail'
 export VMAIL_GROUP_NAME='vmail'
 export VMAIL_ADMIN_USER_NAME="${VMAIL_USER_NAME}admin"
 
+# Default SQL database name used to store mail accounts.
+export VMAIL_DB='vmail'
+
 # Default virtual domain admin name without domain name (@example.com).
 export DOMAIN_ADMIN_NAME='postmaster'
 
