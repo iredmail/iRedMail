@@ -62,17 +62,43 @@ rcm_import_sql()
 {
     ECHO_DEBUG "Import MySQL database and privileges for Roundcubemail."
 
-    mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
-/* Create database and grant privileges. */
+    # Initial roundcube db.
+    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+        mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+-- Create database and grant privileges
 CREATE DATABASE ${RCM_DB} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${RCM_DB}.* TO "${RCM_DB_USER}"@localhost IDENTIFIED BY '${RCM_DB_PASSWD}';
 
-/* Import Roundcubemail SQL template. */
+-- Import Roundcubemail SQL template
 USE ${RCM_DB};
 SOURCE ${RCM_HTTPD_ROOT}/SQL/mysql.initial.sql;
 
 FLUSH PRIVILEGES;
 EOF
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_SYS_USER_HOME}/rcm.sql >/dev/null
+        chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql >/dev/null
+
+        su - ${PGSQL_SYS_USER} -c 'psql >/dev/null' >/dev/null <<EOF
+-- Create database and role
+CREATE DATABASE ${RCM_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
+CREATE USER ${RCM_DB_USER} WITH ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+
+-- Import Roundcubemail SQL template
+\c ${RCM_DB};
+\i ${PGSQL_SYS_USER_HOME}/rcm.sql;
+
+-- Grant privileges
+GRANT SELECT,INSERT,UPDATE,DELETE ON cache,cache_index,cache_messages,cache_thread,contactgroupmembers,contactgroups,contacts,dictionary,identities,searches,session,users TO ${RCM_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON cache_ids,identity_ids,contact_ids,contactgroups_ids,cache_ids,search_ids TO ${RCM_DB_USER};
+
+-- Grant privilege to update password through roundcube webmail
+\c ${VMAIL_DB};
+GRANT UPDATE,SELECT ON mailbox TO ${RCM_DB_USER};
+EOF
+        rm -f ${PGSQL_SYS_USER_HOME}/rcm.sql >/dev/null
+    fi
+
 
     # Do not grant privileges while backend is not MySQL.
     if [ X"${BACKEND}" == X"MYSQL" ]; then
@@ -99,7 +125,7 @@ rcm_config()
 
     export RCM_DB_USER RCM_DB_PASSWD RCMD_DB MYSQL_SERVER FIRST_DOMAIN
 
-    perl -pi -e 's#(.*db_dsnw.*= )(.*)#${1}"$ENV{'PHP_CONN_TYPE'}://$ENV{'RCM_DB_USER'}:$ENV{'RCM_DB_PASSWD'}\@$ENV{'MYSQL_SERVER'}/$ENV{'RCM_DB'}";#' db.inc.php
+    perl -pi -e 's#(.*db_dsnw.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{MYSQL_SERVER}/$ENV{RCM_DB}";#' db.inc.php
 
     # ----------------------------------
     # LOGGING/DEBUGGING

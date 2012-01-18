@@ -33,11 +33,7 @@ dovecot2_config()
         chmod 0664 ${DOVECOT_CONF} && \
         ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
 
-        cat > ${DOVECOT_CONF} <<EOF
-${CONF_MSG}
-EOF
-
-    cat ${SAMPLE_DIR}/conf/dovecot2.conf >> ${DOVECOT_CONF}
+    cp ${SAMPLE_DIR}/conf/dovecot2.conf ${DOVECOT_CONF}
 
     # Base directory.
     perl -pi -e 's#PH_BASE_DIR#$ENV{DOVECOT_BASE_DIR}#' ${DOVECOT_CONF}
@@ -73,11 +69,17 @@ EOF
         perl -pi -e 's#PH_USERDB_DRIVER#ldap#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_PASSDB_ARGS#$ENV{DOVECOT_LDAP_CONF}#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_PASSDB_DRIVER#ldap#' ${DOVECOT_CONF}
-    else
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL.
         perl -pi -e 's#PH_USERDB_ARGS#$ENV{DOVECOT_MYSQL_CONF}#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_USERDB_DRIVER#sql#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_PASSDB_ARGS#$ENV{DOVECOT_MYSQL_CONF}#' ${DOVECOT_CONF}
+        perl -pi -e 's#PH_PASSDB_DRIVER#sql#' ${DOVECOT_CONF}
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        # PostgreSQL.
+        perl -pi -e 's#PH_USERDB_ARGS#$ENV{DOVECOT_PGSQL_CONF}#' ${DOVECOT_CONF}
+        perl -pi -e 's#PH_USERDB_DRIVER#sql#' ${DOVECOT_CONF}
+        perl -pi -e 's#PH_PASSDB_ARGS#$ENV{DOVECOT_PGSQL_CONF}#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_PASSDB_DRIVER#sql#' ${DOVECOT_CONF}
     fi
 
@@ -146,29 +148,30 @@ EOF
         # Set file permission.
         chmod 0500 ${DOVECOT_LDAP_CONF}
 
-    else
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
 
         backup_file ${DOVECOT_MYSQL_CONF}
-        cat > ${DOVECOT_MYSQL_CONF} <<EOF
-driver = mysql
-default_pass_scheme = CRYPT
-connect = host=${MYSQL_SERVER} dbname=${VMAIL_DB} user=${VMAIL_DB_BIND_USER} password=${VMAIL_DB_BIND_PASSWD}
-password_query = SELECT password FROM mailbox WHERE username='%u' AND active='1'
-user_query = SELECT \
-CONCAT(mailbox.storagebasedirectory, '/', mailbox.storagenode, '/', mailbox.maildir) AS home, \
-CONCAT('*:bytes=', mailbox.quota*1048576) AS quota_rule \
-FROM mailbox,domain \
-WHERE mailbox.username='%u' \
-AND mailbox.domain='%d' \
-AND mailbox.enable%Ls%Lc=1 \
-AND mailbox.domain=domain.domain \
-AND domain.backupmx=0 \
-AND domain.active=1 \
-AND mailbox.active=1
-EOF
+        cp -f ${SAMPLE_DIR}/conf/dovecot2-mysql.conf ${DOVECOT_MYSQL_CONF}
+
+        perl -pi -e 's#PH_MYSQL_SERVER#$ENV{MYSQL_SERVER}#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_MYSQL_CONF}
 
         # Set file permission.
         chmod 0550 ${DOVECOT_MYSQL_CONF}
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+
+        backup_file ${DOVECOT_PGSQL_CONF}
+        cp -f ${SAMPLE_DIR}/conf/dovecot2-pgsql.conf ${DOVECOT_PGSQL_CONF}
+
+        perl -pi -e 's#PH_PGSQL_SERVER#$ENV{PGSQL_SERVER}#' ${DOVECOT_PGSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#' ${DOVECOT_PGSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_PGSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_PGSQL_CONF}
+
+        # Set file permission.
+        chmod 0550 ${DOVECOT_PGSQL_CONF}
     fi
 
 

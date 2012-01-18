@@ -82,11 +82,19 @@ cluebringer_config()
     # Configure '[database]' section.
     #
     # DSN
-    perl -pi -e 's/^#(DSN=DBI:mysql:).*/${1}host=$ENV{MYSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+        perl -pi -e 's/^#(DSN=DBI:mysql:).*/${1}host=$ENV{MYSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(DB_Type=).*/${1}mysql/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(DB_Host=).*/${1}$ENV{MYSQL_SERVER}/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(DB_Port=).*/${1}$ENV{MYSQL_PORT}/' ${CLUEBRINGER_CONF}
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        perl -pi -e 's/^#(DSN=DBI:Pg:).*/${1}host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(DB_Type=).*/${1}pgsql/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(DB_Host=).*/${1}$ENV{PGSQL_SERVER}/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(DB_Port=).*/${1}$ENV{PGSQL_PORT}/' ${CLUEBRINGER_CONF}
+    fi
+
     # Database
-    perl -pi -e 's/^(DB_Type=).*/${1}mysql/' ${CLUEBRINGER_CONF}
-    perl -pi -e 's/^(DB_Host=).*/${1}$ENV{MYSQL_SERVER}/' ${CLUEBRINGER_CONF}
-    perl -pi -e 's/^(DB_Port=).*/${1}$ENV{MYSQL_PORT}/' ${CLUEBRINGER_CONF}
     perl -pi -e 's/^(DB_Name=).*/${1}$ENV{CLUEBRINGER_DB_NAME}/' ${CLUEBRINGER_CONF}
     perl -pi -e 's/^(Username=).*/${1}$ENV{CLUEBRINGER_DB_USER}/' ${CLUEBRINGER_CONF}
     perl -pi -e 's/^(Password=).*/${1}$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
@@ -94,7 +102,8 @@ cluebringer_config()
     # Get SQL structure template file.
     tmp_sql="/tmp/policyd_config_tmp.${RANDOM}${RANDOM}"
     if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" ]; then
-        cat > ${tmp_sql} <<EOF
+        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+            cat > ${tmp_sql} <<EOF
 # Import SQL structure template.
 SOURCE $(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep '/DATABASE.mysql$');
 
@@ -102,23 +111,40 @@ SOURCE $(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep '/DATABASE.mysql$')
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_DB_USER}"@localhost IDENTIFIED BY "${CLUEBRINGER_DB_PASSWD}";
 FLUSH PRIVILEGES;
 EOF
+        elif [ X"${BACKEND}" == X"PGSQL" ]; then
+            :
+        fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        cat > ${tmp_sql} <<EOF
+        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+            cat > ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME};
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_DB_USER}"@localhost IDENTIFIED BY "${CLUEBRINGER_DB_PASSWD}";
 USE ${CLUEBRINGER_DB_NAME};
 EOF
 
-        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+            # Append cluebringer default sql template.
             gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.mysql.gz >> ${tmp_sql}
+
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
+            cat > ${tmp_sql} <<EOF
+CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
+CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+\c ${CLUEBRINGER_DB_NAME};
+EOF
+
+            # Append cluebringer default sql template.
             gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.pgsql.gz >> ${tmp_sql}
+
+            cat >> ${tmp_sql} <<EOF
+GRANT SELECT,INSERT,UPDATE,DELETE ON access_control,amavis_rules,checkhelo,checkhelo_blacklist,checkhelo_tracking,checkhelo_whitelist,checkspf,greylisting,greylisting_autoblacklist,greylisting_autowhitelist,greylisting_tracking,greylisting_whitelist,policies,policy_group_members,policy_groups,policy_members,quotas,quotas_limits,quotas_tracking,session_tracking TO ${CLUEBRINGER_DB_USER};
+EOF
         fi
 
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         # Template file will create database: policyd.
-        cat > ${tmp_sql} <<EOF
+        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+            cat > ${tmp_sql} <<EOF
 # Import SQL structure template.
 SOURCE $(eval ${LIST_FILES_IN_PKG} "${PKG_CLUEBRINGER}*" | grep '/DATABASE.mysql$');
 
@@ -127,12 +153,16 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_
 FLUSH PRIVILEGES;
 EOF
 
-    else
-        :
+        elif [ X"${BACKEND}" == X"PGSQL" ]; then
+            :
+        fi
     fi
 
+    # Initial cluebringer db.
+    # Enable greylisting on all inbound emails by default.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
         mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+-- Initialize
 $(cat ${tmp_sql})
 
 -- Delete default sample domains.
@@ -141,8 +171,18 @@ $(cat ${tmp_sql})
 -- Enable greylisting on all inbound emails by default.
 INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, GreylistAuthValidity, GreylistUnAuthValidity, UseAutoWhitelist, AutoWhitelistPeriod, AutoWhitelistCount, AutoWhitelistPercentage, UseAutoBlacklist, AutoBlacklistPeriod, AutoBlacklistCount, AutoBlacklistPercentage, Comment, Disabled) VALUES (1, 'Greylisting Inbound Emails', 1, 240, 'SenderIP:/24', 604800, 86400, 1, 604800, 100, 90, 1, 604800, 100, 20, '', 0);
 EOF
+
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        su - ${PGSQL_SYS_USER} -c "psql -f ${tmp_sql}" >/dev/null 
+        # Initial cluebringer db.
+        su - ${PGSQL_SYS_USER} -c "psql -f ${tmp_sql} >/dev/null" >/dev/null 
+
+        # Enable greylisting on all inbound emails by default.
+        su - ${PGSQL_SYS_USER} -c "psql" >/dev/null  <<EOF
+\c ${CLUEBRINGER_DB_NAME};
+
+-- Enable greylisting on all inbound emails by default.
+INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, GreylistAuthValidity, GreylistUnAuthValidity, UseAutoWhitelist, AutoWhitelistPeriod, AutoWhitelistCount, AutoWhitelistPercentage, UseAutoBlacklist, AutoBlacklistPeriod, AutoBlacklistCount, AutoBlacklistPercentage, Comment, Disabled) VALUES (1, 'Greylisting Inbound Emails', 1, 240, 'SenderIP:/24', 604800, 86400, 1, 604800, 100, 90, 1, 604800, 100, 20, '', 0);
+EOF
     fi
 
     rm -rf ${tmp_sql} 2>/dev/null

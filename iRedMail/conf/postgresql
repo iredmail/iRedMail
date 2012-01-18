@@ -26,6 +26,7 @@ export PGSQL_SYS_USER='postgres'
 export PGSQL_SYS_GROUP='postgres'
 
 export PGSQL_SERVER='localhost'
+export PGSQL_PORT='5432'
 export PGSQL_ROOT_USER='postgres'
 
 export PGSQL_SYS_USER_HOME='/var/lib/postgresql'

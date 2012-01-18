@@ -135,3 +135,5 @@ if [ X"${DISTRO_CODENAME}" == X"lucid" ]; then
 else
     export PHP_CONN_TYPE='mysqli'
 fi
+
+[ X"${BACKEND}" == X"PGSQL" ] && export PHP_CONN_TYPE='pgsql'

@@ -78,7 +78,7 @@ EOF
     cat >> ${TIP_FILE} <<EOF
 PostgreSQL:
     * Bind account (read-only):
-        - Name: ${VMAIL_DB_BIND_USER}, Password: ${VMAIL_DB_BIND_PASSSWD}
+        - Name: ${VMAIL_DB_BIND_USER}, Password: ${VMAIL_DB_BIND_PASSWD}
     * Vmail admin account (read-write):
         - Name: ${VMAIL_DB_ADMIN_USER}, Password: ${VMAIL_DB_ADMIN_PASSWD}
     * Database stored in: ${PGSQL_DATA_DIR}
@@ -99,21 +99,23 @@ pgsql_import_vmail_users()
     export FIRST_USER_PASSWD="$(openssl passwd -1 ${FIRST_USER_PASSWD})"
 
     # Generate SQL.
-    # Modify default SQL template, set storagebasedirectory.
-    perl -pi -e 's#(.*storagebasedirectory.*DEFAULT).*#${1} "$ENV{STORAGE_BASE_DIR}",#' ${PGSQL_VMAIL_STRUCTURE_SAMPLE}
-    perl -pi -e 's#(.*storagenode.*DEFAULT).*#${1} "$ENV{STORAGE_NODE}",#' ${PGSQL_VMAIL_STRUCTURE_SAMPLE}
+    # Modify default SQL template, set storagebasedirectory, storagenode.
+    perl -pi -e 's#(.*storagebasedirectory.*DEFAULT..)(.*)#${1}$ENV{STORAGE_BASE_DIR}${2}#' ${PGSQL_VMAIL_STRUCTURE_SAMPLE}
+    perl -pi -e 's#(.*storagenode.*DEFAULT..)(.*)#${1}$ENV{STORAGE_NODE}${2}#' ${PGSQL_VMAIL_STRUCTURE_SAMPLE}
 
     ECHO_DEBUG "Generating SQL template for postfix virtual hosts: ${PGSQL_INIT_SQL_SAMPLE}."
+
     cat > ${PGSQL_INIT_SQL_SAMPLE} <<EOF
 -- Create database to store mail accounts
 CREATE DATABASE ${VMAIL_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
-\c vmail;
-\i ${PGSQL_VMAIL_STRUCTURE_SAMPLE}
+\c ${VMAIL_DB};
+\i ${PGSQL_SYS_USER_HOME}/vmail.sql;
 
 -- Crete roles:
 -- + vmail: read-only
 -- + vmailadmin: read, write
-CREATE ROLE ${VMAIL_DB_BIND_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_BIND_PASSSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+CREATE USER ${VMAIL_DB_BIND_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_BIND_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+CREATE USER ${VMAIL_DB_ADMIN_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_ADMIN_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 
 -- Set correct privilege for ROLE: vmail
 GRANT SELECT ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user TO ${VMAIL_DB_BIND_USER};
@@ -123,13 +125,23 @@ GRANT SELECT,UPDATE,INSERT,DELETE ON share_folder,used_quota TO ${VMAIL_DB_BIND_
 GRANT SELECT,UPDATE,INSERT ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user,share_folder,used_quota TO ${VMAIL_DB_ADMIN_USER};
 
 -- Add first mail domain
+INSERT INTO domain (domain,transport,created) VALUES ('${FIRST_DOMAIN}', '${TRANSPORT}', NOW());
+
 -- Add first domain admin
--- Assign mail domain to admin
+INSERT INTO admin (username,password,created) VALUES ('${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}','${DOMAIN_ADMIN_PASSWD}', NOW());
+INSERT INTO domain_admins (username,domain,created) VALUES ('${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}','ALL', NOW());
+
 -- Add first mail user
+INSERT INTO mailbox (username,password,name,maildir,quota,domain,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}','${FIRST_USER_PASSWD}','${FIRST_USER}','$( hash_domain ${FIRST_DOMAIN})/$( hash_maildir ${FIRST_USER} )',100, '${FIRST_DOMAIN}', NOW());
+INSERT INTO alias (address,goto,domain,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}', '${FIRST_USER}@${FIRST_DOMAIN}', '${FIRST_DOMAIN}', NOW());
 EOF
 
     ECHO_DEBUG "Import postfix virtual hosts/users: ${PGSQL_INIT_SQL_SAMPLE}."
-    su - ${PGSQL_SYS_USER} -c "psql -f ${PGSQL_INIT_SQL_SAMPLE}" >/dev/null
+    cp -f ${PGSQL_VMAIL_STRUCTURE_SAMPLE} ${PGSQL_SYS_USER_HOME}/vmail.sql >/dev/null
+    cp -f ${PGSQL_INIT_SQL_SAMPLE} ${PGSQL_SYS_USER_HOME}/init.sql >/dev/null
+    chmod 0777 ${PGSQL_SYS_USER_HOME}/{vmail,init}.sql >/dev/null
+    su - ${PGSQL_SYS_USER} -c "psql -f ${PGSQL_SYS_USER_HOME}/init.sql" >/dev/null
+    rm -f ${PGSQL_SYS_USER_HOME}/{vmail,init}.sql >/dev/null
 
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:
