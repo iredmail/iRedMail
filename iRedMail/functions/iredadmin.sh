@@ -101,7 +101,7 @@ AddType text/html .py
 EOF
 
     ECHO_DEBUG "Import iredadmin database template."
-    mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+    mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 # Create databases.
 CREATE DATABASE ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -115,7 +115,7 @@ EOF
 
     # Import addition tables.
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 USE ${IREDADMIN_DB_NAME};
 SOURCE ${SAMPLE_DIR}/used_quota.sql;
 SOURCE ${SAMPLE_DIR}/imap_share_folder.sql;
@@ -137,7 +137,7 @@ EOF
     ECHO_DEBUG "Configure iredadmin database related settings."
     sed -i.tmp \
         -e "/\[iredadmin\]/,/\[/ s#\(^host =\).*#\1 ${MYSQL_SERVER}#" \
-        -e "/\[iredadmin\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_PORT}#" \
+        -e "/\[iredadmin\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_SERVER_PORT}#" \
         -e "/\[iredadmin\]/,/\[/ s#\(^db =\).*#\1 ${IREDADMIN_DB_NAME}#" \
         -e "/\[iredadmin\]/,/\[/ s#\(^user =\).*#\1 ${IREDADMIN_DB_USER}#" \
         -e "/\[iredadmin\]/,/\[/ s#\(^passwd =\).*#\1 ${IREDADMIN_DB_PASSWD}#" \
@@ -165,7 +165,7 @@ EOF
         ECHO_DEBUG "Configure MySQL backend related settings."
         sed -i.tmp \
             -e "/\[vmaildb\]/,/\[/ s#\(^host =\).*#\1 ${MYSQL_SERVER}#" \
-            -e "/\[vmaildb\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_PORT}#" \
+            -e "/\[vmaildb\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_SERVER_PORT}#" \
             -e "/\[vmaildb\]/,/\[/ s#\(^db =\).*#\1 ${VMAIL_DB}#" \
             -e "/\[vmaildb\]/,/\[/ s#\(^user =\).*#\1 ${VMAIL_DB_ADMIN_USER}#" \
             -e "/\[vmaildb\]/,/\[/ s#\(^passwd =\).*#\1 ${VMAIL_DB_ADMIN_PASSWD}#" \
@@ -177,7 +177,7 @@ EOF
     sed -i.tmp \
         -e "/\[policyd\]/,/\[/ s#\(^enabled =\).*#\1 True#" \
         -e "/\[policyd\]/,/\[/ s#\(^host =\).*#\1 ${MYSQL_SERVER}#" \
-        -e "/\[policyd\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_PORT}#" \
+        -e "/\[policyd\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_SERVER_PORT}#" \
         -e "/\[policyd\]/,/\[/ s#\(^db =\).*#\1 ${POLICYD_DB_NAME}#" \
         -e "/\[policyd\]/,/\[/ s#\(^user =\).*#\1 ${POLICYD_DB_USER}#" \
         -e "/\[policyd\]/,/\[/ s#\(^passwd =\).*#\1 ${POLICYD_DB_PASSWD}#" \
@@ -197,7 +197,7 @@ EOF
         -e "/\[amavisd\]/,/\[/ s#\(^quarantine_port =\).*#\1 ${AMAVISD_QUARANTINE_PORT}#" \
         -e "/\[amavisd\]/,/\[/ s#\(^logging_into_sql =\).*#\1 True#" \
         -e "/\[amavisd\]/,/\[/ s#\(^host =\).*#\1 ${MYSQL_SERVER}#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_PORT}#" \
+        -e "/\[amavisd\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_SERVER_PORT}#" \
         -e "/\[amavisd\]/,/\[/ s#\(^db =\).*#\1 ${AMAVISD_DB_NAME}#" \
         -e "/\[amavisd\]/,/\[/ s#\(^user =\).*#\1 ${AMAVISD_DB_USER}#" \
         -e "/\[amavisd\]/,/\[/ s#\(^passwd =\).*#\1 ${AMAVISD_DB_PASSWD}#" \
@@ -222,7 +222,7 @@ iRedAdmin - official web-based admin panel:
         [policyd]
         enabled = True
         host = ${MYSQL_SERVER}
-        port = ${MYSQL_PORT}
+        port = ${MYSQL_SERVER_PORT}
         db = ${POLICYD_DB_NAME}
         user = ${POLICYD_DB_USER}
         passwd = ${POLICYD_DB_PASSWD}
@@ -233,7 +233,7 @@ iRedAdmin - official web-based admin panel:
         quarantine_port = ${AMAVISD_QUARANTINE_PORT}
         logging_into_sql = True
         host = ${MYSQL_SERVER}
-        port = ${MYSQL_PORT}
+        port = ${MYSQL_SERVER_PORT}
         db = ${AMAVISD_DB_NAME}
         user = ${AMAVISD_DB_USER}
         passwd = ${AMAVISD_DB_PASSWD}

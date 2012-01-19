@@ -21,17 +21,18 @@
 #---------------------------------------------------------------------
 
 # Variables for MySQL database server and related.
-
-export MYSQL_SOCKET='/var/lib/mysql/mysql.sock'
-export MYSQL_ROOT_USER='root'
+# MYSQL_SERVER and MYSQL_SERVER_PORT are defined in conf/global.
+# SQL_SERVER and SQL_SERVER_PORT are defined in dialog/config_via_dialog.sh.
 
 # Use lowercase variable name for IP address.
-# Will set SQL_SERVER in functions/backend.sh.
 if [ X"${MYSQL_SERVER}" == X"localhost" ]; then
     export mysql_server='127.0.0.1'
 else
     export mysql_server="${MYSQL_SERVER}"
 fi
+
+export MYSQL_SOCKET='/var/lib/mysql/mysql.sock'
+export MYSQL_ROOT_USER='root'
 
 # MySQL config file.
 if [ X"${DISTRO}" == X"RHEL" ]; then

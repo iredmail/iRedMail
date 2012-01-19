@@ -64,7 +64,7 @@ rcm_import_sql()
 
     # Initial roundcube db.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-        mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 -- Create database and grant privileges
 CREATE DATABASE ${RCM_DB} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${RCM_DB}.* TO "${RCM_DB_USER}"@localhost IDENTIFIED BY '${RCM_DB_PASSWD}';
@@ -82,7 +82,7 @@ EOF
         su - ${PGSQL_SYS_USER} -c 'psql >/dev/null' >/dev/null <<EOF
 -- Create database and role
 CREATE DATABASE ${RCM_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
-CREATE USER ${RCM_DB_USER} WITH ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+CREATE ROLE ${RCM_DB_USER} WITH LOGIN ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 
 -- Import Roundcubemail SQL template
 \c ${RCM_DB};
@@ -90,7 +90,7 @@ CREATE USER ${RCM_DB_USER} WITH ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSUPERUSE
 
 -- Grant privileges
 GRANT SELECT,INSERT,UPDATE,DELETE ON cache,cache_index,cache_messages,cache_thread,contactgroupmembers,contactgroups,contacts,dictionary,identities,searches,session,users TO ${RCM_DB_USER};
-GRANT SELECT,UPDATE,USAGE ON cache_ids,identity_ids,contact_ids,contactgroups_ids,cache_ids,search_ids TO ${RCM_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON cache_ids,contact_ids,contactgroups_ids,identity_ids,search_ids,user_ids TO ${RCM_DB_USER};
 
 -- Grant privilege to update password through roundcube webmail
 \c ${VMAIL_DB};
@@ -102,7 +102,7 @@ EOF
 
     # Do not grant privileges while backend is not MySQL.
     if [ X"${BACKEND}" == X"MYSQL" ]; then
-        mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 -- Grant privileges for Roundcubemail, so that user can change
 -- their own password and setting mail forwarding.
 GRANT UPDATE,SELECT ON ${VMAIL_DB}.mailbox TO "${RCM_DB_USER}"@localhost;
@@ -407,9 +407,14 @@ rcm_plugin_password()
     if [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X"PGSQL" ]; then
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
         perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER}/$ENV{VMAIL_DB}";#' config.inc.php
-        perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE $ENV{VMAIL_DB}.mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u LIMIT 1";#' config.inc.php
         perl -pi -e 's#(.*password_hash_algorithm.*=).*#${1} "md5crypt";#' config.inc.php
         perl -pi -e 's#(.*password_hash_base64.*=).*#${1} false;#' config.inc.php
+
+        if [ X"${BACKEND}" == X"MYSQL" ]; then
+            perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE $ENV{VMAIL_DB}.mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u LIMIT 1";#' config.inc.php
+        elif [ X"${BACKEND}" == X"MYSQL" ]; then
+            perl -pi -e 's#(.*password_query.*=).*#${1} "\c ${VMAIL_DB}; UPDATE mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u";#' config.inc.php
+        fi
 
     elif [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # LDAP backend. Driver: ldap_simple.

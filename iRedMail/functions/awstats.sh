@@ -85,7 +85,7 @@ EOF
 
     AuthMYSQLEnable On
     AuthMySQLHost ${MYSQL_SERVER}
-    AuthMySQLPort ${MYSQL_PORT}
+    AuthMySQLPort ${MYSQL_SERVER_PORT}
     AuthMySQLUser ${VMAIL_DB_BIND_USER}
     AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
     AuthMySQLDB ${VMAIL_DB}

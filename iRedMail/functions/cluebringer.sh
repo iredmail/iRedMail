@@ -86,12 +86,12 @@ cluebringer_config()
         perl -pi -e 's/^#(DSN=DBI:mysql:).*/${1}host=$ENV{MYSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Type=).*/${1}mysql/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Host=).*/${1}$ENV{MYSQL_SERVER}/' ${CLUEBRINGER_CONF}
-        perl -pi -e 's/^(DB_Port=).*/${1}$ENV{MYSQL_PORT}/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(DB_Port=).*/${1}$ENV{MYSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         perl -pi -e 's/^#(DSN=DBI:Pg:).*/${1}host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Type=).*/${1}pgsql/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Host=).*/${1}$ENV{PGSQL_SERVER}/' ${CLUEBRINGER_CONF}
-        perl -pi -e 's/^(DB_Port=).*/${1}$ENV{PGSQL_PORT}/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(DB_Port=).*/${1}$ENV{PGSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
     fi
 
     # Database
@@ -138,6 +138,7 @@ EOF
 
             cat >> ${tmp_sql} <<EOF
 GRANT SELECT,INSERT,UPDATE,DELETE ON access_control,amavis_rules,checkhelo,checkhelo_blacklist,checkhelo_tracking,checkhelo_whitelist,checkspf,greylisting,greylisting_autoblacklist,greylisting_autowhitelist,greylisting_tracking,greylisting_whitelist,policies,policy_group_members,policy_groups,policy_members,quotas,quotas_limits,quotas_tracking,session_tracking TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON access_control_id_seq,amavis_rules_id_seq,checkhelo_blacklist_id_seq,checkhelo_whitelist_id_seq,checkspf_id_seq,greylisting_autoblacklist_id_seq,greylisting_autowhitelist_id_seq,greylisting_whitelist_id_seq,policy_group_members_id_seq,policy_groups_id_seq,policy_members_id_seq,quotas_id_seq,quotas_limits_id_seq TO ${CLUEBRINGER_DB_USER};
 EOF
         fi
 
@@ -161,7 +162,7 @@ EOF
     # Initial cluebringer db.
     # Enable greylisting on all inbound emails by default.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-        mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 -- Initialize
 $(cat ${tmp_sql})
 
@@ -323,7 +324,7 @@ EOF
 
     AuthMYSQLEnable On
     AuthMySQLHost ${MYSQL_SERVER}
-    AuthMySQLPort ${MYSQL_PORT}
+    AuthMySQLPort ${MYSQL_SERVER_PORT}
     AuthMySQLUser ${VMAIL_DB_BIND_USER}
     AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
     AuthMySQLDB ${VMAIL_DB}

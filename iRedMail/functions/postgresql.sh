@@ -39,8 +39,11 @@ EOF
     #ECHO_DEBUG "Force all users to connect PGSQL server with password."
     #perl -pi -e 's#^(local.*)peer#${1}md5#' ${PGSQL_CONF_PG_HBA}
 
-    #ECHO_DEBUG "Listen on only localhost"
-    #perl -pi -e 's/^#(listen_addresses)(.*)/${1} = "localhost"/' ${PGSQL_CONF_POSTGRESQL}
+    ECHO_DEBUG "Listen on only localhost"
+    perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}localhost${2}#' ${PGSQL_CONF_POSTGRESQL}
+
+    ECHO_DEBUG "Set client_min_messages to ERROR."
+    perl -pi -e 's#.*(client_min_messages =).*#${1} error#' ${PGSQL_CONF_POSTGRESQL}
 
     ECHO_DEBUG "Copy iRedMail SSL cert/key with strict permission."
     # SSL is enabled by default.

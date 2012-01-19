@@ -76,13 +76,11 @@ Note:
 " 20 76 8 \
     "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
     "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
-    "phpPgAdmin" "Web-based MySQL management tool" "on" \
-    "Awstats" "Advanced web and mail log analyzer" "on" \
     "Fail2ban" "Ban IP with too many password failures" "on" \
     2>${tmp_config_optional_components}
-else
-    # No hook for other backend yet.
-    :
+
+    #"phpPgAdmin" "Web-based MySQL management tool" "on" \
+    #"Awstats" "Advanced web and mail log analyzer" "on" \
 fi
 
 OPTIONAL_COMPONENTS="$(cat ${tmp_config_optional_components})"

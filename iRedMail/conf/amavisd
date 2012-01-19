@@ -34,7 +34,8 @@ export AMAVISD_DKIM_DIR='/var/lib/dkim'
 export AMAVISD_DB_NAME='amavisd'
 export AMAVISD_DB_USER='amavisd'
 export AMAVISD_DB_PASSWD="$(${RANDOM_STRING})"
-export AMAVISD_DB_SQL_TMPL="${SAMPLE_DIR}/amavisd.mysql"
+export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd.mysql"
+export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd.pgsql"
 export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
 
 # Altermime.
@@ -74,7 +75,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     # Override default Amavisd MySQL template file
     # openSUSE-12.1 ships Amavisd-new-2.7.0
     if [ X"${DISTRO_VERSION}" != X"11.3" -a X"${DISTRO_VERSION}" != X"11.4" ]; then
-        export AMAVISD_DB_SQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
+        export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
     fi
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then

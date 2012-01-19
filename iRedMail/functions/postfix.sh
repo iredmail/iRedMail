@@ -521,8 +521,8 @@ postfix_config_mysql()
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT transport FROM domain WHERE domain='%s' AND active=1
 EOF
@@ -532,8 +532,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT mailbox.transport FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.domain='%d' AND mailbox.domain=domain.domain AND mailbox.transport<>'' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.backupmx=0 AND domain.active=1
 EOF
@@ -542,8 +542,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=0 AND active=1 UNION SELECT alias_domain.alias_domain FROM alias_domain,domain WHERE alias_domain.alias_domain='%s' AND alias_domain.active=1 AND alias_domain.target_domain=domain.domain AND domain.active=1 AND domain.backupmx=0
 EOF
@@ -552,8 +552,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=1 AND active=1
 EOF
@@ -562,8 +562,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT CONCAT(mailbox.storagenode, '/', mailbox.maildir) FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1
 EOF
@@ -572,8 +572,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%s' AND alias.domain='%d' AND alias.domain=domain.domain AND alias.active=1 AND domain.backupmx=0 AND domain.active=1
 EOF
@@ -582,8 +582,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=CONCAT('%u', '@', alias_domain.target_domain) AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1 AND domain.backupmx=0
 EOF
@@ -592,8 +592,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%d' AND alias.address=domain.domain AND alias.active=1 AND domain.active=1 AND domain.backupmx=0
 EOF
@@ -602,8 +602,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=alias_domain.target_domain AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1
 EOF
@@ -612,8 +612,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT mailbox.username FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.domain='%d' AND mailbox.domain=domain.domain AND mailbox.enablesmtp=1 AND mailbox.active=1 AND domain.backupmx=0 AND domain.active=1
 EOF
@@ -622,8 +622,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT bcc_address FROM sender_bcc_domain WHERE domain='%d' AND active=1
 EOF
@@ -632,8 +632,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT sender_bcc_user.bcc_address FROM sender_bcc_user,domain WHERE sender_bcc_user.username='%s' AND sender_bcc_user.domain='%d' AND sender_bcc_user.domain=domain.domain AND domain.backupmx=0 AND domain.active=1 AND sender_bcc_user.active=1
 EOF
@@ -642,8 +642,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT bcc_address FROM recipient_bcc_domain WHERE domain='%d' AND active=1
 EOF
@@ -652,8 +652,8 @@ EOF
 ${CONF_MSG}
 user        = ${VMAIL_DB_BIND_USER}
 password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${mysql_server}
-port        = ${MYSQL_PORT}
+hosts       = ${MYSQL_SERVER}
+port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
 query       = SELECT recipient_bcc_user.bcc_address FROM recipient_bcc_user,domain WHERE recipient_bcc_user.username='%s' AND recipient_bcc_user.domain='%d' AND recipient_bcc_user.domain=domain.domain AND domain.backupmx=0 AND domain.active=1 AND recipient_bcc_user.active=1
 EOF

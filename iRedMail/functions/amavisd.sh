@@ -443,6 +443,9 @@ amavisd_config_general()
 #\$notify_virus_recips_templ= read_text('/var/amavis/notify_virus_recips.txt');
 #\$notify_spam_sender_templ = read_text('/var/amavis/notify_spam_sender.txt');
 #\$notify_spam_admin_templ  = read_text('/var/amavis/notify_spam_admin.txt');
+
+\$sql_allow_8bit_address = 1;
+\$timestamp_fmt_mysql = 1;
 EOF
 
     # Write dkim settings.
@@ -532,20 +535,31 @@ EOF
     fi
 
     # Integrate SQL. Used to store incoming & outgoing related mail information.
-    cat >> ${AMAVISD_CONF} <<EOF
-\$sql_allow_8bit_address = 1;
-\$timestamp_fmt_mysql = 1;
+    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+        cat >> ${AMAVISD_CONF} <<EOF
 @storage_sql_dsn = (
-    ['DBI:mysql:database=${AMAVISD_DB_NAME};host=${MYSQL_SERVER};port=${MYSQL_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
+    ['DBI:mysql:database=${AMAVISD_DB_NAME};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
 );
 EOF
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
+        cat >> ${AMAVISD_CONF} <<EOF
+@storage_sql_dsn = (
+    ['DBI:Pg:database=${AMAVISD_DB_NAME};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
+);
+EOF
+    fi
 
-    # Lookup agains MySQL, for MySQL backend only.
-    if [ X"${BACKEND}" == X"MYSQL" ]; then
+    # SQL lookup.
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+        cat >> ${AMAVISD_CONF} <<EOF
+#@lookup_sql_dsn = @storage_sql_dsn;
+EOF
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
+        # MySQL backend
         cat >> ${AMAVISD_CONF} <<EOF
 # Uncomment below two lines to lookup virtual mail domains from MySQL database.
 #@lookup_sql_dsn =  (
-#    ['DBI:mysql:database=${VMAIL_DB};host=${MYSQL_SERVER};port=${MYSQL_PORT}', '${VMAIL_DB_BIND_USER}', '${VMAIL_DB_BIND_PASSWD}'],
+#    ['DBI:mysql:database=${VMAIL_DB};host=${MYSQL_SERVER};port=${MYSQL_SERVER_PORT}', '${VMAIL_DB_BIND_USER}', '${VMAIL_DB_BIND_PASSWD}'],
 #);
 # For Amavisd-new-2.7.0 and later versions. Placeholder '%d' is available in Amavisd-2.7.0+.
 #\$sql_select_policy = "SELECT domain FROM domain WHERE domain='%d'";
@@ -554,9 +568,18 @@ EOF
 # WARNING: IN() may cause MySQL lookup performance issue.
 #\$sql_select_policy = "SELECT domain FROM domain WHERE CONCAT('@', domain) IN (%k)";
 EOF
-    elif [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
         cat >> ${AMAVISD_CONF} <<EOF
-#@lookup_sql_dsn = @storage_sql_dsn;
+# Uncomment below two lines to lookup virtual mail domains from PostgreSQL database.
+#@lookup_sql_dsn =  (
+#    ['DBI:Pg:database=${VMAIL_DB};host=${MYSQL_SERVER};port=${MYSQL_SERVER_PORT}', '${VMAIL_DB_BIND_USER}', '${VMAIL_DB_BIND_PASSWD}'],
+#);
+# For Amavisd-new-2.7.0 and later versions. Placeholder '%d' is available in Amavisd-2.7.0+.
+#\$sql_select_policy = "SELECT domain FROM domain WHERE domain='%d'";
+
+# For Amavisd-new-2.6.x.
+# WARNING: IN() may cause MySQL lookup performance issue.
+#\$sql_select_policy = "SELECT domain FROM domain WHERE CONCAT('@', domain) IN (%k)";
 EOF
     fi
 
@@ -656,7 +679,7 @@ Amavisd-new:
         - Database name: ${AMAVISD_DB_NAME}
         - Database user: ${AMAVISD_DB_USER}
         - Database password: ${AMAVISD_DB_PASSWD}
-        - SQL template: ${AMAVISD_DB_SQL_TMPL}
+        - SQL template: ${AMAVISD_DB_MYSQL_TMPL}
 
 EOF
 
@@ -667,17 +690,41 @@ amavisd_import_sql()
 {
     ECHO_DEBUG "Import Amavisd database and privileges."
 
-    mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
-/* Create database and grant privileges. */
+    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+-- Create database
 CREATE DATABASE ${AMAVISD_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- Grant privileges
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${AMAVISD_DB_NAME}.* TO "${AMAVISD_DB_USER}"@localhost IDENTIFIED BY '${AMAVISD_DB_PASSWD}';
 
-/* Import Amavisd SQL template. */
+-- Import Amavisd SQL template
 USE ${AMAVISD_DB_NAME};
-SOURCE ${AMAVISD_DB_SQL_TMPL};
+SOURCE ${AMAVISD_DB_MYSQL_TMPL};
 
 FLUSH PRIVILEGES;
 EOF
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
+        chmod 0777 ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
+
+        su - ${PGSQL_SYS_USER} -c "psql" >/dev/null  <<EOF
+-- Create database
+CREATE DATABASE ${AMAVISD_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
+
+-- Create user
+CREATE USER ${AMAVISD_DB_USER} WITH ENCRYPTED PASSWORD '${AMAVISD_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+
+-- Import Amavisd SQL template
+\c ${AMAVISD_DB_NAME};
+\i ${PGSQL_SYS_USER_HOME}/amavisd.sql;
+
+-- Grant privileges
+GRANT SELECT,INSERT,UPDATE,DELETE ON maddr,mailaddr,msgrcpt,msgs,policy,quarantine,users,wblist TO ${AMAVISD_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON maddr_id_seq,mailaddr_id_seq,policy_id_seq,users_id_seq TO ${AMAVISD_DB_USER};
+EOF
+        rm -f ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
+    fi
 
     echo 'export status_amavisd_import_sql="DONE"' >> ${STATUS_FILE}
 }

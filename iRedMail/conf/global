@@ -38,10 +38,17 @@ export MAILDIR_STYLE='hashed'
 export STORAGE_NODE='vmail1'
 
 # For distribute deployment.
+# MySQL server
 export MYSQL_SERVER='127.0.0.1'
-export MYSQL_PORT='3306'
+export MYSQL_SERVER_PORT='3306'
+# PGSQL server
+export PGSQL_SERVER='localhost'
+export PGSQL_SERVER_PORT='5432'
+# POP3/IMAP server (Dovecot)
 export IMAP_SERVER='127.0.0.1'
+# SMTP server (Postfix)
 export SMTP_SERVER='127.0.0.1'
+# Amavisd
 export AMAVISD_SERVER='127.0.0.1'
 
 # For managesieve service and software.
