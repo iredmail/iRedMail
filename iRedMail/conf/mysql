@@ -26,6 +26,7 @@ export MYSQL_SOCKET='/var/lib/mysql/mysql.sock'
 export MYSQL_ROOT_USER='root'
 
 # Use lowercase variable name for IP address.
+# Will set SQL_SERVER in functions/backend.sh.
 if [ X"${MYSQL_SERVER}" == X"localhost" ]; then
     export mysql_server='127.0.0.1'
 else

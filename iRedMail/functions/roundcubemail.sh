@@ -123,9 +123,9 @@ rcm_config()
 
     cd ${RCM_HTTPD_ROOT}/config/
 
-    export RCM_DB_USER RCM_DB_PASSWD RCMD_DB MYSQL_SERVER FIRST_DOMAIN
+    export RCM_DB_USER RCM_DB_PASSWD RCMD_DB MYSQL_SERVER PGSQL_SERVER SQL_SERVER FIRST_DOMAIN
 
-    perl -pi -e 's#(.*db_dsnw.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{MYSQL_SERVER}/$ENV{RCM_DB}";#' db.inc.php
+    perl -pi -e 's#(.*db_dsnw.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER}/$ENV{RCM_DB}";#' db.inc.php
 
     # ----------------------------------
     # LOGGING/DEBUGGING
@@ -404,10 +404,10 @@ rcm_plugin_password()
     # Require the new password to contain a letter and punctuation character
     perl -pi -e 's#(.*password_require_nonalpha.*=).*#${1} true;#' config.inc.php
 
-    if [ X"${BACKEND}" == X"MYSQL" ]; then
+    if [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X"PGSQL" ]; then
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
-        perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{'PHP_CONN_TYPE'}://$ENV{'RCM_DB_USER'}:$ENV{'RCM_DB_PASSWD'}\@$ENV{'MYSQL_SERVER'}/$ENV{'VMAIL_DB'}";#' config.inc.php
-        perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE $ENV{'VMAIL_DB'}.mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u LIMIT 1";#' config.inc.php
+        perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER}/$ENV{VMAIL_DB}";#' config.inc.php
+        perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE $ENV{VMAIL_DB}.mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u LIMIT 1";#' config.inc.php
         perl -pi -e 's#(.*password_hash_algorithm.*=).*#${1} "md5crypt";#' config.inc.php
         perl -pi -e 's#(.*password_hash_base64.*=).*#${1} false;#' config.inc.php
 

@@ -25,6 +25,8 @@
 export PGSQL_SYS_USER='postgres'
 export PGSQL_SYS_GROUP='postgres'
 
+# PGSQL server address
+# Will set SQL_SERVER in functions/backend.sh.
 export PGSQL_SERVER='localhost'
 export PGSQL_PORT='5432'
 export PGSQL_ROOT_USER='postgres'

@@ -33,10 +33,13 @@ backend_install()
         # Initialize MySQL database server.
         check_status_before_run mysql_initialize
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
-        # Initialize MySQL.
+        export SQL_SERVER="${MYSQL_SERVER}"
+
         check_status_before_run mysql_initialize
         check_status_before_run mysql_import_vmail_users
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        export SQL_SERVER="${PGSQL_SERVER}"
+
         check_status_before_run pgsql_initialize
         check_status_before_run pgsql_import_vmail_users
     else

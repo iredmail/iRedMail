@@ -151,9 +151,10 @@ EOF
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
 
         backup_file ${DOVECOT_MYSQL_CONF}
-        cp -f ${SAMPLE_DIR}/conf/dovecot2-mysql.conf ${DOVECOT_MYSQL_CONF}
+        cp -f ${SAMPLE_DIR}/conf/dovecot2-sql.conf ${DOVECOT_MYSQL_CONF}
 
-        perl -pi -e 's#PH_MYSQL_SERVER#$ENV{MYSQL_SERVER}#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_SQL_SERVER#$ENV{MYSQL_SERVER}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_MYSQL_CONF}
@@ -163,9 +164,10 @@ EOF
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
 
         backup_file ${DOVECOT_PGSQL_CONF}
-        cp -f ${SAMPLE_DIR}/conf/dovecot2-pgsql.conf ${DOVECOT_PGSQL_CONF}
+        cp -f ${SAMPLE_DIR}/conf/dovecot2-sql.conf ${DOVECOT_PGSQL_CONF}
 
-        perl -pi -e 's#PH_PGSQL_SERVER#$ENV{PGSQL_SERVER}#' ${DOVECOT_PGSQL_CONF}
+        perl -pi -e 's#PH_SQL_DRIVER#pgsql#' ${DOVECOT_PGSQL_CONF}
+        perl -pi -e 's#PH_SQL_SERVER#$ENV{PGSQL_SERVER}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_PGSQL_CONF}
@@ -175,17 +177,17 @@ EOF
     fi
 
 
-        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-            realtime_quota_db_name="${IREDADMIN_DB_NAME}"
-            realtime_quota_db_user="${IREDADMIN_DB_USER}"
-            realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
-        else
-            realtime_quota_db_name="${VMAIL_DB}"
-            realtime_quota_db_user="${VMAIL_DB_ADMIN_USER}"
-            realtime_quota_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
-        fi
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+        realtime_quota_db_name="${IREDADMIN_DB_NAME}"
+        realtime_quota_db_user="${IREDADMIN_DB_USER}"
+        realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
+    else
+        realtime_quota_db_name="${VMAIL_DB}"
+        realtime_quota_db_user="${VMAIL_DB_ADMIN_USER}"
+        realtime_quota_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
+    fi
 
-        cat > ${DOVECOT_REALTIME_QUOTA_CONF} <<EOF
+    cat > ${DOVECOT_REALTIME_QUOTA_CONF} <<EOF
 ${CONF_MSG}
 connect = host=${MYSQL_SERVER} dbname=${realtime_quota_db_name} user=${realtime_quota_db_user} password=${realtime_quota_db_passwd}
 map {
@@ -202,11 +204,11 @@ map {
 }
 EOF
 
-        # Create MySQL database ${IREDADMIN_DB_USER} and table 'used_quota'
-        # which used to store realtime quota.
-        if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
-            # If iRedAdmin is not used, create database and import table here.
-            mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+    # Create MySQL database ${IREDADMIN_DB_USER} and table 'used_quota'
+    # which used to store realtime quota.
+    if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
+        # If iRedAdmin is not used, create database and import table here.
+        mysql -h${MYSQL_SERVER} -P${MYSQL_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 # Create databases.
 CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -218,7 +220,7 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_U
 FLUSH PRIVILEGES;
 EOF
 
-        fi
+    fi
     # ---- real time dict quota ----
 
     # ---- IMAP shared folder ----
