@@ -154,6 +154,9 @@ elif [ X"${BACKEND}" == X"PGSQL" ]; then
     . ${DIALOG_DIR}/pgsql_config.sh
 fi
 
+echo "export SQL_SERVER='${SQL_SERVER}'" >> ${CONFIG_FILE}
+echo "export SQL_SERVER_PORT='${SQL_SERVER_PORT}'" >> ${CONFIG_FILE}
+
 # Virtual domain configuration.
 . ${DIALOG_DIR}/virtual_domain_config.sh
 

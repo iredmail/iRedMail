@@ -393,7 +393,27 @@ rcm_plugin_password()
     perl -pi -e 's#(.*rcmail_config.*plugins.*=.*array\()(.*\).*)#${1}"password",${2}#' main.inc.php
 
     cd ${RCM_HTTPD_ROOT}/plugins/password/ && \
-    cp config.inc.php.dist config.inc.php
+        cp config.inc.php.dist config.inc.php
+
+    if [ X"${BACKEND}" == X"PGSQL" ]; then
+        # Patch to escape single quote while updating password
+        cd ${RCM_HTTPD_ROOT}
+        patch -p0 <${PATCH_DIR}/roundcubemail/password_driver_pgsql.patch >/dev/null
+
+        # Re-generate config.inc.php because it's hard to use perl to update
+        # 'password_query' setting.
+        cd ${RCM_HTTPD_ROOT}/plugins/password/
+        sed '/password_query/,$d' config.inc.php.dist > config.inc.php.tmp
+        # Update 'password_query' setting.
+        cat >> config.inc.php.tmp <<EOF
+\$rcmail_config['password_query'] = "SELECT * from dblink_exec(E'host=\'${PGSQL_SERVER}\' user=\'${RCM_DB_USER}\' password=\'${RCM_DB_PASSWD}\' dbname=\'${VMAIL_DB}\'', E'UPDATE mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u')";
+EOF
+
+        #perl -pi -e 's#(.*password_query.*)##' config.inc.php.tmp
+        sed '1,/password_query/d' config.inc.php.dist >> config.inc.php.tmp
+        rm -f config.inc.php &>/dev/null && \
+            mv config.inc.php.tmp config.inc.php
+    fi
 
     # Determine whether current password is required to change password
     perl -pi -e 's#(.*password_confirm_current.*=).*#${1} true;#' config.inc.php
@@ -412,8 +432,6 @@ rcm_plugin_password()
 
         if [ X"${BACKEND}" == X"MYSQL" ]; then
             perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE $ENV{VMAIL_DB}.mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u LIMIT 1";#' config.inc.php
-        elif [ X"${BACKEND}" == X"MYSQL" ]; then
-            perl -pi -e 's#(.*password_query.*=).*#${1} "\c ${VMAIL_DB}; UPDATE mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u";#' config.inc.php
         fi
 
     elif [ X"${BACKEND}" == X"OPENLDAP" ]; then

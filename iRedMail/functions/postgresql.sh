@@ -114,6 +114,10 @@ CREATE DATABASE ${VMAIL_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
 \c ${VMAIL_DB};
 \i ${PGSQL_SYS_USER_HOME}/vmail.sql;
 
+-- Create extension dblink.
+-- Used to change password through Roundcube webmail
+CREATE EXTENSION dblink;
+
 -- Crete roles:
 -- + vmail: read-only
 -- + vmailadmin: read, write

@@ -191,7 +191,8 @@ install_all()
             ALL_PKGS="${ALL_PKGS} postgresql-server"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client"
+            # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
+            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib"
         fi
     else
         :
