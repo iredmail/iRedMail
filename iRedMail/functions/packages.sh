@@ -55,81 +55,6 @@ install_all()
             ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
         fi
     fi
-    #### End syslog ####
-
-    #################
-    # Apache and PHP.
-    #
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH}"
-        if [ X"${DISTRO_VERSION}" == X"5" ]; then
-            ALL_PKGS="${ALL_PKGS} php-imap${PKG_ARCH} libmcrypt${PKG_ARCH} php-mcrypt${PKG_ARCH} php-mhash${PKG_ARCH} php-mbstring${PKG_ARCH}"
-        fi
-        ENABLED_SERVICES="${ENABLED_SERVICES} httpd"
-
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} apache2-prefork apache2-mod_php5 php5-iconv php5-ldap php5-mysql php5-mcrypt php5-mbstring php5-gettext php5-dom php5-json php5-intl php5-fileinfo"
-        if [ X"${DISTRO_VERSION}" == X"11.3" -o X"${DISTRO_VERSION}" == X"11.4" ]; then
-            ALL_PKGS="${ALL_PKGS} php5-hash"
-        fi
-        ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
-
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} apache2 apache2-mpm-prefork apache2.2-common libapache2-mod-php5 libapache2-mod-auth-mysql php5-cli php5-imap php5-gd php5-mcrypt php5-mysql php5-ldap php5-pgsql"
-
-        if [ X"${DISTRO_CODENAME}" != X"oneiric" ]; then
-            ALL_PKGS="${ALL_PKGS} php5-mhash"
-        fi
-
-        if [ X"${DISTRO_CODENAME}" == X"lucid" \
-            -o X"${DISTRO_CODENAME}" == X"natty" \
-            -o X"${DISTRO_CODENAME}" == X"oneiric" \
-            ]; then
-            if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-                ALL_PKGS="${ALL_PKGS} php-net-ldap2"
-            fi
-        fi
-
-        ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
-    else
-        :
-    fi
-    #### End Apache & PHP ####
-
-    ###############
-    # Postfix.
-    #
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} postfix${PKG_ARCH}"
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        # On OpenSuSE, postfix already has ldap_table support.
-        ALL_PKGS="${ALL_PKGS} postfix"
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
-    else
-        :
-    fi
-
-    ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
-    #### End Postfix ####
-
-    #############
-    # Awstats.
-    #
-    if [ X"${USE_AWSTATS}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} awstats.noarch"
-        elif [ X"${DISTRO}" == X"SUSE" ]; then
-            ALL_PKGS="${ALL_PKGS} awstats"
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            ALL_PKGS="${ALL_PKGS} awstats"
-        else
-            :
-        fi
-    else
-        :
-    fi
-    #### End Awstats ####
 
     #################################################
     # Backend: OpenLDAP, MySQL, PGSQL and extra packages.
@@ -207,9 +132,62 @@ install_all()
             # Postfix module
             ALL_PKGS="${ALL_PKGS} postfix-pgsql"
         fi
+    fi
+
+    #################
+    # Apache and PHP.
+    #
+    if [ X"${DISTRO}" == X"RHEL" ]; then
+        ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH}"
+        if [ X"${DISTRO_VERSION}" == X"5" ]; then
+            ALL_PKGS="${ALL_PKGS} php-imap${PKG_ARCH} libmcrypt${PKG_ARCH} php-mcrypt${PKG_ARCH} php-mhash${PKG_ARCH} php-mbstring${PKG_ARCH}"
+        fi
+        ENABLED_SERVICES="${ENABLED_SERVICES} httpd"
+
+    elif [ X"${DISTRO}" == X"SUSE" ]; then
+        ALL_PKGS="${ALL_PKGS} apache2-prefork apache2-mod_php5 php5-iconv php5-ldap php5-mysql php5-mcrypt php5-mbstring php5-gettext php5-dom php5-json php5-intl php5-fileinfo"
+        if [ X"${DISTRO_VERSION}" == X"11.3" -o X"${DISTRO_VERSION}" == X"11.4" ]; then
+            ALL_PKGS="${ALL_PKGS} php5-hash"
+        fi
+        ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
+
+    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        ALL_PKGS="${ALL_PKGS} apache2 apache2-mpm-prefork apache2.2-common libapache2-mod-php5 php5-cli php5-imap php5-gd php5-mcrypt php5-mysql php5-ldap php5-pgsql"
+
+        # Authentication modules
+        ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql libapache2-mod-auth-pgsql"
+
+        if [ X"${DISTRO_CODENAME}" != X"oneiric" ]; then
+            ALL_PKGS="${ALL_PKGS} php5-mhash"
+        fi
+
+        if [ X"${DISTRO_CODENAME}" == X"lucid" \
+            -o X"${DISTRO_CODENAME}" == X"natty" \
+            -o X"${DISTRO_CODENAME}" == X"oneiric" \
+            ]; then
+            if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+                ALL_PKGS="${ALL_PKGS} php-net-ldap2"
+            fi
+        fi
+
+        ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
     else
         :
     fi
+
+    ###############
+    # Postfix.
+    #
+    if [ X"${DISTRO}" == X"RHEL" ]; then
+        ALL_PKGS="${ALL_PKGS} postfix${PKG_ARCH}"
+    elif [ X"${DISTRO}" == X"SUSE" ]; then
+        # On OpenSuSE, postfix already has ldap_table support.
+        ALL_PKGS="${ALL_PKGS} postfix"
+    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
+    fi
+
+    ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
 
     # Policyd.
     if [ X"${DISTRO}" == X"RHEL" ]; then
@@ -338,6 +316,16 @@ EOF
         ALL_PKGS="${ALL_PKGS} libmail-spf-perl"
     fi
 
+    # phpPgAdmin
+    if [ X"${USE_PHPPGADMIN}" == X"YES" ]; then
+        if [ X"${DISTRO}" == X"RHEL" ]; then
+            :
+        elif [ X"${DISTRO}" == X"SUSE" ]; then
+            ALL_PKGS="${ALL_PKGS} phpPgAdmin"
+        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+            ALL_PKGS="${ALL_PKGS} phppgadmin"
+        fi
+    fi
 
     ############
     # iRedAPD.
@@ -376,6 +364,18 @@ EOF
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
     fi
 
+    #############
+    # Awstats.
+    #
+    if [ X"${USE_AWSTATS}" == X"YES" ]; then
+        if [ X"${DISTRO}" == X"RHEL" ]; then
+            ALL_PKGS="${ALL_PKGS} awstats.noarch"
+        elif [ X"${DISTRO}" == X"SUSE" ]; then
+            ALL_PKGS="${ALL_PKGS} awstats"
+        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+            ALL_PKGS="${ALL_PKGS} awstats"
+        fi
+    fi
 
     #### Fail2ban ####
     if [ X"${USE_FAIL2BAN}" == X"YES" ]; then

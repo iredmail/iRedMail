@@ -76,6 +76,7 @@ check_env
 . ${CONF_DIR}/spamassassin
 . ${CONF_DIR}/roundcube
 . ${CONF_DIR}/phpmyadmin
+. ${CONF_DIR}/phppgadmin
 . ${CONF_DIR}/awstats
 . ${CONF_DIR}/fail2ban
 . ${CONF_DIR}/iredadmin
@@ -95,16 +96,8 @@ fi
 . ${FUNCTIONS_DIR}/user_vmail.sh
 
 . ${FUNCTIONS_DIR}/apache_php.sh
-
-# LDAP
 . ${FUNCTIONS_DIR}/openldap.sh
-. ${FUNCTIONS_DIR}/phpldapadmin.sh
-
-# MySQL
 . ${FUNCTIONS_DIR}/mysql.sh
-. ${FUNCTIONS_DIR}/phpmyadmin.sh
-
-# PostgreSQL
 . ${FUNCTIONS_DIR}/postgresql.sh
 
 # Switch backend
@@ -119,6 +112,9 @@ fi
 . ${FUNCTIONS_DIR}/amavisd.sh
 . ${FUNCTIONS_DIR}/spamassassin.sh
 . ${FUNCTIONS_DIR}/roundcubemail.sh
+. ${FUNCTIONS_DIR}/phpldapadmin.sh
+. ${FUNCTIONS_DIR}/phpmyadmin.sh
+. ${FUNCTIONS_DIR}/phppgadmin.sh
 . ${FUNCTIONS_DIR}/awstats.sh
 . ${FUNCTIONS_DIR}/fail2ban.sh
 . ${FUNCTIONS_DIR}/iredadmin.sh

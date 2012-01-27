@@ -413,11 +413,8 @@ openldap_data_initialize()
     ECHO_DEBUG "Starting OpenLDAP."
     ${LDAP_INIT_SCRIPT} restart >/dev/null
 
-    ECHO_INFO -n "Sleep 5 seconds for LDAP daemon initialize:"
-    for i in 5 4 3 2 1; do
-        echo -n " ${i}" && sleep 1
-    done
-    echo '.'
+    ECHO_DEBUG -n "Sleep 5 seconds for LDAP daemon initialize:"
+    sleep 5
 
     ECHO_DEBUG "Initialize LDAP tree."
     # home_mailbox format is 'maildir/' by default.

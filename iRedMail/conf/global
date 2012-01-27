@@ -42,7 +42,7 @@ export STORAGE_NODE='vmail1'
 export MYSQL_SERVER='127.0.0.1'
 export MYSQL_SERVER_PORT='3306'
 # PGSQL server
-export PGSQL_SERVER='localhost'
+export PGSQL_SERVER='127.0.0.1'
 export PGSQL_SERVER_PORT='5432'
 # POP3/IMAP server (Dovecot)
 export IMAP_SERVER='127.0.0.1'

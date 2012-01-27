@@ -25,6 +25,7 @@
 . ${CONF_DIR}/global
 . ${CONF_DIR}/core
 . ${CONF_DIR}/openldap
+. ${CONF_DIR}/postfix
 . ${CONF_DIR}/roundcube
 
 trap "exit 255" 2

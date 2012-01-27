@@ -873,6 +873,7 @@ EOF
 EOF
     done
 
+        echo '' >> ${TIP_FILE}
     echo 'export status_postfix_config_vhost_pgsql="DONE"' >> ${STATUS_FILE}
 }
 

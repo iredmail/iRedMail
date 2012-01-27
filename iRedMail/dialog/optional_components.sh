@@ -76,11 +76,10 @@ Note:
 " 20 76 8 \
     "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
     "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
+    "phpPgAdmin" "Web-based MySQL management tool" "on" \
+    "Awstats" "Advanced web and mail log analyzer" "on" \
     "Fail2ban" "Ban IP with too many password failures" "on" \
     2>${tmp_config_optional_components}
-
-    #"phpPgAdmin" "Web-based MySQL management tool" "on" \
-    #"Awstats" "Advanced web and mail log analyzer" "on" \
 fi
 
 OPTIONAL_COMPONENTS="$(cat ${tmp_config_optional_components})"
@@ -95,18 +94,18 @@ echo ${OPTIONAL_COMPONENTS} | grep -i '\<DKIM\>' >/dev/null 2>&1
 echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' >/dev/null 2>&1
 [ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${CONFIG_FILE}
 
-echo ${OPTIONAL_COMPONENTS} | grep -i 'roundcubemail' >/dev/null 2>&1
-if [ X"$?" == X"0" ]; then
+if echo ${OPTIONAL_COMPONENTS} | grep -i 'roundcubemail' &>/dev/null; then
     export USE_WEBMAIL='YES'
     export USE_RCM='YES'
+    export REQUIRE_PHP='YES'
     echo "export USE_WEBMAIL='YES'" >> ${CONFIG_FILE}
     echo "export USE_RCM='YES'" >> ${CONFIG_FILE}
     echo "export REQUIRE_PHP='YES'" >> ${CONFIG_FILE}
 fi
 
-echo ${OPTIONAL_COMPONENTS} | grep -i 'phpldapadmin' >/dev/null 2>&1
-if [ X"$?" == X"0" ]; then
+if echo ${OPTIONAL_COMPONENTS} | grep -i 'phpldapadmin' &>/dev/null; then
     export USE_PHPLDAPADMIN='YES'
+    export REQUIRE_PHP='YES'
     echo "export USE_PHPLDAPADMIN='YES'" >>${CONFIG_FILE}
     echo "export REQUIRE_PHP='YES'" >> ${CONFIG_FILE}
 fi
@@ -118,11 +117,20 @@ if [ X"$?" == X"0" ]; then
     echo "export REQUIRE_PHP='YES'" >> ${CONFIG_FILE}
 fi
 
-echo ${OPTIONAL_COMPONENTS} | grep -i 'awstats' >/dev/null 2>&1
-[ X"$?" == X"0" ] && export USE_AWSTATS='YES' && echo "export USE_AWSTATS='YES'" >>${CONFIG_FILE}
+if echo ${OPTIONAL_COMPONENTS} | grep -i 'phppgadmin' &>/dev/null; then
+    export USE_PHPPGADMIN='YES'
+    echo "export USE_PHPPGADMIN='YES'" >>${CONFIG_FILE}
+fi
 
-echo ${OPTIONAL_COMPONENTS} | grep -i 'fail2ban' >/dev/null 2>&1
-[ X"$?" == X"0" ] && export USE_FAIL2BAN='YES' && echo "export USE_FAIL2BAN='YES'" >>${CONFIG_FILE}
+if echo ${OPTIONAL_COMPONENTS} | grep -i 'awstats' &>/dev/null; then
+    export USE_AWSTATS='YES'
+    echo "export USE_AWSTATS='YES'" >>${CONFIG_FILE}
+fi
+
+if echo ${OPTIONAL_COMPONENTS} | grep -i 'fail2ban' &>/dev/null; then
+    export USE_FAIL2BAN='YES'
+    echo "export USE_FAIL2BAN='YES'" >>${CONFIG_FILE}
+fi
 
 # ----------------------------------------------------------------
 # Promot to choose the prefer language for webmail.

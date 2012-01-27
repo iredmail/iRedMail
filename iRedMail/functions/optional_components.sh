@@ -24,6 +24,10 @@ optional_components()
     [ X"${USE_PHPMYADMIN}" == X"YES" ] && \
         check_status_before_run phpmyadmin_install
 
+    # phpPgAdmin
+    [ X"${USE_PHPPGADMIN}" == X"YES" ] && \
+        check_status_before_run phppgadmin_install
+
     # Awstats.
     [ X"${USE_AWSTATS}" == X"YES" ] && \
         check_status_before_run awstats_config_basic && \

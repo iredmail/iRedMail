@@ -187,6 +187,7 @@ EOF
 
         [ X"${BACKEND}" == X"OPENLDAP" ] && a2enmod authnz_ldap > /dev/null
         [ X"${BACKEND}" == X"MYSQL" ] && a2enmod auth_mysql > /dev/null
+        [ X"${BACKEND}" == X"PGSQL" ] && a2enmod 000_auth_pgsql > /dev/null
 
         # Ubuntu 10.04.
         # Comments starting with '#' are deprecated.

@@ -133,9 +133,26 @@ EOF
 Auth_MySQL_Info ${MYSQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
-        else
-            :
         fi
+
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        # Use PGSQL auth.
+        cat >> ${AWSTATS_HTTPD_CONF} <<EOF
+    Auth_PG_authoritative on
+    Auth_PG_host ${PGSQL_SERVER}
+    Auth_PG_port ${PGSQL_SERVER_PORT}
+    Auth_PG_database ${VMAIL_DB}
+    Auth_PG_user ${VMAIL_DB_BIND_USER}
+    Auth_PG_pwd ${VMAIL_DB_BIND_PASSWD}
+    Auth_PG_pwd_table admin
+    #Auth_PG_pwd_whereclause 'AND xxx'
+    Auth_PG_uid_field username
+    Auth_PG_pwd_field password
+    Auth_PG_lowercase_uid on
+    Auth_PG_encrypted on
+    Auth_PG_hash_type CRYPT
+EOF
+
     else
         # Use basic auth mech.
         cat >> ${AWSTATS_HTTPD_CONF} <<EOF

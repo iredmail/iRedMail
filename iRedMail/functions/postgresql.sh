@@ -59,11 +59,8 @@ EOF
     ECHO_DEBUG "Start PostgreSQL server"
     ${PGSQL_INIT_SCRIPT} restart >/dev/null 2>&1
 
-    ECHO_INFO -n "Sleep 5 seconds for PostgreSQL daemon initialize:"
-    for i in 5 4 3 2 1; do
-        echo -n " ${i}" && sleep 1
-    done
-    echo '.'
+    ECHO_DEBUG -n "Sleep 5 seconds for PostgreSQL daemon initialize:"
+    sleep 5
 
     ECHO_DEBUG "Setting password for PostgreSQL admin: (${PGSQL_ROOT_USER})."
     su - ${PGSQL_SYS_USER} -c "psql -d template1" >/dev/null <<EOF
@@ -88,7 +85,7 @@ PostgreSQL:
     * RC script: ${PGSQL_INIT_SCRIPT}
     * Log file: /var/log/postgresql/
     * See also:
-        - ${PGSQL_INIT_SQL}
+        - ${PGSQL_INIT_SQL_SAMPLE}
         - ${PGSQL_DOT_PGPASS}
 
 EOF
@@ -153,8 +150,8 @@ EOF
 
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:
-    - ${PGSQL_INIT_SQL_SAMPLE}
     - ${PGSQL_VMAIL_STRUCTURE_SAMPLE}
+    - ${PGSQL_INIT_SQL_SAMPLE}
 
 EOF
 

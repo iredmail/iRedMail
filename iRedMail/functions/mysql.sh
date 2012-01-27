@@ -40,11 +40,8 @@ EOF
 
     ${MYSQLD_INIT_SCRIPT} restart >/dev/null 2>&1
 
-    ECHO_INFO -n "Sleep 5 seconds for MySQL daemon initialize:"
-    for i in 5 4 3 2 1; do
-        echo -n " ${i}" && sleep 1
-    done
-    echo '.'
+    ECHO_DEBUG -n "Sleep 5 seconds for MySQL daemon initialize:"
+    sleep 5
 
     echo '' > ${MYSQL_INIT_SQL}
 
@@ -133,8 +130,8 @@ EOF
 
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:
-    - ${MYSQL_VMAIL_SQL}
     - ${MYSQL_VMAIL_STRUCTURE_SAMPLE}
+    - ${MYSQL_VMAIL_SQL}
 
 EOF
 

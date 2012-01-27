@@ -513,5 +513,6 @@ gen_pem_key()
 SSL cert keys (size: ${SSL_KEY_SIZE}):
     - ${SSL_CERT_FILE}
     - ${SSL_KEY_FILE}
+
 EOF
 }

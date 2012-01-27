@@ -372,10 +372,33 @@ EOF
 Auth_MySQL_Info ${MYSQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
-        else
-            :
         fi  # DISTRO
-    fi  # BACKEND
+
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        # Use mod_auth_pgsql.
+        if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+    Auth_PG_authoritative on
+    Auth_PG_host ${PGSQL_SERVER}
+    Auth_PG_port ${PGSQL_SERVER_PORT}
+    Auth_PG_database ${VMAIL_DB}
+    Auth_PG_user ${VMAIL_DB_BIND_USER}
+    Auth_PG_pwd ${VMAIL_DB_BIND_PASSWD}
+    Auth_PG_pwd_table admin
+    #Auth_PG_pwd_whereclause 'AND xxx'
+    Auth_PG_uid_field username
+    Auth_PG_pwd_field password
+    Auth_PG_lowercase_uid on
+    Auth_PG_encrypted on
+    Auth_PG_hash_type CRYPT
+EOF
+        fi
+
+        # Set file permission.
+        chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
+
+    fi
+    # END BACKEND
 
         # Close <Directory> container.
         cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
