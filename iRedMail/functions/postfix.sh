@@ -159,6 +159,9 @@ EOF
     postconf -e virtual_gid_maps="static:${VMAIL_USER_GID}"
     postconf -e virtual_mailbox_base="${STORAGE_BASE_DIR}"
 
+    # Reject unlisted sender
+    postconf -e smtpd_reject_unlisted_sender='yes'
+
     # Simple backscatter block method.
     #postconf -e header_checks="pcre:${POSTFIX_FILE_HEADER_CHECKS}"
     cat >> ${POSTFIX_FILE_HEADER_CHECKS} <<EOF
@@ -230,7 +233,7 @@ EOF
     echo 'export status_postfix_config_basic="DONE"' >> ${STATUS_FILE}
 }
 
-postfix_config_ldap()
+postfix_config_vhost_ldap()
 {
     ECHO_DEBUG "Configure Postfix for LDAP lookup."
 
@@ -249,7 +252,6 @@ postfix_config_ldap()
     #postconf -e relay_recipient_maps="proxy:ldap:${ldap_virtual_mailbox_maps_cf}"
 
     postconf -e smtpd_sender_login_maps="proxy:ldap:${ldap_sender_login_maps_cf}"
-    postconf -e smtpd_reject_unlisted_sender='yes'
 
     cat > ${ldap_virtual_mailbox_domains_cf} <<EOF
 ${CONF_MSG}
@@ -494,10 +496,10 @@ EOF
 EOF
     done
 
-    echo 'export status_postfix_config_ldap="DONE"' >> ${STATUS_FILE}
+    echo 'export status_postfix_config_vhost_ldap="DONE"' >> ${STATUS_FILE}
 }
 
-postfix_config_mysql()
+postfix_config_vhost_mysql()
 {
     ECHO_DEBUG "Configure Postfix for MySQL lookup."
 
@@ -514,7 +516,6 @@ postfix_config_mysql()
     #postconf -e relay_recipient_maps="proxy:mysql:${mysql_virtual_mailbox_maps_cf}"
 
     postconf -e smtpd_sender_login_maps="proxy:mysql:${mysql_sender_login_maps_cf}"
-    postconf -e smtpd_reject_unlisted_sender='yes'
 
     # Per-domain transport maps.
     cat > ${mysql_transport_maps_domain_cf} <<EOF
@@ -685,18 +686,205 @@ EOF
 EOF
     done
 
-    echo 'export status_postfix_config_mysql="DONE"' >> ${STATUS_FILE}
+    echo 'export status_postfix_config_vhost_mysql="DONE"' >> ${STATUS_FILE}
+}
+
+postfix_config_vhost_pgsql()
+{
+    ECHO_DEBUG "Configure Postfix for PostgreSQL lookup."
+
+    postconf -e transport_maps="proxy:pgsql:${pgsql_transport_maps_user_cf}, proxy:pgsql:${pgsql_transport_maps_domain_cf}"
+    postconf -e virtual_mailbox_domains="proxy:pgsql:${pgsql_virtual_mailbox_domains_cf}"
+    postconf -e virtual_mailbox_maps="proxy:pgsql:${pgsql_virtual_mailbox_maps_cf}"
+    postconf -e virtual_alias_maps="proxy:pgsql:${pgsql_virtual_alias_maps_cf}, proxy:pgsql:${pgsql_domain_alias_maps_cf}, proxy:pgsql:${pgsql_catchall_maps_cf}, proxy:pgsql:${pgsql_domain_alias_catchall_maps_cf}"
+    postconf -e sender_bcc_maps="proxy:pgsql:${pgsql_sender_bcc_maps_domain_cf}, proxy:pgsql:${pgsql_sender_bcc_maps_user_cf}"
+    postconf -e recipient_bcc_maps="proxy:pgsql:${pgsql_recipient_bcc_maps_domain_cf}, proxy:pgsql:${pgsql_recipient_bcc_maps_user_cf}"
+    postconf -e relay_domains="\$mydestination, proxy:pgsql:${pgsql_relay_domains_cf}"
+    #postconf -e relay_recipient_maps="proxy:pgsql:${pgsql_virtual_mailbox_maps_cf}"
+
+    postconf -e smtpd_sender_login_maps="proxy:pgsql:${pgsql_sender_login_maps_cf}"
+
+    # Per-domain transport maps.
+    cat > ${pgsql_transport_maps_domain_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT transport FROM domain WHERE domain='%s' AND active=1
+EOF
+
+    # Per-user transport maps.
+    cat > ${pgsql_transport_maps_user_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT mailbox.transport FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.domain='%d' AND mailbox.domain=domain.domain AND mailbox.transport<>'' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.backupmx=0 AND domain.active=1
+EOF
+
+    cat > ${pgsql_virtual_mailbox_domains_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=0 AND active=1 UNION SELECT alias_domain.alias_domain FROM alias_domain,domain WHERE alias_domain.alias_domain='%s' AND alias_domain.active=1 AND alias_domain.target_domain=domain.domain AND domain.active=1 AND domain.backupmx=0
+EOF
+
+    cat > ${pgsql_relay_domains_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=1 AND active=1
+EOF
+
+    cat > ${pgsql_virtual_mailbox_maps_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT CONCAT(mailbox.storagenode, '/', mailbox.maildir) FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1
+EOF
+
+    cat > ${pgsql_virtual_alias_maps_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%s' AND alias.domain='%d' AND alias.domain=domain.domain AND alias.active=1 AND domain.backupmx=0 AND domain.active=1
+EOF
+
+    cat > ${pgsql_domain_alias_maps_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=CONCAT('%u', '@', alias_domain.target_domain) AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1 AND domain.backupmx=0
+EOF
+
+    cat > ${pgsql_catchall_maps_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%d' AND alias.address=domain.domain AND alias.active=1 AND domain.active=1 AND domain.backupmx=0
+EOF
+
+    cat > ${pgsql_domain_alias_catchall_maps_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=alias_domain.target_domain AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1
+EOF
+
+    cat > ${pgsql_sender_login_maps_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT mailbox.username FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.domain='%d' AND mailbox.domain=domain.domain AND mailbox.enablesmtp=1 AND mailbox.active=1 AND domain.backupmx=0 AND domain.active=1
+EOF
+
+    cat > ${pgsql_sender_bcc_maps_domain_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT bcc_address FROM sender_bcc_domain WHERE domain='%d' AND active=1
+EOF
+
+    cat > ${pgsql_sender_bcc_maps_user_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT sender_bcc_user.bcc_address FROM sender_bcc_user,domain WHERE sender_bcc_user.username='%s' AND sender_bcc_user.domain='%d' AND sender_bcc_user.domain=domain.domain AND domain.backupmx=0 AND domain.active=1 AND sender_bcc_user.active=1
+EOF
+
+    cat > ${pgsql_recipient_bcc_maps_domain_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT bcc_address FROM recipient_bcc_domain WHERE domain='%d' AND active=1
+EOF
+
+    cat > ${pgsql_recipient_bcc_maps_user_cf} <<EOF
+${CONF_MSG}
+user        = ${VMAIL_DB_BIND_USER}
+password    = ${VMAIL_DB_BIND_PASSWD}
+hosts       = ${PGSQL_SERVER}
+port        = ${PGSQL_SERVER_PORT}
+dbname      = ${VMAIL_DB}
+query       = SELECT recipient_bcc_user.bcc_address FROM recipient_bcc_user,domain WHERE recipient_bcc_user.username='%s' AND recipient_bcc_user.domain='%d' AND recipient_bcc_user.domain=domain.domain AND domain.backupmx=0 AND domain.active=1 AND recipient_bcc_user.active=1
+EOF
+
+    ECHO_DEBUG "Set file permission: Owner/Group -> postfix/postfix, Mode -> 0640."
+    cat >> ${TIP_FILE} <<EOF
+Postfix (PostgreSQL):
+    * Configuration files:
+EOF
+    for i in ${pgsql_virtual_mailbox_domains_cf} \
+        ${pgsql_transport_maps_domain_cf} \
+        ${pgsql_transport_maps_user_cf} \
+        ${pgsql_virtual_mailbox_maps_cf} \
+        ${pgsql_virtual_alias_maps_cf} \
+        ${pgsql_domain_alias_maps_cf} \
+        ${pgsql_catchall_maps_cf} \
+        ${pgsql_domain_alias_catchall_maps_cf} \
+        ${pgsql_sender_login_maps_cf} \
+        ${pgsql_sender_bcc_maps_domain_cf} \
+        ${pgsql_sender_bcc_maps_user_cf} \
+        ${pgsql_recipient_bcc_maps_domain_cf} \
+        ${pgsql_recipient_bcc_maps_user_cf}
+    do
+        chown ${SYS_ROOT_USER}:${POSTFIX_DAEMON_GROUP} ${i}
+        chmod 0640 ${i}
+
+        cat >> ${TIP_FILE} <<EOF
+        - $i
+EOF
+    done
+
+    echo 'export status_postfix_config_vhost_pgsql="DONE"' >> ${STATUS_FILE}
 }
 
 # Starting config.
 postfix_config_virtual_host()
 {
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        check_status_before_run postfix_config_ldap
+        check_status_before_run postfix_config_vhost_ldap
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
-        check_status_before_run postfix_config_mysql
-    else
-        :
+        check_status_before_run postfix_config_vhost_mysql
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        check_status_before_run postfix_config_vhost_pgsql
     fi
 
     echo 'export status_postfix_config_virtual_host="DONE"' >> ${STATUS_FILE}
@@ -745,11 +933,17 @@ postfix_config_sasl()
     #
     # **** End HELO related ****
 
+    if [ X"${USE_IREDAPD}" == X"YES" ]; then
+        POSTCONF_IREDAPD="check_policy_service inet:${IREDAPD_LISTEN_ADDR}:${IREDAPD_LISTEN_PORT},"
+    else
+        POSTCONF_IREDAPD=''
+    fi
+
     if [ X"${USE_CLUEBRINGER}" == X"YES" ]; then
-        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, check_policy_service inet:${IREDAPD_LISTEN_ADDR}:${IREDAPD_LISTEN_PORT}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${CLUEBRINGER_BINDHOST}:${CLUEBRINGER_BINDPORT}"
+        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${CLUEBRINGER_BINDHOST}:${CLUEBRINGER_BINDPORT}"
         postconf -e smtpd_end_of_data_restrictions="check_policy_service inet:${CLUEBRINGER_BINDHOST}:${CLUEBRINGER_BINDPORT}"
     else
-        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, check_policy_service inet:${IREDAPD_LISTEN_ADDR}:${IREDAPD_LISTEN_PORT}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${POLICYD_BINDHOST}:${POLICYD_BINDPORT}"
+        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${POLICYD_BINDHOST}:${POLICYD_BINDPORT}"
     fi
 
     echo 'export status_postfix_config_sasl="DONE"' >> ${STATUS_FILE}

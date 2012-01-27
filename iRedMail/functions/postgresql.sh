@@ -126,10 +126,11 @@ CREATE USER ${VMAIL_DB_ADMIN_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_ADMIN_PAS
 
 -- Set correct privilege for ROLE: vmail
 GRANT SELECT ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user TO ${VMAIL_DB_BIND_USER};
-GRANT SELECT,UPDATE,INSERT,DELETE ON share_folder,used_quota TO ${VMAIL_DB_BIND_USER};
+GRANT SELECT,UPDATE,INSERT,DELETE ON used_quota TO ${VMAIL_DB_BIND_USER};
+-- GRANT SELECT,UPDATE,INSERT,DELETE ON share_folder TO ${VMAIL_DB_BIND_USER};
 
 -- Set correct privilege for ROLE: vmailadmin
-GRANT SELECT,UPDATE,INSERT ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user,share_folder,used_quota TO ${VMAIL_DB_ADMIN_USER};
+GRANT SELECT,UPDATE,INSERT,DELETE ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user,share_folder,used_quota TO ${VMAIL_DB_ADMIN_USER};
 
 -- Add first mail domain
 INSERT INTO domain (domain,transport,created) VALUES ('${FIRST_DOMAIN}', '${TRANSPORT}', NOW());

@@ -131,27 +131,8 @@ install_all()
     fi
     #### End Awstats ####
 
-    ################
-    # MySQL server.
-    #
-    # Note: mysql server is always required, used to store extra data,
-    #       such as policyd, roundcube webmail data.
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} mysql-server${PKG_ARCH} mysql${PKG_ARCH}"
-        ENABLED_SERVICES="${ENABLED_SERVICES} mysqld"
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} mysql-community-server mysql-community-server-client"
-        ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
-        ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
-    else
-        :
-    fi
-    #### End MySQL server ####
-    
     #################################################
-    # Backend: OpenLDAP or MySQL, and extra packages.
+    # Backend: OpenLDAP, MySQL, PGSQL and extra packages.
     #
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # OpenLDAP server & client.
@@ -159,40 +140,72 @@ install_all()
             ALL_PKGS="${ALL_PKGS} openldap${PKG_ARCH} openldap-clients${PKG_ARCH} openldap-servers${PKG_ARCH}"
             ENABLED_SERVICES="${ENABLED_SERVICES} ${LDAP_RC_SCRIPT_NAME}"
 
+            # MySQL server and client.
+            ALL_PKGS="${ALL_PKGS} mysql-server${PKG_ARCH} mysql${PKG_ARCH}"
+            ENABLED_SERVICES="${ENABLED_SERVICES} mysqld"
+
         elif [ X"${DISTRO}" == X"SUSE" ]; then
             ALL_PKGS="${ALL_PKGS} openldap2 openldap2-client"
             ENABLED_SERVICES="${ENABLED_SERVICES} ldap"
 
+            # MySQL server and client.
+            ALL_PKGS="${ALL_PKGS} mysql-community-server mysql-community-server-client"
+            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl"
             ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
+
+            # MySQL server and client.
+            ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
+            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
         fi
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
+            # MySQL server and client.
+            ALL_PKGS="${ALL_PKGS} mysql-server${PKG_ARCH} mysql${PKG_ARCH}"
+            ENABLED_SERVICES="${ENABLED_SERVICES} mysqld"
+
             # For Awstats.
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} mod_auth_mysql${PKG_ARCH}"
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
+            # MySQL server and client.
+            ALL_PKGS="${ALL_PKGS} mysql-community-server mysql-community-server-client"
+            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
+
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} postfix-mysql apache2-mod_auth_mysql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+            # MySQL server and client.
+            ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
+            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
+
+            # Postfix module
             ALL_PKGS="${ALL_PKGS} postfix-mysql"
 
             # For Awstats.
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
         fi
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        # MySQL server & client.
+        export USE_IREDAPD='NO'
+
+        # PGSQL server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server"
+            ENABLED_SERVICES="${ENABLED_SERVICES} postgresql"
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server"
+            ENABLED_SERVICES="${ENABLED_SERVICES} postgresql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib"
+            ENABLED_SERVICES="${ENABLED_SERVICES} postgresql"
+
+            # Postfix module
+            ALL_PKGS="${ALL_PKGS} postfix-pgsql"
         fi
     else
         :

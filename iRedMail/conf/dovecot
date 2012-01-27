@@ -145,9 +145,15 @@ export DOVECOT_EXPIRE_DICT_BDB='/var/lib/dovecot/expire/expire.db'
 
 # Dovecot quota warning.
 export DOVECOT_QUOTA_WARNING_SCRIPT='/usr/local/bin/dovecot-quota-warning.sh'
-export DOVECOT_REALTIME_QUOTA_SQLTYPE='mysql'
 export DOVECOT_REALTIME_QUOTA_TABLE='used_quota'
-export DOVECOT_SHARE_FOLDER_SQLTYPE='mysql'
+export DOVECOT_SHARE_FOLDER_DB_TABLE='share_folder'
+if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+    export DOVECOT_SHARE_FOLDER_SQLTYPE='mysql'
+    export DOVECOT_REALTIME_QUOTA_SQLTYPE='mysql'
+elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    export DOVECOT_SHARE_FOLDER_SQLTYPE='pgsql'
+    export DOVECOT_REALTIME_QUOTA_SQLTYPE='pgsql'
+fi
 
 if [ X"${DOVECOT_VERSION}" == X"1.1" -o X"${DOVECOT_VERSION}" == X"1.2" ]; then
     export DOVECOT_PROTOCOLS="pop3 pop3s imap imaps managesieve"

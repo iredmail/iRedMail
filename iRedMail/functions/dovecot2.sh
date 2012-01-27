@@ -181,10 +181,14 @@ EOF
         realtime_quota_db_name="${IREDADMIN_DB_NAME}"
         realtime_quota_db_user="${IREDADMIN_DB_USER}"
         realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
-    else
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
         realtime_quota_db_name="${VMAIL_DB}"
         realtime_quota_db_user="${VMAIL_DB_ADMIN_USER}"
         realtime_quota_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        realtime_quota_db_name="${VMAIL_DB}"
+        realtime_quota_db_user="${VMAIL_DB_BIND_USER}"
+        realtime_quota_db_passwd="${VMAIL_DB_BIND_PASSWD}"
     fi
 
     cat > ${DOVECOT_REALTIME_QUOTA_CONF} <<EOF
@@ -229,12 +233,14 @@ EOF
 
         if [ X"${BACKEND}" == X"OPENLDAP" ]; then
             share_folder_db_name="${IREDADMIN_DB_NAME}"
-            share_folder_db_table="share_folder"
             share_folder_db_user="${IREDADMIN_DB_USER}"
             share_folder_db_passwd="${IREDADMIN_DB_PASSWD}"
-        else
+        elif [ X"${BACKEND}" == X"MYSQL" ]; then
             share_folder_db_name="${VMAIL_DB}"
-            share_folder_db_table="share_folder"
+            share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
+            share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
+        elif [ X"${BACKEND}" == X"PGSQL" ]; then
+            share_folder_db_name="${VMAIL_DB}"
             share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
             share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
         fi
@@ -272,7 +278,7 @@ ${CONF_MSG}
 connect = host=${MYSQL_SERVER} dbname=${share_folder_db_name} user=${share_folder_db_user} password=${share_folder_db_passwd}
 map {
     pattern = shared/shared-boxes/user/\$to/\$from
-    table = share_folder
+    table = ${DOVECOT_SHARE_FOLDER_DB_TABLE}
     value_field = dummy
 
     fields {

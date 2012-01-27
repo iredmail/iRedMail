@@ -77,45 +77,61 @@ export MESSAGE_SIZE_LIMIT='15728640'
 # virtual_maildir_limit_message.
 export MAILDIR_LIMIT_MESSAGE="Sorry, the user's maildir has overdrawn the disk quota, please notice the user and try again later."
 
-# LDAP/MYSQL lookup configuration files.
-# LDAP lookup.
-export POSTFIX_LOOKUP_DIR_LDAP="${POSTFIX_ROOTDIR}/ldap"
-export ldap_virtual_mailbox_domains_cf="${POSTFIX_LOOKUP_DIR_LDAP}/virtual_mailbox_domains.cf"
-export ldap_transport_maps_user_cf="${POSTFIX_LOOKUP_DIR_LDAP}/transport_maps_user.cf"
-export ldap_transport_maps_domain_cf="${POSTFIX_LOOKUP_DIR_LDAP}/transport_maps_domain.cf"
-export ldap_virtual_mailbox_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/virtual_mailbox_maps.cf"
-export ldap_virtual_alias_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/virtual_alias_maps.cf"
-export ldap_virtual_group_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/virtual_group_maps.cf"
-export ldap_virtual_maillist_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/virtual_maillist_maps.cf"
-export ldap_sender_login_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/sender_login_maps.cf"
-export ldap_recipient_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR_LDAP}/recipient_bcc_maps_domain.cf"
-export ldap_recipient_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR_LDAP}/recipient_bcc_maps_user.cf"
-export ldap_sender_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR_LDAP}/sender_bcc_maps_domain.cf"
-export ldap_sender_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR_LDAP}/sender_bcc_maps_user.cf"
-export ldap_relay_domains_cf="${POSTFIX_LOOKUP_DIR_LDAP}/relay_domains.cf"
-export ldap_catch_all_maps_cf="${POSTFIX_LOOKUP_DIR_LDAP}/catchall_maps.cf"
-
-# MySQL lookup.
-export POSTFIX_LOOKUP_DIR_MYSQL="${POSTFIX_ROOTDIR}/mysql"
-export mysql_virtual_mailbox_domains_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/virtual_mailbox_domains.cf"
-export mysql_transport_maps_user_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/transport_maps_user.cf"
-export mysql_transport_maps_domain_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/transport_maps_domain.cf"
-export mysql_virtual_mailbox_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/virtual_mailbox_maps.cf"
-export mysql_virtual_alias_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/virtual_alias_maps.cf"
-export mysql_catchall_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/catchall_maps.cf"
-export mysql_domain_alias_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/domain_alias_maps.cf"
-export mysql_domain_alias_catchall_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/domain_alias_catchall_maps.cf"
-export mysql_sender_login_maps_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/sender_login_maps.cf"
-export mysql_sender_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/sender_bcc_maps_domain.cf"
-export mysql_sender_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/sender_bcc_maps_user.cf"
-export mysql_recipient_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/recipient_bcc_maps_domain.cf"
-export mysql_recipient_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/recipient_bcc_maps_user.cf"
-export mysql_relay_domains_cf="${POSTFIX_LOOKUP_DIR_MYSQL}/relay_domains.cf"
-
+# LDAP/MYSQL/PGSQL lookup configuration files.
 if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-    export POSTFIX_LOOKUP_DIR="${POSTFIX_LOOKUP_DIR_LDAP}"
+    export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/ldap"
 elif [ X"${BACKEND}" == X"MYSQL" ]; then
-    export POSTFIX_LOOKUP_DIR="${POSTFIX_LOOKUP_DIR_MYSQL}"
+    export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/mysql"
+elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/pgsql"
 else
     export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/lookups"
 fi
+
+export ldap_virtual_mailbox_domains_cf="${POSTFIX_LOOKUP_DIR}/virtual_mailbox_domains.cf"
+export ldap_transport_maps_user_cf="${POSTFIX_LOOKUP_DIR}/transport_maps_user.cf"
+export ldap_transport_maps_domain_cf="${POSTFIX_LOOKUP_DIR}/transport_maps_domain.cf"
+export ldap_virtual_mailbox_maps_cf="${POSTFIX_LOOKUP_DIR}/virtual_mailbox_maps.cf"
+export ldap_virtual_alias_maps_cf="${POSTFIX_LOOKUP_DIR}/virtual_alias_maps.cf"
+export ldap_virtual_group_maps_cf="${POSTFIX_LOOKUP_DIR}/virtual_group_maps.cf"
+export ldap_virtual_maillist_maps_cf="${POSTFIX_LOOKUP_DIR}/virtual_maillist_maps.cf"
+export ldap_sender_login_maps_cf="${POSTFIX_LOOKUP_DIR}/sender_login_maps.cf"
+export ldap_recipient_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR}/recipient_bcc_maps_domain.cf"
+export ldap_recipient_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR}/recipient_bcc_maps_user.cf"
+export ldap_sender_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR}/sender_bcc_maps_domain.cf"
+export ldap_sender_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR}/sender_bcc_maps_user.cf"
+export ldap_relay_domains_cf="${POSTFIX_LOOKUP_DIR}/relay_domains.cf"
+export ldap_catch_all_maps_cf="${POSTFIX_LOOKUP_DIR}/catchall_maps.cf"
+
+# MySQL lookup.
+export mysql_virtual_mailbox_domains_cf="${POSTFIX_LOOKUP_DIR}/virtual_mailbox_domains.cf"
+export mysql_transport_maps_user_cf="${POSTFIX_LOOKUP_DIR}/transport_maps_user.cf"
+export mysql_transport_maps_domain_cf="${POSTFIX_LOOKUP_DIR}/transport_maps_domain.cf"
+export mysql_virtual_mailbox_maps_cf="${POSTFIX_LOOKUP_DIR}/virtual_mailbox_maps.cf"
+export mysql_virtual_alias_maps_cf="${POSTFIX_LOOKUP_DIR}/virtual_alias_maps.cf"
+export mysql_catchall_maps_cf="${POSTFIX_LOOKUP_DIR}/catchall_maps.cf"
+export mysql_domain_alias_maps_cf="${POSTFIX_LOOKUP_DIR}/domain_alias_maps.cf"
+export mysql_domain_alias_catchall_maps_cf="${POSTFIX_LOOKUP_DIR}/domain_alias_catchall_maps.cf"
+export mysql_sender_login_maps_cf="${POSTFIX_LOOKUP_DIR}/sender_login_maps.cf"
+export mysql_sender_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR}/sender_bcc_maps_domain.cf"
+export mysql_sender_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR}/sender_bcc_maps_user.cf"
+export mysql_recipient_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR}/recipient_bcc_maps_domain.cf"
+export mysql_recipient_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR}/recipient_bcc_maps_user.cf"
+export mysql_relay_domains_cf="${POSTFIX_LOOKUP_DIR}/relay_domains.cf"
+
+# PGSQL lookup.
+export pgsql_virtual_mailbox_domains_cf="${POSTFIX_LOOKUP_DIR}/virtual_mailbox_domains.cf"
+export pgsql_transport_maps_user_cf="${POSTFIX_LOOKUP_DIR}/transport_maps_user.cf"
+export pgsql_transport_maps_domain_cf="${POSTFIX_LOOKUP_DIR}/transport_maps_domain.cf"
+export pgsql_virtual_mailbox_maps_cf="${POSTFIX_LOOKUP_DIR}/virtual_mailbox_maps.cf"
+export pgsql_virtual_alias_maps_cf="${POSTFIX_LOOKUP_DIR}/virtual_alias_maps.cf"
+export pgsql_catchall_maps_cf="${POSTFIX_LOOKUP_DIR}/catchall_maps.cf"
+export pgsql_domain_alias_maps_cf="${POSTFIX_LOOKUP_DIR}/domain_alias_maps.cf"
+export pgsql_domain_alias_catchall_maps_cf="${POSTFIX_LOOKUP_DIR}/domain_alias_catchall_maps.cf"
+export pgsql_sender_login_maps_cf="${POSTFIX_LOOKUP_DIR}/sender_login_maps.cf"
+export pgsql_sender_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR}/sender_bcc_maps_domain.cf"
+export pgsql_sender_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR}/sender_bcc_maps_user.cf"
+export pgsql_recipient_bcc_maps_domain_cf="${POSTFIX_LOOKUP_DIR}/recipient_bcc_maps_domain.cf"
+export pgsql_recipient_bcc_maps_user_cf="${POSTFIX_LOOKUP_DIR}/recipient_bcc_maps_user.cf"
+export pgsql_relay_domains_cf="${POSTFIX_LOOKUP_DIR}/relay_domains.cf"
+
