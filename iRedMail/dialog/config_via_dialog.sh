@@ -87,7 +87,9 @@ rm -f /tmp/vmail_user_home_dir
 # --------------------------------------------------
 # --------------------- Backend --------------------
 # --------------------------------------------------
-${DIALOG} \
+# PGSQL is available on Ubuntu 11.04, 11.10.
+if [ X"${DISTRO_CODENAME}" == X"oneiric" -o X"${DISTRO_CODENAME}" == X"natty" ]; then
+    ${DIALOG} \
     --title "Choose your preferred backend used to store mail accounts" \
     --radiolist "\
 We provide two backends and the homologous webmail programs:
@@ -102,6 +104,26 @@ We provide two backends and the homologous webmail programs:
 +------------+---------------+---------------------------+
 TIP: Use SPACE key to select item.
 " 20 76 3 \
+    'OpenLDAP' 'An open source implementation of LDAP protocol' 'on' \
+    'MySQL' "The world's most popular open source database" 'off' \
+    'PostgreSQL' 'Powerful, open source database system' 'off' \
+    2>/tmp/backend
+
+else
+    ${DIALOG} \
+    --title "Choose your preferred backend used to store mail accounts" \
+    --radiolist "\
+We provide two backends and the homologous webmail programs:
++------------+---------------+---------------------------+
+| Backend    | Web Mail      | Web-based management tool |
++------------+---------------+---------------------------+
+| OpenLDAP   |               | iRedAdmin, phpLDAPadmin   |
++------------+ Roundcube     +---------------------------+
+| MySQL      |               | iRedAdmin, phpMyAdmin     |
++------------+---------------+---------------------------+
+
+TIP: Use SPACE key to select item.
+" 20 76 2 \
     'OpenLDAP' 'An open source implementation of LDAP protocol' 'on' \
     'MySQL' "The world's most popular open source database" 'off' \
     'PostgreSQL' 'Powerful, open source database system' 'off' \
