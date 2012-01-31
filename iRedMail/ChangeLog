@@ -1,4 +1,9 @@
-iRedMail-0.8.0:
+iRedMail-0.8.0-beta2:
+    * Fixed:
+        + Dovecot cannot store realtime quota usage in PostgreSQL.
+
+iRedMail-0.8.0-beta1:
+    * It now supports PostgreSQL as backend.
     * Package update:
         + Roundcube webmail -> 0.7.1
 
