@@ -267,39 +267,39 @@ CREATE TABLE IF NOT EXISTS used_quota (
 -- Trigger required by quota dict
 CREATE OR REPLACE FUNCTION merge_quota() RETURNS TRIGGER AS $$
 BEGIN
-  IF NEW.messages < 0 OR NEW.messages IS NULL THEN
-    -- ugly kludge: we came here from this function, really do try to insert
-    IF NEW.messages IS NULL THEN
-      NEW.messages = 0;
-    ELSE
-      NEW.messages = -NEW.messages;
-    END IF;
-    return NEW;
-  END IF;
-
-  LOOP
-    UPDATE used_quota SET bytes = bytes + NEW.bytes,
-      messages = messages + NEW.messages
-      WHERE username = NEW.username;
-    IF found THEN
-      RETURN NULL;
+    IF NEW.messages < 0 OR NEW.messages IS NULL THEN
+        -- ugly kludge: we came here from this function, really do try to insert
+        IF NEW.messages IS NULL THEN
+            NEW.messages = 0;
+        ELSE
+            NEW.messages = -NEW.messages;
+        END IF;
+        return NEW;
     END IF;
 
-    BEGIN
-      IF NEW.messages = 0 THEN
-        INSERT INTO used_quota (bytes, messages, username)
-          VALUES (NEW.bytes, NULL, NEW.username);
-      ELSE
-        INSERT INTO used_quota (bytes, messages, username)
-          VALUES (NEW.bytes, -NEW.messages, NEW.username);
-      END IF;
-      return NULL;
-    EXCEPTION WHEN unique_violation THEN
-      -- someone just inserted the record, update it
-    END;
-  END LOOP;
+    LOOP
+        UPDATE used_quota
+        SET bytes = bytes + NEW.bytes, messages = messages + NEW.messages
+        WHERE username = NEW.username;
+        IF found THEN
+            RETURN NULL;
+        END IF;
+
+        BEGIN
+            IF NEW.messages = 0 THEN
+                INSERT INTO used_quota (bytes, messages, username)
+                VALUES (NEW.bytes, NULL, NEW.username);
+            ELSE
+                INSERT INTO used_quota (bytes, messages, username)
+                VALUES (NEW.bytes, -NEW.messages, NEW.username);
+            END IF;
+            return NULL;
+            EXCEPTION WHEN unique_violation THEN
+            -- someone just inserted the record, update it
+        END;
+    END LOOP;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER mergequota BEFORE INSERT ON used_quota
-   FOR EACH ROW EXECUTE PROCEDURE merge_quota();
+    FOR EACH ROW EXECUTE PROCEDURE merge_quota();

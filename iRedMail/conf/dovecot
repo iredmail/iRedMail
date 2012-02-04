@@ -51,8 +51,8 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
     export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
     export DOVECOT_PGSQL_CONF='/etc/dovecot/dovecot-pgsql.conf'
-    export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/used-quota.conf'
-    export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/share-folder.conf'
+    export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
+    export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
 
     if [ X"${DISTRO_VERSION}" == X"5" ]; then
         export DOVECOT_VERSION='1.2'
@@ -109,6 +109,16 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
     export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
+
+elif [ X"${DISTRO}" == X"GENTOO" ]; then
+    export DOVECOT_VERSION='2'
+    export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
+    export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
+    export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
+    export DOVECOT_PGSQL_CONF='/etc/dovecot/dovecot-pgsql.conf'
+    export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
+    export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export DOVECOT_VERSION='1.2'
     export DOVECOT_CONF='/usr/local/etc/dovecot.conf'

@@ -26,7 +26,9 @@ export MANAGESIEVE_PORT='2000'
 
 # New Linux releases use port 4190.
 # RHEL 6.
-if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X"6" ]; then
+if [ X"${DISTRO}" == X"RHEL" ]; then
+    [ X"${DISTRO_VERSION}" == X"6" ] && export MANAGESIEVE_PORT='4190'
+elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export MANAGESIEVE_PORT='4190'
 fi
 

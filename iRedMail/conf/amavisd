@@ -87,6 +87,19 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export AMAVISD_LDAP_SCHEMA_NAME='amavis.schema'
     export AMAVISD_VIRUSMAILS_DIR='/var/lib/amavis/virusmails'
 
+elif [ X"${DISTRO}" == X"GENTOO" ]; then
+    export AMAVISD_BIN='/usr/sbin/amavisd'
+    export AMAVISD_RC_SCRIPT_NAME='amavisd'
+    export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
+
+    export AMAVISD_CONF='/etc/amavisd.conf'
+    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
+
+    export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
+    export AMAVISD_MYHOME='/var/amavis'
+    export AMAVISD_QUARANTINEDIR="${AMAVISD_MYHOME}/quarantine"
+    export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Override global setting: user/group.
     export AMAVISD_SYS_USER='vscan'

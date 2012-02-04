@@ -31,36 +31,31 @@ else
     export mysql_server="${MYSQL_SERVER}"
 fi
 
+export MYSQL_MY_CNF='/etc/my.cnf'
 export MYSQL_SOCKET='/var/lib/mysql/mysql.sock'
 export MYSQL_ROOT_USER='root'
 
 # MySQL config file.
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    export MYSQL_MY_CNF='/etc/my.cnf'
-    # RC script.
     export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysqld"
 
 elif [ X"${DISTRO}" == X"SUSE" ]; then
-    export MYSQL_MY_CNF='/etc/my.cnf'
     export MYSQL_SOCKET='/var/run/mysql/mysql.sock'
-    # RC script.
     export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysql"
 
 elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
     export MYSQL_MY_CNF='/etc/mysql/my.cnf'
-    # RC script.
+    export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysql"
+
+elif [ X"${DISTRO}" == X"GENTOO" ]; then
+    export MYSQL_MY_CNF='/etc/mysql/my.cnf'
+    export MYSQL_SOCKET='/var/run/mysqld/mysql.sock'
     export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysql"
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    # Override default socket location.
     export MYSQL_SOCKET='/tmp/mysql.sock'
-
-    # Location of my.cnf.
     export MYSQL_MY_CNF="/var/db/mysql/my.cnf"
-
-    # RC script.
     export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysql-server"
-
 fi
 
 export MYSQL_INIT_SQL="${CONF_DIR}/mysql_init.sql"

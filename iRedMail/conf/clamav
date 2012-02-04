@@ -39,6 +39,10 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLAMD_CONF='/etc/clamav/clamd.conf'
     export FRESHCLAM_CONF='/etc/clamav/freshclam.conf'
 
+elif [ X"${DISTRO}" == X"GENTOO" ]; then
+    export CLAMD_CONF='/etc/clamd.conf'
+    export FRESHCLAM_CONF='/etc/freshclam.conf'
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLAMD_CONF='/usr/local/etc/clamd.conf'
     export FRESHCLAM_CONF='/usr/local/etc/freshclam.conf'
@@ -50,7 +54,7 @@ fi
 export CLAMD_LISTEN_ADDR='127.0.0.1'            # Used to override default setting.
 
 # Clamd local socket.
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+if [ X"${DISTRO}" == X"GENTOO" -o X"${DISTRO}" == X"FREEBSD" ]; then
     export CLAMD_LOCAL_SOCKET='/var/run/clamav/clamd.sock'
 else
     export CLAMD_LOCAL_SOCKET='/tmp/clamd.socket'   # Used to override default setting.

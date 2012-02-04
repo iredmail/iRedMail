@@ -22,14 +22,14 @@
 
 # For SpamAssassin.
 
+export SA_CONF_DIR='/etc/mail/spamassassin'
+export SA_RULES_DIR='/usr/share/spamassassin'
+export SA_INIT_PRE="${SA_CONF_DIR}/init.pre"
+export SA_LOCAL_CF="${SA_CONF_DIR}/local.cf"
+
 if [ X"${DISTRO}" == X"FREEBSD" ]; then
     export SA_CONF_DIR='/usr/local/etc/mail/spamassassin'
     export SA_RULES_DIR='/usr/local/share/spamassassin'
-    export SA_INIT_PRE="${SA_CONF_DIR}/init.pre"
-    export SA_LOCAL_CF="${SA_CONF_DIR}/local.cf"
-else
-    export SA_CONF_DIR='/etc/mail/spamassassin'
-    export SA_RULES_DIR='/usr/share/spamassassin'
     export SA_INIT_PRE="${SA_CONF_DIR}/init.pre"
     export SA_LOCAL_CF="${SA_CONF_DIR}/local.cf"
 fi

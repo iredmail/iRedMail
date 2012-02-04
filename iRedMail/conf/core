@@ -395,6 +395,28 @@ disable_service_debian()
     done
 }
 
+enable_service_gentoo()
+{
+    services="$@"
+    for i in $services; do
+        if [ -x /etc/init.d/$i ]; then
+            ECHO_DEBUG "Enable service: $i."
+            rc-update add $i default
+        fi
+    done
+}
+
+disable_service_gentoo()
+{
+    services="$@"
+    for i in $services; do
+        if [ -x /etc/init.d/$i ]; then
+            ECHO_DEBUG "Disable service: $i."
+            rc-update del $i default
+        fi
+    done
+}
+
 # TODO
 enable_service_freebsd()
 {
@@ -488,6 +510,26 @@ remove_pkg_debian()
 {
     ECHO_INFO "Removing package(s): $@"
     ${APTGET} purge -y $@
+    [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
+}
+
+# Install/Remove binary packages on Gentoo
+install_pkg_gentoo()
+{
+    ECHO_INFO "Installing package(s): $@"
+    emerge --ask n $@
+    if [ X"$?" != X"0" ]; then
+        ECHO_ERROR "Installation failed, please check the terminal output."
+        ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
+        ECHO_ERROR "forum: http://www.iredmail.org/forum/"
+        exit 255
+    fi
+}
+
+remove_pkg_gentoo()
+{
+    ECHO_INFO "Removing package(s): $@"
+    emerge -C --ask n $@
     [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
 }
 

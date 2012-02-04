@@ -48,8 +48,12 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export MAILLOG_INFO='/var/log/mail.info'
     export MAILLOG_ERROR='/var/log/mail.err'
     export MAILLOG_WARN='/var/log/mail.warn'
-else
-    :
+elif [ X"${DISTRO}" == X"GENTOO" ]; then
+    # Gentoo
+    export MAILLOG='/var/log/messages'
+    export MAILLOG_INFO=''
+    export MAILLOG_ERROR=''
+    export MAILLOG_WARN=''
 fi
 
 if [ X"${DISTRO}" == X"FREEBSD" ]; then
@@ -73,9 +77,6 @@ export TRANSPORT='dovecot'
 
 # Set 'message_size_limit', in 'byte'. Default is 10M.
 export MESSAGE_SIZE_LIMIT='15728640'
-
-# virtual_maildir_limit_message.
-export MAILDIR_LIMIT_MESSAGE="Sorry, the user's maildir has overdrawn the disk quota, please notice the user and try again later."
 
 # LDAP/MYSQL/PGSQL lookup configuration files.
 if [ X"${BACKEND}" == X"OPENLDAP" ]; then
