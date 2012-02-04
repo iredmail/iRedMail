@@ -54,6 +54,8 @@ install_all()
             # Ubuntu >= 9.10.
             ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
         fi
+    elif [ X"${DISTRO}" == X"GENTOO" ]; then
+        ENABLED_SERVICES="syslog-ng ${ENABLED_SERVICES}"
     fi
 
     #################################################
@@ -83,6 +85,13 @@ install_all()
             # MySQL server and client.
             ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
+        elif [ X"${DISTRO}" == X"GENTOO" ]; then
+            ALL_PKGS="${ALL_PKGS} net-nds/openldap"
+            ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
+
+            # MySQL server and client.
+            ALL_PKGS="${ALL_PKGS} dev-db/mysql"
+            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
         fi
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL server & client.
@@ -111,6 +120,10 @@ install_all()
 
             # For Awstats.
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
+
+        elif [ X"${DISTRO}" == X'GENTOO' ]; then
+            ALL_PKGS="${ALL_PKGS} dev-db/mysql"
+            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
         fi
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         export USE_IREDAPD='NO'
@@ -131,6 +144,10 @@ install_all()
 
             # Postfix module
             ALL_PKGS="${ALL_PKGS} postfix-pgsql"
+        elif [ X"${DISTRO}" == X'GENTOO' ]; then
+            ALL_PKGS="${ALL_PKGS} dev-db/postgresql-server"
+            ENABLED_SERVICES="${ENABLED_SERVICES} postgresql-${PGSQL_VERSION}"
+
         fi
     fi
 
@@ -171,8 +188,9 @@ install_all()
         fi
 
         ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
-    else
-        :
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        ALL_PKGS="${ALL_PKGS} www-servers/apache dev-lang/php"
+        ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
     fi
 
     ###############
@@ -185,6 +203,8 @@ install_all()
         ALL_PKGS="${ALL_PKGS} postfix"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        ALL_PKGS="${ALL_PKGS} mail-mta/postfix"
     fi
 
     ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
@@ -234,8 +254,9 @@ dbc_authmethod_admin=''
 dbc_authmethod_user=''
 EOF
         fi
-    else
-        :
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        ALL_PKGS="${ALL_PKGS} mail-filter/policyd"
+        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
     fi
 
     # Dovecot.
@@ -273,8 +294,9 @@ EOF
                 ALL_PKGS="${ALL_PKGS} dovecot-pgsql"
             fi
         fi
-    else
-        :
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        ALL_PKGS="${ALL_PKGS} net-mail/dovecot"
+        DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
     fi
 
     ENABLED_SERVICES="${ENABLED_SERVICES} dovecot"
@@ -299,8 +321,11 @@ EOF
         ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj zoo nomarch cpio lzop cabextract p7zip rpm unrar-free ripole"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} clamav-daemon clamav-freshclam"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
-    else
-        :
+
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        ALL_PKGS="${ALL_PKGS} mail-filter/amavisd-new mail-filter/spamassassin app-antivirus/clamav net-mail/altermime"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} clamd"
+        DISABLED_SERVICES="${DISABLED_SERVICES} spamd"
     fi
 
     # SPF verification.
@@ -314,6 +339,9 @@ EOF
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} libmail-spf-perl"
+
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        ALL_PKGS="${ALL_PKGS} dev-perl/Mail-SPF dev-perl/Mail-SPF-Query"
     fi
 
     # phpPgAdmin
@@ -324,6 +352,8 @@ EOF
             ALL_PKGS="${ALL_PKGS} phpPgAdmin"
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} phppgadmin"
+        elif [ X"${DISTRO}" == X'GENTOO' ]; then
+            ALL_PKGS="${ALL_PKGS} dev-db/phppgadmin"
         fi
     fi
 
@@ -337,10 +367,7 @@ EOF
         # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
         # RC script ready in early stage.
         #ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
-    else
-        :
     fi
-    #### End iRedAPD ####
 
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
@@ -362,6 +389,9 @@ EOF
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-mysqldb python-jinja2 python-netifaces python-webpy"
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        ALL_PKGS="${ALL_PKGS} dev-python/jinja dev-python/webpy dev-python/mysql-python dev-python/netifaces"
+        [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} dev-python/python-ldap"
     fi
 
     #############
@@ -374,6 +404,8 @@ EOF
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
+        elif [ X"${DISTRO}" == X'GENTOO' ]; then
+            ALL_PKGS="${ALL_PKGS} www-misc/awstats"
         fi
     fi
 
@@ -385,6 +417,9 @@ EOF
             X"${DISTRO}" == X"SUSE" \
             ]; then
             ALL_PKGS="${ALL_PKGS} fail2ban"
+            ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
+        elif [ X"${DISTRO}" == X'GENTOO' ]; then
+            ALL_PKGS="${ALL_PKGS} net-analyzer/fail2ban"
             ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
         fi
 
@@ -409,8 +444,8 @@ EOF
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
-    else
-        :
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        ALL_PKGS="${ALL_PKGS} app-text/dos2unix"
     fi
     #### End Misc packages & services ####
 

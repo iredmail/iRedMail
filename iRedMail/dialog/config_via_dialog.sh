@@ -79,9 +79,12 @@ NOTE:
 " 20 76 "${VMAIL_USER_HOME_DIR}" 2>/tmp/vmail_user_home_dir
 
 VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"
-export VMAIL_USER_HOME_DIR="${VMAIL_USER_HOME_DIR}" && echo "export VMAIL_USER_HOME_DIR='${VMAIL_USER_HOME_DIR}'" >> ${CONFIG_FILE}
-export STORAGE_BASE_DIR="${VMAIL_USER_HOME_DIR}" && echo "export STORAGE_BASE_DIR='${VMAIL_USER_HOME_DIR}'" >> ${CONFIG_FILE}
-export SIEVE_DIR="${VMAIL_USER_HOME_DIR}/sieve" && echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${CONFIG_FILE}
+export VMAIL_USER_HOME_DIR="${VMAIL_USER_HOME_DIR}"
+export STORAGE_BASE_DIR="${VMAIL_USER_HOME_DIR}"
+export SIEVE_DIR="${VMAIL_USER_HOME_DIR}/sieve"
+echo "export VMAIL_USER_HOME_DIR='${VMAIL_USER_HOME_DIR}'" >> ${CONFIG_FILE}
+echo "export STORAGE_BASE_DIR='${VMAIL_USER_HOME_DIR}'" >> ${CONFIG_FILE}
+echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${CONFIG_FILE}
 rm -f /tmp/vmail_user_home_dir
 
 # --------------------------------------------------
@@ -128,6 +131,7 @@ TIP: Use SPACE key to select item.
     'MySQL' "The world's most popular open source database" 'off' \
     'PostgreSQL' 'Powerful, open source database system' 'off' \
     2>/tmp/backend
+fi
 
 BACKEND_ORIG="$(cat /tmp/backend)"
 if [ X"${BACKEND_ORIG}" == X'OpenLDAP' ]; then
