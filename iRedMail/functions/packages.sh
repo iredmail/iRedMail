@@ -205,6 +205,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} mail-mta/postfix"
+        gentoo_unmark_package 'mail-mta/ssmtp'
     fi
 
     ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
@@ -341,7 +342,7 @@ EOF
         ALL_PKGS="${ALL_PKGS} libmail-spf-perl"
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} dev-perl/Mail-SPF dev-perl/Mail-SPF-Query"
+        ALL_PKGS="${ALL_PKGS} dev-perl/Mail-SPF"
     fi
 
     # phpPgAdmin
@@ -390,7 +391,7 @@ EOF
         ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-mysqldb python-jinja2 python-netifaces python-webpy"
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} dev-python/jinja dev-python/webpy dev-python/mysql-python dev-python/netifaces"
+        ALL_PKGS="${ALL_PKGS} dev-python/jinja dev-python/webpy dev-python/mysql-python"
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} dev-python/python-ldap"
     fi
 

@@ -451,6 +451,32 @@ gen_ldap_passwd()
     ${SLAPPASSWD} -h {SSHA} -s "${1}"
 }
 
+# Create SSL certs/private files.
+gen_pem_key()
+{
+    ECHO_INFO "Create SSL certification files."
+
+    # Create necessary directories.
+    mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} 2>/dev/null
+
+    openssl req \
+        -x509 -nodes -days 3650 -newkey rsa:${SSL_KEY_SIZE} \
+        -subj "/C=${TLS_COUNTRY}/ST=${TLS_STATE}/L=${TLS_CITY}/O=${TLS_COMPANY}/OU=${TLS_DEPARTMENT}/CN=${TLS_HOSTNAME}/emailAddress=${TLS_ADMIN}/" \
+        -out ${SSL_CERT_FILE} -keyout ${SSL_KEY_FILE} >/dev/null 2>&1
+
+    # Set correct file permission.
+    chmod +r ${SSL_CERT_FILE}
+    chmod +r ${SSL_KEY_FILE}
+
+    cat >> ${TIP_FILE} <<EOF
+
+SSL cert keys (size: ${SSL_KEY_SIZE}):
+    - ${SSL_CERT_FILE}
+    - ${SSL_KEY_FILE}
+
+EOF
+}
+
 # Install/Remove binary packages on RHEL/CentOS.
 install_pkg_rhel()
 {
@@ -517,13 +543,27 @@ remove_pkg_debian()
 install_pkg_gentoo()
 {
     ECHO_INFO "Installing package(s): $@"
-    emerge $@
-    if [ X"$?" != X"0" ]; then
-        ECHO_ERROR "Installation failed, please check the terminal output."
-        ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
-        ECHO_ERROR "forum: http://www.iredmail.org/forum/"
-        exit 255
-    fi
+    for i in $@; do
+        if [ X"${i}" != X'' ]; then
+            portname="$( echo ${i} | tr -d '-' | tr -d '/' | tr -d '\.' )"
+            status="\$status_install_port_$portname"
+            if [ X"$(eval echo ${status})" != X"DONE" ]; then
+                ECHO_INFO "Installing package: ${i} ..."
+                emerge ${i}
+
+                if [ X"$?" == X"0" ]; then
+                    echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}
+                else
+                    ECHO_ERROR "Installation failed, please check the terminal output."
+                    ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
+                    ECHO_ERROR "forum: http://www.iredmail.org/forum/"
+                    exit 255
+                fi
+            else
+                ECHO_INFO "Skip package: ${i}."
+            fi
+        fi
+    done
 }
 
 remove_pkg_gentoo()
@@ -533,28 +573,30 @@ remove_pkg_gentoo()
     [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
 }
 
-# Create SSL certs/private files.
-gen_pem_key()
+gentoo_mark_package()
 {
-    ECHO_INFO "Create SSL certification files."
+    ECHO_DEBUG "Mask packages in /etc/portage/package.mask: $@"
+    for pkg in $@; do
+        if not $(grep "^${pkg}$" /etc/portage/package.mask); then
+            echo ${pkg} >> /etc/portage/package.mask
+        fi
+    done
+}
 
-    # Create necessary directories.
-    mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} 2>/dev/null
+gentoo_unmark_package()
+{
+    for pkg in $@; do
+        if not $(grep "^${pkg}$" /etc/portage/package.unmask); then
+            ECHO_DEBUG "Unmask packages in /etc/portage/package.unmask: $@"
+            echo ${pkg} >> /etc/portage/package.unmask
+        fi
+    done
+}
 
-    openssl req \
-        -x509 -nodes -days 3650 -newkey rsa:${SSL_KEY_SIZE} \
-        -subj "/C=${TLS_COUNTRY}/ST=${TLS_STATE}/L=${TLS_CITY}/O=${TLS_COMPANY}/OU=${TLS_DEPARTMENT}/CN=${TLS_HOSTNAME}/emailAddress=${TLS_ADMIN}/" \
-        -out ${SSL_CERT_FILE} -keyout ${SSL_KEY_FILE} >/dev/null 2>&1
-
-    # Set correct file permission.
-    chmod +r ${SSL_CERT_FILE}
-    chmod +r ${SSL_KEY_FILE}
-
-    cat >> ${TIP_FILE} <<EOF
-
-SSL cert keys (size: ${SSL_KEY_SIZE}):
-    - ${SSL_CERT_FILE}
-    - ${SSL_KEY_FILE}
-
-EOF
+gentoo_add_use_flags()
+{
+    # USAGE: gentoo_add_use_flags pkg_name USE_flags
+    if [ X"$#" == X'2' ]; then
+        echo "${1} ${2}" >> /etc/portage/package.use
+    fi
 }

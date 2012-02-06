@@ -129,7 +129,6 @@ TIP: Use SPACE key to select item.
 " 20 76 2 \
     'OpenLDAP' 'An open source implementation of LDAP protocol' 'on' \
     'MySQL' "The world's most popular open source database" 'off' \
-    'PostgreSQL' 'Powerful, open source database system' 'off' \
     2>/tmp/backend
 fi
 
