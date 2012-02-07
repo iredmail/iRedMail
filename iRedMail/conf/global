@@ -430,8 +430,8 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export enable_service='enable_service_gentoo'
     export disable_service='disable_service_gentoo'
 
-    # Syslog config file: syslog-nt.
-    export SYSLOG_CONF='/etc/syslog-nt/syslog-ng.conf'
+    # Syslog config file: syslog-ng.
+    export SYSLOG_CONF='/etc/syslog-ng/syslog-ng.conf'
     export SYSLOG_POSTROTATE_CMD=''
 
     # Crontab related.
@@ -444,7 +444,7 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export IPTABLES_CONFIG="${ETC_SYSCONFIG_DIR}/iptables"
 
     # Directory used to store SSL/TLS key/cert file.
-    export SSL_FILE_DIR="/etc/pki/tls"
+    export SSL_FILE_DIR="/etc/ssl"
 
     # Yum repository related.
     export YUM_REPOS_DIR='/etc/yum.repos.d'
@@ -484,11 +484,10 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Crontab related.
     export CRON_SPOOL_DIR='/var/cron/tabs'
 
-    # Directory /etc/defaults/ on Debian/Ubuntu.
-    export ETC_SYSCONFIG_DIR='/etc/conf.d'
+    export ETC_SYSCONFIG_DIR='/etc/defaults'
 
     # IPFW rule file.
-    export IPTABLES_CONFIG=""
+    export IPTABLES_CONFIG="${ETC_SYSCONFIG_DIR}/ipfw.rules"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"

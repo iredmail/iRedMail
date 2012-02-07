@@ -88,10 +88,12 @@ install_all()
         elif [ X"${DISTRO}" == X"GENTOO" ]; then
             ALL_PKGS="${ALL_PKGS} net-nds/openldap"
             ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
+            gentoo_add_use_flags 'net-nds/openldap' 'berkdb crypt ipv6 ssl tcpd overlays perl sasl syslog'
 
             # MySQL server and client.
             ALL_PKGS="${ALL_PKGS} dev-db/mysql"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
+            gentoo_add_use_flags 'dev-db/mysql' 'berkdb community perl ssl big-tables cluster'
         fi
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL server & client.
@@ -124,6 +126,7 @@ install_all()
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} dev-db/mysql"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
+            gentoo_add_use_flags 'dev-db/mysql' 'berkdb community perl ssl big-tables cluster'
         fi
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         export USE_IREDAPD='NO'
@@ -147,6 +150,7 @@ install_all()
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} dev-db/postgresql-server"
             ENABLED_SERVICES="${ENABLED_SERVICES} postgresql-${PGSQL_VERSION}"
+            gentoo_add_use_flags 'dev-db/postgresql-server' 'nls pam doc perl python xml'
 
         fi
     fi
@@ -191,6 +195,12 @@ install_all()
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} www-servers/apache dev-lang/php"
         ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
+        gentoo_add_use_flags 'dev-libs/apr-util' 'ldap'
+        gentoo_add_use_flags 'www-servers/apache' 'ssl doc ldap suexec'
+        gentoo_add_make_conf 'APACHE2_MODULES' 'actions alias auth_basic authn_alias authn_anon authn_dbm authn_default authn_file authz_dbm authz_default authz_groupfile authz_host authz_owner authz_user autoindex cache cgi cgid dav dav_fs dav_lock deflate dir disk_cache env expires ext_filter file_cache filter headers include info log_config logio mem_cache mime mime_magic negotiation rewrite setenvif speling status unique_id userdir usertrack vhost_alias auth_digest authn_dbd log_forensic proxy proxy_ajp proxy_balancer proxy_connect proxy_ftp proxy_http proxy_scgi substitute version'
+        gentoo_add_make_conf 'APACHE2_MPMS' 'prefork'
+
+        gentoo_add_use_flags 'dev-lang/php' 'berkdb bzip2 cli crypt ctype fileinfo filter hash iconv ipv6 json nls phar posix readline session simplexml ssl tokenizer unicode xml zlib apache2 calendar -cdb cgi cjk curl curlwrappers doc flatfile fpm ftp gd gmp imap inifile intl kerberos ldap ldap-sasl mhash mysql mysqli mysqlnd odbc pdo postgres snmp soap sockets spell sqlite sqlite3 suhosin tidy truetype wddx xmlreader xmlrpc xmlwriter xpm xsl zip'
     fi
 
     ###############
@@ -206,6 +216,7 @@ install_all()
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} mail-mta/postfix"
         gentoo_unmark_package 'mail-mta/ssmtp'
+        gentoo_add_use_flags 'mail-mta/postfix' 'ipv6 pam ssl cdb dovecot-sasl hardened ldap ldap-bind mbox mysql postgres sasl'
     fi
 
     ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
@@ -298,6 +309,7 @@ EOF
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} net-mail/dovecot"
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
+        gentoo_add_use_flags 'net-mail/dovecot' 'bzip2 ipv6 maildir pam ssl zlib caps doc kerberos ldap managesieve mbox mdbox mysql postgres sdbox sieve sqlite suid'
     fi
 
     ENABLED_SERVICES="${ENABLED_SERVICES} dovecot"
@@ -327,6 +339,10 @@ EOF
         ALL_PKGS="${ALL_PKGS} mail-filter/amavisd-new mail-filter/spamassassin app-antivirus/clamav net-mail/altermime"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} clamd"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamd"
+
+        gentoo_add_use_flags 'mail-filter/amavisd-new' 'dkim ldap mysql postgres razor snmp spamassassin'
+        gentoo_add_use_flags 'mail-filter/spamassassin' 'berkdb ipv6 ssl doc ldap mysql postgres sqlite'
+        gentoo_add_use_flags 'app-antivirus/clamav' 'bzip2 iconv ipv6'
     fi
 
     # SPF verification.
@@ -393,6 +409,8 @@ EOF
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} dev-python/jinja dev-python/webpy dev-python/mysql-python"
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} dev-python/python-ldap"
+
+        gentoo_add_use_flags 'dev-python/jinja' 'doc examples i18n vim-syntax'
     fi
 
     #############
@@ -407,6 +425,7 @@ EOF
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} www-misc/awstats"
+            gentoo_add_use_flags 'www-misc/awstats' 'ipv6 geoip'
         fi
     fi
 

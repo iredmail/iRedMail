@@ -575,6 +575,7 @@ remove_pkg_gentoo()
 
 gentoo_mark_package()
 {
+    [ -f /etc/portage/package.mask ] || touch /etc/portage/package.mask
     ECHO_DEBUG "Mask packages in /etc/portage/package.mask: $@"
     for pkg in $@; do
         if not $(grep "^${pkg}$" /etc/portage/package.mask); then
@@ -585,6 +586,7 @@ gentoo_mark_package()
 
 gentoo_unmark_package()
 {
+    [ -f /etc/portage/package.unmask ] || touch /etc/portage/package.unmask
     for pkg in $@; do
         if not $(grep "^${pkg}$" /etc/portage/package.unmask); then
             ECHO_DEBUG "Unmask packages in /etc/portage/package.unmask: $@"
@@ -595,8 +597,26 @@ gentoo_unmark_package()
 
 gentoo_add_use_flags()
 {
+    [ -f /etc/portage/package.use ] || touch /etc/portage/package.use
     # USAGE: gentoo_add_use_flags pkg_name USE_flags
     if [ X"$#" == X'2' ]; then
         echo "${1} ${2}" >> /etc/portage/package.use
+    fi
+}
+
+gentoo_add_make_conf()
+{
+    # USAGE: gentoo_add_make_conf VARIABLE VALUE
+    if [ X"$#" == X'2' ]; then
+        export VAR="${1}"
+        export VALUE="${2}"
+
+        # Comment out old setting.
+        perl -pi -e 's/($ENV{VAR}.*)/#${1}/' /etc/make.conf
+
+        # Add new setting.
+        echo "${VAR}='${VALUE}'" >> /etc/make.conf
+
+        unset VAR VALUE
     fi
 }
