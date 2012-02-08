@@ -143,7 +143,13 @@ EOF
     postconf -e allow_min_user='no'
 
     # Postfix aliases file.
-    [ ! -f ${POSTFIX_FILE_ALIASES} ] && cp -f /etc/aliases ${POSTFIX_FILE_ALIASES}
+    if  [ ! -f ${POSTFIX_FILE_ALIASES} ]; then
+        if [ -f /etc/aliases ]; then
+            cp -f /etc/aliases ${POSTFIX_FILE_ALIASES}
+        else
+            touch ${POSTFIX_FILE_ALIASES}
+        fi
+    fi
     [ ! -z ${MAIL_ALIAS_ROOT} ] && echo "root: ${MAIL_ALIAS_ROOT}" >> ${POSTFIX_FILE_ALIASES}
 
     postconf -e alias_maps="hash:${POSTFIX_FILE_ALIASES}"

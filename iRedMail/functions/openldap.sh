@@ -50,6 +50,7 @@ openldap_config()
             # Run slapd with -h "... ldaps:/// ...".
             perl -pi -e 's/#(SLAPD_LDAPS=).*/${1}yes/' ${OPENLDAP_SYSCONFIG_CONF}
         fi
+
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         # Fix strict permission.
         chmod 0755 ${SSL_KEY_DIR}
@@ -59,6 +60,15 @@ openldap_config()
 
         # Set config backend.
         perl -pi -e 's#^(OPENLDAP_CONFIG_BACKEND=).*#${1}"files"#' ${OPENLDAP_SYSCONFIG_CONF}
+
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        # Comment out default option which uses slapd.d.
+        perl -pi -e 's/^(OPTS=.*)/#${1}/' ${OPENLDAP_SYSCONFIG_CONF}/${LDAP_RC_SCRIPT_NAME}
+
+        # Enable slapd.conf instead of slapd.d.
+        cat >> ${ETC_SYSCONFIG_DIR}/slapd <<EOF
+OPTS="-f ${OPENLDAP_SLAPD_CONF} -h 'ldaps:// ldap:// ldapi://%2fvar%2frun%2fopenldap%2fslapd.sock'"
+EOF
     fi
 
     ###################

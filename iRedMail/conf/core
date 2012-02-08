@@ -458,7 +458,7 @@ gen_pem_key()
 
     # Create necessary directories.
     mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} 2>/dev/null
-    [ X"${DISTRO}" == X"GENTOO" ] && chmod +rw ${SSL_KEY_DIR}
+    [ X"${DISTRO}" == X'GENTOO' ] && chmod o+rx ${SSL_KEY_DIR}
 
     openssl req \
         -x509 -nodes -days 3650 -newkey rsa:${SSL_KEY_SIZE} \

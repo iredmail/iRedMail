@@ -84,6 +84,18 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}
 EOF
         fi
 
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        orig_policyd_sql_file="$(eval ${LIST_FILES_IN_PKG} ${PKG_POLICYD} | grep '/DATABASE.mysql.bz2$')"
+
+        # orig_policyd_sql_file contains SQL command to create database.
+        bunzip2 -c ${orig_policyd_sql_file} > ${tmp_sql}
+
+        cat >> ${tmp_sql} <<EOF
+# Grant privileges.
+GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}"@localhost IDENTIFIED BY "${POLICYD_DB_PASSWD}";
+FLUSH PRIVILEGES;
+EOF
+
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         # Template file will create database: policyd.
         cat > ${tmp_sql} <<EOF
