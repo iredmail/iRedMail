@@ -410,7 +410,7 @@ EOF
         ALL_PKGS="${ALL_PKGS} dev-python/jinja dev-python/webpy dev-python/mysql-python"
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} dev-python/python-ldap"
 
-        gentoo_add_use_flags 'dev-python/jinja' 'doc examples i18n vim-syntax'
+        gentoo_add_use_flags 'dev-python/jinja' 'examples i18n vim-syntax'
     fi
 
     #############
