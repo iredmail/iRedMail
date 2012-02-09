@@ -127,13 +127,16 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export OPENLDAP_CONF_ROOT="/etc/openldap"
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
 
-    export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/ldap"
+    export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/slapd"
 
     # RC script.
     export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/${LDAP_RC_SCRIPT_NAME}"
 
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/lib/openldap/openldap'
+
+    # Override default path
+    export OPENLDAP_DATA_DIR='/var/lib/openldap-data'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # OpenLDAP version.

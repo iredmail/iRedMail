@@ -438,18 +438,13 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export CRON_SPOOL_DIR='/var/spool/cron/crontabs'
 
     # Directory /etc/sysconfig/ on RHEL/CentOS.
-    export ETC_SYSCONFIG_DIR='/etc/sysconfig'
+    export ETC_SYSCONFIG_DIR='/etc/conf.d'
 
     # Iptables rule file.
     export IPTABLES_CONFIG="${ETC_SYSCONFIG_DIR}/iptables"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
-
-    # Yum repository related.
-    export YUM_REPOS_DIR='/etc/yum.repos.d'
-    export LOCAL_REPO_NAME="${PROG_NAME}"
-    export LOCAL_REPO_FILE="${YUM_REPOS_DIR}/${LOCAL_REPO_NAME}.repo"
 
     # Override default value.
     export PKG_DIALOG="dev-util/dialog"

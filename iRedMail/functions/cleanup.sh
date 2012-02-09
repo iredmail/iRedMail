@@ -36,7 +36,7 @@ cleanup_disable_selinux()
 cleanup_remove_sendmail()
 {
     # Remove sendmail.
-    eval ${LIST_ALL_PKGS} | grep sendmail >/dev/null 2>&1
+    eval ${LIST_ALL_PKGS} | grep sendmail &>/dev/null
 
     if [ X"$?" == X"0" ]; then
         ECHO_QUESTION -n "Would you like to *REMOVE* sendmail now? [Y|n]"
@@ -143,11 +143,9 @@ cleanup_replace_iptables_rule()
             ;;
     esac
 
-    if [ X"${KERNEL_NAME}" == X"Linux" ]; then
-        if [ X"${DISTRO}" != X"SUSE" ]; then
-            # Restarting iptables before restarting fail2ban.
-            ENABLED_SERVICES="iptables ${ENABLED_SERVICES}"
-        fi
+    if [ X"${DISTRO}" != X"SUSE" ]; then
+        # Restarting iptables before restarting fail2ban.
+        ENABLED_SERVICES="iptables ${ENABLED_SERVICES}"
     fi
 
     echo 'export status_cleanup_replace_iptables_rule="DONE"' >> ${STATUS_FILE}

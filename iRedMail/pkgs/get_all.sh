@@ -348,10 +348,12 @@ fi
 
 prepare_dirs
 
-# Create yum repository.
 if [ X"${DISTRO}" == X"RHEL" ]; then
+    # Check required commands, install related package if command doesn't exist.
     check_pkg ${BIN_WHICH} ${PKG_WHICH} && \
     check_pkg ${BIN_WGET} ${PKG_WGET} && \
+
+    # Create yum repository.
     create_repo_rhel
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     create_repo_suse
@@ -369,6 +371,9 @@ elif [ X"${DISTRO}" == X"DEBIAN" ]; then
         ECHO_INFO "Execute 'apt-get update'..."
         ${APTGET} update
     fi
+elif [ X"${DISTRO}" == X'GENTOO' ]; then
+    # qlist is used to list all installed portages (qlist --installed).
+    check_pkg 'qlist' 'portage-utils'
 fi
 
 check_status_before_run track_iredmail_info

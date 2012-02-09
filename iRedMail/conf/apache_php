@@ -103,7 +103,7 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export HTTPD_CONF_ROOT="/etc/apache2"
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/httpd.conf"
     export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/modules.d"
-    export HTTPD_SSL_CONF="${HTTPD_CONF_DIR}/vhosts.d/00_default_ssl_vhost.conf"
+    export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/vhosts.d/00_default_ssl_vhost.conf"
     export HTTPD_WSGI_CONF="${HTTPD_CONF_DIR}/wsgi.conf"
 
     # Web data.

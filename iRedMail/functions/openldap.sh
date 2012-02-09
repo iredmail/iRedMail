@@ -63,10 +63,10 @@ openldap_config()
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         # Comment out default option which uses slapd.d.
-        perl -pi -e 's/^(OPTS=.*)/#${1}/' ${OPENLDAP_SYSCONFIG_CONF}/${LDAP_RC_SCRIPT_NAME}
+        perl -pi -e 's/^(OPTS=.*)/#${1}/' ${OPENLDAP_SYSCONFIG_CONF}
 
         # Enable slapd.conf instead of slapd.d.
-        cat >> ${ETC_SYSCONFIG_DIR}/slapd <<EOF
+        cat >> ${OPENLDAP_SYSCONFIG_CONF} <<EOF
 OPTS="-f ${OPENLDAP_SLAPD_CONF} -h 'ldaps:// ldap:// ldapi://%2fvar%2frun%2fopenldap%2fslapd.sock'"
 EOF
     fi
