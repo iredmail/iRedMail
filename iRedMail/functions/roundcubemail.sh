@@ -180,6 +180,9 @@ rcm_config()
     # 0 - disabled, 1 - username and host only, 2 - username, host, password
     perl -pi -e 's#(.*login_autocomplete.*=)(.*)#${1} 2;#' main.inc.php
 
+    # If users authentication is not case sensitive this must be enabled
+    perl -pi -e 's#(.*login_lc.*=)(.*)#${1} true;#' main.inc.php
+
     # Automatically create a new ROUNDCUBE USER when log-in the first time.
     perl -pi -e 's#(.*auto_create_user.*=)(.*)#${1} true;#' main.inc.php
 

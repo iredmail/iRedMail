@@ -340,6 +340,13 @@ EOF
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
         echo -e '!slapd' >> ${SYSLOG_CONF}
         echo -e '*.*\t\t\t\t\t\t/var/log/openldap.log' >> ${SYSLOG_CONF}
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        cat >> ${SYSLOG_CONF} <<EOF
+# OpenLDAP
+filter f_local4         {facility(local4); };
+destination slapd {file("/var/log/openldap.log"); };
+log {source(src); filter(f_local4); destination(slapd); };
+EOF
     else
         echo -e "local4.*\t\t\t\t\t\t-${OPENLDAP_LOGFILE}" >> ${SYSLOG_CONF}
     fi
