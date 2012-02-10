@@ -150,12 +150,12 @@ EOF
         #sed -i -e '/AllowOverride/,/AccessFileName/s#Deny from all#Allow from all#' ${HTTPD_CONF_ROOT}/httpd.conf
     else
         perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_CONF}
+        perl -pi -e 's#^(ServerSignature).*#${1} EMail#' ${HTTPD_CONF}
+        perl -pi -e 's#^(LogLevel).*#${1} warn#' ${HTTPD_CONF}
+
         if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_CONF_DIR}/security
         fi
-
-        perl -pi -e 's#^(ServerSignature).*#${1} EMail#' ${HTTPD_CONF}
-        perl -pi -e 's#^(LogLevel).*#${1} warn#' ${HTTPD_CONF}
     fi
 
     ############
@@ -165,7 +165,11 @@ EOF
     if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" ]; then
         perl -pi -e 's#^(SSLCertificateFile)(.*)#${1} $ENV{SSL_CERT_FILE}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(SSLCertificateKeyFile)(.*)#${1} $ENV{SSL_KEY_FILE}#' ${HTTPD_SSL_CONF}
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+
+    elif [ X"${DISTRO}" == X"DEBIAN" \
+        -o X"${DISTRO}" == X"UBUNTU" \
+        -o X"${DISTRO}" == X'GENTOO' \
+        ]; then
         perl -pi -e 's#^([ \t]+SSLCertificateFile)(.*)#${1} $ENV{SSL_CERT_FILE}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^([ \t]+SSLCertificateKeyFile)(.*)#${1} $ENV{SSL_KEY_FILE}#' ${HTTPD_SSL_CONF}
     else
@@ -223,19 +227,27 @@ EOF
         # Module: mod_auth_pgsql
         [ X"${BACKEND}" == X'PGSQL' ] && \
             perl -pi -e 's#^(APACHE2_OPTS=.*)(")#${1} -D AUTH_PGSQL${2}#' ${HTTPD_SYSCONFIG_CONF}
+
+        # Disable modules: mod_proxy_scgi
+        perl -pi -e 's/^(LoadModule.*mod_proxy_scgi.*)/#${1}/' ${HTTPD_CONF_ROOT}/httpd.conf
     else
         :
     fi
 
     # FreeBSD
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    if [ X"${DISTRO}" == X'GENTOO' ]; then
+        # Change 'Deny from all' to 'Allow from all'.
+        sed -i '/Order deny,allow/,/Deny from all/s#Deny\ from\ all#Allow\ from\ all#' ${HTTPD_CONF_DIR}/00_default_settings.conf
+        sed -i '/Order deny,allow/,/All from all/s#Order\ deny,allow#Order\ allow,deny#' ${HTTPD_CONF_DIR}/00_default_settings.conf
+
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Configure Apache."
         # With Apache2.2 it now wants to load an Accept Filter.
         echo 'accf_http_load="YES"' >> /boot/loader.conf
 
         # Change 'Deny from all' to 'Allow from all'.
         sed -i '.iredmailtmp' '/Each directory to/,/Note that from/s#Deny\ from\ all#Allow\ from\ all#' ${HTTPD_CONF}
-        rm -f ${HTTPD_CONF}.iredmailtmp >/dev/null 2>&1
+        rm -f ${HTTPD_CONF}.iredmailtmp &>/dev/null
 
         # Set ServerName.
         perl -pi -e 's/^#(ServerName).*/${1} $ENV{HOSTNAME}/' ${HTTPD_CONF}

@@ -197,10 +197,6 @@ cleanup_start_postfix_now()
 
             # FreeBSD
             if [ X"${DISTRO}" == X"FREEBSD" ]; then
-                # Update clamav before start clamav-clamd service.
-                ECHO_INFO "Updating ClamAV database..."
-                freshclam
-
                 # Load kernel module 'accf_http' before start.
                 kldload accf_http
 
@@ -223,16 +219,20 @@ cleanup_start_postfix_now()
     echo 'export status_cleanup_start_postfix_now="DONE"' >> ${STATUS_FILE}
 }
 
-cleanup_sa_preconfig()
+cleanup_amavisd_preconfig()
 {
-    # Required on FreeBSD to start Amavisd-new.
-    ECHO_INFO "Fetching SpamAssassin rules (sa-update) ..."
-    /usr/local/bin/sa-update >/dev/null
+    # Required on Gentoo and FreeBSD to start Amavisd-new.
+    ECHO_INFO "Fetching SpamAssassin rules (sa-update), please wait..."
+    ${BIN_SA_UPDATE} &>/dev/null
 
-    ECHO_INFO "Compiling SpamAssassin ruleset into native code (sa-compile), be patient..."
-    /usr/local/bin/sa-compile >/dev/null
+    ECHO_INFO "Compiling SpamAssassin rulesets into native code, please be patient..."
+    ${BIN_SA_COMPILE} &>/dev/null
 
-    echo 'export status_cleanup_sa_preconfig="DONE"' >> ${STATUS_FILE}
+    # Update clamav before start clamav-clamd service.
+    ECHO_INFO "Updating ClamAV database..."
+    freshclam &>/dev/null
+
+    echo 'export status_cleanup_amavisd_preconfig="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_backup_scripts()
@@ -276,8 +276,8 @@ EOF
     check_status_before_run cleanup_remove_mod_python
     [ X"${KERNEL_NAME}" == X"Linux" ] && check_status_before_run cleanup_replace_iptables_rule
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
-    check_status_before_run cleanup_start_postfix_now
-    [ X"${DISTRO}" == X"FREEBSD" ] && check_status_before_run cleanup_sa_preconfig
+    [ X"${DISTRO}" != X'GENTOO' ] && check_status_before_run cleanup_start_postfix_now
+    [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'GENTOO' ] && check_status_before_run cleanup_amavisd_preconfig
     check_status_before_run cleanup_backup_scripts
 
     # Send tip file to the mail server admin and/or first mail user.
@@ -341,7 +341,10 @@ EOF
 *
 EOF
 
-if [ X"${POSTFIX_STARTED}" != X"YES" -a X"${DISTRO}" != X"FREEBSD" ]; then
+if [ X"${POSTFIX_STARTED}" != X"YES" \
+    -a X"${DISTRO}" != X'FREEBSD' \
+    -a X"${DISTRO}" != X'GENTOO' \
+    ]; then
     cat <<EOF
 * Please reboot your system to enable mail related services or start them
 * manually without reboot:
@@ -361,9 +364,12 @@ EOF
 EOF
 fi
 
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        # Reboot freebsd to enable mail related services, because sendmail is
-        # binding to port '25'.
+    if [ X"${DISTRO}" == X'FREEBSD' \
+        -o X"${DISTRO}" == X'GENTOO' \
+        ]; then
+        # Reboot system to enable mail related services.
+        # - FreeBSD: sendmail is binding to port '25'
+        # - Gentoo: some services may require system reboot
         cat <<EOF
 * Please reboot your system to enable mail related services.
 *

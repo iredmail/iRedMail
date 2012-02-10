@@ -118,6 +118,7 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export DOVECOT_PGSQL_CONF='/etc/dovecot/dovecot-pgsql.conf'
     export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
     export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
+    export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export DOVECOT_VERSION='1.2'

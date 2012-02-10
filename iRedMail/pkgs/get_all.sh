@@ -374,6 +374,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" ]; then
 elif [ X"${DISTRO}" == X'GENTOO' ]; then
     # qlist is used to list all installed portages (qlist --installed).
     check_pkg 'qlist' 'portage-utils'
+    check_pkg 'equery' 'gentoolkit'
     check_pkg 'crontab' 'vixie-cron'
 fi
 

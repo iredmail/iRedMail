@@ -447,6 +447,7 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export SSL_FILE_DIR="/etc/ssl"
 
     # Override default value.
+    export VMAIL_GROUP_NAME='mail'
     export PKG_DIALOG="dialog"
     export PKG_BZIP2="bzip2"
 
