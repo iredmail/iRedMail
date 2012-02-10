@@ -36,7 +36,7 @@ cleanup_disable_selinux()
 cleanup_remove_sendmail()
 {
     # Remove sendmail.
-    eval ${LIST_ALL_PKGS} | grep sendmail &>/dev/null
+    eval ${LIST_ALL_PKGS} | grep 'sendmail' &>/dev/null
 
     if [ X"$?" == X"0" ]; then
         ECHO_QUESTION -n "Would you like to *REMOVE* sendmail now? [Y|n]"

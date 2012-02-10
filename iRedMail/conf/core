@@ -152,7 +152,7 @@ check_pkg()
     cmd="$1"
     pkg="$2"
 
-    ECHO_DEBUG "Checking necessary command/package: ${cmd}/${pkg} ..."
+    ECHO_INFO "Checking necessary command/package: ${cmd}/${pkg} ..."
     for i in $(echo $PATH|sed 's/:/ /g'); do
         [ -x $i/${cmd} ] && export HAS_CMD='YES' && break
     done
@@ -546,7 +546,7 @@ install_pkg_gentoo()
             status="\$status_install_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 ECHO_INFO "Installing package: ${i} ..."
-                emerge ${i}
+                emerge --buildpkg ${i}
 
                 if [ X"$?" == X"0" ]; then
                     echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}
@@ -575,7 +575,7 @@ gentoo_mark_package()
     [ -f /etc/portage/package.mask ] || touch /etc/portage/package.mask
     ECHO_DEBUG "Mask packages in /etc/portage/package.mask: $@"
     for pkg in $@; do
-        if not $(grep "^${pkg}$" /etc/portage/package.mask); then
+        if ! grep "^${pkg}$" /etc/portage/package.mask; then
             echo ${pkg} >> /etc/portage/package.mask
         fi
     done
@@ -585,7 +585,7 @@ gentoo_unmark_package()
 {
     [ -f /etc/portage/package.unmask ] || touch /etc/portage/package.unmask
     for pkg in $@; do
-        if not $(grep "^${pkg}$" /etc/portage/package.unmask); then
+        if ! grep "^${pkg}$" /etc/portage/package.unmask &>/dev/null; then
             ECHO_DEBUG "Unmask packages in /etc/portage/package.unmask: $@"
             echo ${pkg} >> /etc/portage/package.unmask
         fi

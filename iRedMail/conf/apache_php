@@ -105,6 +105,7 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/modules.d"
     export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/vhosts.d/00_default_ssl_vhost.conf"
     export HTTPD_WSGI_CONF="${HTTPD_CONF_DIR}/wsgi.conf"
+    export HTTPD_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/apache2"
 
     # Web data.
     export HTTPD_SERVERROOT='/var/www'

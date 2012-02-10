@@ -29,7 +29,7 @@ openldap_config()
     ECHO_INFO "Configure OpenLDAP server."
 
     ECHO_DEBUG "Stoping OpenLDAP."
-    ${LDAP_INIT_SCRIPT} stop >/dev/null
+    ${LDAP_INIT_SCRIPT} stop &>/dev/null
 
     backup_file ${OPENLDAP_SLAPD_CONF} ${OPENLDAP_LDAP_CONF}
 

@@ -207,6 +207,22 @@ EOF
             a2enmod ldap &>/dev/null
 
         [ X"${BACKEND}" == X"MYSQL" ] && a2enmod auth_mysql &>/dev/null
+
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        # Enable modules: php, wsgi
+        perl -pi -e 's#^(APACHE2_OPTS=.*)(")#${1} -D PHP5 -D WSGI${2}#' ${HTTPD_SYSCONFIG_CONF}
+
+        # Modules: ldap, authnz_ldap
+        [ X"${BACKEND}" == X"OPENLDAP" ] && \
+            perl -pi -e 's#^(APACHE2_OPTS=.*)(")#${1} -D LDAP -D AUTHNZ_LDAP${2}#' ${HTTPD_SYSCONFIG_CONF}
+
+        # Module: mod_auth_mysql
+        [ X"${BACKEND}" == X'MYSQL' ] && \
+            perl -pi -e 's#^(APACHE2_OPTS=.*)(")#${1} -D AUTH_MYSQL${2}#' ${HTTPD_SYSCONFIG_CONF}
+
+        # Module: mod_auth_pgsql
+        [ X"${BACKEND}" == X'PGSQL' ] && \
+            perl -pi -e 's#^(APACHE2_OPTS=.*)(")#${1} -D AUTH_PGSQL${2}#' ${HTTPD_SYSCONFIG_CONF}
     else
         :
     fi

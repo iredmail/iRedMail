@@ -441,14 +441,14 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export ETC_SYSCONFIG_DIR='/etc/conf.d'
 
     # Iptables rule file.
-    export IPTABLES_CONFIG="${ETC_SYSCONFIG_DIR}/iptables"
+    export IPTABLES_CONFIG="/var/lib/iptables/rules-save"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
 
     # Override default value.
-    export PKG_DIALOG="dev-util/dialog"
-    export PKG_BZIP2="app-arch/bzip2"
+    export PKG_DIALOG="dialog"
+    export PKG_BZIP2="bzip2"
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # System user: root.

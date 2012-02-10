@@ -86,12 +86,12 @@ install_all()
             ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
         elif [ X"${DISTRO}" == X"GENTOO" ]; then
-            ALL_PKGS="${ALL_PKGS} net-nds/openldap"
+            ALL_PKGS="${ALL_PKGS} openldap"
             ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
             gentoo_add_use_flags 'net-nds/openldap' 'berkdb crypt ipv6 ssl tcpd overlays perl sasl syslog'
 
             # MySQL server and client.
-            ALL_PKGS="${ALL_PKGS} dev-db/mysql"
+            ALL_PKGS="${ALL_PKGS} mysql"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
             gentoo_add_use_flags 'dev-db/mysql' 'berkdb community perl ssl big-tables cluster'
         fi
@@ -124,7 +124,7 @@ install_all()
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
 
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
-            ALL_PKGS="${ALL_PKGS} dev-db/mysql"
+            ALL_PKGS="${ALL_PKGS} mysql mod_auth_mysql"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
             gentoo_add_use_flags 'dev-db/mysql' 'berkdb community perl ssl big-tables cluster'
         fi
@@ -148,7 +148,7 @@ install_all()
             # Postfix module
             ALL_PKGS="${ALL_PKGS} postfix-pgsql"
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
-            ALL_PKGS="${ALL_PKGS} dev-db/postgresql-server"
+            ALL_PKGS="${ALL_PKGS} postgresql-server mod_auth_pgsql"
             ENABLED_SERVICES="${ENABLED_SERVICES} postgresql-${PGSQL_VERSION}"
             gentoo_add_use_flags 'dev-db/postgresql-server' 'nls pam doc perl python xml'
 
@@ -193,7 +193,7 @@ install_all()
 
         ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} www-servers/apache dev-lang/php"
+        ALL_PKGS="${ALL_PKGS} apache php"
         ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
         gentoo_add_use_flags 'dev-libs/apr-util' 'ldap'
         gentoo_add_use_flags 'www-servers/apache' 'ssl doc ldap suexec'
@@ -214,7 +214,7 @@ install_all()
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} mail-mta/postfix"
+        ALL_PKGS="${ALL_PKGS} postfix"
         gentoo_unmark_package 'mail-mta/ssmtp'
         gentoo_add_use_flags 'mail-mta/postfix' 'ipv6 pam ssl cdb dovecot-sasl hardened ldap ldap-bind mbox mysql postgres sasl'
     fi
@@ -267,7 +267,7 @@ dbc_authmethod_user=''
 EOF
         fi
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} mail-filter/policyd"
+        ALL_PKGS="${ALL_PKGS} policyd"
         ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
     fi
 
@@ -307,7 +307,7 @@ EOF
             fi
         fi
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} net-mail/dovecot"
+        ALL_PKGS="${ALL_PKGS} dovecot"
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
         gentoo_add_use_flags 'net-mail/dovecot' 'bzip2 ipv6 maildir pam ssl zlib caps doc kerberos ldap managesieve mbox mdbox mysql postgres sdbox sieve sqlite suid'
     fi
@@ -336,7 +336,7 @@ EOF
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} mail-filter/amavisd-new mail-filter/spamassassin app-antivirus/clamav net-mail/altermime"
+        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin clamav altermime"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} clamd"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamd"
 
@@ -358,7 +358,7 @@ EOF
         ALL_PKGS="${ALL_PKGS} libmail-spf-perl"
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} dev-perl/Mail-SPF"
+        ALL_PKGS="${ALL_PKGS} Mail-SPF"
     fi
 
     # phpPgAdmin
@@ -370,7 +370,7 @@ EOF
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} phppgadmin"
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
-            ALL_PKGS="${ALL_PKGS} dev-db/phppgadmin"
+            ALL_PKGS="${ALL_PKGS} phppgadmin"
         fi
     fi
 
@@ -407,8 +407,8 @@ EOF
         ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-mysqldb python-jinja2 python-netifaces python-webpy"
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} dev-python/jinja dev-python/webpy dev-python/mysql-python"
-        [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} dev-python/python-ldap"
+        ALL_PKGS="${ALL_PKGS} jinja webpy mysql-python mod_wsgi"
+        [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
 
         gentoo_add_use_flags 'dev-python/jinja' 'examples i18n vim-syntax'
     fi
@@ -424,7 +424,7 @@ EOF
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
-            ALL_PKGS="${ALL_PKGS} www-misc/awstats"
+            ALL_PKGS="${ALL_PKGS} awstats"
             gentoo_add_use_flags 'www-misc/awstats' 'ipv6 geoip'
         fi
     fi
@@ -439,7 +439,7 @@ EOF
             ALL_PKGS="${ALL_PKGS} fail2ban"
             ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
-            ALL_PKGS="${ALL_PKGS} net-analyzer/fail2ban"
+            ALL_PKGS="${ALL_PKGS} fail2ban"
             ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
         fi
 
@@ -465,7 +465,7 @@ EOF
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} app-text/dos2unix"
+        ALL_PKGS="${ALL_PKGS} dos2unix"
     fi
     #### End Misc packages & services ####
 
