@@ -215,7 +215,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} postfix"
-        gentoo_unmark_package 'mail-mta/ssmtp'
+        #gentoo_unmask_package 'mail-mta/ssmtp'
         gentoo_add_use_flags 'mail-mta/postfix' 'ipv6 pam ssl cdb dovecot-sasl hardened ldap ldap-bind mbox mysql postgres sasl'
     fi
 
@@ -411,6 +411,8 @@ EOF
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
 
         gentoo_add_use_flags 'dev-python/jinja' 'examples i18n vim-syntax'
+        # Don't use python-3
+        gentoo_mask_package '<=dev-lang/python-3.0'
     fi
 
     #############

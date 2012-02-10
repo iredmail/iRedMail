@@ -105,8 +105,11 @@ amavisd_config_rhel()
 {
     ECHO_INFO "Configure Amavisd-new (interface between MTA and content checkers)."
 
-    if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X"6" ]; then
-        usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER} >/dev/null
+    if [ X"${DISTRO}" == X"RHEL" ]; then
+        [ X"${DISTRO_VERSION}" == X"6" ] && \
+            usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER} >/dev/null
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        usermod -G ${CLAMAV_GROUP} ${AMAVISD_SYS_USER} >/dev/null
     fi
 
     # Don't check amavisd-milter status.
@@ -116,11 +119,6 @@ amavisd_config_rhel()
     chmod 0640 ${AMAVISD_CONF} ${AMAVISD_DKIM_CONF}
 
     ECHO_DEBUG "Configure amavisd-new: ${AMAVISD_CONF}."
-
-    #perl -pi -e 's/^(\$max_servers)/$1\ =\ 15\;\t#/' ${AMAVISD_CONF}
-    # ---- Set amavisd daemon user. ----
-    #perl -pi -e 's/^(\$daemon_user)/$1\ =\ "clamav"\;\t#/' ${AMAVISD_CONF}
-    #perl -pi -e 's/^(\$daemon_group)/$1\ =\ "clamav"\;\t#/' ${AMAVISD_CONF}
 
     export FIRST_DOMAIN
     perl -pi -e 's/^(\$mydomain)/$1\ =\ \"$ENV{'HOSTNAME'}\"\;\t#/' ${AMAVISD_CONF}
@@ -719,7 +717,11 @@ EOF
 
 amavisd_config()
 {
-    if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X"SUSE" ]; then
+    if [ X"${DISTRO}" == X"RHEL" \
+        -o X"${DISTRO}" == X'SUSE' \
+        -o X"${DISTRO}" == X'GENTOO' \
+        -o X"${DISTRO}" == X"FREEBSD" \
+        ]; then
         check_status_before_run amavisd_config_rhel
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         check_status_before_run amavisd_config_debian

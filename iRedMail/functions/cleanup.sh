@@ -222,14 +222,14 @@ cleanup_start_postfix_now()
 cleanup_amavisd_preconfig()
 {
     # Required on Gentoo and FreeBSD to start Amavisd-new.
-    ECHO_INFO "Fetching SpamAssassin rules (sa-update), please wait..."
+    ECHO_INFO "Fetching SpamAssassin rules (sa-update), please wait ..."
     ${BIN_SA_UPDATE} &>/dev/null
 
-    ECHO_INFO "Compiling SpamAssassin rulesets into native code, please be patient..."
+    ECHO_INFO "Compiling SpamAssassin rulesets (sa-compile), please wait ..."
     ${BIN_SA_COMPILE} &>/dev/null
 
     # Update clamav before start clamav-clamd service.
-    ECHO_INFO "Updating ClamAV database..."
+    ECHO_INFO "Updating ClamAV database (freshclam), please wait ..."
     freshclam &>/dev/null
 
     echo 'export status_cleanup_amavisd_preconfig="DONE"' >> ${STATUS_FILE}

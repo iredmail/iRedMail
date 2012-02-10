@@ -179,7 +179,7 @@ check_env()
     # Check config tool: dialog.
     check_pkg ${BIN_DIALOG} ${PKG_DIALOG}
 
-    ECHO_INFO -n "Check configuration file: ${CONFIG_FILE}..."
+    ECHO_INFO -n "Check configuration file: ${CONFIG_FILE} ..."
     if [ -f ${CONFIG_FILE} ]; then
         grep '^#EOF$' ${CONFIG_FILE} >/dev/null
 
@@ -569,7 +569,7 @@ remove_pkg_gentoo()
     [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
 }
 
-gentoo_mark_package()
+gentoo_mask_package()
 {
     [ -f /etc/portage/package.mask ] || touch /etc/portage/package.mask
     ECHO_DEBUG "Mask packages in /etc/portage/package.mask: $@"
@@ -580,7 +580,7 @@ gentoo_mark_package()
     done
 }
 
-gentoo_unmark_package()
+gentoo_unmask_package()
 {
     [ -f /etc/portage/package.unmask ] || touch /etc/portage/package.unmask
     for pkg in $@; do
