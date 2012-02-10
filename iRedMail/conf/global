@@ -450,6 +450,9 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export PKG_DIALOG="dialog"
     export PKG_BZIP2="bzip2"
 
+    # Options used for install package
+    export GENTOO_EMERGE_INSTALL_OPTIONS='--buildpkg'
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # System user: root.
     export SYS_ROOT_USER='root'

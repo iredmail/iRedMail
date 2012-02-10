@@ -88,7 +88,7 @@ install_all()
         elif [ X"${DISTRO}" == X"GENTOO" ]; then
             ALL_PKGS="${ALL_PKGS} openldap"
             ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
-            gentoo_add_use_flags 'net-nds/openldap' 'berkdb crypt ipv6 ssl tcpd overlays perl sasl syslog'
+            gentoo_add_use_flags 'net-nds/openldap' 'crypt ipv6 ssl tcpd overlays perl sasl syslog'
 
             # MySQL server and client.
             ALL_PKGS="${ALL_PKGS} mysql"

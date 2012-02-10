@@ -545,8 +545,7 @@ install_pkg_gentoo()
             portname="$( echo ${i} | tr -d '-' | tr -d '/' | tr -d '\.' )"
             status="\$status_install_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
-                ECHO_INFO "Installing package: ${i} ..."
-                emerge --buildpkg ${i}
+                emerge ${GENTOO_EMERGE_INSTALL_OPTIONS} ${i}
 
                 if [ X"$?" == X"0" ]; then
                     echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}

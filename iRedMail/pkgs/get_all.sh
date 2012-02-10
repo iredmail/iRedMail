@@ -143,7 +143,7 @@ fetch_pkgs_debian()
     cd ${PKG_DIR}
 
     if [ X"${PKGLIST}" != X"0" ]; then
-        ECHO_INFO "Fetching Binary Packages ..."
+        ECHO_INFO "Fetching binary packages ..."
         for i in ${PKGLIST}; do
             if [ X"${DISTRO}" == X"DEBIAN" ]; then
                 url="${MIRROR}/debian/lenny/${i}"
@@ -167,7 +167,7 @@ fetch_misc()
     misc_total=$(( $(echo ${MISCLIST} | wc -w | awk '{print $1}') ))
     misc_count=1
 
-    ECHO_INFO "Fetching Source Tarballs ..."
+    ECHO_INFO "Fetching source tarballs ..."
 
     for i in ${MISCLIST}; do
         url="${MIRROR}/misc/${i}"
@@ -184,7 +184,7 @@ check_md5()
     cd ${ROOTDIR}
 
     if [ X"${DISTRO}" != X"FREEBSD" ]; then
-        ECHO_INFO -n "Validate Packages ..."
+        ECHO_INFO -n "Validate packages ..."
 
         md5file="/tmp/check_md5_tmp.${RANDOM}$RANDOM}"
         echo -e "${MD5LIST}" > ${md5file}
@@ -195,7 +195,7 @@ check_md5()
 
         if [ X"${RETVAL}" == X"0" ]; then
             echo -e "\t[ FAILED ]"
-            ECHO_ERROR "MD5 check failed. Check your rpm packages. Script exit ...\n"
+            ECHO_ERROR "MD5 check failed. Script exit ...\n"
             exit 255
         else
             echo -e "\t[ OK ]"
