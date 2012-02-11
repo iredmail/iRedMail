@@ -56,6 +56,9 @@ install_all()
         fi
     elif [ X"${DISTRO}" == X"GENTOO" ]; then
         ENABLED_SERVICES="syslog-ng ${ENABLED_SERVICES}"
+        gentoo_add_use_flags 'net-nds/openldap' 'crypt ipv6 ssl tcpd overlays perl sasl syslog'
+        gentoo_add_use_flags 'dev-db/mysql' 'berkdb community perl ssl big-tables cluster'
+        gentoo_add_use_flags 'dev-db/postgresql-server' 'nls pam doc perl python xml'
     fi
 
     #################################################
@@ -88,12 +91,10 @@ install_all()
         elif [ X"${DISTRO}" == X"GENTOO" ]; then
             ALL_PKGS="${ALL_PKGS} openldap"
             ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
-            gentoo_add_use_flags 'net-nds/openldap' 'crypt ipv6 ssl tcpd overlays perl sasl syslog'
 
             # MySQL server and client.
             ALL_PKGS="${ALL_PKGS} mysql"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
-            gentoo_add_use_flags 'dev-db/mysql' 'berkdb community perl ssl big-tables cluster'
         fi
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL server & client.
@@ -126,7 +127,6 @@ install_all()
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} mysql mod_auth_mysql"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
-            gentoo_add_use_flags 'dev-db/mysql' 'berkdb community perl ssl big-tables cluster'
         fi
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         export USE_IREDAPD='NO'
@@ -150,8 +150,6 @@ install_all()
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server mod_auth_pgsql"
             ENABLED_SERVICES="${ENABLED_SERVICES} postgresql-${PGSQL_VERSION}"
-            gentoo_add_use_flags 'dev-db/postgresql-server' 'nls pam doc perl python xml'
-
         fi
     fi
 
