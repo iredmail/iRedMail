@@ -1,4 +1,5 @@
 iRedMail-0.8.0-beta2:
+    * It now works perfectly on Gentoo.
     * Fixed:
         + Dovecot cannot store realtime quota usage in PostgreSQL.
         + User authentication in Roundcube is case sensitive (login_lc).
