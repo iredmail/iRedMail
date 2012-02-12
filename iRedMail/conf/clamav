@@ -64,4 +64,3 @@ export FRESHCLAM_LOGFILE='/var/log/clamav/freshclam.log'
 
 # Freshclam.
 export FRESHCLAM_PID_FILE='/var/run/clamav/freshclam.pid'   # Used to override default setting.
-export FRESHCLAM_DATABASE_MIRROR='db.us.clamav.net'     # db.cn.clamav.net is broken.

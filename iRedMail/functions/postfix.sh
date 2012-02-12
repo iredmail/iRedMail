@@ -195,6 +195,15 @@ EOF
 #/(^Received:.*\[).*(\].*Authenticated sender:.*by REPLACED_BY_YOUR_HOSTNAME.*iRedMail.*)/ REPLACE ${1}REPLACED_BY_YOUR_IP_ADDRESS${2}
 EOF
 
+    if [ X"${DISTRO}" == X'GENTOO' ]; then
+        cat >> ${SYSLOG_CONF} <<EOF
+# Maillog
+filter f_maillog {facility(mail); };
+destination maillog {file("${MAILLOG}"); };
+log {source(src); filter(f_maillog); destination(maillog); };
+EOF
+    fi
+
     cat >> ${TIP_FILE} <<EOF
 Postfix (basic):
     * Configuration files:

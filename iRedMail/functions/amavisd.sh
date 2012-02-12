@@ -109,7 +109,7 @@ amavisd_config_rhel()
         [ X"${DISTRO_VERSION}" == X"6" ] && \
             usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER} >/dev/null
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        usermod -G ${CLAMAV_GROUP} ${AMAVISD_SYS_USER} >/dev/null
+        usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER} >/dev/null
     fi
 
     # Don't check amavisd-milter status.

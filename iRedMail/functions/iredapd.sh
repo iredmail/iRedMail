@@ -27,7 +27,7 @@ iredapd_config()
     ECHO_INFO "Configure iRedAPD (postfix policy daemon)."
 
     # Create a low privilege user as daemon user.
-    if [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
+    if [ X"${DISTRO}" == X"FreeBSD" ]; then
         pw useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" -n ${IREDAPD_DAEMON_USER}
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         groupadd ${IREDAPD_DAEMON_GROUP}
@@ -52,6 +52,9 @@ iredapd_config()
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.opensuse ${DIR_RC_SCRIPTS}/iredapd
+    elif [ X"${DISTRO}" == X"GENTOO" ]; then
+        cp ${SAMPLE_DIR}/gentoo.iredapd.runscript ${DIR_RC_SCRIPTS}/iredapd
+        chmod +x ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
     else

@@ -50,7 +50,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export MAILLOG_WARN='/var/log/mail.warn'
 elif [ X"${DISTRO}" == X"GENTOO" ]; then
     # Gentoo
-    export MAILLOG='/var/log/messages'
+    export MAILLOG='/var/log/maillog'
     export MAILLOG_INFO=''
     export MAILLOG_ERROR=''
     export MAILLOG_WARN=''

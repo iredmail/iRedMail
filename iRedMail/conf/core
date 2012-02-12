@@ -152,16 +152,19 @@ check_pkg()
     cmd="$1"
     pkg="$2"
 
-    ECHO_INFO "Checking required command/package: ${cmd}/${pkg} ..."
+    ECHO_INFO -n "Checking required command/package: ${cmd}/${pkg} ..."
     for i in $(echo $PATH|sed 's/:/ /g'); do
         [ -x $i/${cmd} ] && export HAS_CMD='YES' && break
     done
 
     if [ X"${HAS_CMD}" != X'YES' ]; then
+        echo -e '\t[NOT FOUND]'
         eval ${install_pkg} ${pkg}
         if [ X"$?" != X"0" ]; then
             ECHO_ERROR "Please install package ${pkg} first." && exit 255
         fi
+    else
+        echo -e '\t[FOUND]'
     fi
 
     unset HAS_CMD

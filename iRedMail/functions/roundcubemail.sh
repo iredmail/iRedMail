@@ -426,6 +426,7 @@ EOF
 
     # Require the new password to contain a letter and punctuation character
     perl -pi -e 's#(.*password_require_nonalpha.*=).*#${1} true;#' config.inc.php
+    perl -pi -e 's#(.*password_log.*=).*#${1} true;#' config.inc.php
 
     if [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X"PGSQL" ]; then
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php

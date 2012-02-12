@@ -230,7 +230,7 @@ cleanup_amavisd_preconfig()
 
     # Update clamav before start clamav-clamd service.
     ECHO_INFO "Updating ClamAV database (freshclam), please wait ..."
-    freshclam &>/dev/null
+    freshclam
 
     echo 'export status_cleanup_amavisd_preconfig="DONE"' >> ${STATUS_FILE}
 }

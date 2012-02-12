@@ -40,9 +40,11 @@ clamav_config()
     perl -pi -e 's-^#(LocalSocket).*-${1} $ENV{'CLAMD_LOCAL_SOCKET'}-' ${CLAMD_CONF}
 
     ECHO_DEBUG "Configure freshclam: ${FRESHCLAM_CONF}."
-    perl -pi -e 's#^(DatabaseMirror).*#${1} $ENV{'FRESHCLAM_DATABASE_MIRROR'}#' ${CLAMD_CONF}
     perl -pi -e 's-^#(PidFile)(.*)-${1} $ENV{FRESHCLAM_PID_FILE}-' ${FRESHCLAM_CONF}
     perl -pi -e 's#^(UpdateLogFile).*#${1} $ENV{'FRESHCLAM_LOGFILE'}#' ${CLAMD_CONF}
+
+    # Official database only
+    perl -pi -e 's-^#(OfficialDatabaseOnly).*#${1} yes#' ${CLAMD_CONF}
 
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ECHO_DEBUG "Copy freshclam init startup script and enable it."
