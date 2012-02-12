@@ -452,7 +452,7 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export PKG_BZIP2="bzip2"
 
     # Options used for install package
-    export GENTOO_EMERGE_INSTALL_OPTIONS='--buildpkg --quiet-build'
+    export GENTOO_EMERGE_INSTALL_OPTIONS='--usepkg --binpkg-respect-use --buildpkg --quiet-build'
     export GENTOO_CONF_PACKAGE_USE='/etc/portage/package.use'
     export GENTOO_CONF_PACKAGE_MASK='/etc/portage/package.mask'
     export GENTOO_CONF_PACKAGE_UNMASK='/etc/portage/package.unmask'

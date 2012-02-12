@@ -374,7 +374,7 @@ fi
         # - FreeBSD: sendmail is binding to port '25'
         # - Gentoo: some services may require system reboot
         cat <<EOF
-* Please reboot your system to enable mail related services.
+* Please reboot your system to enable mail services.
 *
 EOF
 fi
