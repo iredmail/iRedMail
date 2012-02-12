@@ -280,6 +280,9 @@ EOF
     [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'GENTOO' ] && check_status_before_run cleanup_amavisd_preconfig
     check_status_before_run cleanup_backup_scripts
 
+    # Start Postfix to deliver emails.
+    [ X"${DISTRO}" == X'GENTOO' ] && ${DIR_RC_SCRIPTS}/postfix restart >/dev/null
+
     # Send tip file to the mail server admin and/or first mail user.
     tip_recipient="${FIRST_USER}@${FIRST_DOMAIN}"
     [ ! -z "${MAIL_ALIAS_ROOT}" -a X"${MAIL_ALIAS_ROOT}" != X"${tip_recipient}" ] && \

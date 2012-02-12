@@ -543,12 +543,14 @@ remove_pkg_debian()
 install_pkg_gentoo()
 {
     ECHO_INFO "Installing package(s) with option(s) '${GENTOO_EMERGE_INSTALL_OPTIONS}': $@"
+    pkgs_total="$(echo $@ | wc -w)"
+    pkgs_counter=1
     for pkg in $@; do
         if [ X"${pkg}" != X'' ]; then
             portname="$( echo ${pkg} | tr -d '-' | tr -d '/' | tr -d '\.' )"
             status="\$status_install_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
-                ECHO_INFO "Installing package: ${pkg}"
+                ECHO_INFO "Installing package (${pkgs_counter} of ${pkgs_total}): ${pkg}"
                 emerge ${GENTOO_EMERGE_INSTALL_OPTIONS} ${pkg}
 
                 if [ X"$?" == X"0" ]; then
@@ -562,6 +564,7 @@ install_pkg_gentoo()
             else
                 ECHO_INFO "Skip package: ${pkg}."
             fi
+            pkgs_counter=$((pkgs_counter+1))
         fi
     done
 }

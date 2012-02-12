@@ -79,7 +79,11 @@ EOF
 
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Use mod_auth_mysql.
-        if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
+        if [ X"${DISTRO}" == X"RHEL" \
+            -o X"${DISTRO}" == X"SUSE" \
+            -o X"${DISTRO}" == X"GENTOO" \
+            -o X"${DISTRO}" == X"FREEBSD" \
+            ]; then
             cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     AuthType Basic
 
@@ -101,7 +105,10 @@ EOF
             fi
 
             # OpenSuSE & FreeBSD special.
-            if [ X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
+            if [ X"${DISTRO}" == X"SUSE" \
+                -o X"${DISTRO}" == X"GENTOO" \
+                -o X"${DISTRO}" == X"FREEBSD" \
+                ]; then
                 echo "AuthBasicAuthoritative Off" >> ${AWSTATS_HTTPD_CONF}
             fi
 
