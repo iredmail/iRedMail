@@ -100,6 +100,7 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export AMAVISD_QUARANTINEDIR="${AMAVISD_MYHOME}/quarantine"
     export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
 
+    export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Override global setting: user/group.
     export AMAVISD_SYS_USER='vscan'
