@@ -128,7 +128,7 @@ We provide two backends and the homologous webmail programs:
 +------------+---------------+---------------------------+
 
 TIP: Use SPACE key to select item.
-" 20 76 2 \
+" 20 76 3 \
     'OpenLDAP' 'An open source implementation of LDAP protocol' 'on' \
     'MySQL' "The world's most popular open source database" 'off' \
     2>/tmp/backend
