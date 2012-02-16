@@ -161,8 +161,6 @@ check_pkg()
         if [ X"$?" != X"0" ]; then
             ECHO_ERROR "Please install package ${pkg} first." && exit 255
         fi
-    else
-        echo -e '\t[FOUND]'
     fi
 
     unset HAS_CMD
