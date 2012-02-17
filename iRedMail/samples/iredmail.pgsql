@@ -16,11 +16,6 @@
 -- along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 -- ---------------------------------------------------------------------
 
---
--- Based on original postfixadmin template.
--- http://postfixadmin.sf.net
---
-
 -- Used to store domain admin accounts
 CREATE TABLE IF NOT EXISTS admin (
     username VARCHAR(255) NOT NULL DEFAULT '',
@@ -113,10 +108,10 @@ CREATE TABLE IF NOT EXISTS domain_admins (
     modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 00:00:00',
     active INT2 NOT NULL DEFAULT 1,
-    PRIMARY KEY (username)
+    PRIMARY KEY (username,domain)
 );
+CREATE INDEX idx_domain_admins_username ON domain_admins (username);
 CREATE INDEX idx_domain_admins_domain ON domain_admins (domain);
-CREATE INDEX idx_domain_admins_username ON domain_admins (username, domain);
 CREATE INDEX idx_domain_admins_active ON domain_admins (active);
 
 -- Used to store virtual mail accounts
