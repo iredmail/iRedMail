@@ -428,7 +428,7 @@ plugin {
 EOF
     fi
 
-    # ---- Create ${DOVECOT_REALTIME_QUOTA_CONF} ----
+    # Create ${DOVECOT_REALTIME_QUOTA_CONF}
     if [ X"${DOVECOT_VERSION}" == X"1.2" ]; then
         backup_file ${DOVECOT_REALTIME_QUOTA_CONF}
 
@@ -467,6 +467,8 @@ map {
 }
 EOF
 
+        chmod 0500 ${DOVECOT_REALTIME_QUOTA_CONF}
+
         # Create MySQL database ${IREDADMIN_DB_USER} and table 'used_quota'
         # which used to store realtime quota.
         if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
@@ -485,9 +487,8 @@ EOF
 
         fi
     fi
-    # ---- real time dict quota ----
 
-    # ---- IMAP shared folder ----
+    # IMAP shared folder
     if [ X"${DOVECOT_VERSION}" == X"1.2" ]; then
         backup_file ${DOVECOT_SHARE_FOLDER_CONF}
 
@@ -544,6 +545,8 @@ map {
 }
 EOF
 
+        chmod 0500 ${DOVECOT_SHARE_FOLDER_CONF}
+
         # Create MySQL database ${IREDADMIN_DB_USER} and table 'share_folder'
         # which used to store realtime quota.
         if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
@@ -560,9 +563,7 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_U
 FLUSH PRIVILEGES;
 EOF
         fi
-
     fi
-    # ---- IMAP shared folder ----
 
     ECHO_DEBUG "Copy sample sieve global filter rule file: ${DOVECOT_GLOBAL_SIEVE_FILE}.sample."
     cp -f ${SAMPLE_DIR}/dovecot.sieve ${DOVECOT_GLOBAL_SIEVE_FILE}.sample

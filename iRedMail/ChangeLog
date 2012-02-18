@@ -1,3 +1,9 @@
+iRedMail-0.8.0-beta3:
+    * Fixed:
+        + Two Dovecot config files are world readable: used_quota.conf,
+          share-folder.conf.
+          Thanks Martin Kuchar for the report.
+
 iRedMail-0.8.0-beta2:
     * It now works perfectly on Gentoo.
     * Fixed:
