@@ -229,25 +229,24 @@ EOF
     fi
 
     # IMAP shared folder
-    if [ X"${DOVECOT_VERSION}" == X"1.2" ]; then
-        backup_file ${DOVECOT_SHARE_FOLDER_CONF}
+    backup_file ${DOVECOT_SHARE_FOLDER_CONF}
 
-        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-            share_folder_db_name="${IREDADMIN_DB_NAME}"
-            share_folder_db_user="${IREDADMIN_DB_USER}"
-            share_folder_db_passwd="${IREDADMIN_DB_PASSWD}"
-        elif [ X"${BACKEND}" == X"MYSQL" ]; then
-            share_folder_db_name="${VMAIL_DB}"
-            share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
-            share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
-        elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            share_folder_db_name="${VMAIL_DB}"
-            share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
-            share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
-        fi
+    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+        share_folder_db_name="${IREDADMIN_DB_NAME}"
+        share_folder_db_user="${IREDADMIN_DB_USER}"
+        share_folder_db_passwd="${IREDADMIN_DB_PASSWD}"
+    elif [ X"${BACKEND}" == X"MYSQL" ]; then
+        share_folder_db_name="${VMAIL_DB}"
+        share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
+        share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        share_folder_db_name="${VMAIL_DB}"
+        share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
+        share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
+    fi
 
-        # Enable dict quota in dovecot.
-        cat >> ${DOVECOT_CONF} <<EOF
+    # Enable dict quota in dovecot.
+    cat >> ${DOVECOT_CONF} <<EOF
 namespace private {
     separator = /
     prefix =
@@ -273,8 +272,8 @@ dict {
 }
 EOF
 
-        # SQL lookup for share folder.
-        cat > ${DOVECOT_SHARE_FOLDER_CONF} <<EOF
+    # SQL lookup for share folder.
+    cat > ${DOVECOT_SHARE_FOLDER_CONF} <<EOF
 ${CONF_MSG}
 connect = host=${MYSQL_SERVER} dbname=${share_folder_db_name} user=${share_folder_db_user} password=${share_folder_db_passwd}
 map {
@@ -288,13 +287,13 @@ map {
     }
 }
 EOF
-        chmod 0500 ${DOVECOT_SHARE_FOLDER_CONF}
+    chmod 0500 ${DOVECOT_SHARE_FOLDER_CONF}
 
-        # Create MySQL database ${IREDADMIN_DB_USER} and table 'share_folder'
-        # which used to store realtime quota.
-        if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
-            # If iRedAdmin is not used, create database and import table here.
-            mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+    # Create MySQL database ${IREDADMIN_DB_USER} and table 'share_folder'
+    # which used to store realtime quota.
+    if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
+        # If iRedAdmin is not used, create database and import table here.
+        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 # Create databases.
 CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -305,7 +304,6 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_U
 
 FLUSH PRIVILEGES;
 EOF
-        fi
     fi
 
     ECHO_DEBUG "Copy sample sieve global filter rule file: ${DOVECOT_GLOBAL_SIEVE_FILE}.sample."
