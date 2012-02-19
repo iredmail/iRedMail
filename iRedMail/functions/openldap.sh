@@ -388,8 +388,6 @@ EOF
         # Debian 5  -> ${DIR_RC_SCRIPTS}/rsyslog
         [ -x ${DIR_RC_SCRIPTS}/sysklogd ] && service_control sysklogd restart >/dev/null
         [ -x ${DIR_RC_SCRIPTS}/rsyslog ] && service_control rsyslog restart >/dev/null
-    else
-        :
     fi
 
     # FreeBSD: Start openldap when system start up.
@@ -428,7 +426,7 @@ openldap_data_initialize()
     chmod -R 0700 ${OPENLDAP_DATA_DIR}
 
     ECHO_DEBUG "Starting OpenLDAP."
-    ${LDAP_INIT_SCRIPT} restart >/dev/null
+    ${LDAP_INIT_SCRIPT} restart &>/dev/null
 
     ECHO_DEBUG -n "Sleep 5 seconds for LDAP daemon initialize:"
     sleep 5
