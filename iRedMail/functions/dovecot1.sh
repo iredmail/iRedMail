@@ -467,6 +467,7 @@ map {
 }
 EOF
 
+        chown ${DOVECOT_USER}:${DOVECOT_GROUP} ${DOVECOT_REALTIME_QUOTA_CONF}
         chmod 0500 ${DOVECOT_REALTIME_QUOTA_CONF}
 
         # Create MySQL database ${IREDADMIN_DB_USER} and table 'used_quota'
@@ -545,6 +546,7 @@ map {
 }
 EOF
 
+        chown ${DOVECOT_USER}:${DOVECOT_GROUP} ${DOVECOT_SHARE_FOLDER_CONF}
         chmod 0500 ${DOVECOT_SHARE_FOLDER_CONF}
 
         # Create MySQL database ${IREDADMIN_DB_USER} and table 'share_folder'

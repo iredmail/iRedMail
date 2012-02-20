@@ -107,6 +107,7 @@ dovecot2_config()
     perl -pi -e 's#PH_SSL_CERT#<$ENV{SSL_CERT_FILE}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_SSL_KEY#<$ENV{SSL_KEY_FILE}#' ${DOVECOT_CONF}
 
+
     # Generate dovecot quota warning script.
     mkdir -p $(dirname ${DOVECOT_QUOTA_WARNING_SCRIPT}) 2>/dev/null
 
@@ -193,7 +194,7 @@ EOF
 
     cat > ${DOVECOT_REALTIME_QUOTA_CONF} <<EOF
 ${CONF_MSG}
-connect = host=${MYSQL_SERVER} dbname=${realtime_quota_db_name} user=${realtime_quota_db_user} password=${realtime_quota_db_passwd}
+connect = host=${SQL_SERVER} dbname=${realtime_quota_db_name} user=${realtime_quota_db_user} password=${realtime_quota_db_passwd}
 map {
     pattern = priv/quota/storage
     table = ${DOVECOT_REALTIME_QUOTA_TABLE}
@@ -208,6 +209,7 @@ map {
 }
 EOF
 
+    chown ${DOVECOT_USER}:${DOVECOT_GROUP} ${DOVECOT_REALTIME_QUOTA_CONF}
     chmod 0500 ${DOVECOT_REALTIME_QUOTA_CONF}
 
     # Create MySQL database ${IREDADMIN_DB_USER} and table 'used_quota'
@@ -245,32 +247,9 @@ EOF
         share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
     fi
 
-    # Enable dict quota in dovecot.
-    cat >> ${DOVECOT_CONF} <<EOF
-namespace private {
-    separator = /
-    prefix =
-    #location defaults to mail_location.
-    inbox = yes
-}
-
-namespace shared {
-    separator = /
-    prefix = Shared/%%u/
-    location = maildir:/%%Lh/Maildir/:INDEX=/%%Lh/Maildir/Shared/%%u
-    # this namespace should handle its own subscriptions or not.
-    subscriptions = yes
-    list = children
-}
-
-plugin {
-    acl = vfile
-    acl_shared_dict = proxy::acl
-}
-dict {
-    acl = ${DOVECOT_SHARE_FOLDER_SQLTYPE}:${DOVECOT_SHARE_FOLDER_CONF}
-}
-EOF
+    # ACL and share folder
+    perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_SQLTYPE#$ENV{DOVECOT_SHARE_FOLDER_SQLTYPE}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_CONF#$ENV{DOVECOT_SHARE_FOLDER_CONF}#' ${DOVECOT_CONF}
 
     # SQL lookup for share folder.
     cat > ${DOVECOT_SHARE_FOLDER_CONF} <<EOF
@@ -287,6 +266,8 @@ map {
     }
 }
 EOF
+
+    chown ${DOVECOT_USER}:${DOVECOT_GROUP} ${DOVECOT_SHARE_FOLDER_CONF}
     chmod 0500 ${DOVECOT_SHARE_FOLDER_CONF}
 
     # Create MySQL database ${IREDADMIN_DB_USER} and table 'share_folder'

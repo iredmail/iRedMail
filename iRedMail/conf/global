@@ -194,8 +194,9 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         export DISTRO_VERSION="$(grep 'VERSION' /etc/SuSE-release | awk '{print $3}')"
 
         # SuSE code name.
-        #   - 11.3:
+        #   - 12.1: asparagus
         #   - 11.4: celadon
+        #   - 11.3:
         export DISTRO_CODENAME="$(grep 'CODENAME' /etc/SuSE-release | awk '{print $3}' |tr [A-Z] [a-z])"
 
     elif [ -f /etc/lsb-release ]; then
@@ -213,12 +214,19 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         #   - 10.10: maverick
         #   - 11.04: natty
         #   - 11.10: oneiric
+        export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
 
         # Mark 10.10 (maverick) as 10.04 (lucid).
         if [ X"${DISTRO_CODENAME}" == X"maverick" ]; then
             export DISTRO_CODENAME='lucid'
+        fi
+
+        # Linux Mint support
+        # - 12 (lisa) based on Ubuntu 11.10
+        if [ X"${DISTRO_CODENAME}" == X"lisa" ]; then
+            export DISTRO_CODENAME="oneiric"
         fi
 
     elif [ -f /etc/debian_version ]; then

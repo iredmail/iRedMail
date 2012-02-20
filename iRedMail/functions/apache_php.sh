@@ -234,7 +234,6 @@ EOF
         :
     fi
 
-    # FreeBSD
     if [ X"${DISTRO}" == X'GENTOO' ]; then
         # Change 'Deny from all' to 'Allow from all'.
         sed -i '/Order deny,allow/,/Deny from all/s#Deny\ from\ all#Allow\ from\ all#' ${HTTPD_CONF_DIR}/00_default_settings.conf
@@ -313,6 +312,8 @@ Disallow: /awstats
 Disallow: /iredadmin
 EOF
 
+    echo "${HTTPD_USER}: root" >> ${POSTFIX_FILE_ALIASES}
+    postalias hash:${POSTFIX_FILE_ALIASES} &>/dev/null
     # --------------------------
     # PHP Setting.
     # --------------------------
