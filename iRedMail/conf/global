@@ -214,6 +214,7 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         #   - 10.10: maverick
         #   - 11.04: natty
         #   - 11.10: oneiric
+        #   - 12.04: precise
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"

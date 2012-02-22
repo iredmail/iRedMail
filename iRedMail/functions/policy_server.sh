@@ -22,7 +22,9 @@
 
 policy_server_config()
 {
-    if [ X"${DISTRO_CODENAME}" != X"oneiric" ]; then
+    if [ X"${DISTRO_CODENAME}" != X"oneiric" \
+        -a X"${DISTRO_CODENAME}" != X"precise" \
+        ]; then
         . ${FUNCTIONS_DIR}/policyd.sh
 
         ECHO_INFO "Configure Policyd (postfix policy server, version 1.8)."

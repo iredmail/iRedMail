@@ -28,7 +28,9 @@ cluebringer_user()
     ECHO_DEBUG "Add user and group for policyd: ${CLUEBRINGER_USER}:${CLUEBRINGER_GROUP}."
 
     if [ X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
+        if [ X"${DISTRO_CODENAME}" == X"oneiric" \
+            -o X"${DISTRO_CODENAME}" == X"precise" \
+            ]; then
             # User/group will be created during installing binary package.
             :
         fi

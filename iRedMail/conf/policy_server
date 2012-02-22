@@ -20,7 +20,9 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
+if [ X"${DISTRO_CODENAME}" == X"oneiric" \
+    -o X"${DISTRO_CODENAME}" == X"precise" \
+    ]; then
     # Use Policyd-2.x (cluebringer).
     export USE_CLUEBRINGER='YES'
     export USE_POLICYD='NO'

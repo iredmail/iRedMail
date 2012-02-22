@@ -32,9 +32,10 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export MANAGESIEVE_PORT='4190'
 fi
 
-# Debian 6 (squeeze), Ubuntu 11.10 (oneiric).
+# Debian 6 (squeeze), Ubuntu 11.10 (oneiric), 12.04 (precise).
 if [ X"${DISTRO_CODENAME}" == X"squeeze" \
     -o X"${DISTRO_CODENAME}" == X"oneiric" \
+    -o X"${DISTRO_CODENAME}" == X"precise" \
     ]; then
     export MANAGESIEVE_PORT='4190'
 fi

@@ -176,13 +176,16 @@ install_all()
         # Authentication modules
         ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql libapache2-mod-auth-pgsql"
 
-        if [ X"${DISTRO_CODENAME}" != X"oneiric" ]; then
+        if [ X"${DISTRO_CODENAME}" != X"oneiric" \
+            -a X"${DISTRO_CODENAME}" != X"precise" \
+            ]; then
             ALL_PKGS="${ALL_PKGS} php5-mhash"
         fi
 
         if [ X"${DISTRO_CODENAME}" == X"lucid" \
             -o X"${DISTRO_CODENAME}" == X"natty" \
             -o X"${DISTRO_CODENAME}" == X"oneiric" \
+            -o X"${DISTRO_CODENAME}" == X"precise" \
             ]; then
             if [ X"${BACKEND}" == X"OPENLDAP" ]; then
                 ALL_PKGS="${ALL_PKGS} php-net-ldap2"
@@ -227,7 +230,9 @@ install_all()
         ALL_PKGS="${ALL_PKGS} policyd"
         ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
+        if [ X"${DISTRO_CODENAME}" == X"oneiric" \
+            -o X"${DISTRO_CODENAME}" == X"precise" \
+            ]; then
             # Policyd-2.x, code name "cluebringer".
             ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
             ENABLED_SERVICES="${ENABLED_SERVICES} postfix-cluebringer"
@@ -293,7 +298,9 @@ EOF
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d"
 
-        if [ X"${DISTRO_CODENAME}" == X"oneiric" ]; then
+        if [ X"${DISTRO_CODENAME}" == X"oneiric" \
+            -o X"${DISTRO_CODENAME}" == X"precise" \
+            ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-managesieved dovecot-sieve"
 
             if [ X"${BACKEND}" == X"OPENLDAP" ]; then
