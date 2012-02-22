@@ -128,6 +128,13 @@ EOF
             # Append cluebringer default sql template.
             gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.mysql.gz >> ${tmp_sql}
 
+            if [ X"${DISTRO_CODENAME}" == X"oneiric" \
+                -o X"${DISTRO_CODENAME}" == X"precise" \
+                ]; then
+                # Convert 'TYPE=' to 'ENGINE='
+                perl -pi -e 's#TYPE=#ENGINE=#g' ${tmp_sql}
+            fi
+
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
             cat > ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';

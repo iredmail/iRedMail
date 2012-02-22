@@ -64,11 +64,10 @@ iredadmin_config()
         if [ X"${DISTRO_VERSION}" != X"11.3" -a X"${DISTRO_VERSION}" != X"11.4" ]; then
             # Convert 'TYPE=' to 'ENGINE=' while creating tables.
             perl -pi -e 's#TYPE=#ENGINE=#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql
-
-            # Convert TIMESTAMP(14) to TIMESTAMP.
-            perl -pi -e 's#TIMESTAMP\(14\)#TIMESTAMP#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql
         fi
     fi
+
+    perl -pi -e 's#TIMESTAMP\(14\)#TIMESTAMP#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql
 
     # Copy sample configure file.
     cd ${IREDADMIN_HTTPD_ROOT}/
