@@ -36,9 +36,32 @@ rewrite_header      subject [ SPAM ]
 report_safe         0
 lock_method         flock
 
-use_bayes           1
-bayes_auto_learn    1
-bayes_auto_expire   0
+# Bayesian support
+# References:
+# - http://wiki.apache.org/spamassassin/BayesInSpamAssassin
+# - http://svn.apache.org/repos/asf/spamassassin/branches/3.3/sql/README.bayes
+# Addition plugin for Roundcube webmail to call sa-learn
+# - http://www.tehinterweb.co.uk/roundcube/#pimarkasjunk2
+#
+use_bayes          1
+bayes_auto_learn   1
+bayes_auto_expire  1
+#
+# Store bayesian data in SQL database
+#bayes_store_module Mail::SpamAssassin::BayesStore::SQL
+# For MySQL
+#bayes_sql_dsn      DBI:mysql:database:sql_server:sql_port
+# For PostgreSQL
+#bayes_sql_dsn      DBI:Pg:database:sql_server:sql_port
+#bayes_sql_username db_username
+#bayes_sql_password db_password
+#
+# Override the username used for storing
+# data in the database. This could be used to group users together to
+# share bayesian filter data. You can also use this config option to
+# trick sa-learn to learn data as a specific user.
+#
+#bayes_sql_override_username vmail
 
 score ALL_TRUSTED -10.000
 

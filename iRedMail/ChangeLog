@@ -14,7 +14,7 @@ iRedMail-0.8.0-beta2:
         + User authentication in Roundcube is case sensitive (login_lc).
 
 iRedMail-0.8.0-beta1:
-    * It now supports PostgreSQL as backend.
+    * It now supports PostgreSQL as backend on Ubuntu 11.10/12.04.
     * Package update:
         + Roundcube webmail -> 0.7.1
 

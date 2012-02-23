@@ -37,6 +37,11 @@ export MAILDIR_STYLE='hashed'
 # Current storage node.
 export STORAGE_NODE='vmail1'
 
+# Enabled backends.
+export ENABLE_BACKEND_OPENLDAP='YES'
+export ENABLE_BACKEND_MYSQL='YES'
+export ENABLE_BACKEND_PGSQL='NO'
+
 # For distribute deployment.
 # MySQL server
 export MYSQL_SERVER='127.0.0.1'
@@ -228,6 +233,18 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         # - 12 (lisa) based on Ubuntu 11.10
         if [ X"${DISTRO_CODENAME}" == X"lisa" ]; then
             export DISTRO_CODENAME="oneiric"
+        fi
+
+        # Support PGSQL backend since Ubuntu 11.10.
+        if [ X"${DISTRO_CODENAME}" != X"hardy" \
+            -a X"${DISTRO_CODENAME}" != X"intrepid" \
+            -a X"${DISTRO_CODENAME}" != X"jaunty" \
+            -a X"${DISTRO_CODENAME}" != X"karmic" \
+            -a X"${DISTRO_CODENAME}" != X"lucid" \
+            -a X"${DISTRO_CODENAME}" != X"maverick" \
+            -a X"${DISTRO_CODENAME}" != X"natty" \
+            ]; then
+            export ENABLE_BACKEND_PGSQL='YES'
         fi
 
     elif [ -f /etc/debian_version ]; then

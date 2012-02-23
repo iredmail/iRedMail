@@ -91,9 +91,7 @@ rm -f /tmp/vmail_user_home_dir
 # --------------------- Backend --------------------
 # --------------------------------------------------
 # PGSQL is available on Ubuntu 11.04, 11.10.
-if [ X"${DISTRO_CODENAME}" == X"oneiric" \
-    -o X"${DISTRO_CODENAME}" == X"precise" \
-    ]; then
+if [ X"${ENABLE_BACKEND_PGSQL}" == X"YES" ]; then
     ${DIALOG} \
     --title "Choose your preferred backend used to store mail accounts" \
     --radiolist "\
