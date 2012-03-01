@@ -115,6 +115,8 @@ elif [ X"${DISTRO}" == X'DFLY' ]; then
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
     export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
+    export AMAVISD_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/amavisd"
+
     # Override location of command 'altermime'
     export ALTERMIME_BIN="${DFLY_PKG_LOCALBASE}/bin/altermime"
 

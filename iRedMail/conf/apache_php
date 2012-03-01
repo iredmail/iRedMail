@@ -143,6 +143,8 @@ elif [ X"${DISTRO}" == X"DFLY" ]; then
     # PHP
     export PHP_INI="${DFLY_PKG_LOCALBASE}/etc/php.ini"
 
+    export HTTPD_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/apache"
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/usr/local/etc/apache22"

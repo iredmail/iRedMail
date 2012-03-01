@@ -106,11 +106,10 @@ elif [ X"${DISTRO}" == X'DFLY' ]; then
     export POLICYD_THROTTLE_CONF="${DFLY_PKG_LOCALBASE}/etc/policyd_sender_throttle.conf"
     export POLICYD_THROTTLE_PIDFILE="/var/run/policyd_sender_throttle.pid"
     export POLICYD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
+    export POLICYD_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/policyd"
 
     # Path of policyd-clean
     export POLICYD_CLEANUP_BIN="${DFLY_PKG_LOCALBASE}/libexec/policyd/cleanup"
-
-    export POLICYD_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/policyd"
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export PKG_POLICYD='postfix-policyd-sf'

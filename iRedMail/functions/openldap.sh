@@ -28,6 +28,12 @@ openldap_config()
 {
     ECHO_INFO "Configure OpenLDAP server."
 
+    # DragonFly: Copy rc script
+    if [ X"${DISTRO}" == X'DFLY' ]; then
+        enable_service_dfly slapd
+        cp ${OPENLDAP_SHIPPED_RC_SCRIPT} ${DIR_RC_SCRIPTS}
+    fi
+
     ECHO_DEBUG "Stoping OpenLDAP."
     ${LDAP_INIT_SCRIPT} stop &>/dev/null
 

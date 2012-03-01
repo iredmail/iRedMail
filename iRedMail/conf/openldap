@@ -162,6 +162,8 @@ elif [ X"${DISTRO}" == X'DFLY' ]; then
     export OPENLDAP_PID_FILE='/var/openldap/run/slapd.pid'
     export OPENLDAP_ARGS_FILE='/var/openldap/run/slapd.args'
 
+    export OPENLDAP_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/slapd"
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # OpenLDAP version.
     export OPENLDAP_VERSION='2.4'

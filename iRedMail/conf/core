@@ -130,7 +130,7 @@ check_user()
         exit 255
     else
         if [ X"$(id -u)" == X"0" ]; then
-            export PATH="/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin"
+            export PATH="/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/pkg/sbin:/usr/pkg/bin"
         else
             :
         fi
@@ -652,7 +652,7 @@ gentoo_add_make_conf()
 install_pkg_dfly()
 {
     ECHO_INFO "Installing package(s): $@"
-    pkg_radd $@
+    /usr/bin/pkg_radd $@
     if [ X"$?" != X"0" ]; then
         ECHO_ERROR "Installation failed, please check the terminal output."
         exit 255

@@ -97,10 +97,11 @@ install_all()
             # MySQL server and client.
             ALL_PKGS="${ALL_PKGS} mysql"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
-        elif [ X"${DISTRO}" == X"DLY" ]; then
+        elif [ X"${DISTRO}" == X'DFLY' ]; then
             ALL_PKGS="${ALL_PKGS} openldap-server openldap-client 'mysql-server-5.1.*' 'mysql-client-5.1.*'"
             ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
         fi
+
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then

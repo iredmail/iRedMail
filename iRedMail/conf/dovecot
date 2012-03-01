@@ -133,6 +133,9 @@ elif [ X"${DISTRO}" == X'DFLY' ]; then
     export DOVECOT_DELIVER="${DFLY_PKG_LOCALBASE}/libexec/dovecot/deliver"
 
     export DOVECOT_BIN="${DFLY_PKG_LOCALBASE}/sbin/dovecot"
+
+    export DOVECOT_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/dovecot"
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export DOVECOT_VERSION='1.2'
     export DOVECOT_CONF='/usr/local/etc/dovecot.conf'

@@ -28,6 +28,12 @@ apache_php_config()
 {
     ECHO_INFO "Configure Apache web server and PHP."
 
+    # DragonFly: Copy rc script.
+    if [ X"${DISTRO}" == X'DFLY' ]; then
+        enable_service_dfly apache
+        cp ${HTTPD_SHIPPED_RC_SCRIPT} ${DIR_RC_SCRIPTS}
+    fi
+
     backup_file ${HTTPD_CONF} ${HTTPD_SSL_CONF}
 
     #########################################

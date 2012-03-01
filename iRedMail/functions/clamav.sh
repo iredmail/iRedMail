@@ -28,6 +28,13 @@ clamav_config()
 {
     ECHO_INFO "Configure ClamAV (anti-virus toolkit)."
 
+    # DragonFly: Copy rc script
+    if [ X"${DISTRO}" == X'DFLY' ]; then
+        enable_service_dfly clamd
+        enable_service_dfly freshclamd
+        cp ${CLAMD_SHIPPED_RC_SCRIPT} ${FRESHCLAMD_SHIPPED_RC_SCRIPT} ${DIR_RC_SCRIPTS}
+    fi
+
     export CLAMD_LOCAL_SOCKET CLAMD_LISTEN_ADDR
     ECHO_DEBUG "Configure ClamAV: ${CLAMD_CONF}."
     perl -pi -e 's/^(TCPSocket.*)/#${1}/' ${CLAMD_CONF}
