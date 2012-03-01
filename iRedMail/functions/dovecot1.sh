@@ -598,18 +598,6 @@ EOF
     chown -R ${DOVECOT_USER}:${DOVECOT_GROUP} ${dovecot_expire_dict_dir} && \
     chmod -R 0750 ${dovecot_expire_dict_dir}
 
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        ECHO_DEBUG "Setting cronjob for Dovecot plugin: Expire."
-        cat >> ${CRON_SPOOL_DIR}/root <<EOF
-${CONF_MSG}
-#1   5   *   *   *   ${DOVECOT_BIN} --exec-mail ext $(eval ${LIST_FILES_IN_PKG} dovecot | grep 'expire-tool$')
-EOF
-    elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
-        :
-    else
-        :
-    fi
-
     cat >> ${POSTFIX_FILE_MASTER_CF} <<EOF
 # Use dovecot deliver program as LDA.
 dovecot unix    -       n       n       -       -      pipe

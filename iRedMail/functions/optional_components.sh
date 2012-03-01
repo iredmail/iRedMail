@@ -44,7 +44,10 @@ optional_components()
         check_status_before_run iredapd_config
 
     # Fail2ban.
-    [ X"${USE_FAIL2BAN}" == X"YES" -a X"${DISTRO}" != X"FREEBSD" ] && \
+    [ X"${USE_FAIL2BAN}" == X'YES' \
+        -a X"${DISTRO}" != X'FREEBSD' \
+        -a X"${DISTRO}" != X'DFLY' \
+        ] && \
         check_status_before_run fail2ban_config
 
 }

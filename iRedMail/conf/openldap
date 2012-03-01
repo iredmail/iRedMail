@@ -138,6 +138,30 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     # Override default path
     export OPENLDAP_DATA_DIR='/var/lib/openldap-data'
 
+elif [ X"${DISTRO}" == X'DFLY' ]; then
+    # OpenLDAP version.
+    export OPENLDAP_VERSION='2.4'
+
+    # LDAP daemon user & group.
+    export LDAP_USER='slapd'
+    export LDAP_GROUP='ldap'
+
+    # Configuration files.
+    export OPENLDAP_CONF_ROOT="${DFLY_PKG_LOCALBASE}/etc/openldap"
+    export OPENLDAP_DB_CONFIG_SAMPLE="${DFLY_PKG_LOCALBASE}/share/examples/openldap/DB_CONFIG"
+
+
+    # Module related.
+    export OPENLDAP_MODULE_PATH="${DFLY_PKG_LOCALBASE}/lib/openldap"
+
+    # RC script.
+    export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/slapd"
+
+    # Override default setting.
+    export OPENLDAP_DATA_DIR='/var/openldap'    # Do *NOT* end with '/'.
+    export OPENLDAP_PID_FILE='/var/openldap/run/slapd.pid'
+    export OPENLDAP_ARGS_FILE='/var/openldap/run/slapd.args'
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # OpenLDAP version.
     export OPENLDAP_VERSION='2.4'

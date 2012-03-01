@@ -31,6 +31,8 @@ export ENABLE_DOVECOT_SSL="YES"
 export DOVECOT_USER='dovecot'
 export DOVECOT_GROUP='dovecot'
 
+export DOVECOT_BIN='/usr/sbin/dovecot'
+
 # Dovecot running directory, required by dovecot-2.x.
 export DOVECOT_BASE_DIR='/var/run/dovecot'
 
@@ -120,6 +122,17 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
     export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
 
+elif [ X"${DISTRO}" == X'DFLY' ]; then
+    export DOVECOT_VERSION='2'
+    export DOVECOT_CONF="${DFLY_PKG_LOCALBASE}/etc/dovecot/dovecot.conf"
+    export DOVECOT_LDAP_CONF="${DFLY_PKG_LOCALBASE}/etc/dovecot/dovecot-ldap.conf"
+    export DOVECOT_MYSQL_CONF="${DFLY_PKG_LOCALBASE}/etc/dovecot/dovecot-mysql.conf"
+    export DOVECOT_PGSQL_CONF="${DFLY_PKG_LOCALBASE}/etc/dovecot/dovecot-pgsql.conf"
+    export DOVECOT_REALTIME_QUOTA_CONF="${DFLY_PKG_LOCALBASE}/etc/dovecot/dovecot-used-quota.conf"
+    export DOVECOT_SHARE_FOLDER_CONF="${DFLY_PKG_LOCALBASE}/etc/dovecot/dovecot-share-folder.conf"
+    export DOVECOT_DELIVER="${DFLY_PKG_LOCALBASE}/libexec/dovecot/deliver"
+
+    export DOVECOT_BIN="${DFLY_PKG_LOCALBASE}/sbin/dovecot"
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export DOVECOT_VERSION='1.2'
     export DOVECOT_CONF='/usr/local/etc/dovecot.conf'
@@ -129,6 +142,8 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export DOVECOT_REALTIME_QUOTA_CONF='/usr/local/etc/dovecot-used-quota.conf'
     export DOVECOT_SHARE_FOLDER_CONF='/usr/local/etc/dovecot-share-folder.conf'
     export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
+
+    export DOVECOT_BIN='/usr/local/sbin/dovecot'
 fi
 
 # Override enabled plugins for dovecot-1.1.
@@ -146,9 +161,6 @@ export SIEVE_LOGROTATE_FILE="${LOGROTATE_DIR}/sieve"
 # Dovecot auth socket.
 export DOVECOT_SOCKET_MUX='/var/spool/postfix/dovecot-auth'
 export DOVECOT_AUTH_SOCKET_PATH='/var/run/dovecot/auth-master'
-
-export DOVECOT_BIN='/usr/sbin/dovecot'
-export DOVECOT_SIEVEC='/usr/libexec/dovecot/sievec'
 
 # Dovecot plugin: Expire.
 # NOTE: dict process currently runs as root, so this file will be owned as root.

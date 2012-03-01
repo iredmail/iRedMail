@@ -52,6 +52,9 @@ clamav_config()
         chmod +x /etc/rc.d/init.d/freshclam
         eval ${enable_service} freshclam
         export ENABLED_SERVICES="${ENABLED_SERVICES} freshclam"
+    elif [ X"${DISTRO}" == X'DFLY' ]; then
+        # Comment out line 'Example' to enable clamd and freshclam.
+        perl -pi -e 's/^(Example.*)/#${1}/' ${CLAMD_CONF} ${FRESHCLAM_CONF}
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         pw usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
