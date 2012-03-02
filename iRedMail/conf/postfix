@@ -30,11 +30,8 @@ export POSTFIX_DAEMON_USER='postfix'
 export POSTFIX_DAEMON_GROUP='postfix'
 
 # Mail log files.
-if [ X"${DISTRO}" == X"RHEL" \
-    -o X"${DISTRO}" == X'DFLY' \
-    -o X"${DISTRO}" == X"FREEBSD" \
-    ]; then
-    # RHEL, CentOS, DragonFly, FreeBSD
+if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" ]; then
+    # RHEL, CentOS, FreeBSD
     export MAILLOG='/var/log/maillog'
     export MAILLOG_INFO=''
     export MAILLOG_ERROR=''
@@ -59,10 +56,7 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export MAILLOG_WARN=''
 fi
 
-if [ X"${DISTRO}" == X'DFLY' ]; then
-    export POSTFIX_ROOTDIR="${DFLY_PKG_LOCALBASE}/etc/postfix"
-    export POSTFIX_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/postfix"
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+if [ X"${DISTRO}" == X"FREEBSD" ]; then
     export POSTFIX_ROOTDIR='/usr/local/etc/postfix'
 else
     export POSTFIX_ROOTDIR='/etc/postfix'

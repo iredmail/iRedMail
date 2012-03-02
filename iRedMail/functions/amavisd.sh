@@ -717,17 +717,10 @@ EOF
 
 amavisd_config()
 {
-    # DragonFly: Copy rc script
-    if [ X"${DISTRO}" == X'DFLY' ]; then
-        enable_service_dfly amavisd
-        cp ${AMAVISD_SHIPPED_RC_SCRIPT} ${DIR_RC_SCRIPTS}
-    fi
-
     if [ X"${DISTRO}" == X"RHEL" \
         -o X"${DISTRO}" == X'SUSE' \
         -o X"${DISTRO}" == X'GENTOO' \
-        -o X"${DISTRO}" == X'FREEBSD' \
-        -o X"${DISTRO}" == X'DFLY' \
+        -o X"${DISTRO}" == X"FREEBSD" \
         ]; then
         check_status_before_run amavisd_config_rhel
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then

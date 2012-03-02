@@ -73,6 +73,9 @@ export VMAIL_DB_ADMIN_USER='vmailadmin'
 # Default virtual domain admin name without domain name (@example.com).
 export DOMAIN_ADMIN_NAME='postmaster'
 
+# Hostname.
+export HOSTNAME="$(hostname -f)"
+
 # ----------------------------------
 # You do *NOT* need to modify them.
 # ----------------------------------
@@ -279,16 +282,6 @@ elif [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
 
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/usr/local/etc/rc.d'
-
-elif [ X"${KERNEL_NAME}" == X"DragonFly" ]; then
-    export DISTRO='DFLY'
-    export DISTRO_VERSION="$(uname -r)"
-
-    # Directory of RC scripts.
-    export DIR_RC_SCRIPTS='/etc/rc.d'
-
-    export DFLY_PKG_LOCALBASE='/usr/pkg'
-    export DFLY_PKG_RC_SCRIPTS="${DFLY_PKG_LOCALBASE}/share/examples/rc.d"
 else
     # Not support *BSD and other distrobutions yet.
     echo "Error: Your OS is not supported yet."
@@ -490,36 +483,6 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export GENTOO_CONF_PACKAGE_MASK='/etc/portage/package.mask'
     export GENTOO_CONF_PACKAGE_UNMASK='/etc/portage/package.unmask'
 
-elif [ X"${DISTRO}" == X'DFLY' ]; then
-    # System user: root.
-    export SYS_ROOT_USER='root'
-    export SYS_ROOT_GROUP='wheel'
-
-    # Package management.
-    export install_pkg='install_pkg_dfly'
-    export remove_pkg='remove_pkg_dfly'
-    export LIST_ALL_PKGS="pkg_info | awk '{print $1}'"
-    export LIST_FILES_IN_PKG='pkg_info -L'
-
-    # Service control.
-    export enable_service="enable_service_dfly"
-    export disable_service="disable_service_dfly"
-
-    # Syslog config: rsyslog.
-    export SYSLOG_CONF='/etc/syslog.conf'
-    export SYSLOG_POSTROTATE_CMD=''
-
-    # Crontab related.
-    export CRON_SPOOL_DIR='/var/cron/tabs'
-
-    export ETC_SYSCONFIG_DIR='/etc/defaults'
-
-    # IPFW rule file.
-    export IPTABLES_CONFIG="${ETC_SYSCONFIG_DIR}/ipfw.rules"
-
-    # Directory used to store SSL/TLS key/cert file.
-    export SSL_FILE_DIR="/etc/ssl"
-
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # System user: root.
     export SYS_ROOT_USER='root'
@@ -563,13 +526,6 @@ else
     exit 255
 fi
 
-# Hostname.
-if [ X"${DISTRO}" == X'DFLY' ]; then
-    export HOSTNAME="$(hostname)"
-else
-    export HOSTNAME="$(hostname -f)"
-fi
-
 # Use a seperated directory to store iRedMail certs/keys.
 export SSL_CERT_DIR="${SSL_FILE_DIR}/certs"
 export SSL_KEY_DIR="${SSL_FILE_DIR}/private"
@@ -602,7 +558,7 @@ export SSHD_CONFIG='/etc/ssh/sshd_config'
 export MYSQL_BACKUP_DATABASES=''
 
 # Command use to fetch source tarballs.
-if [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'DFLY' ]; then
+if [ X"${DISTRO}" == X"FREEBSD" ]; then
     # -i: Turns off interactive prompting during multiple file transfers.
     # -V: Disable verbose and progress
     FETCH_CMD='ftp -iV'

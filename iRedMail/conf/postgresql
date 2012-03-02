@@ -36,7 +36,6 @@ export PGSQL_VERSION='9.1'
 export PGSQL_INIT_SCRIPT="${DIR_RC_SCRIPTS}/postgresql"
 [ X"${DISTRO}" == X"GENTOO" ] && \
     export PGSQL_INIT_SCRIPT="${DIR_RC_SCRIPTS}/postgresql-${PGSQL_VERSION}"
-
 export PGSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.pgsql"
 export PGSQL_INIT_SQL_SAMPLE="${CONF_DIR}/pgsql_init.pgsql"
 
@@ -45,15 +44,6 @@ if [ X"${DISTRO}" == X'GENTOO' ]; then
     export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/data"
-
-elif [ X"${DISTRO}" == X'DFLY' ]; then
-    export PGSQL_SYS_USER='pgsql'
-    export PGSQL_SYS_GROUP='pgsql'
-    
-    export PGSQL_CONF_DIR="${DFLY_PKG_LOCALBASE}/etc/postgresql/"
-    export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
-    export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
-    export PGSQL_DATA_DIR="${DFLY_PKG_LOCALBASE}/pgsql"
 else
     export PGSQL_CONF_DIR="/etc/postgresql/${PGSQL_VERSION}/main"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"

@@ -26,9 +26,9 @@
 policyd_user()
 {
     ECHO_DEBUG "Add user and group for policyd: ${POLICYD_USER}:${POLICYD_GROUP}."
-    if [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'DFLY' ]; then
+    if [ X"${DISTRO}" == X"FREEBSD" ]; then
         pw useradd -n ${POLICYD_USER} -s ${SHELL_NOLOGIN} -d ${POLICYD_USER_HOME} -m
-    elif [ X"${DISTRO}" == X"SUSE" -o ]; then
+    elif [ X"${DISTRO}" == X"SUSE" ]; then
         # Not need to add user/group.
         :
     else
@@ -42,12 +42,6 @@ policyd_user()
 policyd_config()
 {
     ECHO_DEBUG "Initialize MySQL database of policyd."
-
-    # DragonFly: Copy sample rc script.
-    if [ X"${DISTRO}" == X'DFLY' ]; then
-        enable_service_dfly policyd
-        cp ${POLICYD_SHIPPED_RC_SCRIPT} ${POLICYD_INIT_SCRIPT}
-    fi
 
     # Get SQL structure template file.
     tmp_sql="/tmp/policyd_config_tmp.${RANDOM}${RANDOM}"
@@ -97,17 +91,6 @@ EOF
         bunzip2 -c ${orig_policyd_sql_file} > ${tmp_sql}
 
         cat >> ${tmp_sql} <<EOF
-# Grant privileges.
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}"@localhost IDENTIFIED BY "${POLICYD_DB_PASSWD}";
-FLUSH PRIVILEGES;
-EOF
-
-    elif [ X"${DISTRO}" == X'DFLY' ]; then
-        # Shipped SQL template will create database: policyd.
-        cat > ${tmp_sql} <<EOF
-# Import SQL structure template.
-SOURCE /usr/pkg/share/examples/policyd/DATABASE.mysql;
-
 # Grant privileges.
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}"@localhost IDENTIFIED BY "${POLICYD_DB_PASSWD}";
 FLUSH PRIVILEGES;
