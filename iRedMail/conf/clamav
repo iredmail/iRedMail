@@ -43,6 +43,13 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export CLAMD_CONF='/etc/clamd.conf'
     export FRESHCLAM_CONF='/etc/freshclam.conf'
 
+elif [ X"${DISTRO}" == X'DFLY' ]; then
+    export CLAMD_CONF="${DFLY_PKG_LOCALBASE}/etc/clamd.conf"
+    export FRESHCLAM_CONF="${DFLY_PKG_LOCALBASE}/etc/freshclam.conf"
+
+    export CLAMD_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/clamd"
+    export FRESHCLAMD_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/freshclamd"
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLAMD_CONF='/usr/local/etc/clamd.conf'
     export FRESHCLAM_CONF='/usr/local/etc/freshclam.conf'

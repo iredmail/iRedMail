@@ -130,7 +130,7 @@ check_user()
         exit 255
     else
         if [ X"$(id -u)" == X"0" ]; then
-            export PATH="/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin"
+            export PATH="/usr/kerberos/sbin:/usr/kerberos/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/usr/pkg/sbin:/usr/pkg/bin"
         else
             :
         fi
@@ -412,16 +412,26 @@ disable_service_gentoo()
     done
 }
 
-# TODO
-enable_service_freebsd()
+enable_service_dfly()
 {
-    :
+    # Add '[service_name]_enable='YES'
+    services="$@"
+    for srv in $services; do
+        if ! grep "${srv}_enabled_by_iredmail" &>/dev/null; then
+            echo "${srv}_enable='YES'  # ${srv}_enabled_by_iredmail" >> /etc/rc.conf
+        fi
+    done
 }
 
-# TODO
-disable_service_freebsd()
+enable_service_freebsd()
 {
-    :
+    # Add '[service_name]_enable='YES'
+    services="$@"
+    for srv in $services; do
+        if ! grep "${srv}_enabled_by_iredmail" &>/dev/null; then
+            echo "${srv}_enable='YES'  # ${srv}_enabled_by_iredmail" >> /etc/rc.conf
+        fi
+    done
 }
 
 service_control()
@@ -637,3 +647,24 @@ gentoo_add_make_conf()
         unset VAR VALUE
     fi
 }
+
+# Install/Remove binary packages on DragonFly BSD
+install_pkg_dfly()
+{
+    ECHO_INFO "Installing package(s): $@"
+    /usr/bin/pkg_radd $@
+    if [ X"$?" != X"0" ]; then
+        ECHO_ERROR "Installation failed, please check the terminal output."
+        exit 255
+    else
+        :
+    fi
+}
+
+remove_pkg_dfly()
+{
+    ECHO_INFO "Removing package(s): $@"
+    pkg_delete $@
+    [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
+}
+

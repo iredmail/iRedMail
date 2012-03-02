@@ -52,6 +52,12 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export MYSQL_SOCKET='/var/run/mysqld/mysql.sock'
     export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysql"
 
+elif [ X"${DISTRO}" == X'DFLY' ]; then
+    export MYSQL_MY_CNF='/etc/mysql/my.cnf'
+    export MYSQL_SOCKET='/var/run/mysqld/mysql.sock'
+    export MYSQLD_INIT_SCRIPT="${DIR_RC_SCRIPTS}/mysqld"
+
+    export MYSQL_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/mysqld"
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export MYSQL_SOCKET='/tmp/mysql.sock'
     export MYSQL_MY_CNF="/var/db/mysql/my.cnf"

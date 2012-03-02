@@ -28,6 +28,12 @@ dovecot2_config()
 {
     ECHO_INFO "Configure Dovecot (pop3/imap server)."
 
+    # DragonFly: Copy rc script
+    if [ X"${DISTRO}" == X'DFLY' ]; then
+        enable_service_dfly dovecot
+        cp ${DOVECOT_SHIPPED_RC_SCRIPT} ${DIR_RC_SCRIPTS}
+    fi
+
     [ X"${ENABLE_DOVECOT}" == X"YES" ] && \
         backup_file ${DOVECOT_CONF} && \
         chmod 0664 ${DOVECOT_CONF} && \
@@ -317,14 +323,6 @@ EOF
     mkdir -p ${dovecot_expire_dict_dir} && \
     chown -R ${DOVECOT_USER}:${DOVECOT_GROUP} ${dovecot_expire_dict_dir} && \
     chmod -R 0750 ${dovecot_expire_dict_dir}
-
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        ECHO_DEBUG "Setting cronjob for Dovecot plugin: Expire."
-        cat >> ${CRON_SPOOL_DIR}/root <<EOF
-${CONF_MSG}
-#1   5   *   *   *   ${DOVECOT_BIN} --exec-mail ext $(eval ${LIST_FILES_IN_PKG} dovecot | grep 'expire-tool$')
-EOF
-    fi
 
     cat >> ${POSTFIX_FILE_MASTER_CF} <<EOF
 # Use dovecot deliver program as LDA.

@@ -33,7 +33,7 @@ trap "exit 255" 2
 # Initialize config file.
 echo '' > ${CONFIG_FILE}
 
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+if [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'DFLY' ]; then
     DIALOG='dialog'
     PASSWORDBOX='--inputbox'
 else

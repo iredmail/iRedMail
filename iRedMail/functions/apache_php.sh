@@ -28,6 +28,12 @@ apache_php_config()
 {
     ECHO_INFO "Configure Apache web server and PHP."
 
+    # DragonFly: Copy rc script.
+    if [ X"${DISTRO}" == X'DFLY' ]; then
+        enable_service_dfly apache
+        cp ${HTTPD_SHIPPED_RC_SCRIPT} ${DIR_RC_SCRIPTS}
+    fi
+
     backup_file ${HTTPD_CONF} ${HTTPD_SSL_CONF}
 
     #########################################
@@ -240,10 +246,6 @@ EOF
         sed -i '/Order deny,allow/,/All from all/s#Order\ deny,allow#Order\ allow,deny#' ${HTTPD_CONF_DIR}/00_default_settings.conf
 
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-        ECHO_DEBUG "Configure Apache."
-        # With Apache2.2 it now wants to load an Accept Filter.
-        echo 'accf_http_load="YES"' >> /boot/loader.conf
-
         # Change 'Deny from all' to 'Allow from all'.
         sed -i '.iredmailtmp' '/Each directory to/,/Note that from/s#Deny\ from\ all#Allow\ from\ all#' ${HTTPD_CONF}
         rm -f ${HTTPD_CONF}.iredmailtmp &>/dev/null
@@ -283,6 +285,11 @@ EOF
 apache22_enable="YES"
 htcacheclean_enable="NO"
 EOF
+    fi
+
+    if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'DFLY' ]; then
+        # With Apache2.2 it now wants to load Accept Filter 'accf_http'.
+        echo 'accf_http_load="YES"' >> /boot/loader.conf
     fi
 
     ##############

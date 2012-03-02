@@ -25,6 +25,8 @@
 # ---- Apache ----
 
 export HTTPD_PORT='80'
+export HTTPD_USER='www'
+export HTTPD_GROUP='www'
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     # Apache configuration files.
@@ -66,7 +68,6 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
 
     # Daemon user.
     export HTTPD_USER='wwwrun'
-    export HTTPD_GROUP='www'
 
     # Log file location.
     export HTTPD_LOG_ACCESSLOG='/var/log/apache2/access_log'
@@ -122,6 +123,28 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     # ---- PHP ----
     export PHP_INI='/etc/php/apache2-php5.3/php.ini'
 
+elif [ X"${DISTRO}" == X"DFLY" ]; then
+    # Apache configuration files.
+    export HTTPD_CONF_ROOT="${DFLY_PKG_LOCALBASE}/etc/httpd"
+    export HTTPD_CONF="${HTTPD_CONF_ROOT}/httpd.conf"
+    export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}"
+
+    # Copy from example: /usr/local/share/examples/apache22/extra/httpd-ssl.conf
+    export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/httpd-ssl.conf"
+
+    # Web data.
+    export HTTPD_SERVERROOT="${DFLY_PKG_LOCALBASE}/share/httpd"
+    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/htdocs"
+
+    # Log file location.
+    export HTTPD_LOG_ACCESSLOG='/var/log/httpd/access.log'
+    export HTTPD_LOG_ERRORLOG='/var/log/httpd/error.log'
+
+    # PHP
+    export PHP_INI="${DFLY_PKG_LOCALBASE}/etc/php.ini"
+
+    export HTTPD_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/apache"
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/usr/local/etc/apache22"
@@ -134,10 +157,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Web data.
     export HTTPD_SERVERROOT='/usr/local/www'
     export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache22/data"
-
-    # Daemon user.
-    export HTTPD_USER='www'
-    export HTTPD_GROUP='www'
 
     # Log file location.
     export HTTPD_LOG_ACCESSLOG='/var/log/httpd-access.log'

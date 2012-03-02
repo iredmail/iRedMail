@@ -28,6 +28,12 @@ openldap_config()
 {
     ECHO_INFO "Configure OpenLDAP server."
 
+    # DragonFly: Copy rc script
+    if [ X"${DISTRO}" == X'DFLY' ]; then
+        enable_service_dfly slapd
+        cp ${OPENLDAP_SHIPPED_RC_SCRIPT} ${DIR_RC_SCRIPTS}
+    fi
+
     ECHO_DEBUG "Stoping OpenLDAP."
     ${LDAP_INIT_SCRIPT} stop &>/dev/null
 
@@ -77,14 +83,14 @@ EOF
     # Copy ${PROG_NAME}.schema.
     cp -f ${SAMPLE_DIR}/iredmail.schema ${OPENLDAP_SCHEMA_DIR}
 
-    # Copy amavisd schema.
+    # Copy amavisd LDAP schema.
     if [ X"${DISTRO}" == X"RHEL" ]; then
         if [ X"${DISTRO_VERSION}" == X"6" ]; then
             amavisd_schema_file="$( eval ${LIST_FILES_IN_PKG} amavisd-new | grep '/LDAP.schema$')"
             cp -f ${amavisd_schema_file} ${OPENLDAP_SCHEMA_DIR}/${AMAVISD_LDAP_SCHEMA_NAME}
         fi
-    elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-        cp -f /usr/local/share/doc/amavisd-new/LDAP.schema ${OPENLDAP_SCHEMA_DIR}/${AMAVISD_LDAP_SCHEMA_NAME}
+    elif [ X"${DISTRO}" == X'DFLY' -o X"${DISTRO}" == X'FREEBSD' ]; then
+        cp -f ${AMAVISD_SHIPPED_LDAP_SCHEMA} ${OPENLDAP_SCHEMA_DIR}/${AMAVISD_LDAP_SCHEMA_NAME}
     fi
 
 

@@ -28,6 +28,12 @@ postfix_config_basic()
 {
     ECHO_INFO "Configure Postfix."
 
+    # DragonFly: Copy rc script
+    if [ X"${DISTRO}" == X'DFLY' ]; then
+        enable_service_dfly postfix
+        cp ${POSTFIX_SHIPPED_RC_SCRIPT} ${DIR_RC_SCRIPTS}
+    fi
+
     backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
 
     ECHO_DEBUG "Enable chroot."

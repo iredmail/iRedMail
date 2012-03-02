@@ -23,17 +23,18 @@
 # For SpamAssassin.
 
 export SA_CONF_DIR='/etc/mail/spamassassin'
-export SA_RULES_DIR='/usr/share/spamassassin'
-export SA_INIT_PRE="${SA_CONF_DIR}/init.pre"
-export SA_LOCAL_CF="${SA_CONF_DIR}/local.cf"
 export BIN_SA_UPDATE='sa-update'
 export BIN_SA_COMPILE='sa-compile'
 
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+if [ X"${DISTRO}" == X'DFLY' ]; then
+    export SA_CONF_DIR="${DFLY_PKG_LOCALBASE}/etc/spamassassin"
+    export BIN_SA_UPDATE='/usr/local/bin/sa-update'
+    export BIN_SA_COMPILE='/usr/local/bin/sa-compile'
+elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export SA_CONF_DIR='/usr/local/etc/mail/spamassassin'
-    export SA_RULES_DIR='/usr/local/share/spamassassin'
-    export SA_INIT_PRE="${SA_CONF_DIR}/init.pre"
-    export SA_LOCAL_CF="${SA_CONF_DIR}/local.cf"
     export BIN_SA_UPDATE='/usr/local/bin/sa-update'
     export BIN_SA_COMPILE='/usr/local/bin/sa-compile'
 fi
+
+export SA_INIT_PRE="${SA_CONF_DIR}/init.pre"
+export SA_LOCAL_CF="${SA_CONF_DIR}/local.cf"

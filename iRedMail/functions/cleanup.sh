@@ -195,8 +195,8 @@ cleanup_start_postfix_now()
                 :
             fi
 
-            # FreeBSD
-            if [ X"${DISTRO}" == X"FREEBSD" ]; then
+            # FreeBSD and DragonFly BSD
+            if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'DFLY' ]; then
                 # Load kernel module 'accf_http' before start.
                 kldload accf_http
 
@@ -277,7 +277,10 @@ EOF
     [ X"${KERNEL_NAME}" == X"Linux" ] && check_status_before_run cleanup_replace_iptables_rule
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
     [ X"${DISTRO}" != X'GENTOO' ] && check_status_before_run cleanup_start_postfix_now
-    [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'GENTOO' ] && check_status_before_run cleanup_amavisd_preconfig
+    [ X"${DISTRO}" == X"FREEBSD" \
+        -o X"${DISTRO}" == X'DFLY' \
+        -o X"${DISTRO}" == X'GENTOO' \
+        ] && check_status_before_run cleanup_amavisd_preconfig
     check_status_before_run cleanup_backup_scripts
 
     # Start Postfix to deliver emails.

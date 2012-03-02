@@ -59,6 +59,8 @@ install_all()
         gentoo_add_use_flags 'net-nds/openldap' 'crypt ipv6 ssl tcpd overlays perl sasl syslog'
         gentoo_add_use_flags 'dev-db/mysql' 'berkdb community perl ssl big-tables cluster'
         gentoo_add_use_flags 'dev-db/postgresql-server' 'nls pam doc perl python xml'
+    elif [ X"${DISTRO}" == X"DFLY" ]; then
+        ENABLED_SERVICES="syslogd ${ENABLED_SERVICES}"
     fi
 
     #################################################
@@ -95,7 +97,11 @@ install_all()
             # MySQL server and client.
             ALL_PKGS="${ALL_PKGS} mysql"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
+        elif [ X"${DISTRO}" == X'DFLY' ]; then
+            ALL_PKGS="${ALL_PKGS} openldap-server openldap-client 'mysql-server-5.1.*' 'mysql-client-5.1.*'"
+            ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
         fi
+
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
@@ -127,6 +133,10 @@ install_all()
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} mysql mod_auth_mysql"
             ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
+
+        elif [ X"${DISTRO}" == X'DFLY' ]; then
+            ALL_PKGS="${ALL_PKGS} 'mysql-server-5.1.*' 'mysql-client-5.1.*' p5-DBD-mysql p5-File-Temp ap22-auth-mysql"
+            ENABLED_SERVICES="${ENABLED_SERVICES} mysqld"
         fi
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         export USE_IREDAPD='NO'
@@ -149,6 +159,10 @@ install_all()
             ALL_PKGS="${ALL_PKGS} postfix-pgsql"
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server mod_auth_pgsql"
+            ENABLED_SERVICES="${ENABLED_SERVICES} postgresql-${PGSQL_VERSION}"
+        elif [ X"${DISTRO}" == X'DFLY' ]; then
+            ALL_PKGS="${ALL_PKGS} postgresql91-server postgresql91-client postgresql91-dblink ap22-auth-pgsql"
+            # TODO
             ENABLED_SERVICES="${ENABLED_SERVICES} postgresql-${PGSQL_VERSION}"
         fi
     fi
@@ -202,6 +216,9 @@ install_all()
         gentoo_add_make_conf 'APACHE2_MPMS' 'prefork'
 
         gentoo_add_use_flags 'dev-lang/php' 'berkdb bzip2 cli crypt ctype fileinfo filter hash iconv ipv6 json nls phar posix readline session simplexml ssl tokenizer unicode xml zlib apache2 calendar -cdb cgi cjk curl curlwrappers doc flatfile fpm ftp gd gmp imap inifile intl kerberos ldap ldap-sasl mhash mysql mysqli mysqlnd odbc pdo postgres snmp soap sockets spell sqlite sqlite3 suhosin tidy truetype wddx xmlreader xmlrpc xmlwriter xpm xsl zip'
+    elif [ X"${DISTRO}" == X'DFLY' ]; then
+        ALL_PKGS="${ALL_PKGS} apache ap22-php53 php53-bz2 php53-imap php53-ldap php53-mbstring php53-mcrypt php53-mysql php53-mysqli php53-pgsql php53-zlib"
+        ENABLED_SERVICES="${ENABLED_SERVICES} apache"
     fi
 
     ###############
@@ -218,6 +235,8 @@ install_all()
         ALL_PKGS="${ALL_PKGS} postfix"
         #gentoo_unmask_package 'mail-mta/ssmtp'
         gentoo_add_use_flags 'mail-mta/postfix' 'ipv6 pam ssl cdb dovecot-sasl hardened ldap ldap-bind mbox mysql postgres sasl'
+    elif [ X"${DISTRO}" == X'DFLY' ]; then
+        ALL_PKGS="${ALL_PKGS} postfix"
     fi
 
     ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
@@ -272,6 +291,10 @@ EOF
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} policyd"
         ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
+    elif [ X"${DISTRO}" == X'DFLY' ]; then
+        ALL_PKGS="${ALL_PKGS} policyd"
+        # TODO
+        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
     fi
 
     # Dovecot.
@@ -315,6 +338,8 @@ EOF
         ALL_PKGS="${ALL_PKGS} dovecot"
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
         gentoo_add_use_flags 'net-mail/dovecot' 'bzip2 ipv6 maildir pam ssl zlib caps doc kerberos ldap managesieve mbox mdbox mysql postgres sdbox sieve sqlite suid'
+    elif [ X"${DISTRO}" == X'DFLY' ]; then
+        ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
     fi
 
     ENABLED_SERVICES="${ENABLED_SERVICES} dovecot"
@@ -348,6 +373,18 @@ EOF
         gentoo_add_use_flags 'mail-filter/amavisd-new' 'dkim ldap mysql postgres razor snmp spamassassin'
         gentoo_add_use_flags 'mail-filter/spamassassin' 'berkdb ipv6 ssl doc ldap mysql postgres sqlite'
         gentoo_add_use_flags 'app-antivirus/clamav' 'bzip2 iconv ipv6'
+
+    elif [ X"${DISTRO}" == X'DFLY' ]; then
+        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin re2c clamav"
+        
+        # Amavisd-new will only scan inside archives if the appropriate
+        # unarchiving tools are available. Install addition tools to
+        # scan the respective archive types.
+        ALL_PKGS="${ALL_PKGS} arc freeze lzop unarj unrar xbin zoo"
+
+        # TODO
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} clamd"
+        DISABLED_SERVICES="${DISABLED_SERVICES} spamd"
     fi
 
     # SPF verification.
@@ -364,6 +401,8 @@ EOF
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} Mail-SPF"
+    elif [ X"${DISTRO}" == X'DFLY' ]; then
+        ALL_PKGS="${ALL_PKGS} p5-Mail-SPF"
     fi
 
     # phpPgAdmin
@@ -376,6 +415,8 @@ EOF
             ALL_PKGS="${ALL_PKGS} phppgadmin"
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} phppgadmin"
+        elif [ X"${DISTRO}" == X'DFLY' ]; then
+            ALL_PKGS="${ALL_PKGS} phppgadmin"
         fi
     fi
 
@@ -386,6 +427,8 @@ EOF
         [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH}"
         [ X"${DISTRO}" == X"SuSE" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
         [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
+        # TODO
+        #[ X"${DISTRO}" == X'DFLY' ] && ALL_PKGS="${ALL_PKGS} "
         # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
         # RC script ready in early stage.
         #ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
@@ -418,6 +461,8 @@ EOF
         gentoo_add_use_flags 'dev-python/jinja' 'examples i18n vim-syntax'
         # Don't use python-3
         gentoo_mask_package '<=dev-lang/python-3.0'
+    elif [ X"${DISTRO}" == X'DFLY' ]; then
+        ALL_PKGS="${ALL_PKGS} py26-jinja2 py26-web.py py26-mysqldb ap22-py26-wsgi"
     fi
 
     #############
@@ -433,10 +478,12 @@ EOF
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
             gentoo_add_use_flags 'www-misc/awstats' 'ipv6 geoip'
+        elif [ X"${DISTRO}" == X'DFLY' ]; then
+            ALL_PKGS="${ALL_PKGS} awstats"
         fi
     fi
 
-    #### Fail2ban ####
+    # Fail2ban
     if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
         if [ X"${DISTRO}" == X"RHEL" -o \
             X"${DISTRO}" == X"DEBIAN" -o \
@@ -448,6 +495,9 @@ EOF
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} fail2ban"
             ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
+        elif [ X"${DISTRO}" == X'DFLY' ]; then
+            # Fail2ban is not yet available in pkgsrc.
+            :
         fi
 
         if [ X"${DISTRO}" == X"RHEL" ]; then
@@ -455,6 +505,30 @@ EOF
         fi
     fi
 
+    # phpLDAPadmin
+    if [ X"${USE_PHPLDAPADMIN}" == X"YES" ]; then
+        # Debian 6 and Ubuntu 10.04/10.10 special.
+        if [ X"${DISTRO_CODENAME}" == X"lucid" -o X"${DISTRO_CODENAME}" == X"squeeze" ]; then
+            ALL_PKGS="${ALL_PKGS} phpldapadmin"
+        fi
+
+        # DragonFly BSD
+        if [ X"${DISTRO}" == X'DFLY' ]; then
+            ALL_PKGS="${ALL_PKGS} phpldapadmin"
+        fi
+    fi
+
+    # phpMyAdmin
+    if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
+        if [ X"${DISTRO_CODENAME}" == X"lucid" -o X"${DISTRO_CODENAME}" == X"squeeze" ]; then
+            ALL_PKGS="${ALL_PKGS} phpmyadmin"
+        fi
+
+        # DragonFly BSD
+        if [ X"${DISTRO}" == X'DFLY' ]; then
+            ALL_PKGS="${ALL_PKGS} phpmyadmin"
+        fi
+    fi
 
     ############################
     # Misc packages & services.
@@ -473,28 +547,13 @@ EOF
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} dos2unix"
+    elif [ X"${DISTRO}" == X'DFLY' ]; then
+        ALL_PKGS="${ALL_PKGS} bzip2 patch unix2dos"
     fi
     #### End Misc packages & services ####
 
     # Disable Ubuntu firewall rules, we have iptables init script and rule file.
     [ X"${DISTRO}" == X"UBUNTU" ] && export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
-
-    # Debian 6 and Ubuntu 10.04/10.10 special.
-    # Install binary packages of phpldapadmin-1.2.x and phpMyAdmin-3.x.
-    if [ X"${DISTRO_CODENAME}" == X"lucid" -o X"${DISTRO_CODENAME}" == X"squeeze" ]; then
-        # Install phpLDAPadmin.
-        if [ X"${USE_PHPLDAPADMIN}" == X"YES" ]; then
-            ALL_PKGS="${ALL_PKGS} phpldapadmin"
-        fi
-
-        # Install phpMyAdmin-3.x.
-        if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
-            ALL_PKGS="${ALL_PKGS} phpmyadmin"
-        fi
-    fi
-    #
-    # ---- End Ubuntu 10.04 special. ----
-    #
 
     export ALL_PKGS ENABLED_SERVICES
 
