@@ -101,25 +101,6 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
 
     export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
-
-elif [ X"${DISTRO}" == X'DFLY' ]; then
-    # Override global setting: user/group.
-    export AMAVISD_SYS_USER='vscan'
-    export AMAVISD_SYS_GROUP='vscan'
-
-    export AMAVISD_BIN="${DFLY_PKG_LOCALBASE}/sbin/amavisd"
-    export AMAVISD_CONF="${DFLY_PKG_LOCALBASE}/etc/amavisd.conf"
-    export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
-    export AMAVISD_RC_SCRIPT_NAME='amavisd'
-    export AMAVISD_SHIPPED_LDAP_SCHEMA='/usr/pkg/share/doc/amavisd-new/LDAP.schema'
-    export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
-    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
-
-    export AMAVISD_SHIPPED_RC_SCRIPT="${DFLY_PKG_RC_SCRIPTS}/amavisd"
-
-    # Override location of command 'altermime'
-    export ALTERMIME_BIN="${DFLY_PKG_LOCALBASE}/bin/altermime"
-
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Override global setting: user/group.
     export AMAVISD_SYS_USER='vscan'
@@ -129,7 +110,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export AMAVISD_CONF='/usr/local/etc/amavisd.conf'
     export AMAVISD_DKIM_CONF='/usr/local/etc/amavisd.conf'
     export AMAVISD_RC_SCRIPT_NAME='amavisd'
-    export AMAVISD_SHIPPED_LDAP_SCHEMA='/usr/local/share/doc/amavisd-new/LDAP.schema'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
     export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 

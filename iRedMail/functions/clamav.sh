@@ -28,13 +28,6 @@ clamav_config()
 {
     ECHO_INFO "Configure ClamAV (anti-virus toolkit)."
 
-    # DragonFly: Copy rc script
-    if [ X"${DISTRO}" == X'DFLY' ]; then
-        enable_service_dfly clamd
-        enable_service_dfly freshclamd
-        cp ${CLAMD_SHIPPED_RC_SCRIPT} ${FRESHCLAMD_SHIPPED_RC_SCRIPT} ${DIR_RC_SCRIPTS}
-    fi
-
     export CLAMD_LOCAL_SOCKET CLAMD_LISTEN_ADDR
     ECHO_DEBUG "Configure ClamAV: ${CLAMD_CONF}."
     perl -pi -e 's/^(TCPSocket.*)/#${1}/' ${CLAMD_CONF}
@@ -59,9 +52,6 @@ clamav_config()
         chmod +x /etc/rc.d/init.d/freshclam
         eval ${enable_service} freshclam
         export ENABLED_SERVICES="${ENABLED_SERVICES} freshclam"
-    elif [ X"${DISTRO}" == X'DFLY' ]; then
-        # Comment out line 'Example' to enable clamd and freshclam.
-        perl -pi -e 's/^(Example.*)/#${1}/' ${CLAMD_CONF} ${FRESHCLAM_CONF}
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         pw usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}

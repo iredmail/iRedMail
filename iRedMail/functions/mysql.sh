@@ -35,14 +35,14 @@ mysql_initialize()
     [ X"${DISTRO}" == X"GENTOO" ] && \
         /usr/bin/mysql_install_db &>/dev/null
 
-    # FreeBSD & DragonFly: set 'mysql_enable=YES' before start/stop mysql daemon.
-    [ X"${DISTRO}" == X"FREEBSD" ] && enable_service_freebsd mysql
-    if [ X"${DISTRO}" == X'DFLY' ]; then
-        enable_service_dfly mysqld
-        cp -f ${MYSQL_SHIPPED_RC_SCRIPT} ${MYSQLD_INIT_SCRIPT}
-    fi
+    # FreeBSD: Start mysql when system start up.
+    # Warning: We must have 'mysql_enable=YES' before start/stop mysql daemon.
+    [ X"${DISTRO}" == X"FREEBSD" ] && cat >> /etc/rc.conf <<EOF
+# Start mysql server.
+mysql_enable="YES"
+EOF
 
-    ${MYSQLD_INIT_SCRIPT} restart &>/dev/null
+    ${MYSQLD_INIT_SCRIPT} restart >/dev/null 2>&1
 
     ECHO_DEBUG -n "Sleep 5 seconds for MySQL daemon initialize:"
     sleep 5
