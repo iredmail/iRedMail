@@ -33,16 +33,6 @@ postfix_config_basic()
     ECHO_DEBUG "Enable chroot."
     perl -pi -e 's/^(smtp.*inet)(.*)(n)(.*)(n)(.*smtpd)$/${1}${2}${3}${4}-${6}/' ${POSTFIX_FILE_MASTER_CF}
 
-    ECHO_DEBUG "Bypass checks for internally generated mail: ${POSTFIX_FILE_MASTER_CF}."
-    # comment out postfix default setting.
-    perl -pi -e 's/^(pickup.*)/#${1}/' ${POSTFIX_FILE_MASTER_CF}
-    # Add new option to 'pickup' daemon.
-    cat >> ${POSTFIX_FILE_MASTER_CF} <<EOF
-# Bypass checks for internally generated mail.
-pickup    fifo  n       -       n       60      1       pickup
-  -o content_filter=
-EOF
-
     if [ X"${DISTRO}" == X"SUSE" ]; then
         # Remove duplicate relay_domains on SuSE.
         perl -pi -e 's/^(relay_domains.*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
