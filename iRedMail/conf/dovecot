@@ -30,6 +30,7 @@ export ENABLE_DOVECOT_SSL="YES"
 # Dovecot user & group.
 export DOVECOT_USER='dovecot'
 export DOVECOT_GROUP='dovecot'
+export DOVECOT_RC_SCRIPT_NAME='dovecot'
 
 # Dovecot running directory, required by dovecot-2.x.
 export DOVECOT_BASE_DIR='/var/run/dovecot'

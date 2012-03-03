@@ -29,6 +29,7 @@ export AMAVISD_LOGFILE='/var/log/amavisd.log'
 export AMAVISD_LOGROTATE_FILE="${LOGROTATE_DIR}/amavisd"
 export AMAVISD_DKIM_SELECTOR='dkim'
 export AMAVISD_DKIM_DIR='/var/lib/dkim'
+export AMAVISD_RC_SCRIPT_NAME='amavisd'
 
 # Database used to store incoming & outgoing email related information.
 export AMAVISD_DB_NAME='amavisd'
@@ -44,7 +45,6 @@ export DISCLAIMER_DIR="${POSTFIX_ROOTDIR}/disclaimer"
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd'
-    export AMAVISD_RC_SCRIPT_NAME='amavisd'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
 
     if [ X"${DISTRO_VERSION}" == X"5" ]; then
@@ -89,7 +89,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
 
 elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd'
-    export AMAVISD_RC_SCRIPT_NAME='amavisd'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
 
     export AMAVISD_CONF='/etc/amavisd.conf'
@@ -109,7 +108,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export AMAVISD_BIN='/usr/local/sbin/amavisd'
     export AMAVISD_CONF='/usr/local/etc/amavisd.conf'
     export AMAVISD_DKIM_CONF='/usr/local/etc/amavisd.conf'
-    export AMAVISD_RC_SCRIPT_NAME='amavisd'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
     export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 

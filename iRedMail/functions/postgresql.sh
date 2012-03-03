@@ -57,7 +57,7 @@ EOF
     ln -s ${PGSQL_SSL_KEY} ${PGSQL_DATA_DIR}/server.key >/dev/null
 
     ECHO_DEBUG "Start PostgreSQL server"
-    ${PGSQL_INIT_SCRIPT} restart >/dev/null 2>&1
+    ${PGSQL_RC_SCRIPT} restart >/dev/null 2>&1
 
     ECHO_DEBUG -n "Sleep 5 seconds for PostgreSQL daemon initialize:"
     sleep 5
@@ -82,7 +82,7 @@ PostgreSQL:
     * Vmail admin account (read-write):
         - Name: ${VMAIL_DB_ADMIN_USER}, Password: ${VMAIL_DB_ADMIN_PASSWD}
     * Database stored in: ${PGSQL_DATA_DIR}
-    * RC script: ${PGSQL_INIT_SCRIPT}
+    * RC script: ${PGSQL_RC_SCRIPT}
     * Log file: /var/log/postgresql/
     * See also:
         - ${PGSQL_INIT_SQL_SAMPLE}

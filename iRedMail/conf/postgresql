@@ -33,9 +33,14 @@ export PGSQL_SYS_USER_HOME='/var/lib/postgresql'
 export PGSQL_DOT_PGPASS="${PGSQL_SYS_USER_HOME}/.pgpass"
 
 export PGSQL_VERSION='9.1'
-export PGSQL_INIT_SCRIPT="${DIR_RC_SCRIPTS}/postgresql"
-[ X"${DISTRO}" == X"GENTOO" ] && \
-    export PGSQL_INIT_SCRIPT="${DIR_RC_SCRIPTS}/postgresql-${PGSQL_VERSION}"
+export PGSQL_RC_SCRIPT_NAME='postgresql'
+
+if [ X"${DISTRO}" == X"GENTOO" ]; then
+    export PGSQL_RC_SCRIPT="${DIR_RC_SCRIPTS}/postgresql-${PGSQL_VERSION}"
+else
+    export PGSQL_RC_SCRIPT="${DIR_RC_SCRIPTS}/postgresql"
+fi
+
 export PGSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.pgsql"
 export PGSQL_INIT_SQL_SAMPLE="${CONF_DIR}/pgsql_init.pgsql"
 

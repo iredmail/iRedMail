@@ -29,13 +29,13 @@
 export POSTFIX_DAEMON_USER='postfix'
 export POSTFIX_DAEMON_GROUP='postfix'
 
+export POSTFIX_ROOTDIR='/etc/postfix'
+export POSTFIX_RC_SCRIPT_NAME='postfix'
+
 # Mail log files.
 if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" ]; then
-    # RHEL, CentOS, FreeBSD
+    # RHEL, CentOS
     export MAILLOG='/var/log/maillog'
-    export MAILLOG_INFO=''
-    export MAILLOG_ERROR=''
-    export MAILLOG_WARN=''
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     export MAILLOG='/var/log/mail'
     export MAILLOG_INFO='/var/log/mail.info'
@@ -51,15 +51,10 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
 elif [ X"${DISTRO}" == X"GENTOO" ]; then
     # Gentoo
     export MAILLOG='/var/log/maillog'
-    export MAILLOG_INFO=''
-    export MAILLOG_ERROR=''
-    export MAILLOG_WARN=''
-fi
-
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    # FreeBSD
     export POSTFIX_ROOTDIR='/usr/local/etc/postfix'
-else
-    export POSTFIX_ROOTDIR='/etc/postfix'
+    export MAILLOG='/var/log/maillog'
 fi
 
 # You do *NOT* need to modify them.

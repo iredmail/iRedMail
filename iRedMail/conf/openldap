@@ -29,6 +29,8 @@ export LDAP_USE_TLS='NO'
 export LDAP_BIND='yes'
 export LDAP_BIND_VERSION='3'
 
+export LDAP_RC_SCRIPT_NAME='slapd'
+
 # Database backend type.
 # Note:
 #   * We use the same database type on all distributions to reduce our
@@ -52,7 +54,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
         export LDAP_RC_SCRIPT_NAME='ldap'
     else
         export OPENLDAP_VERSION='2.4'
-        export LDAP_RC_SCRIPT_NAME='slapd'
     fi
 
     # LDAP daemon user & group.
@@ -64,9 +65,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
 
     export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/ldap"
-
-    # RC script.
-    export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/${LDAP_RC_SCRIPT_NAME}"
 
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/lib/openldap'
@@ -88,8 +86,8 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
 
     export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/openldap"
 
-    # RC script.
-    export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/ldap"
+    # RC script
+    export LDAP_RC_SCRIPT_NAME='ldap'
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # OpenLDAP version.
@@ -111,13 +109,9 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/lib/ldap'
 
-    # RC script.
-    export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/slapd"
-
 elif [ X"${DISTRO}" == X"GENTOO" ]; then
     # OpenLDAP version.
     export OPENLDAP_VERSION='2.4'
-    export LDAP_RC_SCRIPT_NAME='slapd'
 
     # LDAP daemon user & group.
     export LDAP_USER='ldap'
@@ -128,9 +122,6 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
 
     export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/slapd"
-
-    # RC script.
-    export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/${LDAP_RC_SCRIPT_NAME}"
 
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/lib/openldap/openldap'
@@ -150,18 +141,17 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export OPENLDAP_CONF_ROOT='/usr/local/etc/openldap'
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
 
-
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/local/libexec/openldap'
-
-    # RC script.
-    export LDAP_INIT_SCRIPT="${DIR_RC_SCRIPTS}/slapd"
 
     # Override default setting.
     export OPENLDAP_DATA_DIR='/var/db/openldap-data'    # Do *NOT* end with '/'.
 else
     :
 fi
+
+# RC script.
+export LDAP_RC_SCRIPT="${DIR_RC_SCRIPTS}/${LDAP_RC_SCRIPT_NAME}"
 
 export OPENLDAP_SCHEMA_DIR="${OPENLDAP_CONF_ROOT}/schema"
 export OPENLDAP_SLAPD_CONF="${OPENLDAP_CONF_ROOT}/slapd.conf"

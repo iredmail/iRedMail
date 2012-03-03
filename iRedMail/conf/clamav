@@ -22,6 +22,8 @@
 
 export CLAMAV_USER='clamav'
 export CLAMAV_GROUP='clamav'
+export CLAMAV_CLAMD_RC_SCRIPT_NAME='clamd'
+export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclamd'
 
 # Clamav.
 if [ X"${DISTRO}" == X"RHEL" ]; then
@@ -32,10 +34,15 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export FRESHCLAM_INIT_FILE_SAMPLE="${SAMPLE_DIR}/freshclam.init"
 
 elif [ X"${DISTRO}" == X"SUSE" ]; then
+    export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclam'
+
     export CLAMD_CONF='/etc/clamd.conf'
     export FRESHCLAM_CONF='/etc/freshclam.conf'
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    export CLAMAV_CLAMD_RC_SCRIPT_NAME='clamav-daemon'
+    export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='clamav-freshclam'
+
     export CLAMD_CONF='/etc/clamav/clamd.conf'
     export FRESHCLAM_CONF='/etc/clamav/freshclam.conf'
 

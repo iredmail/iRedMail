@@ -42,7 +42,7 @@ mysql_initialize()
 mysql_enable="YES"
 EOF
 
-    ${MYSQLD_INIT_SCRIPT} restart >/dev/null 2>&1
+    ${MYSQLD_RC_SCRIPT} restart >/dev/null 2>&1
 
     ECHO_DEBUG -n "Sleep 5 seconds for MySQL daemon initialize:"
     sleep 5
@@ -73,7 +73,7 @@ MySQL:
     * Vmail admin account (read-write):
         - Name: ${VMAIL_DB_ADMIN_USER}, Password: ${VMAIL_DB_ADMIN_PASSWD}
     * Database stored in: /var/lib/mysql
-    * RC script: ${MYSQLD_INIT_SCRIPT}
+    * RC script: ${MYSQLD_RC_SCRIPT}
     * Log file: /var/log/mysqld.log
     * See also:
         - ${MYSQL_INIT_SQL}

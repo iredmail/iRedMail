@@ -251,7 +251,7 @@ Policyd (cluebringer):
         - ${CLUEBRINGER_CONF}
         - ${CLUEBRINGER_WEBUI_CONF}
     * RC script:
-        - ${CLUEBRINGER_INIT_SCRIPT}
+        - ${CLUEBRINGER_RC_SCRIPT}
     * Database:
         - Database name: ${CLUEBRINGER_DB_NAME}
         - Database user: ${CLUEBRINGER_DB_USER}

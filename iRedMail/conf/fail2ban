@@ -23,6 +23,7 @@
 # Variables for Fail2ban and related.
 
 export FAIL2BAN_CONF_ROOT='/etc/fail2ban'
+export FAIL2BAN_RC_SCRIPT_NAME='fail2ban'
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     export FAIL2BAN_SSHD_LOGFILE='/var/log/secure'

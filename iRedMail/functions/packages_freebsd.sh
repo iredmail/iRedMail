@@ -478,7 +478,7 @@ EOF
 
     ALL_PKGS="${ALL_PKGS} apache"
     ALL_PORTS="${ALL_PORTS} www/apache22"
-    ENABLED_SERVICES="${ENABLED_SERVICES} apache22"
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
 
     # PHP5. REQUIRED.
     cat > /var/db/ports/php5/options <<EOF

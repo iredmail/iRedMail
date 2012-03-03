@@ -66,109 +66,83 @@ install_all()
     #
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # OpenLDAP server & client.
-        if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} openldap${PKG_ARCH} openldap-clients${PKG_ARCH} openldap-servers${PKG_ARCH}"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${LDAP_RC_SCRIPT_NAME}"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${LDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
-            # MySQL server and client.
-            ALL_PKGS="${ALL_PKGS} mysql-server${PKG_ARCH} mysql${PKG_ARCH}"
-            ENABLED_SERVICES="${ENABLED_SERVICES} mysqld"
+        if [ X"${DISTRO}" == X"RHEL" ]; then
+            ALL_PKGS="${ALL_PKGS} openldap${PKG_ARCH} openldap-clients${PKG_ARCH} openldap-servers${PKG_ARCH} mysql-server${PKG_ARCH} mysql${PKG_ARCH}"
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
-            ALL_PKGS="${ALL_PKGS} openldap2 openldap2-client"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ldap"
+            ALL_PKGS="${ALL_PKGS} openldap2 openldap2-client mysql-community-server mysql-community-server-client"
 
-            # MySQL server and client.
-            ALL_PKGS="${ALL_PKGS} mysql-community-server mysql-community-server-client"
-            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl"
-            ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
+            ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl mysql-server mysql-client"
 
-            # MySQL server and client.
-            ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
-            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
         elif [ X"${DISTRO}" == X"GENTOO" ]; then
-            ALL_PKGS="${ALL_PKGS} openldap"
-            ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
+            ALL_PKGS="${ALL_PKGS} openldap mysql"
 
-            # MySQL server and client.
-            ALL_PKGS="${ALL_PKGS} mysql"
-            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
         fi
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL server & client.
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            # MySQL server and client.
             ALL_PKGS="${ALL_PKGS} mysql-server${PKG_ARCH} mysql${PKG_ARCH}"
-            ENABLED_SERVICES="${ENABLED_SERVICES} mysqld"
 
             # For Awstats.
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} mod_auth_mysql${PKG_ARCH}"
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
-            # MySQL server and client.
             ALL_PKGS="${ALL_PKGS} mysql-community-server mysql-community-server-client"
-            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
 
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} postfix-mysql apache2-mod_auth_mysql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # MySQL server and client.
-            ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
-            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
-
-            # Postfix module
-            ALL_PKGS="${ALL_PKGS} postfix-mysql"
+            ALL_PKGS="${ALL_PKGS} mysql-server mysql-client postfix-mysql"
 
             # For Awstats.
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
 
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} mysql mod_auth_mysql"
-            ENABLED_SERVICES="${ENABLED_SERVICES} mysql"
+
         fi
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
+
+        # iRedAPD doesn't work with PGSQL
         export USE_IREDAPD='NO'
 
         # PGSQL server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} postgresql-server"
-            ENABLED_SERVICES="${ENABLED_SERVICES} postgresql"
+            ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib"
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
-            ALL_PKGS="${ALL_PKGS} postgresql-server"
-            ENABLED_SERVICES="${ENABLED_SERVICES} postgresql"
+            ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib postfix-postgresql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
-            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib"
-            ENABLED_SERVICES="${ENABLED_SERVICES} postgresql"
+            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
 
-            # Postfix module
-            ALL_PKGS="${ALL_PKGS} postfix-pgsql"
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server mod_auth_pgsql"
-            ENABLED_SERVICES="${ENABLED_SERVICES} postgresql-${PGSQL_VERSION}"
         fi
     fi
 
     #################
     # Apache and PHP.
     #
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH}"
         if [ X"${DISTRO_VERSION}" == X"5" ]; then
             ALL_PKGS="${ALL_PKGS} php-imap${PKG_ARCH} libmcrypt${PKG_ARCH} php-mcrypt${PKG_ARCH} php-mhash${PKG_ARCH} php-mbstring${PKG_ARCH}"
         fi
-        ENABLED_SERVICES="${ENABLED_SERVICES} httpd"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         ALL_PKGS="${ALL_PKGS} apache2-prefork apache2-mod_php5 php5-iconv php5-ldap php5-mysql php5-mcrypt php5-mbstring php5-gettext php5-dom php5-json php5-intl php5-fileinfo"
         if [ X"${DISTRO_VERSION}" == X"11.3" -o X"${DISTRO_VERSION}" == X"11.4" ]; then
             ALL_PKGS="${ALL_PKGS} php5-hash"
         fi
-        ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} apache2 apache2-mpm-prefork apache2.2-common libapache2-mod-php5 php5-cli php5-imap php5-gd php5-mcrypt php5-mysql php5-ldap php5-pgsql"
@@ -192,10 +166,8 @@ install_all()
             fi
         fi
 
-        ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} apache php"
-        ENABLED_SERVICES="${ENABLED_SERVICES} apache2"
         gentoo_add_use_flags 'dev-libs/apr-util' 'ldap'
         gentoo_add_use_flags 'www-servers/apache' 'ssl doc ldap suexec'
         gentoo_add_make_conf 'APACHE2_MODULES' 'actions alias auth_basic authn_alias authn_anon authn_dbm authn_default authn_file authz_dbm authz_default authz_groupfile authz_host authz_owner authz_user autoindex cache cgi cgid dav dav_fs dav_lock deflate dir disk_cache env expires ext_filter file_cache filter headers include info log_config logio mem_cache mime mime_magic negotiation rewrite setenvif speling status unique_id userdir usertrack vhost_alias auth_digest authn_dbd log_forensic proxy proxy_ajp proxy_balancer proxy_connect proxy_ftp proxy_http proxy_scgi substitute version'
@@ -207,6 +179,7 @@ install_all()
     ###############
     # Postfix.
     #
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${POSTFIX_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} postfix${PKG_ARCH}"
     elif [ X"${DISTRO}" == X"SUSE" ]; then
@@ -220,22 +193,20 @@ install_all()
         gentoo_add_use_flags 'mail-mta/postfix' 'ipv6 pam ssl cdb dovecot-sasl hardened ldap ldap-bind mbox mysql postgres sasl'
     fi
 
-    ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
-
     # Policyd.
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} policyd${PKG_ARCH}"
-        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         ALL_PKGS="${ALL_PKGS} policyd"
-        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         if [ X"${DISTRO_CODENAME}" == X"oneiric" \
             -o X"${DISTRO_CODENAME}" == X"precise" \
             ]; then
             # Policyd-2.x, code name "cluebringer".
             ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
-            ENABLED_SERVICES="${ENABLED_SERVICES} postfix-cluebringer"
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
             if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
                 ALL_PKGS="${ALL_PKGS} postfix-cluebringer-mysql"
@@ -244,7 +215,7 @@ install_all()
             fi
         else
             ALL_PKGS="${ALL_PKGS} postfix-policyd"
-            ENABLED_SERVICES="${ENABLED_SERVICES} postfix-policyd"
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
         fi
 
 
@@ -271,7 +242,7 @@ EOF
         fi
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} policyd"
-        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
     fi
 
     # Dovecot.
@@ -282,8 +253,7 @@ EOF
             ALL_PKGS="${ALL_PKGS} dovecot${PKG_ARCH} dovecot-managesieve${PKG_ARCH} dovecot-pigeonhole${PKG_ARCH}"
         fi
 
-        # We will use Dovecot SASL auth mechanism, so 'saslauthd'
-        # is not necessary, should be disabled.
+        # We use Dovecot SASL auth instead of saslauthd
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
@@ -317,9 +287,10 @@ EOF
         gentoo_add_use_flags 'net-mail/dovecot' 'bzip2 ipv6 maildir pam ssl zlib caps doc kerberos ldap managesieve mbox mdbox mysql postgres sdbox sieve sqlite suid'
     fi
 
-    ENABLED_SERVICES="${ENABLED_SERVICES} dovecot"
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${DOVECOT_RC_SCRIPT_NAME}"
 
     # Amavisd-new & ClamAV & Altermime.
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} ${CLAMAV_CLAMD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} clamd${PKG_ARCH} clamav${PKG_ARCH} clamav-db${PKG_ARCH} spamassassin${PKG_ARCH} altermime${PKG_ARCH} perl-LDAP.noarch"
         if [ X"${DISTRO_VERSION}" == X"5" ]; then
@@ -327,22 +298,20 @@ EOF
         else
             ALL_PKGS="${ALL_PKGS} amavisd-new.noarch"
         fi
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} clamd"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new clamav clamav-db spamassassin altermime perl-ldap perl-DBD-mysql"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} clamd freshclam"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} clamav-milter spamd spampd"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj zoo nomarch cpio lzop cabextract p7zip rpm unrar-free ripole"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} clamav-daemon clamav-freshclam"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin clamav altermime"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} clamd"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamd"
 
         gentoo_add_use_flags 'mail-filter/amavisd-new' 'dkim ldap mysql postgres razor snmp spamassassin'
@@ -438,17 +407,8 @@ EOF
 
     #### Fail2ban ####
     if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X"RHEL" -o \
-            X"${DISTRO}" == X"DEBIAN" -o \
-            X"${DISTRO}" == X"UBUNTU" -o \
-            X"${DISTRO}" == X"SUSE" \
-            ]; then
-            ALL_PKGS="${ALL_PKGS} fail2ban"
-            ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
-        elif [ X"${DISTRO}" == X'GENTOO' ]; then
-            ALL_PKGS="${ALL_PKGS} fail2ban"
-            ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
-        fi
+        ALL_PKGS="${ALL_PKGS} fail2ban"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${FAIL2BAN_RC_SCRIPT_NAME}"
 
         if [ X"${DISTRO}" == X"RHEL" ]; then
             DISABLED_SERVICES="${DISABLED_SERVICES} shorewall"

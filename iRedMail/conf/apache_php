@@ -25,8 +25,10 @@
 # ---- Apache ----
 
 export HTTPD_PORT='80'
+export HTTPD_RC_SCRIPT_NAME='apache2'
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
+    export HTTPD_RC_SCRIPT_NAME='httpd'
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/etc/httpd"
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/conf/httpd.conf"
@@ -123,6 +125,8 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export PHP_INI='/etc/php/apache2-php5.3/php.ini'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    export HTTPD_RC_SCRIPT_NAME='apache22'
+
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/usr/local/etc/apache22"
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/httpd.conf"
@@ -146,9 +150,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # ---- PHP ----
     # Copy from example: /usr/local/etc/php.ini-production
     export PHP_INI='/usr/local/etc/php.ini'
-
-else
-    :
 fi
 
 export HTTPD_CGIBIN_DIR="${HTTPD_SERVERROOT}/cgi-bin"

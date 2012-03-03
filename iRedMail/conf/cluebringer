@@ -26,6 +26,7 @@
 
 export CLUEBRINGER_BINDHOST='127.0.0.1'
 export CLUEBRINGER_BINDPORT='10031'
+export CLUEBRINGER_RC_SCRIPT_NAME='cluebringer'
 
 # Database.
 export CLUEBRINGER_DB_NAME='cluebringer'
@@ -51,7 +52,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export PKG_CLUEBRINGER='policyd'
     export CLUEBRINGER_CONF='/etc/policyd.conf'
     export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"
-    export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='/var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT=''
 
@@ -62,7 +62,6 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export PKG_CLUEBRINGER='policyd'
     export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
     export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"
-    export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT=''
 
@@ -76,7 +75,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export PKG_CLUEBRINGER='postfix-cluebringer'
     export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
     export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"
-    export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/postfix-policyd"
+    export CLUEBRINGER_RC_SCRIPT_NAME='postfix-cluebringer'
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT='/usr/share/postfix-cluebringer-webui/webui'
 
@@ -87,7 +86,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export PKG_CLUEBRINGER='postfix-policyd-sf'
     export CLUEBRINGER_CONF='/usr/local/etc/postfix-policyd-sf.conf'
     export CLUEBRINGER_WEBUI_CONF="/usr/local/etc/cluebringer/cluebringer-webui.conf"
-    export CLUEBRINGER_INIT_SCRIPT="${DIR_RC_SCRIPTS}/policyd"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT=''
 
@@ -97,5 +95,7 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
 else
     :
 fi
+
+export CLUEBRINGER_RC_SCRIPT="${DIR_RC_SCRIPTS}/${CLUEBRINGER_RC_SCRIPT_NAME}"
 
 export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${CLUEBRINGER_DB_NAME}"
