@@ -202,7 +202,7 @@ rcm_config()
     perl -pi -e 's#(.*useragent.*=).*#${1} "RoundCube WebMail";#' main.inc.php
 
     # Set defeault domain.
-    perl -pi -e 's#(.*username_domain.*=)(.*)#${1} "$ENV{'FIRST_DOMAIN'}";#' main.inc.php
+    #perl -pi -e 's#(.*username_domain.*=)(.*)#${1} "$ENV{'FIRST_DOMAIN'}";#' main.inc.php
 
     # Disable multiple identities.
     # 0 - many identities with possibility to edit all params
@@ -304,11 +304,15 @@ rcm_config()
 
     'writable'      => false,
     'ldap_version'  => '${LDAP_BIND_VERSION}',
-    'search_fields' => array('mail', 'cn', 'givenName', 'sn'),
+    'search_fields' => array('mail', 'cn', 'givenName', 'sn', 'street'),
     'name_field'    => 'cn',
     'email_field'   => 'mail',
     'surname_field' => 'sn',
     'firstname_field' => 'givenName',
+    'department_field' => 'departmentnumber',
+    'organization_field' => 'o',
+    'street_field' => 'street',
+    'locality_field'     => 'l',
     'sort'          => 'cn',
     'scope'         => 'sub',
     'filter'        => '(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK})(|(objectClass=${LDAP_OBJECTCLASS_MAILGROUP})(objectClass=${LDAP_OBJECTCLASS_MAILALIAS})(objectClass=${LDAP_OBJECTCLASS_MAILUSER})))',
@@ -325,14 +329,25 @@ rcm_config()
     'bind_dn'       => '${LDAP_ATTR_USER_RDN}=%u@%d,${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
     'writable'      => true,
     'LDAP_Object_Classes' => array('top', 'inetOrgPerson'),
-    'required_fields'     => array('cn', 'mail'),
+    'required_fields'     => array('givenName', 'sn', 'mail'),
     'LDAP_rdn'      => 'cn',
     'ldap_version'  => '${LDAP_BIND_VERSION}',
-    'search_fields' => array('mail', 'cn', 'givenName', 'sn'),
-    'name_field'    => 'cn',
-    'email_field'   => 'mail',
-    'surname_field' => 'sn',
-    'firstname_field' => 'givenName',
+    'search_fields' => array('mail', 'cn', 'givenName', 'sn', 'telephoneNumber', 'homePhone', 'mobile', 'street', 'postalCode', 'l', 'c', 'o', 'description', 'departmentNumber', ),
+    'fieldmap' => array(
+        // Roundcube  => LDAP
+        'name'        => 'cn',
+        'firstname'   => 'givenName',
+        'surname'     => 'sn',
+        'email'       => 'mail',
+        'department'  => 'departmentNumber',
+        'phone:home'  => 'homePhone',
+        'phone:work'  => 'telephoneNumber',
+        'phone:mobile' => 'mobile',
+        'street'      => 'street',
+        'zipcode'     => 'postalCode',
+        //'locality'    => 'l',
+        'organization' => 'o',
+    ),
     'sort'          => 'cn',
     'scope'         => 'list',
     'filter'        => '(objectClass=inetOrgPerson)',
@@ -347,6 +362,9 @@ EOF
 
         # Enable autocomplete for all address books.
         perl -pi -e 's#(.*autocomplete_addressbooks.*=)(.*)#${1} array("sql", "ldap_global");#' main.inc.php
+        # Address template.
+        # LDAP object class 'inetOrgPerson' doesn't contains country and region.
+        perl -pi -e 's#(.*address_template.*=)(.*)#${1} "{street}<br/>{locality} {zipcode}";#' main.inc.php
 
     #elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Set correct username, password and database name.
