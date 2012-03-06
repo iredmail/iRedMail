@@ -291,7 +291,7 @@ EOF
     cat > /tmp/.tips.eml <<EOF
 From: root@${HOSTNAME}
 To: ${tip_recipient}
-Subject: iRedMail tips for mail server administrator
+Subject: Details of this iRedMail installation
 
 EOF
 

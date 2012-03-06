@@ -67,13 +67,14 @@ iredapd_config()
     eval ${enable_service} iredapd >/dev/null
     export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
 
+    # Set file permission.
+    chown -R ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_USER} ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
+    chmod -R 0755 ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
+
     # Copy sample config file.
     cd ${IREDAPD_ROOT_DIR}/iredapd/etc/
     cp iredapd.ini.sample iredapd.ini
-
-    # Set file permission.
-    chown -R ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_USER} ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
-    chmod -R 0700 ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
+    chmod -R 0500 iredapd.ini
 
     # Config iredapd.
     perl -pi -e 's#^(listen_addr).*#${1} = $ENV{IREDAPD_LISTEN_ADDR}#' iredapd.ini
@@ -93,7 +94,7 @@ iredapd_config()
         perl -pi -e 's#^(basedn).*#${1} = $ENV{LDAP_BASEDN}#' iredapd.ini
 
         # Enable plugins.
-        perl -pi -e 's#^(plugins).*#${1} = ldap_maillist_access_policy#' iredapd.ini
+        perl -pi -e 's#^(plugins).*#${1} = ldap_maillist_access_policy, block_amavisd_blacklisted_senders#' iredapd.ini
 
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Set backend.
