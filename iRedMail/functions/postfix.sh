@@ -100,9 +100,7 @@ postfix_config_basic()
     postconf -e smtp_data_init_timeout='240s'
     postconf -e smtp_data_xfer_timeout='600s'
 
-    #
-    # Standalone smtpd_helo_restrictions.
-    #
+    # HELO restriction
     postconf -e smtpd_helo_required="yes"
     postconf -e smtpd_helo_restrictions="permit_mynetworks,permit_sasl_authenticated, check_helo_access pcre:${POSTFIX_FILE_HELO_ACCESS}"
 

@@ -221,9 +221,6 @@ rcm_config()
     # ----------------------------------
     # USER INTERFACE
     # ----------------------------------
-    # Set default language and charset..
-    perl -pi -e 's#(.*language.*= )(.*)#${1}"$ENV{'DEFAULT_LANG'}";#' main.inc.php
-
     # Automatic create and protect default IMAP folders.
     perl -pi -e 's#(.*create_default_folders.*=)(.*)#${1} true;#' main.inc.php
     perl -pi -e 's#(.*protect_default_folders.*=)(.*)#${1} true;#' main.inc.php
@@ -235,10 +232,7 @@ rcm_config()
     # USER PREFERENCES
     # ----------------------------------
     perl -pi -e 's#(.*default_charset.*=).*#${1} "UTF-8";#' main.inc.php
-
-    # Set timezone for Chinese users. UTC +8
-    [ X"${DEFAULT_LANG}" == X"zh_CN" -o X"${DEFAULT_LANG}" == X"zh_TW" ] && \
-        perl -pi -e 's#(.*timezone.*=).*#${1} 8;#' main.inc.php
+    perl -pi -e 's#(.*addressbook_sort_col.*=).*#${1} "name";#' main.inc.php
 
     # display remote inline images
     # 0 - Never, always ask

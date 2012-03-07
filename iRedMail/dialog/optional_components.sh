@@ -132,9 +132,5 @@ if echo ${OPTIONAL_COMPONENTS} | grep -i 'fail2ban' &>/dev/null; then
     echo "export USE_FAIL2BAN='YES'" >>${CONFIG_FILE}
 fi
 
-# ----------------------------------------------------------------
-# Promot to choose the prefer language for webmail.
-[ X"${USE_WEBMAIL}" == X"YES" ] && . ${DIALOG_DIR}/default_language.sh
-
 # Used when you use awstats.
 [ X"${USE_AWSTATS}" == X"YES" ] && . ${DIALOG_DIR}/awstats_config.sh
