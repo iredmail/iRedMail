@@ -330,29 +330,18 @@ EOF
 EOF
 
         backup_file ${DOVECOT_LDAP_CONF}
-        cat > ${DOVECOT_LDAP_CONF} <<EOF
-${CONF_MSG}
-hosts           = ${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}
-ldap_version    = 3
-auth_bind       = yes
-dn              = ${LDAP_BINDDN}
-dnpass          = ${LDAP_BINDPW}
-base            = ${LDAP_BASEDN}
-scope           = subtree
-deref           = never
-user_filter     = (&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=%Ls%Lc)(|(${LDAP_ATTR_USER_RDN}=%u)(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SHADOW_ADDRESS})(${LDAP_ATTR_USER_SHADOW_ADDRESS}=%u))))
-pass_filter     = (&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=%Ls%Lc)(|(${LDAP_ATTR_USER_RDN}=%u)(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SHADOW_ADDRESS})(${LDAP_ATTR_USER_SHADOW_ADDRESS}=%u))))
-pass_attrs      = mail=user,${LDAP_ATTR_USER_PASSWD}=password
-default_pass_scheme = CRYPT
-EOF
+        cp -f ${SAMPLE_DIR}/conf/dovecot-ldap.conf ${DOVECOT_LDAP_CONF}
+
+        perl -pi -e 's#PH_LDAP_SERVER_HOST#$ENV{LDAP_SERVER_HOST}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_LDAP_SERVER_PORT#$ENV{LDAP_SERVER_PORT}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_LDAP_BIND_VERSION#$ENV{LDAP_BIND_VERSION}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_STORAGE_BASE_DIR#$ENV{STORAGE_BASE_DIR}#' ${DOVECOT_LDAP_CONF}
 
         # Set file permission.
         chmod 0500 ${DOVECOT_LDAP_CONF}
-
-        # Maildir format.
-        [ X"${MAILBOX_FORMAT}" == X"Maildir" ] && cat >> ${DOVECOT_LDAP_CONF} <<EOF
-user_attrs      = mail=user,${LDAP_ATTR_USER_HOME_DIRECTORY}=home,mailMessageStore=mail=maildir:${STORAGE_BASE_DIR}/%\$/Maildir/,${LDAP_ATTR_USER_QUOTA}=quota_rule=*:bytes=%\$
-EOF
 
     else
         # SQL backend.
@@ -366,26 +355,13 @@ EOF
 EOF
 
         backup_file ${DOVECOT_MYSQL_CONF}
-        cat > ${DOVECOT_MYSQL_CONF} <<EOF
-${CONF_MSG}
-driver = mysql
-default_pass_scheme = CRYPT
-connect = host=${MYSQL_SERVER} dbname=${VMAIL_DB} user=${VMAIL_DB_BIND_USER} password=${VMAIL_DB_BIND_PASSWD}
-password_query = SELECT password FROM mailbox WHERE username='%u' AND active='1'
-EOF
-        # Maildir format.
-        [ X"${MAILBOX_FORMAT}" == X"Maildir" ] && cat >> ${DOVECOT_MYSQL_CONF} <<EOF
-user_query = SELECT CONCAT(mailbox.storagebasedirectory, '/', mailbox.storagenode, '/', mailbox.maildir) AS home, \
-CONCAT('*:bytes=', mailbox.quota*1048576) AS quota_rule \
-FROM mailbox,domain \
-WHERE mailbox.username='%u' \
-AND mailbox.domain='%d' \
-AND mailbox.enable%Ls%Lc=1 \
-AND mailbox.domain=domain.domain \
-AND domain.backupmx=0 \
-AND domain.active=1 \
-AND mailbox.active=1
-EOF
+        cp -f ${SAMPLE_DIR}/conf/dovecot-sql.conf ${DOVECOT_MYSQL_CONF}
+
+        perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_SQL_SERVER#$ENV{MYSQL_SERVER}#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_MYSQL_CONF}
 
         # Set file permission.
         chmod 0550 ${DOVECOT_MYSQL_CONF}

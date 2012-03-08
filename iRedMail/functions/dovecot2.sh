@@ -129,22 +129,15 @@ dovecot2_config()
 
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         backup_file ${DOVECOT_LDAP_CONF}
-        cat > ${DOVECOT_LDAP_CONF} <<EOF
-${CONF_MSG}
-hosts           = ${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}
-ldap_version    = 3
-auth_bind       = yes
-dn              = ${LDAP_BINDDN}
-dnpass          = ${LDAP_BINDPW}
-base            = ${LDAP_BASEDN}
-scope           = subtree
-deref           = never
-user_filter     = (&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=%Ls%Lc)(|(${LDAP_ATTR_USER_RDN}=%u)(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SHADOW_ADDRESS})(${LDAP_ATTR_USER_SHADOW_ADDRESS}=%u))))
-user_attrs      = mail=user,${LDAP_ATTR_USER_HOME_DIRECTORY}=home,mailMessageStore=mail=maildir:${STORAGE_BASE_DIR}/%\$/Maildir/,${LDAP_ATTR_USER_QUOTA}=quota_rule=*:bytes=%\$
-pass_filter     = (&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=%Ls%Lc)(|(${LDAP_ATTR_USER_RDN}=%u)(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SHADOW_ADDRESS})(${LDAP_ATTR_USER_SHADOW_ADDRESS}=%u))))
-pass_attrs      = mail=user,${LDAP_ATTR_USER_PASSWD}=password
-default_pass_scheme = CRYPT
-EOF
+        cp -f ${SAMPLE_DIR}/conf/dovecot-ldap.conf ${DOVECOT_LDAP_CONF}
+
+        perl -pi -e 's#PH_LDAP_SERVER_HOST#$ENV{LDAP_SERVER_HOST}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_LDAP_SERVER_PORT#$ENV{LDAP_SERVER_PORT}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_LDAP_BIND_VERSION#$ENV{LDAP_BIND_VERSION}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#' ${DOVECOT_LDAP_CONF}
+        perl -pi -e 's#PH_STORAGE_BASE_DIR#$ENV{STORAGE_BASE_DIR}#' ${DOVECOT_LDAP_CONF}
 
         # Set file permission.
         chmod 0500 ${DOVECOT_LDAP_CONF}
@@ -152,7 +145,7 @@ EOF
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
 
         backup_file ${DOVECOT_MYSQL_CONF}
-        cp -f ${SAMPLE_DIR}/conf/dovecot2-sql.conf ${DOVECOT_MYSQL_CONF}
+        cp -f ${SAMPLE_DIR}/conf/dovecot-sql.conf ${DOVECOT_MYSQL_CONF}
 
         perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER#$ENV{MYSQL_SERVER}#' ${DOVECOT_MYSQL_CONF}
@@ -165,7 +158,7 @@ EOF
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
 
         backup_file ${DOVECOT_PGSQL_CONF}
-        cp -f ${SAMPLE_DIR}/conf/dovecot2-sql.conf ${DOVECOT_PGSQL_CONF}
+        cp -f ${SAMPLE_DIR}/conf/dovecot-sql.conf ${DOVECOT_PGSQL_CONF}
 
         perl -pi -e 's#PH_SQL_DRIVER#pgsql#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER#$ENV{PGSQL_SERVER}#' ${DOVECOT_PGSQL_CONF}
