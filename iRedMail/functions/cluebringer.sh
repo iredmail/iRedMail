@@ -348,7 +348,7 @@ EOF
                 perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
             fi
 
-            # OpenSuSE & FreeBSD special.
+            # openSUSE & FreeBSD special.
             if [ X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
                 echo "AuthBasicAuthoritative Off" >> ${CLUEBRINGER_HTTPD_CONF}
             fi

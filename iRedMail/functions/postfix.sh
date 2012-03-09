@@ -34,7 +34,7 @@ postfix_config_basic()
     perl -pi -e 's/^(smtp.*inet)(.*)(n)(.*)(n)(.*smtpd)$/${1}${2}${3}${4}-${6}/' ${POSTFIX_FILE_MASTER_CF}
 
     if [ X"${DISTRO}" == X"SUSE" ]; then
-        # Remove duplicate relay_domains on SuSE.
+        # Remove duplicate relay_domains on openSUSE
         perl -pi -e 's/^(relay_domains.*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
 
         # Uncomment tlsmgr to avoid postfix warning message:

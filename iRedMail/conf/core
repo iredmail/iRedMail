@@ -495,7 +495,7 @@ remove_pkg_rhel()
     [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
 }
 
-# Install/Remove binary packages on OpenSuSE.
+# Install/Remove binary packages on openSUSE 
 install_pkg_suse()
 {
     ECHO_INFO "Installing package(s): $@"

@@ -195,10 +195,10 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         fi
 
     elif [ -f /etc/SuSE-release ]; then
-        # SLES/OpenSuSE
+        # openSUSE
         export DISTRO='SUSE'
 
-        # SuSE version number. e.g. 12.1
+        # Version number. e.g. 12.1
         export DISTRO_VERSION="$(grep 'VERSION' /etc/SuSE-release | awk '{print $3}')"
 
         # code name
@@ -373,7 +373,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export PKG_BZIP2="bzip2${PKG_ARCH}"
 
 elif [ X"${DISTRO}" == X"SUSE" ]; then
-    # OpenSuSE.
+    # openSUSE
     # System user: root. Note: not all OSes have group 'root'.
     export SYS_ROOT_USER='root'
     export SYS_ROOT_GROUP='root'
@@ -396,7 +396,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     # Crontab related.
     export CRON_SPOOL_DIR='/var/spool/cron/tabs'
 
-    # Directory /etc/sysconfig/ on RHEL/CentOS/SuSE.
+    # Directory /etc/sysconfig/ on RHEL/CentOS/openSUSE.
     export ETC_SYSCONFIG_DIR='/etc/sysconfig'
 
     # Iptables rule file.

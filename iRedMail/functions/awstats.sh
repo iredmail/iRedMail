@@ -106,7 +106,7 @@ EOF
                 perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
             fi
 
-            # OpenSuSE & FreeBSD special.
+            # openSUSE & FreeBSD special.
             if [ X"${DISTRO}" == X"SUSE" \
                 -o X"${DISTRO}" == X"GENTOO" \
                 -o X"${DISTRO}" == X"FREEBSD" \

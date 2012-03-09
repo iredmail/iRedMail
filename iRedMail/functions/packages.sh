@@ -30,7 +30,7 @@ install_all()
     # Enable syslog or rsyslog.
     #
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        # RHEL/CENTOS, SuSE
+        # RHEL/CENTOS, openSUSE
         if [ -x ${DIR_RC_SCRIPTS}/syslog ]; then
             ENABLED_SERVICES="syslog ${ENABLED_SERVICES}"
         elif [ -x ${DIR_RC_SCRIPTS}/rsyslog ]; then
@@ -171,7 +171,7 @@ install_all()
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} postfix${PKG_ARCH}"
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        # On OpenSuSE, postfix already has ldap_table support.
+        # On openSUSE, postfix already has ldap_table support.
         ALL_PKGS="${ALL_PKGS} postfix"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
@@ -341,7 +341,7 @@ EOF
     #
     if [ X"${USE_IREDAPD}" == X"YES" ]; then
         [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH}"
-        [ X"${DISTRO}" == X"SuSE" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
+        [ X"${DISTRO}" == X"SUSE" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
         [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
         # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
         # RC script ready in early stage.

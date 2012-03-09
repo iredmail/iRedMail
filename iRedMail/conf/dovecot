@@ -66,7 +66,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     fi
     export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
 elif [ X"${DISTRO}" == X"SUSE" ]; then
-    # OpenSuSE 12.1 and later versions ship dovecot-1.2.x
+    # openSUSE 12.1 and later versions ship 1.2.x and 2.0.x
     export DOVECOT_VERSION='1.2'
 
     export DOVECOT_CONF='/etc/dovecot/dovecot.conf'

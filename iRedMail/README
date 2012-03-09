@@ -1,41 +1,39 @@
-========
-Full Installation Guide:
 
-*) Check if this is the lastest version before you run any script:
-   http://code.google.com/p/iredmail/downloads/list
+*) Check whether this is the lastest version:
+   http://www.iredmail.org/download.html
 
-*) Please do read the installation guide before you run any script
-   shipped within iRedMail:
+*) Please follow the installation guides strictly to deploy iRedMail:
 
-   - Red Hat Enterprise Linux 5 & CentOS 5:
-     http://code.google.com/p/iredmail/wiki/Installation
+   - Red Hat Enterprise Linux, CentOS, Scientific Linux:
+     http://www.iredmail.org/install_iredmail_on_rhel.html
 
-   - Debian 5.x
-     http://code.google.com/p/iredmail/wiki/Installation_on_Debian
+   - Debian:
+     http://www.iredmail.org/install_iredmail_on_debian.html
 
-   - Ubuntu 8.04 & 9.04
-     http://code.google.com/p/iredmail/wiki/Installation_on_Ubuntu
+   - Ubuntu, Mint:
+     http://www.iredmail.org/install_iredmail_on_ubuntu.html
 
-   - OpenSuSE 11.3
-     http://code.google.com/p/iredmail/wiki/Installation_on_OpenSuSE
+   - Gentoo Linux:
+     http://www.iredmail.org/install_iredmail_on_gentoo.html
 
-   - FreeBSD 7.2 & 8.0
-     http://code.google.com/p/iredmail/wiki/Installation_on_FreeBSD
+   - openSUSE:
+     http://www.iredmail.org/install_iredmail_on_opensuse.html
+
+   - FreeBSD:
+     http://www.iredmail.org/install_iredmail_on_freebsd.html
 
 ========
 *) License: GPL v2
 
 *) Authors:
-    - Zhang Huangbin (zhb(at)iredmail.org)
+    - Zhang Huangbin (zhb _at_ iredmail.org)
 
 *) Contributors:
     - Li Daobing (lidaobing (at) gmail.com)
-      Maintainer of Debian & Ubuntu binary packages.
+      Maintainer of Debian 5 & Ubuntu (hardy) binary packages.
 
-*) Issue tracker & bug report:
-    - http://code.google.com/p/iredmail/issues/list
-
-*) Forum: http://www.iredmail.org/forum/
+*) Community, bug report:
+    - http://www.iredmail.org/forum/
 
 ========
 *) Source packages we patched or modified can be download here:
