@@ -34,25 +34,6 @@ export STATUS_FILE="${ROOTDIR}/../.${PROG_NAME}.installation.status"
 check_user root
 check_hostname
 
-#
-# Mirror site.
-# Site directory structure:
-#
-#   ${MIRROR}/
-#           |- yum/         # for RHEL/CentOS
-#               |- rpms/
-#                   |- 5/
-#                   |- 6/   # Not present yet.
-#               |- misc/    # Source tarballs.
-#               |- srpms/   # Source RPMs.
-#           |- apt/             # for Debian/Ubuntu
-#               |- debian/      # For Debian
-#                   |- lenny/   # For Debian (Lenny)
-#
-# You can find nearest mirror in this page:
-#   http://code.google.com/p/iredmail/wiki/Mirrors
-#
-
 # Where to store binary packages and source tarball.
 PKG_DIR="${ROOTDIR}/pkgs"
 MISC_DIR="${ROOTDIR}/misc"
@@ -145,10 +126,6 @@ fetch_pkgs_debian()
     if [ X"${PKGLIST}" != X"0" ]; then
         ECHO_INFO "Fetching binary packages ..."
         for i in ${PKGLIST}; do
-            if [ X"${DISTRO}" == X"DEBIAN" ]; then
-                url="${MIRROR}/debian/lenny/${i}"
-            fi
-
             ECHO_INFO "+ ${pkg_counter} of ${pkg_total}: ${url}"
             ${FETCH_CMD} "${url}"
 
@@ -259,56 +236,9 @@ EOF
 
 }
 
-create_repo_debian()
-{
-    # Use http://backports.debian.org/ on Debian 5.
-    if [ X"${DISTRO}" == X"DEBIAN" -a X"${DISTRO_VERSION}" == X"5" ]; then
-        grep 'Debian-Backports-iRedMail' /etc/apt/sources.list &>/dev/null
-        if [ X"$?" != X"0" ]; then
-            cat >> /etc/apt/sources.list <<EOF
-# Debian-Volatile. Used for updating ClamAV.
-deb http://volatile.debian.org/debian-volatile lenny/volatile main contrib non-free
-# Debian-Backports-iRedMail
-deb http://backports.debian.org/debian-backports lenny-backports main
-EOF
-
-            cat >> /etc/apt/preferences <<EOF
-
-Package: *
-Pin: release a=lenny-backports
-Pin-Priority: 500
-EOF
-
-            # Force 'apt-get update' to enable backports repo.
-            ECHO_INFO "Execute 'apt-get update' ..."
-            ${APTGET} update
-
-            ${APTGET} install -y debian-archive-keyring
-        fi
-    fi
-}
-
 create_repo_ubuntu()
 {
     if [ X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${DISTRO_CODENAME}" == X"hardy" ]; then
-            # Add ppa repo for Ubuntu 8.04.
-            grep 'Ubuntu-Hardy-PPA-iRedMail' /etc/apt/sources.list &>/dev/null
-            if [ X"$?" != X"0" ]; then
-                # Add repo url.
-                cat >> /etc/apt/sources.list <<EOF
-# Ubuntu-Hardy-PPA-iRedMail
-deb http://ppa.launchpad.net/iredmail/8.04/ubuntu hardy main
-#deb-src http://ppa.launchpad.net/iredmail/8.04/ubuntu hardy main
-EOF
-
-                # Import GPG key.
-                apt-key adv --recv-keys \
-                    --keyserver keyserver.ubuntu.com \
-                    0xd9226c1a29511386b3b9f8bc8dc2c190ddf700d3
-            fi
-        fi
-
         # Force update
         ECHO_INFO "Execute 'apt-get update' ..."
         ${APTGET} update
@@ -364,13 +294,9 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
 elif [ X"${DISTRO}" == X"UBUNTU" ]; then
     create_repo_ubuntu
 elif [ X"${DISTRO}" == X"DEBIAN" ]; then
-    if [ X"${DISTRO_VERSION}" == X"5" ]; then
-        create_repo_debian
-    else
-        # Force update.
-        ECHO_INFO "Execute 'apt-get update' ..."
-        ${APTGET} update
-    fi
+    # Force update.
+    ECHO_INFO "Execute 'apt-get update' ..."
+    ${APTGET} update
 elif [ X"${DISTRO}" == X'GENTOO' ]; then
     # qlist is used to list all installed portages (qlist --installed).
     check_pkg 'qlist' 'portage-utils'

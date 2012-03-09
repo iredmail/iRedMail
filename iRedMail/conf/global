@@ -157,6 +157,9 @@ esac
 #   - DISTRO
 #   - DISTRO_VERSION
 #   - DISTRO_CODENAME
+#
+# UNSUPPORTED_RELEASE will be set to 'YES' if current Linux/BSD release is
+# an old release and unsupported anymore.
 if [ X"${KERNEL_NAME}" == X"Linux" ]; then
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/etc/init.d'
@@ -195,14 +198,20 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         # SLES/OpenSuSE
         export DISTRO='SUSE'
 
-        # SuSE version number. e.g. 11.3, 11.4.
+        # SuSE version number. e.g. 12.1
         export DISTRO_VERSION="$(grep 'VERSION' /etc/SuSE-release | awk '{print $3}')"
 
-        # SuSE code name.
+        # code name
         #   - 12.1: asparagus
-        #   - 11.4: celadon
-        #   - 11.3:
         export DISTRO_CODENAME="$(grep 'CODENAME' /etc/SuSE-release | awk '{print $3}' |tr [A-Z] [a-z])"
+
+        # Unsupported releases
+        #   - 11.x
+        #   - 10.x
+        if echo "${DISTRO_VERSION}" | grep '^1[0|1]' &>/dev/null ; then
+            # Both 10.x and 11.x are unsupported
+            export UNSUPPORTED_RELEASE='YES'
+        fi
 
     elif [ -f /etc/lsb-release ]; then
         # Ubuntu
@@ -211,23 +220,12 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         # Ubuntu version number. e.g. 11.10.
 
         # Ubuntu version number and code name:
-        #   - 8.04: hardy
-        #   - 8.10: intrepid
-        #   - 9.04: jaunty
-        #   - 9.10: karmic
-        #   - 10.04: lucid
-        #   - 10.10: maverick
-        #   - 11.04: natty
+        #   - 10.04: lucid (Long Term Support by Ubuntu)
         #   - 11.10: oneiric
-        #   - 12.04: precise
+        #   - 12.04: precise (Long Term support by Ubuntu)
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
-
-        # Mark 10.10 (maverick) as 10.04 (lucid).
-        if [ X"${DISTRO_CODENAME}" == X"maverick" ]; then
-            export DISTRO_CODENAME='lucid'
-        fi
 
         # Linux Mint support
         # - 12 (lisa) based on Ubuntu 11.10
@@ -235,36 +233,50 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
             export DISTRO_CODENAME="oneiric"
         fi
 
-        # Support PGSQL backend since Ubuntu 11.10.
-        if [ X"${DISTRO_CODENAME}" != X"hardy" \
-            -a X"${DISTRO_CODENAME}" != X"intrepid" \
-            -a X"${DISTRO_CODENAME}" != X"jaunty" \
-            -a X"${DISTRO_CODENAME}" != X"karmic" \
-            -a X"${DISTRO_CODENAME}" != X"lucid" \
-            -a X"${DISTRO_CODENAME}" != X"maverick" \
-            -a X"${DISTRO_CODENAME}" != X"natty" \
-            ]; then
+        # Support PGSQL backend on Ubuntu 11.10 and later releases
+        if [ X"${DISTRO_CODENAME}" != X"lucid" ]; then
             export ENABLE_BACKEND_PGSQL='YES'
         fi
 
+        # Unsupported releases.
+        #   - 8.04: hardy
+        #   - 8.10: intrepid
+        #   - 9.04: jaunty
+        #   - 9.10: karmic
+        #   - 10.10: maverick
+        #   - 11.04: natty
+        if [ X"${DISTRO_CODENAME}" == X'hardy' \
+            -o X"${DISTRO_CODENAME}" == X'intrepid' \
+            -o X"${DISTRO_CODENAME}" == X'jaunty' \
+            -o X"${DISTRO_CODENAME}" == X'karmic' \
+            -o X"${DISTRO_CODENAME}" == X'maverick' \
+            -o X"${DISTRO_CODENAME}" == X'natty' \
+            ]; then
+            export UNSUPPORTED_RELEASE='YES'
+        fi
     elif [ -f /etc/debian_version ]; then
         # Debian
         export DISTRO='DEBIAN'
 
-        # Detect release version: 5.x, 6.x.
-        if grep '^5\.' /etc/debian_version &>/dev/null; then
-            # Debian 5
-            export DISTRO_VERSION='5'
-            export DISTRO_CODENAME='lenny'
-        elif grep '^6\.' /etc/debian_version &>/dev/null; then
-            # Debian 6
-            export DISTRO_VERSION='6'
+        # Get major release version number
+        export DISTRO_VERSION="$(cat /etc/debian_version | cut -b 1)"
+
+        if [ X"${DISTRO_VERSION}" == X'6' ]; then
             export DISTRO_CODENAME='squeeze'
         fi
 
         # Override settings.
         if [ X"${DISTRO_CODENAME}" == X"squeeze" ]; then
             export SHELL_NOLOGIN='/usr/sbin/nologin'
+        fi
+
+        # Unsupported releases
+        # - 4: Etch
+        # - 5: Lenny
+        if [ X"${DISTRO_VERSION}" == X'4' \
+            -o X"${DISTRO_VERSION}" == X'5' \
+            ]; then
+            export UNSUPPORTED_RELEASE='YES'
         fi
 
     elif [ -f /etc/gentoo-release ]; then
@@ -282,9 +294,25 @@ elif [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
 
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/usr/local/etc/rc.d'
+
+    # Unsupported releases
+    # - 7.x
+    if echo "${DISTRO_VERSION}" | grep '^7' &>/dev/null ; then
+        export UNSUPPORTED_RELEASE='YES'
+    fi
 else
     # Not support *BSD and other distrobutions yet.
     echo "Error: Your OS is not supported yet."
+    exit 255
+fi
+
+# Exit and prompt to use a supported Linux/BSD distribution
+if [ X"${UNSUPPORTED_RELEASE}" == X'YES' ]; then
+    echo "********* ERROR *********"
+    echo "Release version of ${DISTRO} on this server is unsupported by iRedMail,"
+    echo "please refer to below web page to get list of supported versions."
+    echo "http://www.iredmail.org/download.html"
+    echo "********* ERROR *********"
     exit 255
 fi
 
@@ -412,16 +440,9 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
 
     # Syslog config: rsyslog.
     if [ X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${DISTRO_CODENAME}" == X"hardy" \
-            -o X"${DISTRO_CODENAME}" == X"intrepid" \
-            -o X"${DISTRO_CODENAME}" == X"jaunty" ]; then
-            export SYSLOG_CONF='/etc/syslog.conf'
-            export SYSLOG_POSTROTATE_CMD='invoke-rc.d sysklogd reload > /dev/null'
-        else
-            # Ubuntu >= 9.10
-            export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
-            export SYSLOG_POSTROTATE_CMD='reload rsyslog >/dev/null 2>&1 || true'
-        fi
+        # Ubuntu >= 9.10
+        export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
+        export SYSLOG_POSTROTATE_CMD='reload rsyslog >/dev/null 2>&1 || true'
     fi
 
     if [ X"${DISTRO}" == X"DEBIAN" ]; then

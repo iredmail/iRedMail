@@ -60,13 +60,7 @@ iredadmin_config()
     chown -R ${IREDADMIN_HTTPD_USER}:${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_ROOT}
     chmod -R 0555 ${IREDADMIN_HTTPD_ROOT}
 
-    if [ X"${DISTRO}" == X"SUSE" ]; then
-        if [ X"${DISTRO_VERSION}" != X"11.3" -a X"${DISTRO_VERSION}" != X"11.4" ]; then
-            # Convert 'TYPE=' to 'ENGINE=' while creating tables.
-            perl -pi -e 's#TYPE=#ENGINE=#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql
-        fi
-    fi
-
+    perl -pi -e 's#TYPE=#ENGINE=#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql
     perl -pi -e 's#TIMESTAMP\(14\)#TIMESTAMP#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql
 
     # Copy sample configure file.

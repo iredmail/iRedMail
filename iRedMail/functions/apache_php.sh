@@ -33,24 +33,7 @@ apache_php_config()
     #########################################
     # Create ${HTTPD_CONF} or ${HTTPD_SSL_CONF} for special distributions.
     #
-    if [ X"${DISTRO}" == X"UBUNTU" ]; then
-        # Ubuntu (hardy): Generate a sample default-ssl site config file.
-        if [ X"${DISTRO_CODENAME}" == X"hardy" ]; then
-            cat > ${HTTPD_SSL_CONF} <<EOF
-NameVirtualHost *:443
-<VirtualHost *:443>
-    ServerAdmin ${FIRST_USER}@${FIRST_DOMAIN}
-    DocumentRoot ${HTTPD_DOCUMENTROOT}
-
-    # Enable SSL.
-    SSLEngine On
-    SSLCertificateFile ${SSL_CERT_FILE}
-    SSLCertificateKeyFile ${SSL_KEY_FILE}
-</VirtualHost>
-EOF
-        fi
-
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
+    if [ X"${DISTRO}" == X"SUSE" ]; then
         cat > ${HTTPD_CONF} <<EOF
 <VirtualHost *:80>
     ServerAdmin ${FIRST_USER}@${FIRST_DOMAIN}

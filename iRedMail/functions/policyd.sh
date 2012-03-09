@@ -49,11 +49,7 @@ policyd_config()
         orig_policyd_sql_file="$(eval ${LIST_FILES_IN_PKG} ${PKG_POLICYD} | grep '/DATABASE.mysql$')"
 
         # Convert 'TYPE=' to 'ENGINE=' while creating tables.
-        if [ X"${DISTRO}" == X"SUSE" ]; then
-            if [ X"${DISTRO_VERSION}" != X"11.3" -a X"${DISTRO_VERSION}" != X"11.4" ]; then
-                perl -pi -e 's#TYPE=#ENGINE=#g' ${orig_policyd_sql_file}
-            fi
-        fi
+        perl -pi -e 's#TYPE=#ENGINE=#g' ${orig_policyd_sql_file}
 
         cat > ${tmp_sql} <<EOF
 # Import SQL structure template.
@@ -74,9 +70,7 @@ FLUSH PRIVILEGES;
 EOF
 
         # Debian 5, Ubuntu 8.04, 9.04: Import missing table: postfixpolicyd.blacklist_dnsname.
-        if [ X"${DISTRO}" == X"DEBIAN" -o \
-            X"${DISTRO_CODENAME}" == X"hardy" -o \
-            X"${DISTRO_CODENAME}" == X"jaunty" ]; then
+        if [ X"${DISTRO}" == X'DEBIAN' ]; then
             cat >> ${tmp_sql} <<EOF
 USE ${POLICYD_DB_NAME};
 SOURCE /usr/share/dbconfig-common/data/postfix-policyd/upgrade/mysql/1.73-1;

@@ -44,16 +44,8 @@ install_all()
         # Debian.
         ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
     elif [ X"${DISTRO}" == X"UBUNTU" ]; then
-        # Ubuntu.
-        if [ X"${DISTRO_CODENAME}" == X"hardy" \
-            -o X"${DISTRO_CODENAME}" == X"intrepid" \
-            -o X"${DISTRO_CODENAME}" == X"jaunty" ]; then
-            # Ubuntu <= 9.04.
-            ENABLED_SERVICES="sysklogd ${ENABLED_SERVICES}"
-        else
-            # Ubuntu >= 9.10.
-            ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
-        fi
+        # Ubuntu >= 9.10.
+        ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
     elif [ X"${DISTRO}" == X"GENTOO" ]; then
         ENABLED_SERVICES="syslog-ng ${ENABLED_SERVICES}"
         gentoo_add_use_flags 'net-nds/openldap' 'crypt ipv6 ssl tcpd overlays perl sasl syslog'
@@ -140,9 +132,6 @@ install_all()
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         ALL_PKGS="${ALL_PKGS} apache2-prefork apache2-mod_php5 php5-iconv php5-ldap php5-mysql php5-mcrypt php5-mbstring php5-gettext php5-dom php5-json php5-intl php5-fileinfo"
-        if [ X"${DISTRO_VERSION}" == X"11.3" -o X"${DISTRO_VERSION}" == X"11.4" ]; then
-            ALL_PKGS="${ALL_PKGS} php5-hash"
-        fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} apache2 apache2-mpm-prefork apache2.2-common libapache2-mod-php5 php5-cli php5-imap php5-gd php5-mcrypt php5-mysql php5-ldap php5-pgsql"
@@ -157,7 +146,6 @@ install_all()
         fi
 
         if [ X"${DISTRO_CODENAME}" == X"lucid" \
-            -o X"${DISTRO_CODENAME}" == X"natty" \
             -o X"${DISTRO_CODENAME}" == X"oneiric" \
             -o X"${DISTRO_CODENAME}" == X"precise" \
             ]; then
@@ -370,11 +358,7 @@ EOF
         ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-mysql python-xml"
 
         # Note: Web.py will be installed locally with command 'easy_install'.
-        if [ X"${DISTRO_VERSION}" == X"11.3" -o X"${DISTRO_VERSION}" == X"11.4" ]; then
-            ALL_PKGS="${ALL_PKGS} python-setuptools"
-        else
-            ALL_PKGS="${ALL_PKGS} python-distribute"
-        fi
+        ALL_PKGS="${ALL_PKGS} python-distribute"
         [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -461,11 +445,6 @@ EOF
     # Install all packages.
     install_all_pkgs()
     {
-        # Remove 'patterns-openSUSE-minimal_base' on OpenSuSE-11.4 before install.
-        if [ X"${DISTRO}" == X"SUSE" -a X"${DISTRO_VERSION}" == X"11.4" ]; then
-            rpm -e patterns-openSUSE-minimal_base
-        fi
-
         # Install all packages.
         eval ${install_pkg} ${ALL_PKGS}
 

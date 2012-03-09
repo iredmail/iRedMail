@@ -66,13 +66,8 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     fi
     export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
 elif [ X"${DISTRO}" == X"SUSE" ]; then
-    if [ X"${DISTRO_VERSION}" == X"11.1" ]; then
-        # OpenSuSE 11.1 ships dovecot-1.1.x
-        export DOVECOT_VERSION='1.1'
-    else
-        # OpenSuSE 11.2 and later versions ship dovecot-1.2.x
-        export DOVECOT_VERSION='1.2'
-    fi
+    # OpenSuSE 12.1 and later versions ship dovecot-1.2.x
+    export DOVECOT_VERSION='1.2'
 
     export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
     export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
@@ -83,19 +78,10 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     if [ X"${DISTRO}" == X"DEBIAN" ]; then
-        # Debian 5 (with backports), 6.
         export DOVECOT_VERSION='1.2'
     elif [ X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${DISTRO_CODENAME}" == X"hardy" \
-            -o X"${DISTRO_CODENAME}" == X"intrepid" \
-            -o X"${DISTRO_CODENAME}" == X"jaunty" \
-            -o X"${DISTRO_CODENAME}" == X"karmic" \
-            ]; then
-            export DOVECOT_VERSION='1.1'
-        elif [ X"${DISTRO_CODENAME}" == X"lucid" \
-            -o X"${DISTRO_CODENAME}" == X"natty" \
-            ]; then
-            # Ubuntu 10.04, 10.10, 11.04
+        if [ X"${DISTRO_CODENAME}" == X"lucid" ]; then
+            # Ubuntu 10.04
             export DOVECOT_VERSION='1.2'
         else
             # Ubuntu 11.10+

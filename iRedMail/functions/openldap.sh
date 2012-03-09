@@ -404,16 +404,6 @@ EOF
 
 openldap_data_initialize()
 {
-    if [ X"${DISTRO_CODENAME}" == X"hardy" -a -f /etc/apparmor.d/usr.sbin.slapd ]; then
-        perl -pi -e 's|(})| # Added by $ENV{PROG_NAME}-$ENV{PROG_VERSION}. \n${1}|' /etc/apparmor.d/usr.sbin.slapd
-        perl -pi -e 's#(})# $ENV{LDAP_DATA_DIR}/ r,\n${1}#' /etc/apparmor.d/usr.sbin.slapd
-        perl -pi -e 's#(})# $ENV{LDAP_DATA_DIR}/* rw,\n${1}#' /etc/apparmor.d/usr.sbin.slapd
-        perl -pi -e 's#(})# $ENV{LDAP_DATA_DIR}/alock kw,\n${1}#' /etc/apparmor.d/usr.sbin.slapd
-        [ -x ${DIR_RC_SCRIPTS}/apparmor ] && service_control apparmor restart >/dev/null 2>&1
-    else
-        :
-    fi
-
     # Get DB_CONFIG.example.
     if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X"6" ]; then
         export OPENLDAP_DB_CONFIG_SAMPLE="$( eval ${LIST_FILES_IN_PKG} openldap-servers | grep '/DB_CONFIG.example$')"
