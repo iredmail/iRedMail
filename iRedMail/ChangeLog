@@ -1,4 +1,5 @@
 iRedMail-0.8.0-beta3:
+    * Use Dovecot-2.0 instead of 1.2.x on openSUSE-12.1.
     * Drop support for below distributions and releases:
         + Debian 5 (Lenny)
         + Ubuntu 8.x, 9.x, 10.10, 11.04

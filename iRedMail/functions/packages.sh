@@ -245,12 +245,12 @@ EOF
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} dovecot12"
+        ALL_PKGS="${ALL_PKGS} dovecot20"
 
         if [ X"${BACKEND}" == X"MYSQL" ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot12-backend-mysql"
+            ALL_PKGS="${ALL_PKGS} dovecot20-backend-mysql"
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot12-backend-pgsql"
+            ALL_PKGS="${ALL_PKGS} dovecot20-backend-pgsql"
         fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then

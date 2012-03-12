@@ -308,11 +308,17 @@ fi
 
 # Exit and prompt to use a supported Linux/BSD distribution
 if [ X"${UNSUPPORTED_RELEASE}" == X'YES' ]; then
-    echo "********* ERROR *********"
-    echo "Release version of ${DISTRO} on this server is unsupported by iRedMail,"
-    echo "please refer to below web page to get list of supported versions."
-    echo "http://www.iredmail.org/download.html"
-    echo "********* ERROR *********"
+    cat <EOF
+********* ERROR *********
+Release version of the operating system on this server is unsupported by iRedMail,
+please access below link to get the latest iRedMail and a list of supported
+Linux/BSD distributions and release versions.
+
+http://www.iredmail.org/download.html
+
+*************************
+EOF
+
     exit 255
 fi
 
