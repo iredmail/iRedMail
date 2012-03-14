@@ -237,10 +237,71 @@ cleanup_amavisd_preconfig()
 
 cleanup_backup_scripts()
 {
-    ECHO_DEBUG "Updating backup script: ${TOOLS_DIR}/backup_mysql.sh."
-    perl -pi -e 's#^(MYSQL_USER=).*#${1}"ENV{MYSQL_ROOT_USER}"#' ${TOOLS_DIR}/backup_mysql.sh
-    perl -pi -e 's#^(MYSQL_PASSWD=).*#${1}"ENV{MYSQL_ROOT_PASSWD}"#' ${TOOLS_DIR}/backup_mysql.sh
-    perl -pi -e 's#^(DATABASES=).*#${1}"ENV{MYSQL_BACKUP_DATABASES}"#' ${TOOLS_DIR}/backup_mysql.sh
+    [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
+
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_OPENLDAP}"
+
+        backup_file ${BACKUP_SCRIPT_OPENLDAP}
+        cp ${TOOLS_DIR}/backup_openldap.sh ${BACKUP_SCRIPT_OPENLDAP}
+        chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_OPENLDAP}
+        chmod 0700 ${BACKUP_SCRIPT_OPENLDAP}
+
+        perl -pi -e 's#^(BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_OPENLDAP}
+
+        # Add cron job
+        cat >> ${CRON_SPOOL_DIR}/root <<EOF
+# Backup on 03:00 AM
+0   3   *   *   *   bash ${BACKUP_SCRIPT_OPENLDAP}
+EOF
+
+        cat >> ${TIP_FILE} <<EOF
+Backup OpenLDAP data:
+    * Script: ${BACKUP_SCRIPT_OPENLDAP}
+    * See also:
+        # crontab -l -u ${SYS_ROOT_USER}
+
+EOF
+    fi
+
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_MYSQL}"
+
+        backup_file ${BACKUP_SCRIPT_MYSQL}
+        cp ${TOOLS_DIR}/backup_mysql.sh ${BACKUP_SCRIPT_MYSQL}
+        chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_MYSQL}
+        chmod 0700 ${BACKUP_SCRIPT_MYSQL}
+
+        perl -pi -e 's#^(BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_MYSQL}
+        perl -pi -e 's#^(MYSQL_USER=).*#${1}"$ENV{MYSQL_ROOT_USER}"#' ${BACKUP_SCRIPT_MYSQL}
+        perl -pi -e 's#^(MYSQL_PASSWD=).*#${1}"$ENV{MYSQL_ROOT_PASSWD}"#' ${BACKUP_SCRIPT_MYSQL}
+        perl -pi -e 's#^(DATABASES=).*#${1}"$ENV{MYSQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_MYSQL}
+
+        # Add cron job
+        cat >> ${CRON_SPOOL_DIR}/root <<EOF
+# Backup on 03:30 AM
+30   3   *   *   *   bash ${BACKUP_SCRIPT_MYSQL}
+EOF
+
+        cat >> ${TIP_FILE} <<EOF
+Backup MySQL database:
+    * Script: ${BACKUP_SCRIPT_MYSQL}
+    * See also:
+        # crontab -l -u ${SYS_ROOT_USER}
+EOF
+    fi
+
+    #if [ X"${BACKEND}" == X'PGSQL' ]; then
+    #   ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_PGSQL}"
+    #
+    #   backup_file ${BACKUP_SCRIPT_PGSQL}
+    #   cp ${TOOLS_DIR}/backup_pgsql.sh ${BACKUP_SCRIPT_PGSQL}
+    #   chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_PGSQL}
+    #   chmod 0700 ${BACKUP_SCRIPT_PGSQL}
+    #
+    #   TODO
+    #   Add cron job
+    #fi
 
     echo 'export status_cleanup_backup_scripts="DONE"' >> ${STATUS_FILE}
 }

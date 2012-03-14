@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Author:   Zhang Huangbin (zhb@iredmail.org)
-# Date:     05/02/2010
+# Date:     Mar 15, 2012
 # Purpose:  Dump whole LDAP tree with command 'slapcat'.
 # License:  This shell script is part of iRedMail project, released under
 #           GPL v2.
@@ -21,8 +21,8 @@
 # USAGE
 ###########################
 #
-#   * It stores all backup copies in directory '/backup' by default, you can
-#     change it in variable $BACKUP_ROOTDIR below.
+#   * It stores all backup copies in directory '/var/vmail/backup' by default,
+#     You can change it with variable $BACKUP_ROOTDIR below.
 #
 #   * Set correct values for below variables:
 #
@@ -54,34 +54,12 @@
 # http://www.iredmail.org/wiki/index.php?title=IRedMail/FAQ/Backup#How_to_restore_from_LDIF_file
 #
 
-###########################
-# DIRECTORY STRUCTURE
-###########################
-#
-#   $BACKUP_ROOTDIR             # Default is /backup
-#       |- ldap/                # Used to store all backed up copies.
-#           |- YEAR.MONTH/
-#               |- DAY/
-#                   |- YEAR.MONTH.DAY.MIN.HOUR.SECOND.ldif
-#                               # Backup copy, plain LDIF file.
-#                               # Note: it will be removed immediately after
-#                               # it was compressed with success and 
-#                               # DELETE_PLAIN_SQL_FILE='YES'
-#
-#                   |- YEAR.MONTH.DAY.HOUR.MINUTE.SECOND.ldif.bz2
-#                               # Backup copy, compressed LDIF file.
-#
-#       |- logs/
-#           |- YEAR.MONTH/
-#               |- ldap-YEAR.MONTH.DAY.MIN.HOUR.SECOND.log     # Log file
-#
-
 #########################################################
 # Modify below variables to fit your need ----
 #########################################################
 
 # Where to store backup copies.
-BACKUP_ROOTDIR='/backup'
+BACKUP_ROOTDIR='/var/vmail/backup'
 
 # Compress plain SQL file: YES, NO.
 COMPRESS="YES"
@@ -111,21 +89,24 @@ else
 fi
 
 # Date.
-export MONTH="$(${CMD_DATE} +%Y.%m)"
+export YEAR="$(${CMD_DATE} +%Y)"
+export MONTH="$(${CMD_DATE} +%m)"
 export DAY="$(${CMD_DATE} +%d)"
-export DATE="$(${CMD_DATE} +%Y.%m.%d.%H.%M.%S)"
+export TIME="$(${CMD_DATE} +%H.%M.%S)"
+export TIMESTAMP="${YEAR}.${MONTH}.${DAY}.${TIME}"
 
+# Pre-defined backup status
 export BACKUP_SUCCESS='NO'
 
 #########
 # Define, check, create directories.
 #
 # Backup directory.
-export BACKUP_DIR="${BACKUP_ROOTDIR}/ldap/${MONTH}/${DAY}"
-export BACKUP_FILE="${BACKUP_DIR}/${DATE}.ldif"
+export BACKUP_DIR="${BACKUP_ROOTDIR}/ldap/${YEAR}/${MONTH}"
+export BACKUP_FILE="${BACKUP_DIR}/${TIMESTAMP}.ldif"
 
-# Logfile directory. Default is /backup/logs/YYYY.MM/.
-export LOG_DIR="${BACKUP_ROOTDIR}/logs/${MONTH}"
+# Log file
+export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
 
 # Check and create directories.
 if [ ! -d ${BACKUP_DIR} ]; then
@@ -133,20 +114,11 @@ if [ ! -d ${BACKUP_DIR} ]; then
     mkdir -p ${BACKUP_DIR}
 fi
 
-if [ ! -d ${LOG_DIR} ]; then
-    echo "* Create log directory: ${LOG_DIR}."
-    mkdir -p ${LOG_DIR} 2>/dev/null
-fi
-
-# Log file. Default is /backup/logs/YYYY.MM/mysql-YYYY.MM.DD.log.
-LOGFILE="${LOG_DIR}/ldap-${DATE}.log"
-
 ############
 # Initialize log file.
 #
-echo "* Starting backup: ${DATE}." >${LOGFILE}
+echo "* Starting backup at ${TIMESTAMP}" >${LOGFILE}
 echo "* Backup directory: ${BACKUP_DIR}." >>${LOGFILE}
-echo "* Log file: ${LOGFILE}." >>${LOGFILE}
 
 ##############
 # Backing up
@@ -177,24 +149,21 @@ if [ X"${COMPRESS}" == X"YES" ]; then
 fi
 
 
-# Append file size of backup files.
+# Append file size of backup files to log file.
 echo "* File size:" >>${LOGFILE}
 echo "=================" >>${LOGFILE}
 ${CMD_DU} ${BACKUP_FILE}* >>${LOGFILE}
 echo "=================" >>${LOGFILE}
 
-echo "* Backup completed (Successfully: ${BACKUP_SUCCESS})." >>${LOGFILE}
+echo "* Backup completed (Success? ${BACKUP_SUCCESS})." >>${LOGFILE}
 
+# Print some message. It will cause cron generates an email to root user.
 if [ X"${BACKUP_SUCCESS}" == X"YES" ]; then
-    cat <<EOF
-* Backup completed successfully.
-EOF
+    echo "==> Backup completed successfully."
 else
-    echo -e "\n* Backup completed with !!!ERRORS!!!.\n" 1>&2
+    echo -e "==> Backup completed with !!!ERRORS!!!.\n" 1>&2
 fi
 
-cat << EOF
-    + Data: ${BACKUP_FILE}*
-    + Log: ${LOGFILE}
-EOF
-
+echo "==> Detailed log (${LOGFILE}):"
+echo "========================="
+cat ${LOGFILE}

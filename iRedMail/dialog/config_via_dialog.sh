@@ -78,14 +78,23 @@ NOTE:
     * It may take large disk space.
 " 20 76 "${VMAIL_USER_HOME_DIR}" 2>/tmp/vmail_user_home_dir
 
-VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"
-export VMAIL_USER_HOME_DIR="${VMAIL_USER_HOME_DIR}"
+export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"
+rm -f /tmp/vmail_user_home_dir
+
 export STORAGE_BASE_DIR="${VMAIL_USER_HOME_DIR}"
 export SIEVE_DIR="${VMAIL_USER_HOME_DIR}/sieve"
 echo "export VMAIL_USER_HOME_DIR='${VMAIL_USER_HOME_DIR}'" >> ${CONFIG_FILE}
 echo "export STORAGE_BASE_DIR='${VMAIL_USER_HOME_DIR}'" >> ${CONFIG_FILE}
 echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${CONFIG_FILE}
-rm -f /tmp/vmail_user_home_dir
+
+export BACKUP_DIR="${VMAIL_USER_HOME_DIR}/backup"
+export BACKUP_SCRIPT_OPENLDAP="${BACKUP_DIR}/backup_openldap.sh"
+export BACKUP_SCRIPT_MYSQL="${BACKUP_DIR}/backup_mysql.sh"
+export BACKUP_SCRIPT_PGSQL="${BACKUP_DIR}/backup_pgsql.sh"
+echo "export BACKUP_DIR='${BACKUP_DIR}'" >>${CONFIG_FILE}
+echo "export BACKUP_SCRIPT_OPENLDAP='${BACKUP_SCRIPT_OPENLDAP}'" >>${CONFIG_FILE}
+echo "export BACKUP_SCRIPT_MYSQL='${BACKUP_SCRIPT_MYSQL}'" >>${CONFIG_FILE}
+echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${CONFIG_FILE}
 
 # --------------------------------------------------
 # --------------------- Backend --------------------

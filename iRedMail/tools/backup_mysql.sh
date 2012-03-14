@@ -21,8 +21,8 @@
 # USAGE
 ###########################
 #
-#   * It stores all backup copies in directory '/backup' by default, you can
-#     change it in variable $BACKUP_ROOTDIR below.
+#   * It stores all backup copies in directory '/var/vmail/backup' by default,
+#     You can change it in variable $BACKUP_ROOTDIR below.
 #
 #   * Set correct values for below variables:
 #
@@ -51,43 +51,21 @@
 #       # /etc/init.d/cron status
 #
 
-###########################
-# DIRECTORY STRUCTURE
-###########################
-#
-#   $BACKUP_ROOTDIR             # Default is /backup
-#       |- mysql/               # Used to store all backed up databases.
-#           |- YEAR.MONTH/
-#               |- YEAR.MONTH.DAY/
-#                   |- DB.YEAR.MONTH.DAY.MIN.HOUR.SECOND.sql
-#                               # Backup copy, plain SQL file.
-#                               # Note: it will be removed immediately after
-#                               # it was compressed with success and 
-#                               # DELETE_PLAIN_SQL_FILE='YES'
-#
-#                   |- DB.YEAR.MONTH.DAY.HOUR.MINUTE.SECOND.sql.bz2
-#                               # Backup copy, compressed SQL file.
-#
-#       |- logs/
-#           |- YEAR.MONTH/
-#               |- mysql-YEAR.MONTH.DAY.MIN.HOUR.SECOND.log     # Log file
-#
-
 #########################################################
 # Modify below variables to fit your need ----
 #########################################################
 # Where to store backup copies.
-BACKUP_ROOTDIR='/backup'
+BACKUP_ROOTDIR='/var/vmail/backup'
 
 # MySQL user and password.
 MYSQL_USER='root'
 MYSQL_PASSWD='passwd'
 
-# Which database(s) we should backup. Multiple databases MUST be seperated by
-# a SPACE.
+# Databases we should backup.
+# Multiple databases MUST be seperated by SPACE.
 # Your iRedMail server might have below databases:
 # mysql, roundcubemail, policyd (or postfixpolicyd), amavisd, iredadmin
-DATABASES='mysql roundcubemail postfixpolicyd amavisd iredadmin'
+DATABASES='mysql roundcubemail policyd amavisd iredadmin'
 
 # Database character set for ALL databases.
 # Note: Currently, it doesn't support to specify character set for each databases.
@@ -110,18 +88,20 @@ CMD_MYSQLDUMP='mysqldump'
 CMD_MYSQL='mysql'
 
 # Date.
-MONTH="$(${CMD_DATE} +%Y.%m)"
-DAY="$(${CMD_DATE} +%d)"
-DATE="$(${CMD_DATE} +%Y.%m.%d.%H.%M.%S)"
+export YEAR="$(${CMD_DATE} +%Y)"
+export MONTH="$(${CMD_DATE} +%m)"
+export DAY="$(${CMD_DATE} +%d)"
+export TIME="$(${CMD_DATE} +%H.%M.%S)"
+export TIMESTAMP="${YEAR}.${MONTH}.${DAY}.${TIME}"
 
+# Pre-defined backup status
 export BACKUP_SUCCESS='YES'
 
 # Define, check, create directories.
-BACKUP_DIR="${BACKUP_ROOTDIR}/mysql/${MONTH}/${DAY}"
+export BACKUP_DIR="${BACKUP_ROOTDIR}/mysql/${YEAR}/${MONTH}/${DAY}"
 
-# Logfile directory. Default is /backup/logs/YYYY.MM/.
-LOG_DIR="${BACKUP_ROOTDIR}/logs/${MONTH}"
-LOGFILE="${LOG_DIR}/mysql-${DATE}.log"
+# Log file
+export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
 
 # Check required variables.
 if [ X"${MYSQL_USER}" == X"" -o X"${MYSQL_PASSWD}" == X"" -o X"${DATABASES}" == X"" ]; then
@@ -133,7 +113,7 @@ if [ X"${MYSQL_USER}" == X"" -o X"${MYSQL_PASSWD}" == X"" -o X"${DATABASES}" == 
 fi
 
 # Verify MySQL connection.
-${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" -e "show databases" >/dev/null 2>&1
+${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" -e "show databases" &>/dev/null
 if [ X"$?" != X"0" ]; then
     echo "[ERROR] MySQL username or password is incorrect in file ${0}." 1>&2
     echo "Please fix them first." 1>&2
@@ -142,83 +122,66 @@ if [ X"$?" != X"0" ]; then
 fi
 
 # Check and create directories.
-if [ ! -d ${BACKUP_DIR} ]; then
-    echo "* Create data directory: ${BACKUP_DIR} ..."
-    mkdir -p ${BACKUP_DIR} 2>/dev/null
-fi
-
-if [ ! -d ${LOG_DIR} ]; then
-    echo "* Create log directory: ${LOG_DIR} ..."
-    mkdir -p ${LOG_DIR} 2>/dev/null
-fi
+[ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} 2>/dev/null
 
 # Initialize log file.
-echo "* Starting backup: ${DATE}." >${LOGFILE}
+echo "* Starting backup: ${TIMESTAMP}." >${LOGFILE}
 echo "* Backup directory: ${BACKUP_DIR}." >>${LOGFILE}
-echo "* Log file: ${LOGFILE}." >>${LOGFILE}
 
 backup_db()
 {
     # USAGE:
     #  # backup dbname
     db="${1}"
-    output_sql="${BACKUP_DIR}/${DATE}-${db}.sql"
+    output_sql="${BACKUP_DIR}/${db}-${TIMESTAMP}.sql"
 
-    ${CMD_MYSQLDUMP} \
-        -u"${MYSQL_USER}" \
-        -p"${MYSQL_PASSWD}" \
-        --default-character-set=${DB_CHARACTER_SET} \
-        ${db} > ${output_sql}
+    ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" -e "use ${db}" &>/dev/null
+
+    if [ X"$?" == X'0' ]; then
+        # Dump
+        ${CMD_MYSQLDUMP} \
+            -u"${MYSQL_USER}" \
+            -p"${MYSQL_PASSWD}" \
+            --default-character-set=${DB_CHARACTER_SET} \
+            ${db} > ${output_sql}
+
+        # Compress
+        if [ X"${COMPRESS}" == X"YES" ]; then
+            ${CMD_COMPRESS} ${output_sql} &>>${LOGFILE}
+
+            if [ X"$?" == X'0' -a X"${DELETE_PLAIN_SQL_FILE}" == X'YES' ]; then
+                rm -f ${output_sql} &>> ${LOGFILE}
+            fi
+        fi
+    fi
+
 }
 
 # Backup.
 echo "* Backing up databases ..." >> ${LOGFILE}
 for db in ${DATABASES}; do
-    backup_db ${db} >>${LOGFILE} 2>&1
+    backup_db ${db} &>>${LOGFILE}
 
     if [ X"$?" == X"0" ]; then
-        echo "  - [DONE] ${db}" >> ${LOGFILE}
+        echo "  - ${db} [DONE]" >> ${LOGFILE}
     else
         [ X"${BACKUP_SUCCESS}" == X"YES" ] && export BACKUP_SUCCESS='NO'
     fi
 done
 
-# Compress plain SQL file.
-if [ X"${COMPRESS}" == X"YES" ]; then
-    echo "* Compressing plain SQL files ..." >>${LOGFILE}
-    for sql_file in $(ls ${BACKUP_DIR}/*${DATE}*); do
-        ${CMD_COMPRESS} ${sql_file} >>${LOGFILE} 2>&1
-
-        if [ X"$?" == X"0" ]; then
-            echo "  - [DONE] $(basename ${sql_file})" >>${LOGFILE}
-
-            # Delete plain SQL file after compressed.
-            if [ X"${DELETE_PLAIN_SQL_FILE}" == X"YES" -a -f ${sql_file} ]; then
-                echo -n "* Removing plain SQL file: ${sql_file}..." >>${LOGFILE}
-                rm -f ${BACKUP_DIR}/*${DATE}*sql >>${LOGFILE} 2>&1
-            fi
-        fi
-    done
-fi
-
 # Append file size of backup files.
-echo "* File size:" >>${LOGFILE}
-echo "=================" >>${LOGFILE}
-${CMD_DU} ${BACKUP_DIR}/*${DATE}* >>${LOGFILE}
-echo "=================" >>${LOGFILE}
+echo -e "* File size:\n----" >>${LOGFILE}
+${CMD_DU} ${BACKUP_DIR}/*${TIMESTAMP}*sql* >>${LOGFILE}
+echo "----" >>${LOGFILE}
 
-echo "* Backup complete (Successfully: ${BACKUP_SUCCESS})." >>${LOGFILE}
+echo "* Backup completed (Success? ${BACKUP_SUCCESS})." >>${LOGFILE}
 
 if [ X"${BACKUP_SUCCESS}" == X"YES" ]; then
-    cat <<EOF
-* Backup completed successfully.
-EOF
+    echo "==> Backup completed successfully."
 else
-    echo -e "\n* Backup completed with !!!ERRORS!!!.\n" 1>&2
+    echo -e "==> Backup completed with !!!ERRORS!!!.\n" 1>&2
 fi
 
-cat << EOF
-    + Data: ${BACKUP_FILE}*
-    + Log: ${LOGFILE}
-EOF
-
+echo "==> Detailed log (${LOGFILE}):"
+echo "========================="
+cat ${LOGFILE}
