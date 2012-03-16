@@ -32,29 +32,23 @@ export POSTFIX_DAEMON_GROUP='postfix'
 export POSTFIX_ROOTDIR='/etc/postfix'
 export POSTFIX_RC_SCRIPT_NAME='postfix'
 
+# Log file
+export MAILLOG='/var/log/maillog'
+
 # Mail log files.
-if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" ]; then
-    # RHEL, CentOS
-    export MAILLOG='/var/log/maillog'
-elif [ X"${DISTRO}" == X"SUSE" ]; then
+if [ X"${DISTRO}" == X"SUSE" ]; then
     export MAILLOG='/var/log/mail'
     export MAILLOG_INFO='/var/log/mail.info'
     export MAILLOG_ERROR='/var/log/mail.err'
     export MAILLOG_WARN='/var/log/mail.warn'
     export POSTFIX_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/postfix"
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-    # Debian, Ubuntu
     export MAILLOG='/var/log/mail.log'
     export MAILLOG_INFO='/var/log/mail.info'
     export MAILLOG_ERROR='/var/log/mail.err'
     export MAILLOG_WARN='/var/log/mail.warn'
-elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    # Gentoo
-    export MAILLOG='/var/log/maillog'
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    # FreeBSD
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export POSTFIX_ROOTDIR='/usr/local/etc/postfix'
-    export MAILLOG='/var/log/maillog'
 fi
 
 # You do *NOT* need to modify them.

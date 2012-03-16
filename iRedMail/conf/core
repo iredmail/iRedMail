@@ -637,3 +637,23 @@ gentoo_add_make_conf()
         unset VAR VALUE
     fi
 }
+
+freebsd_add_make_conf()
+{
+    # USAGE: freebsd_add_make_conf VAR VALUE
+    [ -f /etc/make.conf ] || touch /etc/make.conf
+    if [ X"$#" == X'2' ]; then
+        var="${1}"
+        value="${2}"
+        final_option="${1}=${2}"
+        comment_mark="# ${PROG_NAME}-${var}"
+        if ! grep "^${comment_mark}$" /etc/make.conf &>/dev/null; then
+            ECHO_DEBUG "Add make option in /etc/make.conf: ${final_option}"
+            echo "${comment_mark}" >> /etc/make.conf
+            echo "${final_option}" >> /etc/make.conf
+        else
+            ECHO_DEBUG "Skip adding option in /etc/make.conf: ${final_option}"
+        fi
+    fi
+}
+

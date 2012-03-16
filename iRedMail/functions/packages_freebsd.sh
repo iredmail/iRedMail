@@ -23,29 +23,22 @@
 install_all()
 {
     ALL_PKGS=''             # Binary package names. e.g. mysql-server, dovecot.
-    ALL_PORTS=''            # Port name under /usr/ports/. e.g. mail/dovecot, databases/mysql50.
+    ALL_PORTS=''            # Port name under /usr/ports/. e.g. mail/dovecot2.
     ENABLED_SERVICES=''     # Scripts under /usr/local/etc/rc.d/
     DISABLED_SERVICES=''    # Scripts under /usr/local/etc/rc.d/
 
     # Make it don't popup dialog while building ports.
     export BATCH='yes'
 
-    cat >> /etc/make.conf <<EOF
-# Without X-Window/GUI.
-WITHOUT_X11=yes
-# Use MySQL-5.0.x as default.
-WANT_MYSQL_VER=50
-# Use python-2.6 as default.
-PYTHON_DEFAULT_VERSION=python2.6
-# Use apache-2.2.
-APACHE_PORT=www/apache22
-# Use OpenLDAP 2.4.
-WANT_OPENLDAP_VER=24
-WITH_SASL=yes
-WANT_BDB_VER=46
-EOF
+    freebsd_add_make_conf 'WITHOUT_X11' 'yes'
+    freebsd_add_make_conf 'WANT_MYSQL_VER' '55'
+    freebsd_add_make_conf 'WANT_PGSQL_VER' '91'
+    freebsd_add_make_conf 'PYTHON_DEFAULT_VERSION' 'python2.7'
+    freebsd_add_make_conf 'APACHE_PORT' 'www/apache22'
+    freebsd_add_make_conf 'WANT_OPENLDAP_VER' '24'
+    freebsd_add_make_conf 'WITH_SASL' 'yes'
 
-    for i in m4 libiconv cyrus-sasl2 perl openslp mysql-server openldap24 dovecot \
+    for i in m4 libiconv cyrus-sasl2 perl openslp mysql openldap24 dovecot2 \
         ca_root_nss libssh2 curl libusb pth gnupg p5-IO-Socket-SSL \
         p5-Archive-Tar p5-Net-DNS p5-Mail-SpamAssassin p5-Authen-SASL \
         amavisd-new clamav apr python26 apache22 php5 php5-extensions \
@@ -100,18 +93,6 @@ WITH_SLP_SECURITY=true
 WITH_ASYNC_API=true
 EOF
 
-    # MySQL-server. REQUIRED.
-    cat > /var/db/ports/mysql-server/options <<EOF
-WITH_CHARSET=utf8
-WITH_XCHARSET=all
-WITH_OPENSSL=yes
-WITH_COLLATION=utf8_general_ci
-EOF
-    ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
-    ALL_PORTS="${ALL_PORTS} databases/mysql50-server"
-
-    ENABLED_SERVICES="${ENABLED_SERVICES} mysql-server"
-
     # OpenLDAP v2.4. REQUIRED for LDAP backend.
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         cat > /var/db/ports/openldap24/options <<EOF
@@ -159,25 +140,56 @@ EOF
         ALL_PORTS="${ALL_PORTS} net/openldap24-server"
         ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
 
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        cat > /var/db/ports/postgresql91/options <<EOF
+WITH_NLS=true
+WITHOUT_DTRACE=true
+WITHOUT_PAM=true
+WITHOUT_LDAP=true
+WITHOUT_MIT_KRB5=true
+WITHOUT_HEIMDAL_KRB5=true
+WITHOUT_GSSAPI=true
+WITHOUT_OPTIMIZED_CFLAGS=true
+WITH_XML=true
+WITH_TZDATA=true
+WITHOUT_DEBUG=true
+WITH_ICU=true
+WITH_INTDATE=true
+WITH_SSL=true
+EOF
+
+        ALL_PKGS="${ALL_PKGS} postgresql91-server postgresql91-client postgresql91-contrib"
+        ALL_PORTS="${ALL_PORTS} databases/postgresql91-server databases/postgresql91-contrib"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
+    fi
+
+    # MySQL server. Required in both backend OpenLDAP and MySQL.
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        cat > /var/db/ports/mysql/options <<EOF
+WITH_OPENSSL=true
+WITHOUT_FASTMTX=true
+EOF
+        ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
+        ALL_PORTS="${ALL_PORTS} databases/mysql55-server"
+
+        ENABLED_SERVICES="${ENABLED_SERVICES} mysql-server"
     fi
 
     # Dovecot v1.2.x. REQUIRED.
-    cat > /var/db/ports/dovecot/options <<EOF
+    cat > /var/db/ports/dovecot2/options <<EOF
 WITH_KQUEUE=true
 WITH_SSL=true
-WITH_MANAGESIEVE=true
-WITH_GSSAPI=true
+WITHOUT_GSSAPI=true
 WITHOUT_VPOPMAIL=true
-WITH_BDB=true
 WITH_LDAP=true
-WITHOUT_PGSQL=true
+WITH_PGSQL=true
 WITH_MYSQL=true
 WITHOUT_SQLITE=true
 EOF
 
     # Note: dovecot-sieve will install dovecot first.
     ALL_PKGS="${ALL_PKGS} dovecot-sieve dovecot-managesieve"
-    ALL_PORTS="${ALL_PORTS} mail/dovecot-sieve mail/dovecot-managesieve"
+    ALL_PORTS="${ALL_PORTS} mail/dovecot2 mail/dovecot2-pigeonhole"
     ENABLED_SERVICES="${ENABLED_SERVICES} dovecot"
 
     # ca_root_nss. DEPENDENCE.
@@ -325,15 +337,17 @@ EOF
     cat > /var/db/ports/postfix/options <<EOF
 WITH_PCRE=true
 WITHOUT_SASL2=true
-WITH_DOVECOT=true
-WITHOUT_DOVECOT2=true
+WITHOUT_DOVECOT=true
+WITH_DOVECOT2=true
 WITHOUT_SASLKRB5=true
 WITHOUT_SASLKMIT=true
 WITH_TLS=true
 WITH_BDB=true
 WITH_MYSQL=true
-WITHOUT_PGSQL=true
+WITH_PGSQL=true
+WITHOUT_SQLITE=true
 WITH_OPENLDAP=true
+WITH_LDAP_SASL=true
 WITH_CDB=true
 WITHOUT_NIS=true
 WITHOUT_VDA=true
@@ -347,10 +361,24 @@ EOF
     ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
     DISABLED_SERVICES="${DISABLED_SERVICES} sendmail sendmail_submit sendmail_outbound sendmail_msq_queue"
 
-    # Policyd v1.8x. REQUIRED.
-    ALL_PKGS="${ALL_PKGS} postfix-policyd-sf"
-    ALL_PORTS="${ALL_PORTS} mail/postfix-policyd-sf"
-    ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        # Policyd v1.8x
+        ALL_PKGS="${ALL_PKGS} postfix-policyd-sf"
+        ALL_PORTS="${ALL_PORTS} mail/postfix-policyd-sf"
+        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        # Policyd v2.x
+        ALL_PKGS="${ALL_PKGS} policyd2"
+        ALL_PORTS="${ALL_PORTS} mail/policyd2"
+        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
+
+        cat > /var/db/ports/policyd2/options <<EOF
+WITH_MYSQL=true
+WITH_PostgreSQL=true
+WITHOUT_SQLite=true
+EOF
+
+    fi
 
     # ClamAV. REQUIRED.
     cat > /var/db/ports/clamav/options <<EOF
@@ -671,6 +699,7 @@ EOF
 
     # Install all packages.
     ECHO_INFO "==== Install packages ===="
+
     for i in ${ALL_PORTS}; do
         if [ X"${i}" != X'' ]; then
             portname="$( echo ${i} | tr -d '-' | tr -d '/' | tr -d '\.' )"
@@ -679,7 +708,7 @@ EOF
                 cd /usr/ports/${i} && \
                     make clean && \
                     ECHO_INFO "Installing port: ${i} ..." && \
-                    make BATCH=yes install clean
+                    make DEPENDS_TARGET=package package clean
 
                     if [ X"$?" == X"0" ]; then
                         echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}

@@ -27,7 +27,7 @@ iredapd_config()
     ECHO_INFO "Configure iRedAPD (postfix policy daemon)."
 
     # Create a low privilege user as daemon user.
-    if [ X"${DISTRO}" == X"FreeBSD" ]; then
+    if [ X"${DISTRO}" == X'FreeBSD' ]; then
         pw useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" -n ${IREDAPD_DAEMON_USER}
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         groupadd ${IREDAPD_DAEMON_GROUP}
@@ -96,12 +96,17 @@ iredapd_config()
         # Enable plugins.
         perl -pi -e 's#^(plugins).*#${1} = ldap_maillist_access_policy, block_amavisd_blacklisted_senders#' iredapd.ini
 
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
+    elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
         # Set backend.
-        perl -pi -e 's#^(backend).*#${1} = mysql#' iredapd.ini
+        if [ X"${BACKEND}" == X'MYSQL' ]; then
+            perl -pi -e 's#^(backend).*#${1} = mysql#' iredapd.ini
+        else
+            perl -pi -e 's#^(backend).*#${1} = pgsql#' iredapd.ini
+        fi
 
         # Configure MySQL server related stuffs.
-        perl -pi -e 's#^(server).*#${1} = $ENV{MYSQL_SERVER}#' iredapd.ini
+        perl -pi -e 's#^(server).*#${1} = $ENV{SQL_SERVER}#' iredapd.ini
+        perl -pi -e 's#^(port).*#${1} = $ENV{SQL_SERVER_PORT}#' iredapd.ini
         perl -pi -e 's#^(db).*#${1} = $ENV{VMAIL_DB}#' iredapd.ini
         perl -pi -e 's#^(user).*#${1} = $ENV{VMAIL_DB_BIND_USER}#' iredapd.ini
         perl -pi -e 's#^(password).*#${1} = $ENV{VMAIL_DB_BIND_PASSWD}#' iredapd.ini

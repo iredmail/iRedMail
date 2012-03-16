@@ -101,9 +101,6 @@ install_all()
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
 
-        # iRedAPD doesn't work with PGSQL
-        export USE_IREDAPD='NO'
-
         # PGSQL server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib"
@@ -340,12 +337,12 @@ EOF
     # iRedAPD.
     #
     if [ X"${USE_IREDAPD}" == X"YES" ]; then
-        [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH}"
-        [ X"${DISTRO}" == X"SUSE" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
-        [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
         # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
         # RC script ready in early stage.
-        #ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
+
+        [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH}"
+        [ X"${DISTRO}" == X"SUSE" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
+        [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && ALL_PKGS="${ALL_PKGS} python-ldap python-psycopg2 python-mysqldb"
     fi
 
     # iRedAdmin.

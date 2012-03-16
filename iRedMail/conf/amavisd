@@ -111,8 +111,8 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
 
     # Override location of command 'altermime'
     export ALTERMIME_BIN='/usr/local/bin/altermime'
-else
-    :
+
+    export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
 fi
 
 # Syslog setting, 'YES' or 'NO'

@@ -27,6 +27,9 @@
 export ENABLE_DOVECOT="YES"
 export ENABLE_DOVECOT_SSL="YES"
 
+# Dovecot major version number
+export DOVECOT_VERSION='2'
+
 # Dovecot user & group.
 export DOVECOT_USER='dovecot'
 export DOVECOT_GROUP='dovecot'
@@ -47,7 +50,6 @@ export SIEVE_RULE_FILENAME='dovecot.sieve'
 export DOVECOT_GLOBAL_SIEVE_FILE="${SIEVE_DIR}/${SIEVE_RULE_FILENAME}"
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    export DOVECOT_VERSION='2'
     export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
     export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
     export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
@@ -66,9 +68,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     fi
     export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
 elif [ X"${DISTRO}" == X"SUSE" ]; then
-    # openSUSE 12.1 and later versions ship 2.0.x
-    export DOVECOT_VERSION='2'
-
     export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
     export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
     export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
@@ -83,9 +82,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         if [ X"${DISTRO_CODENAME}" == X"lucid" ]; then
             # Ubuntu 10.04
             export DOVECOT_VERSION='1.2'
-        else
-            # Ubuntu 11.10+
-            export DOVECOT_VERSION='2'
         fi
     fi
 
@@ -98,7 +94,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 
 elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    export DOVECOT_VERSION='2'
     export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
     export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
     export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
@@ -108,7 +103,6 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    export DOVECOT_VERSION='1.2'
     export DOVECOT_CONF='/usr/local/etc/dovecot.conf'
     export DOVECOT_LDAP_CONF='/usr/local/etc/dovecot-ldap.conf'
     export DOVECOT_MYSQL_CONF='/usr/local/etc/dovecot-mysql.conf'
