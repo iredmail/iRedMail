@@ -28,12 +28,12 @@ dovecot2_config()
 {
     ECHO_INFO "Configure Dovecot (pop3/imap server, version ${DOVECOT_VERSION})."
 
-    [ X"${ENABLE_DOVECOT}" == X"YES" ] && \
-        backup_file ${DOVECOT_CONF} && \
-        chmod 0664 ${DOVECOT_CONF} && \
-        ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
+    backup_file ${DOVECOT_CONF}
+
+    ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
 
     cp ${SAMPLE_DIR}/conf/dovecot2.conf ${DOVECOT_CONF}
+    chmod 0664 ${DOVECOT_CONF}
 
     # Base directory.
     perl -pi -e 's#PH_BASE_DIR#$ENV{DOVECOT_BASE_DIR}#' ${DOVECOT_CONF}

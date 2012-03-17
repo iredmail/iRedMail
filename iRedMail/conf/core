@@ -626,6 +626,15 @@ gentoo_add_make_conf()
     fi
 }
 
+enable_service_freebsd()
+{
+    :
+}
+disable_service_freebsd()
+{
+    :
+}
+
 freebsd_add_make_conf()
 {
     # USAGE: freebsd_add_make_conf VAR VALUE

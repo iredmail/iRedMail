@@ -83,8 +83,11 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLUEBRINGER_CLEANUP_BIN='/usr/lib/postfix-policyd/cleanup'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    export PKG_CLUEBRINGER='postfix-policyd-sf'
-    export CLUEBRINGER_CONF='/usr/local/etc/postfix-policyd-sf.conf'
+    export CLUEBRINGER_USER='policyd'
+    export CLUEBRINGER_GROUP='policyd'
+
+    export PKG_CLUEBRINGER='policyd2'
+    export CLUEBRINGER_CONF='/usr/local/etc/cluebringer.conf'
     export CLUEBRINGER_WEBUI_CONF="/usr/local/etc/cluebringer/cluebringer-webui.conf"
     export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT=''

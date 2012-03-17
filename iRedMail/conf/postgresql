@@ -51,7 +51,11 @@ if [ X"${DISTRO}" == X'GENTOO' ]; then
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/data"
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-    export PGSQL_CONF_DIR='/usr/local/pgsql/data'
+    export PGSQL_SYS_USER='pgsql'
+    export PGSQL_SYS_GROUP='pgsql'
+    export PGSQL_SYS_USER_HOME='/usr/local/pgsql'
+
+    export PGSQL_CONF_DIR="${PGSQL_SYS_USER_HOME}/data"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
     export PGSQL_DATA_DIR="${PGSQL_CONF_DIR}"

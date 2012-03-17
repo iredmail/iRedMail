@@ -354,6 +354,9 @@ ${CONF_MSG}
 EOF
     fi
 
+    # FreeBSD: Start policyd when system start up.
+    freebsd_enable_service_in_rc_conf 'postfix_policyd_sf_enable' 'YES'
+
     # Set cron file permission: root:root, 0600.
     chmod 0600 ${CRON_SPOOL_DIR}/${POLICYD_USER}
 

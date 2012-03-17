@@ -20,18 +20,29 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-if [ X"${DISTRO_CODENAME}" == X"oneiric" \
-    -o X"${DISTRO_CODENAME}" == X"precise" \
-    ]; then
-    # Use Policyd-2.x (cluebringer).
-    export USE_CLUEBRINGER='YES'
-    export USE_POLICYD='NO'
+# Use policyd-1.8 by default
+export USE_CLUEBRINGER='NO'
+export USE_POLICYD='YES'
 
-    . ${CONF_DIR}/cluebringer
-else
-    # Use Policyd-1.x.
-    export USE_CLUEBRINGER='NO'
-    export USE_POLICYD='YES'
+# Use Policyd-2.x (cluebringer).
+if [ X"${DISTRO}" == X'UBUNTU' ]; then
+    if [ X"${DISTRO_CODENAME}" == X"oneiric" \
+        -o X"${DISTRO_CODENAME}" == X"precise" \
+        ]; then
+        export USE_CLUEBRINGER='YES'
+        export USE_POLICYD='NO'
+    fi
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    if [ X"${BACKEND}" == X'PGSQL' ]; then
+        export USE_CLUEBRINGER='YES'
+        export USE_POLICYD='NO'
+    fi
+fi
 
+if [ X"${USE_POLICYD}" == X'YES' ]; then
     . ${CONF_DIR}/policyd
+fi
+
+if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
+    . ${CONF_DIR}/cluebringer
 fi

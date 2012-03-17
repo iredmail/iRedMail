@@ -35,9 +35,7 @@ cluebringer_user()
             :
         fi
     fi
-    #if [ X"${DISTRO}" == X"FREEBSD" ]; then
-    #    pw useradd -n ${CLUEBRINGER_USER} -s ${SHELL_NOLOGIN} -d ${CLUEBRINGER_USER_HOME} -m
-    #elif [ X"${DISTRO}" == X"SUSE" ]; then
+    #if [ X"${DISTRO}" == X"SUSE" ]; then
     #    # Not need to add user/group.
     #    :
     #else
@@ -53,6 +51,9 @@ cluebringer_config()
     ECHO_DEBUG "Initialize MySQL database of policyd."
 
     backup_file ${CLUEBRINGER_CONF}
+
+    # FreeBSD: Generate config file by copying a sample file
+    [ X"${DISTRO}" == X'FREBSD' ] && cp ${CLUEBRINGER_CONF}.sample ${CLUEBRINGER_CONF} >/dev/null
 
     #
     # Configure '[server]' section.
@@ -277,7 +278,11 @@ cluebringer_webui_config()
 {
     ECHO_DEBUG "Configure webui of Policyd (cluebringer)."
 
-    backup_file ${CLUEBRINGER_CONF}
+    backup_file ${CLUEBRINGER_WEBUI_CONF}
+
+    # FreeBSD: Generate config file by copying a sample file
+    [ X"${DISTRO}" == X'FREBSD' ] && \
+        cp /usr/local/share/policyd2/contrib/httpd/cluebringer-httpd.conf ${CLUEBRINGER_WEBUI_CONF}
 
     # Make Cluebringer accessible via HTTPS.
     perl -pi -e 's#(</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}

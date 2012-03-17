@@ -511,6 +511,8 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export GENTOO_CONF_PACKAGE_UNMASK='/etc/portage/package.unmask'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    export ENABLE_BACKEND_PGSQL='YES'
+
     # System user: root.
     export SYS_ROOT_USER='root'
     export SYS_ROOT_GROUP='wheel'

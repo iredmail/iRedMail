@@ -28,17 +28,23 @@ install_all()
     DISABLED_SERVICES=''    # Scripts under /usr/local/etc/rc.d/
 
     # Make it don't popup dialog while building ports.
+    export PACKAGE_BUILDING='yes'
     export BATCH='yes'
+    export WANT_OPENLDAP_VER='24'
+    export WANT_MYSQL_VER='55'
+    export WANT_PGSQL_VER='91'
+    export WANT_POSTFIX_VER='27'
 
     freebsd_add_make_conf 'WITHOUT_X11' 'yes'
-    freebsd_add_make_conf 'WANT_MYSQL_VER' '55'
-    freebsd_add_make_conf 'WANT_PGSQL_VER' '91'
+    freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${WANT_OPENLDAP_VER}"
+    freebsd_add_make_conf 'WANT_MYSQL_VER' "${WANT_MYSQL_VER}"
+    freebsd_add_make_conf 'WANT_PGSQL_VER' "${WANT_PGSQL_VER}"
     freebsd_add_make_conf 'PYTHON_DEFAULT_VERSION' 'python2.7'
     freebsd_add_make_conf 'APACHE_PORT' 'www/apache22'
-    freebsd_add_make_conf 'WANT_OPENLDAP_VER' '24'
     freebsd_add_make_conf 'WITH_SASL' 'yes'
 
-    for i in m4 libiconv cyrus-sasl2 perl openslp mysql openldap24 dovecot2 \
+    for i in openldap${WANT_OPENLDAP_VER} mysql postgresql${WANT_PGSQL_VER} postgresql${WANT_PGSQL_VER}-contrib \
+        m4 libiconv cyrus-sasl2 perl openslp dovecot2 policyd2 \
         ca_root_nss libssh2 curl libusb pth gnupg p5-IO-Socket-SSL \
         p5-Archive-Tar p5-Net-DNS p5-Mail-SpamAssassin p5-Authen-SASL \
         amavisd-new clamav apr python27 apache22 php5 php5-extensions \
@@ -93,9 +99,12 @@ WITH_SLP_SECURITY=true
 WITH_ASYNC_API=true
 EOF
 
+    # LDAP/MySQL/PGSQL client libraries and tools
+    ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-client databases/mysql${WANT_MYSQL_VER}-client databases/postgresql${WANT_PGSQL_VER}-client"
+
     # OpenLDAP v2.4. REQUIRED for LDAP backend.
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        cat > /var/db/ports/openldap24/options <<EOF
+        cat > /var/db/ports/openldap${WANT_OPENLDAP_VER}/options <<EOF
 WITH_SASL=true
 WITH_FETCH=true
 WITH_DYNACL=true
@@ -137,11 +146,11 @@ WITH_DYNAMIC_BACKENDS=true
 EOF
 
         ALL_PKGS="${ALL_PKGS} openldap-sasl-server openldap-sasl-client"
-        ALL_PORTS="${ALL_PORTS} net/openldap24-server"
+        ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-server"
         ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cat > /var/db/ports/postgresql91/options <<EOF
+        cat > /var/db/ports/postgresql${WANT_PGSQL_VER}/options <<EOF
 WITH_NLS=true
 WITHOUT_DTRACE=true
 WITHOUT_PAM=true
@@ -158,8 +167,12 @@ WITH_INTDATE=true
 WITH_SSL=true
 EOF
 
-        ALL_PKGS="${ALL_PKGS} postgresql91-server postgresql91-client postgresql91-contrib"
-        ALL_PORTS="${ALL_PORTS} databases/postgresql91-server databases/postgresql91-contrib"
+        cat > /var/db/ports/postgresql${WANT_PGSQL_VER}-contrib/options <<EOF
+WITHOUT_OSSP_UUID=true
+EOF
+
+        ALL_PKGS="${ALL_PKGS} postgresql${WANT_PGSQL_VER}-server postgresql${WANT_PGSQL_VER}-contrib"
+        ALL_PORTS="${ALL_PORTS} databases/postgresql${WANT_PGSQL_VER}-server databases/postgresql${WANT_PGSQL_VER}-contrib"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
     fi
 
@@ -170,7 +183,7 @@ WITH_OPENSSL=true
 WITHOUT_FASTMTX=true
 EOF
         ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
-        ALL_PORTS="${ALL_PORTS} databases/mysql55-server"
+        ALL_PORTS="${ALL_PORTS} databases/mysql${WANT_MYSQL_VER}-server"
 
         ENABLED_SERVICES="${ENABLED_SERVICES} mysql-server"
     fi
@@ -357,46 +370,9 @@ WITHOUT_INST_BASE=true
 EOF
 
     ALL_PKGS="${ALL_PKGS} pcre postfix"
-    ALL_PORTS="${ALL_PORTS} devel/pcre mail/postfix27"
+    ALL_PORTS="${ALL_PORTS} devel/pcre mail/postfix${WANT_POSTFIX_VER}"
     ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
     DISABLED_SERVICES="${DISABLED_SERVICES} sendmail sendmail_submit sendmail_outbound sendmail_msq_queue"
-
-    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-        # Policyd v1.8x
-        ALL_PKGS="${ALL_PKGS} postfix-policyd-sf"
-        ALL_PORTS="${ALL_PORTS} mail/postfix-policyd-sf"
-        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
-    elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        # Policyd v2.x
-        ALL_PKGS="${ALL_PKGS} policyd2"
-        ALL_PORTS="${ALL_PORTS} mail/policyd2"
-        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
-
-        cat > /var/db/ports/policyd2/options <<EOF
-WITH_MYSQL=true
-WITH_PostgreSQL=true
-WITHOUT_SQLite=true
-EOF
-
-    fi
-
-    # ClamAV. REQUIRED.
-    cat > /var/db/ports/clamav/options <<EOF
-WITH_ARC=true
-WITH_ARJ=true
-WITH_LHA=true
-WITH_UNZOO=true
-WITH_UNRAR=true
-WITH_ICONV=true
-WITHOUT_MILTER=true
-WITHOUT_LDAP=true
-WITHOUT_STDERR=true
-WITHOUT_EXPERIMENTAL=true
-EOF
-
-    ALL_PKGS="${ALL_PKGS} clamav"
-    ALL_PORTS="${ALL_PORTS} security/clamav"
-    ENABLED_SERVICES="${ENABLED_SERVICES} clamav-clamd clamav-freshclam"
 
     # Apr. DEPENDENCE.
     cat > /var/db/ports/apr/options <<EOF
@@ -608,6 +584,48 @@ WITHOUT_TRUETYPE=true
 WITHOUT_JIS=true
 EOF
 
+    # PHP extensions
+    if [ X"${REQUIRE_PHP}" == X"YES" -o X"${USE_WEBMAIL}" == X"YES" ]; then
+        ALL_PKGS="${ALL_PKGS} php5-gd php5-imap php5-zip php5-bz2 php5-zlib php5-gettext php5-mbstring php5-mcrypt php5-mysql php5-mysqli php5-openssl php5-session php5-ldap php5-ctype php5-hash php5-iconv php5-pspell php5-dom php5-xml php5-sqlite"
+        ALL_PORTS="${ALL_PORTS} mail/php5-imap graphics/php5-gd archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt databases/php5-mysql security/php5-openssl www/php5-session net/php5-ldap textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml databases/php5-sqlite databases/php5-mysqli"
+    fi
+
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        # Policyd v1.8x
+        ALL_PKGS="${ALL_PKGS} postfix-policyd-sf"
+        ALL_PORTS="${ALL_PORTS} mail/postfix-policyd-sf"
+        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        # Policyd v2.x
+        ALL_PKGS="${ALL_PKGS} policyd2"
+        ALL_PORTS="${ALL_PORTS} mail/policyd2"
+        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
+
+        cat > /var/db/ports/policyd2/options <<EOF
+WITH_MYSQL=true
+WITH_PostgreSQL=true
+WITHOUT_SQLite=true
+EOF
+    fi
+
+    # ClamAV. REQUIRED.
+    cat > /var/db/ports/clamav/options <<EOF
+WITH_ARC=true
+WITH_ARJ=true
+WITH_LHA=true
+WITH_UNZOO=true
+WITH_UNRAR=true
+WITH_ICONV=true
+WITHOUT_MILTER=true
+WITHOUT_LDAP=true
+WITHOUT_STDERR=true
+WITHOUT_EXPERIMENTAL=true
+EOF
+
+    ALL_PKGS="${ALL_PKGS} clamav"
+    ALL_PORTS="${ALL_PORTS} security/clamav"
+    ENABLED_SERVICES="${ENABLED_SERVICES} clamav-clamd clamav-freshclam"
+
     # Roundcube.
     cat > /var/db/ports/roundcube/options <<EOF
 WITH_MYSQL=true
@@ -624,12 +642,6 @@ EOF
     cat > /var/db/ports/MySQLdb/options <<EOF
 WITH_MYSQLCLIENT_R=true
 EOF
-
-    # PHP extensions
-    if [ X"${REQUIRE_PHP}" == X"YES" -o X"${USE_WEBMAIL}" == X"YES" ]; then
-        ALL_PKGS="${ALL_PKGS} php5-gd php5-imap php5-zip php5-bz2 php5-zlib php5-gettext php5-mbstring php5-mcrypt php5-mysql php5-mysqli php5-openssl php5-session php5-ldap php5-ctype php5-hash php5-iconv php5-pspell php5-dom php5-xml php5-sqlite"
-        ALL_PORTS="${ALL_PORTS} mail/php5-imap graphics/php5-gd archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt databases/php5-mysql security/php5-openssl www/php5-session net/php5-ldap textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml databases/php5-sqlite databases/php5-mysqli"
-    fi
 
     # Roundcube webmail.
     if [ X"${USE_RCM}" == X"YES" ]; then
@@ -659,6 +671,12 @@ EOF
         ALL_PORTS="${ALL_PORTS} databases/phpmyadmin"
     fi
 
+    # phpPgAdmin
+    if [ X"${USE_PHPPGADMIN}" == X"YES" ]; then
+        ALL_PKGS="${ALL_PKGS} phppgadmin"
+        ALL_PORTS="${ALL_PORTS} databases/phppgadmin"
+    fi
+
     # iRedAPD.
     if [ X"${USE_IREDAPD}" == X"YES" ]; then
         # python-ldap.
@@ -679,12 +697,14 @@ EOF
     #fi
 
     # Fetch all source tarballs.
-    ECHO_INFO "==== Fetch all source tarballs of required components (make fetch-recursive) ===="
+    ECHO_INFO "Fetching all distfile for required packages (make fetch-recursive)"
+
     for i in ${ALL_PORTS}; do
         if [ X"${i}" != X'' ]; then
             portname="$( echo ${i} | tr -d '-' | tr -d '/' | tr -d '\.' )"
             status="\$status_fetch_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
+                ECHO_INFO "Fetching all distfiles for port: ${i}"
                 cd /usr/ports/${i} && make fetch-recursive
                 if [ X"$?" == X"0" ]; then
                     echo "export status_fetch_port_${portname}='DONE'" >> ${STATUS_FILE}
@@ -693,7 +713,7 @@ EOF
                     exit 255
                 fi
             else
-                ECHO_INFO "Skip fetching tarballs of port: ${i}."
+                ECHO_INFO "[SKIP] Fetching distfiles for port: ${i}."
             fi
         fi
     done
@@ -707,9 +727,9 @@ EOF
             status="\$status_install_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 cd /usr/ports/${i} && \
-                    make clean && \
                     ECHO_INFO "Installing port: ${i} ..." && \
-                    make DEPENDS_TARGET=package package clean
+                    make clean && \
+                    make install clean
 
                     if [ X"$?" == X"0" ]; then
                         echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}
@@ -718,7 +738,7 @@ EOF
                         exit 255
                     fi
             else
-                ECHO_INFO "Skip installing port: ${i}."
+                ECHO_INFO "[SKIP] Installing port: ${i}."
             fi
         fi
     done

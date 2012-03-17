@@ -22,15 +22,15 @@
 
 policy_server_config()
 {
-    if [ X"${DISTRO_CODENAME}" != X"oneiric" \
-        -a X"${DISTRO_CODENAME}" != X"precise" \
-        ]; then
+    if [ X"${USE_POLICYD}" == X'YES' ]; then
         . ${FUNCTIONS_DIR}/policyd.sh
 
         ECHO_INFO "Configure Policyd (postfix policy server, version 1.8)."
         check_status_before_run policyd_user
         check_status_before_run policyd_config
-    else
+    fi
+
+    if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
         . ${FUNCTIONS_DIR}/cluebringer.sh
 
         ECHO_INFO "Configure Policyd (postfix policy server, code name cluebringer)."
@@ -38,9 +38,6 @@ policy_server_config()
         check_status_before_run cluebringer_config
         check_status_before_run cluebringer_webui_config
     fi
-
-    # FreeBSD: Start policyd when system start up.
-    freebsd_enable_service_in_rc_conf 'postfix_policyd_sf_enable' 'YES'
 
     echo 'export status_policy_server_config="DONE"' >> ${STATUS_FILE}
 }

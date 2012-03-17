@@ -32,7 +32,7 @@ pgsql_initialize()
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
         freebsd_enable_service_in_rc_conf 'postgresql_enable' 'YES'
 
-        su - ${PGSQL_SYS_USER} -c "${PGSQL_RC_SCRIPT} initdb" >/dev/null
+        ${PGSQL_RC_SCRIPT} initdb >/dev/null
     fi
 
     backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
