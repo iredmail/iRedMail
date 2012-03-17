@@ -27,7 +27,7 @@ iredapd_config()
     ECHO_INFO "Configure iRedAPD (postfix policy daemon)."
 
     # Create a low privilege user as daemon user.
-    if [ X"${DISTRO}" == X'FreeBSD' ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         pw useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" -n ${IREDAPD_DAEMON_USER}
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         groupadd ${IREDAPD_DAEMON_GROUP}
@@ -115,14 +115,8 @@ iredapd_config()
         perl -pi -e 's#^(plugins).*#${1} = sql_alias_access_policy#' iredapd.ini
     fi
 
-    # FreeBSD.
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        # Start iredapd when system start up.
-        cat >> /etc/rc.conf <<EOF
-# Start iredapd.
-iredapd_enable="YES"
-EOF
-    fi
+    # FreeBSD: Start iredapd when system start up.
+    freebsd_enable_service_in_rc_conf 'iredapd_enable' 'YES'
 
     cat >> ${TIP_FILE} <<EOF
 iRedAPD - Postfix Policy Daemon:

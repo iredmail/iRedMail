@@ -49,14 +49,18 @@ export DOVECOT_QUOTA_TYPE='dict:user::proxy::quotadict'
 export SIEVE_RULE_FILENAME='dovecot.sieve'
 export DOVECOT_GLOBAL_SIEVE_FILE="${SIEVE_DIR}/${SIEVE_RULE_FILENAME}"
 
-if [ X"${DISTRO}" == X"RHEL" ]; then
-    export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
-    export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
-    export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
-    export DOVECOT_PGSQL_CONF='/etc/dovecot/dovecot-pgsql.conf'
-    export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
-    export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
+# Dovecot config files
+export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
+export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
+export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
+export DOVECOT_PGSQL_CONF='/etc/dovecot/dovecot-pgsql.conf'
+export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
+export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
 
+# Path to Dovecot deliver agant
+export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
+
+if [ X"${DISTRO}" == X"RHEL" ]; then
     if [ X"${DISTRO_VERSION}" == X"5" ]; then
         export DOVECOT_VERSION='1.2'
         export DOVECOT_CONF='/etc/dovecot.conf'
@@ -66,15 +70,9 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
         export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot-used-quota.conf'
         export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot-share-folder.conf'
     fi
-    export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
 elif [ X"${DISTRO}" == X"SUSE" ]; then
-    export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
-    export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
-    export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
-    export DOVECOT_PGSQL_CONF='/etc/dovecot/dovecot-pgsql.conf'
-    export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
-    export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
+
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     if [ X"${DISTRO}" == X"DEBIAN" ]; then
         export DOVECOT_VERSION='1.2'
@@ -85,30 +83,15 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         fi
     fi
 
-    export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
-    export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
-    export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
-    export DOVECOT_PGSQL_CONF='/etc/dovecot/dovecot-pgsql.conf'
-    export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
-    export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 
-elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
-    export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
-    export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
-    export DOVECOT_PGSQL_CONF='/etc/dovecot/dovecot-pgsql.conf'
-    export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
-    export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
-    export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
-
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    export DOVECOT_CONF='/usr/local/etc/dovecot.conf'
-    export DOVECOT_LDAP_CONF='/usr/local/etc/dovecot-ldap.conf'
-    export DOVECOT_MYSQL_CONF='/usr/local/etc/dovecot-mysql.conf'
-    export DOVECOT_PGSQL_CONF='/usr/local/etc/dovecot-pgsql.conf'
-    export DOVECOT_REALTIME_QUOTA_CONF='/usr/local/etc/dovecot-used-quota.conf'
-    export DOVECOT_SHARE_FOLDER_CONF='/usr/local/etc/dovecot-share-folder.conf'
+    export DOVECOT_CONF='/usr/local/etc/dovecot/dovecot.conf'
+    export DOVECOT_LDAP_CONF='/usr/local/etc/dovecot/dovecot-ldap.conf'
+    export DOVECOT_MYSQL_CONF='/usr/local/etc/dovecot/dovecot-mysql.conf'
+    export DOVECOT_PGSQL_CONF='/usr/local/etc/dovecot/dovecot-pgsql.conf'
+    export DOVECOT_REALTIME_QUOTA_CONF='/usr/local/etc/dovecot/dovecot-used-quota.conf'
+    export DOVECOT_SHARE_FOLDER_CONF='/usr/local/etc/dovecot/dovecot-share-folder.conf'
     export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
 fi
 

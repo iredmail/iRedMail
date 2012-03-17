@@ -106,12 +106,7 @@ ignoreregex =
 EOF
 
     # FreeBSD: Start fail2ban when system start up.
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        cat >> /etc/rc.conf <<EOF
-# Start fail2ban.
-fail2ban_enable="YES"
-EOF
-    fi
+    freebsd_enable_service_in_rc_conf 'fail2ban_enable' 'YES'
 
     echo 'export status_fail2ban_config="DONE"' >> ${STATUS_FILE}
 }

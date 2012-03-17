@@ -412,18 +412,6 @@ disable_service_gentoo()
     done
 }
 
-# TODO
-enable_service_freebsd()
-{
-    :
-}
-
-# TODO
-disable_service_freebsd()
-{
-    :
-}
-
 service_control()
 {
     service="$1"
@@ -653,6 +641,27 @@ freebsd_add_make_conf()
             echo "${final_option}" >> /etc/make.conf
         else
             ECHO_DEBUG "Skip adding option in /etc/make.conf: ${final_option}"
+        fi
+    fi
+}
+
+freebsd_enable_service_in_rc_conf()
+{
+    # USAGE: freebsd_enable_service_in_rc_conf VAR VALUE
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        [ -f /etc/rc.conf ] || touch /etc/rc.conf
+        if [ X"$#" == X'2' ]; then
+            var="${1}"
+            value="${2}"
+            final_option="${1}='${2}'"
+            comment_mark="# ${PROG_NAME}-${var}"
+            if ! grep "^${comment_mark}$" /etc/rc.conf &>/dev/null; then
+                ECHO_DEBUG "Add setting in /etc/rc.conf: ${final_option}"
+                echo "${comment_mark}" >> /etc/rc.conf
+                echo "${final_option}" >> /etc/rc.conf
+            else
+                ECHO_DEBUG "Skip adding setting in /etc/rc.conf: ${final_option}"
+            fi
         fi
     fi
 }

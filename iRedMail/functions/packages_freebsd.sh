@@ -41,7 +41,7 @@ install_all()
     for i in m4 libiconv cyrus-sasl2 perl openslp mysql openldap24 dovecot2 \
         ca_root_nss libssh2 curl libusb pth gnupg p5-IO-Socket-SSL \
         p5-Archive-Tar p5-Net-DNS p5-Mail-SpamAssassin p5-Authen-SASL \
-        amavisd-new clamav apr python26 apache22 php5 php5-extensions \
+        amavisd-new clamav apr python27 apache22 php5 php5-extensions \
         php5-gd roundcube postfix MySQLdb p7zip; do
         mkdir -p /var/db/ports/${i} 2>/dev/null
     done
@@ -410,10 +410,11 @@ WITH_MYSQL=true
 WITHOUT_PGSQL=true
 EOF
 
-    # Python v2.6. REQUIRED.
-    cat > /var/db/ports/python26/options <<EOF
+    # Python v2.7
+    cat > /var/db/ports/python27/options <<EOF
 WITH_THREADS=true
-WITH_HUGE_STACK_SIZE=true
+WITHOUT_SEM=true
+WITHOUT_PTH=true
 WITH_UCS4=true
 WITH_PYMALLOC=true
 WITH_IPV6=true

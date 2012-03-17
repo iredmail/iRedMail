@@ -392,12 +392,9 @@ EOF
 
     # FreeBSD: Start openldap when system start up.
     # Warning: Make sure we have 'slapd_enable=YES' before start/stop openldap.
-    [ X"${DISTRO}" == X"FREEBSD" ] && cat >> /etc/rc.conf <<EOF
-# Start openldap server.
-slapd_enable="YES"
-slapd_flags='-h "ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://127.0.0.1/ ldaps://127.0.0.1/"'
-slapd_sockets="/var/run/openldap/ldapi"
-EOF
+    freebsd_enable_service_in_rc_conf 'slapd_enable' 'YES'
+    freebsd_enable_service_in_rc_conf 'slapd_flags' '-h "ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://127.0.0.1/ ldaps://127.0.0.1/"'
+    freebsd_enable_service_in_rc_conf 'slapd_sockets' '/var/run/openldap/ldapi'
 
     echo 'export status_openldap_config="DONE"' >> ${STATUS_FILE}
 }

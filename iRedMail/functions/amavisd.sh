@@ -730,14 +730,10 @@ amavisd_config()
     fi
 
     # FreeBSD: Start amavisd when system start up.
-    [ X"${DISTRO}" == X"FREEBSD" ] && cat >> /etc/rc.conf <<EOF
-# Start amavisd, disable amavis-milter.
-amavisd_enable="YES"
-amavisd_pidfile="/var/amavis/amavisd.pid"
-amavis_milter_enable="NO"
-amavis_p0fanalyzer_enable="NO"
-#amavis_p0fanalyzer_p0f_filter="tcp dst port 25"
-EOF
+    freebsd_enable_service_in_rc_conf 'amavisd_enable' 'YES'
+    freebsd_enable_service_in_rc_conf 'amavisd_pidfile' '/var/amavis/amavisd.pid'
+    freebsd_enable_service_in_rc_conf 'amavis_milter_enable' 'NO'
+    freebsd_enable_service_in_rc_conf 'amavis_p0fanalyzer_enable' 'NO'
 
     check_status_before_run amavisd_config_general
     check_status_before_run amavisd_import_sql

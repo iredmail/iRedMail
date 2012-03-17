@@ -30,10 +30,7 @@ pgsql_initialize()
     # FreeBSD: Start pgsql when system start up.
     # Warning: We must have 'postgresql_enable=YES' before start/stop mysql daemon.
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        cat >> /etc/rc.conf <<EOF
-# Start PostgreSQL server.
-postgresql_enable="YES"
-EOF
+        freebsd_enable_service_in_rc_conf 'postgresql_enable' 'YES'
 
         su - ${PGSQL_SYS_USER} -c "${PGSQL_RC_SCRIPT} initdb" >/dev/null
     fi

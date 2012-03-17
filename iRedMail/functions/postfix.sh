@@ -215,19 +215,15 @@ mailq       /usr/local/sbin/sendmail
 newaliases  /usr/local/sbin/sendmail
 EOF
 
-        cat >> /etc/rc.conf <<EOF
-# Start postfix.
-postfix_enable="YES"
-# Disable sendmail.
-sendmail_enable="NO"
-sendmail_submit_enable="NO"
-sendmail_outbound_enable="NO"
-sendmail_msp_queue_enable="NO"
-daily_clean_hoststat_enable="NO"
-daily_status_mail_rejects_enable="NO"
-daily_status_include_submit_mailq="NO"
-daily_submit_queuerun="NO"
-EOF
+        freebsd_enable_service_in_rc_conf 'postfix_enable' 'YES'
+        freebsd_enable_service_in_rc_conf 'sendmail_enable' 'NO'
+        freebsd_enable_service_in_rc_conf 'sendmail_submit_enable' 'NO'
+        freebsd_enable_service_in_rc_conf 'sendmail_outbound_enable' 'NO'
+        freebsd_enable_service_in_rc_conf 'sendmail_msp_queue_enable' 'NO'
+        freebsd_enable_service_in_rc_conf 'daily_clean_hoststat_enable' 'NO'
+        freebsd_enable_service_in_rc_conf 'daily_status_mail_rejects_enable' 'NO'
+        freebsd_enable_service_in_rc_conf 'daily_status_include_submit_mailq' 'NO'
+        freebsd_enable_service_in_rc_conf 'daily_submit_queuerun' 'NO'
     fi
 
     # Create directory, used to store lookup files.

@@ -27,7 +27,7 @@
 # -------------------------------------------------------
 mysql_initialize()
 {
-    ECHO_DEBUG "Configure MySQL database server." 
+    ECHO_INFO "Configure MySQL database server." 
 
     ECHO_DEBUG "Starting MySQL."
 
@@ -37,12 +37,9 @@ mysql_initialize()
 
     # FreeBSD: Start mysql when system start up.
     # Warning: We must have 'mysql_enable=YES' before start/stop mysql daemon.
-    [ X"${DISTRO}" == X"FREEBSD" ] && cat >> /etc/rc.conf <<EOF
-# Start mysql server.
-mysql_enable="YES"
-EOF
+    freebsd_enable_service_in_rc_conf 'mysql_enable' 'YES'
 
-    ${MYSQLD_RC_SCRIPT} restart >/dev/null 2>&1
+    ${MYSQLD_RC_SCRIPT} restart &>/dev/null
 
     ECHO_DEBUG -n "Sleep 5 seconds for MySQL daemon initialize:"
     sleep 5

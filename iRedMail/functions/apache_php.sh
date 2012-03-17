@@ -261,11 +261,8 @@ EOF
         mkdir -p /usr/local/www/proxy/ 2>/dev/null
 
         # Start apache when system start up.
-        cat >> /etc/rc.conf <<EOF
-# Start apache web server.
-apache22_enable="YES"
-htcacheclean_enable="NO"
-EOF
+        freebsd_enable_service_in_rc_conf 'apache22_enable' 'YES'
+        freebsd_enable_service_in_rc_conf 'htcacheclean_enable' 'NO'
     fi
 
     ##############
