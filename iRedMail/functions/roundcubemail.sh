@@ -89,7 +89,7 @@ EOF
         cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_SYS_USER_HOME}/rcm.sql >/dev/null
         chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql >/dev/null
 
-        su - ${PGSQL_SYS_USER} -c 'psql >/dev/null' >/dev/null <<EOF
+        su - ${PGSQL_SYS_USER} -c "psql -d template1 >/dev/null" >/dev/null <<EOF
 -- Create database and role
 CREATE DATABASE ${RCM_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE ROLE ${RCM_DB_USER} WITH LOGIN ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;

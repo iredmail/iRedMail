@@ -88,7 +88,8 @@ WITH_GDBM=true
 WITH_PERL_MALLOC=true
 WITH_PERL_64BITINT=true
 WITH_THREADS=true
-WITH_SUIDPERL=true
+WITH_PTHREAD=true
+WITH_MULTIPLICITY=true
 WITH_SITECUSTOMIZE=true
 WITH_USE_PERL=true
 EOF
@@ -100,7 +101,7 @@ WITH_ASYNC_API=true
 EOF
 
     # LDAP/MySQL/PGSQL client libraries and tools
-    ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-client databases/mysql${WANT_MYSQL_VER}-client databases/postgresql${WANT_PGSQL_VER}-client"
+    #ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-client databases/mysql${WANT_MYSQL_VER}-client databases/postgresql${WANT_PGSQL_VER}-client"
 
     # OpenLDAP v2.4. REQUIRED for LDAP backend.
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
@@ -548,7 +549,7 @@ WITH_PCRE=true
 WITHOUT_PDF=true
 WITH_PDO=true
 WITH_PDO_SQLITE=true
-WITHOUT_PGSQL=true
+WITH_PGSQL=true
 WITH_POSIX=true
 WITH_PSPELL=true
 WITHOUT_READLINE=true
@@ -602,7 +603,7 @@ EOF
         ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
 
         cat > /var/db/ports/policyd2/options <<EOF
-WITH_MYSQL=true
+WITHOUT_MYSQL=true
 WITH_PostgreSQL=true
 WITHOUT_SQLite=true
 EOF
@@ -650,9 +651,11 @@ EOF
     fi
 
     # Awstats.
-    if [ X"${USE_AWSTATS}" == X"YES" ]; then
-        if [ X"${BACKEND}" == X"MYSQL" ]; then
+    if [ X"${USE_AWSTATS}" == X'YES' ]; then
+        if [ X"${BACKEND}" == X'MYSQL' ]; then
             ALL_PORTS="${ALL_PORTS} www/mod_auth_mysql_another"
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            ALL_PORTS="${ALL_PORTS} www/mod_auth_pgsql2"
         fi
 
         ALL_PKGS="${ALL_PKGS} awstats"

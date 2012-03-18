@@ -415,7 +415,7 @@ openldap_data_initialize()
     ECHO_DEBUG "Starting OpenLDAP."
     ${LDAP_RC_SCRIPT} restart &>/dev/null
 
-    ECHO_DEBUG -n "Sleep 5 seconds for LDAP daemon initialize:"
+    ECHO_DEBUG "Sleep 5 seconds for LDAP daemon initialize ..."
     sleep 5
 
     ECHO_DEBUG "Initialize LDAP tree."

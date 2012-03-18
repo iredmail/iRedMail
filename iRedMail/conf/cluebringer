@@ -88,9 +88,9 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
 
     export PKG_CLUEBRINGER='policyd2'
     export CLUEBRINGER_CONF='/usr/local/etc/cluebringer.conf'
-    export CLUEBRINGER_WEBUI_CONF="/usr/local/etc/cluebringer/cluebringer-webui.conf"
-    export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
-    export CLUEBRINGER_HTTPD_ROOT=''
+    export CLUEBRINGER_WEBUI_CONF="${HTTPD_CONF_DIR}/cluebringer.conf"
+    export CLUEBRINGER_PID_FILE='/var/run/cbpolicyd.pid'
+    export CLUEBRINGER_HTTPD_ROOT='/usr/share/cluebringer/webui'
 
     # Path of policyd-clean
     export CLUEBRINGER_CLEANUP_BIN='/usr/local/sbin/postfix-policyd-sf-cleanup'

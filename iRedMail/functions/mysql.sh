@@ -41,7 +41,7 @@ mysql_initialize()
 
     ${MYSQLD_RC_SCRIPT} restart &>/dev/null
 
-    ECHO_DEBUG -n "Sleep 5 seconds for MySQL daemon initialize:"
+    ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialize ..."
     sleep 5
 
     echo '' > ${MYSQL_INIT_SQL}

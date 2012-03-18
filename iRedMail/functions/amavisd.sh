@@ -543,8 +543,8 @@ EOF
         cat >> ${AMAVISD_CONF} <<EOF
 @storage_sql_dsn = (
     ['DBI:Pg:database=${AMAVISD_DB_NAME};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
-#@lookup_sql_dsn = @storage_sql_dsn;
 );
+#@lookup_sql_dsn = @storage_sql_dsn;
 EOF
     fi
 
@@ -694,7 +694,7 @@ EOF
         cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
         chmod 0777 ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
 
-        su - ${PGSQL_SYS_USER} -c "psql" >/dev/null  <<EOF
+        su - ${PGSQL_SYS_USER} -c "psql -d template1" >/dev/null  <<EOF
 -- Create database
 CREATE DATABASE ${AMAVISD_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 

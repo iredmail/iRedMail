@@ -34,8 +34,10 @@ cluebringer_user()
             # User/group will be created during installing binary package.
             :
         fi
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+        pw useradd -n ${CLUEBRINGER_USER} -s ${SHELL_NOLOGIN} -d ${CLUEBRINGER_USER_HOME} -m
     fi
-    #if [ X"${DISTRO}" == X"SUSE" ]; then
+    #elif [ X"${DISTRO}" == X"SUSE" ]; then
     #    # Not need to add user/group.
     #    :
     #else
@@ -52,8 +54,8 @@ cluebringer_config()
 
     backup_file ${CLUEBRINGER_CONF}
 
-    # FreeBSD: Generate config file by copying a sample file
-    [ X"${DISTRO}" == X'FREBSD' ] && cp ${CLUEBRINGER_CONF}.sample ${CLUEBRINGER_CONF} >/dev/null
+    # FreeBSD: Generate sample config file
+    [ X"${DISTRO}" == X'FREEBSD' ] && cp ${CLUEBRINGER_CONF}.sample ${CLUEBRINGER_CONF}
 
     #
     # Configure '[server]' section.
@@ -95,6 +97,11 @@ cluebringer_config()
         perl -pi -e 's/^(DB_Type=).*/${1}pgsql/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Host=).*/${1}$ENV{PGSQL_SERVER}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Port=).*/${1}$ENV{PGSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
+
+        # FreeBSD
+        if [ X"${DISTRO}" == X'FREEBSD' ]; then
+            perl -pi -e 's/^(DSN=DBI:).*/${1}Pg:host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+        fi
     fi
 
     # Database
@@ -154,19 +161,38 @@ EOF
 
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         # Template file will create database: policyd.
+        cd /usr/local/share/policyd2/database/
+        chmod +x ./convert-tsql
+
         if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+            policyd_sql_type='mysql'
             cat > ${tmp_sql} <<EOF
-# Import SQL structure template.
-SOURCE $(eval ${LIST_FILES_IN_PKG} "${PKG_CLUEBRINGER}*" | grep '/DATABASE.mysql$');
-
-# Grant privileges.
+CREATE DATABASE ${CLUEBRINGER_DB_NAME};
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_DB_USER}"@localhost IDENTIFIED BY "${CLUEBRINGER_DB_PASSWD}";
-FLUSH PRIVILEGES;
+USE ${CLUEBRINGER_DB_NAME};
 EOF
-
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            :
+            policyd_sql_type='pgsql'
+            cat > ${tmp_sql} <<EOF
+CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
+CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+\c ${CLUEBRINGER_DB_NAME};
+EOF
         fi
+
+        for i in core.tsql \
+            access_control.tsql \
+            quotas.tsql \
+            amavis.tsql \
+            checkhelo.tsql \
+            checkspf.tsql \
+            greylisting.tsql; do
+            bash convert-tsql ${policyd_sql_type} $i
+        done >> ${tmp_sql}
+
+        # accounting.tsql is shipped in 2.0.11.
+        [ -f accounting.tsql ] && bash convert ${policyd_sql_type} accounting.tsql >> ${tmp_sql}
+        unset policyd_sql_type
     fi
 
     # Initial cluebringer db.
@@ -184,11 +210,14 @@ INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, 
 EOF
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        # Comment out all lines starts with '#'
+        perl -pi -e 's=^(#.*)=/*${1}*/=' ${tmp_sql}
+
         # Initial cluebringer db.
-        su - ${PGSQL_SYS_USER} -c "psql -f ${tmp_sql} >/dev/null" >/dev/null 
+        su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >/dev/null 
 
         # Enable greylisting on all inbound emails by default.
-        su - ${PGSQL_SYS_USER} -c "psql" >/dev/null  <<EOF
+        su - ${PGSQL_SYS_USER} -c "psql -d template1" >/dev/null  <<EOF
 \c ${CLUEBRINGER_DB_NAME};
 
 -- Enable greylisting on all inbound emails by default.
@@ -196,20 +225,15 @@ INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, 
 EOF
     fi
 
-    rm -rf ${tmp_sql} 2>/dev/null
+    #rm -f ${tmp_sql} 2>/dev/null
     unset tmp_sql
-
-    # Configure policyd.
-    ECHO_DEBUG "Configure policyd: ${CLUEBRINGER_CONF}."
-
-    # FreeBSD: Copy sample config file.
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        cp /usr/local/etc/postfix-policyd-sf.conf.sample ${CLUEBRINGER_CONF}
-    fi
 
     # Set correct permission.
     chown ${CLUEBRINGER_USER}:${CLUEBRINGER_GROUP} ${CLUEBRINGER_CONF}
     chmod 0700 ${CLUEBRINGER_CONF}
+
+    # FreeBSD: Enable policyd2
+    freebsd_enable_service_in_rc_conf 'policyd2_enable' 'YES'
 
     if [ X"${CLUEBRINGER_SEPERATE_LOG}" == X"YES" ]; then
         echo -e "local1.*\t\t\t\t\t\t-${CLUEBRINGER_LOGFILE}" >> ${SYSLOG_CONF}
@@ -279,10 +303,6 @@ cluebringer_webui_config()
     ECHO_DEBUG "Configure webui of Policyd (cluebringer)."
 
     backup_file ${CLUEBRINGER_WEBUI_CONF}
-
-    # FreeBSD: Generate config file by copying a sample file
-    [ X"${DISTRO}" == X'FREBSD' ] && \
-        cp /usr/local/share/policyd2/contrib/httpd/cluebringer-httpd.conf ${CLUEBRINGER_WEBUI_CONF}
 
     # Make Cluebringer accessible via HTTPS.
     perl -pi -e 's#(</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}

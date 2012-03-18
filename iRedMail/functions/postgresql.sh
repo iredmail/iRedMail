@@ -32,7 +32,11 @@ pgsql_initialize()
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
         freebsd_enable_service_in_rc_conf 'postgresql_enable' 'YES'
 
-        ${PGSQL_RC_SCRIPT} initdb >/dev/null
+        ${PGSQL_RC_SCRIPT} initdb &>/dev/null
+
+        #echo '/usr/local/bin/postgres "-D" "/usr/local/pgsql/data"' > ${PGSQL_DATA_DIR}/postmaster.opts
+        #chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_DATA_DIR}/postmaster.opts
+        #chmod 0600 ${PGSQL_DATA_DIR}/postmaster.opts
     fi
 
     backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
@@ -58,9 +62,13 @@ pgsql_initialize()
     ln -s ${PGSQL_SSL_KEY} ${PGSQL_DATA_DIR}/server.key >/dev/null
 
     ECHO_DEBUG "Start PostgreSQL server"
-    ${PGSQL_RC_SCRIPT} restart >/dev/null 2>&1
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        ${PGSQL_RC_SCRIPT} start  #&>/dev/null
+    else
+        ${PGSQL_RC_SCRIPT} restart &>/dev/null
+    fi
 
-    ECHO_DEBUG -n "Sleep 5 seconds for PostgreSQL daemon initialize:"
+    ECHO_DEBUG "Sleep 5 seconds for PostgreSQL daemon initialize ..."
     sleep 5
 
     ECHO_DEBUG "Setting password for PostgreSQL admin: (${PGSQL_ROOT_USER})."
@@ -146,7 +154,7 @@ EOF
     cp -f ${PGSQL_VMAIL_STRUCTURE_SAMPLE} ${PGSQL_SYS_USER_HOME}/vmail.sql >/dev/null
     cp -f ${PGSQL_INIT_SQL_SAMPLE} ${PGSQL_SYS_USER_HOME}/init.sql >/dev/null
     chmod 0777 ${PGSQL_SYS_USER_HOME}/{vmail,init}.sql >/dev/null
-    su - ${PGSQL_SYS_USER} -c "psql -f ${PGSQL_SYS_USER_HOME}/init.sql" >/dev/null
+    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_SYS_USER_HOME}/init.sql" >/dev/null
     rm -f ${PGSQL_SYS_USER_HOME}/{vmail,init}.sql >/dev/null
 
     cat >> ${TIP_FILE} <<EOF

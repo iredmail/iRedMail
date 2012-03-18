@@ -213,8 +213,15 @@ EOF
 
         # Disable modules: mod_proxy_scgi
         perl -pi -e 's/^(LoadModule.*mod_proxy_scgi.*)/#${1}/' ${HTTPD_CONF_ROOT}/httpd.conf
-    else
-        :
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+        [ X"${BACKEND}" == X'OPENLDAP' ] && \
+            perl -pi -e 's/^#(LoadModule.*ldap_module.*)/${1}/' ${HTTPD_CONF}
+
+        [ X"${BACKEND}" == X'MYSQL' ] && \
+            perl -pi -e 's/^#(LoadModule.*mysql_auth_module.*)/${1}/' ${HTTPD_CONF}
+
+        [ X"${BACKEND}" == X'PGSQL' ] && \
+            perl -pi -e 's/^#(LoadModule.*auth_pgsql_module.*)/${1}/' ${HTTPD_CONF}
     fi
 
     if [ X"${DISTRO}" == X'GENTOO' ]; then
