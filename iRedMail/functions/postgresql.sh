@@ -23,6 +23,11 @@
 # -------------------------------------------------------
 # -------------------- PostgreSQL -----------------------
 # -------------------------------------------------------
+
+# NOTE: iRedMail will force all clients to send encrypted password
+#       after configuration completed and SQL data imported.
+# Reference: functions/cleanup.sh, function cleanup_pgsql_force_password().
+
 pgsql_initialize()
 {
     ECHO_INFO "Configure PostgreSQL database server." 
@@ -33,16 +38,9 @@ pgsql_initialize()
         freebsd_enable_service_in_rc_conf 'postgresql_enable' 'YES'
 
         ${PGSQL_RC_SCRIPT} initdb &>/dev/null
-
-        #echo '/usr/local/bin/postgres "-D" "/usr/local/pgsql/data"' > ${PGSQL_DATA_DIR}/postmaster.opts
-        #chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_DATA_DIR}/postmaster.opts
-        #chmod 0600 ${PGSQL_DATA_DIR}/postmaster.opts
     fi
 
     backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
-
-    #ECHO_DEBUG "Force all users to connect PGSQL server with password."
-    #perl -pi -e 's#^(local.*)peer#${1}md5#' ${PGSQL_CONF_PG_HBA}
 
     ECHO_DEBUG "Listen on only localhost"
     perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}localhost${2}#' ${PGSQL_CONF_POSTGRESQL}
@@ -51,7 +49,6 @@ pgsql_initialize()
     perl -pi -e 's#.*(client_min_messages =).*#${1} error#' ${PGSQL_CONF_POSTGRESQL}
 
     ECHO_DEBUG "Copy iRedMail SSL cert/key with strict permission."
-    # SSL is enabled by default.
     backup_file ${PGSQL_DATA_DIR}/server.{crt,key}
     rm -f ${PGSQL_DATA_DIR}/server.{crt,key} >/dev/null
     cp -f ${SSL_CERT_FILE} ${PGSQL_SSL_CERT} >/dev/null
@@ -60,6 +57,11 @@ pgsql_initialize()
     chmod 0600 ${PGSQL_SSL_CERT} ${PGSQL_SSL_KEY}
     ln -s ${PGSQL_SSL_CERT} ${PGSQL_DATA_DIR}/server.crt >/dev/null
     ln -s ${PGSQL_SSL_KEY} ${PGSQL_DATA_DIR}/server.key >/dev/null
+
+    ECHO_DEBUG "Copy iRedMail SSL cert/key with strict permission."
+    # SSL is enabled by default on Ubuntu.
+    [ X"${DISTRO}" == X'FREEBSD' ] && \
+        perl -pi -e 's/^#(ssl.=.)off(.*)#${1}on${2}#' ${PGSQL_CONF_POSTGRESQL}
 
     ECHO_DEBUG "Start PostgreSQL server"
     if [ X"${DISTRO}" == X'FREEBSD' ]; then

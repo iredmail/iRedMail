@@ -423,7 +423,7 @@ rcm_plugin_password()
     if [ X"${BACKEND}" == X"PGSQL" ]; then
         # Patch to escape single quote while updating password
         cd ${RCM_HTTPD_ROOT}
-        patch -p0 <${PATCH_DIR}/roundcubemail/password_driver_pgsql.patch >/dev/null
+        patch -p0 <${PATCH_DIR}/roundcubemail/password_driver_pgsql.patch &>/dev/null
 
         # Re-generate config.inc.php because it's hard to use perl to update
         # 'password_query' setting.

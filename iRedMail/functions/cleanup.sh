@@ -239,6 +239,7 @@ cleanup_backup_scripts()
 {
     [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
 
+    # Backup OpenLDAP data
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_OPENLDAP}"
 
@@ -264,6 +265,7 @@ Backup OpenLDAP data:
 EOF
     fi
 
+    # Backup MySQL databases
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_MYSQL}"
 
@@ -291,6 +293,7 @@ Backup MySQL database:
 EOF
     fi
 
+    # Backup PostgreSQL databases
     #if [ X"${BACKEND}" == X'PGSQL' ]; then
     #   ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_PGSQL}"
     #
@@ -301,9 +304,26 @@ EOF
     #
     #   TODO
     #   Add cron job
+    #   cat >> ${CRON_SPOOL_DIR}/root <<EOF
+## Backup on 03:30 AM
+#30   3   *   *   *   bash ${BACKUP_SCRIPT_PGSQL}
+#EOF
     #fi
 
     echo 'export status_cleanup_backup_scripts="DONE"' >> ${STATUS_FILE}
+}
+
+cleanup_pgsql_force_password()
+{
+    ECHO_DEBUG "Force all users to connect PGSQL server with password."
+
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+        perl -pi -e 's#^(local.*)peer#${1}md5#' ${PGSQL_CONF_PG_HBA}
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # FreeBSD
+        perl -pi -e 's#^(local.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
+        perl -pi -e 's#^(host.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
+    fi
 }
 
 cleanup()
@@ -337,9 +357,10 @@ EOF
     check_status_before_run cleanup_remove_mod_python
     [ X"${KERNEL_NAME}" == X"Linux" ] && check_status_before_run cleanup_replace_iptables_rule
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
+    check_status_before_run cleanup_backup_scripts
+    [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
     [ X"${DISTRO}" != X'GENTOO' ] && check_status_before_run cleanup_start_postfix_now
     [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'GENTOO' ] && check_status_before_run cleanup_amavisd_preconfig
-    check_status_before_run cleanup_backup_scripts
 
     # Start Postfix to deliver emails.
     [ X"${DISTRO}" == X'GENTOO' ] && ${DIR_RC_SCRIPTS}/postfix restart >/dev/null

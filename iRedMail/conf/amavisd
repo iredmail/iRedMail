@@ -75,6 +75,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     # Override default Amavisd MySQL template file
     # openSUSE-12.1 ships Amavisd-new-2.7.0
     export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
+    export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.pgsql"
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd-new'
@@ -98,6 +99,7 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
 
     export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
+    export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.pgsql"
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Override global setting: user/group.
     export AMAVISD_SYS_USER='vscan'
@@ -113,6 +115,7 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export ALTERMIME_BIN='/usr/local/bin/altermime'
 
     export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
+    export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.pgsql"
 fi
 
 # Syslog setting, 'YES' or 'NO'

@@ -152,11 +152,6 @@ EOF
 
             # Append cluebringer default sql template.
             gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.pgsql.gz >> ${tmp_sql}
-
-            cat >> ${tmp_sql} <<EOF
-GRANT SELECT,INSERT,UPDATE,DELETE ON access_control,amavis_rules,checkhelo,checkhelo_blacklist,checkhelo_tracking,checkhelo_whitelist,checkspf,greylisting,greylisting_autoblacklist,greylisting_autowhitelist,greylisting_tracking,greylisting_whitelist,policies,policy_group_members,policy_groups,policy_members,quotas,quotas_limits,quotas_tracking,session_tracking TO ${CLUEBRINGER_DB_USER};
-GRANT SELECT,UPDATE,USAGE ON access_control_id_seq,amavis_rules_id_seq,checkhelo_blacklist_id_seq,checkhelo_whitelist_id_seq,checkspf_id_seq,greylisting_autoblacklist_id_seq,greylisting_autowhitelist_id_seq,greylisting_whitelist_id_seq,policy_group_members_id_seq,policy_groups_id_seq,policy_members_id_seq,quotas_id_seq,quotas_limits_id_seq TO ${CLUEBRINGER_DB_USER};
-EOF
         fi
 
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
@@ -193,6 +188,14 @@ EOF
         # accounting.tsql is shipped in 2.0.11.
         [ -f accounting.tsql ] && bash convert ${policyd_sql_type} accounting.tsql >> ${tmp_sql}
         unset policyd_sql_type
+
+    fi
+
+    if [ X"${BACKEND}" == X'PGSQL' ]; then
+        cat >> ${tmp_sql} <<EOF
+GRANT SELECT,INSERT,UPDATE,DELETE ON access_control,amavis_rules,checkhelo,checkhelo_blacklist,checkhelo_tracking,checkhelo_whitelist,checkspf,greylisting,greylisting_autoblacklist,greylisting_autowhitelist,greylisting_tracking,greylisting_whitelist,policies,policy_group_members,policy_groups,policy_members,quotas,quotas_limits,quotas_tracking,session_tracking TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON access_control_id_seq,amavis_rules_id_seq,checkhelo_blacklist_id_seq,checkhelo_whitelist_id_seq,checkspf_id_seq,greylisting_autoblacklist_id_seq,greylisting_autowhitelist_id_seq,greylisting_whitelist_id_seq,policy_group_members_id_seq,policy_groups_id_seq,policy_members_id_seq,quotas_id_seq,quotas_limits_id_seq TO ${CLUEBRINGER_DB_USER};
+EOF
     fi
 
     # Initial cluebringer db.
@@ -225,7 +228,7 @@ INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, 
 EOF
     fi
 
-    #rm -f ${tmp_sql} 2>/dev/null
+    rm -f ${tmp_sql} 2>/dev/null
     unset tmp_sql
 
     # Set correct permission.
@@ -304,13 +307,18 @@ cluebringer_webui_config()
 
     backup_file ${CLUEBRINGER_WEBUI_CONF}
 
+    [ X"${DISTRO}" == X'FREEBSD' ] && \
+        cp /usr/local/share/policyd2/contrib/httpd/cluebringer-httpd.conf ${CLUEBRINGER_WEBUI_CONF}
+
     # Make Cluebringer accessible via HTTPS.
     perl -pi -e 's#(</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     # Configure webui.
-    perl -pi -e 's#(.DB_DSN=).*#${1}"mysql:host=$ENV{MYSQL_SERVER};dbname=${CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
-    perl -pi -e 's#(.DB_USER=).*#${1}"$ENV{CLUEBRINGER_DB_USER}";#' ${CLUEBRINGER_WEBUI_CONF}
-    perl -pi -e 's#(.DB_PASS=).*#${1}"$ENV{CLUEBRINGER_DB_PASSWD}";#' ${CLUEBRINGER_WEBUI_CONF}
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+        perl -pi -e 's#(.DB_DSN=).*#${1}"mysql:host=$ENV{MYSQL_SERVER};dbname=${CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
+        perl -pi -e 's#(.DB_USER=).*#${1}"$ENV{CLUEBRINGER_DB_USER}";#' ${CLUEBRINGER_WEBUI_CONF}
+        perl -pi -e 's#(.DB_PASS=).*#${1}"$ENV{CLUEBRINGER_DB_PASSWD}";#' ${CLUEBRINGER_WEBUI_CONF}
+    fi
 
     cat > ${CLUEBRINGER_HTTPD_CONF} <<EOF
 ${CONF_MSG}
