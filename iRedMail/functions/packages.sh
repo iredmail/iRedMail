@@ -442,6 +442,10 @@ EOF
     # Install all packages.
     install_all_pkgs()
     {
+        if [ X"${DISTRO}" == X"SUSE" ]; then
+            rpm -e patterns-openSUSE-minimal_base-conflicts &>/dev/null
+        fi
+
         # Install all packages.
         eval ${install_pkg} ${ALL_PKGS}
 
