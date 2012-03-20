@@ -147,6 +147,7 @@ EOF
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         # Use PGSQL auth.
         cat >> ${AWSTATS_HTTPD_CONF} <<EOF
+    AuthType Basic
     Auth_PG_authoritative on
     Auth_PG_host ${PGSQL_SERVER}
     Auth_PG_port ${PGSQL_SERVER_PORT}

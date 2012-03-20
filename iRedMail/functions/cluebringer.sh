@@ -110,7 +110,7 @@ cluebringer_config()
     perl -pi -e 's/^(Password=).*/${1}$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
 
     # Get SQL structure template file.
-    tmp_sql="/tmp/policyd_config_tmp.${RANDOM}${RANDOM}"
+    tmp_sql="/tmp/cluebringer_init_sql.${RANDOM}${RANDOM}"
     if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" ]; then
         if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
             cat > ${tmp_sql} <<EOF
@@ -228,7 +228,7 @@ INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, 
 EOF
     fi
 
-    rm -f ${tmp_sql} 2>/dev/null
+    #rm -f ${tmp_sql} 2>/dev/null
     unset tmp_sql
 
     # Set correct permission.
@@ -315,7 +315,12 @@ cluebringer_webui_config()
 
     # Configure webui.
     if [ X"${DISTRO}" == X'UBUNTU' ]; then
-        perl -pi -e 's#(.DB_DSN=).*#${1}"mysql:host=$ENV{MYSQL_SERVER};dbname=${CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
+        if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+            perl -pi -e 's#(.DB_DSN=).*#${1}"mysql:host=$ENV{SQL_SERVER};dbname=$ENV{CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            perl -pi -e 's#(.DB_DSN=).*#${1}"pgsql:host=$ENV{SQL_SERVER};dbname=$ENV{CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
+        fi
+
         perl -pi -e 's#(.DB_USER=).*#${1}"$ENV{CLUEBRINGER_DB_USER}";#' ${CLUEBRINGER_WEBUI_CONF}
         perl -pi -e 's#(.DB_PASS=).*#${1}"$ENV{CLUEBRINGER_DB_PASSWD}";#' ${CLUEBRINGER_WEBUI_CONF}
     fi
@@ -337,6 +342,7 @@ ${CONF_MSG}
     allow from 127.0.0.1
     #allow from all
 
+    AuthType basic
     AuthName "Authorization Required"
 EOF
 

@@ -107,9 +107,10 @@ export SIEVE_LOG_FILE='/var/log/sieve.log'
 export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
 export SIEVE_LOGROTATE_FILE="${LOGROTATE_DIR}/sieve"
 
-# Dovecot auth socket.
+# Dovecot auth socket and pid file.
 export DOVECOT_SOCKET_MUX='/var/spool/postfix/dovecot-auth'
-export DOVECOT_AUTH_SOCKET_PATH='/var/run/dovecot/auth-master'
+export DOVECOT_AUTH_SOCKET_PATH="${DOVECOT_BASE_DIR}/auth-master"
+export DOVECOT_MASTER_PID="${DOVECOT_BASE_DIR}/master.pid"
 
 export DOVECOT_BIN='/usr/sbin/dovecot'
 export DOVECOT_SIEVEC='/usr/libexec/dovecot/sievec'

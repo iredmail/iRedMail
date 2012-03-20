@@ -596,4 +596,3 @@ else
     # -q: Turn off Wget's output.
     FETCH_CMD="wget -cq"
 fi
-

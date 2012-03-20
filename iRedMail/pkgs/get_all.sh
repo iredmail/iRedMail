@@ -29,7 +29,7 @@ CONF_DIR="${ROOTDIR}/../conf"
 . ${CONF_DIR}/iredadmin
 
 # Re-define @STATUS_FILE, so that iRedMail.sh can read it.
-export STATUS_FILE="${ROOTDIR}/../.${PROG_NAME}.installation.status"
+export STATUS_FILE="${ROOTDIR}/../.status"
 
 check_user root
 check_hostname
@@ -119,23 +119,6 @@ prepare_dirs()
     done
 }
 
-fetch_pkgs_debian()
-{
-    cd ${PKG_DIR}
-
-    if [ X"${PKGLIST}" != X"0" ]; then
-        ECHO_INFO "Fetching binary packages ..."
-        for i in ${PKGLIST}; do
-            ECHO_INFO "+ ${pkg_counter} of ${pkg_total}: ${url}"
-            ${FETCH_CMD} "${url}"
-
-            pkg_counter=$((pkg_counter+1))
-        done
-    else
-        :
-    fi
-}
-
 fetch_misc()
 {
     # Fetch all misc packages.
@@ -176,7 +159,6 @@ check_md5()
             exit 255
         else
             echo -e "\t[ OK ]"
-            echo 'export status_fetch_pkgs="DONE"' >> ${STATUS_FILE}
             echo 'export status_fetch_misc="DONE"' >> ${STATUS_FILE}
             echo 'export status_check_md5="DONE"' >> ${STATUS_FILE}
         fi
@@ -236,15 +218,6 @@ EOF
 
 }
 
-create_repo_ubuntu()
-{
-    if [ X"${DISTRO}" == X"UBUNTU" ]; then
-        # Force update
-        ECHO_INFO "Execute 'apt-get update' ..."
-        ${APTGET} update
-    fi
-}
-
 track_iredmail_info()
 {
     # Help track basic information, used to help iRedMail team understand
@@ -291,9 +264,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     ECHO_INFO "Clean and refresh metadata of zypper repositories."
     zypper clean --metadata --raw-metadata
     zypper refresh
-elif [ X"${DISTRO}" == X"UBUNTU" ]; then
-    create_repo_ubuntu
-elif [ X"${DISTRO}" == X"DEBIAN" ]; then
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Force update.
     ECHO_INFO "Execute 'apt-get update' ..."
     ${APTGET} update
@@ -305,7 +276,7 @@ elif [ X"${DISTRO}" == X'GENTOO' ]; then
 fi
 
 check_status_before_run track_iredmail_info
-fetch_misc && \
+check_status_before_run fetch_misc && \
 check_md5 && \
 check_pkg ${BIN_DIALOG} ${PKG_DIALOG} && \
 echo_end_msg && \

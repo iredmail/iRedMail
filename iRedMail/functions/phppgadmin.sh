@@ -54,6 +54,15 @@ EOF
 
     perl -pi -e 's#(.*Servers.*connect_type.*=).*#${1}"socket";#' ${PHPPGADMIN_CONFIG_FILE}
 
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+        # Create a symbol link
+        if [ -f /etc/phppgadmin/config.inc.php ]; then
+            backup_file /etc/phppgadmin/config.inc.php
+            rm -f /etc/phppgadmin/config.inc.php &>/dev/null
+            ln -s ${PHPPGADMIN_CONFIG_FILE} /etc/phppgadmin/config.inc.php
+        fi
+    fi
+
     cat >> ${TIP_FILE} <<EOF
 phpPgAdmin:
     * Configuration files:

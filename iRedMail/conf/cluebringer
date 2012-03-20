@@ -62,7 +62,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export PKG_CLUEBRINGER='policyd'
     export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
     export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"
-    export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
+    export CLUEBRINGER_PID_FILE='/var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT=''
 
     # Path of policyd-clean
@@ -76,7 +76,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
     export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"
     export CLUEBRINGER_RC_SCRIPT_NAME='postfix-cluebringer'
-    export CLUEBRINGER_PID_FILE='var/run/cluebringer/cbpolicyd.pid'
+    export CLUEBRINGER_PID_FILE='/var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT='/usr/share/postfix-cluebringer-webui/webui'
 
     # Path of policyd-clean

@@ -12,6 +12,8 @@ iRedMail-0.8.0-beta3:
     * It now works on Linux Mint 12 (code name: lisa).
     * Add share folder support within Dovecot 2.
     * Fixed:
+        + Incorrect postrotate command for dovecot log files.
+          Thanks raffayellow@gmail for the report.
         + Two Dovecot config files are world readable: used_quota.conf,
           share-folder.conf.
           Thanks Martin Kuchar for the report.

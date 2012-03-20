@@ -32,7 +32,7 @@ dovecot2_config()
 
     ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
 
-    cp ${SAMPLE_DIR}/conf/dovecot2.conf ${DOVECOT_CONF}
+    cp ${SAMPLE_DIR}/dovecot/dovecot2.conf ${DOVECOT_CONF}
     chmod 0664 ${DOVECOT_CONF}
 
     # Base directory.
@@ -113,7 +113,7 @@ dovecot2_config()
 
     backup_file ${DOVECOT_QUOTA_WARNING_SCRIPT}
     rm -f ${DOVECOT_QUOTA_WARNING_SCRIPT} 2>/dev/null
-    cp -f ${SAMPLE_DIR}/conf/dovecot2-quota-warning.sh ${DOVECOT_QUOTA_WARNING_SCRIPT}
+    cp -f ${SAMPLE_DIR}/dovecot/dovecot2-quota-warning.sh ${DOVECOT_QUOTA_WARNING_SCRIPT}
 
     export DOVECOT_DELIVER HOSTNAME
     perl -pi -e 's#PH_DOVECOT_DELIVER#$ENV{DOVECOT_DELIVER}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
@@ -129,7 +129,7 @@ dovecot2_config()
 
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         backup_file ${DOVECOT_LDAP_CONF}
-        cp -f ${SAMPLE_DIR}/conf/dovecot-ldap.conf ${DOVECOT_LDAP_CONF}
+        cp -f ${SAMPLE_DIR}/dovecot/dovecot-ldap.conf ${DOVECOT_LDAP_CONF}
 
         perl -pi -e 's#PH_LDAP_SERVER_HOST#$ENV{LDAP_SERVER_HOST}#' ${DOVECOT_LDAP_CONF}
         perl -pi -e 's#PH_LDAP_SERVER_PORT#$ENV{LDAP_SERVER_PORT}#' ${DOVECOT_LDAP_CONF}
@@ -145,7 +145,7 @@ dovecot2_config()
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
 
         backup_file ${DOVECOT_MYSQL_CONF}
-        cp -f ${SAMPLE_DIR}/conf/dovecot-sql.conf ${DOVECOT_MYSQL_CONF}
+        cp -f ${SAMPLE_DIR}/dovecot/dovecot-sql.conf ${DOVECOT_MYSQL_CONF}
 
         perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER#$ENV{MYSQL_SERVER}#' ${DOVECOT_MYSQL_CONF}
@@ -158,7 +158,7 @@ dovecot2_config()
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
 
         backup_file ${DOVECOT_PGSQL_CONF}
-        cp -f ${SAMPLE_DIR}/conf/dovecot-sql.conf ${DOVECOT_PGSQL_CONF}
+        cp -f ${SAMPLE_DIR}/dovecot/dovecot-sql.conf ${DOVECOT_PGSQL_CONF}
 
         perl -pi -e 's#PH_SQL_DRIVER#pgsql#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER#$ENV{PGSQL_SERVER}#' ${DOVECOT_PGSQL_CONF}
@@ -215,7 +215,7 @@ CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 CO
 
 # Import SQL template.
 USE ${IREDADMIN_DB_NAME};
-SOURCE ${SAMPLE_DIR}/used_quota.sql;
+SOURCE ${SAMPLE_DIR}/dovecot/used_quota.sql;
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@localhost IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
 
 FLUSH PRIVILEGES;
@@ -273,7 +273,7 @@ CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 CO
 
 # Import SQL template.
 USE ${IREDADMIN_DB_NAME};
-SOURCE ${SAMPLE_DIR}/imap_share_folder.sql;
+SOURCE ${SAMPLE_DIR}/dovecot/imap_share_folder.sql;
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@localhost IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
 
 FLUSH PRIVILEGES;
@@ -281,7 +281,7 @@ EOF
     fi
 
     ECHO_DEBUG "Copy sample sieve global filter rule file: ${DOVECOT_GLOBAL_SIEVE_FILE}.sample."
-    cp -f ${SAMPLE_DIR}/dovecot.sieve ${DOVECOT_GLOBAL_SIEVE_FILE}.sample
+    cp -f ${SAMPLE_DIR}/dovecot/dovecot.sieve ${DOVECOT_GLOBAL_SIEVE_FILE}.sample
     chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOVECOT_GLOBAL_SIEVE_FILE}.sample
     chmod 0500 ${DOVECOT_GLOBAL_SIEVE_FILE}.sample
 
@@ -343,7 +343,7 @@ ${DOVECOT_LOG_FILE} {
     compressext .bz2
 
     postrotate
-        ${SYSLOG_POSTROTATE_CMD}
+        doveadm log reopen
     endscript
 }
 EOF
@@ -357,7 +357,7 @@ ${SIEVE_LOG_FILE} {
     create 0666 ${VMAIL_USER_NAME} ${VMAIL_GROUP_NAME}
     missingok
     postrotate
-        ${SYSLOG_POSTROTATE_CMD}
+        doveadm log reopen
     endscript
 }
 EOF

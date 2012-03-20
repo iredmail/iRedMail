@@ -170,23 +170,22 @@ echo "export RCM_DB_USER='${RCM_DB_USER}'" >> ${CONFIG_FILE}
 echo "export RCM_DB_PASSWD='${RCM_DB_PASSWD}'" >> ${CONFIG_FILE}
 
 if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-    export SQL_SERVER="${MYSQL_SERVER}"
-    export SQL_SERVER_PORT="${MYSQL_SERVER_PORT}"
-
     . ${DIALOG_DIR}/ldap_config.sh
 
     # MySQL server is used to store policyd/roundcube data.
     . ${DIALOG_DIR}/mysql_config.sh
 elif [ X"${BACKEND}" == X"MYSQL" ]; then
-    export SQL_SERVER="${MYSQL_SERVER}"
-    export SQL_SERVER_PORT="${MYSQL_SERVER_PORT}"
-
     . ${DIALOG_DIR}/mysql_config.sh
 elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    . ${DIALOG_DIR}/pgsql_config.sh
+fi
+
+if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X'MYSQL' ]; then
+    export SQL_SERVER="${MYSQL_SERVER}"
+    export SQL_SERVER_PORT="${MYSQL_SERVER_PORT}"
+elif [ X"${BACKEND}" == X'PGSQL' ]; then
     export SQL_SERVER="${PGSQL_SERVER}"
     export SQL_SERVER_PORT="${PGSQL_SERVER_PORT}"
-
-    . ${DIALOG_DIR}/pgsql_config.sh
 fi
 
 echo "export SQL_SERVER='${SQL_SERVER}'" >> ${CONFIG_FILE}

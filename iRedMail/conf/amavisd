@@ -35,9 +35,8 @@ export AMAVISD_RC_SCRIPT_NAME='amavisd'
 export AMAVISD_DB_NAME='amavisd'
 export AMAVISD_DB_USER='amavisd'
 export AMAVISD_DB_PASSWD="$(${RANDOM_STRING})"
-export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd.mysql"
-export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd.pgsql"
 export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
+export AMAVISD_VERSION='2.6'
 
 # Altermime.
 export ALTERMIME_BIN='/usr/bin/altermime'
@@ -60,6 +59,9 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
 
 elif [ X"${DISTRO}" == X"SUSE" ]; then
+    # openSUSE-12.1 ships Amavisd-new-2.7.0
+    export AMAVISD_VERSION='2.7'
+
     # Override global setting: user/group.
     export AMAVISD_SYS_USER='vscan'
     export AMAVISD_SYS_GROUP='vscan'
@@ -72,11 +74,6 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
     export AMAVISD_VIRUSMAILS_DIR='/var/spool/amavis/virusmails'
 
-    # Override default Amavisd MySQL template file
-    # openSUSE-12.1 ships Amavisd-new-2.7.0
-    export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
-    export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.pgsql"
-
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd-new'
     export AMAVISD_CONF_DIR='/etc/amavis/conf.d'
@@ -87,6 +84,8 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export AMAVISD_VIRUSMAILS_DIR='/var/lib/amavis/virusmails'
 
 elif [ X"${DISTRO}" == X"GENTOO" ]; then
+    export AMAVISD_VERSION='2.7'
+
     export AMAVISD_BIN='/usr/sbin/amavisd'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
 
@@ -98,9 +97,9 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export AMAVISD_QUARANTINEDIR="${AMAVISD_MYHOME}/quarantine"
     export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
 
-    export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
-    export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.pgsql"
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    export AMAVISD_VERSION='2.7'
+
     # Override global setting: user/group.
     export AMAVISD_SYS_USER='vscan'
     export AMAVISD_SYS_GROUP='vscan'
@@ -113,9 +112,14 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
 
     # Override location of command 'altermime'
     export ALTERMIME_BIN='/usr/local/bin/altermime'
+fi
 
-    export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.mysql"
-    export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd-2.7.0.pgsql"
+if [ X"${AMAVISD_VERSION}" == X'2.7' ]; then
+    export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd-2.7.0.mysql"
+    export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd-2.7.0.pgsql"
+else
+    export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.mysql"
+    export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.pgsql"
 fi
 
 # Syslog setting, 'YES' or 'NO'

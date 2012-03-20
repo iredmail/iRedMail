@@ -27,7 +27,7 @@
 
 fail2ban_config()
 {
-    ECHO_INFO "Configure Fail2ban."
+    ECHO_INFO "Configure Fail2ban (authentication failure monitor)."
 
     ECHO_DEBUG "Log into syslog instead of log file."
     perl -pi -e 's#^(logtarget).*#${1} = $ENV{FAIL2BAN_LOGTARGET}#' ${FAIL2BAN_MAIN_CONF}
