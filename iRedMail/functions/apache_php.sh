@@ -331,13 +331,13 @@ EOF
     # Set date.timezone. Required by PHP-5.3.
     grep '^date.timezone' ${PHP_INI} >/dev/null
     if [ X"$?" == X"0" ]; then
-        perl -pi -e 's#^(date.timezone).*#${1} = Asia/Hong_Kong#' ${PHP_INI}
+        perl -pi -e 's#^(date.timezone).*#${1} = GMT#' ${PHP_INI}
     else
-        perl -pi -e 's#^;(date.timezone).*#${1} = Asia/Hong_Kong#' ${PHP_INI}
+        perl -pi -e 's#^;(date.timezone).*#${1} = GMT#' ${PHP_INI}
     fi
 
     # Disable suhosin.session.encrypt on Debian 6. Required by Roundcube webmail.
-    if [ X"${DISTRO}" == X"DEBIAN" ]; then
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         [ -f ${PHP_INI_CONF_DIR}/suhosin.ini ] && \
             perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${PHP_INI_CONF_DIR}/suhosin.ini
     fi

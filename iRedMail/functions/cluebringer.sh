@@ -181,35 +181,52 @@ EOF
             amavis.tsql \
             checkhelo.tsql \
             checkspf.tsql \
-            greylisting.tsql; do
-            bash convert-tsql ${policyd_sql_type} $i
+            greylisting.tsql \
+            accounting.tsql; do
+            # accounting.tsql is shipped in 2.0.11.
+            [ -f $i ] && bash convert ${policyd_sql_type} $i >> ${tmp_sql}
         done >> ${tmp_sql}
 
-        # accounting.tsql is shipped in 2.0.11.
-        [ -f accounting.tsql ] && bash convert ${policyd_sql_type} accounting.tsql >> ${tmp_sql}
         unset policyd_sql_type
-
     fi
 
     if [ X"${BACKEND}" == X'PGSQL' ]; then
         cat >> ${tmp_sql} <<EOF
 GRANT SELECT,INSERT,UPDATE,DELETE ON access_control,amavis_rules,checkhelo,checkhelo_blacklist,checkhelo_tracking,checkhelo_whitelist,checkspf,greylisting,greylisting_autoblacklist,greylisting_autowhitelist,greylisting_tracking,greylisting_whitelist,policies,policy_group_members,policy_groups,policy_members,quotas,quotas_limits,quotas_tracking,session_tracking TO ${CLUEBRINGER_DB_USER};
-GRANT SELECT,UPDATE,USAGE ON access_control_id_seq,amavis_rules_id_seq,checkhelo_blacklist_id_seq,checkhelo_whitelist_id_seq,checkspf_id_seq,greylisting_autoblacklist_id_seq,greylisting_autowhitelist_id_seq,greylisting_whitelist_id_seq,policy_group_members_id_seq,policy_groups_id_seq,policy_members_id_seq,quotas_id_seq,quotas_limits_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON access_control_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON amavis_rules_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON checkhelo_blacklist_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON checkhelo_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON checkhelo_whitelist_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON checkspf_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON greylisting_autoblacklist_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON greylisting_autowhitelist_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON greylisting_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON greylisting_whitelist_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON policies_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON policy_group_members_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON policy_groups_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON policy_members_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON quotas_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON quotas_limits_id_seq TO ${CLUEBRINGER_DB_USER};
 EOF
     fi
+
+    # Enable greylisting on Default Inbound.
+    cat >> ${tmp_sql} <<EOF
+INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, GreylistAuthValidity, GreylistUnAuthValidity, UseAutoWhitelist, AutoWhitelistPeriod, AutoWhitelistCount, AutoWhitelistPercentage, UseAutoBlacklist, AutoBlacklistPeriod, AutoBlacklistCount, AutoBlacklistPercentage, Comment, Disabled) VALUES (3, 'Greylisting Inbound Emails', 1, 240, 'SenderIP:/24', 604800, 86400, 1, 604800, 100, 90, 1, 604800, 100, 20, '', 0);
+EOF
+
+    # Enable HELO/EHLO check on Default Inbound.
+    cat >> ${tmp_sql} <<EOF
+INSERT INTO checkhelo (id, policyid, name, useblacklist, blacklistperiod, usehrp, hrpperiod, hrplimit, rejectinvalid, rejectip, rejectunresolvable, comment, disabled) VALUES (1, 3, 'Enable HELO/EHLO check', 1, 2419200, 1, 2419200, 5, 1, 1, 0, 'Enable HELO/EHLO check on inbound by default', 0);
+EOF
 
     # Initial cluebringer db.
     # Enable greylisting on all inbound emails by default.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
         mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
--- Initialize
 $(cat ${tmp_sql})
-
--- Delete default sample domains.
--- DELETE FROM policy_group_members WHERE Member IN ('@example.com', '@example.org', '10.0.0.0/8');
-
--- Enable greylisting on all inbound emails by default.
-INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, GreylistAuthValidity, GreylistUnAuthValidity, UseAutoWhitelist, AutoWhitelistPeriod, AutoWhitelistCount, AutoWhitelistPercentage, UseAutoBlacklist, AutoBlacklistPeriod, AutoBlacklistCount, AutoBlacklistPercentage, Comment, Disabled) VALUES (1, 'Greylisting Inbound Emails', 1, 240, 'SenderIP:/24', 604800, 86400, 1, 604800, 100, 90, 1, 604800, 100, 20, '', 0);
 EOF
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
@@ -218,17 +235,9 @@ EOF
 
         # Initial cluebringer db.
         su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >/dev/null 
-
-        # Enable greylisting on all inbound emails by default.
-        su - ${PGSQL_SYS_USER} -c "psql -d template1" >/dev/null  <<EOF
-\c ${CLUEBRINGER_DB_NAME};
-
--- Enable greylisting on all inbound emails by default.
-INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, GreylistAuthValidity, GreylistUnAuthValidity, UseAutoWhitelist, AutoWhitelistPeriod, AutoWhitelistCount, AutoWhitelistPercentage, UseAutoBlacklist, AutoBlacklistPeriod, AutoBlacklistCount, AutoBlacklistPercentage, Comment, Disabled) VALUES (1, 'Greylisting Inbound Emails', 1, 240, 'SenderIP:/24', 604800, 86400, 1, 604800, 100, 90, 1, 604800, 100, 20, '', 0);
-EOF
     fi
 
-    #rm -f ${tmp_sql} 2>/dev/null
+    rm -f ${tmp_sql} 2>/dev/null
     unset tmp_sql
 
     # Set correct permission.

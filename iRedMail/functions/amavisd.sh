@@ -599,6 +599,7 @@ ${AMAVISD_SERVER}:10025 inet n  -   -   -   -  smtpd
     -o smtpd_helo_restrictions=
     -o smtpd_sender_restrictions=
     -o smtpd_recipient_restrictions=permit_mynetworks,reject
+    -o smtpd_end_of_data_restrictions=
     -o mynetworks_style=host
     -o mynetworks=127.0.0.0/8
     -o strict_rfc821_envelopes=yes
