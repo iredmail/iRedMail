@@ -189,7 +189,7 @@ EOF
         ENABLED_SERVICES="${ENABLED_SERVICES} mysql-server"
     fi
 
-    # Dovecot v1.2.x. REQUIRED.
+    # Dovecot v2.0.x. REQUIRED.
     cat > /var/db/ports/dovecot2/options <<EOF
 WITH_KQUEUE=true
 WITH_SSL=true

@@ -172,9 +172,7 @@ EOF
 
     # Setup postfix for recipient throttle.
     cat >> ${POSTFIX_FILE_MAIN_CF} <<EOF
-#
-# Uncomment the following line to enable policyd sender throttle.
-#
+# Uncomment below line to enable policyd sender throttle.
 #smtpd_end_of_data_restrictions = check_policy_service inet:${POLICYD_THROTTLE_BINDHOST}:${POLICYD_THROTTLE_BINDPORT}
 EOF
 

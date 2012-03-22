@@ -266,7 +266,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     zypper refresh
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Force update.
-    ECHO_INFO "Execute 'apt-get update' ..."
+    ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."
     ${APTGET} update
 elif [ X"${DISTRO}" == X'GENTOO' ]; then
     # qlist is used to list all installed portages (qlist --installed).

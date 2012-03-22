@@ -43,8 +43,6 @@ postfix_config_basic()
 
         # Set postfix:myhostname in /etc/sysconfig/postfix.
         perl -pi -e 's#^(POSTFIX_MYHOSTNAME=).*#${1}"$ENV{'HOSTNAME'}"#' ${POSTFIX_SYSCONFIG_CONF}
-        # postfix:inet_protocols
-        perl -pi -e 's#^(POSTFIX_INET_PROTO=).*#${1}"ipv4"#' ${POSTFIX_SYSCONFIG_CONF}
         #postfix:message_size_limit
         perl -pi -e 's#^(POSTFIX_ADD_MESSAGE_SIZE_LIMIT=).*#${1}"$ENV{'MESSAGE_SIZE_LIMIT'}"#' ${POSTFIX_SYSCONFIG_CONF}
 
@@ -81,7 +79,7 @@ postfix_config_basic()
         postconf -e mydomain="${HOSTNAME}"
     fi
 
-    postconf -e inet_protocols="ipv4"
+    postconf -e inet_protocols="all"
     postconf -e mydestination="\$myhostname, localhost, localhost.localdomain, localhost.\$myhostname"
     postconf -e biff="no"   # Do not notify local user.
     postconf -e inet_interfaces="all"

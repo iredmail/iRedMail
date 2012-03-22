@@ -580,16 +580,12 @@ EOF
 ${CONF_MSG}
 #1   5   *   *   *   ${DOVECOT_BIN} --exec-mail ext $(eval ${LIST_FILES_IN_PKG} dovecot | grep 'expire-tool$')
 EOF
-    elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
-        :
-    else
-        :
     fi
 
     cat >> ${POSTFIX_FILE_MASTER_CF} <<EOF
 # Use dovecot deliver program as LDA.
 dovecot unix    -       n       n       -       -      pipe
-    flags=DRhu user=${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} argv=${DOVECOT_DELIVER} -f \${sender} -d \${user}@\${domain}
+    flags=DRhu user=${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} argv=${DOVECOT_DELIVER} -f \${sender} -d \${user}@\${domain} -m \${extension}
 EOF
 
     if [ X"${KERNEL_NAME}" == X"Linux" ]; then
