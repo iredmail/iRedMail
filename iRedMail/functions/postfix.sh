@@ -901,44 +901,21 @@ postfix_config_sasl()
         perl -pi -e 's#^(POSTFIX_SMTP_AUTH_OPTIONS=).*#${1}"noanonymous"#' ${POSTFIX_SYSCONFIG_CONF}
 
     # Report the SASL authenticated user name in Received message header.
-    # Used to reject backscatter.
-    # Such as:
-    # ----8<----
-    # Received: xxxxxxxxxxx
-    #           (Authenticated sender: www@a.cn)
-    # ----8<----
     # Default is 'no'.
     postconf -e smtpd_sasl_authenticated_header="no"
 
-    # smtpd_recipient_restrictions reference:
-    #   http://www.postfix.org/SASL_README.html
-    #
-    #   Must order:
-    #       xxx, permit_sasl_authenticated, reject_unauth_destination, _policy_
-    #
-    # **** HELO related (smtpd_helo_restrictions) ****
-    # Reject the request when the HELO or EHLO hostname syntax is
-    # invalid. 
-    #   - reject_invalid_helo_hostname
-    #
-    # Reject the request when the HELO or EHLO hostname is not in
-    # fully-qualified domain form, as required by the RFC. 
-    #   - reject_non_fqdn_helo_hostname
-    #
-    # Reject the request when the HELO or EHLO hostname has no DNS A
-    # or MX record.
-    #   - reject_unknown_helo_hostname
-    #
-    # **** End HELO related ****
-
+    POSTCONF_IREDAPD=''
     if [ X"${USE_IREDAPD}" == X"YES" ]; then
         POSTCONF_IREDAPD="check_policy_service inet:${IREDAPD_LISTEN_ADDR}:${IREDAPD_LISTEN_PORT},"
-    else
-        POSTCONF_IREDAPD=''
+    fi
+
+    POSTCONF_CLUEBRINGER=''
+    if [ X"${USE_CLUEBRINGER}" == X"YES" ]; then
+        POSTCONF_CLUEBRINGER="check_policy_service inet:${CLUEBRINGER_BINDHOST}:${CLUEBRINGER_BINDPORT},"
     fi
 
     if [ X"${USE_CLUEBRINGER}" == X"YES" ]; then
-        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${CLUEBRINGER_BINDHOST}:${CLUEBRINGER_BINDPORT}"
+        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname"
         postconf -e smtpd_end_of_data_restrictions="check_policy_service inet:${CLUEBRINGER_BINDHOST}:${CLUEBRINGER_BINDPORT}"
     else
         postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${POLICYD_BINDHOST}:${POLICYD_BINDPORT}"
