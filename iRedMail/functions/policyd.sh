@@ -92,9 +92,10 @@ EOF
 
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         # Template file will create database: policyd.
+        perl -pi -e 's#TYPE=#ENGINE=#g' /usr/local/share/doc/policyd/DATABASE.mysql
         cat > ${tmp_sql} <<EOF
 # Import SQL structure template.
-SOURCE $(eval ${LIST_FILES_IN_PKG} "${PKG_POLICYD}*" | grep '/DATABASE.mysql$');
+SOURCE /usr/local/share/doc/policyd/DATABASE.mysql;
 
 # Grant privileges.
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}"@localhost IDENTIFIED BY "${POLICYD_DB_PASSWD}";

@@ -360,7 +360,6 @@ EOF
     check_status_before_run cleanup_backup_scripts
     [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
     [ X"${DISTRO}" != X'GENTOO' ] && check_status_before_run cleanup_start_postfix_now
-    [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'GENTOO' ] && check_status_before_run cleanup_amavisd_preconfig
 
     # Start Postfix to deliver emails.
     [ X"${DISTRO}" == X'GENTOO' ] && ${DIR_RC_SCRIPTS}/postfix restart >/dev/null
@@ -388,6 +387,9 @@ Subject: Useful resources for iRedMail administrator
 EOF
     cat ${DOC_FILE} >> /tmp/.links.eml
     sendmail -t ${tip_recipient} < /tmp/.links.eml &>/dev/null && rm -f /tmp/.links.eml &>/dev/null
+
+    # Don't execute 'cleanup_amavisd_preconfig' before sending emails.
+    [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'GENTOO' ] && check_status_before_run cleanup_amavisd_preconfig
 
     cat <<EOF
 ********************************************************************

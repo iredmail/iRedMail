@@ -22,7 +22,6 @@
 
 install_all()
 {
-    ALL_PKGS=''             # Binary package names. e.g. mysql-server, dovecot.
     ALL_PORTS=''            # Port name under /usr/ports/. e.g. mail/dovecot2.
     ENABLED_SERVICES=''     # Scripts under /usr/local/etc/rc.d/
     DISABLED_SERVICES=''    # Scripts under /usr/local/etc/rc.d/
@@ -110,6 +109,7 @@ WITH_SASL=true
 WITH_FETCH=true
 WITH_DYNACL=true
 WITH_ACI=true
+WITH_BDB=true
 WITH_DNSSRV=true
 WITH_PASSWD=true
 WITH_PERL=true
@@ -121,7 +121,6 @@ WITH_RLOOKUPS=true
 WITH_SLP=true
 WITH_SLAPI=true
 WITH_TCP_WRAPPERS=true
-WITH_BDB=true
 WITH_ACCESSLOG=true
 WITH_AUDITLOG=true
 WITH_COLLECT=true
@@ -130,7 +129,6 @@ WITH_DDS=true
 WITH_DEREF=true
 WITH_DYNGROUP=true
 WITH_DYNLIST=true
-WITH_LASTMOD=true
 WITH_MEMBEROF=true
 WITH_PPOLICY=true
 WITH_PROXYCACHE=true
@@ -138,6 +136,7 @@ WITH_REFINT=true
 WITH_RETCODE=true
 WITH_RWM=true
 WITH_SEQMOD=true
+WITH_SSSVLV=true
 WITH_SYNCPROV=true
 WITH_TRANSLUCENT=true
 WITH_UNIQUE=true
@@ -146,7 +145,6 @@ WITH_SMBPWD=true
 WITH_DYNAMIC_BACKENDS=true
 EOF
 
-        ALL_PKGS="${ALL_PKGS} openldap-sasl-server openldap-sasl-client"
         ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-server"
         ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
 
@@ -172,7 +170,6 @@ EOF
 WITHOUT_OSSP_UUID=true
 EOF
 
-        ALL_PKGS="${ALL_PKGS} postgresql${WANT_PGSQL_VER}-server postgresql${WANT_PGSQL_VER}-contrib"
         ALL_PORTS="${ALL_PORTS} databases/postgresql${WANT_PGSQL_VER}-server databases/postgresql${WANT_PGSQL_VER}-contrib"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
     fi
@@ -183,7 +180,6 @@ EOF
 WITH_OPENSSL=true
 WITHOUT_FASTMTX=true
 EOF
-        ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
         ALL_PORTS="${ALL_PORTS} databases/mysql${WANT_MYSQL_VER}-server"
 
         ENABLED_SERVICES="${ENABLED_SERVICES} mysql-server"
@@ -202,7 +198,6 @@ WITHOUT_SQLITE=true
 EOF
 
     # Note: dovecot-sieve will install dovecot first.
-    ALL_PKGS="${ALL_PKGS} dovecot-sieve dovecot-managesieve"
     ALL_PORTS="${ALL_PORTS} mail/dovecot2 mail/dovecot2-pigeonhole"
     ENABLED_SERVICES="${ENABLED_SERVICES} dovecot"
 
@@ -282,7 +277,6 @@ WITH_SPF_QUERY=true
 WITH_RELAY_COUNTRY=true
 EOF
 
-    ALL_PKGS="${ALL_PKGS} pth gnupg p5-Net-DNS p5-Mail-SpamAssassin"
     ALL_PORTS="${ALL_PORTS} devel/pth security/gnupg dns/p5-Net-DNS mail/p5-Mail-SpamAssassin"
     DISABLED_SERVICES="${DISABLED_SERVICES} spamd"
 
@@ -291,7 +285,6 @@ WITH_KERBEROS=true
 EOF
 
     # AlterMIME. REQUIRED.
-    ALL_PKGS="${ALL_PKGS} p5-Authen-SASL altermime"
     ALL_PORTS="${ALL_PORTS} security/p5-Authen-SASL mail/altermime"
 
     cat > /var/db/ports/p7zip/options <<EOF
@@ -343,7 +336,6 @@ WITHOUT_RAR=true
 EOF
     fi
 
-    ALL_PKGS="${ALL_PKGS} amavisd-new"
     ALL_PORTS="${ALL_PORTS} security/amavisd-new"
     ENABLED_SERVICES="${ENABLED_SERVICES} amavisd"
 
@@ -370,7 +362,6 @@ WITHOUT_SPF=true
 WITHOUT_INST_BASE=true
 EOF
 
-    ALL_PKGS="${ALL_PKGS} pcre postfix"
     ALL_PORTS="${ALL_PORTS} devel/pcre mail/postfix${WANT_POSTFIX_VER}"
     ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
     DISABLED_SERVICES="${DISABLED_SERVICES} sendmail sendmail_submit sendmail_outbound sendmail_msq_queue"
@@ -482,7 +473,6 @@ WITH_SUEXEC=true
 WITH_CGID=true
 EOF
 
-    ALL_PKGS="${ALL_PKGS} apache"
     ALL_PORTS="${ALL_PORTS} www/apache22"
     ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
 
@@ -502,7 +492,6 @@ WITH_FASTCGI=true
 WITH_PATHINFO=true
 EOF
 
-    ALL_PKGS="${ALL_PKGS} php5"
     ALL_PORTS="${ALL_PORTS} lang/php5"
 
     # PHP extensions. REQUIRED.
@@ -587,18 +576,15 @@ EOF
 
     # PHP extensions
     if [ X"${REQUIRE_PHP}" == X"YES" -o X"${USE_WEBMAIL}" == X"YES" ]; then
-        ALL_PKGS="${ALL_PKGS} php5-gd php5-imap php5-zip php5-bz2 php5-zlib php5-gettext php5-mbstring php5-mcrypt php5-mysql php5-mysqli php5-openssl php5-session php5-ldap php5-ctype php5-hash php5-iconv php5-pspell php5-dom php5-xml php5-sqlite"
         ALL_PORTS="${ALL_PORTS} mail/php5-imap graphics/php5-gd archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt databases/php5-mysql security/php5-openssl www/php5-session net/php5-ldap textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml databases/php5-sqlite databases/php5-mysqli"
     fi
 
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         # Policyd v1.8x
-        ALL_PKGS="${ALL_PKGS} postfix-policyd-sf"
         ALL_PORTS="${ALL_PORTS} mail/postfix-policyd-sf"
         ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         # Policyd v2.x
-        ALL_PKGS="${ALL_PKGS} policyd2"
         ALL_PORTS="${ALL_PORTS} mail/policyd2"
         ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
 
@@ -623,7 +609,6 @@ WITHOUT_STDERR=true
 WITHOUT_EXPERIMENTAL=true
 EOF
 
-    ALL_PKGS="${ALL_PKGS} clamav"
     ALL_PORTS="${ALL_PORTS} security/clamav"
     ENABLED_SERVICES="${ENABLED_SERVICES} clamav-clamd clamav-freshclam"
 
@@ -646,7 +631,6 @@ EOF
 
     # Roundcube webmail.
     if [ X"${USE_RCM}" == X"YES" ]; then
-        ALL_PKGS="${ALL_PKGS} roundcube"
         ALL_PORTS="${ALL_PORTS} mail/roundcube"
     fi
 
@@ -658,25 +642,21 @@ EOF
             ALL_PORTS="${ALL_PORTS} www/mod_auth_pgsql2"
         fi
 
-        ALL_PKGS="${ALL_PKGS} awstats"
         ALL_PORTS="${ALL_PORTS} www/awstats"
     fi
 
     # phpLDAPadmin.
     if [ X"${USE_PHPLDAPADMIN}" == X"YES" ]; then
-        ALL_PKGS="${ALL_PKGS} phpldapadmin"
         ALL_PORTS="${ALL_PORTS} net/phpldapadmin"
     fi
 
     # phpMyAdmin.
     if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
-        ALL_PKGS="${ALL_PKGS} phpMyAdmin"
         ALL_PORTS="${ALL_PORTS} databases/phpmyadmin"
     fi
 
     # phpPgAdmin
     if [ X"${USE_PHPPGADMIN}" == X"YES" ]; then
-        ALL_PKGS="${ALL_PKGS} phppgadmin"
         ALL_PORTS="${ALL_PORTS} databases/phppgadmin"
     fi
 
@@ -745,4 +725,6 @@ EOF
             fi
         fi
     done
+
+    echo 'export status_install_all="DONE"' >> ${STATUS_FILE}
 }

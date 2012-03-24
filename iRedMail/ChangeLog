@@ -21,6 +21,7 @@ iRedMail-0.8.0-beta3:
         + Roundcube -> 0.7.2
         + MySQL -> 5.5 (FreeBSD)
         + Dovecot -> 2.0 (FreeBSD)
+        + iRedAPD -> 1.3.7
 
 iRedMail-0.8.0-beta2:
     * It now works perfectly on Gentoo.
