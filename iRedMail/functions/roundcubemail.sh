@@ -313,6 +313,7 @@ rcm_config()
     'fuzzy_search'  => true);
 
 // Personal LDAP address book.
+/*
 \$rcmail_config['ldap_public']["ldap_personal"] = array(
     'name'          => 'Personal LDAP Address Book',
     'hosts'         => array('${LDAP_SERVER_HOST}'),
@@ -347,6 +348,7 @@ rcm_config()
     'filter'        => '(objectClass=inetOrgPerson)',
     'fuzzy_search'  => true);
 
+*/
 // end of config file
 ?>
 EOF

@@ -89,7 +89,6 @@ postfix_config_basic()
     postconf -e smtpd_reject_unlisted_recipient='yes'   # Default
     postconf -e smtpd_sender_restrictions="permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"
     postconf -e delay_warning_time='0h'
-    postconf -e policy_time_limit='3600'
     postconf -e maximal_queue_lifetime='1d'
     postconf -e bounce_queue_lifetime='1d'
     postconf -e recipient_delimiter='+'
@@ -935,7 +934,6 @@ postfix_config_tls()
     postconf -e smtpd_tls_cert_file="${SSL_CERT_FILE}"
     postconf -e smtpd_tls_CAfile="${SSL_CERT_FILE}"
     postconf -e tls_random_source='dev:/dev/urandom'
-    postconf -e tls_daemon_random_source='dev:/dev/urandom'
 
     if [ X"${DISTRO}" == X"SUSE" ]; then
         perl -pi -e 's#^(POSTFIX_SMTP_TLS_SERVER=).*#${1}"yes"#' ${POSTFIX_SYSCONFIG_CONF}

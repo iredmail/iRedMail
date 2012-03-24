@@ -222,6 +222,11 @@ EOF
 INSERT INTO checkhelo (id, policyid, name, useblacklist, blacklistperiod, usehrp, hrpperiod, hrplimit, rejectinvalid, rejectip, rejectunresolvable, comment, disabled) VALUES (1, 3, 'Enable HELO/EHLO check', 1, 2419200, 1, 2419200, 5, 1, 1, 0, 'Enable HELO/EHLO check on inbound by default', 0);
 EOF
 
+    # Add first mail domain to policy group: internal_domains
+    cat >> ${tmp_sql} <<EOF
+INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled) VALUES (2, '@${FIRST_DOMAIN}', 0);
+EOF
+
     # Initial cluebringer db.
     # Enable greylisting on all inbound emails by default.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
