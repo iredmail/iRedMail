@@ -220,12 +220,32 @@ EOF
 
 track_iredmail_info()
 {
-    # Help track basic information, used to help iRedMail team understand
-    # which Linux/BSD distribution we should take more care of.
+    # Check new version and track basic information,
+    # Used to help iRedMail team understand which Linux/BSD distribution
+    # we should take more care of.
     # iRedMail version number, OS distribution, release version, code name, backend.
+    ECHO_INFO "Checking new version of iRedMail ..."
     ${FETCH_CMD} "http://iredmail.org/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
 
+    UPDATE_AVAILABLE='NO'
+    if ls iredmail_os* &>/dev/null; then
+        info="$(cat iredmail_os*)"
+        if [ X"${info}" == X'UPDATE_AVAILABLE' ]; then
+            UPDATE_AVAILABLE='YES'
+        fi
+    fi
+
     rm -f iredmail_os* &>/dev/null
+
+    if [ X"${UPDATE_AVAILABLE}" == X'YES' ]; then
+        echo ''
+        ECHO_ERROR "Your iRedMail version (${PROG_VERSION}) is out of date, please"
+        ECHO_ERROR "download the latest version and try again:"
+        ECHO_ERROR "http://iredmail.org/download.html"
+        echo ''
+        exit 255
+    fi
+
     echo 'export status_track_iredmail_info="DONE"' >> ${STATUS_FILE}
 }
 
@@ -248,6 +268,9 @@ if [ -e ${STATUS_FILE} ]; then
 else
     echo '' > ${STATUS_FILE}
 fi
+
+# Check latest version
+check_status_before_run track_iredmail_info
 
 prepare_dirs
 
@@ -275,7 +298,6 @@ elif [ X"${DISTRO}" == X'GENTOO' ]; then
     check_pkg 'crontab' 'vixie-cron'
 fi
 
-check_status_before_run track_iredmail_info
 check_status_before_run fetch_misc && \
 check_md5 && \
 check_pkg ${BIN_DIALOG} ${PKG_DIALOG} && \

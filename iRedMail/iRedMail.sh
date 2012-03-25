@@ -48,7 +48,12 @@ export TOOLS_DIR="${ROOTDIR}/tools"
 # Check downloaded packages, pkg repository.
 [ -f ${STATUS_FILE} ] && . ${STATUS_FILE}
 if [ X"${status_get_all}" != X"DONE" ]; then
-    cd ${ROOTDIR}/pkgs/ && bash get_all.sh && cd ${ROOTDIR}
+    cd ${ROOTDIR}/pkgs/ && bash get_all.sh
+    if [ X"$?" == X'0' ]; then
+        cd ${ROOTDIR}
+    else
+        exit 255
+    fi
 fi
 
 # ------------------------------
