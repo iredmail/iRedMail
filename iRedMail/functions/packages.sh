@@ -349,7 +349,7 @@ EOF
         # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
         # RC script ready in early stage.
 
-        [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH}"
+        [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH} python-psycopg2${PKG_ARCH}"
         [ X"${DISTRO}" == X"SUSE" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
         [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && ALL_PKGS="${ALL_PKGS} python-ldap python-psycopg2 python-mysqldb"
     fi

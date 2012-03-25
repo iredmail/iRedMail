@@ -77,6 +77,7 @@ cluebringer_config()
     # 3 - Info, notices, warnings, errors
     # 4 - Debugging 
     perl -pi -e 's/^#(log_level=).*/${1}2/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^(log_mail=).*/${1}mail\@syslog:native/' ${CLUEBRINGER_CONF}
 
     # File to log to instead of stdout
     perl -pi -e 's/^#(log_file=).*/${1}$ENV{CLUEBRINGER_LOG_FILE}/' ${CLUEBRINGER_CONF}
@@ -96,6 +97,8 @@ cluebringer_config()
         perl -pi -e 's/^(DB_Host=).*/${1}$ENV{MYSQL_SERVER}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Port=).*/${1}$ENV{MYSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        perl -pi -e 's/^(DSN=DBI:Pg:).*/${1}host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+        # Commentted out
         perl -pi -e 's/^#(DSN=DBI:Pg:).*/${1}host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Type=).*/${1}pgsql/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Host=).*/${1}$ENV{PGSQL_SERVER}/' ${CLUEBRINGER_CONF}

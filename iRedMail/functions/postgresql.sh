@@ -187,7 +187,7 @@ EOF
     cp -f ${PGSQL_INIT_SQL_SAMPLE} ${PGSQL_DATA_DIR}/init.sql >/dev/null
     chmod 0777 ${PGSQL_DATA_DIR}/{vmail,init}.sql >/dev/null
     su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init.sql" >/dev/null
-    #rm -f ${PGSQL_DATA_DIR}/{vmail,init}.sql >/dev/null
+    rm -f ${PGSQL_DATA_DIR}/{vmail,init}.sql >/dev/null
 
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:
