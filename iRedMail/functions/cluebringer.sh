@@ -125,14 +125,18 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_
 FLUSH PRIVILEGES;
 EOF
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
+            export shipped_pgsql_temp="$(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep '/policyd.pgsql.sql$')"
+            perl -pi -e 's=^(#.*)=/*${1}*/=' ${shipped_pgsql_temp}
             cat > ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 \c ${CLUEBRINGER_DB_NAME};
 
 -- Import SQL structure template.
-SOURCE $(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep '/policyd.pgsql.sql$');
+\i ${shipped_pgsql_temp};
 EOF
+
+            unset shipped_pgsql_temp
         fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then

@@ -36,10 +36,18 @@ pgsql_initialize()
     # Warning: We must have 'postgresql_enable=YES' before start/stop mysql daemon.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         freebsd_enable_service_in_rc_conf 'postgresql_enable' 'YES'
+        ${PGSQL_RC_SCRIPT} initdb &>/dev/null
     fi
 
-    if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'FREEBSD' ]; then
-        ${PGSQL_RC_SCRIPT} initdb &>/dev/null
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        if [ X"${DISTRO_VERSION}" == X'5' ]; then
+            if [ -d ${PGSQL_DATA_DIR} ]; then
+                # Remove it to force /etc/init.d/postgresql initialize database
+                mv ${PGSQL_DATA_DIR} ${PGSQL_DATA_DIR}-backup &>/dev/null
+            fi
+        elif [ X"${DISTRO_VERSION}" == X'6' ]; then
+            ${PGSQL_RC_SCRIPT} initdb &>/dev/null
+        fi
     fi
 
     backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
@@ -122,12 +130,32 @@ pgsql_import_vmail_users()
 -- Create database to store mail accounts
 CREATE DATABASE ${VMAIL_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
 \c ${VMAIL_DB};
-\i ${PGSQL_DATA_DIR}/vmail.sql;
+EOF
 
+    # PostgreSQL 8.x
+    # - Create language plpgsql
+    # - Create extension dblink via importing SQL file
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
+CREATE LANGUAGE plpgsql;
+\i /usr/share/pgsql/contrib/dblink.sql;
+EOF
+    fi
+
+    cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
+\i ${PGSQL_DATA_DIR}/vmail.sql;
+EOF
+
+    # PostgreSQL 9.x can create extension directly
+    if [ X"${DISTRO}" != X'RHEL' ]; then
+        cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
 -- Create extension dblink.
 -- Used to change password through Roundcube webmail
 CREATE EXTENSION dblink;
+EOF
+    fi
 
+    cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
 -- Crete roles:
 -- + vmail: read-only
 -- + vmailadmin: read, write

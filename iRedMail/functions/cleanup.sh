@@ -317,7 +317,10 @@ cleanup_pgsql_force_password()
 {
     ECHO_DEBUG "Force all users to connect PGSQL server with password."
 
-    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        perl -pi -e 's#^(local.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
+        perl -pi -e 's#^(host.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
+    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         perl -pi -e 's#^(local.*)peer#${1}md5#' ${PGSQL_CONF_PG_HBA}
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         # FreeBSD

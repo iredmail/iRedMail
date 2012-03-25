@@ -158,7 +158,12 @@ dovecot2_config()
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
 
         backup_file ${DOVECOT_PGSQL_CONF}
-        cp -f ${SAMPLE_DIR}/dovecot/dovecot-sql.conf ${DOVECOT_PGSQL_CONF}
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            # PGSQL 8.x
+            cp -f ${SAMPLE_DIR}/dovecot/dovecot-pgsql-8.x.conf ${DOVECOT_PGSQL_CONF}
+        else
+            cp -f ${SAMPLE_DIR}/dovecot/dovecot-sql.conf ${DOVECOT_PGSQL_CONF}
+        fi
 
         perl -pi -e 's#PH_SQL_DRIVER#pgsql#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER#$ENV{PGSQL_SERVER}#' ${DOVECOT_PGSQL_CONF}
