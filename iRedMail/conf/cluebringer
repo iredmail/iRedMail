@@ -48,28 +48,16 @@ export CLUEBRINGER_SYSLOG_FACILITY='LOG_MAIL|LOG_INFO'
 export CLUEBRINGER_LOGROTATE_FILE='/etc/logrotate.d/policyd'
 export CLUEBRINGER_LOG_FILE='/var/log/cbpolicyd.log'
 
-if [ X"${DISTRO}" == X"RHEL" ]; then
-    export PKG_CLUEBRINGER='policyd'
-    export CLUEBRINGER_CONF='/etc/policyd.conf'
-    export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"
-    export CLUEBRINGER_PID_FILE='/var/run/cluebringer/cbpolicyd.pid'
-    export CLUEBRINGER_HTTPD_ROOT=''
-
-    # Path of policyd-clean
-    export CLUEBRINGER_CLEANUP_BIN='/usr/sbin/policyd-cleanup'
-
-elif [ X"${DISTRO}" == X"SUSE" ]; then
-    export PKG_CLUEBRINGER='policyd'
-    export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
-    export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"
-    export CLUEBRINGER_PID_FILE='/var/run/cluebringer/cbpolicyd.pid'
-    export CLUEBRINGER_HTTPD_ROOT=''
-
-    # Path of policyd-clean
-    export CLUEBRINGER_CLEANUP_BIN='/usr/lib/policyd/cleanup'
+if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X'SUSE' ]; then
+    export PKG_CLUEBRINGER='cluebringer'
+    export CLUEBRINGER_RC_SCRIPT_NAME='cbpolicyd'
+    export CLUEBRINGER_CONF='/etc/policyd/cluebringer.conf'
+    export CLUEBRINGER_WEBUI_CONF="/etc/policyd/webui.conf"
+    export CLUEBRINGER_PID_FILE='/var/run/cbpolicyd.pid'
+    export CLUEBRINGER_HTTPD_ROOT='/usr/share/cluebringer/webui/'
 
     # Override default setting.
-    export CLUEBRINGER_USER_HOME='/var/lib/empty'
+    export CLUEBRINGER_USER_HOME='/home/cbpolicyd'
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export PKG_CLUEBRINGER='postfix-cluebringer'
@@ -78,9 +66,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLUEBRINGER_RC_SCRIPT_NAME='postfix-cluebringer'
     export CLUEBRINGER_PID_FILE='/var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT='/usr/share/postfix-cluebringer-webui/webui'
-
-    # Path of policyd-clean
-    export CLUEBRINGER_CLEANUP_BIN='/usr/lib/postfix-policyd/cleanup'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLUEBRINGER_USER='policyd'
@@ -92,11 +77,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLUEBRINGER_PID_FILE='/var/run/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT='/usr/share/cluebringer/webui'
 
-    # Path of policyd-clean
-    export CLUEBRINGER_CLEANUP_BIN='/usr/local/sbin/postfix-policyd-sf-cleanup'
-
-else
-    :
 fi
 
 export CLUEBRINGER_RC_SCRIPT="${DIR_RC_SCRIPTS}/${CLUEBRINGER_RC_SCRIPT_NAME}"

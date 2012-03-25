@@ -25,7 +25,12 @@ export USE_CLUEBRINGER='NO'
 export USE_POLICYD='YES'
 
 # Use Policyd-2.x (cluebringer).
-if [ X"${DISTRO}" == X'UBUNTU' ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    if [ X"${BACKEND}" == X'PGSQL' ]; then
+        export USE_CLUEBRINGER='YES'
+        export USE_POLICYD='NO'
+    fi
+elif [ X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO_CODENAME}" == X"oneiric" \
         -o X"${DISTRO_CODENAME}" == X"precise" \
         ]; then

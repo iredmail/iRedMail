@@ -17,7 +17,7 @@
 -- ---------------------------------------------------------------------
 
 -- Used to store domain admin accounts
-CREATE TABLE IF NOT EXISTS admin (
+CREATE TABLE admin (
     username VARCHAR(255) NOT NULL DEFAULT '',
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
@@ -34,7 +34,7 @@ CREATE INDEX idx_admin_expired ON admin (expired);
 CREATE INDEX idx_admin_active ON admin (active);
 
 -- Used to store mail alias accounts
-CREATE TABLE IF NOT EXISTS alias (
+CREATE TABLE alias (
     address VARCHAR(255) NOT NULL DEFAULT '',
     goto TEXT NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
@@ -52,7 +52,7 @@ CREATE INDEX idx_alias_expired ON alias (expired);
 CREATE INDEX idx_alias_active ON alias (active);
 
 -- Used to store virtual mail domains
-CREATE TABLE IF NOT EXISTS domain (
+CREATE TABLE domain (
     -- mail domain name. e.g. iredmail.org.
     domain VARCHAR(255) NOT NULL DEFAULT '',
     description TEXT NOT NULL DEFAULT '',
@@ -89,7 +89,7 @@ CREATE INDEX idx_domain_expired ON domain (expired);
 CREATE INDEX idx_domain_active ON domain (active);
 
 -- Used to store alias domains
-CREATE TABLE IF NOT EXISTS alias_domain (
+CREATE TABLE alias_domain (
     alias_domain VARCHAR(255) NOT NULL,
     target_domain VARCHAR(255) NOT NULL,
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
@@ -101,7 +101,7 @@ CREATE INDEX idx_alias_domain_target_domain ON alias_domain (target_domain);
 CREATE INDEX idx_alias_domain_active ON alias_domain (active);
 
 -- Used to store domain <=> admin relationship
-CREATE TABLE IF NOT EXISTS domain_admins (
+CREATE TABLE domain_admins (
     username VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
@@ -115,7 +115,7 @@ CREATE INDEX idx_domain_admins_domain ON domain_admins (domain);
 CREATE INDEX idx_domain_admins_active ON domain_admins (active);
 
 -- Used to store virtual mail accounts
-CREATE TABLE IF NOT EXISTS mailbox (
+CREATE TABLE mailbox (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
@@ -174,7 +174,7 @@ CREATE INDEX idx_mailbox_passwordlastchange ON mailbox (passwordlastchange);
 CREATE INDEX idx_mailbox_expired ON mailbox (expired);
 CREATE INDEX idx_mailbox_active ON mailbox (active);
 
-CREATE TABLE IF NOT EXISTS sender_bcc_domain (
+CREATE TABLE sender_bcc_domain (
     domain VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
@@ -187,7 +187,7 @@ CREATE INDEX idx_sender_bcc_domain_bcc_address ON sender_bcc_domain (bcc_address
 CREATE INDEX idx_sender_bcc_domain_expired ON sender_bcc_domain (expired);
 CREATE INDEX idx_sender_bcc_domain_active ON sender_bcc_domain (active);
 
-CREATE TABLE IF NOT EXISTS sender_bcc_user (
+CREATE TABLE sender_bcc_user (
     username VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
@@ -205,7 +205,7 @@ CREATE INDEX idx_sender_bcc_user_active ON sender_bcc_user (active);
 --
 -- Table structure for table recipient_bcc_domain
 --
-CREATE TABLE IF NOT EXISTS recipient_bcc_domain (
+CREATE TABLE recipient_bcc_domain (
     domain VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
@@ -221,7 +221,7 @@ CREATE INDEX idx_recipient_bcc_domain_active ON recipient_bcc_domain (active);
 --
 -- Table structure for table recipient_bcc_user
 --
-CREATE TABLE IF NOT EXISTS recipient_bcc_user (
+CREATE TABLE recipient_bcc_user (
     username VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
@@ -239,7 +239,7 @@ CREATE INDEX idx_recipient_bcc_user_active ON recipient_bcc_user (active);
 -- IMAP shared folders. User 'from_user' shares folders to user 'to_user'.
 -- WARNING: Works only with Dovecot 1.2+.
 --
-CREATE TABLE IF NOT EXISTS share_folder (
+CREATE TABLE share_folder (
     from_user VARCHAR(255) NOT NULL,
     to_user VARCHAR(255) NOT NULL,
     dummy CHAR(1),
@@ -252,7 +252,7 @@ CREATE INDEX idx_share_folder_to_user ON share_folder (to_user);
 -- Table used_quota. Used to store realtime mailbox quota in Dovecot.
 -- WARNING: Works only with Dovecot 1.2+.
 --
-CREATE TABLE IF NOT EXISTS used_quota (
+CREATE TABLE used_quota (
     username VARCHAR(255) NOT NULL,
     bytes INT8 NOT NULL DEFAULT 0,
     messages INT8 NOT NULL DEFAULT 0,

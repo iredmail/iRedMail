@@ -1,5 +1,5 @@
 iRedMail-0.8.0-beta3:
-    * Enable PostgreSQL support on FreeBSD.
+    * Enable PostgreSQL support on FreeBSD, RHEL/CentOS 6.
     * Add shell scripts to backup OpenLDAP and/or MySQL in cron by default.
     * Use Dovecot-2.0 instead of 1.2.x on openSUSE-12.1.
     * Drop support for below distributions and releases:

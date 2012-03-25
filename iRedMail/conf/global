@@ -194,6 +194,11 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
             export PKG_ARCH=''
         fi
 
+        # Enable PostgreSQL backend on RHEL/CentOS 6.
+        if [ X"${DISTRO_VERSION}" == X'6' ]; then
+            export ENABLE_BACKEND_PGSQL='YES'
+        fi
+
     elif [ -f /etc/SuSE-release ]; then
         # openSUSE
         export DISTRO='SUSE'

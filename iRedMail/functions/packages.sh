@@ -103,7 +103,7 @@ install_all()
 
         # PGSQL server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib"
+            ALL_PKGS="${ALL_PKGS} postgresql-server${PKG_ARCH} postgresql-contrib${PKG_ARCH}"
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib postfix-postgresql"
@@ -180,10 +180,10 @@ install_all()
 
     # Policyd.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} policyd${PKG_ARCH}"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
+        ALL_PKGS="${ALL_PKGS} cluebringer"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} policyd"
+        ALL_PKGS="${ALL_PKGS} cluebringer"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         if [ X"${DISTRO_CODENAME}" == X"oneiric" \
@@ -278,11 +278,17 @@ EOF
     ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} ${CLAMAV_CLAMD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} clamd${PKG_ARCH} clamav${PKG_ARCH} clamav-db${PKG_ARCH} spamassassin${PKG_ARCH} altermime${PKG_ARCH} perl-LDAP.noarch"
+
         if [ X"${DISTRO_VERSION}" == X"5" ]; then
             ALL_PKGS="${ALL_PKGS} amavisd-new${PKG_ARCH} perl-IO-Compress.noarch"
         else
             ALL_PKGS="${ALL_PKGS} amavisd-new.noarch"
         fi
+
+        if [ X"${BACKEND}" == X'PGSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} perl-DBD-Pg"
+        fi
+
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then

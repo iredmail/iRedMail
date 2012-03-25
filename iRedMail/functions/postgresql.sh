@@ -34,9 +34,11 @@ pgsql_initialize()
 
     # FreeBSD: Start pgsql when system start up.
     # Warning: We must have 'postgresql_enable=YES' before start/stop mysql daemon.
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         freebsd_enable_service_in_rc_conf 'postgresql_enable' 'YES'
+    fi
 
+    if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'FREEBSD' ]; then
         ${PGSQL_RC_SCRIPT} initdb &>/dev/null
     fi
 
@@ -120,7 +122,7 @@ pgsql_import_vmail_users()
 -- Create database to store mail accounts
 CREATE DATABASE ${VMAIL_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
 \c ${VMAIL_DB};
-\i ${PGSQL_SYS_USER_HOME}/vmail.sql;
+\i ${PGSQL_DATA_DIR}/vmail.sql;
 
 -- Create extension dblink.
 -- Used to change password through Roundcube webmail
@@ -153,11 +155,11 @@ INSERT INTO alias (address,goto,domain,created) VALUES ('${FIRST_USER}@${FIRST_D
 EOF
 
     ECHO_DEBUG "Import postfix virtual hosts/users: ${PGSQL_INIT_SQL_SAMPLE}."
-    cp -f ${PGSQL_VMAIL_STRUCTURE_SAMPLE} ${PGSQL_SYS_USER_HOME}/vmail.sql >/dev/null
-    cp -f ${PGSQL_INIT_SQL_SAMPLE} ${PGSQL_SYS_USER_HOME}/init.sql >/dev/null
-    chmod 0777 ${PGSQL_SYS_USER_HOME}/{vmail,init}.sql >/dev/null
-    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_SYS_USER_HOME}/init.sql" >/dev/null
-    rm -f ${PGSQL_SYS_USER_HOME}/{vmail,init}.sql >/dev/null
+    cp -f ${PGSQL_VMAIL_STRUCTURE_SAMPLE} ${PGSQL_DATA_DIR}/vmail.sql >/dev/null
+    cp -f ${PGSQL_INIT_SQL_SAMPLE} ${PGSQL_DATA_DIR}/init.sql >/dev/null
+    chmod 0777 ${PGSQL_DATA_DIR}/{vmail,init}.sql >/dev/null
+    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init.sql" >/dev/null
+    #rm -f ${PGSQL_DATA_DIR}/{vmail,init}.sql >/dev/null
 
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:

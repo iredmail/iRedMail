@@ -34,20 +34,27 @@ export PGSQL_SYS_USER_HOME='/var/lib/postgresql'
 export PGSQL_VERSION='9.1'  # Required on Gentoo
 export PGSQL_RC_SCRIPT_NAME='postgresql'
 
-if [ X"${DISTRO}" == X"GENTOO" ]; then
-    export PGSQL_RC_SCRIPT="${DIR_RC_SCRIPTS}/postgresql-${PGSQL_VERSION}"
-else
-    export PGSQL_RC_SCRIPT="${DIR_RC_SCRIPTS}/postgresql"
-fi
-
 export PGSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.pgsql"
 export PGSQL_INIT_SQL_SAMPLE="${CONF_DIR}/pgsql_init.pgsql"
 
-if [ X"${DISTRO}" == X'GENTOO' ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    export PGSQL_SYS_USER_HOME='/var/lib/pgsql'
+    export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
+
+    export PGSQL_CONF_DIR="${PGSQL_DATA_DIR}"
+    export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
+    export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
+
+elif [ X"${DISTRO}" == X'SUSE' ]; then
+    :
+
+elif [ X"${DISTRO}" == X'GENTOO' ]; then
     export PGSQL_CONF_DIR="/etc/postgresql-${PGSQL_VERSION}"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/data"
+
+    export PGSQL_RC_SCRIPT_NAME="postgresql-${PGSQL_VERSION}"
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PGSQL_SYS_USER='pgsql'
@@ -65,6 +72,8 @@ else
     export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"
 fi
+
+export PGSQL_RC_SCRIPT="${DIR_RC_SCRIPTS}/${PGSQL_RC_SCRIPT_NAME}"
 
 # ~/.pgpass
 export PGSQL_DOT_PGPASS="${PGSQL_SYS_USER_HOME}/.pgpass"

@@ -27,7 +27,10 @@ cluebringer_user()
 {
     ECHO_DEBUG "Add user and group for policyd: ${CLUEBRINGER_USER}:${CLUEBRINGER_GROUP}."
 
-    if [ X"${DISTRO}" == X"UBUNTU" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        groupadd ${CLUEBRINGER_GROUP}
+        useradd -m -d ${CLUEBRINGER_USER_HOME} -s ${SHELL_NOLOGIN} -g ${CLUEBRINGER_GROUP} ${CLUEBRINGER_USER}
+    elif [ X"${DISTRO}" == X"UBUNTU" ]; then
         if [ X"${DISTRO_CODENAME}" == X"oneiric" \
             -o X"${DISTRO_CODENAME}" == X"precise" \
             ]; then
@@ -50,7 +53,7 @@ cluebringer_user()
 
 cluebringer_config()
 {
-    ECHO_DEBUG "Initialize MySQL database of policyd."
+    ECHO_DEBUG "Initialize SQL database for policyd."
 
     backup_file ${CLUEBRINGER_CONF}
 
@@ -114,15 +117,22 @@ cluebringer_config()
     if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" ]; then
         if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
             cat > ${tmp_sql} <<EOF
-# Import SQL structure template.
+-- Import SQL structure template.
 SOURCE $(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep '/DATABASE.mysql$');
 
-# Grant privileges.
+-- Grant privileges.
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_DB_USER}"@localhost IDENTIFIED BY "${CLUEBRINGER_DB_PASSWD}";
 FLUSH PRIVILEGES;
 EOF
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            :
+            cat > ${tmp_sql} <<EOF
+CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
+CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+\c ${CLUEBRINGER_DB_NAME};
+
+-- Import SQL structure template.
+SOURCE $(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep '/policyd.pgsql.sql$');
+EOF
         fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
