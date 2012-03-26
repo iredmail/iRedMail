@@ -79,7 +79,7 @@ postfix_config_basic()
         postconf -e mydomain="${HOSTNAME}"
     fi
 
-    postconf -e inet_protocols="all"
+    postconf -e inet_protocols="ipv4"
     postconf -e mydestination="\$myhostname, localhost, localhost.localdomain, localhost.\$myhostname"
     postconf -e biff="no"   # Do not notify local user.
     postconf -e inet_interfaces="all"

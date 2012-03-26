@@ -570,9 +570,11 @@ EOF
     fi
 
     # Use 'utf8' character set.
-    grep -i 'set names' ${AMAVISD_BIN} >/dev/null 2>&1
-    if [ X"$?" != X"0" ]; then
-        perl -pi -e 's#(.*)(section_time.*sql-connect.*)#${1}\$dbh->do("SET NAMES utf8"); ${2}#' ${AMAVISD_BIN}
+    if [ X"${BACKEND}" != X'PGSQL' ]; then
+        grep -i 'set names' ${AMAVISD_BIN} >/dev/null 2>&1
+        if [ X"$?" != X"0" ]; then
+            perl -pi -e 's#(.*)(section_time.*sql-connect.*)#${1}\$dbh->do("SET NAMES utf8"); ${2}#' ${AMAVISD_BIN}
+        fi
     fi
 
     cat >> ${AMAVISD_CONF} <<EOF

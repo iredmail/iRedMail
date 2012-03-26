@@ -81,7 +81,7 @@ protocols = ${DOVECOT_PROTOCOLS}
 # ipv4: *
 # ipv6: [::]
 #listen = *, [::]
-listen = *, [::]
+listen = *
 
 # mail uid/gid.
 mail_uid = ${VMAIL_USER_UID}

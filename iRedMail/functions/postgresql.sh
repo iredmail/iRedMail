@@ -40,14 +40,7 @@ pgsql_initialize()
     fi
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        if [ X"${DISTRO_VERSION}" == X'5' ]; then
-            if [ -d ${PGSQL_DATA_DIR} ]; then
-                # Remove it to force /etc/init.d/postgresql initialize database
-                mv ${PGSQL_DATA_DIR} ${PGSQL_DATA_DIR}-backup &>/dev/null
-            fi
-        elif [ X"${DISTRO_VERSION}" == X'6' ]; then
-            ${PGSQL_RC_SCRIPT} initdb &>/dev/null
-        fi
+        ${PGSQL_RC_SCRIPT} initdb &>/dev/null
     fi
 
     backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
