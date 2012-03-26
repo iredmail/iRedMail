@@ -105,7 +105,7 @@ cluebringer_config()
         perl -pi -e 's/^(DB_Port=).*/${1}$ENV{PGSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
 
         # FreeBSD
-        if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'FREEBSD' ]; then
             perl -pi -e 's/^(DSN=DBI:).*/${1}Pg:host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
         fi
     fi
