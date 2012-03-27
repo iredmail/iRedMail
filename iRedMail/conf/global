@@ -236,15 +236,6 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
             export DISTRO_CODENAME="oneiric"
         fi
 
-        # Linux Mint support. LMDE, based on Debian.
-        if [ X"${DISTRO_ID}" == X'LinuxMint' -a X"${DISTRO_CODENAME}" == X'debian' ]; then
-            if [ X"${DISTRO_VERSION}" == X'1' ]; then
-                # Based on Debian wheezy/sid, which is also the base of Ubuntu 12.04 LTS
-                export DISTRO_VERSION='12.04'
-                export DISTRO_CODENAME='precise'
-            fi
-        fi
-
         # Support PGSQL backend on Ubuntu 11.10 and later releases
         if [ X"${DISTRO_CODENAME}" != X"lucid" ]; then
             export ENABLE_BACKEND_PGSQL='YES'
