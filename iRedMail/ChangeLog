@@ -9,7 +9,8 @@ iRedMail-0.8.0-beta3:
         + FreeBSD: 7.x
     * Enable greylist opt-in in Policyd-1.x by default.
     * It now works on Ubuntu Linux 12.04 (precise). Tested on Alpha 2.
-    * It now works on Linux Mint 12 (code name: lisa).
+    * It now works on Linux Mint 12 (based on Ubuntu, code name: lisa), LMDE
+      (based on Debian).
     * Add share folder support within Dovecot 2.
     * Fixed:
         + Incorrect postrotate command for dovecot log files.
