@@ -218,7 +218,7 @@ EOF
 
 }
 
-track_iredmail_info()
+check_new_iredmail()
 {
     # Check new version and track basic information,
     # Used to help iRedMail team understand which Linux/BSD distribution
@@ -246,7 +246,7 @@ track_iredmail_info()
         exit 255
     fi
 
-    echo 'export status_track_iredmail_info="DONE"' >> ${STATUS_FILE}
+    echo 'export status_check_new_iredmail="DONE"' >> ${STATUS_FILE}
 }
 
 echo_end_msg()
@@ -270,7 +270,7 @@ else
 fi
 
 # Check latest version
-check_status_before_run track_iredmail_info
+check_status_before_run check_new_iredmail
 
 prepare_dirs
 
