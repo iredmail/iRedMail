@@ -1,6 +1,6 @@
 iRedMail-0.8.0-beta4:
     * Fixed:
-        + DEBUG=NO in iRedMail.sh breaks postfix installation on FreeBSD.
+        + DEBUG=NO in conf/global breaks postfix installation on FreeBSD.
 
 iRedMail-0.8.0-beta3:
     * Enable PostgreSQL support on FreeBSD, RHEL/CentOS 6.
