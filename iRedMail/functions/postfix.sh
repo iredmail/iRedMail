@@ -749,7 +749,7 @@ password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${PGSQL_SERVER}
 port        = ${PGSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
-query       = SELECT CONCAT(mailbox.storagenode, '/', mailbox.maildir) FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1
+query       = SELECT (mailbox.storagenode || '/' || mailbox.maildir) FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1
 EOF
 
     cat > ${pgsql_virtual_alias_maps_cf} <<EOF
@@ -769,7 +769,7 @@ password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${PGSQL_SERVER}
 port        = ${PGSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
-query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=CONCAT('%u', '@', alias_domain.target_domain) AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1 AND domain.backupmx=0
+query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=('%u' || '@' || alias_domain.target_domain) AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1 AND domain.backupmx=0
 EOF
 
     cat > ${pgsql_catchall_maps_cf} <<EOF

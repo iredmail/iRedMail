@@ -29,9 +29,9 @@ CREATE TABLE admin (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (username)
 );
-CREATE INDEX idx_admin_passwordlastchange ON admin (passwordlastchange);
-CREATE INDEX idx_admin_expired ON admin (expired);
-CREATE INDEX idx_admin_active ON admin (active);
+CREATE INDEX passwordlastchange ON admin (passwordlastchange);
+CREATE INDEX expired ON admin (expired);
+CREATE INDEX active ON admin (active);
 
 -- Used to store mail alias accounts
 CREATE TABLE alias (
@@ -47,9 +47,9 @@ CREATE TABLE alias (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (address)
 );
-CREATE INDEX idx_alias_domain ON alias (domain);
-CREATE INDEX idx_alias_expired ON alias (expired);
-CREATE INDEX idx_alias_active ON alias (active);
+CREATE INDEX domain ON alias (domain);
+CREATE INDEX expired ON alias (expired);
+CREATE INDEX active ON alias (active);
 
 -- Used to store virtual mail domains
 CREATE TABLE domain (
@@ -84,9 +84,10 @@ CREATE TABLE domain (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (domain)
 );
-CREATE INDEX idx_domain_backupmx ON domain (backupmx);
-CREATE INDEX idx_domain_expired ON domain (expired);
-CREATE INDEX idx_domain_active ON domain (active);
+CREATE INDEX domain_active ON domain (domain, active);
+CREATE INDEX backupmx ON domain (backupmx);
+CREATE INDEX expired ON domain (expired);
+CREATE INDEX active ON domain (active);
 
 -- Used to store alias domains
 CREATE TABLE alias_domain (
@@ -97,8 +98,8 @@ CREATE TABLE alias_domain (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (alias_domain)
 );
-CREATE INDEX idx_alias_domain_target_domain ON alias_domain (target_domain);
-CREATE INDEX idx_alias_domain_active ON alias_domain (active);
+CREATE INDEX target_domain ON alias_domain (target_domain);
+CREATE INDEX active ON alias_domain (active);
 
 -- Used to store domain <=> admin relationship
 CREATE TABLE domain_admins (
@@ -110,9 +111,9 @@ CREATE TABLE domain_admins (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (username,domain)
 );
-CREATE INDEX idx_domain_admins_username ON domain_admins (username);
-CREATE INDEX idx_domain_admins_domain ON domain_admins (domain);
-CREATE INDEX idx_domain_admins_active ON domain_admins (active);
+CREATE INDEX username ON domain_admins (username);
+CREATE INDEX domain ON domain_admins (domain);
+CREATE INDEX active ON domain_admins (active);
 
 -- Used to store virtual mail accounts
 CREATE TABLE mailbox (
@@ -154,25 +155,25 @@ CREATE TABLE mailbox (
     local_part VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (username)
 );
-CREATE INDEX idx_mailbox_domain ON mailbox (domain);
-CREATE INDEX idx_mailbox_department ON mailbox (department);
-CREATE INDEX idx_mailbox_employeeid ON mailbox (employeeid);
-CREATE INDEX idx_mailbox_enablesmtp ON mailbox (enablesmtp);
-CREATE INDEX idx_mailbox_enablesmtpsecured ON mailbox (enablesmtpsecured);
-CREATE INDEX idx_mailbox_enablepop3 ON mailbox (enablepop3);
-CREATE INDEX idx_mailbox_enablepop3secured ON mailbox (enablepop3secured);
-CREATE INDEX idx_mailbox_enableimap ON mailbox (enableimap);
-CREATE INDEX idx_mailbox_enableimapsecured ON mailbox (enableimapsecured);
-CREATE INDEX idx_mailbox_enabledeliver ON mailbox (enabledeliver);
-CREATE INDEX idx_mailbox_enablelda ON mailbox (enablelda);
-CREATE INDEX idx_mailbox_enablemanagesieve ON mailbox (enablemanagesieve);
-CREATE INDEX idx_mailbox_enablemanagesievesecured ON mailbox (enablemanagesievesecured);
-CREATE INDEX idx_mailbox_enablesieve ON mailbox (enablesieve);
-CREATE INDEX idx_mailbox_enablesievesecured ON mailbox (enablesievesecured);
-CREATE INDEX idx_mailbox_enableinternal ON mailbox (enableinternal);
-CREATE INDEX idx_mailbox_passwordlastchange ON mailbox (passwordlastchange);
-CREATE INDEX idx_mailbox_expired ON mailbox (expired);
-CREATE INDEX idx_mailbox_active ON mailbox (active);
+CREATE INDEX domain ON mailbox (domain);
+CREATE INDEX department ON mailbox (department);
+CREATE INDEX employeeid ON mailbox (employeeid);
+CREATE INDEX enablesmtp ON mailbox (enablesmtp);
+CREATE INDEX enablesmtpsecured ON mailbox (enablesmtpsecured);
+CREATE INDEX enablepop3 ON mailbox (enablepop3);
+CREATE INDEX enablepop3secured ON mailbox (enablepop3secured);
+CREATE INDEX enableimap ON mailbox (enableimap);
+CREATE INDEX enableimapsecured ON mailbox (enableimapsecured);
+CREATE INDEX enabledeliver ON mailbox (enabledeliver);
+CREATE INDEX enablelda ON mailbox (enablelda);
+CREATE INDEX enablemanagesieve ON mailbox (enablemanagesieve);
+CREATE INDEX enablemanagesievesecured ON mailbox (enablemanagesievesecured);
+CREATE INDEX enablesieve ON mailbox (enablesieve);
+CREATE INDEX enablesievesecured ON mailbox (enablesievesecured);
+CREATE INDEX enableinternal ON mailbox (enableinternal);
+CREATE INDEX passwordlastchange ON mailbox (passwordlastchange);
+CREATE INDEX expired ON mailbox (expired);
+CREATE INDEX active ON mailbox (active);
 
 CREATE TABLE sender_bcc_domain (
     domain VARCHAR(255) NOT NULL DEFAULT '',
@@ -183,9 +184,10 @@ CREATE TABLE sender_bcc_domain (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (domain)
 );
-CREATE INDEX idx_sender_bcc_domain_bcc_address ON sender_bcc_domain (bcc_address);
-CREATE INDEX idx_sender_bcc_domain_expired ON sender_bcc_domain (expired);
-CREATE INDEX idx_sender_bcc_domain_active ON sender_bcc_domain (active);
+CREATE INDEX domain ON sender_bcc_domain (domain);
+CREATE INDEX bcc_address ON sender_bcc_domain (bcc_address);
+CREATE INDEX expired ON sender_bcc_domain (expired);
+CREATE INDEX active ON sender_bcc_domain (active);
 
 CREATE TABLE sender_bcc_user (
     username VARCHAR(255) NOT NULL DEFAULT '',
@@ -197,10 +199,11 @@ CREATE TABLE sender_bcc_user (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (username)
 );
-CREATE INDEX idx_sender_bcc_user_bcc_address ON sender_bcc_user (bcc_address);
-CREATE INDEX idx_sender_bcc_user_domain ON sender_bcc_user (domain);
-CREATE INDEX idx_sender_bcc_user_expired ON sender_bcc_user (expired);
-CREATE INDEX idx_sender_bcc_user_active ON sender_bcc_user (active);
+CREATE INDEX username ON sender_bcc_user (username);
+CREATE INDEX bcc_address ON sender_bcc_user (bcc_address);
+CREATE INDEX domain ON sender_bcc_user (domain);
+CREATE INDEX expired ON sender_bcc_user (expired);
+CREATE INDEX active ON sender_bcc_user (active);
 
 --
 -- Table structure for table recipient_bcc_domain
@@ -214,9 +217,10 @@ CREATE TABLE recipient_bcc_domain (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (domain)
 );
-CREATE INDEX idx_recipient_bcc_domain_bcc_address ON recipient_bcc_domain (bcc_address);
-CREATE INDEX idx_recipient_bcc_domain_expired ON recipient_bcc_domain (expired);
-CREATE INDEX idx_recipient_bcc_domain_active ON recipient_bcc_domain (active);
+CREATE INDEX domain ON recipient_bcc_domain (domain);
+CREATE INDEX bcc_address ON recipient_bcc_domain (bcc_address);
+CREATE INDEX expired ON recipient_bcc_domain (expired);
+CREATE INDEX active ON recipient_bcc_domain (active);
 
 --
 -- Table structure for table recipient_bcc_user
@@ -231,9 +235,10 @@ CREATE TABLE recipient_bcc_user (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (username)
 );
-CREATE INDEX idx_recipient_bcc_user_bcc_address ON recipient_bcc_user (bcc_address);
-CREATE INDEX idx_recipient_bcc_user_expired ON recipient_bcc_user (expired);
-CREATE INDEX idx_recipient_bcc_user_active ON recipient_bcc_user (active);
+CREATE INDEX username ON recipient_bcc_user (username);
+CREATE INDEX bcc_address ON recipient_bcc_user (bcc_address);
+CREATE INDEX expired ON recipient_bcc_user (expired);
+CREATE INDEX active ON recipient_bcc_user (active);
 
 --
 -- IMAP shared folders. User 'from_user' shares folders to user 'to_user'.
@@ -245,8 +250,8 @@ CREATE TABLE share_folder (
     dummy CHAR(1),
     PRIMARY KEY (from_user, to_user)
 );
-CREATE INDEX idx_share_folder_from_user ON share_folder (from_user);
-CREATE INDEX idx_share_folder_to_user ON share_folder (to_user);
+CREATE INDEX from_user ON share_folder (from_user);
+CREATE INDEX to_user ON share_folder (to_user);
 
 --
 -- Table used_quota. Used to store realtime mailbox quota in Dovecot.
