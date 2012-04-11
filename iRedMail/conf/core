@@ -424,6 +424,13 @@ service_control()
     fi
 }
 
+# Generate MD5 password
+gen_md5_passwd()
+{
+    # Usage: gen_sql_passwd 'plain_password'
+    openssl passwd -1 ${1}
+}
+
 gen_ldap_passwd()
 {
     if [ X"${DISTRO}" == X"FREEBSD" ]; then

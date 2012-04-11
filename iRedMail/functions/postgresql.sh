@@ -109,8 +109,8 @@ EOF
 
 pgsql_import_vmail_users()
 {
-    export DOMAIN_ADMIN_PASSWD="$(openssl passwd -1 ${DOMAIN_ADMIN_PASSWD})"
-    export FIRST_USER_PASSWD="$(openssl passwd -1 ${FIRST_USER_PASSWD})"
+    export DOMAIN_ADMIN_PASSWD="$(gen_md5_passwd ${DOMAIN_ADMIN_PASSWD})"
+    export FIRST_USER_PASSWD="$(gen_md5_passwd ${FIRST_USER_PASSWD})"
 
     # Generate SQL.
     # Modify default SQL template, set storagebasedirectory, storagenode.
