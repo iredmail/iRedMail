@@ -219,8 +219,7 @@ Configuration completed.
 EOF
 
 ECHO_QUESTION -n "Continue? [y|N]"
-read ANSWER
-
+read_setting ${AUTO_INSTALL_WITHOUT_CONFIRM}
 case ${ANSWER} in
     Y|y) : ;;
     N|n|*)

@@ -183,11 +183,21 @@ install_all()
 
     # Policyd.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} cluebringer"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
+        if [ X"${USE_POLICYD}" == X'YES' ]; then
+            ALL_PKGS="${ALL_PKGS} policyd${PKG_ARCH}"
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
+        else
+            ALL_PKGS="${ALL_PKGS} cluebringer"
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
+        fi
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} cluebringer"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
+        if [ X"${USE_POLICYD}" == X'YES' ]; then
+            ALL_PKGS="${ALL_PKGS} policyd"
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
+        else
+            ALL_PKGS="${ALL_PKGS} cluebringer"
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
+        fi
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         if [ X"${DISTRO_CODENAME}" == X"oneiric" \
             -o X"${DISTRO_CODENAME}" == X"precise" \

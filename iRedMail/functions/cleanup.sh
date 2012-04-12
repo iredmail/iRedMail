@@ -20,6 +20,17 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
+# Available variables for automate installation (value should be 'y' or 'n'):
+#   AUTO_CLEANUP_REMOVE_SENDMAIL
+#   AUTO_CLEANUP_REMOVE_MOD_PYTHON
+#   AUTO_CLEANUP_REPLACE_IPTABLES_RULE
+#   AUTO_CLEANUP_RESTART_IPTABLES
+#   AUTO_CLEANUP_REPLACE_MYSQL_CONFIG
+#   AUTO_CLEANUP_RESTART_POSTFIX
+#
+# Usage:
+#   # AUTO_CLEANUP_REMOVE_SENDMAIL=y [...] bash iRedMail.sh
+
 # -------------------------------------------
 # Misc.
 # -------------------------------------------
@@ -40,7 +51,7 @@ cleanup_remove_sendmail()
 
     if [ X"$?" == X"0" ]; then
         ECHO_QUESTION -n "Would you like to *REMOVE* sendmail now? [Y|n]"
-        read ANSWER
+        read_setting ${AUTO_CLEANUP_REMOVE_SENDMAIL}
         case $ANSWER in
             N|n )
                 ECHO_INFO "Disable sendmail, it is replaced by Postfix." && \
@@ -66,7 +77,7 @@ cleanup_remove_mod_python()
 
     if [ X"$?" == X"0" ]; then
         ECHO_QUESTION -n "iRedAdmin doesn't work with mod_python, *REMOVE* it now? [Y|n]"
-        read ANSWER
+        read_setting ${AUTO_CLEANUP_REMOVE_MOD_PYTHON}
         case $ANSWER in
             N|n ) : ;;
             Y|y|* ) eval ${remove_pkg} mod_python ;;
@@ -94,7 +105,7 @@ cleanup_replace_iptables_rule()
 
     ECHO_QUESTION "Would you like to use firewall rules shipped within iRedMail now?"
     ECHO_QUESTION -n "File: ${IPTABLES_CONFIG}, with SSHD port: ${sshd_port}. [Y|n]"
-    read ANSWER
+    read_setting ${AUTO_CLEANUP_REPLACE_IPTABLES_RULE}
     case $ANSWER in
         N|n ) ECHO_INFO "Skip firewall rules." ;;
         Y|y|* ) 
@@ -126,7 +137,7 @@ cleanup_replace_iptables_rule()
 
             # Prompt to restart iptables.
             ECHO_QUESTION -n "Restart firewall now (with SSHD port ${sshd_port})? [y|N]"
-            read ANSWER
+            read_setting ${AUTO_CLEANUP_RESTART_IPTABLES}
             case $ANSWER in
                 Y|y )
                     ECHO_INFO "Restarting firewall ..."
@@ -154,11 +165,11 @@ cleanup_replace_iptables_rule()
 cleanup_replace_mysql_config()
 {
     if [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X"OPENLDAP" ]; then
-        # Both MySQL and OpenLDAP will need MySQL database server, so prompt
+        # Both MySQL and OpenLDAP backend need MySQL database server, so prompt
         # this config file replacement.
         ECHO_QUESTION "Would you like to use MySQL configuration file shipped within iRedMail now?"
         ECHO_QUESTION -n "File: ${MYSQL_MY_CNF}. [Y|n]"
-        read ANSWER
+        read_setting ${AUTO_CLEANUP_REPLACE_MYSQL_CONFIG}
         case $ANSWER in
             N|n ) ECHO_INFO "Skip copy and modify MySQL config file." ;;
             Y|y|* )
@@ -183,7 +194,7 @@ cleanup_start_postfix_now()
 {
     # Start postfix without reboot your system.
     ECHO_QUESTION -n "Would you like to start postfix now? [y|N]"
-    read ANSWER
+    read_setting ${AUTO_CLEANUP_RESTART_POSTFIX}
     case ${ANSWER} in
         Y|y )
             # Disable SELinux.

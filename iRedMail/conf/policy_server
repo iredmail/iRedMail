@@ -25,7 +25,7 @@ export USE_CLUEBRINGER='NO'
 export USE_POLICYD='YES'
 
 # Use Policyd-2.x (cluebringer).
-if [ X"${DISTRO}" == X'RHEL' ]; then
+if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'SUSE' ]; then
     if [ X"${BACKEND}" == X'PGSQL' ]; then
         export USE_CLUEBRINGER='YES'
         export USE_POLICYD='NO'
