@@ -46,16 +46,13 @@ policyd_config()
     # Get SQL structure template file.
     tmp_sql="/tmp/policyd_config_tmp.${RANDOM}${RANDOM}"
     if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" ]; then
-        orig_policyd_sql_file="$(eval ${LIST_FILES_IN_PKG} ${PKG_POLICYD} | grep '/DATABASE.mysql$')"
-
-        # Convert 'TYPE=' to 'ENGINE=' while creating tables.
-        perl -pi -e 's#TYPE=#ENGINE=#g' ${orig_policyd_sql_file}
-
         cat > ${tmp_sql} <<EOF
-# Import SQL structure template.
-SOURCE ${orig_policyd_sql_file};
+CREATE DATABASE ${POLICYD_DB_NAME};
+USE ${POLICYD_DB_NAME}
+-- Import SQL structure template.
+SOURCE ${SAMPLE_DIR}/policyd/DATABASE.mysql;
 
-# Grant privileges.
+-- Grant privileges.
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}"@localhost IDENTIFIED BY "${POLICYD_DB_PASSWD}";
 FLUSH PRIVILEGES;
 EOF
@@ -63,7 +60,7 @@ EOF
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         # dbconfig-common will initialize policyd database, grant privileges.
         cat > ${tmp_sql} <<EOF
-# Reset password.
+-- Reset password.
 USE mysql;
 UPDATE user SET Password=password("${POLICYD_DB_PASSWD}") WHERE User="${POLICYD_DB_USER}";
 FLUSH PRIVILEGES;
@@ -79,25 +76,23 @@ EOF
         fi
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        orig_policyd_sql_file="$(eval ${LIST_FILES_IN_PKG} ${PKG_POLICYD} | grep '/DATABASE.mysql.bz2$')"
-
-        # orig_policyd_sql_file contains SQL command to create database.
-        bunzip2 -c ${orig_policyd_sql_file} > ${tmp_sql}
-
         cat >> ${tmp_sql} <<EOF
-# Grant privileges.
+CREATE DATABASE ${POLICYD_DB_NAME};
+USE ${POLICYD_DB_NAME}
+-- Import SQL structure template.
+SOURCE ${SAMPLE_DIR}/policyd/DATABASE.mysql;
+-- Grant privileges.
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}"@localhost IDENTIFIED BY "${POLICYD_DB_PASSWD}";
 FLUSH PRIVILEGES;
 EOF
 
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-        # Template file will create database: policyd.
-        perl -pi -e 's#TYPE=#ENGINE=#g' /usr/local/share/doc/policyd/DATABASE.mysql
         cat > ${tmp_sql} <<EOF
-# Import SQL structure template.
-SOURCE /usr/local/share/doc/policyd/DATABASE.mysql;
-
-# Grant privileges.
+CREATE DATABASE ${POLICYD_DB_NAME};
+USE ${POLICYD_DB_NAME}
+-- Import SQL structure template.
+SOURCE ${SAMPLE_DIR}/policyd/DATABASE.mysql;
+-- Grant privileges.
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}"@localhost IDENTIFIED BY "${POLICYD_DB_PASSWD}";
 FLUSH PRIVILEGES;
 EOF
@@ -106,38 +101,12 @@ EOF
         :
     fi
 
+    # Import whitelist/blacklist shipped in policyd.
     cat >> ${tmp_sql} <<EOF
 USE ${POLICYD_DB_NAME};
-SOURCE ${SAMPLE_DIR}/policyd_blacklist_helo.sql;
+SOURCE ${SAMPLE_DIR}/policyd/whitelist.sql;
+SOURCE ${SAMPLE_DIR}/policyd/blacklist_helo.sql;
 EOF
-
-    # Import whitelist/blacklist shipped in policyd and provided by iRedMail.
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        cat >> ${tmp_sql} <<EOF
-SOURCE $(eval ${LIST_FILES_IN_PKG} ${PKG_POLICYD} | grep 'whitelist.sql');
-SOURCE $(eval ${LIST_FILES_IN_PKG} ${PKG_POLICYD} | grep 'blacklist_helo.sql');
-EOF
-
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        # Create a temp directory.
-        tmp_dir="/tmp/$(${RANDOM_STRING})" && mkdir -p ${tmp_dir}
-
-        for i in $( eval ${LIST_FILES_IN_PKG} postfix-policyd | grep 'sql.gz$'); do
-            cp $i ${tmp_dir}
-            gunzip ${tmp_dir}/$(basename $i)
-
-            cat >> ${tmp_sql} <<EOF
-SOURCE ${tmp_dir}/$(basename $i | awk -F'.gz' '{print $1}');
-EOF
-        done
-    elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-        cat >> ${tmp_sql} <<EOF
-SOURCE $(eval ${LIST_FILES_IN_PKG} "${PKG_POLICYD}*" | grep 'whitelist.sql');
-SOURCE $(eval ${LIST_FILES_IN_PKG} "${PKG_POLICYD}*" | grep 'blacklist_helo.sql');
-EOF
-    else
-        :
-    fi
 
     mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 $(cat ${tmp_sql})
