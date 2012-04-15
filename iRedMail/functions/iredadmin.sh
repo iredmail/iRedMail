@@ -72,7 +72,7 @@ iredadmin_config()
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         cp settings.ini.mysql.sample settings.ini
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp settings.ini.mysql.sample settings.ini
+        cp settings.ini.pgsql.sample settings.ini
     fi
 
     chown -R ${IREDADMIN_HTTPD_USER}:${IREDADMIN_HTTPD_GROUP} settings.ini

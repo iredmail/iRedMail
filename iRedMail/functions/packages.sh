@@ -420,19 +420,19 @@ EOF
     # Misc packages & services.
     #
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} bzip2${PKG_ARCH} acl${PKG_ARCH} patch${PKG_ARCH} tmpwatch${PKG_ARCH} crontabs.noarch dos2unix${PKG_ARCH}"
+        ALL_PKGS="${ALL_PKGS} bzip2${PKG_ARCH} acl${PKG_ARCH} patch${PKG_ARCH} tmpwatch${PKG_ARCH} crontabs.noarch dos2unix${PKG_ARCH} logwatch"
         if [ X"${DISTRO_VERSION}" == X"5" ]; then
             ALL_PKGS="${ALL_PKGS} vixie-cron${PKG_ARCH}"
         fi
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tmpwatch dos2unix"
+        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tmpwatch dos2unix logwatch"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos"
+        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} dos2unix"
+        ALL_PKGS="${ALL_PKGS} dos2unix logwatch"
     fi
     #### End Misc packages & services ####
 

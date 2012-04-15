@@ -679,6 +679,9 @@ EOF
     #    ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
     #fi
 
+    # Misc
+    ALL_PORTS="${ALL_PORTS} sysutils/logwatch"
+
     # Fetch all source tarballs.
     ECHO_INFO "Fetching all distfile for required packages (make fetch-recursive)"
 

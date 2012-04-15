@@ -330,7 +330,7 @@ EOF
 
     # Add postfix alias.
     if [ ! -z ${MAIL_ALIAS_ROOT} ]; then
-        echo "policyd: ${MAIL_ALIAS_ROOT}" >> ${POSTFIX_FILE_ALIASES}
+        echo "policyd: root" >> ${POSTFIX_FILE_ALIASES}
         postalias hash:${POSTFIX_FILE_ALIASES} 2>/dev/null
     else
         :

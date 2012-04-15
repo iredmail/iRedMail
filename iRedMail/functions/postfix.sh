@@ -135,7 +135,14 @@ postfix_config_basic()
             touch ${POSTFIX_FILE_ALIASES}
         fi
     fi
-    [ ! -z ${MAIL_ALIAS_ROOT} ] && echo "root: ${MAIL_ALIAS_ROOT}" >> ${POSTFIX_FILE_ALIASES}
+
+    # Comment out default aliases for root
+    perl -pi -e 's/^(root:.*)/#${1}/g' ${POSTFIX_FILE_ALIASES}
+
+    if [ ! -z ${MAIL_ALIAS_ROOT} ]; then
+        echo "root: ${MAIL_ALIAS_ROOT}" >> ${POSTFIX_FILE_ALIASES}
+    fi
+    postalias hash:${POSTFIX_FILE_ALIASES} &>/dev/null
 
     postconf -e alias_maps="hash:${POSTFIX_FILE_ALIASES}"
     postconf -e alias_database="hash:${POSTFIX_FILE_ALIASES}"
