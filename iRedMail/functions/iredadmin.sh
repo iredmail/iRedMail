@@ -27,6 +27,7 @@ iredadmin_config()
 
     # Backup database.
     export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${IREDADMIN_DB_NAME}"
+    export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${IREDADMIN_DB_NAME}"
 
     # Create a low privilege user as httpd daemon user.
     if [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
@@ -54,7 +55,7 @@ iredadmin_config()
 
     # Create symbol link, so that we don't need to modify apache
     # conf.d/iredadmin.conf file after upgrading this component.
-    ln -s ${IREDADMIN_HTTPD_ROOT} ${HTTPD_SERVERROOT}/iredadmin 2>/dev/null
+    ln -s ${IREDADMIN_HTTPD_ROOT} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK} 2>/dev/null
 
     ECHO_DEBUG "Set correct permission for iRedAdmin: ${IREDADMIN_HTTPD_ROOT}."
     chown -R ${IREDADMIN_HTTPD_USER}:${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_ROOT}
@@ -66,9 +67,11 @@ iredadmin_config()
     # Copy sample configure file.
     cd ${IREDADMIN_HTTPD_ROOT}/
 
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         cp settings.ini.ldap.sample settings.ini
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        cp settings.ini.mysql.sample settings.ini
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp settings.ini.mysql.sample settings.ini
     fi
 
@@ -87,14 +90,15 @@ WSGIProcessGroup ${IREDADMIN_HTTPD_GROUP}
 
 AddType text/html .py
 
-<Directory ${HTTPD_SERVERROOT}/iredadmin/>
+<Directory ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/>
     Order allow,deny
     Allow from all
 </Directory>
 EOF
 
     ECHO_DEBUG "Import iredadmin database template."
-    mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 # Create databases.
 CREATE DATABASE ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -102,18 +106,34 @@ CREATE DATABASE ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_gen
 USE ${IREDADMIN_DB_NAME};
 SOURCE ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql;
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@localhost IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
-
 FLUSH PRIVILEGES;
 EOF
 
-    # Import addition tables.
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        # Import addition tables.
+        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+            mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 USE ${IREDADMIN_DB_NAME};
 SOURCE ${SAMPLE_DIR}/dovecot/used_quota.sql;
 SOURCE ${SAMPLE_DIR}/dovecot/imap_share_folder.sql;
 FLUSH PRIVILEGES;
 EOF
+        fi
+
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        cp -f ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/docs/samples/iredadmin.pgsql ${PGSQL_DATA_DIR}/ >/dev/null
+        chmod 0777 ${PGSQL_DATA_DIR}/iredadmin.pgsql >/dev/null
+        su - ${PGSQL_SYS_USER} -c "psql -d template1" >/dev/null <<EOF
+-- Create database
+CREATE DATABASE ${IREDADMIN_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
+-- Create user
+CREATE USER ${IREDADMIN_DB_USER} WITH ENCRYPTED PASSWORD '${IREDADMIN_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+\c ${IREDADMIN_DB_NAME};
+\i ${PGSQL_DATA_DIR}/iredadmin.pgsql;
+-- Grant permissions
+GRANT INSERT,UPDATE,DELETE,SELECT on sessions,log,updatelog to ${IREDADMIN_DB_USER};
+GRANT UPDATE,USAGE,SELECT ON log_id_seq TO ${IREDADMIN_DB_USER};
+EOF
+        rm -f ${PGSQL_DATA_DIR}/iredadmin.pgsql
     fi
 
     ECHO_DEBUG "Configure iRedAdmin."
@@ -129,8 +149,8 @@ EOF
     # [iredadmin] section.
     ECHO_DEBUG "Configure iredadmin database related settings."
     sed -i.tmp \
-        -e "/\[iredadmin\]/,/\[/ s#\(^host =\).*#\1 ${MYSQL_SERVER}#" \
-        -e "/\[iredadmin\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_SERVER_PORT}#" \
+        -e "/\[iredadmin\]/,/\[/ s#\(^host =\).*#\1 ${SQL_SERVER}#" \
+        -e "/\[iredadmin\]/,/\[/ s#\(^port =\).*#\1 ${SQL_SERVER_PORT}#" \
         -e "/\[iredadmin\]/,/\[/ s#\(^db =\).*#\1 ${IREDADMIN_DB_NAME}#" \
         -e "/\[iredadmin\]/,/\[/ s#\(^user =\).*#\1 ${IREDADMIN_DB_USER}#" \
         -e "/\[iredadmin\]/,/\[/ s#\(^passwd =\).*#\1 ${IREDADMIN_DB_PASSWD}#" \
@@ -151,14 +171,11 @@ EOF
             -e "/\[ldap\]/,/\[/ s#\(^bind_pw =\).*#\1 ${LDAP_ADMIN_PW}#" \
             settings.ini
 
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
-        # Change backend.
-        sed -i.tmp -e "/\[general\]/,/\[/ s#\(^backend =\).*#\1 mysql#" settings.ini
-
-        ECHO_DEBUG "Configure MySQL backend related settings."
+    elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
+        ECHO_DEBUG "Configure MySQL related settings."
         sed -i.tmp \
-            -e "/\[vmaildb\]/,/\[/ s#\(^host =\).*#\1 ${MYSQL_SERVER}#" \
-            -e "/\[vmaildb\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_SERVER_PORT}#" \
+            -e "/\[vmaildb\]/,/\[/ s#\(^host =\).*#\1 ${SQL_SERVER}#" \
+            -e "/\[vmaildb\]/,/\[/ s#\(^port =\).*#\1 ${SQL_SERVER_PORT}#" \
             -e "/\[vmaildb\]/,/\[/ s#\(^db =\).*#\1 ${VMAIL_DB}#" \
             -e "/\[vmaildb\]/,/\[/ s#\(^user =\).*#\1 ${VMAIL_DB_ADMIN_USER}#" \
             -e "/\[vmaildb\]/,/\[/ s#\(^passwd =\).*#\1 ${VMAIL_DB_ADMIN_PASSWD}#" \
@@ -169,18 +186,16 @@ EOF
     ECHO_DEBUG "Configure Policyd related settings."
     sed -i.tmp \
         -e "/\[policyd\]/,/\[/ s#\(^enabled =\).*#\1 True#" \
-        -e "/\[policyd\]/,/\[/ s#\(^host =\).*#\1 ${MYSQL_SERVER}#" \
-        -e "/\[policyd\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_SERVER_PORT}#" \
+        -e "/\[policyd\]/,/\[/ s#\(^host =\).*#\1 ${SQL_SERVER}#" \
+        -e "/\[policyd\]/,/\[/ s#\(^port =\).*#\1 ${SQL_SERVER_PORT}#" \
         -e "/\[policyd\]/,/\[/ s#\(^db =\).*#\1 ${POLICYD_DB_NAME}#" \
         -e "/\[policyd\]/,/\[/ s#\(^user =\).*#\1 ${POLICYD_DB_USER}#" \
         -e "/\[policyd\]/,/\[/ s#\(^passwd =\).*#\1 ${POLICYD_DB_PASSWD}#" \
         settings.ini
 
 
-    # Ubuntu 11.10 uses Policyd-2 which is not yet supported in iRedAdmin.
-    if [ X"${DISTRO_CODENAME}" == X"oneiric" \
-        -o X"${DISTRO_CODENAME}" == X"precise" \
-        ]; then
+    # Policyd-2 (cluebringer) is not yet supported in iRedAdmin.
+    if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
         sed -i.tmp -e "/\[policyd\]/,/\[/ s#\(^enabled =\).*#\1 False#" settings.ini
     fi
 
@@ -191,8 +206,8 @@ EOF
         -e "/\[amavisd\]/,/\[/ s#\(^server =\).*#\1 ${AMAVISD_SERVER}#" \
         -e "/\[amavisd\]/,/\[/ s#\(^quarantine_port =\).*#\1 ${AMAVISD_QUARANTINE_PORT}#" \
         -e "/\[amavisd\]/,/\[/ s#\(^logging_into_sql =\).*#\1 True#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^host =\).*#\1 ${MYSQL_SERVER}#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^port =\).*#\1 ${MYSQL_SERVER_PORT}#" \
+        -e "/\[amavisd\]/,/\[/ s#\(^host =\).*#\1 ${SQL_SERVER}#" \
+        -e "/\[amavisd\]/,/\[/ s#\(^port =\).*#\1 ${SQL_SERVER_PORT}#" \
         -e "/\[amavisd\]/,/\[/ s#\(^db =\).*#\1 ${AMAVISD_DB_NAME}#" \
         -e "/\[amavisd\]/,/\[/ s#\(^user =\).*#\1 ${AMAVISD_DB_USER}#" \
         -e "/\[amavisd\]/,/\[/ s#\(^passwd =\).*#\1 ${AMAVISD_DB_PASSWD}#" \
@@ -216,8 +231,8 @@ iRedAdmin - official web-based admin panel:
 
         [policyd]
         enabled = True
-        host = ${MYSQL_SERVER}
-        port = ${MYSQL_SERVER_PORT}
+        host = ${SQL_SERVER}
+        port = ${SQL_SERVER_PORT}
         db = ${POLICYD_DB_NAME}
         user = ${POLICYD_DB_USER}
         passwd = ${POLICYD_DB_PASSWD}
@@ -227,8 +242,8 @@ iRedAdmin - official web-based admin panel:
         server = ${AMAVISD_SERVER}
         quarantine_port = ${AMAVISD_QUARANTINE_PORT}
         logging_into_sql = True
-        host = ${MYSQL_SERVER}
-        port = ${MYSQL_SERVER_PORT}
+        host = ${SQL_SERVER}
+        port = ${SQL_SERVER_PORT}
         db = ${AMAVISD_DB_NAME}
         user = ${AMAVISD_DB_USER}
         passwd = ${AMAVISD_DB_PASSWD}

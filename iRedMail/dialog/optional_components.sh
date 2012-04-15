@@ -76,6 +76,7 @@ Note:
 " 20 76 8 \
     "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
     "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
+    "iRedAdmin" "Official web-based Admin Panel" "on" \
     "phpPgAdmin" "Web-based MySQL management tool" "on" \
     "Awstats" "Advanced web and mail log analyzer" "on" \
     "Fail2ban" "Ban IP with too many password failures" "on" \

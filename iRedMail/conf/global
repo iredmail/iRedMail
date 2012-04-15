@@ -175,6 +175,8 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         elif grep '\ 6' /etc/redhat-release &>/dev/null; then
             # version 6.x
             export DISTRO_VERSION='6'
+        else
+            export UNSUPPORTED_RELEASE='YES'
         fi
 
         # Get distribution name as DISTRO_CODENAME
@@ -187,6 +189,8 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         elif grep '^Scientific' /etc/redhat-release &>/dev/null; then
             # Scientific Linux
             export DISTRO_CODENAME='Scientific'
+        else
+            export UNSUPPORTED_RELEASE='YES'
         fi
 
         export PKG_ARCH=".${ARCH}"
@@ -264,21 +268,15 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         # Get major release version number
         export DISTRO_VERSION="$(cat /etc/debian_version | cut -b 1)"
 
-        if [ X"${DISTRO_VERSION}" == X'6' ]; then
-            export DISTRO_CODENAME='squeeze'
-        fi
-
-        # Override settings.
-        if [ X"${DISTRO_CODENAME}" == X"squeeze" ]; then
-            export SHELL_NOLOGIN='/usr/sbin/nologin'
-        fi
-
-        # Unsupported releases
+        # Set distro code name and unsupported releases:
         # - 4: Etch
         # - 5: Lenny
-        if [ X"${DISTRO_VERSION}" == X'4' \
-            -o X"${DISTRO_VERSION}" == X'5' \
-            ]; then
+        if [ X"${DISTRO_VERSION}" == X'6' ]; then
+            export DISTRO_CODENAME='squeeze'
+
+            # Override settings.
+            export SHELL_NOLOGIN='/usr/sbin/nologin'
+        else
             export UNSUPPORTED_RELEASE='YES'
         fi
 
@@ -287,9 +285,7 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         export DISTRO='GENTOO'
 
     else
-        # Not support yet.
-        echo "Your distrobution is not supported yet."
-        exit 255
+        export UNSUPPORTED_RELEASE='YES'
     fi
 elif [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
     export DISTRO='FREEBSD'
@@ -313,9 +309,9 @@ fi
 if [ X"${UNSUPPORTED_RELEASE}" == X'YES' ]; then
     cat <EOF
 ********* ERROR *********
-Release version of the operating system on this server is unsupported by iRedMail,
-please access below link to get the latest iRedMail and a list of supported
-Linux/BSD distributions and release versions.
+Release version of the operating system on this server is unsupported by
+iRedMail, please access below link to get the latest iRedMail and a list
+of supported Linux/BSD distributions and release versions.
 
 http://www.iredmail.org/download.html
 

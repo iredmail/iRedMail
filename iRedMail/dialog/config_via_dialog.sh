@@ -112,7 +112,7 @@ We provide two backends and the homologous webmail programs:
 +------------+               +---------------------------+
 | MySQL      | Roundcube     | iRedAdmin, phpMyAdmin     |
 +------------+               +---------------------------+
-| PostgreSQL |               | phpPgAdmin                |
+| PostgreSQL |               | iRedAdmin, phpPgAdmin     |
 +------------+---------------+---------------------------+
 TIP: Use SPACE key to select item.
 " 20 76 3 \
