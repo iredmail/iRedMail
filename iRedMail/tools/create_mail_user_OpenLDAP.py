@@ -31,7 +31,11 @@ BASEDN = 'o=domains,dc=iredmail,dc=org'
 
 # Storage base directory.
 STORAGE_BASE_DIRECTORY = '/var/vmail/vmail1'
-STORAGE_NODE = STORAGE_BASE_DIRECTORY.split('/')[-1]
+
+# Get base directory and storage node.
+std = STORAGE_BASE_DIRECTORY.rstrip('/').split('/')
+STORAGE_NODE = std.pop()
+STORAGE_BASE = '/'.join(std)
 
 # Hashed maildir: True, False.
 # Example:
@@ -75,11 +79,11 @@ CSV file format:
     domain name, username, password, [common name], [quota], [groups]
 
 Example #1:
-    iredmail.org, zhang, secret_pw, Zhang Huangbin, 1024, group1:group2
+    iredmail.org, zhang, plain_password, Zhang Huangbin, 1024, group1:group2
 Example #2:
-    iredmail.org, zhang, secret_pw, Zhang Huangbin, ,
+    iredmail.org, zhang, plain_password, Zhang Huangbin, ,
 Example #3:
-    iredmail.org, zhang, secret_pw, , 1024, group1:group2
+    iredmail.org, zhang, plain_password, , 1024, group1:group2
      
 Note:
     - Domain name, username and password are REQUIRED, others are optional:
@@ -164,7 +168,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         ('cn',                  [cn]),
         ('sn',                  [username]),
         ('uid',                 [username]),
-        ('storageBaseDirectory', [STORAGE_BASE_DIRECTORY]),
+        ('storageBaseDirectory', [STORAGE_BASE]),
         ('mailMessageStore',    [mailMessageStore]),
         ('homeDirectory',       [homeDirectory]),
         ('accountStatus',       ['active']),
