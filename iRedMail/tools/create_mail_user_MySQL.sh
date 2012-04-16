@@ -64,6 +64,9 @@ MAILDIR_STYLE='hashed'      # hashed, normal.
 # Time stamp, will be appended in maildir.
 DATE="$(date +%Y.%m.%d.%H.%M.%S)"
 
+STORAGE_BASE="$(dirname ${STORAGE_BASE_DIRECTORY})"
+STORAGE_NODE="$(basename ${STORAGE_BASE_DIRECTORY})"
+
 # Path to SQL template file.
 SQL="output.sql"
 echo '' > ${SQL}
@@ -125,7 +128,7 @@ generate_sql()
 
         cat >> ${SQL} <<EOF
 INSERT INTO mailbox (username, password, name, storagebasedirectory,storagenode, maildir, quota, domain, active, local_part, created)
-    VALUES ('${mail}', '${CRYPT_PASSWD}', '${username}', '${STORAGE_BASE_DIRECTORY}','${STORAGE_NODE}', '${maildir}', '${DEFAULT_QUOTA}', '${DOMAIN}', '1','${username}', NOW());
+    VALUES ('${mail}', '${CRYPT_PASSWD}', '${username}', '${STORAGE_BASE}','${STORAGE_NODE}', '${maildir}', '${DEFAULT_QUOTA}', '${DOMAIN}', '1','${username}', NOW());
 INSERT INTO alias (address, goto, domain, created, active) VALUES ('${mail}', '${mail}','${DOMAIN}', NOW(), 1);
 EOF
     done

@@ -127,7 +127,8 @@ WELCOME_MSG_BODY="Welcome, new user."
 # Time stamp, will be appended in maildir.
 DATE="$(date +%Y.%m.%d.%H.%M.%S)"
 
-STORAGE_NODE="$(echo ${STORAGE_BASE_DIRECTORY} | tr '/' ' ' | awk '{print $NF}')"
+STORAGE_BASE="$(dirname ${STORAGE_BASE_DIRECTORY})"
+STORAGE_NODE="$(basename ${STORAGE_BASE_DIRECTORY})"
 
 add_new_domain()
 {
@@ -218,9 +219,9 @@ objectClass: shadowAccount
 objectClass: amavisAccount
 objectClass: mailUser
 objectClass: top
-storageBaseDirectory: ${STORAGE_BASE_DIRECTORY}
-homeDirectory: ${STORAGE_BASE_DIRECTORY}/${maildir}
 accountStatus: active
+storageBaseDirectory: ${STORAGE_BASE}
+homeDirectory: ${STORAGE_BASE_DIRECTORY}/${maildir}
 mailMessageStore: ${STORAGE_NODE}/${maildir}
 mail: ${MAIL}
 mailQuota: ${QUOTA}
