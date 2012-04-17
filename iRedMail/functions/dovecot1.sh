@@ -30,20 +30,9 @@ dovecot_ssl_config()
     ECHO_DEBUG "Enable TLS support."
 
     if [ X"${ENABLE_DOVECOT_SSL}" == X"YES" ]; then
-        # Enable ssl. Different setting in v1.1, v1.2.
-        if [ X"${DOVECOT_VERSION}" == X"1.1" ]; then
-            cat >> ${DOVECOT_CONF} <<EOF
-# SSL support.
-ssl_disable = no
-EOF
-        elif [ X"${DOVECOT_VERSION}" == X"1.2" ]; then
-            cat >> ${DOVECOT_CONF} <<EOF
-# SSL support.
-ssl = yes
-EOF
-        fi
-
         cat >> ${DOVECOT_CONF} <<EOF
+# SSL support.
+ssl = required
 verbose_ssl = no
 ssl_key_file = ${SSL_KEY_FILE}
 ssl_cert_file = ${SSL_CERT_FILE}
@@ -67,17 +56,11 @@ dovecot_config()
 ${CONF_MSG}
 EOF
 
-        if [ X"${DOVECOT_VERSION}" == X"1.1" ]; then
-            cat >> ${DOVECOT_CONF} <<EOF
-umask = 0077
-EOF
-        fi
-
         cat >> ${DOVECOT_CONF} <<EOF
 # Provided services.
 protocols = ${DOVECOT_PROTOCOLS}
 
-# Listen addresses. for Dovecot-1.1.x.
+# Listen addresses. for Dovecot-1.x.
 # ipv4: *
 # ipv6: [::]
 #listen = *, [::]
@@ -121,7 +104,8 @@ log_path = ${DOVECOT_LOG_FILE}
 # "pool_system_malloc(100248): Out of memory".
 mail_process_size = 1024
 
-disable_plaintext_auth = no
+# With disable_plaintext_auth=yes, STARTTLS or SSL is mandatory.
+disable_plaintext_auth = yes
 
 # Performance Tuning. Reference:
 #   http://wiki.dovecot.org/LoginProcess

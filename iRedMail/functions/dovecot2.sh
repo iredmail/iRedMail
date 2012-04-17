@@ -103,9 +103,8 @@ dovecot2_config()
     perl -pi -e 's#PH_GLOBAL_SIEVE_FILE#$ENV{DOVECOT_GLOBAL_SIEVE_FILE}#' ${DOVECOT_CONF}
 
     # SSL.
-    perl -pi -e 's#PH_ENABLE_SSL#yes#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_SSL_CERT#<$ENV{SSL_CERT_FILE}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_SSL_KEY#<$ENV{SSL_KEY_FILE}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_SSL_CERT#$ENV{SSL_CERT_FILE}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_SSL_KEY#$ENV{SSL_KEY_FILE}#' ${DOVECOT_CONF}
 
 
     # Generate dovecot quota warning script.

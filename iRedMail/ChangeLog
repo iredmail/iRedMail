@@ -1,4 +1,6 @@
 iRedMail-0.8.0-beta4:
+    * All clients are forced to use IMAPS and POPS (via STARTTLS).
+    * Drop support for Dovecot-1.1. At least Dovecot-1.2 is required.
     * Fixed:
         + DEBUG=NO in conf/global breaks postfix installation on FreeBSD.
 
