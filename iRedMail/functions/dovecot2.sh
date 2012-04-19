@@ -146,6 +146,7 @@ dovecot2_config()
 
         backup_file ${DOVECOT_MYSQL_CONF}
         cp -f ${SAMPLE_DIR}/dovecot/dovecot-sql.conf ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's/^#(iterate_.*)/${1}/' ${DOVECOT_MYSQL_CONF}
 
         perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER#$ENV{MYSQL_SERVER}#' ${DOVECOT_MYSQL_CONF}
@@ -164,7 +165,7 @@ dovecot2_config()
         else
             cp -f ${SAMPLE_DIR}/dovecot/dovecot-sql.conf ${DOVECOT_PGSQL_CONF}
         fi
-
+        perl -pi -e 's/^#(iterate_.*)/${1}/' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_SQL_DRIVER#pgsql#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER#$ENV{PGSQL_SERVER}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#' ${DOVECOT_PGSQL_CONF}
