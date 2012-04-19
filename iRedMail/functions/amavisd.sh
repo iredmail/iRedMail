@@ -390,12 +390,15 @@ amavisd_config_general()
 #########################
 # Quarantine VIRUS mails.
 #
-# Quarantine VIRUS into local file system. Default is 'virus-quarantine'.
 #\$virus_quarantine_to     = 'virus-quarantine';
-
-# Quarantine method. How to store VIRUS mail body. Default is 'local:virus-%m'.
-# VIRUS is quarantined into local file system by default.
 #\$virus_quarantine_method = 'sql:';
+
+#########################
+# Quarantine BANNED mails.
+#
+#\$banned_files_quarantine_method = 'sql:';
+#\$banned_quarantine_to = 'banned-quarantine';
+
 
 # Modify email subject, add '\$sa_spam_subject_tag'.
 #   0:  disable

@@ -1,4 +1,6 @@
 iRedMail-0.8.0-beta4:
+    * Add new value of enabledService: doveadm. Required by command doveadm
+      provided by Dovecot-2.
     * All clients are forced to use IMAPS and POPS (via STARTTLS).
     * Drop support for Dovecot-1.1. At least Dovecot-1.2 is required.
     * Fixed:

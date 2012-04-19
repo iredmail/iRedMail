@@ -230,6 +230,8 @@ cn: ${USERNAME}
 sn: ${USERNAME}
 givenName: ${USERNAME}
 uid: ${USERNAME}
+enabledService: internal
+enabledService: doveadm
 enabledService: mail
 enabledService: pop3
 enabledService: pop3secured
@@ -247,7 +249,6 @@ enabledService: senderbcc
 enabledService: recipientbcc
 enabledService: shadowaddress
 enabledService: displayedInGlobalAddressBook
-enabledService: internal
 ${LDIF_PUREFTPD_USER}
 EOF
 }
