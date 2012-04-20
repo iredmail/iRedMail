@@ -5,6 +5,9 @@ iRedMail-0.8.0-beta4:
     * Drop support for Dovecot-1.1. At least Dovecot-1.2 is required.
     * Fixed:
         + DEBUG=NO in conf/global breaks postfix installation on FreeBSD.
+    * Package update:
+        + iRedAdmin -> 0.1.7. It now works with PostgreSQL.
+        + iRedAPD -> 1.3.7. It now works with PostgreSQL.
 
 iRedMail-0.8.0-beta3:
     * Enable PostgreSQL support on FreeBSD, RHEL/CentOS 6.
