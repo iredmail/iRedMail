@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+# Author:   Zhang Huangbin (zhb _at_ iredmail.org)
 # Purpose:  Install & config necessary packages for iRedAdmin.
 
 #---------------------------------------------------------------------
@@ -28,16 +28,6 @@ iredadmin_config()
     # Backup database.
     export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${IREDADMIN_DB_NAME}"
     export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${IREDADMIN_DB_NAME}"
-
-    # Create a low privilege user as httpd daemon user.
-    if [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
-        pw useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -n ${IREDADMIN_HTTPD_USER}
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        groupadd ${IREDADMIN_HTTPD_GROUP}
-        useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_USER} 2>/dev/null
-    else
-        useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} ${IREDADMIN_HTTPD_GROUP}
-    fi
 
     if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"SUSE" ]; then
         ECHO_DEBUG "Enable apache module: wsgi."

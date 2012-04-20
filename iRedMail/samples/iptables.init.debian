@@ -30,7 +30,7 @@
 #
 # This init.d script is used to control iptables, based on
 # /etc/init.d/iptables on Red Hat Enterprise Linux 5.3, modified
-# by Zhang Huangbin (zhb(at)iredmail.org), iRedMail project
+# by Zhang Huangbin (zhb _at_ iredmail.org), iRedMail project
 # (http://www.iredmail.org/).
 #
 

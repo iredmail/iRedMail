@@ -98,7 +98,7 @@ else
 fi
 
 # User/Group: vmail. We will export vmail uid/gid here.
-. ${FUNCTIONS_DIR}/user_vmail.sh
+. ${FUNCTIONS_DIR}/system_accounts.sh
 
 . ${FUNCTIONS_DIR}/apache_php.sh
 . ${FUNCTIONS_DIR}/openldap.sh
@@ -139,7 +139,7 @@ ECHO_INFO "---- Start iRedMail Configurations ----"
 check_status_before_run gen_pem_key
 
 # User/Group: vmail
-check_status_before_run adduser_vmail
+check_status_before_run add_required_users
 
 # Apache & PHP.
 check_status_before_run apache_php_config

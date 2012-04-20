@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+# Author:   Zhang Huangbin (zhb _at_ iredmail.org)
 # Purpose:  Install & config necessary packages for iRedAPD.
 
 #---------------------------------------------------------------------
@@ -25,16 +25,6 @@
 iredapd_config()
 {
     ECHO_INFO "Configure iRedAPD (postfix policy daemon)."
-
-    # Create a low privilege user as daemon user.
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" -n ${IREDAPD_DAEMON_USER}
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        groupadd ${IREDAPD_DAEMON_GROUP}
-        useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDAPD_DAEMON_GROUP} ${IREDAPD_DAEMON_USER} 2>/dev/null
-    else
-        useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" ${IREDAPD_DAEMON_USER}
-    fi
 
     # Extract source tarball.
     cd ${MISC_DIR}

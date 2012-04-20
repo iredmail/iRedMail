@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
 
-# Author: Zhang Huangbin <zhb(at)iredmail.org>
+# Author: Zhang Huangbin <zhb _at_ iredmail.org>
 
 # -------------------------------------------------------
 # ---------------- User/Group: vmail --------------------
 # -------------------------------------------------------
-adduser_vmail()
+add_user_vmail()
 {
-    ECHO_INFO "Configure User/Group: vmail."
+    ECHO_DEBUG "Create HOME folder for vmail user."
 
     homedir="$(dirname $(echo ${VMAIL_USER_HOME_DIR} | sed 's#/$##'))"
     [ -L ${homedir} ] && rm -f ${homedir}
     [ -d ${homedir} ] || mkdir -p ${homedir}
     [ -d ${STORAGE_BASE_DIR}/${STORAGE_NODE} ] || mkdir -p ${STORAGE_BASE_DIR}/${STORAGE_NODE}
 
-    ECHO_DEBUG "Add user/group: vmail."
+    ECHO_DEBUG "Create system user/group: vmail:vmail."
 
     # It will create a group with the same name as vmail user name.
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
@@ -36,8 +36,6 @@ adduser_vmail()
     if [ -d ${VMAIL_USER_HOME_DIR} ]; then
         chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${VMAIL_USER_HOME_DIR}
         chmod -R 0700 ${VMAIL_USER_HOME_DIR}
-    else
-        :
     fi
 
     ECHO_DEBUG "Create directory to store user sieve rule files: ${SIEVE_DIR}."
@@ -53,5 +51,47 @@ Mail Storage:
 
 EOF
 
-    echo 'export status_adduser_vmail="DONE"' >> ${STATUS_FILE}
+    echo 'export status_add_user_vmail="DONE"' >> ${STATUS_FILE}
+}
+
+add_user_iredadmin()
+{
+    ECHO_DEBUG "Create system user: iredadmin."
+
+    # Low privilege user used to run iRedAdmin.
+    if [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
+        pw useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -n ${IREDADMIN_HTTPD_USER}
+    elif [ X"${DISTRO}" == X"SUSE" ]; then
+        groupadd ${IREDADMIN_HTTPD_GROUP}
+        useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_USER} 2>/dev/null
+    else
+        useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} ${IREDADMIN_HTTPD_GROUP}
+    fi
+
+    echo 'export status_add_user_iredadmin="DONE"' >> ${STATUS_FILE}
+}
+
+add_user_iredapd()
+{
+    ECHO_DEBUG "Create system user: iredapd."
+
+    # Low privilege user used to run iRedAPD daemon.
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        pw useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" -n ${IREDAPD_DAEMON_USER}
+    elif [ X"${DISTRO}" == X"SUSE" ]; then
+        groupadd ${IREDAPD_DAEMON_GROUP}
+        useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDAPD_DAEMON_GROUP} ${IREDAPD_DAEMON_USER} 2>/dev/null
+    else
+        useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" ${IREDAPD_DAEMON_USER}
+    fi
+
+    echo 'export status_add_user_iredapd="DONE"' >> ${STATUS_FILE}
+}
+
+add_required_users()
+{
+    ECHO_INFO "Create required system accounts: vmail, iredapd, iredadmin."
+    check_status_before_run add_user_vmail
+    check_status_before_run add_user_iredadmin
+    check_status_before_run add_user_iredapd
 }

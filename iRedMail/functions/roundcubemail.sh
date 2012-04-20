@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Author: Zhang Huangbin <zhb(at)iredmail.org>
+# Author: Zhang Huangbin <zhb _at_ iredmail.org>
 
 # -----------------------
 # Roundcube.

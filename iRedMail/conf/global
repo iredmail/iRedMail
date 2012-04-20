@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Author:   Zhang Huangbin (zhb(at)iredmail.org)
+# Author:   Zhang Huangbin (zhb _at_ iredmail.org)
 
 #---------------------------------------------------------------------
 # This file is part of iRedMail, which is an open source mail server
@@ -59,8 +59,7 @@ export AMAVISD_SERVER='127.0.0.1'
 # For managesieve service and software.
 export USE_MANAGESIEVE='YES'    # Use managesieve service.
 
-# vmail user. uid and gid should be export after user added. Reference:
-# functions/user_vmail.sh
+# vmail user. uid and gid should be export after user added.
 export VMAIL_USER_NAME='vmail'
 export VMAIL_GROUP_NAME='vmail'
 export VMAIL_DB_ADMIN_USER="${VMAIL_USER_NAME}admin"
