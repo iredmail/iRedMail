@@ -355,34 +355,29 @@ EOF
     ############
     # iRedAPD.
     #
-    if [ X"${USE_IREDAPD}" == X"YES" ]; then
-        # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
-        # RC script ready in early stage.
+    # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
+    # RC script ready in early stage.
 
-        [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH} python-psycopg2${PKG_ARCH}"
-        [ X"${DISTRO}" == X"SUSE" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
-        [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && ALL_PKGS="${ALL_PKGS} python-ldap python-psycopg2 python-mysqldb"
-    fi
+    [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH} python-psycopg2${PKG_ARCH}"
+    [ X"${DISTRO}" == X"SUSE" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
+    [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && ALL_PKGS="${ALL_PKGS} python-ldap python-psycopg2 python-mysqldb"
+    [ X"${DISTRO}" == X'GENTOO' ] && ALL_PKGS="${ALL_PKGS} python-ldap"
 
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2${PKG_ARCH} python-webpy.noarch MySQL-python${PKG_ARCH} mod_wsgi${PKG_ARCH}"
-        [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH}"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-mysql python-xml"
 
         # Note: Web.py will be installed locally with command 'easy_install'.
         ALL_PKGS="${ALL_PKGS} python-distribute"
-        [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-mysqldb python-jinja2 python-netifaces python-webpy"
-        [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} jinja webpy mysql-python mod_wsgi"
-        [ X"${USE_IREDAPD}" != "YES" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
 
         gentoo_add_use_flags 'dev-python/jinja' 'examples i18n vim-syntax'
         # Don't use python-3
