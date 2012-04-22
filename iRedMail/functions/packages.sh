@@ -48,7 +48,7 @@ install_all()
         ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
     elif [ X"${DISTRO}" == X"GENTOO" ]; then
         ENABLED_SERVICES="syslog-ng ${ENABLED_SERVICES}"
-        gentoo_add_use_flags 'net-nds/openldap' 'crypt ipv6 ssl tcpd overlays perl sasl syslog'
+        gentoo_add_use_flags 'net-nds/openldap' 'crypt ipv6 ssl tcpd -overlays perl sasl syslog'
         gentoo_add_use_flags 'dev-db/mysql' 'berkdb community perl ssl big-tables cluster'
         gentoo_add_use_flags 'dev-db/postgresql-server' 'nls pam doc perl python xml'
     fi

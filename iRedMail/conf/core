@@ -362,7 +362,7 @@ enable_service_rh()
     for i in $services; do
         if [ -x /etc/init.d/$i ]; then
             ECHO_DEBUG "Enable service: $i."
-            /sbin/chkconfig --level 2345 $i on
+            /sbin/chkconfig --level 345 $i on
         fi
     done
 }
@@ -373,7 +373,7 @@ disable_service_rh()
     for i in $services; do
         if [ -x /etc/init.d/$i ]; then
             ECHO_DEBUG "Disable service: $i."
-            /sbin/chkconfig --level 2345 $i off
+            /sbin/chkconfig --level 345 $i off
         fi
     done
 }
