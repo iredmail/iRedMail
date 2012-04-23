@@ -321,6 +321,7 @@ EOF
         gentoo_add_use_flags 'mail-filter/amavisd-new' 'dkim ldap mysql postgres razor snmp spamassassin'
         gentoo_add_use_flags 'mail-filter/spamassassin' 'berkdb ipv6 ssl doc ldap mysql postgres sqlite'
         gentoo_add_use_flags 'app-antivirus/clamav' 'bzip2 iconv ipv6'
+        gentoo_add_use_flags 'net-analyzer/net-snmp' 'bzip2 ipv6 ssl tcpd zlib perl'
     fi
 
     # SPF verification.
