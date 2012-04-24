@@ -234,9 +234,12 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
 
         # Linux Mint support
+        # - 13 (maya) based on Ubuntu 12.04
         # - 12 (lisa) based on Ubuntu 11.10
         if [ X"${DISTRO_CODENAME}" == X"lisa" ]; then
             export DISTRO_CODENAME="oneiric"
+        elif [ X"${DISTRO_CODENAME}" == X"maya" ]; then
+            export DISTRO_CODENAME="precise"
         fi
 
         # Support PGSQL backend on Ubuntu 11.10 and later releases

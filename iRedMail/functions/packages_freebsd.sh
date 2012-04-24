@@ -714,7 +714,7 @@ EOF
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 cd /usr/ports/${i} && \
                     ECHO_INFO "Installing port: ${i} ..."
-                    echo "export status_installing_port_${portname}='processing'" >> ${STATUS_FILE}
+                    echo "export status_install_port_${portname}='processing'" >> ${STATUS_FILE}
                     make clean && make install clean
 
                     if [ X"$?" == X"0" ]; then

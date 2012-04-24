@@ -216,9 +216,9 @@ cleanup_start_postfix_now()
             fi
 
             # Start/Restart necessary services.
-            for i in ${ENABLED_SERVICES}
+            for srv in ${ENABLED_SERVICES}
             do
-                service_control ${i} restart
+                service_control ${srv} restart
             done
             export POSTFIX_STARTED='YES'
             ;;
@@ -460,7 +460,7 @@ EOF
     fi
 
     cat <<EOF
-*   # for i in ${ENABLED_SERVICES}; do ${DIR_RC_SCRIPTS}/\${i} restart; done
+*   # for srv in ${ENABLED_SERVICES}; do ${DIR_RC_SCRIPTS}/\${srv} restart; done
 *
 EOF
 fi
