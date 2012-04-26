@@ -145,7 +145,10 @@ EOF
     # SSL
     #
     ECHO_DEBUG "Set correct SSL Cert/Key file location."
-    if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" ]; then
+    if [ X"${DISTRO}" == X"RHEL" \
+        -o X"${DISTRO}" == X'FREEBSD' \
+        -o X"${DISTRO}" == X'OPENBSD' \
+        ]; then
         perl -pi -e 's#^(SSLCertificateFile)(.*)#${1} $ENV{SSL_CERT_FILE}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(SSLCertificateKeyFile)(.*)#${1} $ENV{SSL_KEY_FILE}#' ${HTTPD_SSL_CONF}
 
@@ -299,15 +302,31 @@ Disallow: /awstats
 Disallow: /iredadmin
 EOF
 
-    echo "${HTTPD_USER}: root" >> ${POSTFIX_FILE_ALIASES}
-    postalias hash:${POSTFIX_FILE_ALIASES} &>/dev/null
+    if [ X"${DISTRO}" != X'OPENBSD' ]; then
+        echo "${HTTPD_USER}: root" >> ${POSTFIX_FILE_ALIASES}
+        postalias hash:${POSTFIX_FILE_ALIASES} &>/dev/null
+    fi
+
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        echo 'httpd_flags="-DSSL -u"' >> ${RC_CONF_LOCAL}
+    fi
+
     # --------------------------
     # PHP Setting.
     # --------------------------
     backup_file ${PHP_INI}
 
     # FreeBSD: Copy sample file.
-    [ X"${DISTRO}" == X"FREEBSD" ] && cp -f /usr/local/etc/php.ini-production ${PHP_INI}
+    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+        cp -f /usr/local/etc/php.ini-production ${PHP_INI}
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ln -s /var/www/conf/modules.sample/php-${PHP_VERSION}.conf /var/www/conf/modules/php.conf
+
+        # Enable Apache modules
+        for module in fileinfo bz2 imap ldap mcrypt mysql mysqli pgsql pspell gd; do
+            ln -s /etc/php-${PHP_VERSION}.sample/${module}.ini /etc/php-${PHP_VERSION}/${module}.ini
+        done
+    fi
 
     #ECHO_DEBUG "Setting error_reporting to 'E_ERROR': ${PHP_INI}."
     #perl -pi -e 's#^(error_reporting.*=)#${1} E_ERROR;#' ${PHP_INI}
@@ -327,6 +346,7 @@ EOF
 
     ECHO_DEBUG "Disable php extension: suhosin. ${PHP_INI}."
     perl -pi -e 's/^(suhosin.session.encrypt.*=)/${1} Off;/' ${PHP_INI}
+    perl -pi -e 's/^;(suhosin.session.encrypt.*=)/${1} Off;/' ${PHP_INI}
 
     # Set date.timezone. Required by PHP-5.3.
     grep '^date.timezone' ${PHP_INI} >/dev/null

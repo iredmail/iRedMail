@@ -87,6 +87,8 @@ elif [ X"${DISTRO}" == X"UBUNTU" -a X"${DISTRO_CODENAME}" == X"lucid" ]; then
     PKGMISC='MD5.ubuntu.lucid'
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     PKGMISC='MD5.misc MD5.opensuse'
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    PKGMISC='MD5.openbsd'
 else
     PKGMISC='MD5.misc'
 fi
@@ -149,8 +151,13 @@ check_md5()
         md5file="/tmp/check_md5_tmp.${RANDOM}$RANDOM}"
         echo -e "${MD5LIST}" > ${md5file}
         cat ${PKGMISC} >> ${md5file}
-        md5sum -c ${md5file} |grep 'FAILED'
-        RETVAL="$?"
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            md5 -c ${md5file} |grep 'FAILED'
+            RETVAL="$?"
+        else
+            md5sum -c ${md5file} |grep 'FAILED'
+            RETVAL="$?"
+        fi
         rm -f ${md5file} 2>/dev/null
 
         if [ X"${RETVAL}" == X"0" ]; then
@@ -299,7 +306,7 @@ elif [ X"${DISTRO}" == X'GENTOO' ]; then
 fi
 
 check_status_before_run fetch_misc && \
-check_md5 && \
+check_status_before_run check_md5 && \
 check_pkg ${BIN_DIALOG} ${PKG_DIALOG} && \
 echo_end_msg && \
 echo 'export status_get_all="DONE"' >> ${STATUS_FILE}

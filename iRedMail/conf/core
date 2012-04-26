@@ -157,6 +157,7 @@ check_pkg()
     done
 
     if [ X"${HAS_CMD}" != X'YES' ]; then
+        ECHO_INFO "Install package: ${pkg}"
         eval ${install_pkg} ${pkg}
         if [ X"$?" != X"0" ]; then
             ECHO_ERROR "Please install package ${pkg} first." && exit 255
@@ -326,15 +327,15 @@ hash_maildir()
 
     # Different maildir style: hashed, normal.
     if [ X"${MAILDIR_STYLE}" == X"hashed" ]; then
-        length="$(echo ${username} | wc -L)"
         str1="$(echo ${username} | cut -c1)"
         str2="$(echo ${username} | cut -c2)"
         str3="$(echo ${username} | cut -c3)"
 
-        if [ X"${length}" == X"1" ]; then
+        if [ X"${username}" == X"${str1}" ]; then
+            # Username has only one character
             str2="${str1}"
             str3="${str1}"
-        elif [ X"${length}" == X"2" ]; then
+        elif [ X"${username}" == X"${str1}${str2}" ]; then
             str3="${str2}"
         else
             :
@@ -443,7 +444,7 @@ gen_md5_passwd()
 
 gen_ldap_passwd()
 {
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
         SLAPPASSWD='/usr/local/sbin/slappasswd'
     else
         SLAPPASSWD='/usr/sbin/slappasswd'
@@ -643,6 +644,28 @@ gentoo_add_make_conf()
     fi
 }
 
+enable_service_openbsd()
+{
+    # USAGE: enable_service_openbsd flag value
+    # For example: enable_service_openbsd sendmail_flags ''
+    [ -f ${RC_CONF_LOCAL} ] || touch ${RC_CONF_LOCAL}
+    if [ X"$#" == X'2' ]; then
+        flag="${1}"
+        value="${2}"
+        comment_mark="# ${PROG_NAME}-${flag}"
+        if ! grep "^${comment_mark}$" ${RC_CONF_LOCAL} &>/dev/null; then
+            ECHO_DEBUG "Add flag in ${RC_CONF_LOCAL}: ${flag}='${value}'"
+            echo "${comment_mark}" >> ${RC_CONF_LOCAL}
+            echo "${flag}='${value}'" >> ${RC_CONF_LOCAL}
+        else
+            ECHO_DEBUG "Skip adding flag in ${RC_CONF_LOCAL}: ${pkg}='${value}'"
+        fi
+    fi
+}
+disable_service_openbsd()
+{
+    :
+}
 enable_service_freebsd()
 {
     :

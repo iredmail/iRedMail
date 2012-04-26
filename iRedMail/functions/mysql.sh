@@ -31,9 +31,12 @@ mysql_initialize()
 
     ECHO_DEBUG "Starting MySQL."
 
-    # Gentoo: Initial MySQL database first
-    [ X"${DISTRO}" == X"GENTOO" ] && \
+    # Gentoo, OpenBSD: Initial MySQL database first
+    if [ X"${DISTRO}" == X"GENTOO" ]; then
         /usr/bin/mysql_install_db &>/dev/null
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        /usr/local/bin/mysql_install_db &>/dev/null
+    fi
 
     # FreeBSD: Start mysql when system start up.
     # Warning: We must have 'mysql_enable=YES' before start/stop mysql daemon.

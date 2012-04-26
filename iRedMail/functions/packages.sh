@@ -25,6 +25,7 @@ install_all()
     ALL_PKGS=''
     ENABLED_SERVICES=''
     DISABLED_SERVICES=''
+    PKG_SCRIPTS=''  # OpenBSD only
 
     ###########################
     # Enable syslog or rsyslog.
@@ -72,6 +73,10 @@ install_all()
         elif [ X"${DISTRO}" == X"GENTOO" ]; then
             ALL_PKGS="${ALL_PKGS} openldap mysql"
 
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            ALL_PKGS="${ALL_PKGS} openldap-server openldap-client mysql-server mysql-client"
+            PKG_SCRIPTS="${PKG_SCRIPTS} ${LDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
+
         fi
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # MySQL server & client.
@@ -97,6 +102,10 @@ install_all()
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} mysql mod_auth_mysql"
 
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
+            PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
+
         fi
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
@@ -117,6 +126,10 @@ install_all()
 
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server mod_auth_pgsql"
+
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-client postgresql-contrib"
+            PKG_SCRIPTS="${PKG_SCRIPTS} ${PGSQL_RC_SCRIPT_NAME}"
         fi
     fi
 
@@ -162,6 +175,9 @@ install_all()
         gentoo_add_make_conf 'APACHE2_MPMS' 'prefork'
 
         gentoo_add_use_flags 'dev-lang/php' 'berkdb bzip2 cli crypt ctype fileinfo filter hash iconv ipv6 json nls phar posix readline session simplexml ssl tokenizer unicode xml zlib apache2 calendar -cdb cgi cjk curl curlwrappers doc flatfile fpm ftp gd gmp imap inifile intl kerberos ldap ldap-sasl mhash mysql mysqli mysqlnd odbc pdo postgres snmp soap sockets spell sqlite sqlite3 suhosin tidy truetype wddx xmlreader xmlrpc xmlwriter xpm xsl zip'
+
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-ldap php-mcrypt php-mysql php-mysqli php-pgsql php-gd"
     fi
 
     ###############
@@ -179,6 +195,15 @@ install_all()
         ALL_PKGS="${ALL_PKGS} postfix"
         #gentoo_unmask_package 'mail-mta/ssmtp'
         gentoo_add_use_flags 'mail-mta/postfix' 'ipv6 pam ssl cdb dovecot-sasl hardened ldap ldap-bind mbox mysql postgres sasl'
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        PKG_SCRIPTS="${PKG_SCRIPTS} ${POSTFIX_RC_SCRIPT_NAME}"
+        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+            ALL_PKGS="${ALL_PKGS} postfix--ldap"
+        elif [ X"${BACKEND}" == X'MYSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} postfix--mysql"
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} postfix--pgsql"
+        fi
     fi
 
     # Policyd.
@@ -241,9 +266,13 @@ EOF
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} policyd"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # No port available.
+        :
     fi
 
     # Dovecot.
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${DOVECOT_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
         if [ X"${DISTRO_VERSION}" == X"5" ]; then
             ALL_PKGS="${ALL_PKGS} dovecot${PKG_ARCH} dovecot-sieve${PKG_ARCH} dovecot-managesieve${PKG_ARCH}"
@@ -283,9 +312,21 @@ EOF
         ALL_PKGS="${ALL_PKGS} dovecot"
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
         gentoo_add_use_flags 'net-mail/dovecot' 'bzip2 ipv6 maildir pam ssl zlib caps doc kerberos ldap managesieve mbox mdbox mysql postgres sdbox sieve sqlite suid'
-    fi
 
-    ENABLED_SERVICES="${ENABLED_SERVICES} ${DOVECOT_RC_SCRIPT_NAME}"
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
+        PKG_SCRIPTS="${PKG_SCRIPTS} ${DOVECOT_RC_SCRIPT_NAME}"
+
+        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot-ldap dovecot-mysql"
+        elif [ X"${BACKEND}" == X'MYSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot-mysql"
+        elif [ X"${BACKEND}" == X'OPENLDAP' ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot-postgresql"
+        fi
+
+        DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
+    fi
 
     # Amavisd-new & ClamAV & Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} ${CLAMAV_CLAMD_RC_SCRIPT_NAME}"
@@ -322,6 +363,10 @@ EOF
         gentoo_add_use_flags 'mail-filter/spamassassin' 'berkdb ipv6 ssl doc ldap mysql postgres sqlite'
         gentoo_add_use_flags 'app-antivirus/clamav' 'bzip2 iconv ipv6'
         gentoo_add_use_flags 'net-analyzer/net-snmp' 'bzip2 ipv6 ssl tcpd zlib perl'
+
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ALL_PKGS="${ALL_PKGS} amavisd-new p5-ldap p5-Mail-SpamAssassin clamav"
+        PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
 
     # SPF verification.
@@ -338,6 +383,9 @@ EOF
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} Mail-SPF"
+
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ALL_PKGS="${ALL_PKGS} p5-Mail-SPF"
     fi
 
     # phpPgAdmin
@@ -350,6 +398,29 @@ EOF
             ALL_PKGS="${ALL_PKGS} phppgadmin"
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} phppgadmin"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            ALL_PKGS="${ALL_PKGS} phpPgAdmin"
+        fi
+    fi
+
+    # Roundcube
+    if [ X"${USE_RCM}" == X"YES" ]; then
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            ALL_PKGS="${ALL_PKGS} roundcubemail"
+        fi
+    fi
+
+    # phpMyAdmin
+    if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            ALL_PKGS="${ALL_PKGS} phpMyAdmin"
+        fi
+    fi
+
+    # phpLDAPadmin
+    if [ X"${USE_PHPLDAPADMIN}" == X"YES" ]; then
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            ALL_PKGS="${ALL_PKGS} phpldapadmin"
         fi
     fi
 
@@ -359,10 +430,18 @@ EOF
     # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
     # RC script ready in early stage.
 
-    [ X"${DISTRO}" == X"RHEL" ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH} python-psycopg2${PKG_ARCH}"
-    [ X"${DISTRO}" == X"SUSE" ] && ALL_PKGS="${ALL_PKGS} python-ldap"
-    [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && ALL_PKGS="${ALL_PKGS} python-ldap python-psycopg2 python-mysqldb"
-    [ X"${DISTRO}" == X'GENTOO' ] && ALL_PKGS="${ALL_PKGS} python-ldap"
+    if [ X"${DISTRO}" == X"RHEL" ]; then
+        ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH} python-psycopg2${PKG_ARCH}"
+    elif [ X"${DISTRO}" == X"SUSE" ]; then
+        ALL_PKGS="${ALL_PKGS} python-ldap"
+    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        ALL_PKGS="${ALL_PKGS} python-ldap python-psycopg2 python-mysqldb"
+    elif [ X"${DISTRO}" == X'GENTOO' ]; then
+        ALL_PKGS="${ALL_PKGS} python-ldap"
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ALL_PKGS="${ALL_PKGS} py-ldap py-psycopg2"
+        PKG_SCRIPTS="${PKG_SCRIPTS} iredapd"
+    fi
 
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
@@ -383,6 +462,8 @@ EOF
         gentoo_add_use_flags 'dev-python/jinja' 'examples i18n vim-syntax'
         # Don't use python-3
         gentoo_mask_package '<=dev-lang/python-3.0'
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-mysql"
     fi
 
     #############
@@ -398,16 +479,24 @@ EOF
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
             gentoo_add_use_flags 'www-misc/awstats' 'ipv6 geoip'
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            # No port available.
+            :
         fi
     fi
 
     #### Fail2ban ####
     if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
-        ALL_PKGS="${ALL_PKGS} fail2ban"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${FAIL2BAN_RC_SCRIPT_NAME}"
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            # No port available.
+            :
+        else
+            ALL_PKGS="${ALL_PKGS} fail2ban"
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${FAIL2BAN_RC_SCRIPT_NAME}"
 
-        if [ X"${DISTRO}" == X"RHEL" ]; then
-            DISABLED_SERVICES="${DISABLED_SERVICES} shorewall"
+            if [ X"${DISTRO}" == X"RHEL" ]; then
+                DISABLED_SERVICES="${DISABLED_SERVICES} shorewall"
+            fi
         fi
     fi
 
@@ -429,8 +518,9 @@ EOF
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} dos2unix logwatch"
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ALL_PKGS="${ALL_PKGS} bzip2"
     fi
-    #### End Misc packages & services ####
 
     # Disable Ubuntu firewall rules, we have iptables init script and rule file.
     [ X"${DISTRO}" == X"UBUNTU" ] && export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
@@ -462,6 +552,10 @@ EOF
         fi
 
         # Install all packages.
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            ECHO_INFO "PKG_PATH: ${PKG_PATH}"
+            ECHO_INFO "Installing packages:${ALL_PKGS}"
+        fi
         eval ${install_pkg} ${ALL_PKGS}
 
         if [ X"${DISTRO}" == X"SUSE" -a X"${USE_IREDADMIN}" == X"YES" ]; then
@@ -478,7 +572,15 @@ EOF
         eval ${enable_service} ${ENABLED_SERVICES} >/dev/null
 
         # Disable services.
-        eval ${disable_service} ${DISABLED_SERVICES} >/dev/null
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            echo "pkg_scripts='${PKG_SCRIPTS}'" >> ${RC_CONF_LOCAL}
+            ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
+            ln -sf /usr/local/bin/python2.7-2to3 /usr/local/bin/2to3
+            ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
+            ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
+        else
+            eval ${disable_service} ${DISABLED_SERVICES} >/dev/null
+        fi
 
         if [ X"${DISTRO}" == X"SUSE" ]; then
             eval ${disable_service} SuSEfirewall2_setup SuSEfirewall2_init >/dev/null

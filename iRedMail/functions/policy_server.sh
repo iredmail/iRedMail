@@ -23,11 +23,15 @@
 policy_server_config()
 {
     if [ X"${USE_POLICYD}" == X'YES' ]; then
-        . ${FUNCTIONS_DIR}/policyd.sh
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            :
+        else
+            . ${FUNCTIONS_DIR}/policyd.sh
 
-        ECHO_INFO "Configure Policyd (postfix policy server, version 1.8)."
-        check_status_before_run policyd_user
-        check_status_before_run policyd_config
+            ECHO_INFO "Configure Policyd (postfix policy server, version 1.8)."
+            check_status_before_run policyd_user
+            check_status_before_run policyd_config
+        fi
     fi
 
     if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then

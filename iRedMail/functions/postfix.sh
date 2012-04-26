@@ -28,6 +28,14 @@ postfix_config_basic()
 {
     ECHO_INFO "Configure Postfix."
 
+    # OpenBSD: Replace sendmail with Postfix
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        echo 'sendmail_flags=NO' >> ${RC_CONF_LOCAL}
+        /usr/local/sbin/postfix-enable &>/dev/null
+        perl -pi -e 's/(.*sendmail -L sm-msp-queue.*)/#${1}/' ${CRON_SPOOL_DIR}/root 
+        perl -pi -e 's/^(inet_protocols.*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+    fi
+
     backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
 
     ECHO_DEBUG "Enable chroot."
@@ -923,8 +931,10 @@ postfix_config_sasl()
     if [ X"${USE_CLUEBRINGER}" == X"YES" ]; then
         postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname"
         postconf -e smtpd_end_of_data_restrictions="check_policy_service inet:${CLUEBRINGER_BINDHOST}:${CLUEBRINGER_BINDPORT}"
-    else
+    elif [ X"${USE_POLICYD}" == X"YES" ]; then
         postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_policy_service inet:${POLICYD_BINDHOST}:${POLICYD_BINDPORT}"
+    else
+        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname"
     fi
 
     echo 'export status_postfix_config_sasl="DONE"' >> ${STATUS_FILE}

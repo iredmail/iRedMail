@@ -78,6 +78,7 @@ EOF
     cp -f ${SAMPLE_DIR}/iredmail.schema ${OPENLDAP_SCHEMA_DIR}
 
     # Copy amavisd schema.
+    # - On OpenBSD: package amavisd-new will copy schema file to /etc/openldap/schema
     if [ X"${DISTRO}" == X"RHEL" ]; then
         if [ X"${DISTRO_VERSION}" == X"6" ]; then
             amavisd_schema_file="$( eval ${LIST_FILES_IN_PKG} amavisd-new | grep '/LDAP.schema$')"
@@ -117,7 +118,10 @@ TLSCertificateKeyFile ${SSL_KEY_FILE}
 EOF
 
     # Load backend module. Required on Debian/Ubuntu.
-    if [ X"${OPENLDAP_VERSION}" == X"2.4" -a X"${DISTRO}" != X"SUSE" ]; then
+    if [ X"${OPENLDAP_VERSION}" == X"2.4" \
+        -a X"${DISTRO}" != X'SUSE' \
+        -a X"${DISTRO}" != X'OPENBSD' \
+        ]; then
         if [ X"${OPENLDAP_DEFAULT_DBTYPE}" == X"bdb" ]; then
             # bdb, Berkeley DB.
             cat >> ${OPENLDAP_SLAPD_CONF} <<EOF

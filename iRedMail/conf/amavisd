@@ -112,6 +112,23 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
 
     # Override location of command 'altermime'
     export ALTERMIME_BIN='/usr/local/bin/altermime'
+
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export AMAVISD_VERSION='2.7'
+    export AMAVISD_SYS_USER='_vscan'
+    export AMAVISD_SYS_GROUP='_vscan'
+
+    export AMAVISD_BIN='/usr/local/sbin/amavisd'
+    export AMAVISD_CONF='/etc/amavisd.conf'
+    export AMAVISD_DKIM_CONF='/etc/amavisd.conf'
+    export AMAVISD_LDAP_SCHEMA_NAME='amavisd.schema'
+    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
+
+    export AMAVISD_DKIM_DIR='/var/amavisd/dkim'
+
+    # Override location of command 'altermime'
+    export ALTERMIME_BIN='/usr/local/bin/altermime'
+
 fi
 
 if [ X"${AMAVISD_VERSION}" == X'2.7' ]; then

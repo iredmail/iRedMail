@@ -367,13 +367,13 @@ EOF
     fi
 
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_disable_selinux
-    check_status_before_run cleanup_remove_sendmail
+    [ X"${DISTRO}" != X'OPENBSD' ] && check_status_before_run cleanup_remove_sendmail
     check_status_before_run cleanup_remove_mod_python
     [ X"${KERNEL_NAME}" == X"Linux" ] && check_status_before_run cleanup_replace_iptables_rule
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
     check_status_before_run cleanup_backup_scripts
     [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
-    [ X"${DISTRO}" != X'GENTOO' ] && check_status_before_run cleanup_start_postfix_now
+    [ X"${DISTRO}" != X'GENTOO' -a X"${DISTRO}" != X'OPENBSD' ] && check_status_before_run cleanup_start_postfix_now
 
     # Start Postfix to deliver emails.
     [ X"${DISTRO}" == X'GENTOO' ] && ${DIR_RC_SCRIPTS}/postfix restart >/dev/null
@@ -403,7 +403,12 @@ EOF
     sendmail -t ${tip_recipient} < /tmp/.links.eml &>/dev/null && rm -f /tmp/.links.eml &>/dev/null
 
     # Don't execute 'cleanup_amavisd_preconfig' before sending emails.
-    [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'GENTOO' ] && check_status_before_run cleanup_amavisd_preconfig
+    if [ X"${DISTRO}" == X'GENTOO' \
+        -o X"${DISTRO}" == X'FREEBSD' \
+        -o X"${DISTRO}" == X'OPENBSD' \
+        ]; then
+        check_status_before_run cleanup_amavisd_preconfig
+    fi
 
     cat <<EOF
 ********************************************************************

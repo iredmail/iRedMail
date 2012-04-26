@@ -29,22 +29,27 @@ optional_components()
         check_status_before_run phppgadmin_install
 
     # Awstats.
-    [ X"${USE_AWSTATS}" == X"YES" ] && \
-        check_status_before_run awstats_config_basic && \
-        check_status_before_run awstats_config_weblog && \
-        check_status_before_run awstats_config_maillog && \
-        check_status_before_run awstats_config_crontab
+    if [ X"${DISTRO}" != X'OPENBSD' ]; then
+        [ X"${USE_AWSTATS}" == X"YES" ] && \
+            check_status_before_run awstats_config_basic && \
+            check_status_before_run awstats_config_weblog && \
+            check_status_before_run awstats_config_maillog && \
+            check_status_before_run awstats_config_crontab
+    fi
 
     # iRedAdmin.
-    [ X"${USE_IREDADMIN}" == X"YES" ] && \
+    [ X"${USE_IREDADMIN}" == X"YES" -a X"${DISTRO}" != X'OPENBSD' ] && \
         check_status_before_run iredadmin_config
 
     # iRedAPD.
-    [ X"${USE_IREDAPD}" == X"YES" ] && \
+    [ X"${USE_IREDAPD}" == X'YES' ] && \
         check_status_before_run iredapd_config
 
     # Fail2ban.
-    [ X"${USE_FAIL2BAN}" == X"YES" -a X"${DISTRO}" != X"FREEBSD" ] && \
+    [ X"${USE_FAIL2BAN}" == X'YES' \
+        -a X"${DISTRO}" != X'FREEBSD' \
+        -a X"${DISTRO}" != X'OPENBSD' \
+        ] && \
         check_status_before_run fail2ban_config
 
 }

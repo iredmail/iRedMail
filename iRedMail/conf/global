@@ -72,9 +72,6 @@ export VMAIL_DB_ADMIN_USER='vmailadmin'
 # Default virtual domain admin name without domain name (@example.com).
 export DOMAIN_ADMIN_NAME='postmaster'
 
-# Hostname.
-export HOSTNAME="$(hostname -f)"
-
 # ----------------------------------
 # You do *NOT* need to modify them.
 # ----------------------------------
@@ -87,11 +84,6 @@ export LC_ALL=C
 if [ X"${_DEBUG}" != X'YES' ]; then
     export _DEBUG='NO'
 fi
-
-# Genrate a random string.
-# Usage:
-#   str="$(${RANDOM_STRING})"
-export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9| (head -c $1 > /dev/null 2>&1 || head -c 30)'
 
 # Tools.
 export CONFIG_VIA_DIALOG="${DIALOG_DIR}/config_via_dialog.sh"
@@ -128,6 +120,19 @@ export LOGROTATE_DIR='/etc/logrotate.d'
 
 # Kernel name.
 export KERNEL_NAME="$(uname -s)"
+
+# Hostname.
+if [ X"${KERNEL_NAME}" == X'OpenBSD' ]; then
+    export HOSTNAME="$(hostname)"
+    export RANDOM_STRING='eval echo $RANDOM | md5'
+else
+    export HOSTNAME="$(hostname -f)"
+
+    # Genrate a random string.
+    # Usage:
+    #   str="$(${RANDOM_STRING})"
+    export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 30)'
+fi
 
 # command: dialog.
 export BIN_DIALOG="dialog"
@@ -301,6 +306,14 @@ elif [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
     if echo "${DISTRO_VERSION}" | grep '^7' &>/dev/null ; then
         export UNSUPPORTED_RELEASE='YES'
     fi
+elif [ X"${KERNEL_NAME}" == X'OpenBSD' ]; then
+    export DISTRO='OPENBSD'
+    export DISTRO_VERSION="$(uname -r)"
+
+    # Directory of RC scripts.
+    export DIR_RC_SCRIPTS='/etc/rc.d'
+
+    export RC_CONF_LOCAL='/etc/rc.conf.local'
 else
     # Not support *BSD and other distrobutions yet.
     echo "Error: Your OS is not supported yet."
@@ -550,6 +563,43 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
 
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export ENABLE_BACKEND_MYSQL='NO'
+    export ENABLE_BACKEND_PGSQL='NO'
+
+    # System user: root.
+    export SYS_ROOT_USER='root'
+    export SYS_ROOT_GROUP='wheel'
+
+    # Package management.
+    if [ X"${PKG_PATH}" == X"" ]; then
+        # Reference: http://www.openbsd.org/faq/faq15.html#Easy
+        export PKG_PATH="ftp://ftp.openbsd.org/pub/OpenBSD/$(uname -r)/packages/$(machine -a)/"
+    fi
+
+    # Package management.
+    export install_pkg='pkg_add -i'
+    export remove_pkg='pkg_delete'
+    export LIST_ALL_PKGS="pkg_info -a | awk '{print $1}'"
+    export LIST_FILES_IN_PKG='pkg_info -L'
+
+    # Service control.
+    export enable_service="enable_service_openbsd"
+    export disable_service="disable_service_openbsd"
+
+    # Syslog config: rsyslog.
+    export SYSLOG_CONF='/etc/syslog.conf'
+    export SYSLOG_POSTROTATE_CMD=''
+
+    # Crontab related.
+    export CRON_SPOOL_DIR='/var/cron/tabs'
+
+    # PF rule file.
+    export IPTABLES_CONFIG="/etc/pf.rules"
+
+    # Directory used to store SSL/TLS key/cert file.
+    export SSL_FILE_DIR="/etc/ssl"
+
 else
     # Not support yet.
     echo "Your distrobution is not supported yet."
@@ -557,8 +607,13 @@ else
 fi
 
 # Use a seperated directory to store iRedMail certs/keys.
-export SSL_CERT_DIR="${SSL_FILE_DIR}/certs"
-export SSL_KEY_DIR="${SSL_FILE_DIR}/private"
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export SSL_CERT_DIR="${SSL_FILE_DIR}"
+    export SSL_KEY_DIR="${SSL_FILE_DIR}"
+else
+    export SSL_CERT_DIR="${SSL_FILE_DIR}/certs"
+    export SSL_KEY_DIR="${SSL_FILE_DIR}/private"
+fi
 
 # SSL key.
 export OPENSSL_CONF="${SSL_FILE_DIR}/openssl.cnf"
@@ -588,7 +643,7 @@ export SSHD_CONFIG='/etc/ssh/sshd_config'
 export MYSQL_BACKUP_DATABASES=''
 
 # Command use to fetch source tarballs.
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
     # -i: Turns off interactive prompting during multiple file transfers.
     # -V: Disable verbose and progress
     FETCH_CMD='ftp -iV'

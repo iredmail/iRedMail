@@ -2,9 +2,8 @@
 
 # Author: Zhang Huangbin <zhb _at_ iredmail.org>
 
-# -------------------------------------------------------
-# ---------------- User/Group: vmail --------------------
-# -------------------------------------------------------
+# Add required system accounts
+
 add_user_vmail()
 {
     ECHO_DEBUG "Create HOME folder for vmail user."
@@ -19,6 +18,9 @@ add_user_vmail()
     # It will create a group with the same name as vmail user name.
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
         pw useradd -n ${VMAIL_USER_NAME} -s ${SHELL_NOLOGIN} -d ${VMAIL_USER_HOME_DIR} -m 2>/dev/null
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        groupadd ${VMAIL_GROUP_NAME}
+        useradd -d ${VMAIL_USER_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${VMAIL_GROUP_NAME} ${VMAIL_USER_NAME}
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         # Note: package 'postfix-mysql' will create vmail:vmail, with uid/gid=303.
         groupadd ${VMAIL_GROUP_NAME} 2>/dev/null
@@ -61,6 +63,9 @@ add_user_iredadmin()
     # Low privilege user used to run iRedAdmin.
     if [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
         pw useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -n ${IREDADMIN_HTTPD_USER}
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        groupadd ${IREDADMIN_HTTPD_GROUP} 2>/dev/null
+        useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_USER} 2>/dev/null
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         groupadd ${IREDADMIN_HTTPD_GROUP}
         useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_USER} 2>/dev/null
@@ -78,6 +83,9 @@ add_user_iredapd()
     # Low privilege user used to run iRedAPD daemon.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         pw useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" -n ${IREDAPD_DAEMON_USER}
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        groupadd ${IREDAPD_DAEMON_GROUP}
+        useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDAPD_DAEMON_GROUP} ${IREDAPD_DAEMON_USER} 2>/dev/null
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         groupadd ${IREDAPD_DAEMON_GROUP}
         useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDAPD_DAEMON_GROUP} ${IREDAPD_DAEMON_USER} 2>/dev/null

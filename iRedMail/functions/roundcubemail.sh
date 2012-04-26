@@ -10,7 +10,7 @@ rcm_install()
     ECHO_INFO "Configure Roundcube webmail."
 
     # FreeBSD: install via ports tree.
-    if [ X"${DISTRO}" != X"FREEBSD" ]; then
+    if [ X"${DISTRO}" != X"FREEBSD" -a X"${DISTRO}" != X'OPENBSD' ]; then
         cd ${MISC_DIR}
 
         # Extract source tarball.
@@ -51,9 +51,9 @@ Alias /roundcube "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
 EOF
 
     # Make Roundcube can be accessed via HTTPS.
-    perl -pi -e 's#(</VirtualHost>)#Alias /mail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#(</VirtualHost>)#Alias /webmail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#(</VirtualHost>)#Alias /roundcube "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^(</VirtualHost>)#Alias /mail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^(</VirtualHost>)#Alias /webmail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^(</VirtualHost>)#Alias /roundcube "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     # Redirect home page to webmail by default
     backup_file ${HTTPD_DOCUMENTROOT}/index.html

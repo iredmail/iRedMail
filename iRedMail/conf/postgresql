@@ -71,6 +71,17 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
     export PGSQL_DATA_DIR="${PGSQL_CONF_DIR}"
+
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export PGSQL_SYS_USER='_postgresql'
+    export PGSQL_SYS_GROUP='_postgresql'
+    export PGSQL_ROOT_USER='_postgresql'
+    export PGSQL_SYS_USER_HOME='/var/postgresql'
+
+    export PGSQL_CONF_DIR="${PGSQL_SYS_USER_HOME}/data"
+    export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
+    export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
+    export PGSQL_DATA_DIR="${PGSQL_CONF_DIR}"
 else
     export PGSQL_CONF_DIR="/etc/postgresql/${PGSQL_VERSION}/main"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
@@ -90,7 +101,7 @@ export PGSQL_SSL_KEY="${SSL_KEY_DIR}/iRedMail_PostgreSQL.key"
 # Commands
 export PGSQL_BIN_PG_DUMP='/usr/bin/pg_dump'
 export PGSQL_BIN_PG_DUMPALL='/usr/bin/pg_dumpall'
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+if [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'OPENBSD' ]; then
     export PGSQL_BIN_PG_DUMP='/usr/local/bin/pg_dump'
     export PGSQL_BIN_PG_DUMPALL='/usr/local/bin/pg_dumpall'
 fi

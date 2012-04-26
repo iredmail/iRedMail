@@ -30,6 +30,9 @@ export RCM_TARBALL="roundcubemail-${RCM_VERSION}.tar.gz"
 if [ X"${DISTRO}" == X"FREEBSD" ]; then
     export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcube"
     export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcubemail"
+    export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
 else
     export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcubemail-${RCM_VERSION}"
     export RCM_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/roundcubemail"
@@ -51,4 +54,4 @@ export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${RCM_DB}"
 # in the session record (and the client cookie if remember password is enabled).
 # please provide a string of exactly 24 chars.
 export tmp_rcm_des_key="$(${RANDOM_STRING})"
-export RCM_DES_KEY="$(echo ${tmp_rcm_des_key} | head -c 24)"
+export RCM_DES_KEY="$(echo ${tmp_rcm_des_key} | cut -c-24)"

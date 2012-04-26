@@ -43,7 +43,11 @@ export DOVECOT_LDA_PLUGINS='quota sieve autocreate'
 export DOVECOT_IMAP_PLUGINS='quota imap_quota autocreate'
 
 # Default quota type: maildir, dict:user::proxy::quotadict (quotadict).
-export DOVECOT_QUOTA_TYPE='dict:user::proxy::quotadict'
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export DOVECOT_QUOTA_TYPE='maildir'
+else
+    export DOVECOT_QUOTA_TYPE='dict:user::proxy::quotadict'
+fi
 
 # Do not starts with dot (.).
 export SIEVE_RULE_FILENAME='dovecot.sieve'
@@ -93,12 +97,12 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export DOVECOT_REALTIME_QUOTA_CONF='/usr/local/etc/dovecot/dovecot-used-quota.conf'
     export DOVECOT_SHARE_FOLDER_CONF='/usr/local/etc/dovecot/dovecot-share-folder.conf'
     export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
-fi
 
-# Override enabled plugins for dovecot-1.1.
-if [ X"${DOVECOT_VERSION}" == X"1.1" ]; then
-    export DOVECOT_LDA_PLUGINS='cmusieve quota'
-    export DOVECOT_IMAP_PLUGINS='quota imap_quota'
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export DOVECOT_USER='_dovecot'
+    export DOVECOT_GROUP='_dovecot'
+    export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
+
 fi
 
 # Log & logrotate files.
@@ -132,7 +136,7 @@ elif [ X"${BACKEND}" == X"PGSQL" ]; then
     export DOVECOT_REALTIME_QUOTA_SQLTYPE='pgsql'
 fi
 
-if [ X"${DOVECOT_VERSION}" == X"1.1" -o X"${DOVECOT_VERSION}" == X"1.2" ]; then
+if [ X"${DOVECOT_VERSION}" == X"1.2" ]; then
     export DOVECOT_PROTOCOLS="pop3 pop3s imap imaps managesieve"
 else
     export DOVECOT_PROTOCOLS="pop3 imap sieve"

@@ -42,6 +42,9 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         export USE_CLUEBRINGER='YES'
         export USE_POLICYD='NO'
     fi
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export USE_CLUEBRINGER='NO'
+    export USE_POLICYD='NO'
 fi
 
 if [ X"${USE_POLICYD}" == X'YES' ]; then

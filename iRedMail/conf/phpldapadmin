@@ -27,7 +27,7 @@ export PLA_TARBALL="phpldapadmin-${PLA_VERSION}.tgz"
 # Install phpLDAPadmin with source tarball.
 export PHPLDAPADMIN_USE_SOURCE='YES'
 
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+if [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'OPENBSD' ]; then
     # Install phpLDAPadmin via ports tree.
     export PHPLDAPADMIN_USE_SOURCE='NO'
 

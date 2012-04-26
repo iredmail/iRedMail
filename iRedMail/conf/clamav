@@ -25,19 +25,19 @@ export CLAMAV_GROUP='clamav'
 export CLAMAV_CLAMD_RC_SCRIPT_NAME='clamd'
 export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclamd'
 
+export CLAMD_CONF='/etc/clamd.conf'
+export FRESHCLAM_CONF='/etc/freshclam.conf'
+
+export CLAMD_LOGFILE='/var/log/clamav/clamd.log'
+export FRESHCLAM_LOGFILE='/var/log/clamav/freshclam.log'
+
 # Clamav.
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    export CLAMD_CONF='/etc/clamd.conf'
-
     # Freshclam.
-    export FRESHCLAM_CONF='/etc/freshclam.conf'
     export FRESHCLAM_INIT_FILE_SAMPLE="${SAMPLE_DIR}/freshclam.init"
 
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclam'
-
-    export CLAMD_CONF='/etc/clamd.conf'
-    export FRESHCLAM_CONF='/etc/freshclam.conf'
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLAMAV_CLAMD_RC_SCRIPT_NAME='clamav-daemon'
@@ -46,15 +46,14 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLAMD_CONF='/etc/clamav/clamd.conf'
     export FRESHCLAM_CONF='/etc/clamav/freshclam.conf'
 
-elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    export CLAMD_CONF='/etc/clamd.conf'
-    export FRESHCLAM_CONF='/etc/freshclam.conf'
-
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLAMD_CONF='/usr/local/etc/clamd.conf'
     export FRESHCLAM_CONF='/usr/local/etc/freshclam.conf'
-else
-    :
+
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export CLAMAV_USER='_clamav'
+    export CLAMAV_GROUP='_clamav'
+    export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclam'
 fi
 
 # Clamd.
@@ -66,8 +65,6 @@ if [ X"${DISTRO}" == X"GENTOO" -o X"${DISTRO}" == X"FREEBSD" ]; then
 else
     export CLAMD_LOCAL_SOCKET='/tmp/clamd.socket'   # Used to override default setting.
 fi
-export CLAMD_LOGFILE='/var/log/clamav/clamd.log'
-export FRESHCLAM_LOGFILE='/var/log/clamav/freshclam.log'
 
 # Freshclam.
 export FRESHCLAM_PID_FILE='/var/run/clamav/freshclam.pid'   # Used to override default setting.

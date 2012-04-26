@@ -149,17 +149,15 @@ EOF
     # Backend related settings.
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # Change backend.
-        sed -i.tmp -e "/\[general\]/,/\[/ s#\(^backend =\).*#\1 ldap#" settings.ini
+        perl -pi -e 's#^(backend.*=).*#${1} ldap#' settings.ini
 
         # Section [ldap].
         ECHO_DEBUG "Configure OpenLDAP backend related settings."
-        sed -i.tmp \
-            -e "/\[ldap\]/,/\[/ s#\(^uri =\).*#\1 ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}#" \
-            -e "/\[ldap\]/,/\[/ s#\(^basedn =\).*#\1 ${LDAP_BASEDN}#" \
-            -e "/\[ldap\]/,/\[/ s#\(^domainadmin_dn =\).*#\1 ${LDAP_ADMIN_BASEDN}#" \
-            -e "/\[ldap\]/,/\[/ s#\(^bind_dn =\).*#\1 ${LDAP_ADMIN_DN}#" \
-            -e "/\[ldap\]/,/\[/ s#\(^bind_pw =\).*#\1 ${LDAP_ADMIN_PW}#" \
-            settings.ini
+        perl -pi -e 's#^(uri.*=).*#${1} ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}#' settings.ini
+        perl -pi -e 's#^(basedn.*=).*#${1} ${LDAP_BASEDN}#' settings.ini
+        perl -pi -e 's#^(domainadmin_dn.*=).*#${1} ${LDAP_ADMIN_BASEDN}#' settings.ini
+        perl -pi -e 's#^(bind_dn.*=).*#${1} ${LDAP_ADMIN_DN}#' settings.ini
+        perl -pi -e 's#^(bind_pw.*=).*#${1} ${LDAP_ADMIN_PW}#' settings.ini
 
     elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
         ECHO_DEBUG "Configure MySQL related settings."

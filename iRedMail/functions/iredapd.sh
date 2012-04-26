@@ -50,6 +50,14 @@ iredapd_config()
     else
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
     fi
+
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        perl -pi -e 's#(.*)(/usr/bin/env bash)#${1}/usr/local/bin/bash#' ${DIR_RC_SCRIPTS}/iredapd
+        perl -pi -e 's#python#/usr/local/bin/python#' ${DIR_RC_SCRIPTS}/iredapd
+        perl -pi -e 's#(.*echo)(.*Starting.*)#${1} -n " iredapd"#' ${DIR_RC_SCRIPTS}/iredapd
+        perl -pi -e 's#(.*echo)(.*Stopping.*)#${1} -n " iredapd"#' ${DIR_RC_SCRIPTS}/iredapd
+    fi
+
     chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
     chmod +x ${IREDAPD_ROOT_DIR}/iredapd/src/iredapd.py
 

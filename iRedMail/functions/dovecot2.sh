@@ -37,6 +37,9 @@ dovecot2_config()
 
     # Base directory.
     perl -pi -e 's#PH_BASE_DIR#$ENV{DOVECOT_BASE_DIR}#' ${DOVECOT_CONF}
+    # base_dir is required on OpenBSD
+    [ X"${DISTRO}" == X'OPENBSD' ] && \
+        perl -pi -e 's/^#(base_dir.*)/${1}/' ${DOVECOT_CONF}
 
     # Provided services.
     export DOVECOT_PROTOCOLS
@@ -113,6 +116,9 @@ dovecot2_config()
     backup_file ${DOVECOT_QUOTA_WARNING_SCRIPT}
     rm -f ${DOVECOT_QUOTA_WARNING_SCRIPT} 2>/dev/null
     cp -f ${SAMPLE_DIR}/dovecot/dovecot2-quota-warning.sh ${DOVECOT_QUOTA_WARNING_SCRIPT}
+    if [ X"${DOVECOT_QUOTA_TYPE}" == X'maildir' ]; then
+        perl -pi -e 's#(.*)(-o.*plugin.*)#${1}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
+    fi
 
     export DOVECOT_DELIVER HOSTNAME
     perl -pi -e 's#PH_DOVECOT_DELIVER#$ENV{DOVECOT_DELIVER}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}

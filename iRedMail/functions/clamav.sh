@@ -27,17 +27,26 @@
 clamav_config()
 {
     ECHO_INFO "Configure ClamAV (anti-virus toolkit)."
+    backup_file ${CLAMD_CONF} ${FRESHCLAM_CONF}
+
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        perl -pi -e 's/^(Example)/#${1}/' ${CLAMD_CONF} ${FRESHCLAM_CONF}
+        mkdir /var/log/clamav
+        chown ${CLAMAV_USER}:${CLAMAV_GROUP} /var/log/clamav
+    fi
 
     export CLAMD_LOCAL_SOCKET CLAMD_LISTEN_ADDR
     ECHO_DEBUG "Configure ClamAV: ${CLAMD_CONF}."
     perl -pi -e 's/^(TCPSocket.*)/#${1}/' ${CLAMD_CONF}
     perl -pi -e 's#^(TCPAddr).*#${1} $ENV{CLAMD_LISTEN_ADDR}#' ${CLAMD_CONF}
+
+    # Set log file
     perl -pi -e 's#^(LogFile).*#${1} $ENV{CLAMD_LOGFILE}#' ${CLAMD_CONF}
+    perl -pi -e 's/^#(LogFile).*/${1} $ENV{CLAMD_LOGFILE}/' ${CLAMD_CONF}
+
     # Set CLAMD_LOCAL_SOCKET
-    # - for clamav < 0.9.6
-    perl -pi -e 's#^(LocalSocket).*#${1} $ENV{CLAMD_LOCAL_SOCKET}#' ${CLAMD_CONF}
     # - for clamav = 0.9.6
-    perl -pi -e 's-^#(LocalSocket).*-${1} $ENV{CLAMD_LOCAL_SOCKET}-' ${CLAMD_CONF}
+    perl -pi -e 's/^#(LocalSocket).*/${1} $ENV{CLAMD_LOCAL_SOCKET}/' ${CLAMD_CONF}
 
     ECHO_DEBUG "Configure freshclam: ${FRESHCLAM_CONF}."
     perl -pi -e 's-^#(PidFile)(.*)-${1} $ENV{FRESHCLAM_PID_FILE}-' ${FRESHCLAM_CONF}

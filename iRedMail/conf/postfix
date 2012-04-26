@@ -42,13 +42,19 @@ if [ X"${DISTRO}" == X"SUSE" ]; then
     export MAILLOG_ERROR='/var/log/mail.err'
     export MAILLOG_WARN='/var/log/mail.warn'
     export POSTFIX_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/postfix"
+
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export MAILLOG='/var/log/mail.log'
     export MAILLOG_INFO='/var/log/mail.info'
     export MAILLOG_ERROR='/var/log/mail.err'
     export MAILLOG_WARN='/var/log/mail.warn'
+
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export POSTFIX_ROOTDIR='/usr/local/etc/postfix'
+
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export POSTFIX_DAEMON_USER='_postfix'
+    export POSTFIX_DAEMON_GROUP='_postfix'
 fi
 
 # You do *NOT* need to modify them.
