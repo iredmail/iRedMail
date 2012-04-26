@@ -35,7 +35,7 @@ if [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
     export PHPPGADMIN_HTTPD_ROOT="/usr/share/phppgadmin"
     export PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK="${PHPPGADMIN_HTTPD_ROOT}"
     export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin"
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'OPENBSD' ]; then
     export PHPPGADMIN_USE_SOURCE='NO'
     export PHPPGADMIN_HTTPD_ROOT="${HTTPD_SERVERROOT}/phpPgAdmin"
     export PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK="${PHPPGADMIN_HTTPD_ROOT}"
