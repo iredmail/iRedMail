@@ -321,7 +321,7 @@ EOF
             ALL_PKGS="${ALL_PKGS} dovecot-ldap dovecot-mysql"
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-mysql"
-        elif [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-postgresql"
         fi
 
@@ -365,7 +365,7 @@ EOF
         gentoo_add_use_flags 'net-analyzer/net-snmp' 'bzip2 ipv6 ssl tcpd zlib perl'
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new p5-ldap p5-Mail-SpamAssassin clamav"
+        ALL_PKGS="${ALL_PKGS} amavisd-new p5-ldap p5-DBD-mysql p5-DBD-Pg p5-Mail-SpamAssassin clamav"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
 

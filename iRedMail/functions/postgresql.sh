@@ -37,6 +37,10 @@ pgsql_initialize()
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         freebsd_enable_service_in_rc_conf 'postgresql_enable' 'YES'
         ${PGSQL_RC_SCRIPT} initdb &>/dev/null
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        mkdir -p ${PGSQL_DATA_DIR} 2>/dev/null
+        chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_DATA_DIR}
+        su - ${PGSQL_SYS_USER} -c "initdb -D ${PGSQL_DATA_DIR} -U ${PGSQL_SYS_USER} -A trust" >/dev/null
     fi
 
     if [ X"${DISTRO}" == X'RHEL' ]; then

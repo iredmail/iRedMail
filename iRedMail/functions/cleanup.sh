@@ -333,7 +333,7 @@ cleanup_pgsql_force_password()
         perl -pi -e 's#^(host.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         perl -pi -e 's#^(local.*)peer#${1}md5#' ${PGSQL_CONF_PG_HBA}
-    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    elif [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
         # FreeBSD
         perl -pi -e 's#^(local.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
         perl -pi -e 's#^(host.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}

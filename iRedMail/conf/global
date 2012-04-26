@@ -564,8 +564,7 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export SSL_FILE_DIR="/etc/ssl"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export ENABLE_BACKEND_MYSQL='NO'
-    export ENABLE_BACKEND_PGSQL='NO'
+    export ENABLE_BACKEND_PGSQL='YES'
 
     # System user: root.
     export SYS_ROOT_USER='root'
