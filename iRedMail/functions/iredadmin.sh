@@ -25,10 +25,6 @@ iredadmin_config()
 {
     ECHO_INFO "Configure iRedAdmin (official web-based admin panel)."
 
-    # Backup database.
-    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${IREDADMIN_DB_NAME}"
-    export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${IREDADMIN_DB_NAME}"
-
     if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"SUSE" ]; then
         ECHO_DEBUG "Enable apache module: wsgi."
         a2enmod wsgi >/dev/null 2>&1
@@ -153,11 +149,11 @@ EOF
 
         # Section [ldap].
         ECHO_DEBUG "Configure OpenLDAP backend related settings."
-        perl -pi -e 's#^(uri.*=).*#${1} ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}#' settings.ini
-        perl -pi -e 's#^(basedn.*=).*#${1} ${LDAP_BASEDN}#' settings.ini
-        perl -pi -e 's#^(domainadmin_dn.*=).*#${1} ${LDAP_ADMIN_BASEDN}#' settings.ini
-        perl -pi -e 's#^(bind_dn.*=).*#${1} ${LDAP_ADMIN_DN}#' settings.ini
-        perl -pi -e 's#^(bind_pw.*=).*#${1} ${LDAP_ADMIN_PW}#' settings.ini
+        perl -pi -e 's#^(uri =).*#${1} ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}#' settings.ini
+        perl -pi -e 's#^(basedn =).*#${1} ${LDAP_BASEDN}#' settings.ini
+        perl -pi -e 's#^(domainadmin_dn =).*#${1} ${LDAP_ADMIN_BASEDN}#' settings.ini
+        perl -pi -e 's#^(bind_dn =).*#${1} ${LDAP_ADMIN_DN}#' settings.ini
+        perl -pi -e 's#^(bind_pw =).*#${1} ${LDAP_ADMIN_PW}#' settings.ini
 
     elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
         ECHO_DEBUG "Configure MySQL related settings."

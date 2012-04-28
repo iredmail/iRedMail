@@ -640,6 +640,7 @@ export SSHD_CONFIG='/etc/ssh/sshd_config'
 
 # SQL databases which need to be backed up.
 export MYSQL_BACKUP_DATABASES=''
+export PGSQL_BACKUP_DATABASES=''
 
 # Command use to fetch source tarballs.
 if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
