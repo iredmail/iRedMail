@@ -150,10 +150,10 @@ EOF
         # Section [ldap].
         ECHO_DEBUG "Configure OpenLDAP backend related settings."
         perl -pi -e 's#^(uri =).*#${1} ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}#' settings.ini
-        perl -pi -e 's#^(basedn =).*#${1} ${LDAP_BASEDN}#' settings.ini
-        perl -pi -e 's#^(domainadmin_dn =).*#${1} ${LDAP_ADMIN_BASEDN}#' settings.ini
-        perl -pi -e 's#^(bind_dn =).*#${1} ${LDAP_ADMIN_DN}#' settings.ini
-        perl -pi -e 's#^(bind_pw =).*#${1} ${LDAP_ADMIN_PW}#' settings.ini
+        perl -pi -e 's#^(basedn =).*#${1} $ENV{LDAP_BASEDN}#' settings.ini
+        perl -pi -e 's#^(domainadmin_dn =).*#${1} $ENV{LDAP_ADMIN_BASEDN}#' settings.ini
+        perl -pi -e 's#^(bind_dn =).*#${1} $ENV{LDAP_ADMIN_DN}#' settings.ini
+        perl -pi -e 's#^(bind_pw =).*#${1} $ENV{LDAP_ADMIN_PW}#' settings.ini
 
     elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
         ECHO_DEBUG "Configure MySQL related settings."
