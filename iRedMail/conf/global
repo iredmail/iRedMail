@@ -322,7 +322,7 @@ fi
 
 # Exit and prompt to use a supported Linux/BSD distribution
 if [ X"${UNSUPPORTED_RELEASE}" == X'YES' ]; then
-    cat <EOF
+    cat <<EOF
 ********* ERROR *********
 Release version of the operating system on this server is unsupported by
 iRedMail, please access below link to get the latest iRedMail and a list
