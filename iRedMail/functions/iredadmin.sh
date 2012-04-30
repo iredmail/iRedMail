@@ -64,12 +64,14 @@ iredadmin_config()
     chown -R ${IREDADMIN_HTTPD_USER}:${IREDADMIN_HTTPD_GROUP} settings.ini
     chmod 0400 settings.ini
 
-    ECHO_DEBUG "Create directory alias for iRedAdmin."
-    backup_file ${HTTPD_CONF_DIR}/iredadmin.conf
-    perl -pi -e 's#(</VirtualHost>)#WSGIScriptAlias /iredadmin "$ENV{HTTPD_SERVERROOT}/iredadmin/iredadmin.py/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#(</VirtualHost>)#Alias /iredadmin/static "$ENV{HTTPD_SERVERROOT}/iredadmin/static/"\n${1}#' ${HTTPD_SSL_CONF}
+    if [ X"${DISTRO}" != X'OPENBSD' ]; then
+        ECHO_DEBUG "Create directory alias for iRedAdmin."
+        perl -pi -e 's#^(</VirtualHost>)#WSGIScriptAlias /iredadmin "$ENV{HTTPD_SERVERROOT}/iredadmin/iredadmin.py/"\n${1}#' ${HTTPD_SSL_CONF}
+        perl -pi -e 's#^(</VirtualHost>)#Alias /iredadmin/static "$ENV{HTTPD_SERVERROOT}/iredadmin/static/"\n${1}#' ${HTTPD_SSL_CONF}
+    fi
 
-    cat > ${HTTPD_CONF_DIR}/iredadmin.conf <<EOF
+    backup_file ${IREDADMIN_HTTPD_CONF}
+    cat > ${IREDADMIN_HTTPD_CONF} <<EOF
 WSGISocketPrefix /var/run/wsgi
 WSGIDaemonProcess iredadmin user=${IREDADMIN_HTTPD_USER} threads=15
 WSGIProcessGroup ${IREDADMIN_HTTPD_GROUP}
@@ -81,6 +83,10 @@ AddType text/html .py
     Allow from all
 </Directory>
 EOF
+
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        mv ${IREDADMIN_HTTPD_CONF} ${IREDADMIN_HTTPD_CONF}.bak
+    fi
 
     ECHO_DEBUG "Import iredadmin database template."
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
@@ -127,20 +133,16 @@ EOF
     # Modify iRedAdmin settings.
     # [general] section.
     ECHO_DEBUG "Configure general settings."
-    sed -i.tmp \
-        -e "/\[general\]/,/\[/ s#\(^webmaster =\).*#\1 ${MAIL_ALIAS_ROOT}#" \
-        -e "/\[general\]/,/\[/ s#\(^storage_base_directory =\).*#\1 ${STORAGE_BASE_DIR}/${STORAGE_NODE}#" \
-        settings.ini
+    perl -pi -e 's#^(webmaster =).*#${1} $ENV{MAIL_ALIAS_ROOT}#' settings.ini
+    perl -pi -e 's#^(storage_base_directory =).*#${1} $ENV{STORAGE_BASE_DIR}/$ENV{STORAGE_NODE}#' settings.ini
 
     # [iredadmin] section.
     ECHO_DEBUG "Configure iredadmin database related settings."
-    sed -i.tmp \
-        -e "/\[iredadmin\]/,/\[/ s#\(^host =\).*#\1 ${SQL_SERVER}#" \
-        -e "/\[iredadmin\]/,/\[/ s#\(^port =\).*#\1 ${SQL_SERVER_PORT}#" \
-        -e "/\[iredadmin\]/,/\[/ s#\(^db =\).*#\1 ${IREDADMIN_DB_NAME}#" \
-        -e "/\[iredadmin\]/,/\[/ s#\(^user =\).*#\1 ${IREDADMIN_DB_USER}#" \
-        -e "/\[iredadmin\]/,/\[/ s#\(^passwd =\).*#\1 ${IREDADMIN_DB_PASSWD}#" \
-        settings.ini
+    perl -pi -e 's#(.*)host_of_iredadmin_sql_server#${1} $ENV{SQL_SERVER}#' settings.ini
+    perl -pi -e 's#(.*)port_of_iredadmin_sql_server#${1} $ENV{SQL_SERVER_PORT}#' settings.ini
+    perl -pi -e 's#^(db =) iredadmin#${1} $ENV{IREDADMIN_DB_NAME}#' settings.ini
+    perl -pi -e 's#^(user =) iredadmin#${1} $ENV{IREDADMIN_DB_USER}#' settings.ini
+    perl -pi -e 's#(.*)password_of_iredadmin_db#${1} $ENV{IREDADMIN_DB_PASSWD}#' settings.ini
 
     # Backend related settings.
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
@@ -157,47 +159,38 @@ EOF
 
     elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
         ECHO_DEBUG "Configure MySQL related settings."
-        sed -i.tmp \
-            -e "/\[vmaildb\]/,/\[/ s#\(^host =\).*#\1 ${SQL_SERVER}#" \
-            -e "/\[vmaildb\]/,/\[/ s#\(^port =\).*#\1 ${SQL_SERVER_PORT}#" \
-            -e "/\[vmaildb\]/,/\[/ s#\(^db =\).*#\1 ${VMAIL_DB}#" \
-            -e "/\[vmaildb\]/,/\[/ s#\(^user =\).*#\1 ${VMAIL_DB_ADMIN_USER}#" \
-            -e "/\[vmaildb\]/,/\[/ s#\(^passwd =\).*#\1 ${VMAIL_DB_ADMIN_PASSWD}#" \
-            settings.ini
+        perl -pi -e 's#(.*)host_of_vmaildb_sql_server#${1} $ENV{SQL_SERVER}#' settings.ini
+        perl -pi -e 's#(.*)port_of_vmaildb_sql_server#${1} $ENV{SQL_SERVER_PORT}#' settings.ini
+        perl -pi -e 's#^(db =) vmail#${1} $ENV{VMAIL_DB}#' settings.ini
+        perl -pi -e 's#^(user =) vmailadmin#${1} $ENV{VMAIL_DB_ADMIN_USER}#' settings.ini
+        perl -pi -e 's#(.*)password_of_vmail_db#${1} $ENV{VMAIL_DB_ADMIN_PASSWD}#' settings.ini
     fi
 
     # Section [policyd].
     ECHO_DEBUG "Configure Policyd related settings."
-    sed -i.tmp \
-        -e "/\[policyd\]/,/\[/ s#\(^enabled =\).*#\1 True#" \
-        -e "/\[policyd\]/,/\[/ s#\(^host =\).*#\1 ${SQL_SERVER}#" \
-        -e "/\[policyd\]/,/\[/ s#\(^port =\).*#\1 ${SQL_SERVER_PORT}#" \
-        -e "/\[policyd\]/,/\[/ s#\(^db =\).*#\1 ${POLICYD_DB_NAME}#" \
-        -e "/\[policyd\]/,/\[/ s#\(^user =\).*#\1 ${POLICYD_DB_USER}#" \
-        -e "/\[policyd\]/,/\[/ s#\(^passwd =\).*#\1 ${POLICYD_DB_PASSWD}#" \
-        settings.ini
-
-
-    # Policyd-2 (cluebringer) is not yet supported in iRedAdmin.
-    if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
-        sed -i.tmp -e "/\[policyd\]/,/\[/ s#\(^enabled =\).*#\1 False#" settings.ini
+    if [ X"${USE_POLICYD}" == X'YES' ]; then
+        perl -pi -e 's#^(enabled =).*#${1} True#' settings.ini
+        perl -pi -e 's#(.*)host_of_policyd_sql_server#${1} $ENV{SQL_SERVER}#' settings.ini
+        perl -pi -e 's#(.*)port_of_policyd_sql_server#${1} $ENV{SQL_SERVER_PORT}#' settings.ini
+        perl -pi -e 's#^(db =) policyd#${1} $ENV{POLICYD_DB_NAME}#' settings.ini
+        perl -pi -e 's#^(user =) policyd#${1} $ENV{POLICYD_DB_USER}#' settings.ini
+        perl -pi -e 's#(.*)password_of_policyd_db#${1} $ENV{POLICYD_DB_PASSWD}#' settings.ini
+    else
+        # Policyd-2 (cluebringer) is not yet supported in iRedAdmin.
+        perl -pi -e 's#^(enabled =) True#${1} False#' settings.ini
     fi
 
     # Section [amavisd].
     ECHO_DEBUG "Configure Amavisd related settings."
-    sed -i.tmp \
-        -e "/\[amavisd\]/,/\[/ s#\(^quarantine =\).*#\1 True#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^server =\).*#\1 ${AMAVISD_SERVER}#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^quarantine_port =\).*#\1 ${AMAVISD_QUARANTINE_PORT}#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^logging_into_sql =\).*#\1 True#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^host =\).*#\1 ${SQL_SERVER}#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^port =\).*#\1 ${SQL_SERVER_PORT}#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^db =\).*#\1 ${AMAVISD_DB_NAME}#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^user =\).*#\1 ${AMAVISD_DB_USER}#" \
-        -e "/\[amavisd\]/,/\[/ s#\(^passwd =\).*#\1 ${AMAVISD_DB_PASSWD}#" \
-        settings.ini
+    perl -pi -e 's#(.*)host_of_amavisd_sql_server#${1} $ENV{SQL_SERVER}#' settings.ini
+    perl -pi -e 's#(.*)port_of_amavisd_sql_server#${1} $ENV{SQL_SERVER_PORT}#' settings.ini
+    perl -pi -e 's#^(db =) amavisd#${1} $ENV{AMAVISD_DB_NAME}#' settings.ini
+    perl -pi -e 's#^(user =) amavisd#${1} $ENV{AMAVISD_DB_USER}#' settings.ini
+    perl -pi -e 's#(.*)password_of_amavisd_db#${1} $ENV{AMAVISD_DB_PASSWD}#' settings.ini
 
-    [ -f settings.ini.tmp ] && rm -f settings.ini.tmp &>/dev/null
+    perl -pi -e 's#^(logging_into_sql =).*#${1} True#' settings.ini
+    perl -pi -e 's#^(quarantine =).*#${1} True#' settings.ini
+    perl -pi -e 's#^(quarantine_port =).*#${1} $ENV{AMAVISD_QUARANTINE_PORT}#' settings.ini
 
     cat >> ${TIP_FILE} <<EOF
 iRedAdmin - official web-based admin panel:
@@ -223,8 +216,8 @@ iRedAdmin - official web-based admin panel:
 
         [amavisd]
         quarantine = True
-        server = ${AMAVISD_SERVER}
         quarantine_port = ${AMAVISD_QUARANTINE_PORT}
+
         logging_into_sql = True
         host = ${SQL_SERVER}
         port = ${SQL_SERVER_PORT}
@@ -233,7 +226,7 @@ iRedAdmin - official web-based admin panel:
         passwd = ${AMAVISD_DB_PASSWD}
 
     * See also:
-        - ${HTTPD_CONF_DIR}/iredadmin.conf
+        - ${IREDADMIN_HTTPD_CONF}
 
 EOF
 

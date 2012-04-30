@@ -38,7 +38,7 @@ optional_components()
     fi
 
     # iRedAdmin.
-    [ X"${USE_IREDADMIN}" == X"YES" -a X"${DISTRO}" != X'OPENBSD' ] && \
+    [ X"${USE_IREDADMIN}" == X"YES" ] && \
         check_status_before_run iredadmin_config
 
     # iRedAPD.

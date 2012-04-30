@@ -25,6 +25,7 @@ export IREDADMIN_TARBALL="iRedAdmin-${IREDADMIN_VERSION}.tar.bz2"
 export IREDADMIN_URL="http://iredmail.googlecode.com/files/${IREDADMIN_TARBALL}"
 export IREDADMIN_HTTPD_ROOT="${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}"
 export IREDADMIN_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/iredadmin"
+export IREDADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/iredadmin.conf"
 
 # Run iRedAdmin with Apache + mod_wsgi, but as a low privilege user/group.
 export IREDADMIN_HOME_DIR='/home/iredadmin'
