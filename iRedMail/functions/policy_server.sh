@@ -20,18 +20,30 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
+spamd_config()
+{
+    # Enable PF, spamd, spamlogd.
+    cat >> ${RC_CONF_LOCAL} <<EOF
+pf=YES
+spamd_flags=''
+spamlogd_flags=''
+EOF
+
+    # Whitelists in file
+    touch /etc/mail/nospamd
+
+    # Enable spamd-setup in cron
+    perl -pi -e 's/#(.*spamd-setup.*)/#${1}/' ${CRON_SPOOL_DIR}/root
+}
+
 policy_server_config()
 {
     if [ X"${USE_POLICYD}" == X'YES' ]; then
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            :
-        else
-            . ${FUNCTIONS_DIR}/policyd.sh
+        . ${FUNCTIONS_DIR}/policyd.sh
 
-            ECHO_INFO "Configure Policyd (postfix policy server, version 1.8)."
-            check_status_before_run policyd_user
-            check_status_before_run policyd_config
-        fi
+        ECHO_INFO "Configure Policyd (postfix policy server, version 1.8)."
+        check_status_before_run policyd_user
+        check_status_before_run policyd_config
     fi
 
     if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
@@ -41,6 +53,11 @@ policy_server_config()
         check_status_before_run cluebringer_user
         check_status_before_run cluebringer_config
         check_status_before_run cluebringer_webui_config
+    fi
+
+    # OpenBSD special
+    if [ X"${USE_SPAMD}" == X'YES' ]; then
+        check_status_before_run spamd_config
     fi
 
     echo 'export status_policy_server_config="DONE"' >> ${STATUS_FILE}

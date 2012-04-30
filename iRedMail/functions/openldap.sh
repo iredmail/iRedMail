@@ -360,7 +360,7 @@ EOF
     chown ${LDAP_USER}:${LDAP_GROUP} ${OPENLDAP_LOGFILE}
     chmod 0600 ${OPENLDAP_LOGFILE}
 
-    if [ X"${KERNEL_NAME}" == X"Linux" ]; then
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         ECHO_DEBUG "Setting logrotate for openldap log file: ${OPENLDAP_LOGFILE}."
         cat > ${OPENLDAP_LOGROTATE_FILE} <<EOF
 ${CONF_MSG}

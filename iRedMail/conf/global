@@ -118,11 +118,11 @@ fi
 # Logrotate configuration directory.
 export LOGROTATE_DIR='/etc/logrotate.d'
 
-# Kernel name.
-export KERNEL_NAME="$(uname -s)"
+# Kernel name, in upper cases.
+export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 
 # Hostname.
-if [ X"${KERNEL_NAME}" == X'OpenBSD' ]; then
+if [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export HOSTNAME="$(hostname)"
     export RANDOM_STRING='eval echo $RANDOM | md5'
 else
@@ -164,7 +164,7 @@ esac
 #
 # UNSUPPORTED_RELEASE will be set to 'YES' if current Linux/BSD release is
 # an old release and unsupported anymore.
-if [ X"${KERNEL_NAME}" == X"Linux" ]; then
+if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/etc/init.d'
 
@@ -294,7 +294,7 @@ if [ X"${KERNEL_NAME}" == X"Linux" ]; then
     else
         export UNSUPPORTED_RELEASE='YES'
     fi
-elif [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
+elif [ X"${KERNEL_NAME}" == X"FREEBSD" ]; then
     export DISTRO='FREEBSD'
     export DISTRO_VERSION="$(uname -r |awk -F'-' '{print $1}')"
 
@@ -306,7 +306,7 @@ elif [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
     if echo "${DISTRO_VERSION}" | grep '^7' &>/dev/null ; then
         export UNSUPPORTED_RELEASE='YES'
     fi
-elif [ X"${KERNEL_NAME}" == X'OpenBSD' ]; then
+elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DISTRO='OPENBSD'
     export DISTRO_VERSION="$(uname -r)"
 
@@ -594,7 +594,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export CRON_SPOOL_DIR='/var/cron/tabs'
 
     # PF rule file.
-    export IPTABLES_CONFIG="/etc/pf.rules"
+    export IPTABLES_CONFIG="/etc/pf.conf"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"

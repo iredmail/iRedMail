@@ -45,6 +45,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export USE_CLUEBRINGER='NO'
     export USE_POLICYD='NO'
+    export USE_SPAMD='YES'
 fi
 
 if [ X"${USE_POLICYD}" == X'YES' ]; then

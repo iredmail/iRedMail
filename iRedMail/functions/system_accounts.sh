@@ -61,7 +61,7 @@ add_user_iredadmin()
     ECHO_DEBUG "Create system user: iredadmin."
 
     # Low privilege user used to run iRedAdmin.
-    if [ X"${KERNEL_NAME}" == X"FreeBSD" ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         pw useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -n ${IREDADMIN_HTTPD_USER}
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         groupadd ${IREDADMIN_HTTPD_GROUP} 2>/dev/null

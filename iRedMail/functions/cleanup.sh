@@ -97,42 +97,48 @@ cleanup_replace_iptables_rule()
         # No port number defined, use default (22).
         export sshd_port='22'
     else
-        # Replace port number in iptable and Fail2ban.
-        perl -pi -e 's#(.*multiport.*,)22 (.*)#${1}$ENV{sshd_port} ${2}#' ${SAMPLE_DIR}/iptables.rules
+        # Replace port number in iptable, pf and Fail2ban.
+        perl -pi -e 's#(.*,)22(.*)#${1}$ENV{sshd_port} ${2}#' ${SAMPLE_DIR}/iptables.rules ${SAMPLE_DIR}/pf.conf
+
         [ -f ${FAIL2BAN_JAIL_LOCAL_CONF} ] && \
             perl -pi -e 's#(.*port=.*)ssh(.*)#${1}$ENV{sshd_port}${2}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
     fi
 
-    ECHO_QUESTION "Would you like to use firewall rules shipped within iRedMail now?"
+    ECHO_QUESTION "Would you like to use firewall rules provided by iRedMail now?"
     ECHO_QUESTION -n "File: ${IPTABLES_CONFIG}, with SSHD port: ${sshd_port}. [Y|n]"
     read_setting ${AUTO_CLEANUP_REPLACE_IPTABLES_RULE}
     case $ANSWER in
         N|n ) ECHO_INFO "Skip firewall rules." ;;
         Y|y|* ) 
-            if [ X"${DISTRO}" != X"SUSE" ]; then
+            backup_file ${IPTABLES_CONFIG}
+            if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+                if [ X"${DISTRO}" != X"SUSE" ]; then
+                    ECHO_INFO "Copy firewall sample rules: ${IPTABLES_CONFIG}."
+                    cp -f ${SAMPLE_DIR}/iptables.rules ${IPTABLES_CONFIG}
+
+                    # Replace HTTP port.
+                    [ X"${HTTPD_PORT}" != X"80" ]&& \
+                        perl -pi -e 's#(.*)80(,.*)#${1}$ENV{HTTPD_PORT}${2}#' ${IPTABLES_CONFIG}
+                fi
+
+                if [ X"${DISTRO}" == X"SUSE" ]; then
+                    # Below services are not accessable from external network:
+                    #   - ldaps (636)
+                    perl -pi -e 's/^(FW_SERVICES_EXT_TCP=)(.*)/${1}"$ENV{'HTTPD_PORT'} 443 25 110 995 143 993 587 465 $ENV{'sshd_port'}"\n#${2}/' ${IPTABLES_CONFIG}
+
+                elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+                    # Copy sample rc script for Debian.
+                    cp -f ${SAMPLE_DIR}/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
+                    chmod +x ${DIR_RC_SCRIPTS}/iptables
+
+                    eval ${enable_service} iptables >/dev/null
+
+                else
+                    eval ${enable_service} iptables >/dev/null
+                fi
+            elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
                 ECHO_INFO "Copy firewall sample rules: ${IPTABLES_CONFIG}."
-                backup_file ${IPTABLES_CONFIG}
-                cp -f ${SAMPLE_DIR}/iptables.rules ${IPTABLES_CONFIG}
-
-                # Replace HTTP port.
-                [ X"${HTTPD_PORT}" != X"80" ]&& \
-                    perl -pi -e 's#(.*)80(,.*)#${1}$ENV{HTTPD_PORT}${2}#' ${IPTABLES_CONFIG}
-            fi
-
-            if [ X"${DISTRO}" == X"SUSE" ]; then
-                # Below services are not accessable from external network:
-                #   - ldaps (636)
-                perl -pi -e 's/^(FW_SERVICES_EXT_TCP=)(.*)/${1}"$ENV{'HTTPD_PORT'} 443 25 110 995 143 993 587 465 $ENV{'sshd_port'}"\n#${2}/' ${IPTABLES_CONFIG}
-
-            elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-                # Copy sample rc script for Debian.
-                cp -f ${SAMPLE_DIR}/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
-                chmod +x ${DIR_RC_SCRIPTS}/iptables
-
-                eval ${enable_service} iptables >/dev/null
-
-            else
-                eval ${enable_service} iptables >/dev/null
+                cp -f ${SAMPLE_DIR}/pf.conf ${IPTABLES_CONFIG}
             fi
 
             # Prompt to restart iptables.
@@ -143,8 +149,12 @@ cleanup_replace_iptables_rule()
                     ECHO_INFO "Restarting firewall ..."
 
                     # openSUSE will use /etc/init.d/{SuSEfirewall2_init, SuSEfirewall2_setup} instead.
-                    if [ X"${DISTRO}" != X"SUSE" ]; then
-                        ${DIR_RC_SCRIPTS}/iptables restart
+                    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+                        /sbin/pfctl -f ${IPTABLES_CONFIG}
+                    else
+                        if [ X"${DISTRO}" != X"SUSE" ]; then
+                            ${DIR_RC_SCRIPTS}/iptables restart
+                        fi
                     fi
                     ;;
                 N|n|* )
@@ -233,7 +243,7 @@ cleanup_start_postfix_now()
 cleanup_amavisd_preconfig()
 {
     # Required on Gentoo and FreeBSD to start Amavisd-new.
-    ECHO_INFO "Fetching SpamAssassin rules (sa-update), please wait ..."
+    ECHO_INFO "Updating SpamAssassin rules (sa-update), please wait ..."
     ${BIN_SA_UPDATE} &>/dev/null
 
     ECHO_INFO "Compiling SpamAssassin rulesets (sa-compile), please wait ..."
@@ -369,11 +379,16 @@ EOF
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_disable_selinux
     [ X"${DISTRO}" != X'OPENBSD' ] && check_status_before_run cleanup_remove_sendmail
     check_status_before_run cleanup_remove_mod_python
-    [ X"${KERNEL_NAME}" == X"Linux" ] && check_status_before_run cleanup_replace_iptables_rule
+    [ X"${KERNEL_NAME}" == X'LINUX' \
+        -o X"${KERNEL_NAME}" == X'OPENBSD' \
+        ] && check_status_before_run cleanup_replace_iptables_rule
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
     check_status_before_run cleanup_backup_scripts
     [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
-    [ X"${DISTRO}" != X'GENTOO' -a X"${DISTRO}" != X'OPENBSD' ] && check_status_before_run cleanup_start_postfix_now
+    [ X"${DISTRO}" != X'GENTOO' \
+        -a X"${DISTRO}" != X'FREEBSD' \
+        -a X"${DISTRO}" != X'OPENBSD' \
+        ] && check_status_before_run cleanup_start_postfix_now
 
     # Start Postfix to deliver emails.
     [ X"${DISTRO}" == X'GENTOO' ] && ${DIR_RC_SCRIPTS}/postfix restart >/dev/null
