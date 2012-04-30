@@ -1,3 +1,6 @@
+iRedMail-0.8.0:
+    * It now works on OpenBSD. Tested with OpenBSD 5.1.
+
 iRedMail-0.8.0-beta4:
     * Add new value of enabledService: doveadm. Required by Dovecot-2.0
       service doveadm.

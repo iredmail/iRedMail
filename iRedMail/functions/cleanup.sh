@@ -148,10 +148,10 @@ cleanup_replace_iptables_rule()
                 Y|y )
                     ECHO_INFO "Restarting firewall ..."
 
-                    # openSUSE will use /etc/init.d/{SuSEfirewall2_init, SuSEfirewall2_setup} instead.
                     if [ X"${DISTRO}" == X'OPENBSD' ]; then
-                        /sbin/pfctl -f ${IPTABLES_CONFIG}
+                        /sbin/pfctl -ef ${IPTABLES_CONFIG}
                     else
+                        # openSUSE will use /etc/init.d/SuSEfirewall2_{init,setup} instead.
                         if [ X"${DISTRO}" != X"SUSE" ]; then
                             ${DIR_RC_SCRIPTS}/iptables restart
                         fi
