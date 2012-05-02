@@ -37,23 +37,23 @@ clamav_config()
 
     export CLAMD_LOCAL_SOCKET CLAMD_LISTEN_ADDR
     ECHO_DEBUG "Configure ClamAV: ${CLAMD_CONF}."
-    perl -pi -e 's/^(TCPSocket.*)/#${1}/' ${CLAMD_CONF}
-    perl -pi -e 's#^(TCPAddr).*#${1} $ENV{CLAMD_LISTEN_ADDR}#' ${CLAMD_CONF}
+    perl -pi -e 's/^(TCPSocket .*)/#${1}/' ${CLAMD_CONF}
+    perl -pi -e 's#^(TCPAddr ).*#${1} $ENV{CLAMD_LISTEN_ADDR}#' ${CLAMD_CONF}
 
     # Set log file
-    perl -pi -e 's#^(LogFile).*#${1} $ENV{CLAMD_LOGFILE}#' ${CLAMD_CONF}
-    perl -pi -e 's/^#(LogFile).*/${1} $ENV{CLAMD_LOGFILE}/' ${CLAMD_CONF}
+    perl -pi -e 's#^(LogFile ).*#${1}$ENV{CLAMD_LOGFILE}#' ${CLAMD_CONF}
+    perl -pi -e 's/^#(LogFile ).*/${1}$ENV{CLAMD_LOGFILE}/' ${CLAMD_CONF}
 
     # Set CLAMD_LOCAL_SOCKET
     # - for clamav = 0.9.6
-    perl -pi -e 's/^#(LocalSocket).*/${1} $ENV{CLAMD_LOCAL_SOCKET}/' ${CLAMD_CONF}
+    perl -pi -e 's/^#(LocalSocket ).*/${1}$ENV{CLAMD_LOCAL_SOCKET}/' ${CLAMD_CONF}
 
     ECHO_DEBUG "Configure freshclam: ${FRESHCLAM_CONF}."
-    perl -pi -e 's-^#(PidFile)(.*)-${1} $ENV{FRESHCLAM_PID_FILE}-' ${FRESHCLAM_CONF}
-    perl -pi -e 's#^(UpdateLogFile).*#${1} $ENV{FRESHCLAM_LOGFILE}#' ${CLAMD_CONF}
+    perl -pi -e 's-^#(PidFile )(.*)-${1}$ENV{FRESHCLAM_PID_FILE}-' ${FRESHCLAM_CONF}
+    perl -pi -e 's#^(UpdateLogFile ).*#${1}$ENV{FRESHCLAM_LOGFILE}#' ${CLAMD_CONF}
 
     # Official database only
-    perl -pi -e 's/^#(OfficialDatabaseOnly).*/${1} yes/' ${CLAMD_CONF}
+    perl -pi -e 's/^#(OfficialDatabaseOnly ).*/${1} yes/' ${CLAMD_CONF}
 
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ECHO_DEBUG "Copy freshclam init startup script and enable it."
