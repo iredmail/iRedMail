@@ -74,7 +74,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} openldap mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} cyrus-sasl--ldap openldap-server openldap-client mysql-server mysql-client"
+            ALL_PKGS="${ALL_PKGS} openldap-client cyrus-sasl--ldap openldap-server mysql-server mysql-client"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${LDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
         fi
@@ -103,7 +103,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} mysql mod_auth_mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} cyrus-sasl--mysql mysql-server mysql-client"
+            ALL_PKGS="${ALL_PKGS} mysql-client cyrus-sasl--mysql mysql-server"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
 
         fi
@@ -128,7 +128,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} postgresql-server mod_auth_pgsql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} cyrus-sasl--pgsql postgresql-server postgresql-client postgresql-contrib"
+            ALL_PKGS="${ALL_PKGS} postgresql-client cyrus-sasl--pgsql postgresql-server postgresql-contrib"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${PGSQL_RC_SCRIPT_NAME}"
         fi
     fi

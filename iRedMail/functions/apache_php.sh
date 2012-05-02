@@ -308,7 +308,11 @@ EOF
     fi
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        echo 'httpd_flags="-DSSL -u"' >> ${RC_CONF_LOCAL}
+        # Enable httpd.
+        echo 'httpd_flags="-DSSL"' >> ${RC_CONF_LOCAL}
+
+        # Create /var/www/dev/*random.
+        cd /var/www/dev/ && /dev/MAKEDEV random
     fi
 
     # --------------------------
