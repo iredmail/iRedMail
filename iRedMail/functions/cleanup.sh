@@ -445,7 +445,7 @@ EOF
     if [ X"${USE_IREDADMIN}" == X"YES" ]; then
         cat <<EOF
 * - Admin Panel (iRedAdmin): httpS://${HOSTNAME}/iredadmin/
-*   + Account: ${SITE_ADMIN_NAME}, Password: ${SITE_ADMIN_PASSWD}
+*   + Username: ${SITE_ADMIN_NAME}, Password: ${SITE_ADMIN_PASSWD}
 *
 EOF
     fi
@@ -463,8 +463,9 @@ EOF
 EOF
 
 if [ X"${POSTFIX_STARTED}" != X"YES" \
-    -a X"${DISTRO}" != X'FREEBSD' \
     -a X"${DISTRO}" != X'GENTOO' \
+    -a X"${DISTRO}" != X'FREEBSD' \
+    -a X"${DISTRO}" != X'OPENBSD' \
     ]; then
     cat <<EOF
 * Please reboot your system to enable mail related services or start them
@@ -485,8 +486,9 @@ EOF
 EOF
 fi
 
-    if [ X"${DISTRO}" == X'FREEBSD' \
-        -o X"${DISTRO}" == X'GENTOO' \
+    if [ X"${DISTRO}" == X'GENTOO' \
+        -o X"${DISTRO}" == X'FREEBSD' \
+        -o X"${DISTRO}" == X'OPENBSD' \
         ]; then
         # Reboot system to enable mail related services.
         # - FreeBSD: sendmail is binding to port '25'

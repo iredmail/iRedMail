@@ -74,7 +74,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} openldap mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} openldap-client cyrus-sasl--ldap openldap-server mysql-server mysql-client"
+            ALL_PKGS="${ALL_PKGS} cyrus-sasl--ldap openldap-server openldap-client mysql-server mysql-client"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${LDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
         fi
@@ -177,7 +177,11 @@ install_all()
         gentoo_add_use_flags 'dev-lang/php' 'berkdb bzip2 cli crypt ctype fileinfo filter hash iconv ipv6 json nls phar posix readline session simplexml ssl tokenizer unicode xml zlib apache2 calendar -cdb cgi cjk curl curlwrappers doc flatfile fpm ftp gd gmp imap inifile intl kerberos ldap ldap-sasl mhash mysql mysqli mysqlnd odbc pdo postgres snmp soap sockets spell sqlite sqlite3 suhosin tidy truetype wddx xmlreader xmlrpc xmlwriter xpm xsl zip'
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-ldap php-mcrypt php-mysql php-mysqli php-pgsql php-gd"
+        ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-mcrypt php-gd"
+
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-mysql php-mysqli"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql php-mysqli"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql"
     fi
 
     ###############
@@ -196,7 +200,9 @@ install_all()
         #gentoo_unmask_package 'mail-mta/ssmtp'
         gentoo_add_use_flags 'mail-mta/postfix' 'ipv6 pam ssl cdb dovecot-sasl hardened ldap ldap-bind mbox mysql postgres sasl'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        PKG_SCRIPTS="${PKG_SCRIPTS} ${POSTFIX_RC_SCRIPT_NAME}"
+        #PKG_SCRIPTS: Postfix will flush the queue when startup, so we should
+        #             start amavisd before postfix since Amavisd is content
+        #             filter.
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ALL_PKGS="${ALL_PKGS} postfix--ldap"
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
@@ -329,7 +335,7 @@ EOF
     fi
 
     # Amavisd-new & ClamAV & Altermime.
-    ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME} ${CLAMAV_CLAMD_RC_SCRIPT_NAME}"
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} clamd${PKG_ARCH} clamav${PKG_ARCH} clamav-db${PKG_ARCH} spamassassin${PKG_ARCH} altermime${PKG_ARCH} perl-LDAP.noarch perl-Mail-SPF.noarch perl-Mail-SPF-Query.noarch"
 
@@ -366,7 +372,7 @@ EOF
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new p5-ldap p5-DBD-mysql p5-DBD-Pg p5-Mail-SPF p5-Mail-SpamAssassin clamav"
-        PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
+        PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME} ${POSTFIX_RC_SCRIPT_NAME}"
     fi
 
     # phpPgAdmin
