@@ -210,9 +210,6 @@ check_env()
                     if [ ! -e ${TIP_FILE} ]; then
                         cat > ${TIP_FILE} <<EOF
 ${CONF_MSG}
-If you consider here should be put some more infomation, please contact us:
-    - http://www.iredmail.org/contact.html
-
 EOF
                     else
                         :

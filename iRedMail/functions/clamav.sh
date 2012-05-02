@@ -45,12 +45,12 @@ clamav_config()
     perl -pi -e 's/^#(LogFile ).*/${1}$ENV{CLAMD_LOGFILE}/' ${CLAMD_CONF}
 
     # Set CLAMD_LOCAL_SOCKET
-    # - for clamav = 0.9.6
+    perl -pi -e 's/^(LocalSocket ).*/${1}$ENV{CLAMD_LOCAL_SOCKET}/' ${CLAMD_CONF}
     perl -pi -e 's/^#(LocalSocket ).*/${1}$ENV{CLAMD_LOCAL_SOCKET}/' ${CLAMD_CONF}
 
     ECHO_DEBUG "Configure freshclam: ${FRESHCLAM_CONF}."
-    perl -pi -e 's-^#(PidFile )(.*)-${1}$ENV{FRESHCLAM_PID_FILE}-' ${FRESHCLAM_CONF}
     perl -pi -e 's#^(UpdateLogFile ).*#${1}$ENV{FRESHCLAM_LOGFILE}#' ${CLAMD_CONF}
+    perl -pi -e 's/^#(UpdateLogFile ).*/${1}$ENV{FRESHCLAM_LOGFILE}/' ${CLAMD_CONF}
 
     # Official database only
     perl -pi -e 's/^#(OfficialDatabaseOnly ).*/${1} yes/' ${CLAMD_CONF}
@@ -77,15 +77,8 @@ ClamAV:
         - ${FRESHCLAM_CONF}
         - /etc/logrotate.d/clamav
     * RC scripts:
-        - RHEL/CentOS/openSUSE:
-            + ${DIR_RC_SCRIPTS}/clamd 
-            + ${DIR_RC_SCRIPTS}/freshclam
-        - Debian & Ubuntu:
-            + ${DIR_RC_SCRIPTS}/clamav-daemon
-            + ${DIR_RC_SCRIPTS}/clamav-freshclam
-        - FreeBSD:
-            + ${DIR_RC_SCRIPTS}/clamav-clamd
-            + ${DIR_RC_SCRIPTS}/clamav-freshclam
+            + ${DIR_RC_SCRIPTS}/${CLAMAV_CLAMD_RC_SCRIPT_NAME}
+            + ${DIR_RC_SCRIPTS}/${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}
     * Log files:
         - ${CLAMD_LOGFILE}
         - ${FRESHCLAM_LOGFILE}
