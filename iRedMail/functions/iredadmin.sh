@@ -47,9 +47,6 @@ iredadmin_config()
     chown -R ${IREDADMIN_HTTPD_USER}:${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_ROOT}
     chmod -R 0555 ${IREDADMIN_HTTPD_ROOT}
 
-    perl -pi -e 's#TYPE=#ENGINE=#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql
-    perl -pi -e 's#TIMESTAMP\(14\)#TIMESTAMP#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql
-
     # Copy sample configure file.
     cd ${IREDADMIN_HTTPD_ROOT}/
 
