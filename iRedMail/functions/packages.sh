@@ -450,7 +450,7 @@ EOF
         # Don't use python-3
         gentoo_mask_package '<=dev-lang/python-3.0'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-mysql"
+        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-mysql py-flup"
     fi
 
     #############

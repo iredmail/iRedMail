@@ -61,14 +61,49 @@ iredadmin_config()
     chown -R ${IREDADMIN_HTTPD_USER}:${IREDADMIN_HTTPD_GROUP} settings.ini
     chmod 0400 settings.ini
 
-    if [ X"${DISTRO}" != X'OPENBSD' ]; then
-        ECHO_DEBUG "Create directory alias for iRedAdmin."
-        perl -pi -e 's#^(</VirtualHost>)#WSGIScriptAlias /iredadmin "$ENV{HTTPD_SERVERROOT}/iredadmin/iredadmin.py/"\n${1}#' ${HTTPD_SSL_CONF}
-        perl -pi -e 's#^(</VirtualHost>)#Alias /iredadmin/static "$ENV{HTTPD_SERVERROOT}/iredadmin/static/"\n${1}#' ${HTTPD_SSL_CONF}
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Change file owner
+        # iRedAdmin is not running as user 'iredadmin' on OpenBSD
+        chown -R ${HTTPD_USER}:${HTTPD_GROUP} settings.ini
     fi
 
     backup_file ${IREDADMIN_HTTPD_CONF}
-    cat > ${IREDADMIN_HTTPD_CONF} <<EOF
+    ECHO_DEBUG "Create directory alias for iRedAdmin."
+
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Create directory alias.
+        perl -pi -e 's#^(</VirtualHost>)#Alias /iredadmin/static "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static"\n${1}#' ${HTTPD_SSL_CONF}
+        perl -pi -e 's#^(</VirtualHost>)#ScriptAlias /iredadmin "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py"\n${1}#' ${HTTPD_SSL_CONF}
+
+        # There's no wsgi module for Apache available on OpenBSD, so
+        # iRedAdmin runs as CGI program.
+        cat > ${IREDADMIN_HTTPD_CONF} <<EOF
+AddType text/html .py
+AddHandler cgi-script .py
+
+<Directory "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}">
+    Options +ExecCGI +FollowSymLinks
+    Order allow,deny
+    Allow from all
+
+    <IfModule mod_rewrite.c>
+        RewriteEngine on
+        RewriteBase /
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteCond %{REQUEST_FILENAME} !-d
+        RewriteCond %{REQUEST_URI} !^/favicon.ico$
+        RewriteCond %{REQUEST_URI} !^(/.*)+iredadmin.py/
+        RewriteRule ^(.*)$ iredadmin.py/\$1 [PT]
+        RewriteRule ^/(static/.*)$ /static/\$1 [QSA,L,PT]
+    </IfModule>
+</Directory>
+EOF
+    else
+        perl -pi -e 's#^(</VirtualHost>)#Alias /iredadmin/static "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static/"\n${1}#' ${HTTPD_SSL_CONF}
+        perl -pi -e 's#^(</VirtualHost>)#WSGIScriptAlias /iredadmin "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py/"\n${1}#' ${HTTPD_SSL_CONF}
+
+        # iRedAdmin runs as WSGI application with Apache + mod_wsgi
+        cat > ${IREDADMIN_HTTPD_CONF} <<EOF
 WSGISocketPrefix /var/run/wsgi
 WSGIDaemonProcess iredadmin user=${IREDADMIN_HTTPD_USER} threads=15
 WSGIProcessGroup ${IREDADMIN_HTTPD_GROUP}
@@ -80,9 +115,6 @@ AddType text/html .py
     Allow from all
 </Directory>
 EOF
-
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        mv ${IREDADMIN_HTTPD_CONF} ${IREDADMIN_HTTPD_CONF}.bak
     fi
 
     ECHO_DEBUG "Import iredadmin database template."

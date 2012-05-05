@@ -309,7 +309,8 @@ EOF
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable httpd.
-        echo 'httpd_flags="-DSSL"' >> ${RC_CONF_LOCAL}
+        # Note: iRedAdmin doesn't work with chroot.
+        echo 'httpd_flags="-DSSL -u"' >> ${RC_CONF_LOCAL}
 
         # Create /var/www/dev/*random.
         cd /var/www/dev/ && /dev/MAKEDEV random
