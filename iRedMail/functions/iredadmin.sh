@@ -82,20 +82,9 @@ AddType text/html .py
 AddHandler cgi-script .py
 
 <Directory "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}">
-    Options +ExecCGI +FollowSymLinks
+    Options +ExecCGI
     Order allow,deny
     Allow from all
-
-    <IfModule mod_rewrite.c>
-        RewriteEngine on
-        RewriteBase /
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteCond %{REQUEST_URI} !^/favicon.ico$
-        RewriteCond %{REQUEST_URI} !^(/.*)+iredadmin.py/
-        RewriteRule ^(.*)$ iredadmin.py/\$1 [PT]
-        RewriteRule ^/(static/.*)$ /static/\$1 [QSA,L,PT]
-    </IfModule>
 </Directory>
 EOF
     else
