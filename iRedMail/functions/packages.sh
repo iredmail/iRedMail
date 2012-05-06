@@ -430,7 +430,9 @@ EOF
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} python-ldap"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py-ldap py-psycopg2"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py-ldap py-mysql"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py-mysql"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} py-psycopg2"
         PKG_SCRIPTS="${PKG_SCRIPTS} iredapd"
     fi
 
@@ -454,7 +456,7 @@ EOF
         # Don't use python-3
         gentoo_mask_package '<=dev-lang/python-3.0'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-mysql py-flup"
+        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup"
     fi
 
     #############
