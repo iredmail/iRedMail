@@ -81,6 +81,8 @@ iredapd_config()
     perl -pi -e 's#^(run_as_user).*#${1} = $ENV{IREDAPD_DAEMON_USER}#' iredapd.ini
     perl -pi -e 's#^(run_as_daemon).*#${1} = yes#' iredapd.ini
 
+    perl -pi -e 's#^(log_level).*#${1} = info#' iredapd.ini
+
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # Set backend.
         perl -pi -e 's#^(backend).*#${1} = ldap#' iredapd.ini
