@@ -118,6 +118,30 @@ iredapd_config()
     # FreeBSD: Start iredapd when system start up.
     freebsd_enable_service_in_rc_conf 'iredapd_enable' 'YES'
 
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        ECHO_DEBUG "Setting logrotate for iRedAPD log file."
+        cat > ${IREDAPD_LOGROTATE_FILE} <<EOF
+${CONF_MSG}
+${IREDAPD_LOG_FILE} {
+    compress
+    weekly
+    rotate 10
+    create 0600 ${SYS_ROOT_USER} ${SYS_ROOT_GROUP}
+    missingok
+
+    # Use bzip2 for compress.
+    compresscmd $(which bzip2)
+    uncompresscmd $(which bunzip2)
+    compressoptions -9
+    compressext .bz2
+
+    postrotate
+        ${SYSLOG_POSTROTATE_CMD}
+    endscript
+}
+EOF
+    fi
+
     cat >> ${TIP_FILE} <<EOF
 iRedAPD - Postfix Policy Daemon:
     * Version: ${IREDAPD_VERSION}
