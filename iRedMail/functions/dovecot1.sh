@@ -104,7 +104,9 @@ log_path = ${DOVECOT_LOG_FILE}
 # "pool_system_malloc(100248): Out of memory".
 mail_process_size = 1024
 
-# With disable_plaintext_auth=yes, STARTTLS or SSL is mandatory.
+# With disable_plaintext_auth=yes, STARTTLS is mandatory.
+# Set disable_plaintext_auth=no AND ssl=yes to allow plain password transmitted
+# insecurely.
 disable_plaintext_auth = yes
 
 # Performance Tuning. Reference:
