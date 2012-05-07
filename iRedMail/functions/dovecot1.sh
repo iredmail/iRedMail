@@ -132,7 +132,7 @@ login_process_per_connection=yes
 
 # Default realm/domain to use if none was specified.
 # This is used for both SASL realms and appending '@domain.ltd' to username in plaintext logins.
-#auth_default_realm = ${FIRST_DOMAIN}
+auth_default_realm = ${FIRST_DOMAIN}
 
 # ---- NFS storage ----
 # Set to 'no' For NFSv2. Default is 'yes'.

@@ -202,7 +202,7 @@ rcm_config()
     perl -pi -e 's#(.*useragent.*=).*#${1} "RoundCube WebMail";#' main.inc.php
 
     # Set defeault domain.
-    #perl -pi -e 's#(.*username_domain.*=)(.*)#${1} "$ENV{'FIRST_DOMAIN'}";#' main.inc.php
+    perl -pi -e 's#(.*username_domain.*=)(.*)#${1} "$ENV{FIRST_DOMAIN}";#' main.inc.php
 
     # Disable multiple identities.
     # 0 - many identities with possibility to edit all params
