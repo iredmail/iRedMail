@@ -5,8 +5,8 @@ iRedMail-0.8.0-beta4:
     * Add new value of enabledService: doveadm. Required by Dovecot-2.0
       service doveadm.
     * All clients are forced to use IMAPS and POPS (via STARTTLS).
-      To enable POP3/IMAPS without STARTTLS again, set disable_plaintext_auth
-      to 'no' in dovecot.conf.
+      To enable POP3/IMAPS without STARTTLS again, set 'ssl=yes' and
+      'disable_plaintext_auth=no' in dovecot.conf.
     * Drop support for Dovecot-1.1. At least Dovecot-1.2 is required.
     * Fixed:
         + DEBUG=NO in conf/global breaks postfix installation on FreeBSD.
