@@ -68,9 +68,13 @@ EOF
 
         # Debian 5, Ubuntu 8.04, 9.04: Import missing table: postfixpolicyd.blacklist_dnsname.
         if [ X"${DISTRO}" == X'DEBIAN' ]; then
+            addition_sql_file='/usr/share/dbconfig-common/data/postfix-policyd/upgrade/mysql/1.73-1'
+            [ -f ${addition_sql_file} ] && \
+                perl -pi -e 's#TYPE=#ENGINE=#g' ${addition_sql_file}
+
             cat >> ${tmp_sql} <<EOF
 USE ${POLICYD_DB_NAME};
-SOURCE /usr/share/dbconfig-common/data/postfix-policyd/upgrade/mysql/1.73-1;
+SOURCE ${addition_sql_file};
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}"@localhost;
 EOF
         fi
