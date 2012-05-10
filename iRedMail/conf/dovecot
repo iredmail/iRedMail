@@ -44,11 +44,6 @@ export DOVECOT_IMAP_PLUGINS='quota imap_quota autocreate'
 
 # Default quota type: maildir, dict:user::proxy::quotadict (quotadict).
 export DOVECOT_QUOTA_TYPE='dict:user::proxy::quotadict'
-if [ X"${DISTRO}" == X'OPENBSD' ]; then
-    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        export DOVECOT_QUOTA_TYPE='maildir'
-    fi
-fi
 
 # Do not starts with dot (.).
 export SIEVE_RULE_FILENAME='dovecot.sieve'
