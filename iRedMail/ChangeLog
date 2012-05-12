@@ -1,3 +1,6 @@
+iRedMail-0.8.1:
+    * Fix incorrect MySQL user password and databases in MySQL backup script.
+
 iRedMail-0.8.0:
     * It now works on OpenBSD. Tested with OpenBSD 5.1.
 

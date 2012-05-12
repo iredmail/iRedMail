@@ -295,6 +295,7 @@ EOF
         chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_MYSQL}
         chmod 0700 ${BACKUP_SCRIPT_MYSQL}
 
+        export MYSQL_ROOT_PASSWD MYSQL_BACKUP_DATABASES
         perl -pi -e 's#^(BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_MYSQL}
         perl -pi -e 's#^(MYSQL_USER=).*#${1}"$ENV{MYSQL_ROOT_USER}"#' ${BACKUP_SCRIPT_MYSQL}
         perl -pi -e 's#^(MYSQL_PASSWD=).*#${1}"$ENV{MYSQL_ROOT_PASSWD}"#' ${BACKUP_SCRIPT_MYSQL}
