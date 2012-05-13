@@ -184,7 +184,11 @@ rcm_config()
 
     # enable caching of messages and mailbox data in the local database.
     # recommended if the IMAP server does not run on the same machine
-    #perl -pi -e 's#(.*enable_caching.*= )(.*)#${1}FALSE;#' main.inc.php
+    #perl -pi -e 's#(.*enable_caching.*= )(.*)#${1}false;#' main.inc.php
+
+    # enforce connections over https
+    # with this option enabled, all non-secure connections will be redirected.
+    perl -pi -e 's#(.*force_https.*= )(.*)#${1}true;#' main.inc.php
 
     # Allow browser-autocompletion on login form.
     # 0 - disabled, 1 - username and host only, 2 - username, host, password
@@ -212,7 +216,7 @@ rcm_config()
     perl -pi -e 's#(.*identities_level.*=).*#${1} 3;#' main.inc.php
 
     # Spellcheck.
-    perl -pi -e 's#(.*enable_spellcheck.*=).*#${1} FALSE;#' main.inc.php
+    perl -pi -e 's#(.*enable_spellcheck.*=).*#${1} false;#' main.inc.php
 
     # ----------------------------------
     # PLUGINS

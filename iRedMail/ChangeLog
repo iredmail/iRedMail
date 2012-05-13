@@ -1,4 +1,5 @@
 iRedMail-0.8.1:
+    * Enforce connections over https in Roundcube.
     * Fix incorrect MySQL user password and databases in MySQL backup script.
 
 iRedMail-0.8.0:
