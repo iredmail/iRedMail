@@ -1,6 +1,9 @@
 iRedMail-0.8.1:
     * Enforce connections over https in Roundcube.
     * Fix incorrect MySQL user password and databases in MySQL backup script.
+    * Fixed:
+        + [ldap] Don't require enabledService=smtp for maillist members.
+          Thanks rain6966 <uenuan@gmail> for the report.
 
 iRedMail-0.8.0:
     * It now works on OpenBSD. Tested with OpenBSD 5.1.
