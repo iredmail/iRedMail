@@ -600,6 +600,7 @@ ${AMAVISD_SERVER}:10025 inet n  -   -   -   -  smtpd
     -o relay_recipient_maps=
     -o smtpd_restriction_classes=
     -o smtpd_delay_reject=no
+    -o smtpd_tls_security_level=none
     -o smtpd_client_restrictions=permit_mynetworks,reject
     -o smtpd_helo_restrictions=
     -o smtpd_sender_restrictions=

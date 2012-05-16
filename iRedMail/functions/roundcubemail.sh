@@ -155,9 +155,10 @@ rcm_config()
     # ----------------------------------
     # IMAP
     # ----------------------------------
-    perl -pi -e 's#(.*default_host.*=).*#${1} "$ENV{'IMAP_SERVER'}";#' main.inc.php
+    export IMAP_SERVER
+    perl -pi -e 's#(.*default_host.*=).*#${1} "$ENV{IMAP_SERVER}";#' main.inc.php
     #perl -pi -e 's#(.*default_port.*=).*#${1} 143;#' main.inc.php
-    perl -pi -e 's#(.*imap_auth_type.*=).*#${1} "";#' main.inc.php
+    perl -pi -e 's#(.*imap_auth_type.*=).*#${1} "LOGIN";#' main.inc.php
 
     # IMAP share folder.
     perl -pi -e 's#(.*imap_delimiter.*=).*#${1} "/";#' main.inc.php
@@ -168,13 +169,14 @@ rcm_config()
     # ----------------------------------
     # SMTP
     # ----------------------------------
-    perl -pi -e 's#(.*smtp_server.*= )(.*)#${1}"$ENV{'SMTP_SERVER'}";#' main.inc.php
+    export SMTP_SERVER
+    perl -pi -e 's#(.*smtp_server.*= )(.*)#${1}"$ENV{SMTP_SERVER}";#' main.inc.php
     #perl -pi -e 's#(.*smtp_port.*= )(.*)#${1} 25;#' main.inc.php
     perl -pi -e 's#(.*smtp_user.*= )(.*)#${1}"%u";#' main.inc.php
     perl -pi -e 's#(.*smtp_pass.*= )(.*)#${1}"%p";#' main.inc.php
 
     # smtp_auth_type: empty to use best server supported one)
-    perl -pi -e 's#(.*smtp_auth_type.*= )(.*)#${1}"";#' main.inc.php
+    perl -pi -e 's#(.*smtp_auth_type.*= )(.*)#${1}"LOGIN";#' main.inc.php
 
     # ----------------------------------
     # SYSTEM
@@ -200,7 +202,8 @@ rcm_config()
     # Automatically create a new ROUNDCUBE USER when log-in the first time.
     perl -pi -e 's#(.*auto_create_user.*=)(.*)#${1} true;#' main.inc.php
 
-    perl -pi -e 's#(.*des_key.*= )(.*)#${1}"$ENV{'RCM_DES_KEY'}";#' main.inc.php
+    export RCM_DES_KEY
+    perl -pi -e 's#(.*des_key.*= )(.*)#${1}"$ENV{RCM_DES_KEY}";#' main.inc.php
 
     # Set useragent, hide version number.
     perl -pi -e 's#(.*useragent.*=).*#${1} "RoundCube WebMail";#' main.inc.php
@@ -365,12 +368,6 @@ EOF
         # Address template.
         # LDAP object class 'inetOrgPerson' doesn't contains country and region.
         perl -pi -e 's#(.*address_template.*=)(.*)#${1} "{street}<br/>{locality} {zipcode}";#' main.inc.php
-
-    #elif [ X"${BACKEND}" == X"MYSQL" ]; then
-        # Set correct username, password and database name.
-    #    perl -pi -e 's#(.*db_dsnw.*= )(.*)#${1}"$ENV{'PHP_CONN_TYPE'}://$ENV{'RCM_DB_USER'}:$ENV{'RCM_DB_PASSWD'}\@$ENV{'MYSQL_SERVER'}/$ENV{'VMAIL_DB'}";#' plugins/changepasswd/config.inc.php
-    else
-        :
     fi
 
     # Attachment size.
