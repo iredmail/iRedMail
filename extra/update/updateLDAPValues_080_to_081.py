@@ -2,9 +2,9 @@
 # encoding: utf-8
 
 # Author:   Zhang Huangbin <zhb _at_ iredmail.org>
-# Purpose:  Add enabledService=doveadm for all mail users.
-#           Required by command doveadm which provided by Dovecot-2.0.
-# Date:     2012-04-19
+# Purpose:  Add enabledService=lib-storage for all mail users.
+#           Required by IMAP folder sharing in Dovecot-2.0.
+# Date:     2012-05-18
 
 import sys
 import ldap
