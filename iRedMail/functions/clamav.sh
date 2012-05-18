@@ -40,9 +40,8 @@ clamav_config()
     perl -pi -e 's/^(TCPSocket .*)/#${1}/' ${CLAMD_CONF}
     perl -pi -e 's#^(TCPAddr ).*#${1} $ENV{CLAMD_LISTEN_ADDR}#' ${CLAMD_CONF}
 
-    # Set log file
-    perl -pi -e 's#^(LogFile ).*#${1}$ENV{CLAMD_LOGFILE}#' ${CLAMD_CONF}
-    perl -pi -e 's/^#(LogFile ).*/${1}$ENV{CLAMD_LOGFILE}/' ${CLAMD_CONF}
+    # Disable log file
+    perl -pi -e 's/^(LogFile.*/#${1}/' ${CLAMD_CONF}
 
     # Set CLAMD_LOCAL_SOCKET
     perl -pi -e 's/^(LocalSocket ).*/${1}$ENV{CLAMD_LOCAL_SOCKET}/' ${CLAMD_CONF}

@@ -249,6 +249,7 @@ enabledService: senderbcc
 enabledService: recipientbcc
 enabledService: shadowaddress
 enabledService: displayedInGlobalAddressBook
+enabledService: lib-storage
 ${LDIF_PUREFTPD_USER}
 EOF
 }

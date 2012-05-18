@@ -179,7 +179,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
                                 'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',
                                  'managesieve', 'managesievesecured',
                                  'sieve', 'sievesecured', 'shadowaddress',
-                                'displayedInGlobalAddressBook', ]),
+                                'displayedInGlobalAddressBook', 'lib-storage', ]),
         ('memberOfGroup',       groups),
         ]
 

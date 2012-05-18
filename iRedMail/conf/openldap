@@ -223,6 +223,7 @@ export LDAP_SERVICE_WEBMAIL='webmail'
 export LDAP_SERVICE_AWSTATS='awstats'
 export LDAP_SERVICE_SHADOW_ADDRESS='shadowaddress'
 export LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK='displayedInGlobalAddressBook'
+export LDAP_SERVICE_LIB_STORAGE='lib-storage'
 
 # Shared attributes.
 export LDAP_ATTR_ACCOUNT_STATUS='accountStatus'

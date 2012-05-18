@@ -594,7 +594,7 @@ password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${MYSQL_SERVER}
 port        = ${MYSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
-query       = SELECT CONCAT(mailbox.storagenode, '/', mailbox.maildir) FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1
+query       = SELECT CONCAT(mailbox.storagenode, '/', mailbox.maildir, '/Maildir/') FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1
 EOF
 
     cat > ${mysql_virtual_alias_maps_cf} <<EOF
@@ -781,7 +781,7 @@ password    = ${VMAIL_DB_BIND_PASSWD}
 hosts       = ${PGSQL_SERVER}
 port        = ${PGSQL_SERVER_PORT}
 dbname      = ${VMAIL_DB}
-query       = SELECT (mailbox.storagenode || '/' || mailbox.maildir) FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1
+query       = SELECT (mailbox.storagenode || '/' || mailbox.maildir || '/Maildir/') FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1
 EOF
 
     cat > ${pgsql_virtual_alias_maps_cf} <<EOF

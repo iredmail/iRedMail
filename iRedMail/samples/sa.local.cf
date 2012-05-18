@@ -46,12 +46,12 @@ lock_method         flock
 use_bayes          1
 bayes_auto_learn   1
 bayes_auto_expire  1
-#
-# Store bayesian data in SQL database
-# For MySQL
+
+# Store bayesian data in MySQL
 #bayes_store_module Mail::SpamAssassin::BayesStore::MySQL
 #bayes_sql_dsn      DBI:mysql:database:sql_server:sql_port
-# For PostgreSQL
+
+# Store bayesian data in MySQL
 #bayes_store_module Mail::SpamAssassin::BayesStore::PgSQL
 #bayes_sql_dsn      DBI:Pg:database:sql_server:sql_port
 #
