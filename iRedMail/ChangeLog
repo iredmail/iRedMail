@@ -2,8 +2,9 @@ iRedMail-0.8.1:
     * Enforce connections over https in Roundcube.
     * Fix incorrect MySQL user password and databases in MySQL backup script.
     * Fixed:
-        + [ldap] Add new attribute/value required by Dovecot-2 share folder:
-          enabledService=lib-storage.
+        + Add missing auth service in Dovecot-2: auth-userdb.
+        + Add new LDAP attribute and SQL column required by Dovecot-2 share folder:
+          enabledService=lib-storage (ldap), enablelib-storage=1 (SQL).
           Thanks moreni <fmoreni _at_ simtrack.com.br> for the report.
         + [mysql & pgsql] Incorrect maildir path while using Postfix built-in
           'virtual' as transport.

@@ -142,6 +142,7 @@ CREATE TABLE mailbox (
     enablesievesecured INT2 NOT NULL DEFAULT 1,
     enableinternal INT2 NOT NULL DEFAULT 1,
     enabledoveadm INT2 NOT NULL DEFAULT 1,
+    "enablelib-storage" INT2 NOT NULL DEFAULT 1,
     lastlogindate TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     lastloginipv4 INET NOT NULL DEFAULT '0.0.0.0',
     lastloginprotocol CHAR(255) NOT NULL DEFAULT '',
@@ -171,6 +172,8 @@ CREATE INDEX idx_mailbox_enablemanagesievesecured ON mailbox (enablemanagesieves
 CREATE INDEX idx_mailbox_enablesieve ON mailbox (enablesieve);
 CREATE INDEX idx_mailbox_enablesievesecured ON mailbox (enablesievesecured);
 CREATE INDEX idx_mailbox_enableinternal ON mailbox (enableinternal);
+CREATE INDEX idx_mailbox_enabledoveadm ON mailbox (enabledoveadm);
+CREATE INDEX idx_mailbox_enablelib_storage ON mailbox ("enablelib-storage");
 CREATE INDEX idx_mailbox_passwordlastchange ON mailbox (passwordlastchange);
 CREATE INDEX idx_mailbox_expired ON mailbox (expired);
 CREATE INDEX idx_mailbox_active ON mailbox (active);

@@ -83,7 +83,7 @@ echo "export SITE_ADMIN_PASSWD='${SITE_ADMIN_PASSWD}'" >> ${CONFIG_FILE}
 rm -f /tmp/first_domain_admin_passwd
 
 #FIRST_USER
-export FIRST_USER='www'
+export FIRST_USER='test'
 echo "export FIRST_USER='${FIRST_USER}'" >>${CONFIG_FILE}
 
 # FIRST_USER_PASSWD
