@@ -27,6 +27,7 @@ pla_install()
 
     # Config phpLDAPadmin.
     perl -pi -e 's#(// )(.*hide_template_warning.*=).*#${2} true;#' config.php
+    perl -pi -e 's#(// )(.*custom_templates_only.*=).*#${2} true;#' config.php
 
     ECHO_DEBUG "Set file permission."
     chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${PLA_HTTPD_ROOT}
