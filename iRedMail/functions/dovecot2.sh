@@ -261,7 +261,7 @@ EOF
     # SQL lookup for share folder.
     cat > ${DOVECOT_SHARE_FOLDER_CONF} <<EOF
 ${CONF_MSG}
-connect = host=${MYSQL_SERVER} dbname=${share_folder_db_name} user=${share_folder_db_user} password=${share_folder_db_passwd}
+connect = host=${SQL_SERVER} dbname=${share_folder_db_name} user=${share_folder_db_user} password=${share_folder_db_passwd}
 map {
     pattern = shared/shared-boxes/user/\$to/\$from
     table = ${DOVECOT_SHARE_FOLDER_DB_TABLE}
@@ -270,6 +270,17 @@ map {
     fields {
         from_user = \$from
         to_user = \$to
+    }
+}
+
+# To share mailbox to anyone, please uncomment 'acl_anyone = allow' in
+# dovecot.conf
+map {
+    pattern = shared/shared-boxes/anyone/\$from
+    table = ${DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE}
+    value_field = dummy
+    fields {
+        from_user = \$from
     }
 }
 EOF

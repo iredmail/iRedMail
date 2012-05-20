@@ -252,6 +252,12 @@ CREATE TABLE share_folder (
 CREATE INDEX idx_share_folder_from_user ON share_folder (from_user);
 CREATE INDEX idx_share_folder_to_user ON share_folder (to_user);
 
+CREATE TABLE anyone_shares (
+    from_user VARCHAR(255) NOT NULL,
+    dummy CHAR(1),
+    PRIMARY KEY (from_user)
+);
+
 --
 -- Table used_quota. Used to store realtime mailbox quota in Dovecot.
 -- WARNING: Works only with Dovecot 1.2+.

@@ -8,3 +8,9 @@ CREATE TABLE IF NOT EXISTS share_folder (
   dummy CHAR(1),
   PRIMARY KEY (from_user, to_user)
 );
+
+CREATE TABLE IF NOT EXISTS anyone_shares (
+    from_user VARCHAR(255) NOT NULL,
+    dummy CHAR(1) DEFAULT '1',
+    PRIMARY KEY (from_user)
+);

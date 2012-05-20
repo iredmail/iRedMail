@@ -123,6 +123,7 @@ export DOVECOT_EXPIRE_DICT_BDB='/var/lib/dovecot/expire/expire.db'
 export DOVECOT_QUOTA_WARNING_SCRIPT='/usr/local/bin/dovecot-quota-warning.sh'
 export DOVECOT_REALTIME_QUOTA_TABLE='used_quota'
 export DOVECOT_SHARE_FOLDER_DB_TABLE='share_folder'
+export DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE='anyone_shares'
 
 if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
     export DOVECOT_SHARE_FOLDER_SQLTYPE='mysql'

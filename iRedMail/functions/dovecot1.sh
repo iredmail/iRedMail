@@ -487,6 +487,11 @@ namespace shared {
 plugin {
     acl = vfile
     acl_shared_dict = proxy::acl
+
+    # By default Dovecot doesn't allow using the IMAP "anyone" or
+    # "authenticated" identifier, because it would be an easy way to spam
+    # other users in the system. If you wish to allow it,
+    #acl_anyone = allow
 }
 dict {
     acl = ${DOVECOT_SHARE_FOLDER_SQLTYPE}:${DOVECOT_SHARE_FOLDER_CONF}
@@ -505,6 +510,17 @@ map {
     fields {
         from_user = \$from
         to_user = \$to
+    }
+}
+
+# To share mailbox to anyone, please uncomment 'acl_anyone = allow' in
+# dovecot.conf
+map {
+    pattern = shared/shared-boxes/anyone/\$from
+    table = ${DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE}
+    value_field = dummy
+    fields {
+        from_user = \$from
     }
 }
 EOF
