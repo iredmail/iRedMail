@@ -257,8 +257,8 @@ postfix_config_vhost_ldap()
     postconf -e virtual_alias_maps="proxy:ldap:${ldap_virtual_alias_maps_cf}, proxy:ldap:${ldap_virtual_group_maps_cf}, proxy:ldap:${ldap_virtual_group_members_maps_cf}, proxy:ldap:${ldap_catch_all_maps_cf}"
     postconf -e virtual_mailbox_domains="proxy:ldap:${ldap_virtual_mailbox_domains_cf}"
     postconf -e virtual_mailbox_maps="proxy:ldap:${ldap_virtual_mailbox_maps_cf}"
-    postconf -e sender_bcc_maps="proxy:ldap:${ldap_sender_bcc_maps_domain_cf}, proxy:ldap:${ldap_sender_bcc_maps_user_cf}"
-    postconf -e recipient_bcc_maps="proxy:ldap:${ldap_recipient_bcc_maps_domain_cf}, proxy:ldap:${ldap_recipient_bcc_maps_user_cf}"
+    postconf -e sender_bcc_maps="proxy:ldap:${ldap_sender_bcc_maps_user_cf}, proxy:ldap:${ldap_sender_bcc_maps_domain_cf}"
+    postconf -e recipient_bcc_maps="proxy:ldap:${ldap_recipient_bcc_maps_user_cf}, proxy:ldap:${ldap_recipient_bcc_maps_domain_cf}"
     postconf -e relay_domains="\$mydestination, proxy:ldap:${ldap_relay_domains_cf}"
     #postconf -e relay_recipient_maps="proxy:ldap:${ldap_virtual_mailbox_maps_cf}"
 
@@ -538,8 +538,8 @@ postfix_config_vhost_mysql()
     postconf -e virtual_mailbox_domains="proxy:mysql:${mysql_virtual_mailbox_domains_cf}"
     postconf -e virtual_mailbox_maps="proxy:mysql:${mysql_virtual_mailbox_maps_cf}"
     postconf -e virtual_alias_maps="proxy:mysql:${mysql_virtual_alias_maps_cf}, proxy:mysql:${mysql_domain_alias_maps_cf}, proxy:mysql:${mysql_catchall_maps_cf}, proxy:mysql:${mysql_domain_alias_catchall_maps_cf}"
-    postconf -e sender_bcc_maps="proxy:mysql:${mysql_sender_bcc_maps_domain_cf}, proxy:mysql:${mysql_sender_bcc_maps_user_cf}"
-    postconf -e recipient_bcc_maps="proxy:mysql:${mysql_recipient_bcc_maps_domain_cf}, proxy:mysql:${mysql_recipient_bcc_maps_user_cf}"
+    postconf -e sender_bcc_maps="proxy:mysql:${mysql_sender_bcc_maps_user_cf}, proxy:mysql:${mysql_sender_bcc_maps_domain_cf}"
+    postconf -e recipient_bcc_maps="proxy:mysql:${mysql_recipient_bcc_maps_user_cf}, proxy:mysql:${mysql_recipient_bcc_maps_domain_cf}"
     postconf -e relay_domains="\$mydestination, proxy:mysql:${mysql_relay_domains_cf}"
     #postconf -e relay_recipient_maps="proxy:mysql:${mysql_virtual_mailbox_maps_cf}"
 
@@ -725,8 +725,8 @@ postfix_config_vhost_pgsql()
     postconf -e virtual_mailbox_domains="proxy:pgsql:${pgsql_virtual_mailbox_domains_cf}"
     postconf -e virtual_mailbox_maps="proxy:pgsql:${pgsql_virtual_mailbox_maps_cf}"
     postconf -e virtual_alias_maps="proxy:pgsql:${pgsql_virtual_alias_maps_cf}, proxy:pgsql:${pgsql_domain_alias_maps_cf}, proxy:pgsql:${pgsql_catchall_maps_cf}, proxy:pgsql:${pgsql_domain_alias_catchall_maps_cf}"
-    postconf -e sender_bcc_maps="proxy:pgsql:${pgsql_sender_bcc_maps_domain_cf}, proxy:pgsql:${pgsql_sender_bcc_maps_user_cf}"
-    postconf -e recipient_bcc_maps="proxy:pgsql:${pgsql_recipient_bcc_maps_domain_cf}, proxy:pgsql:${pgsql_recipient_bcc_maps_user_cf}"
+    postconf -e sender_bcc_maps="proxy:pgsql:${pgsql_sender_bcc_maps_user_cf}, proxy:pgsql:${pgsql_sender_bcc_maps_domain_cf}"
+    postconf -e recipient_bcc_maps="proxy:pgsql:${pgsql_recipient_bcc_maps_user_cf}, proxy:pgsql:${pgsql_recipient_bcc_maps_domain_cf}"
     postconf -e relay_domains="\$mydestination, proxy:pgsql:${pgsql_relay_domains_cf}"
     #postconf -e relay_recipient_maps="proxy:pgsql:${pgsql_virtual_mailbox_maps_cf}"
 

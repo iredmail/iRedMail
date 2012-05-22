@@ -1,4 +1,6 @@
 iRedMail-0.8.1:
+    * Make sure per-user BCC settings have higher priority than per-domain
+      settings.
     * Enforce connections over https in Roundcube.
     * Fix incorrect MySQL user password and databases in MySQL backup script.
     * Fixed:
