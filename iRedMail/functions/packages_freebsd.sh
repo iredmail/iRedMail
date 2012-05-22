@@ -576,7 +576,7 @@ EOF
 
     # PHP extensions
     if [ X"${REQUIRE_PHP}" == X"YES" -o X"${USE_WEBMAIL}" == X"YES" ]; then
-        ALL_PORTS="${ALL_PORTS} mail/php5-imap graphics/php5-gd archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt databases/php5-mysql security/php5-openssl www/php5-session net/php5-ldap textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml databases/php5-sqlite databases/php5-mysqli"
+        ALL_PORTS="${ALL_PORTS} mail/php5-imap graphics/php5-gd archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt databases/php5-mysql security/php5-openssl www/php5-session net/php5-ldap textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml databases/php5-mysqli"
     fi
 
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
@@ -616,7 +616,7 @@ EOF
     cat > /var/db/ports/roundcube/options <<EOF
 WITH_MYSQL=true
 WITHOUT_PGSQL=true
-WITH_SQLITE=true
+WITHOUT_SQLITE=true
 WITH_SSL=true
 WITH_LDAP=true
 WITH_PSPELL=true
@@ -681,6 +681,23 @@ EOF
 
     # Misc
     ALL_PORTS="${ALL_PORTS} sysutils/logwatch"
+
+    if [ X"${BACKEND}" == X'PGSQL' ]; then
+        # Enable PGSQL support, disable LDAP/MySQL support.
+        for opt_file in \
+            /var/db/ports/p5-Mail-SpamAssassin/options \
+            /var/db/ports/amavisd-new/options \
+            /var/db/ports/apr/options \
+            /var/db/ports/apache22/options \
+            /var/db/ports/roundcube/options \
+            ; do
+            if [ -f ${opt_file} ]; then
+                perl -pi -e 's#WITH_LDAP=true#WITHOUT_LDAP=true#' ${opt_file}
+                perl -pi -e 's#WITH_MYSQL=true#WITHOUT_MYSQL=true#' ${opt_file}
+                perl -pi -e 's#WITHOUT_PGSQL=true#WITH_PGSQL=true#' ${opt_file}
+            fi
+        done
+    fi
 
     # Fetch all source tarballs.
     ECHO_INFO "Fetching all distfile for required packages (make fetch-recursive)"

@@ -67,6 +67,7 @@ Note:
 WARNING:
 
     * EMPTY password is *NOT* permitted.
+    * Please reset password immediately after installation completed.
 
 " 20 76 2>/tmp/first_domain_admin_passwd
 
@@ -102,6 +103,7 @@ Note:
 WARNING:
 
     * EMPTY password is *NOT* permitted.
+    * Please reset password immediately after installation completed.
 
 " 20 76 2>/tmp/first_user_passwd
 
