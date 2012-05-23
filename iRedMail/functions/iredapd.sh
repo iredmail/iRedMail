@@ -47,6 +47,8 @@ iredapd_config()
         chmod +x ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
     else
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
     fi
@@ -139,6 +141,11 @@ ${IREDAPD_LOG_FILE} ${IREDAPD_RR_LOG_FILE} {
         ${SYSLOG_POSTROTATE_CMD}
     endscript
 }
+EOF
+        elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+            if ! grep 'iredapd.log' /etc/newsyslog.conf &>/dev/null; then
+                cat >> /etc/newsyslog.conf <<EOF
+${IREDAPD_LOG_FILE}    ${SYS_ROOT_USER}:${SYS_ROOT_GROUP}   640  7     *    24    Z "${DIR_RC_SCRIPTS}/iredapd restart"
 EOF
     fi
 
