@@ -120,9 +120,9 @@ amavisd_config_rhel()
 
     ECHO_DEBUG "Configure amavisd-new: ${AMAVISD_CONF}."
 
-    export FIRST_DOMAIN
-    perl -pi -e 's/^(\$mydomain)/$1\ =\ \"$ENV{'HOSTNAME'}\"\;\t#/' ${AMAVISD_CONF}
-    perl -pi -e 's/(.*local_domains_maps.*)(].*)/${1},"$ENV{'FIRST_DOMAIN'}"${2}/' ${AMAVISD_CONF}
+    export HOSTNAME FIRST_DOMAIN
+    perl -pi -e 's/^(\$mydomain)/$1\ =\ \"$ENV{HOSTNAME}\"\;\t#/' ${AMAVISD_CONF}
+    perl -pi -e 's/(.*local_domains_maps.*)(].*)/${1},"$ENV{FIRST_DOMAIN}"${2}/' ${AMAVISD_CONF}
 
     if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X"6" ]; then
         perl -pi -e 's#(.*--tempdir=).*\{\}(.*)#${1}$ENV{AMAVISD_TEMPDIR}${2}#' ${AMAVISD_CONF}
