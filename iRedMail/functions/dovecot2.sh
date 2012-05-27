@@ -156,7 +156,7 @@ dovecot2_config()
         perl -pi -e 's#(.*mailbox.)(enable.*Lc)(=1)#${1}`${2}`${3}#' ${DOVECOT_MYSQL_CONF}
 
         perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
-        perl -pi -e 's#PH_SQL_SERVER#$ENV{MYSQL_SERVER}#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_MYSQL_CONF}
@@ -175,7 +175,7 @@ dovecot2_config()
         perl -pi -e 's#(.*mailbox.)(enable.*Lc)(=1)#${1}"${2}"${3}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's/^#(iterate_.*)/${1}/' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_SQL_DRIVER#pgsql#' ${DOVECOT_PGSQL_CONF}
-        perl -pi -e 's#PH_SQL_SERVER#$ENV{PGSQL_SERVER}#' ${DOVECOT_PGSQL_CONF}
+        perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_PGSQL_CONF}
@@ -241,52 +241,31 @@ EOF
     backup_file ${DOVECOT_SHARE_FOLDER_CONF}
 
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        share_folder_db_name="${IREDADMIN_DB_NAME}"
-        share_folder_db_user="${IREDADMIN_DB_USER}"
-        share_folder_db_passwd="${IREDADMIN_DB_PASSWD}"
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
-        share_folder_db_name="${VMAIL_DB}"
-        share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
-        share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        share_folder_db_name="${VMAIL_DB}"
-        share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
-        share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
+        export share_folder_db_name="${IREDADMIN_DB_NAME}"
+        export share_folder_db_user="${IREDADMIN_DB_USER}"
+        export share_folder_db_passwd="${IREDADMIN_DB_PASSWD}"
+    elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
+        export share_folder_db_name="${VMAIL_DB}"
+        export share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
+        export share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
     fi
 
-    # ACL and share folder
+    # ACL and share folder settings in dovecot.conf
     perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_SQLTYPE#$ENV{DOVECOT_SHARE_FOLDER_SQLTYPE}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_CONF#$ENV{DOVECOT_SHARE_FOLDER_CONF}#' ${DOVECOT_CONF}
 
-    # SQL lookup for share folder.
-    cat > ${DOVECOT_SHARE_FOLDER_CONF} <<EOF
-${CONF_MSG}
-connect = host=${SQL_SERVER} dbname=${share_folder_db_name} user=${share_folder_db_user} password=${share_folder_db_passwd}
-map {
-    pattern = shared/shared-boxes/user/\$to/\$from
-    table = ${DOVECOT_SHARE_FOLDER_DB_TABLE}
-    value_field = dummy
-
-    fields {
-        from_user = \$from
-        to_user = \$to
-    }
-}
-
-# To share mailbox to anyone, please uncomment 'acl_anyone = allow' in
-# dovecot.conf
-map {
-    pattern = shared/shared-boxes/anyone/\$from
-    table = ${DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE}
-    value_field = dummy
-    fields {
-        from_user = \$from
-    }
-}
-EOF
-
+    # Copy sample config and set file owner/permission
+    cp ${SAMPLE_DIR}/dovecot/dovecot-share-folder.conf ${DOVECOT_SHARE_FOLDER_CONF}
     chown ${DOVECOT_USER}:${DOVECOT_GROUP} ${DOVECOT_SHARE_FOLDER_CONF}
     chmod 0500 ${DOVECOT_SHARE_FOLDER_CONF}
+
+    # Replace place holders in sample config file
+    perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#' ${DOVECOT_SHARE_FOLDER_CONF}
+    perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_DB_NAME#$ENV{share_folder_db_name}#' ${DOVECOT_SHARE_FOLDER_CONF}
+    perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_DB_USER#$ENV{share_folder_db_user}#' ${DOVECOT_SHARE_FOLDER_CONF}
+    perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_DB_PASSWORD#$ENV{share_folder_db_passwd}#' ${DOVECOT_SHARE_FOLDER_CONF}
+    perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_DB_TABLE#$ENV{DOVECOT_SHARE_FOLDER_DB_TABLE}#' ${DOVECOT_SHARE_FOLDER_CONF}
+    perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE#$ENV{DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE}#' ${DOVECOT_SHARE_FOLDER_CONF}
 
     # Create MySQL database ${IREDADMIN_DB_USER} and table 'share_folder'
     # which used to store realtime quota.
