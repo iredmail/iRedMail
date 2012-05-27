@@ -138,7 +138,7 @@ ${IREDAPD_LOG_FILE} ${IREDAPD_RR_LOG_FILE} {
     compressext .bz2
 
     postrotate
-        ${SYSLOG_POSTROTATE_CMD}
+        ${DIR_RC_SCRIPTS}/iredapd restart
     endscript
 }
 EOF
