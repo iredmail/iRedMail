@@ -184,40 +184,32 @@ dovecot2_config()
         chmod 0550 ${DOVECOT_PGSQL_CONF}
     fi
 
-
+    # Realtime quota
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        realtime_quota_db_name="${IREDADMIN_DB_NAME}"
-        realtime_quota_db_user="${IREDADMIN_DB_USER}"
-        realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
+        export realtime_quota_db_name="${IREDADMIN_DB_NAME}"
+        export realtime_quota_db_user="${IREDADMIN_DB_USER}"
+        export realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
-        realtime_quota_db_name="${VMAIL_DB}"
-        realtime_quota_db_user="${VMAIL_DB_ADMIN_USER}"
-        realtime_quota_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
+        export realtime_quota_db_name="${VMAIL_DB}"
+        export realtime_quota_db_user="${VMAIL_DB_ADMIN_USER}"
+        export realtime_quota_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        realtime_quota_db_name="${VMAIL_DB}"
-        realtime_quota_db_user="${VMAIL_DB_BIND_USER}"
-        realtime_quota_db_passwd="${VMAIL_DB_BIND_PASSWD}"
+        export realtime_quota_db_name="${VMAIL_DB}"
+        export realtime_quota_db_user="${VMAIL_DB_BIND_USER}"
+        export realtime_quota_db_passwd="${VMAIL_DB_BIND_PASSWD}"
     fi
 
-    cat > ${DOVECOT_REALTIME_QUOTA_CONF} <<EOF
-${CONF_MSG}
-connect = host=${SQL_SERVER} dbname=${realtime_quota_db_name} user=${realtime_quota_db_user} password=${realtime_quota_db_passwd}
-map {
-    pattern = priv/quota/storage
-    table = ${DOVECOT_REALTIME_QUOTA_TABLE}
-    username_field = username
-    value_field = bytes
-}
-map {
-    pattern = priv/quota/messages
-    table = ${DOVECOT_REALTIME_QUOTA_TABLE}
-    username_field = username
-    value_field = messages
-}
-EOF
-
+    # Copy sample config and set file owner/permission
+    cp ${SAMPLE_DIR}/dovecot/dovecot-used-quota.conf ${DOVECOT_REALTIME_QUOTA_CONF}
     chown ${DOVECOT_USER}:${DOVECOT_GROUP} ${DOVECOT_REALTIME_QUOTA_CONF}
     chmod 0500 ${DOVECOT_REALTIME_QUOTA_CONF}
+
+    # Replace place holders in sample config file
+    perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#' ${DOVECOT_REALTIME_QUOTA_CONF}
+    perl -pi -e 's#PH_REALTIME_QUOTA_DB_NAME#$ENV{realtime_quota_db_name}#' ${DOVECOT_REALTIME_QUOTA_CONF}
+    perl -pi -e 's#PH_REALTIME_QUOTA_DB_USER#$ENV{realtime_quota_db_user}#' ${DOVECOT_REALTIME_QUOTA_CONF}
+    perl -pi -e 's#PH_REALTIME_QUOTA_DB_PASSWORD#$ENV{realtime_quota_db_passwd}#' ${DOVECOT_REALTIME_QUOTA_CONF}
+    perl -pi -e 's#PH_DOVECOT_REALTIME_QUOTA_TABLE#$ENV{DOVECOT_REALTIME_QUOTA_TABLE}#' ${DOVECOT_REALTIME_QUOTA_CONF}
 
     # Create MySQL database ${IREDADMIN_DB_USER} and table 'used_quota'
     # which used to store realtime quota.
