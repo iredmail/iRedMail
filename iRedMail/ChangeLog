@@ -12,7 +12,8 @@ iRedMail-0.8.1:
           Thanks moreni <fmoreni _at_ simtrack.com.br> for the report.
         + [mysql & pgsql] Incorrect maildir path while using Postfix built-in
           'virtual' as transport.
-        + [ldap] Don't require enabledService=smtp for maillist members.
+        + [ldap] Require enabledService=deliver instead of enabledService=smtp
+          for maillist members.
           Thanks rain6966 <uenuan@gmail> for the report.
 
 iRedMail-0.8.0:
