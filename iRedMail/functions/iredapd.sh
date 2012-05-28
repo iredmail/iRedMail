@@ -142,7 +142,7 @@ ${IREDAPD_LOG_FILE} ${IREDAPD_RR_LOG_FILE} {
     endscript
 }
 EOF
-    elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+    elif [ X"${KERNEL_NAME}" == X'FREEBSD' -o X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if ! grep 'iredapd.log' /etc/newsyslog.conf &>/dev/null; then
             cat >> /etc/newsyslog.conf <<EOF
 ${IREDAPD_LOG_FILE}    ${SYS_ROOT_USER}:${SYS_ROOT_GROUP}   640  7     *    24    Z "${DIR_RC_SCRIPTS}/iredapd restart"
