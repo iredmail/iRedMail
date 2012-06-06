@@ -208,6 +208,7 @@ EOF
     perl -pi -e 's#^(TRIPLET_AUTH_TIMEOUT=)(.*)#${1}7d#' ${POLICYD_CONF}
     perl -pi -e 's#^(TRIPLET_UNAUTH_TIMEOUT=)(.*)#${1}2d#' ${POLICYD_CONF}
     perl -pi -e 's#^(OPTINOUT=)(.*)#${1}1#' ${POLICYD_CONF}
+    perl -pi -e 's#^(OPTINOUTALL=)(.*)#${1}1#' ${POLICYD_CONF}
 
     # Disable sender throttling here, it should be invoked in postfix
     # 'smtpd_end_of_data_restrictions'.

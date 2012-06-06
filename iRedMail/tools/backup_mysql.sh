@@ -147,10 +147,10 @@ backup_db()
 
         # Compress
         if [ X"${COMPRESS}" == X"YES" ]; then
-            ${CMD_COMPRESS} ${output_sql} &>>${LOGFILE}
+            ${CMD_COMPRESS} ${output_sql} >>${LOGFILE}
 
             if [ X"$?" == X'0' -a X"${DELETE_PLAIN_SQL_FILE}" == X'YES' ]; then
-                rm -f ${output_sql} &>> ${LOGFILE}
+                rm -f ${output_sql} >> ${LOGFILE}
             fi
         fi
     fi
@@ -160,7 +160,7 @@ backup_db()
 # Backup.
 echo "* Backing up databases ..." >> ${LOGFILE}
 for db in ${DATABASES}; do
-    backup_db ${db} &>>${LOGFILE}
+    backup_db ${db} >>${LOGFILE}
 
     if [ X"$?" == X"0" ]; then
         echo "  - ${db} [DONE]" >> ${LOGFILE}

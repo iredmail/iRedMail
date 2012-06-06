@@ -119,6 +119,7 @@ CREATE TABLE mailbox (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
+    language VARCHAR(5) NOT NULL DEFAULT 'en_US',
     storagebasedirectory VARCHAR(255) NOT NULL DEFAULT '',
     storagenode VARCHAR(255) NOT NULL DEFAULT '',
     maildir VARCHAR(255) NOT NULL DEFAULT '',
