@@ -98,7 +98,8 @@ cleanup_replace_iptables_rule()
         export sshd_port='22'
     else
         # Replace port number in iptable, pf and Fail2ban.
-        perl -pi -e 's#(.*, )22( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/iptables.rules
+        perl -pi -e 's#(.* )22( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/iptables.rules
+        perl -pi -e 's#(.*mail_services=.*)ssh( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/pf.conf
 
         [ -f ${FAIL2BAN_JAIL_LOCAL_CONF} ] && \
             perl -pi -e 's#(.*port=.*)ssh(.*)#${1}$ENV{sshd_port}${2}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
