@@ -98,7 +98,7 @@ cleanup_replace_iptables_rule()
         export sshd_port='22'
     else
         # Replace port number in iptable, pf and Fail2ban.
-        perl -pi -e 's#(.*,)22(.*)#${1}$ENV{sshd_port} ${2}#' ${SAMPLE_DIR}/iptables.rules ${SAMPLE_DIR}/pf.conf
+        perl -pi -e 's#(.*, )22( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/iptables.rules
 
         [ -f ${FAIL2BAN_JAIL_LOCAL_CONF} ] && \
             perl -pi -e 's#(.*port=.*)ssh(.*)#${1}$ENV{sshd_port}${2}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
@@ -124,7 +124,7 @@ cleanup_replace_iptables_rule()
                 if [ X"${DISTRO}" == X"SUSE" ]; then
                     # Below services are not accessable from external network:
                     #   - ldaps (636)
-                    perl -pi -e 's/^(FW_SERVICES_EXT_TCP=)(.*)/${1}"$ENV{'HTTPD_PORT'} 443 25 110 995 143 993 587 465 $ENV{'sshd_port'}"\n#${2}/' ${IPTABLES_CONFIG}
+                    perl -pi -e 's/^(FW_SERVICES_EXT_TCP=)(.*)/${1}"$ENV{HTTPD_PORT} 443 25 110 995 143 993 587 465 $ENV{sshd_port}"\n#${2}/' ${IPTABLES_CONFIG}
 
                 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
                     # Copy sample rc script for Debian.

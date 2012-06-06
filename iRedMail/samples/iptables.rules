@@ -35,8 +35,24 @@
 # Loop device.
 -A INPUT -i lo -j ACCEPT
 
-# http/https, smtp/submission, pop3/pop3s, imap/imaps, ssh
--A INPUT -p tcp -m multiport --dport 80,443,25,587,110,995,143,993,465,22 -j ACCEPT
+# http, https
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+
+# smtp, submission
+-A INPUT -p tcp --dport 25 -j ACCEPT
+-A INPUT -p tcp --dport 587 -j ACCEPT
+
+# pop3, pop3s
+-A INPUT -p tcp --dport 110 -j ACCEPT
+-A INPUT -p tcp --dport 995 -j ACCEPT
+
+# imap, imaps
+-A INPUT -p tcp --dport 143 -j ACCEPT
+-A INPUT -p tcp --dport 993 -j ACCEPT
+
+# ssh
+-A INPUT -p tcp --dport 22 -j ACCEPT
 
 # Allow PING from remote hosts.
 -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
@@ -44,25 +60,10 @@
 # ejabberd
 #-A INPUT -p tcp -m multiport --dport 5222,5223,5280 -j ACCEPT
 
-# http/https
-#-A INPUT -p tcp -m multiport --dport 80,443 -j ACCEPT
-
-# smtp/smtps
-#-A INPUT -p tcp -m multiport --dport 25,465 -j ACCEPT
-
-# pop3/pop3s
-#-A INPUT -p tcp -m multiport --dport 110,995 -j ACCEPT
-
-# imap/imaps
-#-A INPUT -p tcp -m multiport --dport 143,993 -j ACCEPT
-
 # ldap/ldaps
 #-A INPUT -p tcp -m multiport --dport 389,636 -j ACCEPT
 
 # ftp.
 #-A INPUT -p tcp -m multiport --dport 21,20 -j ACCEPT
-
-# ssh
-#-A INPUT -p tcp --dport 22 -j ACCEPT
 
 COMMIT
