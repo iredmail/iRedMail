@@ -25,6 +25,8 @@ iredadmin_config()
 {
     ECHO_INFO "Configure iRedAdmin (official web-based admin panel)."
 
+    echo "export IREDADMIN_DB_PASSWD='${IREDADMIN_DB_PASSWD}'" >> ${CONFIG_FILE}
+
     if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"SUSE" ]; then
         ECHO_DEBUG "Enable apache module: wsgi."
         a2enmod wsgi >/dev/null 2>&1
@@ -151,7 +153,6 @@ EOF
     # Modify iRedAdmin settings.
     # [general] section.
     ECHO_DEBUG "Configure general settings."
-    perl -pi -e 's#^(webmaster =).*#${1} $ENV{MAIL_ALIAS_ROOT}#' settings.ini
     perl -pi -e 's#^(storage_base_directory =).*#${1} $ENV{STORAGE_BASE_DIR}/$ENV{STORAGE_NODE}#' settings.ini
 
     # [iredadmin] section.

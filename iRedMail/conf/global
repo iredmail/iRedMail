@@ -264,19 +264,23 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         export DISTRO='DEBIAN'
 
         # Get major release version number
-        export DISTRO_VERSION="$(cat /etc/debian_version | cut -b 1)"
+        export DISTRO_VERSION="$(cat /etc/debian_version)"
 
-        # Set distro code name and unsupported releases:
-        # - 4: Etch
-        # - 5: Lenny
-        if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        # Set distro code name and unsupported releases.
+        if grep '^6' /etc/debian_version &>/dev/null; then
+            export DISTRO_VERSION='6'
             export DISTRO_CODENAME='squeeze'
-
-            # Override settings.
-            export SHELL_NOLOGIN='/usr/sbin/nologin'
+        elif grep '^7' /etc/debian_version &>/dev/null || \
+            grep -i '^wheezy' /etc/debian_version &>/dev/null; then
+            export DISTRO_VERSION='7'
+            export DISTRO_CODENAME='wheezy'
+            export ENABLE_BACKEND_PGSQL='YES'
         else
             export UNSUPPORTED_RELEASE='YES'
         fi
+
+        # Override settings.
+        export SHELL_NOLOGIN='/usr/sbin/nologin'
 
     elif [ -f /etc/gentoo-release ]; then
         # Gentoo

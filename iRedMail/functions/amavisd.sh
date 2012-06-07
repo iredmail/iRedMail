@@ -255,12 +255,8 @@ chomp(\$mydomain = "${HOSTNAME}");
 EOF
 
     # Add postfix alias for user: amavis.
-    if [ ! -z ${MAIL_ALIAS_ROOT} ]; then
-        echo "${AMAVISD_SYS_USER}: root" >> ${POSTFIX_FILE_ALIASES}
-        postalias hash:${POSTFIX_FILE_ALIASES} &>/dev/null
-    else
-        :
-    fi
+    echo "${AMAVISD_SYS_USER}: ${SYS_ROOT_USER}" >> ${POSTFIX_FILE_ALIASES}
+    postalias hash:${POSTFIX_FILE_ALIASES} &>/dev/null
 
     # Make sure that clamav is configured to init supplementary
     # groups when it drops priviledges, and that you add the

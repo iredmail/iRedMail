@@ -73,14 +73,11 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 
-elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-    if [ X"${DISTRO}" == X"DEBIAN" ]; then
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    if [ X"${DISTRO_CODENAME}" == X'squeeze' \
+        -o X"${DISTRO_CODENAME}" == X'lucid' \
+        ]; then
         export DOVECOT_VERSION='1.2'
-    elif [ X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${DISTRO_CODENAME}" == X"lucid" ]; then
-            # Ubuntu 10.04
-            export DOVECOT_VERSION='1.2'
-        fi
     fi
 
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'

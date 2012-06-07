@@ -303,7 +303,7 @@ Disallow: /iredadmin
 EOF
 
     if [ X"${DISTRO}" != X'OPENBSD' ]; then
-        echo "${HTTPD_USER}: root" >> ${POSTFIX_FILE_ALIASES}
+        echo "${HTTPD_USER}: ${SYS_ROOT_USER}" >> ${POSTFIX_FILE_ALIASES}
         postalias hash:${POSTFIX_FILE_ALIASES} &>/dev/null
     fi
 

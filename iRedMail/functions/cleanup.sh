@@ -397,8 +397,6 @@ EOF
 
     # Send tip file to the mail server admin and/or first mail user.
     tip_recipient="${FIRST_USER}@${FIRST_DOMAIN}"
-    [ ! -z "${MAIL_ALIAS_ROOT}" -a X"${MAIL_ALIAS_ROOT}" != X"${tip_recipient}" ] && \
-        tip_recipient="${tip_recipient},${MAIL_ALIAS_ROOT}"
 
     cat > /tmp/.tips.eml <<EOF
 From: root@${HOSTNAME}

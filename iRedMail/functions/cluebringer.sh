@@ -152,13 +152,7 @@ EOF
 
             # Append cluebringer default sql template.
             gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.mysql.gz >> ${tmp_sql}
-
-            if [ X"${DISTRO_CODENAME}" == X"oneiric" \
-                -o X"${DISTRO_CODENAME}" == X"precise" \
-                ]; then
-                # Convert 'TYPE=' to 'ENGINE='
-                perl -pi -e 's#TYPE=#ENGINE=#g' ${tmp_sql}
-            fi
+            perl -pi -e 's#TYPE=#ENGINE=#g' ${tmp_sql}
 
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
             cat > ${tmp_sql} <<EOF
@@ -291,17 +285,11 @@ ${AMAVISD_LOGFILE} {
     endscript
 }
 EOF
-    else
-        :
     fi
 
     # Add postfix alias.
-    if [ ! -z ${MAIL_ALIAS_ROOT} ]; then
-        echo "cluebringer: ${MAIL_ALIAS_ROOT}" >> ${POSTFIX_FILE_ALIASES}
-        postalias hash:${POSTFIX_FILE_ALIASES} 2>/dev/null
-    else
-        :
-    fi
+    echo "${CLUEBRINGER_USER}: ${SYS_ROOT_USER}" >> ${POSTFIX_FILE_ALIASES}
+    postalias hash:${POSTFIX_FILE_ALIASES} 2>/dev/null
 
     # Tips.
     cat >> ${TIP_FILE} <<EOF

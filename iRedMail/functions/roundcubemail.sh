@@ -9,6 +9,9 @@ rcm_install()
 {
     ECHO_INFO "Configure Roundcube webmail."
 
+    echo "export RCM_DB_USER='${RCM_DB_USER}'" >> ${CONFIG_FILE}
+    echo "export RCM_DB_PASSWD='${RCM_DB_PASSWD}'" >> ${CONFIG_FILE}
+
     # FreeBSD: install via ports tree.
     if [ X"${DISTRO}" != X"FREEBSD" -a X"${DISTRO}" != X'OPENBSD' ]; then
         cd ${MISC_DIR}

@@ -30,6 +30,12 @@ if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'SUSE' ]; then
         export USE_CLUEBRINGER='YES'
         export USE_POLICYD='NO'
     fi
+elif [ X"${DISTRO}" == X'DEBIAN' ]; then
+    if [ X"${DISTRO_CODENAME}" == X'wheezy' ]; then
+        export USE_CLUEBRINGER='YES'
+        export USE_POLICYD='NO'
+    fi
+
 elif [ X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO_CODENAME}" == X"oneiric" \
         -o X"${DISTRO_CODENAME}" == X"precise" \

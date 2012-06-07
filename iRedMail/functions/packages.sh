@@ -152,16 +152,13 @@ install_all()
         # Authentication modules
         ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql libapache2-mod-auth-pgsql"
 
-        if [ X"${DISTRO_CODENAME}" != X"oneiric" \
-            -a X"${DISTRO_CODENAME}" != X"precise" \
+        if [ X"${DISTRO_CODENAME}" == X'squeeze' \
+            -o X"${DISTRO_CODENAME}" == X'lucid' \
             ]; then
             ALL_PKGS="${ALL_PKGS} php5-mhash"
         fi
 
-        if [ X"${DISTRO_CODENAME}" == X"lucid" \
-            -o X"${DISTRO_CODENAME}" == X"oneiric" \
-            -o X"${DISTRO_CODENAME}" == X"precise" \
-            ]; then
+        if [ X"${DISTRO_CODENAME}" != X'squeeze' ]; then
             if [ X"${BACKEND}" == X"OPENLDAP" ]; then
                 ALL_PKGS="${ALL_PKGS} php-net-ldap2"
             fi
@@ -229,11 +226,9 @@ install_all()
             ALL_PKGS="${ALL_PKGS} cluebringer"
             ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
         fi
+
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${DISTRO_CODENAME}" == X"oneiric" \
-            -o X"${DISTRO_CODENAME}" == X"precise" \
-            ]; then
-            # Policyd-2.x, code name "cluebringer".
+        if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
             ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
             ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
@@ -246,7 +241,6 @@ install_all()
             ALL_PKGS="${ALL_PKGS} postfix-policyd"
             ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
         fi
-
 
         if [ X"${DISTRO_CODENAME}" == X"lucid" ]; then
             # Don't invoke dbconfig-common on Ubuntu.
@@ -301,8 +295,8 @@ EOF
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d"
 
-        if [ X"${DISTRO_CODENAME}" == X"oneiric" \
-            -o X"${DISTRO_CODENAME}" == X"precise" \
+        if [ X"${DISTRO_CODENAME}" != X'squeeze' \
+            -a X"${DISTRO_CODENAME}" != X'lucid' \
             ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-managesieved dovecot-sieve"
 
@@ -403,14 +397,18 @@ EOF
 
     # phpMyAdmin
     if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            ALL_PKGS="${ALL_PKGS} phpmyadmin"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} phpMyAdmin"
         fi
     fi
 
     # phpLDAPadmin
     if [ X"${USE_PHPLDAPADMIN}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            ALL_PKGS="${ALL_PKGS} phpldapadmin"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} phpldapadmin"
         fi
     fi
@@ -518,19 +516,6 @@ EOF
     # Disable Ubuntu firewall rules, we have iptables init script and rule file.
     [ X"${DISTRO}" == X"UBUNTU" ] && export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
 
-    # Debian 6 and Ubuntu 10.04/10.10 special.
-    # Install binary packages of phpldapadmin-1.2.x and phpMyAdmin-3.x.
-    if [ X"${DISTRO_CODENAME}" == X"lucid" -o X"${DISTRO_CODENAME}" == X"squeeze" ]; then
-        # Install phpLDAPadmin.
-        if [ X"${USE_PHPLDAPADMIN}" == X"YES" ]; then
-            ALL_PKGS="${ALL_PKGS} phpldapadmin"
-        fi
-
-        # Install phpMyAdmin-3.x.
-        if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
-            ALL_PKGS="${ALL_PKGS} phpmyadmin"
-        fi
-    fi
     #
     # ---- End Ubuntu 10.04 special. ----
     #

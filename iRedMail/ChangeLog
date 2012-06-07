@@ -1,4 +1,5 @@
 iRedMail-0.8.1:
+    * It now works on Debian wheezy. Tested with Debian wheezy alpha 1.
     * Drop support for Linux Mint. Sorry, not a server OS.
     * Add new column 'mailbox.language' in MySQL & PGSQL backends, used by
       iRedAdmin.

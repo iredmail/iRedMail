@@ -116,12 +116,6 @@ echo "export FIRST_USER_PASSWD='${FIRST_USER_PASSWD}'" >>${CONFIG_FILE}
 echo "export FIRST_USER_PASSWD_PLAIN='${FIRST_USER_PASSWD_PLAIN}'" >>${CONFIG_FILE}
 rm -f /tmp/first_user_passwd
 
-#
-# Set first mail user as alias for root.
-#
-export MAIL_ALIAS_ROOT="${FIRST_USER}@${FIRST_DOMAIN}"
-echo "export MAIL_ALIAS_ROOT='${MAIL_ALIAS_ROOT}'" >> ${CONFIG_FILE}
-
 cat >> ${TIP_FILE} <<EOF
 Admin of domain ${FIRST_DOMAIN}:
     * Account: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
@@ -141,9 +135,5 @@ First mail user:
     Note:
         - This account is a normal mail user.
         - You can login webmail with this account, login name is full email address.
-
-Alias for root user:
-    * Alias address: ${MAIL_ALIAS_ROOT}
-    * You can change it in file ${POSTFIX_FILE_ALIASES}, then execute command 'postalias ${POSTFIX_FILE_ALIASES}'.
 
 EOF
