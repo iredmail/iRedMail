@@ -39,8 +39,12 @@ EOF
     cd ${PHPMYADMIN_HTTPD_ROOT} && cp config.sample.inc.php ${PHPMYADMIN_CONFIG_FILE}
 
     export COOKIE_STRING="$(${RANDOM_STRING})"
-    perl -pi -e 's#(.*blowfish_secret.*= )(.*)#${1}"$ENV{'COOKIE_STRING'}"; //${2}#' ${PHPMYADMIN_CONFIG_FILE}
-    perl -pi -e 's#(.*Servers.*host.*=.*)localhost(.*)#${1}$ENV{'MYSQL_SERVER'}${2}#' ${PHPMYADMIN_CONFIG_FILE}
+    perl -pi -e 's#(.*blowfish_secret.*= )(.*)#${1}"$ENV{COOKIE_STRING}"; //${2}#' ${PHPMYADMIN_CONFIG_FILE}
+
+    # New option in phpMyAdmin-3.5.1
+    perl -pi -e 's#(.*blowfish_secret.*)#${1}\n\$cfg\["AllowThirdPartyFraming"\] = true;#' ${PHPMYADMIN_CONFIG_FILE}
+
+    perl -pi -e 's#(.*Servers.*host.*=.*)localhost(.*)#${1}$ENV{SQL_SERVER}${2}#' ${PHPMYADMIN_CONFIG_FILE}
 
     if [ X"${MYSQL_SERVER}" == X"localhost" ]; then
         # Use unix socket.
