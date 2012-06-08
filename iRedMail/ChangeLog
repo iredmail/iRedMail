@@ -21,6 +21,9 @@ iRedMail-0.8.1:
           for maillist members.
           Thanks rain6966 <uenuan@gmail> for the report.
 
+    * Package update:
+        + iRedAdmin -> 0.1.8
+
 iRedMail-0.8.0:
     * It now works on OpenBSD. Tested with OpenBSD 5.1.
 
