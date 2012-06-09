@@ -186,13 +186,13 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         # Get distribution name as DISTRO_CODENAME
         if grep '^Red' /etc/redhat-release &>/dev/null; then
             # RHEL
-            export DISTRO_CODENAME='RHEL'
+            export DISTRO_CODENAME='rhel'
         elif grep '^CentOS' /etc/redhat-release &>/dev/null; then
             # CentOS
-            export DISTRO_CODENAME='CentOS'
+            export DISTRO_CODENAME='centos'
         elif grep '^Scientific' /etc/redhat-release &>/dev/null; then
             # Scientific Linux
-            export DISTRO_CODENAME='Scientific'
+            export DISTRO_CODENAME='scientific'
         else
             export UNSUPPORTED_RELEASE='YES'
         fi
