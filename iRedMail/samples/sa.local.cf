@@ -88,6 +88,14 @@ spf_timeout         5
 score SPF_PASS -10.000
 score SPF_FAIL 5.00
 
+# Trusted networks. Examples:
+#   192.168/16            # all in 192.168.*.*
+#   212.17.35.15          # just that host
+#   !10.0.1.5 10.0.1/24   # all in 10.0.1.* but not 10.0.1.5
+#   DEAD:BEEF::/32        # all in that ipv6 prefix
+# Local host (127.0.0.1) will automatically be trusted implicitly.
+#trusted_networks 192.168/16
+
 # Whitelist from SPF.
 #whitelist_from_spf     joe@example.com fred@example.com
 whitelist_from_spf      *@gmail.com
