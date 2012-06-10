@@ -23,7 +23,7 @@
 # Available variables for automate installation (value should be 'y' or 'n'):
 #   AUTO_CLEANUP_REMOVE_SENDMAIL
 #   AUTO_CLEANUP_REMOVE_MOD_PYTHON
-#   AUTO_CLEANUP_REPLACE_IPTABLES_RULE
+#   AUTO_CLEANUP_REPLACE_FIREWALL_RULES
 #   AUTO_CLEANUP_RESTART_IPTABLES
 #   AUTO_CLEANUP_REPLACE_MYSQL_CONFIG
 #   AUTO_CLEANUP_RESTART_POSTFIX
@@ -89,7 +89,7 @@ cleanup_remove_mod_python()
     echo 'export status_cleanup_remove_mod_python="DONE"' >> ${STATUS_FILE}
 }
 
-cleanup_replace_iptables_rule()
+cleanup_replace_firewall_rules()
 {
     # Get SSH listen port, replace default port number in iptable rule file.
     export sshd_port="$(grep '^Port' ${SSHD_CONFIG} | awk '{print $2}' )"
@@ -107,7 +107,7 @@ cleanup_replace_iptables_rule()
 
     ECHO_QUESTION "Would you like to use firewall rules provided by iRedMail now?"
     ECHO_QUESTION -n "File: ${IPTABLES_CONFIG}, with SSHD port: ${sshd_port}. [Y|n]"
-    read_setting ${AUTO_CLEANUP_REPLACE_IPTABLES_RULE}
+    read_setting ${AUTO_CLEANUP_REPLACE_FIREWALL_RULES}
     case $ANSWER in
         N|n ) ECHO_INFO "Skip firewall rules." ;;
         Y|y|* ) 
@@ -170,7 +170,7 @@ cleanup_replace_iptables_rule()
         ENABLED_SERVICES="iptables ${ENABLED_SERVICES}"
     fi
 
-    echo 'export status_cleanup_replace_iptables_rule="DONE"' >> ${STATUS_FILE}
+    echo 'export status_cleanup_replace_firewall_rules="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_replace_mysql_config()
@@ -383,7 +383,7 @@ EOF
     check_status_before_run cleanup_remove_mod_python
     [ X"${KERNEL_NAME}" == X'LINUX' \
         -o X"${KERNEL_NAME}" == X'OPENBSD' \
-        ] && check_status_before_run cleanup_replace_iptables_rule
+        ] && check_status_before_run cleanup_replace_firewall_rules
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
     check_status_before_run cleanup_backup_scripts
     [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password

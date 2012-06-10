@@ -48,16 +48,30 @@ iredapd_config()
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
+        # Create rc script
+        cat > ${DIR_RC_SCRIPTS}/iredapd <<EOF
+#!/bin/sh
+daemon='python ${IREDAPD_ROOT_DIR}/iredapd/src/iredapd.py ${IREDAPD_ROOT_DIR}/iredapd/etc/iredapd.ini'
+
+. /etc/rc.d/rc.subr
+
+rc_reload=NO
+rc_cmd \$1
+EOF
+
+        cat > ${DIR_RC_SCRIPTS}/iredapd-rr <<EOF
+#!/bin/sh
+daemon='python ${IREDAPD_ROOT_DIR}/iredapd/src/iredapd-rr.py ${IREDAPD_ROOT_DIR}/iredapd/etc/iredapd-rr.ini'
+
+. /etc/rc.d/rc.subr
+
+rc_reload=NO
+rc_cmd \$1
+EOF
+
+        chmod 0755 ${DIR_RC_SCRIPTS}/iredapd-rr
     else
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
-    fi
-
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        perl -pi -e 's#(.*)(/usr/bin/env bash)#${1}/usr/local/bin/bash#' ${DIR_RC_SCRIPTS}/iredapd
-        perl -pi -e 's#python#/usr/local/bin/python#' ${DIR_RC_SCRIPTS}/iredapd
-        perl -pi -e 's#(.*echo)(.*Starting.*)#${1} -n " iredapd"#' ${DIR_RC_SCRIPTS}/iredapd
-        perl -pi -e 's#(.*echo)(.*Stopping.*)#${1} -n " iredapd"#' ${DIR_RC_SCRIPTS}/iredapd
     fi
 
     chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
