@@ -29,6 +29,10 @@ export LDAP_USE_TLS='NO'
 export LDAP_BIND='yes'
 export LDAP_BIND_VERSION='3'
 
+# OpenLDAP daemon user and group name.
+export OPENLDAP_DAEMON_USER='ldap'
+export OPENLDAP_DAEMON_GROUP='ldap'
+
 export LDAP_RC_SCRIPT_NAME='slapd'
 
 # Database backend type.
@@ -56,10 +60,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
         export OPENLDAP_VERSION='2.4'
     fi
 
-    # LDAP daemon user & group.
-    export LDAP_USER='ldap'
-    export LDAP_GROUP='ldap'
-
     # Configuration files.
     export OPENLDAP_CONF_ROOT="/etc/openldap"
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
@@ -75,10 +75,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     # OpenLDAP version.
     export OPENLDAP_VERSION='2.4'
-
-    # LDAP daemon user & group.
-    export LDAP_USER='ldap'
-    export LDAP_GROUP='ldap'
 
     # Configuration files.
     export OPENLDAP_CONF_ROOT="/etc/openldap"
@@ -97,8 +93,8 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export OPENLDAP_VERSION='2.4'
 
     # LDAP daemon user & group.
-    export LDAP_USER='openldap'
-    export LDAP_GROUP='openldap'
+    export OPENLDAP_DAEMON_USER='openldap'
+    export OPENLDAP_DAEMON_GROUP='openldap'
 
     # Configuration files.
     export OPENLDAP_CONF_ROOT="/etc/ldap"
@@ -116,10 +112,6 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     # OpenLDAP version.
     export OPENLDAP_VERSION='2.4'
 
-    # LDAP daemon user & group.
-    export LDAP_USER='ldap'
-    export LDAP_GROUP='ldap'
-
     # Configuration files.
     export OPENLDAP_CONF_ROOT="/etc/openldap"
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
@@ -136,10 +128,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # OpenLDAP version.
     export OPENLDAP_VERSION='2.4'
 
-    # LDAP daemon user & group.
-    export LDAP_USER='ldap'
-    export LDAP_GROUP='ldap'
-
     # Configuration files.
     export OPENLDAP_CONF_ROOT='/usr/local/etc/openldap'
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
@@ -155,8 +143,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export OPENLDAP_VERSION='2.4'
 
     # LDAP daemon user & group.
-    export LDAP_USER='_openldap'
-    export LDAP_GROUP='_openldap'
+    export OPENLDAP_DAEMON_USER='_openldap'
+    export OPENLDAP_DAEMON_GROUP='_openldap'
 
     # Configuration files.
     export OPENLDAP_CONF_ROOT='/etc/openldap'

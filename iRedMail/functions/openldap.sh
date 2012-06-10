@@ -36,8 +36,9 @@ openldap_config()
     ###########
     # Fix file permission issues, so that slapd can read SSL key.
     #
-    # Add ${LDAP_USER} to 'ssl-cert' group.
-    [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && usermod -G ssl-cert ${LDAP_USER}
+    # Add ${OPENLDAP_DAEMON_USER} to 'ssl-cert' group.
+    [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && \
+        usermod -G ssl-cert ${OPENLDAP_DAEMON_USER}
 
     if [ X"${DISTRO}" == X"RHEL" ]; then
         if [ X"${DISTRO_VERSION}" == X"6" ]; then
@@ -338,12 +339,12 @@ BASE    ${LDAP_SUFFIX}
 URI     ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}
 TLS_CACERT ${SSL_CERT_FILE}
 EOF
-    chown ${LDAP_USER}:${LDAP_GROUP} ${OPENLDAP_LDAP_CONF}
+    chown ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP} ${OPENLDAP_LDAP_CONF}
 
     ECHO_DEBUG "Setting up syslog configration file for OpenLDAP."
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
         echo -e '!slapd' >> ${SYSLOG_CONF}
-        echo -e '*.*\t\t\t\t\t\t/var/log/openldap.log' >> ${SYSLOG_CONF}
+        echo -e "*.*\t\t\t\t\t\t${OPENLDAP_LOGFILE}" >> ${SYSLOG_CONF}
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         cat >> ${SYSLOG_CONF} <<EOF
 # OpenLDAP
@@ -357,7 +358,7 @@ EOF
 
     ECHO_DEBUG "Create empty log file for OpenLDAP: ${OPENLDAP_LOGFILE}."
     touch ${OPENLDAP_LOGFILE}
-    chown ${LDAP_USER}:${LDAP_GROUP} ${OPENLDAP_LOGFILE}
+    chown ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP} ${OPENLDAP_LOGFILE}
     chmod 0600 ${OPENLDAP_LOGFILE}
 
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
@@ -368,7 +369,7 @@ ${OPENLDAP_LOGFILE} {
     compress
     weekly
     rotate 10
-    create 0600 ${LDAP_USER} ${LDAP_GROUP}
+    create 0600 ${OPENLDAP_DAEMON_USER} ${OPENLDAP_DAEMON_GROUP}
     missingok
 
     # Use bzip2 for compress.
@@ -382,6 +383,12 @@ ${OPENLDAP_LOGFILE} {
     endscript
 }
 EOF
+    elif [ X"${KERNEL_NAME}" == X'FREEBSD' -o X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+        if ! grep "${OPENLDAP_LOGFILE}" /etc/newsyslog.conf &>/dev/null; then
+            cat >> /etc/newsyslog.conf <<EOF
+${OPENLDAP_LOGFILE}    ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP}   600  7     *    24    Z
+EOF
+        fi
     fi
 
     ECHO_DEBUG "Restarting syslog."
@@ -413,7 +420,7 @@ openldap_data_initialize()
     ECHO_DEBUG "Create instance directory for openldap tree: ${LDAP_DATA_DIR}."
     mkdir -p ${LDAP_DATA_DIR}
     cp -f ${OPENLDAP_DB_CONFIG_SAMPLE} ${LDAP_DATA_DIR}/DB_CONFIG
-    chown -R ${LDAP_USER}:${LDAP_GROUP} ${OPENLDAP_DATA_DIR}
+    chown -R ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP} ${OPENLDAP_DATA_DIR}
     chmod -R 0700 ${OPENLDAP_DATA_DIR}
 
     ECHO_DEBUG "Starting OpenLDAP."
