@@ -106,26 +106,26 @@ cleanup_replace_firewall_rules()
     fi
 
     ECHO_QUESTION "Would you like to use firewall rules provided by iRedMail now?"
-    ECHO_QUESTION -n "File: ${IPTABLES_CONFIG}, with SSHD port: ${sshd_port}. [Y|n]"
+    ECHO_QUESTION -n "File: ${FIREWALL_RULE_CONF}, with SSHD port: ${sshd_port}. [Y|n]"
     read_setting ${AUTO_CLEANUP_REPLACE_FIREWALL_RULES}
     case $ANSWER in
         N|n ) ECHO_INFO "Skip firewall rules." ;;
         Y|y|* ) 
-            backup_file ${IPTABLES_CONFIG}
+            backup_file ${FIREWALL_RULE_CONF}
             if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
                 if [ X"${DISTRO}" != X"SUSE" ]; then
-                    ECHO_INFO "Copy firewall sample rules: ${IPTABLES_CONFIG}."
-                    cp -f ${SAMPLE_DIR}/iptables.rules ${IPTABLES_CONFIG}
+                    ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
+                    cp -f ${SAMPLE_DIR}/iptables.rules ${FIREWALL_RULE_CONF}
 
                     # Replace HTTP port.
                     [ X"${HTTPD_PORT}" != X"80" ]&& \
-                        perl -pi -e 's#(.*)80(,.*)#${1}$ENV{HTTPD_PORT}${2}#' ${IPTABLES_CONFIG}
+                        perl -pi -e 's#(.*)80(,.*)#${1}$ENV{HTTPD_PORT}${2}#' ${FIREWALL_RULE_CONF}
                 fi
 
                 if [ X"${DISTRO}" == X"SUSE" ]; then
                     # Below services are not accessable from external network:
                     #   - ldaps (636)
-                    perl -pi -e 's/^(FW_SERVICES_EXT_TCP=)(.*)/${1}"$ENV{HTTPD_PORT} 443 25 110 995 143 993 587 465 $ENV{sshd_port}"\n#${2}/' ${IPTABLES_CONFIG}
+                    perl -pi -e 's/^(FW_SERVICES_EXT_TCP=)(.*)/${1}"$ENV{HTTPD_PORT} 443 25 110 995 143 993 587 465 $ENV{sshd_port}"\n#${2}/' ${FIREWALL_RULE_CONF}
 
                 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
                     # Copy sample rc script for Debian.
@@ -138,8 +138,8 @@ cleanup_replace_firewall_rules()
                     eval ${enable_service} iptables >/dev/null
                 fi
             elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-                ECHO_INFO "Copy firewall sample rules: ${IPTABLES_CONFIG}."
-                cp -f ${SAMPLE_DIR}/pf.conf ${IPTABLES_CONFIG}
+                ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
+                cp -f ${SAMPLE_DIR}/pf.conf ${FIREWALL_RULE_CONF}
             fi
 
             # Prompt to restart iptables.
@@ -150,7 +150,7 @@ cleanup_replace_firewall_rules()
                     ECHO_INFO "Restarting firewall ..."
 
                     if [ X"${DISTRO}" == X'OPENBSD' ]; then
-                        /sbin/pfctl -ef ${IPTABLES_CONFIG}
+                        /sbin/pfctl -ef ${FIREWALL_RULE_CONF}
                     else
                         # openSUSE will use /etc/init.d/SuSEfirewall2_{init,setup} instead.
                         if [ X"${DISTRO}" != X"SUSE" ]; then

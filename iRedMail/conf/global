@@ -372,8 +372,8 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     # Directory /etc/sysconfig/ on RHEL/CentOS.
     export ETC_SYSCONFIG_DIR='/etc/sysconfig'
 
-    # Iptables rule file.
-    export IPTABLES_CONFIG="${ETC_SYSCONFIG_DIR}/iptables"
+    # iptables rule file.
+    export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/iptables"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/pki/tls"
@@ -414,8 +414,8 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     # Directory /etc/sysconfig/ on RHEL/CentOS/openSUSE.
     export ETC_SYSCONFIG_DIR='/etc/sysconfig'
 
-    # Iptables rule file.
-    export IPTABLES_CONFIG="${ETC_SYSCONFIG_DIR}/SuSEfirewall2"
+    # iptables rule file.
+    export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/SuSEfirewall2"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
@@ -471,8 +471,8 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Directory /etc/default/ on Debian/Ubuntu.
     export ETC_SYSCONFIG_DIR='/etc/default'
 
-    # Iptables rule file.
-    export IPTABLES_CONFIG="${ETC_SYSCONFIG_DIR}/iptables"
+    # iptables rule file.
+    export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/iptables"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
@@ -502,8 +502,8 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     # Directory /etc/sysconfig/ on RHEL/CentOS.
     export ETC_SYSCONFIG_DIR='/etc/conf.d'
 
-    # Iptables rule file.
-    export IPTABLES_CONFIG="/var/lib/iptables/rules-save"
+    # iptables rule file.
+    export FIREWALL_RULE_CONF="/var/lib/iptables/rules-save"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
@@ -553,7 +553,7 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export ETC_SYSCONFIG_DIR='/etc/defaults'
 
     # IPFW rule file.
-    export IPTABLES_CONFIG="${ETC_SYSCONFIG_DIR}/ipfw.rules"
+    export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/ipfw.rules"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
@@ -589,7 +589,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export CRON_SPOOL_DIR='/var/cron/tabs'
 
     # PF rule file.
-    export IPTABLES_CONFIG="/etc/pf.conf"
+    export FIREWALL_RULE_CONF="/etc/pf.conf"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
