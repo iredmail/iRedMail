@@ -56,9 +56,14 @@ if [ X"${status_get_all}" != X"DONE" ]; then
     fi
 fi
 
-# ------------------------------
+# --------------------------------------
 # Check target platform and environment.
-# ------------------------------
+# --------------------------------------
+# Required by OpenVZ:
+# Make sure others can read-write /dev/null and /dev/*random, so that it won't
+# interrupt iRedMail installation.
+chmod og+rx /dev/null /dev/*random &>/dev/null
+
 check_env
 
 # ------------------------------
