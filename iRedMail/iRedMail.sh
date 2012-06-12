@@ -62,7 +62,7 @@ fi
 # Required by OpenVZ:
 # Make sure others can read-write /dev/null and /dev/*random, so that it won't
 # interrupt iRedMail installation.
-chmod og+rx /dev/null /dev/*random &>/dev/null
+chmod go+rx /dev/null /dev/*random &>/dev/null
 
 check_env
 
