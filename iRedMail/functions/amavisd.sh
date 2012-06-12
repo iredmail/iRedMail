@@ -243,7 +243,7 @@ chomp(\$mydomain = "${HOSTNAME}");
   #forward_method => 'smtp:[127.0.0.1]:10027',
   # force MTA conversion to 7-bit (e.g. before DKIM signing)
   smtpd_discard_ehlo_keywords => ['8BITMIME'],
-  bypass_banned_checks_maps => [1],  # allow sending any file names and types
+  #bypass_banned_checks_maps => [1],  # allow sending any file names and types
   terminate_dsn_on_notify_success => 0,  # don't remove NOTIFY=SUCCESS option
 };
 
@@ -348,7 +348,7 @@ amavisd_config_general()
     #bypass_header_checks_maps => [1],
 
     # allow sending any file names and types
-    bypass_banned_checks_maps => [1],
+    #bypass_banned_checks_maps => [1],
 };
 
 # regular incoming mail, originating from anywhere (usually from outside)
