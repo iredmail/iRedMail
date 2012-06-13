@@ -723,7 +723,8 @@ amavisd_config()
     if [ X"${DISTRO}" == X"RHEL" \
         -o X"${DISTRO}" == X'SUSE' \
         -o X"${DISTRO}" == X'GENTOO' \
-        -o X"${DISTRO}" == X"FREEBSD" \
+        -o X"${DISTRO}" == X'FREEBSD' \
+        -o X"${DISTRO}" == X'OPENBSD' \
         ]; then
         check_status_before_run amavisd_config_rhel
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
