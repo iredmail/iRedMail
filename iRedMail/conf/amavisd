@@ -87,6 +87,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             -a X"${DISTRO_CODENAME}" != X'precise' \
             ]
             export AMAVISD_VERSION='2.7'
+        fi
     fi
     export AMAVISD_BIN='/usr/sbin/amavisd-new'
     export AMAVISD_CONF_DIR='/etc/amavis/conf.d'

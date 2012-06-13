@@ -181,7 +181,7 @@ amavisd_config_debian()
 
     ECHO_DEBUG "Configure amavisd-new: ${AMAVISD_CONF}."
 
-    perl -pi -e 's#^(chmop.*\$mydomain.*=).*#${1} "$ENV{'HOSTNAME'}";#' ${AMAVISD_CONF_DIR}/05-domain_id
+    perl -pi -e 's#^(chmop.*\$mydomain.*=).*#${1} "$ENV{HOSTNAME}";#' ${AMAVISD_CONF_DIR}/05-domain_id
 
     perl -pi -e 's/^(1;.*)/#{1}/' ${AMAVISD_CONF}
 
