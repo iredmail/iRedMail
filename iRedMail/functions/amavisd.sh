@@ -176,7 +176,7 @@ amavisd_config_rhel()
 
 amavisd_config_debian()
 {
-    ECHO_INFO "Configure Amavisd-new."
+    ECHO_INFO "Configure Amavisd-new (interface between MTA and content checkers)."
     backup_file ${AMAVISD_CONF} ${AMAVISD_DKIM_CONF}
 
     ECHO_DEBUG "Configure amavisd-new: ${AMAVISD_CONF}."
