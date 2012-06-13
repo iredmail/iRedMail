@@ -78,14 +78,14 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Debian 7 (wheezy) and Ubuntu 12.10 (quantal) ships Amavisd-new-2.7
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
-        if [ X"${DISTRO_CODENAME}" != X'squeeze' ]
+        if [ X"${DISTRO_CODENAME}" != X'squeeze' ]; then
             export AMAVISD_VERSION='2.7'
         fi
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         if [ X"${DISTRO_CODENAME}" != X'lucid' \
             -a X"${DISTRO_CODENAME}" != X'oneiric' \
             -a X"${DISTRO_CODENAME}" != X'precise' \
-            ]
+            ]; then
             export AMAVISD_VERSION='2.7'
         fi
     fi
