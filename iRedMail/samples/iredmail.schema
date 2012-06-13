@@ -354,7 +354,8 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
         lastLoginDate $ lastLoginIP $ lastLoginProtocol $
         preferredLanguage $ disclaimer $ accountSetting $
         title $ userManager $
-        mailWhitelistRecipient $ mailBlacklistRecipient ))
+        mailWhitelistRecipient $ mailBlacklistRecipient $
+        domainGlobalAdmin ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.4 NAME 'mailAlias'
     DESC 'Mail Alias' SUP top STRUCTURAL
     MUST ( mail )
