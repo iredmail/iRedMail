@@ -33,6 +33,8 @@ export IREDAPD_ROOT_DIR='/opt'
 export IREDAPD_LISTEN_ADDR='127.0.0.1'
 export IREDAPD_LISTEN_PORT='7777'
 
+export IREDAPD_PID_FILE='/var/run/iredapd.pid'
 export IREDAPD_LOG_FILE='/var/log/iredapd.log'
+export IREDAPD_RR_PID_FILE='/var/run/iredapd-rr.pid'
 export IREDAPD_RR_LOG_FILE='/var/log/iredapd-rr.log'
 export IREDAPD_LOGROTATE_FILE="${LOGROTATE_DIR}/iredapd"
