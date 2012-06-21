@@ -358,6 +358,21 @@ ${SIEVE_LOG_FILE} {
     endscript
 }
 EOF
+    elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
+            # Define command used to reopen log service after rotated
+            cat >> /etc/newsyslog.conf <<EOF
+${DOVECOT_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z    ${DOVECOT_MASTER_PID}
+EOF
+        fi
+
+        if ! grep "${SIEVE_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
+            # Define command used to reopen log service after rotated
+            cat >> /etc/newsyslog.conf <<EOF
+${SIEVE_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z    ${DOVECOT_MASTER_PID}
+EOF
+        fi
+
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
