@@ -295,12 +295,18 @@ rootpw      $(gen_ldap_passwd "${LDAP_ROOTPW}")
 sizelimit   1000
 cachesize   1000
 
-# The checkpoint directive defines the time between checkpoint operations
-# in BDB. The database can only be recovered from the last checkpoint.
+# This directive specifies how often to checkpoint the BDB transaction log.
+# A checkpoint operation flushes the database buffers to disk and writes a
+# checkpoint record in the log. The checkpoint will occur if either <kbyte>
+# data has been written or <min> minutes have passed since the last checkpoint.
+# Both arguments default to zero, in which case they are ignored. When the
+# <min> argument is non-zero, an internal task will run every <min> minutes
+# to perform the checkpoint. See the Berkeley DB reference guide for more
+# details.
+#
 # OpenLDAP default is NO CHECKPOINTING.
 #
-# Check point whenever 128kb data bytes written or 5 minutes has elapsed
-# whichever occurs first
+# whenever 128kb data bytes written or 5 minutes has elapsed
 checkpoint  128 5
 
 # Set directory permission.
