@@ -23,10 +23,10 @@
 LDAP_URI = 'ldap://127.0.0.1:389'
 
 # LDAP base dn.
-BASEDN = 'o=domains,dc=iredmail,dc=org'
+BASEDN = 'o=domains,dc=example,dc=com'
 
 # LDAP bind dn & password.
-#BINDDN = 'cn=Manager,dc=iredmail,dc=org'
+#BINDDN = 'cn=Manager,dc=example,dc=com'
 #BINDPW = 'passwd'
 
 # Storage base directory.

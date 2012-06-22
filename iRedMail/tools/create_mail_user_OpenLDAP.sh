@@ -70,7 +70,7 @@ MAILDIR_STYLE='hashed'
 # ------------------------------------------------------------------
 # -------------------------- LDAP Setting --------------------------
 # ------------------------------------------------------------------
-LDAP_SUFFIX="dc=iredmail,dc=org"
+LDAP_SUFFIX="dc=example,dc=com"
 
 # Setting 'BASE_DN'.
 BASE_DN="o=domains,${LDAP_SUFFIX}"
@@ -273,7 +273,7 @@ if [ $# -lt 2 ]; then
     usage
 else
     # Promopt to check settings.
-    [ X"${LDAP_SUFFIX}" == X"dc=iredmail,dc=org" ] && echo "You should change 'LDAP_SUFFIX' in $0."
+    [ X"${LDAP_SUFFIX}" == X"dc=example,dc=com" ] && echo "You should change 'LDAP_SUFFIX' in $0."
 
     # Get domain name.
     DOMAIN_NAME="$1"
