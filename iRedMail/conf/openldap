@@ -42,7 +42,7 @@ export LDAP_RC_SCRIPT_NAME='slapd'
 #     OS will be more comfortable.
 #   * Performance of bdb backend is good enough. but Debian/Ubuntu can
 #     also use 'hdb' for OpenLDAP-2.4.x.
-export OPENLDAP_DEFAULT_DBTYPE='bdb'    # bdb, hdb(used for OpenLDAP-2.4.x)
+export OPENLDAP_DEFAULT_DBTYPE='bdb'
 
 # Default LDAP data directory.
 export OPENLDAP_DATA_DIR='/var/lib/ldap'    # Do *NOT* end with '/'.

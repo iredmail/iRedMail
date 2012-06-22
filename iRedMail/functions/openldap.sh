@@ -295,9 +295,15 @@ rootpw      $(gen_ldap_passwd "${LDAP_ROOTPW}")
 sizelimit   1000
 cachesize   1000
 
+# The checkpoint directive defines the time between checkpoint operations
+# in BDB. The database can only be recovered from the last checkpoint.
+# OpenLDAP default is NO CHECKPOINTING.
 #
+# Check point whenever 128kb data bytes written or 5 minutes has elapsed
+# whichever occurs first
+checkpoint  128 5
+
 # Set directory permission.
-#
 mode        0700
 
 #
