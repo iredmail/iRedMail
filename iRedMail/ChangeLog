@@ -2,6 +2,8 @@ iRedMail-0.8.2:
     * Rotate Dovecot log files on OpenBSD and FreeBSD.
     * Allow to use attribute domainGlobalAdmin for mail user.
     * Fixed:
+        + [LDAP] Incorrect maildir path while using Postfix built-in
+          'virtual' transport.
         + Incorrect log rotate setting of iRedAPD log file on FreeBSD.
           Thanks openbsdnoob <w-chi _at_ gmx.de> for the report.
 

@@ -345,6 +345,7 @@ search_base     = ${LDAP_BASEDN}
 scope           = sub
 query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(|(${LDAP_ATTR_USER_RDN}=%s)(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SHADOW_ADDRESS})(${LDAP_ATTR_USER_SHADOW_ADDRESS}=%s)))(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER}))
 result_attribute= mailMessageStore
+result_format   = %s/Maildir/
 debuglevel      = 0
 EOF
 
