@@ -1,9 +1,11 @@
 iRedMail-0.8.2:
+    * Allow to use LDAP attribute shadowAddress for mail list account.
+      Thanks chrisjrob <cjr _at_ tridentgarages.co.uk> for the report.
     * Add checkpoint setting in OpenLDAP for data recovery, used to define
       the time between BDB checkpoint operations. Default is whenever 128kb
       data bytes written or 5 minutes has elapsed whichever occurs first.
     * Rotate Dovecot log files on OpenBSD and FreeBSD.
-    * Allow to use attribute domainGlobalAdmin for mail user.
+    * Allow to use LDAP attribute domainGlobalAdmin for mail user.
     * Fixed:
         + [LDAP] Incorrect maildir path while using Postfix built-in
           'virtual' transport.
