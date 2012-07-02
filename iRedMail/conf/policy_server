@@ -37,9 +37,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' ]; then
     fi
 
 elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X"oneiric" \
-        -o X"${DISTRO_CODENAME}" == X"precise" \
-        ]; then
+    if [ X"${DISTRO_CODENAME}" != X'lucid' ]; then
         export USE_CLUEBRINGER='YES'
         export USE_POLICYD='NO'
     fi

@@ -27,26 +27,16 @@ cluebringer_user()
 {
     ECHO_DEBUG "Add user and group for policyd: ${CLUEBRINGER_USER}:${CLUEBRINGER_GROUP}."
 
+    # User/group will be created during installing binary package on:
+    #   - Ubuntu
+    #   - openSUSE
+    #   - Gentoo
     if [ X"${DISTRO}" == X'RHEL' ]; then
         groupadd ${CLUEBRINGER_GROUP}
         useradd -m -d ${CLUEBRINGER_USER_HOME} -s ${SHELL_NOLOGIN} -g ${CLUEBRINGER_GROUP} ${CLUEBRINGER_USER}
-    elif [ X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${DISTRO_CODENAME}" == X"oneiric" \
-            -o X"${DISTRO_CODENAME}" == X"precise" \
-            ]; then
-            # User/group will be created during installing binary package.
-            :
-        fi
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         pw useradd -n ${CLUEBRINGER_USER} -s ${SHELL_NOLOGIN} -d ${CLUEBRINGER_USER_HOME} -m
     fi
-    #elif [ X"${DISTRO}" == X"SUSE" ]; then
-    #    # Not need to add user/group.
-    #    :
-    #else
-    #    groupadd ${CLUEBRINGER_GROUP}
-    #    useradd -m -d ${CLUEBRINGER_USER_HOME} -s ${SHELL_NOLOGIN} -g ${CLUEBRINGER_GROUP} ${CLUEBRINGER_USER}
-    #fi
 
     echo 'export status_cluebringer_user="DONE"' >> ${STATUS_FILE}
 }

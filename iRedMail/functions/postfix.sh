@@ -33,7 +33,6 @@ postfix_config_basic()
         echo 'sendmail_flags=NO' >> ${RC_CONF_LOCAL}
         /usr/local/sbin/postfix-enable &>/dev/null
         perl -pi -e 's/(.*sendmail -L sm-msp-queue.*)/#${1}/' ${CRON_SPOOL_DIR}/root 
-        perl -pi -e 's/^(inet_protocols.*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
     fi
 
     backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
@@ -87,7 +86,6 @@ postfix_config_basic()
         postconf -e mydomain="${HOSTNAME}"
     fi
 
-    postconf -e inet_protocols="ipv4"
     postconf -e mydestination="\$myhostname, localhost, localhost.localdomain, localhost.\$myhostname"
     postconf -e biff="no"   # Do not notify local user.
     postconf -e inet_interfaces="all"

@@ -232,7 +232,6 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
 
         # Ubuntu version number and code name:
         #   - 10.04: lucid (Long Term Support by Ubuntu)
-        #   - 11.10: oneiric
         #   - 12.04: precise (Long Term support by Ubuntu)
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
@@ -250,12 +249,14 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         #   - 9.10: karmic
         #   - 10.10: maverick
         #   - 11.04: natty
+        #   - 11.10: oneiric
         if [ X"${DISTRO_CODENAME}" == X'hardy' \
             -o X"${DISTRO_CODENAME}" == X'intrepid' \
             -o X"${DISTRO_CODENAME}" == X'jaunty' \
             -o X"${DISTRO_CODENAME}" == X'karmic' \
             -o X"${DISTRO_CODENAME}" == X'maverick' \
             -o X"${DISTRO_CODENAME}" == X'natty' \
+            -o X"${DISTRO_CODENAME}" == X'oneiric' \
             ]; then
             export UNSUPPORTED_RELEASE='YES'
         fi

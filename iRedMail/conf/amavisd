@@ -83,7 +83,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         fi
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         if [ X"${DISTRO_CODENAME}" != X'lucid' \
-            -a X"${DISTRO_CODENAME}" != X'oneiric' \
             -a X"${DISTRO_CODENAME}" != X'precise' \
             ]; then
             export AMAVISD_VERSION='2.7'

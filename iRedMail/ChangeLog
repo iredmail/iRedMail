@@ -1,4 +1,7 @@
 iRedMail-0.8.2:
+    * Drop support for Ubuntu-11.10 (oneiric).
+    * New columns for MySQL/PGSQL backend in table vmail.mailbox:
+      isadmin, isglobaladmin, language.
     * Allow to use LDAP attribute shadowAddress for mail list account.
       Thanks chrisjrob <cjr _at_ tridentgarages.co.uk> for the report.
     * Add checkpoint setting in OpenLDAP for data recovery, used to define

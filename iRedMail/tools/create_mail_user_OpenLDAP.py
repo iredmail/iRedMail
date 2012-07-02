@@ -76,14 +76,14 @@ def usage():
     print '''
 CSV file format:
 
-    domain name, username, password, [common name], [quota], [groups]
+    domain name, username, password, [common name], [quota_in_bytes], [groups]
 
 Example #1:
-    iredmail.org, zhang, plain_password, Zhang Huangbin, 1024, group1:group2
+    iredmail.org, zhang, plain_password, Zhang Huangbin, 104857600, group1:group2
 Example #2:
     iredmail.org, zhang, plain_password, Zhang Huangbin, ,
 Example #3:
-    iredmail.org, zhang, plain_password, , 1024, group1:group2
+    iredmail.org, zhang, plain_password, , 104857600, group1:group2
      
 Note:
     - Domain name, username and password are REQUIRED, others are optional:
