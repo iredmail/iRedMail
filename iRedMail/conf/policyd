@@ -24,8 +24,8 @@
 # Policyd.
 # ------------------------------------------------
 
-export POLICYD_BINDHOST='127.0.0.1' # Default value in policyd.conf.
-export POLICYD_BINDPORT='10031' # Default value in policyd.conf.
+# POLICYD_BIND_HOST is configured in conf/global
+export POLICYD_BIND_PORT='10031' # Default value in policyd.conf.
 
 export POLICYD_RC_SCRIPT_NAME='policyd'
 export POLICYD_DB_PASSWD="$(${RANDOM_STRING})"
@@ -39,8 +39,8 @@ export POLICYD_USER_HOME='/home/policyd'
 #
 export POLICYD_THROTTLE_PIDFILE='/var/run/policyd_throttle.pid'
 
-export POLICYD_THROTTLE_BINDHOST="${POLICYD_BINDHOST}"
-export POLICYD_THROTTLE_BINDPORT='10032'
+export POLICYD_THROTTLE_BIND_HOST="${POLICYD_BIND_HOST}"
+export POLICYD_THROTTLE_BIND_PORT='10032'
 
 #
 # Syslog setting.

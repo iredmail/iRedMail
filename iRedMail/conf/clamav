@@ -27,6 +27,7 @@ export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclamd'
 
 export CLAMD_CONF='/etc/clamd.conf'
 export CLAMD_LOGFILE='/var/log/clamav/clamd.log'
+# CLAMD_BIND_HOST is configured in conf/global
 export CLAMD_LOCAL_SOCKET='/tmp/clamd.socket'   # Used to override default setting.
 
 export FRESHCLAM_CONF='/etc/freshclam.conf'
@@ -59,9 +60,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
     export FRESHCLAM_PID_FILE='/var/run/freshclam.pid'
 fi
-
-# Clamd.
-export CLAMD_LISTEN_ADDR='127.0.0.1'            # Used to override default setting.
 
 # Clamd local socket.
 if [ X"${DISTRO}" == X"GENTOO" \

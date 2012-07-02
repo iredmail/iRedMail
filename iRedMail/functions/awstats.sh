@@ -56,7 +56,7 @@ ${CONF_MSG}
     Options ExecCGI
     Order allow,deny
     allow from all
-    #allow from 127.0.0.1
+    #allow from ${LOCAL_ADDRESS}
 
     AuthName "Authorization Required"
 EOF

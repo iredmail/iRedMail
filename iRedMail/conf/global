@@ -42,19 +42,31 @@ export ENABLE_BACKEND_OPENLDAP='YES'
 export ENABLE_BACKEND_MYSQL='YES'
 export ENABLE_BACKEND_PGSQL='NO'
 
-# For distribute deployment.
+# For better distributed deployment
+# IP address of localhost. usually it's 127.0.0.1, but not in FreeBSD Jail.
+export LOCAL_ADDRESS='127.0.0.1'
+# OpenLDAP
+export LDAP_SERVER_HOST="${LOCAL_ADDRESS}"
 # MySQL server
-export MYSQL_SERVER='127.0.0.1'
+export MYSQL_SERVER="${LOCAL_ADDRESS}"
 export MYSQL_SERVER_PORT='3306'
 # PGSQL server
-export PGSQL_SERVER='127.0.0.1'
+export PGSQL_SERVER="${LOCAL_ADDRESS}"
 export PGSQL_SERVER_PORT='5432'
-# POP3/IMAP server (Dovecot)
-export IMAP_SERVER='127.0.0.1'
+# Dovecot: POP3, IMAP, managesieve
+export IMAP_SERVER="${LOCAL_ADDRESS}"
+export MANAGESIEVE_BIND_HOST="${LOCAL_ADDRESS}"
 # SMTP server (Postfix)
-export SMTP_SERVER='127.0.0.1'
+export SMTP_SERVER="${LOCAL_ADDRESS}"
 # Amavisd
-export AMAVISD_SERVER='127.0.0.1'
+export AMAVISD_SERVER="${LOCAL_ADDRESS}"
+# Policyd or Cluebringer
+export POLICYD_BIND_HOST="${LOCAL_ADDRESS}"
+export CLUEBRINGER_BIND_HOST="${LOCAL_ADDRESS}"
+# ClamAV
+export CLAMD_BIND_HOST="${LOCAL_ADDRESS}"
+# iRedAPD
+export IREDAPD_BIND_HOST="${LOCAL_ADDRESS}"
 
 # For managesieve service and software.
 export USE_MANAGESIEVE='YES'    # Use managesieve service.

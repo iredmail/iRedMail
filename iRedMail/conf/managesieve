@@ -21,7 +21,7 @@
 #---------------------------------------------------------------------
 
 # Variables for managesieve service.
-export MANAGESIEVE_BINDADDR='127.0.0.1'
+# MANAGESIEVE_BIND_HOST is configured in conf/global
 export MANAGESIEVE_PORT='4190'
 
 # Old Linux releases use port 2000.

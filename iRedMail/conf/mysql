@@ -24,13 +24,6 @@
 # MYSQL_SERVER and MYSQL_SERVER_PORT are defined in conf/global.
 # SQL_SERVER and SQL_SERVER_PORT are defined in dialog/config_via_dialog.sh.
 
-# Use lowercase variable name for IP address.
-if [ X"${MYSQL_SERVER}" == X"localhost" ]; then
-    export mysql_server='127.0.0.1'
-else
-    export mysql_server="${MYSQL_SERVER}"
-fi
-
 export MYSQL_MY_CNF='/etc/my.cnf'
 export MYSQL_SOCKET='/var/lib/mysql/mysql.sock'
 export MYSQL_ROOT_USER='root'

@@ -235,12 +235,12 @@ chomp(\$mydomain = "${HOSTNAME}");
   allow_disclaimers => 1,  # enables disclaimer insertion if available
   # notify administrator of locally originating malware
   virus_admin_maps => ["root\@\$mydomain"],
-  spam_admin_maps  => ["root\@$mydomain"],
+  spam_admin_maps  => ["root\@\$mydomain"],
   warnbadhsender   => 0,
   #warnvirussender  => 1,
   #warnspamsender   => 1,
   # forward to a smtpd service providing DKIM signing service
-  #forward_method => 'smtp:[127.0.0.1]:10027',
+  #forward_method => 'smtp:[${AMAVISD_SYS_USER}]:10027',
   # force MTA conversion to 7-bit (e.g. before DKIM signing)
   smtpd_discard_ehlo_keywords => ['8BITMIME'],
   #bypass_banned_checks_maps => [1],  # allow sending any file names and types
@@ -334,7 +334,7 @@ amavisd_config_general()
     warnbadhsender   => 0,
 
     # forward to a smtpd service providing DKIM signing service
-    #forward_method => 'smtp:[127.0.0.1]:10027',
+    #forward_method => 'smtp:[${AMAVISD_SERVER}]:10027',
 
     # force MTA conversion to 7-bit (e.g. before DKIM signing)
     smtpd_discard_ehlo_keywords => ['8BITMIME'],
@@ -362,7 +362,7 @@ amavisd_config_general()
 \$interface_policy{'${AMAVISD_QUARANTINE_PORT}'} = 'AM.PDP-INET';
 \$policy_bank{'AM.PDP-INET'} = {
     protocol => 'AM.PDP',       # select Amavis policy delegation protocol
-    inet_acl => [qw( 127.0.0.1 [::1] )],    # restrict access to these IP addresses
+    inet_acl => [qw( ${AMAVISD_SERVER} [::1] )],    # restrict access to these IP addresses
     auth_required_release => 1,    # 0 - don't require secret_id for amavisd-release
     #log_level => 4,
     #always_bcc_by_ccat => {CC_CLEAN, 'admin@example.com'},

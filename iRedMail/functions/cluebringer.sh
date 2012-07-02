@@ -73,9 +73,9 @@ cluebringer_config()
     perl -pi -e 's/^#(log_file=).*/${1}$ENV{CLUEBRINGER_LOG_FILE}/' ${CLUEBRINGER_CONF}
 
     # IP to listen on, * for all
-    perl -pi -e 's/^(host=).*/${1}$ENV{CLUEBRINGER_BINDHOST}/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^(host=).*/${1}$ENV{CLUEBRINGER_BIND_HOST}/' ${CLUEBRINGER_CONF}
     # Port to run on
-    perl -pi -e 's/^#(port=).*/${1}$ENV{CLUEBRINGER_BINDPORT}/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^#(port=).*/${1}$ENV{CLUEBRINGER_BIND_PORT}/' ${CLUEBRINGER_CONF}
 
     #
     # Configure '[database]' section.
@@ -348,7 +348,7 @@ ${CONF_MSG}
     DirectoryIndex index.php
     Options ExecCGI
     Order allow,deny
-    allow from 127.0.0.1
+    allow from ${CLUEBRINGER_BIND_HOST}
     #allow from all
 
     AuthType basic

@@ -28,7 +28,7 @@ managesieve_config()
             cat >> ${DOVECOT_CONF} <<EOF
 protocol managesieve {
     # IP or host address where to listen in for connections.
-    listen = ${MANAGESIEVE_BINDADDR}:${MANAGESIEVE_PORT}
+    listen = ${MANAGESIEVE_BIND_HOST}:${MANAGESIEVE_PORT}
 
     # Specifies the location of the symbolic link pointing to the
     # active script in the sieve storage directory.
@@ -58,7 +58,7 @@ EOF
 # ManageSieve service. http://wiki.dovecot.org/ManageSieve
 protocol managesieve {
     # IP or host address where to listen in for connections.
-    listen = ${MANAGESIEVE_BINDADDR}:${MANAGESIEVE_PORT}
+    listen = ${MANAGESIEVE_BIND_HOST}:${MANAGESIEVE_PORT}
 
     # Login executable location.
     #login_executable = /usr/local/libexec/dovecot/managesieve-login

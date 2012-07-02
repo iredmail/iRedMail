@@ -23,7 +23,7 @@
 # Variables for OpenLDAP and related. Refer to 'dialog/ldap_config.sh'.
 
 # LDAP service info.
-export LDAP_SERVER_HOST='127.0.0.1'
+# LDAP_SERVER_HOST is configured in conf/global
 export LDAP_SERVER_PORT='389'
 export LDAP_USE_TLS='NO'
 export LDAP_BIND='yes'

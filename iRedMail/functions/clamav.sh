@@ -35,10 +35,10 @@ clamav_config()
         chown ${CLAMAV_USER}:${CLAMAV_GROUP} /var/log/clamav
     fi
 
-    export CLAMD_LOCAL_SOCKET CLAMD_LISTEN_ADDR
+    export CLAMD_LOCAL_SOCKET CLAMD_BIND_HOST
     ECHO_DEBUG "Configure ClamAV: ${CLAMD_CONF}."
     perl -pi -e 's/^(TCPSocket .*)/#${1}/' ${CLAMD_CONF}
-    perl -pi -e 's#^(TCPAddr ).*#${1} $ENV{CLAMD_LISTEN_ADDR}#' ${CLAMD_CONF}
+    perl -pi -e 's#^(TCPAddr ).*#${1} $ENV{CLAMD_BIND_HOST}#' ${CLAMD_CONF}
 
     # Disable log file
     perl -pi -e 's/^(LogFile.*)/#${1}/' ${CLAMD_CONF}

@@ -147,16 +147,13 @@ EOF
     # Setup postfix for recipient throttle.
     cat >> ${POSTFIX_FILE_MAIN_CF} <<EOF
 # Uncomment below line to enable policyd sender throttle.
-#smtpd_end_of_data_restrictions = check_policy_service inet:${POLICYD_THROTTLE_BINDHOST}:${POLICYD_THROTTLE_BINDPORT}
+#smtpd_end_of_data_restrictions = check_policy_service inet:${POLICYD_THROTTLE_BIND_HOST}:${POLICYD_THROTTLE_BIND_PORT}
 EOF
 
     # -------------------------------------------------------------
     # Policyd config for normal feature exclude recipient throttle.
     # -------------------------------------------------------------
     # ---- DATABASE CONFIG ----
-
-    # Policyd doesn't work while mysql server is 'localhost', should be
-    # changed to '127.0.0.1'.
 
     perl -pi -e 's#^(MYSQLHOST=)(.*)#${1}"$ENV{MYSQL_SERVER}"#' ${POLICYD_CONF} ${POLICYD_THROTTLE_CONF}
     perl -pi -e 's#^(MYSQLDBASE=)(.*)#${1}"$ENV{POLICYD_DB_NAME}"#' ${POLICYD_CONF} ${POLICYD_THROTTLE_CONF}
@@ -167,8 +164,8 @@ EOF
     # ---- DAEMON CONFIG ----
     perl -pi -e 's#^(DEBUG=)(.*)#${1}0#' ${POLICYD_CONF}
     perl -pi -e 's#^(DAEMON=)(.*)#${1}1#' ${POLICYD_CONF}
-    perl -pi -e 's#^(BINDHOST=)(.*)#${1}"$ENV{POLICYD_BINDHOST}"#' ${POLICYD_CONF}
-    perl -pi -e 's#^(BINDPORT=)(.*)#${1}"$ENV{POLICYD_BINDPORT}"#' ${POLICYD_CONF}
+    perl -pi -e 's#^(BINDHOST=)(.*)#${1}"$ENV{POLICYD_BIND_HOST}"#' ${POLICYD_CONF}
+    perl -pi -e 's#^(BINDPORT=)(.*)#${1}"$ENV{POLICYD_BIND_PORT}"#' ${POLICYD_CONF}
 
     # ---- CHROOT ----
     export policyd_user_id="$(id -u ${POLICYD_USER})"
@@ -231,8 +228,8 @@ EOF
     # ---- DAEMON CONFIG ----
     perl -pi -e 's#^(DEBUG=)(.*)#${1}0#' ${POLICYD_THROTTLE_CONF}
     perl -pi -e 's#^(DAEMON=)(.*)#${1}1#' ${POLICYD_THROTTLE_CONF}
-    perl -pi -e 's#^(BINDHOST=)(.*)#${1}"$ENV{POLICYD_THROTTLE_BINDHOST}"#' ${POLICYD_THROTTLE_CONF}
-    perl -pi -e 's#^(BINDPORT=)(.*)#${1}"$ENV{POLICYD_THROTTLE_BINDPORT}"#' ${POLICYD_THROTTLE_CONF}
+    perl -pi -e 's#^(BINDHOST=)(.*)#${1}"$ENV{POLICYD_THROTTLE_BIND_HOST}"#' ${POLICYD_THROTTLE_CONF}
+    perl -pi -e 's#^(BINDPORT=)(.*)#${1}"$ENV{POLICYD_THROTTLE_BIND_PORT}"#' ${POLICYD_THROTTLE_CONF}
     perl -pi -e 's#^(PIDFILE=)(.*)#${1}"$ENV{POLICYD_THROTTLE_PIDFILE}"#' ${POLICYD_THROTTLE_CONF}
 
     # ---- CHROOT ----

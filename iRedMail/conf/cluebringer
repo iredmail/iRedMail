@@ -24,8 +24,8 @@
 # Policyd-2.x (code name: cluebringer).
 # ------------------------------------------------
 
-export CLUEBRINGER_BINDHOST='127.0.0.1'
-export CLUEBRINGER_BINDPORT='10031'
+# CLUEBRINGER_BIND_HOST is configured in conf/global.
+export CLUEBRINGER_BIND_PORT='10031'
 export CLUEBRINGER_RC_SCRIPT_NAME='cluebringer'
 
 # Database.

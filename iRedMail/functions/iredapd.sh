@@ -91,7 +91,7 @@ EOF
     chmod -R 0500 iredapd.ini
 
     # Config iredapd.
-    perl -pi -e 's#^(listen_addr).*#${1} = $ENV{IREDAPD_LISTEN_ADDR}#' iredapd.ini
+    perl -pi -e 's#^(listen_addr).*#${1} = $ENV{IREDAPD_BIND_HOST}#' iredapd.ini
     perl -pi -e 's#^(listen_port).*#${1} = $ENV{IREDAPD_LISTEN_PORT}#' iredapd.ini
 
     perl -pi -e 's#^(run_as_user).*#${1} = $ENV{IREDAPD_DAEMON_USER}#' iredapd.ini
@@ -175,7 +175,7 @@ EOF
     cat >> ${TIP_FILE} <<EOF
 iRedAPD - Postfix Policy Daemon:
     * Version: ${IREDAPD_VERSION}
-    * Listen address: ${IREDAPD_LISTEN_ADDR}, port: ${IREDAPD_LISTEN_PORT}
+    * Listen address: ${IREDAPD_BIND_HOST}, port: ${IREDAPD_LISTEN_PORT}
     * Related files:
         - ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}/
         - ${IREDAPD_ROOT_DIR}/iredapd/
