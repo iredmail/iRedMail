@@ -27,8 +27,8 @@
 #   * muniao <at> gamil.
 #
 
-# Prepend HELO identifier for anti-spam analytics.
-/(.*)/ PREPEND X-Original-Helo: $1 (iRedMail: http://www.iredmail.org/)
+# Prepend HELO hostname of sender server
+#/(.*)/ PREPEND X-Original-Helo: $1 (iRedMail: http://www.iredmail.org/)
 
 #*******************************************
 # IP address: (([0-9]){3}-){2}
