@@ -1,0 +1,12 @@
+server_host     = 127.0.0.1
+server_port     = 389
+bind            = yes
+start_tls       = no
+version         = 3
+bind_dn         = cn=vmail,dc=example,dc=com
+bind_pw         = RBUuFDo31MJbLkJgrwkaKkmRg7Cldw
+search_base     = PH_LDAP_BASEDN
+scope           = one
+query_filter    = (&(objectClass=mailDomain)(|(domainName=%s)(&(enabledService=domainalias)(domainAliasName=%s)))(!(domainBackupMX=yes))(accountStatus=active)(enabledService=mail))
+result_attribute= domainName
+debuglevel      = 0

@@ -1,0 +1,12 @@
+server_host     = 127.0.0.1
+server_port     = 389
+version         = 3
+bind            = yes
+start_tls       = no
+bind_dn         = cn=vmail,dc=example,dc=com
+bind_pw         = RBUuFDo31MJbLkJgrwkaKkmRg7Cldw
+search_base     = PH_LDAP_BASEDN
+scope           = sub
+query_filter    = (&(objectClass=mailUser)(accountStatus=active)(enabledService=mail)(enabledService=deliver)(|(mail=%s)(&(enabledService=shadowaddress)(shadowAddress=%s))))
+result_attribute= mail
+debuglevel      = 0

@@ -241,11 +241,6 @@ postfix_config_vhost_ldap()
 {
     ECHO_DEBUG "Configure Postfix for LDAP lookup."
 
-    # LDAP search filters.
-    ldap_search_base_domain="${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}"
-    ldap_search_base_user="${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}"
-    ldap_search_base_group="${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_GROUPS},${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}"
-
     postconf -e transport_maps="proxy:ldap:${ldap_transport_maps_user_cf}, proxy:ldap:${ldap_transport_maps_domain_cf}"
     postconf -e virtual_alias_maps="proxy:ldap:${ldap_virtual_alias_maps_cf}, proxy:ldap:${ldap_virtual_group_maps_cf}, proxy:ldap:${ldap_virtual_group_members_maps_cf}, proxy:ldap:${ldap_catch_all_maps_cf}"
     postconf -e virtual_mailbox_domains="proxy:ldap:${ldap_virtual_mailbox_domains_cf}"
@@ -253,243 +248,31 @@ postfix_config_vhost_ldap()
     postconf -e sender_bcc_maps="proxy:ldap:${ldap_sender_bcc_maps_user_cf}, proxy:ldap:${ldap_sender_bcc_maps_domain_cf}"
     postconf -e recipient_bcc_maps="proxy:ldap:${ldap_recipient_bcc_maps_user_cf}, proxy:ldap:${ldap_recipient_bcc_maps_domain_cf}"
     postconf -e relay_domains="\$mydestination, proxy:ldap:${ldap_relay_domains_cf}"
-    #postconf -e relay_recipient_maps="proxy:ldap:${ldap_virtual_mailbox_maps_cf}"
 
     postconf -e smtpd_sender_login_maps="proxy:ldap:${ldap_sender_login_maps_cf}"
 
-    cat > ${ldap_virtual_mailbox_domains_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-bind            = ${LDAP_BIND}
-start_tls       = no
-version         = ${LDAP_BIND_VERSION}
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = one
-query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILDOMAIN})(|(${LDAP_ATTR_DOMAIN_RDN}=%s)(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DOMAIN_ALIAS})(${LDAP_ATTR_DOMAIN_ALIAS_NAME}=%s)))(!(${LDAP_ATTR_DOMAIN_BACKUPMX}=${LDAP_VALUE_DOMAIN_BACKUPMX}))(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL}))
-result_attribute= ${LDAP_ATTR_DOMAIN_RDN}
-debuglevel      = 0
-EOF
-
-    # LDAP relay domains.
-    cat > ${ldap_relay_domains_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-bind            = ${LDAP_BIND}
-start_tls       = no
-version         = ${LDAP_BIND_VERSION}
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = one
-query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILDOMAIN})(|(${LDAP_ATTR_DOMAIN_RDN}=%s)(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DOMAIN_ALIAS})(${LDAP_ATTR_DOMAIN_ALIAS_NAME}=%s)))(${LDAP_ATTR_DOMAIN_BACKUPMX}=${LDAP_VALUE_DOMAIN_BACKUPMX})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL}))
-result_attribute= ${LDAP_ATTR_DOMAIN_RDN}
-debuglevel      = 0
-EOF
-
-    #
-    # LDAP transport maps
-    #
-    # Per-domain transport maps
-    cat > ${ldap_transport_maps_domain_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = one
-query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILDOMAIN})(|(${LDAP_ATTR_DOMAIN_RDN}=%s)(${LDAP_ATTR_DOMAIN_ALIAS_NAME}=%s))(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL}))
-result_attribute= ${LDAP_ATTR_MTA_TRANSPORT}
-debuglevel      = 0
-EOF
-
-    # Per-user transport maps
-    cat > ${ldap_transport_maps_user_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${ldap_search_base_user}
-scope           = one
-query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_USER_RDN}=%s)(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL}))
-result_attribute= ${LDAP_ATTR_MTA_TRANSPORT}
-debuglevel      = 0
-EOF
-
-    #
-    # LDAP Virtual Users.
-    #
-    cat > ${ldap_virtual_mailbox_maps_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = sub
-query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(|(${LDAP_ATTR_USER_RDN}=%s)(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SHADOW_ADDRESS})(${LDAP_ATTR_USER_SHADOW_ADDRESS}=%s)))(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER}))
-result_attribute= mailMessageStore
-result_format   = %s/Maildir/
-debuglevel      = 0
-EOF
-
-    cat > ${ldap_sender_login_maps_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = sub
-query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SMTP})(|(${LDAP_ATTR_USER_RDN}=%s)(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SHADOW_ADDRESS})(${LDAP_ATTR_USER_SHADOW_ADDRESS}=%s))))
-result_attribute= ${LDAP_ATTR_USER_RDN}
-debuglevel      = 0
-EOF
-
-    cat > ${ldap_virtual_alias_maps_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = sub
-query_filter    = (&(|(${LDAP_ATTR_USER_RDN}=%s)(${LDAP_ATTR_USER_SHADOW_ADDRESS}=%s))(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER})(|(objectClass=${LDAP_OBJECTCLASS_MAILALIAS})(&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_FORWARD}))))
-result_attribute= ${LDAP_ATTR_USER_FORWARD}
-debuglevel      = 0
-EOF
-
-    cat > ${ldap_virtual_group_maps_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = sub
-query_filter    = (&(${LDAP_ATTR_USER_MEMBER_OF_GROUP}=%s)(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER})(|(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(objectClass=${LDAP_OBJECTCLASS_MAIL_EXTERNAL_USER})))
-result_attribute= ${LDAP_ATTR_USER_RDN}
-debuglevel      = 0
-EOF
-
-    cat > ${ldap_virtual_group_members_maps_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = sub
-query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER})(|(${LDAP_ATTR_USER_RDN}=%s)(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SHADOW_ADDRESS})(${LDAP_ATTR_USER_SHADOW_ADDRESS}=%s))))
-result_attribute= ${LDAP_ATTR_USER_RDN}
-debuglevel      = 0
-EOF
-
-    cat > ${ldap_catch_all_maps_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = sub
-query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(|(mail=@%d)(${LDAP_ATTR_USER_SHADOW_ADDRESS}=@%d)))
-result_attribute= ${LDAP_ATTR_USER_FORWARD}
-debuglevel      = 0
-EOF
-
-    cat > ${ldap_recipient_bcc_maps_domain_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = one
-query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILDOMAIN})(|(${LDAP_ATTR_DOMAIN_RDN}=%d)(${LDAP_ATTR_DOMAIN_ALIAS_NAME}=%d))(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_RECIPIENT_BCC}))
-result_attribute= ${LDAP_ATTR_DOMAIN_RECIPIENT_BCC_ADDRESS}
-debuglevel      = 0
-EOF
-
-    cat > ${ldap_recipient_bcc_maps_user_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${ldap_search_base_user}
-scope           = one
-query_filter    = (&(${LDAP_ATTR_USER_RDN}=%s)(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_RECIPIENT_BCC}))
-result_attribute= ${LDAP_ATTR_USER_RECIPIENT_BCC_ADDRESS}
-debuglevel      = 0
-EOF
-
-    cat > ${ldap_sender_bcc_maps_domain_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${LDAP_BASEDN}
-scope           = one
-query_filter    = (&(objectClass=${LDAP_OBJECTCLASS_MAILDOMAIN})(|(${LDAP_ATTR_DOMAIN_RDN}=%d)(${LDAP_ATTR_DOMAIN_ALIAS_NAME}=%d))(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SENDER_BCC}))
-result_attribute= ${LDAP_ATTR_DOMAIN_SENDER_BCC_ADDRESS}
-debuglevel      = 0
-EOF
-
-    cat > ${ldap_sender_bcc_maps_user_cf} <<EOF
-${CONF_MSG}
-server_host     = ${LDAP_SERVER_HOST}
-server_port     = ${LDAP_SERVER_PORT}
-version         = ${LDAP_BIND_VERSION}
-bind            = ${LDAP_BIND}
-start_tls       = no
-bind_dn         = ${LDAP_BINDDN}
-bind_pw         = ${LDAP_BINDPW}
-search_base     = ${ldap_search_base_user}
-scope           = one
-query_filter    = (&(${LDAP_ATTR_USER_RDN}=%s)(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_SENDER_BCC}))
-result_attribute= ${LDAP_ATTR_USER_SENDER_BCC_ADDRESS}
-debuglevel      = 0
-EOF
+    # Copy sample ldap lookup files
+    cp ${SAMPLE_DIR}/postfix/ldap/virtual_mailbox_domains.cf ${ldap_virtual_mailbox_domains_cf}
+    cp ${SAMPLE_DIR}/postfix/ldap/relay_domains.cf ${ldap_relay_domains_cf}
+    # Per-domain and per-user transport maps
+    cp ${SAMPLE_DIR}/postfix/ldap/transport_maps_domain.cf ${ldap_transport_maps_domain_cf}
+    cp ${SAMPLE_DIR}/postfix/ldap/transport_maps_user.cf ${ldap_transport_maps_user_cf}
+    # Virtual mailboxes
+    cp ${SAMPLE_DIR}/postfix/ldap/virtual_mailbox_maps.cf ${ldap_virtual_mailbox_maps_cf}
+    # Sender login maps
+    cp ${SAMPLE_DIR}/postfix/ldap/sender_login_maps.cf ${ldap_sender_login_maps_cf}
+    # Virtual alias
+    cp ${SAMPLE_DIR}/postfix/ldap/virtual_alias_maps.cf ${ldap_virtual_alias_maps_cf}
+    cp ${SAMPLE_DIR}/postfix/ldap/virtual_group_maps.cf ${ldap_virtual_group_maps_cf}
+    # Used to avoid listing normal mail users in catch-all
+    cp ${SAMPLE_DIR}/postfix/ldap/virtual_group_members_maps.cf ${ldap_virtual_group_members_maps_cf}
+    cp ${SAMPLE_DIR}/postfix/ldap/catchall_maps.cf ${ldap_catch_all_maps_cf}
+    # Per-domain and per-user recipient bcc maps
+    cp ${SAMPLE_DIR}/postfix/ldap/recipient_bcc_maps_domain.cf ${ldap_recipient_bcc_maps_domain_cf}
+    cp ${SAMPLE_DIR}/postfix/ldap/recipient_bcc_maps_user.cf ${ldap_recipient_bcc_maps_user_cf}
+    # Per-domain and per-user sender bcc maps
+    cp ${SAMPLE_DIR}/postfix/ldap/sender_bcc_maps_domain.cf ${ldap_sender_bcc_maps_domain_cf}
+    cp ${SAMPLE_DIR}/postfix/ldap/sender_bcc_maps_user.cf ${ldap_sender_bcc_maps_user_cf}
 
     ECHO_DEBUG "Set file permission: Owner/Group -> root/root, Mode -> 0640."
 
@@ -498,23 +281,36 @@ Postfix (LDAP):
     * Configuration files:
 EOF
 
-    for i in ${ldap_virtual_mailbox_domains_cf} \
+    for i in \
+        ${ldap_virtual_mailbox_domains_cf} \
+        ${ldap_relay_domains_cf} \
         ${ldap_transport_maps_domain_cf} \
         ${ldap_transport_maps_user_cf} \
         ${ldap_virtual_mailbox_maps_cf} \
+        ${ldap_sender_login_maps_cf} \
         ${ldap_virtual_alias_maps_cf} \
         ${ldap_virtual_group_maps_cf} \
         ${ldap_virtual_group_members_maps_cf} \
+        ${ldap_catch_all_maps_cf} \
         ${ldap_recipient_bcc_maps_domain_cf} \
         ${ldap_recipient_bcc_maps_user_cf} \
         ${ldap_sender_bcc_maps_domain_cf} \
-        ${ldap_sender_bcc_maps_user_cf}
-    do
+        ${ldap_sender_bcc_maps_user_cf}; do
+
+        # Set file owner and permission
         chown ${SYS_ROOT_USER}:${POSTFIX_DAEMON_GROUP} ${i}
         chmod 0640 ${i}
+
+        # Replace placeholders
+        perl -pi -e 's#(^server_host * = ).*#${1}$ENV{LDAP_SERVER_HOST}#' ${i}
+        perl -pi -e 's#(^server_port * = ).*#${1}$ENV{LDAP_SERVER_PORT}#' ${i}
+        perl -pi -e 's#(^bind_dn * = ).*#${1}$ENV{LDAP_BINDDN}#' ${i}
+        perl -pi -e 's#(^bind_pw * = ).*#${1}$ENV{LDAP_BINDPW}#' ${i}
+        # search_base
+        perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#' ${i}
+
         cat >> ${TIP_FILE} <<EOF
         - ${i}
-
 EOF
     done
 

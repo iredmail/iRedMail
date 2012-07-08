@@ -162,6 +162,7 @@ EOF
             cat >> /etc/newsyslog.conf <<EOF
 ${IREDAPD_LOG_FILE}    ${SYS_ROOT_USER}:${SYS_ROOT_GROUP}   640  7     *    24    Z ${IREDAPD_PID_FILE}
 EOF
+        fi
 
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if ! grep 'iredapd.log' /etc/newsyslog.conf &>/dev/null; then
