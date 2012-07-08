@@ -1,0 +1,6 @@
+user        = vmail
+password    = yCrSkh8YsoGn6GNKSVCVomi6ecb4Pi
+hosts       = 127.0.0.1
+port        = 5432
+dbname      = vmail
+query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=('%u' || '@' || alias_domain.target_domain) AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1 AND domain.backupmx=0

@@ -1,0 +1,6 @@
+user        = vmail
+password    = NSep2RRC7vzN9k6dW5bnc07fTLDEW7
+hosts       = 127.0.0.1
+port        = 3306
+dbname      = vmail
+query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%d' AND alias.address=domain.domain AND alias.active=1 AND domain.active=1 AND domain.backupmx=0

@@ -108,7 +108,7 @@ postfix_config_basic()
     postconf -e smtpd_helo_restrictions="permit_mynetworks,permit_sasl_authenticated, check_helo_access pcre:${POSTFIX_FILE_HELO_ACCESS}"
 
     backup_file ${POSTFIX_FILE_HELO_ACCESS}
-    cp -f ${SAMPLE_DIR}/helo_access.pcre ${POSTFIX_FILE_HELO_ACCESS}
+    cp -f ${SAMPLE_DIR}/postfix/helo_access.pcre ${POSTFIX_FILE_HELO_ACCESS}
 
     # Reduce queue run delay time.
     postconf -e queue_run_delay='300s'          # default '300s' in postfix-2.4.
@@ -328,160 +328,45 @@ postfix_config_vhost_mysql()
     postconf -e sender_bcc_maps="proxy:mysql:${mysql_sender_bcc_maps_user_cf}, proxy:mysql:${mysql_sender_bcc_maps_domain_cf}"
     postconf -e recipient_bcc_maps="proxy:mysql:${mysql_recipient_bcc_maps_user_cf}, proxy:mysql:${mysql_recipient_bcc_maps_domain_cf}"
     postconf -e relay_domains="\$mydestination, proxy:mysql:${mysql_relay_domains_cf}"
-    #postconf -e relay_recipient_maps="proxy:mysql:${mysql_virtual_mailbox_maps_cf}"
-
     postconf -e smtpd_sender_login_maps="proxy:mysql:${mysql_sender_login_maps_cf}"
 
-    # Per-domain transport maps.
-    cat > ${mysql_transport_maps_domain_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT transport FROM domain WHERE domain='%s' AND active=1
-EOF
-
-    # Per-user transport maps.
-    cat > ${mysql_transport_maps_user_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT mailbox.transport FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.domain='%d' AND mailbox.domain=domain.domain AND mailbox.transport<>'' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.backupmx=0 AND domain.active=1
-EOF
-
-    cat > ${mysql_virtual_mailbox_domains_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=0 AND active=1 UNION SELECT alias_domain.alias_domain FROM alias_domain,domain WHERE alias_domain.alias_domain='%s' AND alias_domain.active=1 AND alias_domain.target_domain=domain.domain AND domain.active=1 AND domain.backupmx=0
-EOF
-
-    cat > ${mysql_relay_domains_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=1 AND active=1
-EOF
-
-    cat > ${mysql_virtual_mailbox_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT CONCAT(mailbox.storagenode, '/', mailbox.maildir, '/Maildir/') FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1
-EOF
-
-    cat > ${mysql_virtual_alias_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%s' AND alias.domain='%d' AND alias.domain=domain.domain AND alias.active=1 AND domain.backupmx=0 AND domain.active=1
-EOF
-
-    cat > ${mysql_domain_alias_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=CONCAT('%u', '@', alias_domain.target_domain) AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1 AND domain.backupmx=0
-EOF
-
-    cat > ${mysql_catchall_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%d' AND alias.address=domain.domain AND alias.active=1 AND domain.active=1 AND domain.backupmx=0
-EOF
-
-    cat > ${mysql_domain_alias_catchall_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=alias_domain.target_domain AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1
-EOF
-
-    cat > ${mysql_sender_login_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT mailbox.username FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.domain='%d' AND mailbox.domain=domain.domain AND mailbox.enablesmtp=1 AND mailbox.active=1 AND domain.backupmx=0 AND domain.active=1
-EOF
-
-    cat > ${mysql_sender_bcc_maps_domain_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT bcc_address FROM sender_bcc_domain WHERE domain='%d' AND active=1
-EOF
-
-    cat > ${mysql_sender_bcc_maps_user_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT sender_bcc_user.bcc_address FROM sender_bcc_user,domain WHERE sender_bcc_user.username='%s' AND sender_bcc_user.domain='%d' AND sender_bcc_user.domain=domain.domain AND domain.backupmx=0 AND domain.active=1 AND sender_bcc_user.active=1
-EOF
-
-    cat > ${mysql_recipient_bcc_maps_domain_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT bcc_address FROM recipient_bcc_domain WHERE domain='%d' AND active=1
-EOF
-
-    cat > ${mysql_recipient_bcc_maps_user_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${MYSQL_SERVER}
-port        = ${MYSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT recipient_bcc_user.bcc_address FROM recipient_bcc_user,domain WHERE recipient_bcc_user.username='%s' AND recipient_bcc_user.domain='%d' AND recipient_bcc_user.domain=domain.domain AND domain.backupmx=0 AND domain.active=1 AND recipient_bcc_user.active=1
-EOF
+    # Per-domain and per-user transport maps.
+    cp ${SAMPLE_DIR}/postfix/mysql/transport_maps_domain.cf ${mysql_transport_maps_domain_cf}
+    cp ${SAMPLE_DIR}/postfix/mysql/transport_maps_user.cf ${mysql_transport_maps_user_cf}
+    # Virtual domains
+    cp ${SAMPLE_DIR}/postfix/mysql/virtual_mailbox_domains.cf ${mysql_virtual_mailbox_domains_cf}
+    # Relay domains
+    cp ${SAMPLE_DIR}/postfix/mysql/relay_domains.cf ${mysql_relay_domains_cf}
+    # Virtual mail users
+    cp ${SAMPLE_DIR}/postfix/mysql/virtual_mailbox_maps.cf ${mysql_virtual_mailbox_maps_cf}
+    # Virtual alias
+    cp ${SAMPLE_DIR}/postfix/mysql/virtual_alias_maps.cf ${mysql_virtual_alias_maps_cf}
+    # Alias domain
+    cp ${SAMPLE_DIR}/postfix/mysql/domain_alias_maps.cf ${mysql_domain_alias_maps_cf}
+    # Catch-all
+    cp ${SAMPLE_DIR}/postfix/mysql/catchall_maps.cf ${mysql_catchall_maps_cf}
+    # Alias domain support of catch-all
+    cp ${SAMPLE_DIR}/postfix/mysql/domain_alias_catchall_maps.cf ${mysql_domain_alias_catchall_maps_cf}
+    # Sender login maps
+    cp ${SAMPLE_DIR}/postfix/mysql/sender_login_maps.cf ${mysql_sender_login_maps_cf}
+    # Sender bcc maps
+    cp ${SAMPLE_DIR}/postfix/mysql/sender_bcc_maps_domain.cf ${mysql_sender_bcc_maps_domain_cf}
+    cp ${SAMPLE_DIR}/postfix/mysql/sender_bcc_maps_user.cf ${mysql_sender_bcc_maps_user_cf}
+    # Recipient bcc maps
+    cp ${SAMPLE_DIR}/postfix/mysql/recipient_bcc_maps_domain.cf ${mysql_recipient_bcc_maps_domain_cf}
+    cp ${SAMPLE_DIR}/postfix/mysql/recipient_bcc_maps_user.cf ${mysql_recipient_bcc_maps_user_cf}
 
     ECHO_DEBUG "Set file permission: Owner/Group -> postfix/postfix, Mode -> 0640."
     cat >> ${TIP_FILE} <<EOF
 Postfix (MySQL):
     * Configuration files:
 EOF
-    for i in ${mysql_virtual_mailbox_domains_cf} \
+
+    for i in \
         ${mysql_transport_maps_domain_cf} \
         ${mysql_transport_maps_user_cf} \
+        ${mysql_virtual_mailbox_domains_cf} \
+        ${mysql_relay_domains_cf} \
         ${mysql_virtual_mailbox_maps_cf} \
         ${mysql_virtual_alias_maps_cf} \
         ${mysql_domain_alias_maps_cf} \
@@ -491,10 +376,18 @@ EOF
         ${mysql_sender_bcc_maps_domain_cf} \
         ${mysql_sender_bcc_maps_user_cf} \
         ${mysql_recipient_bcc_maps_domain_cf} \
-        ${mysql_recipient_bcc_maps_user_cf}
-    do
+        ${mysql_recipient_bcc_maps_user_cf}; do
+
+        # Set file owner and permission
         chown ${SYS_ROOT_USER}:${POSTFIX_DAEMON_GROUP} ${i}
         chmod 0640 ${i}
+
+        # Place placeholders
+        perl -pi -e 's#^(user * = ).*#${1}$ENV{VMAIL_DB_BIND_USER}#' ${i}
+        perl -pi -e 's#^(password * = ).*#${1}$ENV{VMAIL_DB_BIND_PASSWD}#' ${i}
+        perl -pi -e 's#^(hosts * = ).*#${1}$ENV{SQL_SERVER}#' ${i}
+        perl -pi -e 's#^(port * = ).*#${1}$ENV{SQL_SERVER_PORT}#' ${i}
+        perl -pi -e 's#^(dbname * = ).*#${1}$ENV{VMAIL_DB}#' ${i}
 
         cat >> ${TIP_FILE} <<EOF
         - $i
@@ -519,156 +412,43 @@ postfix_config_vhost_pgsql()
 
     postconf -e smtpd_sender_login_maps="proxy:pgsql:${pgsql_sender_login_maps_cf}"
 
-    # Per-domain transport maps.
-    cat > ${pgsql_transport_maps_domain_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT transport FROM domain WHERE domain='%s' AND active=1
-EOF
-
-    # Per-user transport maps.
-    cat > ${pgsql_transport_maps_user_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT mailbox.transport FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.domain='%d' AND mailbox.domain=domain.domain AND mailbox.transport<>'' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.backupmx=0 AND domain.active=1
-EOF
-
-    cat > ${pgsql_virtual_mailbox_domains_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=0 AND active=1 UNION SELECT alias_domain.alias_domain FROM alias_domain,domain WHERE alias_domain.alias_domain='%s' AND alias_domain.active=1 AND alias_domain.target_domain=domain.domain AND domain.active=1 AND domain.backupmx=0
-EOF
-
-    cat > ${pgsql_relay_domains_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=1 AND active=1
-EOF
-
-    cat > ${pgsql_virtual_mailbox_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT (mailbox.storagenode || '/' || mailbox.maildir || '/Maildir/') FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1
-EOF
-
-    cat > ${pgsql_virtual_alias_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%s' AND alias.domain='%d' AND alias.domain=domain.domain AND alias.active=1 AND domain.backupmx=0 AND domain.active=1
-EOF
-
-    cat > ${pgsql_domain_alias_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=('%u' || '@' || alias_domain.target_domain) AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1 AND domain.backupmx=0
-EOF
-
-    cat > ${pgsql_catchall_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%d' AND alias.address=domain.domain AND alias.active=1 AND domain.active=1 AND domain.backupmx=0
-EOF
-
-    cat > ${pgsql_domain_alias_catchall_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=alias_domain.target_domain AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1
-EOF
-
-    cat > ${pgsql_sender_login_maps_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT mailbox.username FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.domain='%d' AND mailbox.domain=domain.domain AND mailbox.enablesmtp=1 AND mailbox.active=1 AND domain.backupmx=0 AND domain.active=1
-EOF
-
-    cat > ${pgsql_sender_bcc_maps_domain_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT bcc_address FROM sender_bcc_domain WHERE domain='%d' AND active=1
-EOF
-
-    cat > ${pgsql_sender_bcc_maps_user_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT sender_bcc_user.bcc_address FROM sender_bcc_user,domain WHERE sender_bcc_user.username='%s' AND sender_bcc_user.domain='%d' AND sender_bcc_user.domain=domain.domain AND domain.backupmx=0 AND domain.active=1 AND sender_bcc_user.active=1
-EOF
-
-    cat > ${pgsql_recipient_bcc_maps_domain_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT bcc_address FROM recipient_bcc_domain WHERE domain='%d' AND active=1
-EOF
-
-    cat > ${pgsql_recipient_bcc_maps_user_cf} <<EOF
-${CONF_MSG}
-user        = ${VMAIL_DB_BIND_USER}
-password    = ${VMAIL_DB_BIND_PASSWD}
-hosts       = ${PGSQL_SERVER}
-port        = ${PGSQL_SERVER_PORT}
-dbname      = ${VMAIL_DB}
-query       = SELECT recipient_bcc_user.bcc_address FROM recipient_bcc_user,domain WHERE recipient_bcc_user.username='%s' AND recipient_bcc_user.domain='%d' AND recipient_bcc_user.domain=domain.domain AND domain.backupmx=0 AND domain.active=1 AND recipient_bcc_user.active=1
-EOF
+    # Per-domain and per-user transport maps.
+    cp ${SAMPLE_DIR}/postfix/pgsql/transport_maps_domain.cf ${pgsql_transport_maps_domain_cf}
+    cp ${SAMPLE_DIR}/postfix/pgsql/transport_maps_user.cf ${pgsql_transport_maps_user_cf}
+    # Virtual domains
+    cp ${SAMPLE_DIR}/postfix/pgsql/virtual_mailbox_domains.cf ${pgsql_virtual_mailbox_domains_cf}
+    # Relay domains
+    cp ${SAMPLE_DIR}/postfix/pgsql/relay_domains.cf ${pgsql_relay_domains_cf}
+    # Virtual mailboxes
+    cp ${SAMPLE_DIR}/postfix/pgsql/virtual_mailbox_maps.cf ${pgsql_virtual_mailbox_maps_cf}
+    # Virtual aliases
+    cp ${SAMPLE_DIR}/postfix/pgsql/virtual_alias_maps.cf ${pgsql_virtual_alias_maps_cf}
+    # Alias domains
+    cp ${SAMPLE_DIR}/postfix/pgsql/domain_alias_maps.cf ${pgsql_domain_alias_maps_cf}
+    # Catch-all
+    cp ${SAMPLE_DIR}/postfix/pgsql/catchall_maps.cf ${pgsql_catchall_maps_cf}
+    # Alias domain support of catch-all
+    cp ${SAMPLE_DIR}/postfix/pgsql/domain_alias_catchall_maps.cf ${pgsql_domain_alias_catchall_maps_cf}
+    # Sender login maps
+    cp ${SAMPLE_DIR}/postfix/pgsql/sender_login_maps.cf ${pgsql_sender_login_maps_cf}
+    # Per-domain and per-user sender bcc maps
+    cp ${SAMPLE_DIR}/postfix/pgsql/sender_bcc_maps_domain.cf ${pgsql_sender_bcc_maps_domain_cf}
+    cp ${SAMPLE_DIR}/postfix/pgsql/sender_bcc_maps_user.cf ${pgsql_sender_bcc_maps_user_cf}
+    # Per-domain and per-user recipient bcc maps
+    cp ${SAMPLE_DIR}/postfix/pgsql/recipient_bcc_maps_domain.cf ${pgsql_recipient_bcc_maps_domain_cf}
+    cp ${SAMPLE_DIR}/postfix/pgsql/recipient_bcc_maps_user.cf ${pgsql_recipient_bcc_maps_user_cf}
 
     ECHO_DEBUG "Set file permission: Owner/Group -> postfix/postfix, Mode -> 0640."
     cat >> ${TIP_FILE} <<EOF
 Postfix (PostgreSQL):
     * Configuration files:
 EOF
-    for i in ${pgsql_virtual_mailbox_domains_cf} \
+
+    for i in \
         ${pgsql_transport_maps_domain_cf} \
         ${pgsql_transport_maps_user_cf} \
+        ${pgsql_virtual_mailbox_domains_cf} \
+        ${pgsql_relay_domains_cf} \
         ${pgsql_virtual_mailbox_maps_cf} \
         ${pgsql_virtual_alias_maps_cf} \
         ${pgsql_domain_alias_maps_cf} \
@@ -678,10 +458,18 @@ EOF
         ${pgsql_sender_bcc_maps_domain_cf} \
         ${pgsql_sender_bcc_maps_user_cf} \
         ${pgsql_recipient_bcc_maps_domain_cf} \
-        ${pgsql_recipient_bcc_maps_user_cf}
-    do
+        ${pgsql_recipient_bcc_maps_user_cf}; do
+
+        # Set file owner and permission
         chown ${SYS_ROOT_USER}:${POSTFIX_DAEMON_GROUP} ${i}
         chmod 0640 ${i}
+
+        # Place placeholders
+        perl -pi -e 's#^(user * = ).*#${1}$ENV{VMAIL_DB_BIND_USER}#' ${i}
+        perl -pi -e 's#^(password * = ).*#${1}$ENV{VMAIL_DB_BIND_PASSWD}#' ${i}
+        perl -pi -e 's#^(hosts * = ).*#${1}$ENV{SQL_SERVER}#' ${i}
+        perl -pi -e 's#^(port * = ).*#${1}$ENV{SQL_SERVER_PORT}#' ${i}
+        perl -pi -e 's#^(dbname * = ).*#${1}$ENV{VMAIL_DB}#' ${i}
 
         cat >> ${TIP_FILE} <<EOF
         - $i

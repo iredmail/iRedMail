@@ -1,0 +1,6 @@
+user        = vmail
+password    = yCrSkh8YsoGn6GNKSVCVomi6ecb4Pi
+hosts       = 127.0.0.1
+port        = 5432
+dbname      = vmail
+query       = SELECT domain FROM domain WHERE domain='%s' AND backupmx=1 AND active=1

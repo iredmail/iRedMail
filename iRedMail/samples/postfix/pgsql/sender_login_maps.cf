@@ -1,0 +1,6 @@
+user        = vmail
+password    = yCrSkh8YsoGn6GNKSVCVomi6ecb4Pi
+hosts       = 127.0.0.1
+port        = 5432
+dbname      = vmail
+query       = SELECT mailbox.username FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.domain='%d' AND mailbox.domain=domain.domain AND mailbox.enablesmtp=1 AND mailbox.active=1 AND domain.backupmx=0 AND domain.active=1

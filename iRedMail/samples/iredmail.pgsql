@@ -131,7 +131,6 @@ CREATE TABLE mailbox (
     employeeid VARCHAR(255) DEFAULT '',
     isadmin INT2 NOT NULL DEFAULT 0,
     isglobaladmin INT2 NOT NULL DEFAULT 0,
-    language VARCHAR(5) NOT NULL DEFAULT 'en_US',
     enablesmtp INT2 NOT NULL DEFAULT 1,
     enablesmtpsecured INT2 NOT NULL DEFAULT 1,
     enablepop3 INT2 NOT NULL DEFAULT 1,
@@ -164,6 +163,7 @@ CREATE INDEX idx_mailbox_domain ON mailbox (domain);
 CREATE INDEX idx_mailbox_department ON mailbox (department);
 CREATE INDEX idx_mailbox_employeeid ON mailbox (employeeid);
 CREATE INDEX idx_mailbox_isadmin ON mailbox (isadmin);
+CREATE INDEX idx_mailbox_isglobaladmin ON mailbox (isglobaladmin);
 CREATE INDEX idx_mailbox_enablesmtp ON mailbox (enablesmtp);
 CREATE INDEX idx_mailbox_enablesmtpsecured ON mailbox (enablesmtpsecured);
 CREATE INDEX idx_mailbox_enablepop3 ON mailbox (enablepop3);
