@@ -14,6 +14,8 @@ iRedMail-0.8.2:
           'virtual' transport.
         + Incorrect log rotate setting of iRedAPD log file on FreeBSD.
           Thanks openbsdnoob <w-chi _at_ gmx.de> for the report.
+    * Package update:
+        + phpMyAdmin -> 3.5.2
 
 iRedMail-0.8.1:
     * It now works on Debian wheezy. Tested with Debian wheezy alpha 1.
