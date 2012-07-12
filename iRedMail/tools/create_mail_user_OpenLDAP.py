@@ -149,7 +149,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         maildir_user = "%s/%s/%s/%s%s/" % (str1, str2, str3, username, TIMESTAMP_IN_MAILDIR, )
         mailMessageStore = maildir_domain + '/' + maildir_user
     else:
-        mailMessageStore = "%s/%s-%s/" % (domain, username, DATE)
+        mailMessageStore = "%s/%s%s/" % (domain, username, TIMESTAMP_IN_MAILDIR)
 
     homeDirectory = STORAGE_BASE_DIRECTORY + '/' + mailMessageStore
     mailMessageStore = STORAGE_NODE + '/' + mailMessageStore
