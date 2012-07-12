@@ -25,12 +25,11 @@ LDAP_URI = 'ldap://127.0.0.1:389'
 # LDAP base dn.
 BASEDN = 'o=domains,dc=example,dc=com'
 
-# LDAP bind dn & password.
-#BINDDN = 'cn=Manager,dc=example,dc=com'
-#BINDPW = 'passwd'
-
 # Storage base directory.
 STORAGE_BASE_DIRECTORY = '/var/vmail/vmail1'
+
+# Append timestamp in maildir path.
+APPEND_TIMESTAMP_IN_MAILDIR = True
 
 # Get base directory and storage node.
 std = STORAGE_BASE_DIRECTORY.rstrip('/').split('/')
@@ -114,7 +113,12 @@ def convEmailToUserDN(email):
     return dn
 
 def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
+    # Append timestamp in maildir path
     DATE = time.strftime('%Y.%m.%d.%H.%M.%S')
+    TIMESTAMP_IN_MAILDIR = ''
+    if APPEND_TIMESTAMP_IN_MAILDIR:
+        TIMESTAMP_IN_MAILDIR = '-%s' % DATE
+
     if quota == '':
         quota = '0'
 
@@ -135,24 +139,14 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     if HASHED_MAILDIR is True:
         # Hashed. Length of domain name are always >= 2.
         #maildir_domain = "%s/%s/%s/" % (domain[:1], domain[:2], domain)
+        str1 = str2 = str3 = username[0]
         if len(username) >= 3:
-            maildir_user = "%s/%s/%s/%s-%s/" % (username[0], username[1], username[2], username, DATE,)
+            str2 = username[1]
+            str3 = username[2]
         elif len(username) == 2:
-            maildir_user = "%s/%s/%s/%s-%s/" % (
-                    username[0],
-                    username[1],
-                    username[1],
-                    username,
-                    DATE,
-                    )
-        else:
-            maildir_user = "%s/%s/%s/%s-%s/" % (
-                    username[0],
-                    username[0],
-                    username[0],
-                    username,
-                    DATE,
-                    )
+            str2 = str3 = username[1]
+
+        maildir_user = "%s/%s/%s/%s%s/" % (str1, str2, str3, username, TIMESTAMP_IN_MAILDIR, )
         mailMessageStore = maildir_domain + '/' + maildir_user
     else:
         mailMessageStore = "%s/%s-%s/" % (domain, username, DATE)
