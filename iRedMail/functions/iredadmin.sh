@@ -153,7 +153,7 @@ EOF
     # Modify iRedAdmin settings.
     # [general] section.
     ECHO_DEBUG "Configure general settings."
-    perl -pi -e 's#^(storage_base_directory =).*#${1} $ENV{STORAGE_BASE_DIR}/$ENV{STORAGE_NODE}#' settings.ini
+    perl -pi -e 's#^(storage_base_directory =).*#${1} $ENV{STORAGE_MAILBOX_DIR}#' settings.ini
 
     # [iredadmin] section.
     ECHO_DEBUG "Configure iredadmin database related settings."

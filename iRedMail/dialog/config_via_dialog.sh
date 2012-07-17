@@ -81,9 +81,11 @@ export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"
 rm -f /tmp/vmail_user_home_dir
 
 export STORAGE_BASE_DIR="${VMAIL_USER_HOME_DIR}"
+export STORAGE_MAILBOX_DIR="${STORAGE_BASE_DIR}/${STORAGE_NODE}"
 export SIEVE_DIR="${VMAIL_USER_HOME_DIR}/sieve"
 echo "export VMAIL_USER_HOME_DIR='${VMAIL_USER_HOME_DIR}'" >> ${CONFIG_FILE}
 echo "export STORAGE_BASE_DIR='${VMAIL_USER_HOME_DIR}'" >> ${CONFIG_FILE}
+echo "export STORAGE_MAILBOX_DIR='${STORAGE_MAILBOX_DIR}'" >> ${CONFIG_FILE}
 echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${CONFIG_FILE}
 
 export BACKUP_DIR="${VMAIL_USER_HOME_DIR}/backup"
