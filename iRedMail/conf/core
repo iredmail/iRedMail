@@ -96,6 +96,17 @@ ECHO_DEBUG()
     fi
 }
 
+read_setting()
+{
+    answer="${1}"
+    if [ ! -z "${answer}" ]; then
+        ANSWER="${answer}"
+        echo ${ANSWER}
+    else
+        read ANSWER
+    fi
+}
+
 backup_file()
 {
     # Usage: backup_file file1 [file2 file3 ... fileN]
@@ -273,17 +284,6 @@ check_status_before_run()
         else
             echo -e "<<< SKIP >>> Skip function: $1."
         fi
-    fi
-}
-
-read_setting()
-{
-    answer="${1}"
-    if [ ! -z "${answer}" ]; then
-        ANSWER="${answer}"
-        echo ${ANSWER}
-    else
-        read ANSWER
     fi
 }
 

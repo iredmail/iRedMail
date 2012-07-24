@@ -268,6 +268,12 @@ EOF
 
 amavisd_config_general()
 {
+    # Disable $final_xxx_destiny to avoid duplicate
+    perl -pi -e 's/^(\$final_virus_destiny.*)/#${1}/' ${AMAVISD_CONF}
+    perl -pi -e 's/^(\$final_banned_destiny.*)/#${1}/' ${AMAVISD_CONF}
+    perl -pi -e 's/^(\$final_spam_destiny.*)/#${1}/' ${AMAVISD_CONF}
+    perl -pi -e 's/^(\$final_bad_header_destiny.*)/#${1}/' ${AMAVISD_CONF}
+
     cat >> ${AMAVISD_CONF} <<EOF
 # Set hostname.
 \$myhostname = "${HOSTNAME}";
