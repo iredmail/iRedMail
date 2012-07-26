@@ -292,8 +292,8 @@ directory   ${LDAP_DATA_DIR}
 rootdn      ${LDAP_ROOTDN}
 rootpw      $(gen_ldap_passwd "${LDAP_ROOTPW}")
 
-sizelimit   1000
-cachesize   1000
+sizelimit   10000
+cachesize   10000
 
 # This directive specifies how often to checkpoint the BDB transaction log.
 # A checkpoint operation flushes the database buffers to disk and writes a

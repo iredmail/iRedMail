@@ -323,16 +323,14 @@ cluebringer_webui_config()
     perl -pi -e 's#(</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     # Configure webui.
-    if [ X"${DISTRO}" == X'UBUNTU' ]; then
-        if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-            perl -pi -e 's#(.DB_DSN=).*#${1}"mysql:host=$ENV{SQL_SERVER};dbname=$ENV{CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
-        elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            perl -pi -e 's#(.DB_DSN=).*#${1}"pgsql:host=$ENV{SQL_SERVER};dbname=$ENV{CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
-        fi
-
-        perl -pi -e 's#(.DB_USER=).*#${1}"$ENV{CLUEBRINGER_DB_USER}";#' ${CLUEBRINGER_WEBUI_CONF}
-        perl -pi -e 's#(.DB_PASS=).*#${1}"$ENV{CLUEBRINGER_DB_PASSWD}";#' ${CLUEBRINGER_WEBUI_CONF}
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        perl -pi -e 's#(.DB_DSN=).*#${1}"mysql:host=$ENV{SQL_SERVER};dbname=$ENV{CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        perl -pi -e 's#(.DB_DSN=).*#${1}"pgsql:host=$ENV{SQL_SERVER};dbname=$ENV{CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
     fi
+
+    perl -pi -e 's#(.DB_USER=).*#${1}"$ENV{CLUEBRINGER_DB_USER}";#' ${CLUEBRINGER_WEBUI_CONF}
+    perl -pi -e 's#(.DB_PASS=).*#${1}"$ENV{CLUEBRINGER_DB_PASSWD}";#' ${CLUEBRINGER_WEBUI_CONF}
 
     cat > ${CLUEBRINGER_HTTPD_CONF} <<EOF
 ${CONF_MSG}
