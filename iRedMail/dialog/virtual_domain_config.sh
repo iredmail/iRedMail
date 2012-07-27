@@ -62,12 +62,12 @@ Please specify password for the administrator user:
 
 Note:
 
-    * You can login iRedAdmin with this account.
+    * You can login to both webmail and iRedAdmin with this account.
+    * Please reset password immediately after installation completed.
 
 WARNING:
 
     * EMPTY password is *NOT* permitted.
-    * Please reset password immediately after installation completed.
 
 " 20 76 2>/tmp/first_domain_admin_passwd
 
@@ -83,38 +83,13 @@ echo "export DOMAIN_ADMIN_PASSWD='${DOMAIN_ADMIN_PASSWD}'" >> ${CONFIG_FILE}
 echo "export SITE_ADMIN_PASSWD='${SITE_ADMIN_PASSWD}'" >> ${CONFIG_FILE}
 rm -f /tmp/first_domain_admin_passwd
 
-#FIRST_USER
-export FIRST_USER='test'
+# First mail user and password
+export FIRST_USER="${DOMAIN_ADMIN_NAME}"
+export FIRST_USER_PASSWD="${DOMAIN_ADMIN_PASSWD}"
+export FIRST_USER_PASSWD_PLAIN="${DOMAIN_ADMIN_PASSWD_PLAIN}"
 echo "export FIRST_USER='${FIRST_USER}'" >>${CONFIG_FILE}
-
-# FIRST_USER_PASSWD
-while : ; do
-    ${DIALOG} \
-    --title "Password for your first user" \
-    ${PASSWORDBOX} "\
-Please specify password for your first user:
-
-    * ${FIRST_USER}@${FIRST_DOMAIN}
-
-Note:
-
-    * You can login webmail with this account.
-
-WARNING:
-
-    * EMPTY password is *NOT* permitted.
-    * Please reset password immediately after installation completed.
-
-" 20 76 2>/tmp/first_user_passwd
-
-    FIRST_USER_PASSWD="$(cat /tmp/first_user_passwd)"
-    [ X"${FIRST_USER_PASSWD}" != X"" ] && break
-done
-
-export FIRST_USER_PASSWD_PLAIN="${FIRST_USER_PASSWD}"
 echo "export FIRST_USER_PASSWD='${FIRST_USER_PASSWD}'" >>${CONFIG_FILE}
 echo "export FIRST_USER_PASSWD_PLAIN='${FIRST_USER_PASSWD_PLAIN}'" >>${CONFIG_FILE}
-rm -f /tmp/first_user_passwd
 
 cat >> ${TIP_FILE} <<EOF
 Admin of domain ${FIRST_DOMAIN}:

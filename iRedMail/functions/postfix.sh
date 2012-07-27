@@ -26,7 +26,7 @@
 
 postfix_config_basic()
 {
-    ECHO_INFO "Configure Postfix."
+    ECHO_INFO "Configure Postfix (Message Transfer Agent)."
 
     # OpenBSD: Replace sendmail with Postfix
     if [ X"${DISTRO}" == X'OPENBSD' ]; then

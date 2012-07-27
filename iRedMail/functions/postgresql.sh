@@ -170,13 +170,12 @@ GRANT SELECT,UPDATE,INSERT,DELETE ON admin,alias,alias_domain,domain,domain_admi
 -- Add first mail domain
 INSERT INTO domain (domain,transport,created) VALUES ('${FIRST_DOMAIN}', '${TRANSPORT}', NOW());
 
--- Add first domain admin
-INSERT INTO admin (username,password,created) VALUES ('${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}','${DOMAIN_ADMIN_PASSWD}', NOW());
-INSERT INTO domain_admins (username,domain,created) VALUES ('${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}','ALL', NOW());
-
 -- Add first mail user
-INSERT INTO mailbox (username,password,name,maildir,quota,domain,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}','${FIRST_USER_PASSWD}','${FIRST_USER}','$( hash_domain ${FIRST_DOMAIN})/$( hash_maildir ${FIRST_USER} )',100, '${FIRST_DOMAIN}', NOW());
+INSERT INTO mailbox (username,password,name,maildir,quota,domain,isadmin,isglobaladmin,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}','${FIRST_USER_PASSWD}','${FIRST_USER}','$( hash_domain ${FIRST_DOMAIN})/$( hash_maildir ${FIRST_USER} )',100, '${FIRST_DOMAIN}', 1, 1, NOW());
 INSERT INTO alias (address,goto,domain,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}', '${FIRST_USER}@${FIRST_DOMAIN}', '${FIRST_DOMAIN}', NOW());
+
+-- Mark first mail user as global admin
+INSERT INTO domain_admins (username,domain,created) VALUES ('${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}','ALL', NOW());
 EOF
 
     ECHO_DEBUG "Import postfix virtual hosts/users: ${PGSQL_INIT_SQL_SAMPLE}."
