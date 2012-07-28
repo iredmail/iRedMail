@@ -60,7 +60,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
 
 elif [ X"${DISTRO}" == X"SUSE" ]; then
-    # openSUSE-12.1 ships Amavisd-new-2.7.0
+    # openSUSE-12.1/12.2 ships Amavisd-new-2.7.0
     export AMAVISD_VERSION='2.7'
 
     # Override global setting: user/group.

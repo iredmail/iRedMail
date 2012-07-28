@@ -45,6 +45,8 @@ pgsql_initialize()
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ${PGSQL_RC_SCRIPT} initdb &>/dev/null
+    elif [ X"${DISTRO}" == X'SUSE' ]; then
+        su - ${PGSQL_SYS_USER} -c "initdb -D ${PGSQL_DATA_DIR} -U ${PGSQL_SYS_USER} -A trust" >/dev/null
     fi
 
     backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}

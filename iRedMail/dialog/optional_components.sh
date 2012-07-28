@@ -23,6 +23,26 @@
 # ----------------------------------------
 # Optional components for special backend.
 # ----------------------------------------
+# Detect selectable menu items
+if [ X"${DISTRO}" == X'SUSE' ]; then
+    # Apache module mod_auth_pgsql is not available
+    if [ X"${DISTRO_CODENAME}" == X'mantis' ]; then
+        [ X"${BACKEND}" == X'PGSQL' ] && export DIALOG_SELECTABLE_AWSTATS='NO'
+    fi
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    # Binary/port Awstats is not available
+    export DIALOG_SELECTABLE_AWSTATS='NO'
+fi
+
+# Construct dialog menu list
+# Format: item_name item_descrition on/off
+# Note: item_descrition must be concatenated by '_'.
+export LIST_OF_OPTIONAL_COMPONENTS=''
+
+if [ X"${DIALOG_SELECTABLE_AWSTATS}" == X'YES' ]; then
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Awstats Advanced_web_and_mail_log_analyzer on"
+fi
+
 export tmp_config_optional_components="${ROOTDIR}/.optional_components"
 
 if [ X"${BACKEND}" == X"OPENLDAP" ]; then
@@ -41,7 +61,7 @@ Note:
     "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
     "phpLDAPadmin" "Web-based OpenLDAP management tool" "on" \
     "phpMyAdmin" "Web-based MySQL management tool" "on" \
-    "Awstats" "Advanced web and mail log analyzer" "on" \
+    ${LIST_OF_OPTIONAL_COMPONENTS} \
     "Fail2ban" "Ban IP with too many password failures" "on" \
     2>${tmp_config_optional_components}
 
@@ -60,9 +80,10 @@ Note:
     "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
     "phpMyAdmin" "Web-based MySQL management tool" "on" \
     "iRedAdmin" "Official web-based Admin Panel" "on" \
-    "Awstats" "Advanced web and mail log analyzer" "on" \
+    ${LIST_OF_OPTIONAL_COMPONENTS} \
     "Fail2ban" "Ban IP with too many password failures" "on" \
     2>${tmp_config_optional_components}
+
 elif [ X"${BACKEND}" == X"PGSQL" ]; then
     ${DIALOG} \
     --title "Optional Components for ${BACKEND_ORIG} backend" \
@@ -78,7 +99,7 @@ Note:
     "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
     "iRedAdmin" "Official web-based Admin Panel" "on" \
     "phpPgAdmin" "Web-based MySQL management tool" "on" \
-    "Awstats" "Advanced web and mail log analyzer" "on" \
+    ${LIST_OF_OPTIONAL_COMPONENTS} \
     "Fail2ban" "Ban IP with too many password failures" "on" \
     2>${tmp_config_optional_components}
 fi

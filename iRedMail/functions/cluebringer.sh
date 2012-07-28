@@ -31,7 +31,7 @@ cluebringer_user()
     #   - Ubuntu
     #   - openSUSE
     #   - Gentoo
-    if [ X"${DISTRO}" == X'RHEL' ]; then
+    if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'SUSE' ]; then
         groupadd ${CLUEBRINGER_GROUP}
         useradd -m -d ${CLUEBRINGER_USER_HOME} -s ${SHELL_NOLOGIN} -g ${CLUEBRINGER_GROUP} ${CLUEBRINGER_USER}
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then

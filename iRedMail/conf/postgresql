@@ -51,7 +51,12 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'SUSE' ]; then
-    :
+    export PGSQL_SYS_USER_HOME='/var/lib/pgsql'
+    export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
+
+    export PGSQL_CONF_DIR="${PGSQL_DATA_DIR}"
+    export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
+    export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'GENTOO' ]; then
     export PGSQL_CONF_DIR="/etc/postgresql-${PGSQL_VERSION}"

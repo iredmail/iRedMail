@@ -219,7 +219,7 @@ enabled=1
 autorefresh=1
 path=/
 type=rpm-md
-keeppackages=0
+keeppackages=1
 gpgcheck=0
 EOF
 
@@ -291,8 +291,10 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     create_repo_suse
 
-    ECHO_INFO "Clean and refresh metadata of zypper repositories."
+    ECHO_INFO "Clean metadata of zypper repositories."
     zypper clean --metadata --raw-metadata
+
+    ECHO_INFO "Refresh zypper repositories."
     zypper refresh
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Force update.

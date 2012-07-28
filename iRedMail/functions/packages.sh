@@ -30,8 +30,8 @@ install_all()
     ###########################
     # Enable syslog or rsyslog.
     #
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        # RHEL/CENTOS, openSUSE
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        # RHEL/CENTOS/Scientific
         if [ -x ${DIR_RC_SCRIPTS}/syslog ]; then
             ENABLED_SERVICES="syslog ${ENABLED_SERVICES}"
         elif [ -x ${DIR_RC_SCRIPTS}/rsyslog ]; then
@@ -144,7 +144,14 @@ install_all()
         fi
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} apache2-prefork apache2-mod_php5 php5-iconv php5-ldap php5-mysql php5-mcrypt php5-mbstring php5-gettext php5-dom php5-json php5-intl php5-fileinfo"
+        # Apache
+        ALL_PKGS="${ALL_PKGS} apache2-prefork apache2-mod_php5"
+
+        # PHP
+        ALL_PKGS="${ALL_PKGS} php5-dom php5-fileinfo php5-gettext php5-iconv php5-intl php5-json php5-ldap php5-mbstring php5-mcrypt"
+
+        [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php5-pgsql"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} apache2 apache2-mpm-prefork apache2.2-common libapache2-mod-php5 php5-cli php5-imap php5-gd php5-mcrypt php5-mysql php5-ldap php5-pgsql"
@@ -284,12 +291,15 @@ EOF
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} dovecot20"
+        [ X"${DISTRO_CODENAME}" == X'asparagus' ] && ALL_PKGS="${ALL_PKGS} dovecot20"
+        [ X"${DISTRO_CODENAME}" == X'mantis' ] && ALL_PKGS="${ALL_PKGS} dovecot21"
 
         if [ X"${BACKEND}" == X"MYSQL" ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot20-backend-mysql"
+            [ X"${DISTRO_CODENAME}" == X'asparagus' ] && ALL_PKGS="${ALL_PKGS} dovecot20-backend-mysql"
+            [ X"${DISTRO_CODENAME}" == X'mantis' ] && ALL_PKGS="${ALL_PKGS} dovecot21-backend-mysql"
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot20-backend-pgsql"
+            [ X"${DISTRO_CODENAME}" == X'asparagus' ] && ALL_PKGS="${ALL_PKGS} dovecot20-backend-pgsql"
+            [ X"${DISTRO_CODENAME}" == X'mantis' ] && ALL_PKGS="${ALL_PKGS} dovecot21-backend-pgsql"
         fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -346,7 +356,12 @@ EOF
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} perl-Mail-SPF amavisd-new clamav clamav-db spamassassin altermime perl-ldap perl-DBD-mysql"
+        ALL_PKGS="${ALL_PKGS} perl-Mail-SPF amavisd-new clamav clamav-db spamassassin altermime"
+
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} perl-ldap perl-DBD-mysql"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} perl-DBD-mysql"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} perl-DBD-Pg"
+
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} clamav-milter spamd spampd"
 
@@ -397,7 +412,9 @@ EOF
 
     # phpMyAdmin
     if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        if [ X"${DISTRO}" == X'SUSE' ]; then
+            ALL_PKGS="${ALL_PKGS} phpMyAdmin"
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} phpmyadmin"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} phpMyAdmin"
@@ -442,8 +459,9 @@ EOF
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-mysql python-xml"
 
-        # Note: Web.py will be installed locally with command 'easy_install'.
-        ALL_PKGS="${ALL_PKGS} python-distribute"
+        # openSUSE-12.1: Web.py will be installed locally with command 'easy_install'.
+        [ X"${DISTRO_CODENAME}" == X'asparagus' ] && ALL_PKGS="${ALL_PKGS} python-distribute"
+        [ X"${DISTRO_CODENAME}" == X'mantis' ] && ALL_PKGS="${ALL_PKGS} python-web.py"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-mysqldb python-jinja2 python-netifaces python-webpy"
@@ -525,8 +543,9 @@ EOF
     # Install all packages.
     install_all_pkgs()
     {
-        if [ X"${DISTRO}" == X"SUSE" ]; then
+        if [ X"${DISTRO}" == X'SUSE' ]; then
             rpm -e patterns-openSUSE-minimal_base-conflicts &>/dev/null
+            rpm -e exim &>/dev/null
         fi
 
         # Install all packages.
@@ -536,7 +555,10 @@ EOF
         fi
         eval ${install_pkg} ${ALL_PKGS}
 
-        if [ X"${DISTRO}" == X"SUSE" -a X"${USE_IREDADMIN}" == X"YES" ]; then
+        if [ X"${DISTRO}" == X"SUSE" \
+            -a X"${USE_IREDADMIN}" == X'YES' \
+            -a X"${DISTRO_CODENAME}" == X'asparagus' \
+            ]; then
             ECHO_DEBUG "Install web.py (${MISC_DIR}/web.py-*.tar.bz)."
             easy_install ${MISC_DIR}/web.py-*.tar.gz >/dev/null
         fi

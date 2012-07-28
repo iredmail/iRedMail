@@ -1,4 +1,6 @@
 iRedMail-0.8.2:
+    * It now works on openSUSE-12.2 (code name Mantis), with all 3 backends
+      available. Tested with openSUSE 12.2 RC1.
     * Drop support for Ubuntu-11.10 (oneiric).
     * New columns for MySQL/PGSQL backend in table vmail.mailbox:
       isadmin, isglobaladmin, language.

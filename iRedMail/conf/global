@@ -24,6 +24,14 @@ export PROG_NAME='iRedMail'
 export PROG_NAME_LOWERCASE='iredmail'
 export PROG_VERSION='0.8.1'
 
+export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
+
+# For perl and run-time locale setting.
+export LC_ALL=C
+
+# Debug mode: YES, NO.
+export _DEBUG="${_DEBUG:=NO}"
+
 # -----------------
 # ---- Generic ----
 # -----------------
@@ -41,6 +49,9 @@ export STORAGE_NODE='vmail1'
 export ENABLE_BACKEND_OPENLDAP='YES'
 export ENABLE_BACKEND_MYSQL='YES'
 export ENABLE_BACKEND_PGSQL='NO'
+
+# Enabled components.
+export DIALOG_SELECTABLE_AWSTATS='YES'
 
 # For better distributed deployment
 # IP address of localhost. usually it's 127.0.0.1, but not in FreeBSD Jail.
@@ -83,19 +94,6 @@ export VMAIL_DB_ADMIN_USER='vmailadmin'
 
 # Default virtual domain admin name without domain name (@example.com).
 export DOMAIN_ADMIN_NAME='postmaster'
-
-# ----------------------------------
-# You do *NOT* need to modify them.
-# ----------------------------------
-export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
-
-# For perl and run-time locale setting.
-export LC_ALL=C
-
-# Debug mode: YES, NO.
-if [ X"${_DEBUG}" != X'YES' ]; then
-    export _DEBUG='NO'
-fi
 
 # Tools.
 export CONFIG_VIA_DIALOG="${DIALOG_DIR}/config_via_dialog.sh"
@@ -228,6 +226,7 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
 
         # code name
         #   - 12.1: asparagus
+        #   - 12.2: mantis
         export DISTRO_CODENAME="$(grep 'CODENAME' /etc/SuSE-release | awk '{print $3}' |tr [A-Z] [a-z])"
 
         # Unsupported releases
@@ -238,6 +237,9 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
 
+        if [ X"${DISTRO_CODENAME}" == X'mantis' ]; then
+            export ENABLE_BACKEND_PGSQL='YES'
+        fi
     elif [ -f /etc/lsb-release ]; then
         # Ubuntu
         export DISTRO='UBUNTU'

@@ -70,7 +70,7 @@ EOF
     AuthBasicProvider ldap
     AuthzLDAPAuthoritative   Off
 
-    AuthLDAPUrl   ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}/${LDAP_ADMIN_BASEDN}?${LDAP_ATTR_USER_RDN}?sub?(&(objectclass=${LDAP_OBJECTCLASS_MAILADMIN})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE}))
+    AuthLDAPUrl   ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}/${LDAP_BASEDN}?${LDAP_ATTR_USER_RDN}?sub?(&(objectclass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DOMAIN_ADMIN})(${LDAP_ATTR_DOMAIN_GLOBALADMIN}=${LDAP_VALUE_DOMAIN_GLOBALADMIN}))
 
     AuthLDAPBindDN "${LDAP_BINDDN}"
     AuthLDAPBindPassword "${LDAP_BINDPW}"
@@ -98,6 +98,7 @@ EOF
     AuthMySQLUserTable admin
     AuthMySQLNameField username
     AuthMySQLPasswordField password
+    AuthMySQLUserCondition "isadmin=1 AND isglobaladmin=1"
 EOF
 
             # FreeBSD special.
@@ -111,8 +112,9 @@ EOF
                 -o X"${DISTRO}" == X"GENTOO" \
                 -o X"${DISTRO}" == X"FREEBSD" \
                 ]; then
-                echo "AuthBasicAuthoritative Off" >> ${AWSTATS_HTTPD_CONF}
+                echo "    AuthBasicAuthoritative Off" >> ${AWSTATS_HTTPD_CONF}
             fi
+
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             cat >> ${AWSTATS_HTTPD_CONF} <<EOF
