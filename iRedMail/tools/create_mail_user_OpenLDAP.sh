@@ -13,8 +13,6 @@
 # Please change variables below to fit your env:
 #   - In 'Global Setting' section:
 #       * STORAGE_BASE_DIRECTORY
-#       * VMAIL_USER_NAME
-#       * VMAIL_GROUP_NAME
 #
 #   - In 'LDAP Setting' section:
 #       * LDAP_SUFFIX
@@ -54,18 +52,6 @@
 #   STORAGE_BASE_DIRECTORY|DOMAIN_NAME|USERNAME
 #
 STORAGE_BASE_DIRECTORY="/var/vmail/vmail1"
-
-# All mails will be stored under user vmail's home directory.
-# Files and directories will be ownned as 'vmail:vmail'.
-# By default it's 'vmail:vmail'.
-VMAIL_USER_NAME="vmail"
-VMAIL_GROUP_NAME='vmail'
-
-# Mailbox format: mbox, Maildir.
-MAILBOX_FORMAT='Maildir'
-
-# Mailbox style: hashed, normal.
-MAILDIR_STYLE='hashed'
 
 # ------------------------------------------------------------------
 # -------------------------- LDAP Setting --------------------------

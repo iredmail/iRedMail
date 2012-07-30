@@ -43,4 +43,6 @@ WARNING:
 done
 
 echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${CONFIG_FILE}
+# PGSQL_ROOT_USER is defined in conf/postgresql
+echo "export PGSQL_ROOT_USER='${PGSQL_ROOT_USER}'" >>${CONFIG_FILE}
 rm -f /tmp/pgsql_rootpw

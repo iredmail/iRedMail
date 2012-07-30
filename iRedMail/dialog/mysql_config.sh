@@ -43,4 +43,6 @@ WARNING:
 done
 
 echo "export MYSQL_ROOT_PASSWD='${MYSQL_ROOT_PASSWD}'" >>${CONFIG_FILE}
+# MYSQL_ROOT_USER is defined in conf/mysql
+echo "export MYSQL_ROOT_USER='${MYSQL_ROOT_USER}'" >>${CONFIG_FILE}
 rm -f /tmp/mysql_rootpw

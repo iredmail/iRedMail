@@ -181,9 +181,13 @@ fi
 if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X'MYSQL' ]; then
     export SQL_SERVER="${MYSQL_SERVER}"
     export SQL_SERVER_PORT="${MYSQL_SERVER_PORT}"
+    export SQL_ROOT_USER="${MYSQL_ROOT_USER}"
+    export SQL_ROOT_PASSWD="${MYSQL_ROOT_PASSWD}"
 elif [ X"${BACKEND}" == X'PGSQL' ]; then
     export SQL_SERVER="${PGSQL_SERVER}"
     export SQL_SERVER_PORT="${PGSQL_SERVER_PORT}"
+    export SQL_ROOT_USER="${PGSQL_ROOT_USER}"
+    export SQL_ROOT_PASSWD="${PGSQL_ROOT_PASSWD}"
 fi
 
 echo "export SQL_SERVER='${SQL_SERVER}'" >> ${CONFIG_FILE}

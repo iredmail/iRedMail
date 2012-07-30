@@ -25,6 +25,10 @@ LDAP_URI = 'ldap://127.0.0.1:389'
 # LDAP base dn.
 BASEDN = 'o=domains,dc=example,dc=com'
 
+# Bind dn/password
+BINDDN = 'cn=Manager,dc=example,dc=com'
+BINDPW = 'password'
+
 # Storage base directory.
 STORAGE_BASE_DIRECTORY = '/var/vmail/vmail1'
 
@@ -167,13 +171,13 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         ('homeDirectory',       [homeDirectory]),
         ('accountStatus',       ['active']),
         ('mtaTransport',        ['dovecot']),
-        ('enabledService',      ['internal', 'doveadm',
+        ('enabledService',      ['internal', 'doveadm', 'lib-storage',
                                  'mail', 'smtp', 'smtpsecured',
                                  'pop3', 'pop3secured', 'imap', 'imapsecured',
                                 'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',
                                  'managesieve', 'managesievesecured',
                                  'sieve', 'sievesecured', 'shadowaddress',
-                                'displayedInGlobalAddressBook', 'lib-storage', ]),
+                                'displayedInGlobalAddressBook', ]),
         ('memberOfGroup',       groups),
         ]
 
@@ -215,11 +219,9 @@ print "< INFO > User data are stored in %s, you can verify it before import it."
 
 # Prompt to import user data.
 '''
-Would you like to import them now?""" % (ldif_file)
+answer = raw_input("Would you like to import them now? [y|N]").lower().strip()
 
-answer = raw_input('[Y|n] ').lower().strip()
-
-if answer == '' or answer == 'y':
+if answer == 'y':
     # Import data.
     conn = ldap.initialize(LDAP_URI)
     conn.set_option(ldap.OPT_PROTOCOL_VERSION, 3)   # Use LDAP v3
