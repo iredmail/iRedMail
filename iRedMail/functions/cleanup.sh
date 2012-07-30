@@ -427,7 +427,7 @@ EOF
 
     cat <<EOF
 ********************************************************************
-* URLs of your web applications:
+* URLs of installed web applications:
 *
 EOF
 

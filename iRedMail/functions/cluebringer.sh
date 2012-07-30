@@ -82,22 +82,16 @@ cluebringer_config()
     #
     # DSN
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-        perl -pi -e 's/^#(DSN=DBI:mysql:).*/${1}host=$ENV{MYSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(#*)(DSN=DBI:mysql:).*/${2}host=$ENV{MYSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Type=).*/${1}mysql/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Host=).*/${1}$ENV{MYSQL_SERVER}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Port=).*/${1}$ENV{MYSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        perl -pi -e 's/^(DSN=DBI:Pg:).*/${1}host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
-        # Commentted out
-        perl -pi -e 's/^#(DSN=DBI:Pg:).*/${1}host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(#*)(DSN=DBI:Pg:).*/${2}host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+
         perl -pi -e 's/^(DB_Type=).*/${1}pgsql/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Host=).*/${1}$ENV{PGSQL_SERVER}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Port=).*/${1}$ENV{PGSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
-
-        # FreeBSD
-        if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'FREEBSD' ]; then
-            perl -pi -e 's/^(DSN=DBI:).*/${1}Pg:host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
-        fi
     fi
 
     # Database
@@ -278,8 +272,7 @@ EOF
     fi
 
     # Add postfix alias.
-    echo "${CLUEBRINGER_USER}: ${SYS_ROOT_USER}" >> ${POSTFIX_FILE_ALIASES}
-    postalias hash:${POSTFIX_FILE_ALIASES} 2>/dev/null
+    add_postfix_alias ${CLUEBRINGER_USER} ${SYS_ROOT_USER}
 
     # Tips.
     cat >> ${TIP_FILE} <<EOF
@@ -346,8 +339,8 @@ ${CONF_MSG}
     DirectoryIndex index.php
     Options ExecCGI
     Order allow,deny
-    allow from ${CLUEBRINGER_BIND_HOST}
-    #allow from all
+    #allow from ${CLUEBRINGER_BIND_HOST}
+    allow from all
 
     AuthType basic
     AuthName "Authorization Required"
@@ -431,23 +424,21 @@ EOF
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         # Use mod_auth_pgsql.
-        if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+        cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     Auth_PG_authoritative on
     Auth_PG_host ${PGSQL_SERVER}
     Auth_PG_port ${PGSQL_SERVER_PORT}
     Auth_PG_database ${VMAIL_DB}
     Auth_PG_user ${VMAIL_DB_BIND_USER}
     Auth_PG_pwd ${VMAIL_DB_BIND_PASSWD}
-    Auth_PG_pwd_table admin
-    #Auth_PG_pwd_whereclause 'AND xxx'
+    Auth_PG_pwd_table mailbox
+    Auth_PG_pwd_whereclause 'AND isadmin=1 AND isglobaladmin=1'
     Auth_PG_uid_field username
     Auth_PG_pwd_field password
     Auth_PG_lowercase_uid on
     Auth_PG_encrypted on
     Auth_PG_hash_type CRYPT
 EOF
-        fi
 
         # Set file permission.
         chmod 0600 ${CLUEBRINGER_HTTPD_CONF}

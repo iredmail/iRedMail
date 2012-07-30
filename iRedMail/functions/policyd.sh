@@ -331,8 +331,7 @@ EOF
     chmod 0600 ${CRON_SPOOL_DIR}/${POLICYD_USER}
 
     # Add postfix alias.
-    echo "${POLICYD_USER}: ${SYS_ROOT_USER}" >> ${POSTFIX_FILE_ALIASES}
-    postalias hash:${POSTFIX_FILE_ALIASES} 2>/dev/null
+    add_postfix_alias ${POLICYD_USER} ${SYS_ROOT_USER}
 
     # Tips.
     cat >> ${TIP_FILE} <<EOF

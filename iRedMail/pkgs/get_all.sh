@@ -282,17 +282,21 @@ check_status_before_run check_new_iredmail
 prepare_dirs
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    # Check required commands, install related package if command doesn't exist.
-    check_pkg ${BIN_WHICH} ${PKG_WHICH} && \
-    check_pkg ${BIN_WGET} ${PKG_WGET} && \
+    # Clean metadata
+    ECHO_INFO "Clean metadata of yum repositories."
+    yum clean metadata
 
     # Create yum repository.
     create_repo_rhel
-elif [ X"${DISTRO}" == X"SUSE" ]; then
-    create_repo_suse
 
+    # Check required commands, install related package if command doesn't exist.
+    check_pkg ${BIN_WHICH} ${PKG_WHICH} && \
+    check_pkg ${BIN_WGET} ${PKG_WGET} && \
+elif [ X"${DISTRO}" == X"SUSE" ]; then
     ECHO_INFO "Clean metadata of zypper repositories."
     zypper clean --metadata --raw-metadata
+
+    create_repo_suse
 
     ECHO_INFO "Refresh zypper repositories."
     zypper refresh

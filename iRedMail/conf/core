@@ -476,6 +476,36 @@ SSL cert keys (size: ${SSL_KEY_SIZE}):
 EOF
 }
 
+# Add alias entry in Postfix /etc/postfix/aliases.
+add_postfix_alias()
+{
+    # Usage: add_postfix_alias nobody root
+    # File /path/to/aliases will be created if not exist.
+    export alias_orig="${1}"
+    export alias_dest="${2}"
+
+    if [ ! -f ${POSTFIX_FILE_ALIASES} ]; then
+        if [ -f /etc/aliases ]; then
+            cp -f /etc/aliases ${POSTFIX_FILE_ALIASES}
+        else
+            # Create an empty file
+            touch ${POSTFIX_FILE_ALIASES}
+        fi
+    fi
+
+    # If alias_orig exists, comment it out
+    if grep "^${alias_orig}:" ${POSTFIX_FILE_ALIASES} >/dev/null 2>&1; then
+        perl -pi -e 's/^($ENV{alias_orig}:.*)/#${1}/' ${POSTFIX_FILE_ALIASES}
+    fi
+
+    # Add new alias
+    echo "${alias_orig}: ${alias_dest}" >> ${POSTFIX_FILE_ALIASES}
+
+    postalias hash:${POSTFIX_FILE_ALIASES} >/dev/null 2>&1
+    unset alias_orig
+    unset alias_dest
+}
+
 # Install/Remove binary packages on RHEL/CentOS.
 install_pkg_rhel()
 {

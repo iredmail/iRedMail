@@ -133,22 +133,13 @@ postfix_config_basic()
     # Allow recipient address start with '-'.
     postconf -e allow_min_user='no'
 
-    # Postfix aliases file.
-    if  [ ! -f ${POSTFIX_FILE_ALIASES} ]; then
-        if [ -f /etc/aliases ]; then
-            cp -f /etc/aliases ${POSTFIX_FILE_ALIASES}
-        else
-            touch ${POSTFIX_FILE_ALIASES}
-        fi
-    fi
-
-    # Comment out default aliases for root
-    perl -pi -e 's/^(root:.*)/#${1}/g' ${POSTFIX_FILE_ALIASES}
+    # Update Postfix aliases file.
+    add_postfix_alias nobody ${SYS_ROOT_USER}
+    add_postfix_alias ${VMAIL_USER_NAME} ${SYS_ROOT_USER}
+    add_postfix_alias ${SYS_ROOT_USER} ${FIRST_USER}@${FIRST_DOMAIN}
 
     postconf -e alias_maps="hash:${POSTFIX_FILE_ALIASES}"
     postconf -e alias_database="hash:${POSTFIX_FILE_ALIASES}"
-    postalias hash:${POSTFIX_FILE_ALIASES} 2>/dev/null
-    newaliases >/dev/null 2>&1
 
     # Set message_size_limit.
     postconf -e message_size_limit="${MESSAGE_SIZE_LIMIT}"

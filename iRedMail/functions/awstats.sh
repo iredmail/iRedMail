@@ -95,7 +95,7 @@ EOF
     AuthMySQLUser ${VMAIL_DB_BIND_USER}
     AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
     AuthMySQLDB ${VMAIL_DB}
-    AuthMySQLUserTable admin
+    AuthMySQLUserTable mailbox
     AuthMySQLNameField username
     AuthMySQLPasswordField password
     AuthMySQLUserCondition "isadmin=1 AND isglobaladmin=1"
@@ -125,7 +125,7 @@ EOF
     AuthUserFile /dev/null
 
     # Database related.
-    AuthMySQL_Password_Table admin
+    AuthMySQL_Password_Table mailbox
     Auth_MySQL_Username_Field username
     Auth_MySQL_Password_Field password
 
@@ -133,6 +133,7 @@ EOF
     AuthMySQL_Empty_Passwords off
     AuthMySQL_Encryption_Types Crypt_MD5
     Auth_MySQL_Authoritative On
+    #AuthMySQLUserCondition "isadmin=1 AND isglobaladmin=1"
 EOF
 
             # Set file permission.
@@ -156,8 +157,8 @@ EOF
     Auth_PG_database ${VMAIL_DB}
     Auth_PG_user ${VMAIL_DB_BIND_USER}
     Auth_PG_pwd ${VMAIL_DB_BIND_PASSWD}
-    Auth_PG_pwd_table admin
-    #Auth_PG_pwd_whereclause 'AND xxx'
+    Auth_PG_pwd_table mailbox
+    Auth_PG_pwd_whereclause 'AND isadmin=1 AND isglobaladmin=1'
     Auth_PG_uid_field username
     Auth_PG_pwd_field password
     Auth_PG_lowercase_uid on
