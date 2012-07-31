@@ -201,46 +201,6 @@ cleanup_replace_mysql_config()
     echo 'export status_cleanup_replace_mysql_config="DONE"' >> ${STATUS_FILE}
 }
 
-cleanup_start_postfix_now()
-{
-    # Start postfix without reboot your system.
-    ECHO_QUESTION -n "Would you like to start postfix now? [y|N]"
-    read_setting ${AUTO_CLEANUP_RESTART_POSTFIX}
-    case ${ANSWER} in
-        Y|y )
-            # Disable SELinux.
-            SETENFORCE="$(which setenforce 2>/dev/null)"
-            if [ ! -z ${SETENFORCE} ]; then
-                ECHO_INFO "Temporarily set SELinux policy to 'permissive'."
-                ${SETENFORCE} 0
-            else
-                :
-            fi
-
-            # FreeBSD
-            if [ X"${DISTRO}" == X"FREEBSD" ]; then
-                # Load kernel module 'accf_http' before start.
-                kldload accf_http
-
-                # Stop sendmail.
-                killall sendmail
-            fi
-
-            # Start/Restart necessary services.
-            for srv in ${ENABLED_SERVICES}
-            do
-                service_control ${srv} restart
-            done
-            export POSTFIX_STARTED='YES'
-            ;;
-        N|n|* )
-            :
-            ;;
-    esac
-
-    echo 'export status_cleanup_start_postfix_now="DONE"' >> ${STATUS_FILE}
-}
-
 cleanup_amavisd_preconfig()
 {
     # Required on Gentoo and FreeBSD to start Amavisd-new.
@@ -387,10 +347,6 @@ EOF
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
     check_status_before_run cleanup_backup_scripts
     [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
-    [ X"${DISTRO}" != X'GENTOO' \
-        -a X"${DISTRO}" != X'FREEBSD' \
-        -a X"${DISTRO}" != X'OPENBSD' \
-        ] && check_status_before_run cleanup_start_postfix_now
 
     # Start Postfix to deliver emails.
     [ X"${DISTRO}" == X'GENTOO' ] && ${DIR_RC_SCRIPTS}/postfix restart >/dev/null
@@ -450,6 +406,9 @@ EOF
 EOF
     fi
 
+    # Reboot system to enable mail related services.
+    # - FreeBSD: sendmail is binding to port '25'
+    # - Gentoo: some services may require system reboot
     cat <<EOF
 
 ********************************************************************
@@ -460,48 +419,9 @@ EOF
 *
 * And it's sent to your mail account ${tip_recipient}.
 *
-EOF
-
-if [ X"${POSTFIX_STARTED}" != X"YES" \
-    -a X"${DISTRO}" != X'GENTOO' \
-    -a X"${DISTRO}" != X'FREEBSD' \
-    -a X"${DISTRO}" != X'OPENBSD' \
-    ]; then
-    cat <<EOF
-* Please reboot your system to enable mail related services or start them
-* manually without reboot:
-*
-EOF
-
-    # Prompt to disable selinux.
-    if [ ! -z ${SETENFORCE} ]; then
-        cat <<EOF
-*   # ${SETENFORCE} 0
-EOF
-    fi
-
-    cat <<EOF
-*   # for srv in ${ENABLED_SERVICES}; do ${DIR_RC_SCRIPTS}/\${srv} restart; done
-*
-EOF
-fi
-
-    if [ X"${DISTRO}" == X'GENTOO' \
-        -o X"${DISTRO}" == X'FREEBSD' \
-        -o X"${DISTRO}" == X'OPENBSD' \
-        ]; then
-        # Reboot system to enable mail related services.
-        # - FreeBSD: sendmail is binding to port '25'
-        # - Gentoo: some services may require system reboot
-        cat <<EOF
 * Please reboot your system to enable mail services.
 *
-EOF
-fi
-
-    cat <<EOF
 ********************************************************************
-
 EOF
 
     echo 'export status_cleanup="DONE"' >> ${STATUS_FILE}
