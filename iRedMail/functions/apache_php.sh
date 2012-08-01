@@ -302,9 +302,8 @@ Disallow: /awstats
 Disallow: /iredadmin
 EOF
 
-    if [ X"${DISTRO}" != X'OPENBSD' ]; then
-        add_postfix_alias ${HTTPD_USER} ${SYS_ROOT_USER}
-    fi
+    # Add alias for Apache daemon user
+    add_postfix_alias ${HTTPD_USER} ${SYS_ROOT_USER}
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable httpd.
