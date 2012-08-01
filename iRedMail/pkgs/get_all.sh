@@ -34,13 +34,12 @@ export STATUS_FILE="${ROOTDIR}/../.status"
 check_user root
 check_hostname
 
-# Where to store binary packages and source tarball.
-PKG_DIR="${ROOTDIR}/pkgs"
-MISC_DIR="${ROOTDIR}/misc"
+# Where to fetch/store binary packages and source tarball.
+export MIRROR='http://iredmail.org/yum'
+export PKG_DIR="${ROOTDIR}/pkgs"
+export MISC_DIR="${ROOTDIR}/misc"
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    export MIRROR='http://iredmail.org/yum'
-
     # Special package.
     # command: which.
     export BIN_WHICH='which'
@@ -50,8 +49,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export PKG_WGET="wget${PKG_ARCH}"
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-    export MIRROR='http://iredmail.org/apt'
-
     if [ X"${ARCH}" == X"x86_64" ]; then
         export pkg_arch='amd64'
     else
@@ -68,10 +65,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # command: dpkg-scanpackages.
     export BIN_CREATEREPO="dpkg-scanpackages"
     export PKG_CREATEREPO="dpkg-dev"
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    export MIRROR='http://iredmail.org/yum/freebsd'
-else
-    export MIRROR='http://iredmail.org/yum'
 fi
 
 # Binary packages.
