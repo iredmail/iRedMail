@@ -64,6 +64,9 @@ postfix_config_basic()
         postconf -e sender_canonical_maps=''
     fi
 
+    # Use ipv4 only
+    postconf -e inet_protocols='ipv4'
+
     # Do not set virtual_alias_domains.
     postconf -e virtual_alias_domains=''
 

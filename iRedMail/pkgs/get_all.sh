@@ -283,8 +283,9 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     create_repo_rhel
 
     # Check required commands, install related package if command doesn't exist.
-    check_pkg ${BIN_WHICH} ${PKG_WHICH} && \
-    check_pkg ${BIN_WGET} ${PKG_WGET} && \
+    check_pkg ${BIN_WHICH} ${PKG_WHICH}
+    check_pkg ${BIN_WGET} ${PKG_WGET}
+
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     ECHO_INFO "Clean metadata of zypper repositories."
     zypper clean --metadata --raw-metadata
