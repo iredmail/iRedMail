@@ -35,6 +35,10 @@ export DOVECOT_USER='dovecot'
 export DOVECOT_GROUP='dovecot'
 export DOVECOT_RC_SCRIPT_NAME='dovecot'
 
+export DOVECOT_BIN='/usr/sbin/dovecot'
+export DOVECOT_DOVEADM_BIN='/usr/bin/doveadm'
+export DOVECOT_SIEVEC='/usr/libexec/dovecot/sievec'
+
 # Dovecot running directory, required by dovecot-2.x.
 export DOVECOT_BASE_DIR='/var/run/dovecot'
 
@@ -95,6 +99,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export DOVECOT_USER='_dovecot'
     export DOVECOT_GROUP='_dovecot'
     export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
+    export DOVECOT_DOVEADM_BIN='/usr/local/bin/doveadm'
 
 fi
 
@@ -108,9 +113,6 @@ export SIEVE_LOGROTATE_FILE="${LOGROTATE_DIR}/sieve"
 export DOVECOT_SOCKET_MUX='/var/spool/postfix/dovecot-auth'
 export DOVECOT_AUTH_SOCKET_PATH="${DOVECOT_BASE_DIR}/auth-master"
 export DOVECOT_MASTER_PID="${DOVECOT_BASE_DIR}/master.pid"
-
-export DOVECOT_BIN='/usr/sbin/dovecot'
-export DOVECOT_SIEVEC='/usr/libexec/dovecot/sievec'
 
 # Dovecot plugin: Expire.
 # NOTE: dict process currently runs as root, so this file will be owned as root.
