@@ -139,7 +139,13 @@ fi
 check_status_before_run install_all || (ECHO_ERROR "Package installation error, please check the output log." && exit 255)
 
 echo -e '\n\n'
-ECHO_INFO "---- Start iRedMail Configurations ----"
+cat <<EOF
+
+********************************************************************
+* Start iRedMail Configurations
+********************************************************************
+EOF
+
 
 # Create SSL/TLS cert file.
 check_status_before_run gen_pem_key
