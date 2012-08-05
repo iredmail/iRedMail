@@ -556,8 +556,8 @@ EOF
         eval ${install_pkg} ${ALL_PKGS}
 
         if [ X"${DISTRO}" == X"SUSE" \
-            -a X"${USE_IREDADMIN}" == X'YES' \
             -a X"${DISTRO_CODENAME}" == X'asparagus' \
+            -a X"${USE_IREDADMIN}" == X'YES' \
             ]; then
             ECHO_DEBUG "Install web.py (${MISC_DIR}/web.py-*.tar.bz)."
             easy_install ${MISC_DIR}/web.py-*.tar.gz >/dev/null
