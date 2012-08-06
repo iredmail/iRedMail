@@ -348,8 +348,8 @@ EOF
     check_status_before_run cleanup_backup_scripts
     [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
 
-    # Start Postfix to deliver emails.
-    [ X"${DISTRO}" == X'GENTOO' ] && ${DIR_RC_SCRIPTS}/postfix restart >/dev/null
+    # Start Dovecot to deliver emails.
+    ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME} restart >/dev/null 2>&1
 
     # Send tip file to the mail server admin and/or first mail user.
     tip_recipient="${FIRST_USER}@${FIRST_DOMAIN}"
@@ -362,7 +362,7 @@ Subject: Details of this iRedMail installation
 EOF
 
     cat ${TIP_FILE} >> /tmp/.tips.eml
-    sendmail -t ${tip_recipient} < /tmp/.tips.eml &>/dev/null && rm -f /tmp/.tips.eml &>/dev/null
+    ${DOVECOT_DELIVER} -c ${DOVECOT_CONF} -f root@${HOSTNAME} -d ${tip_recipient} < /tmp/.tips.eml
 
     cat > /tmp/.links.eml <<EOF
 From: root@${HOSTNAME}
@@ -371,7 +371,7 @@ Subject: Useful resources for iRedMail administrator
 
 EOF
     cat ${DOC_FILE} >> /tmp/.links.eml
-    sendmail -t ${tip_recipient} < /tmp/.links.eml &>/dev/null && rm -f /tmp/.links.eml &>/dev/null
+    ${DOVECOT_DELIVER} -c ${DOVECOT_CONF} -f root@${HOSTNAME} -d ${tip_recipient} < /tmp/.links.eml
 
     # Don't execute 'cleanup_amavisd_preconfig' before sending emails.
     if [ X"${DISTRO}" == X'GENTOO' \
