@@ -378,7 +378,13 @@ EOF
     cat ${DOC_FILE} >> /tmp/.links.eml
     ${DOVECOT_DELIVER} -c ${DOVECOT_CONF} -f root@${HOSTNAME} -d ${tip_recipient} < /tmp/.links.eml
 
-    check_status_before_run cleanup_update_compile_spamassassin_rules
+    if [ X"${DISTRO}" == X'GENTOO' \
+        -o X"${DISTRO}" == X'FREEBSD' \
+        -o X"${DISTRO}" == X'OPENBSD' \
+        ]; then
+        check_status_before_run cleanup_update_compile_spamassassin_rules
+    fi
+
     check_status_before_run cleanup_update_clamav_signatures
 
     cat <<EOF
