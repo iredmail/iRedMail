@@ -20,6 +20,7 @@ iRedMail-0.8.2:
         + phpMyAdmin -> 3.5.2
         + iRedAPD -> 1.3.8
         + iRedAdmin -> 0.1.9
+        + Roundcube webmail -> 0.8.0
 
 iRedMail-0.8.1:
     * It now works on Debian wheezy. Tested with Debian wheezy alpha 1.

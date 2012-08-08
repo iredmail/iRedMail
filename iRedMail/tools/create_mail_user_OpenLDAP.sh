@@ -216,8 +216,11 @@ cn: ${USERNAME}
 sn: ${USERNAME}
 givenName: ${USERNAME}
 uid: ${USERNAME}
+shadowLastChange: 0
+amavisLocal: true
 enabledService: internal
 enabledService: doveadm
+enabledService: lib-storage
 enabledService: mail
 enabledService: pop3
 enabledService: pop3secured
@@ -235,7 +238,6 @@ enabledService: senderbcc
 enabledService: recipientbcc
 enabledService: shadowaddress
 enabledService: displayedInGlobalAddressBook
-enabledService: lib-storage
 ${LDIF_PUREFTPD_USER}
 EOF
 }

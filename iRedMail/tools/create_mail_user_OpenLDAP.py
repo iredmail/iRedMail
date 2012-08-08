@@ -179,6 +179,10 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
                                  'sieve', 'sievesecured', 'shadowaddress',
                                 'displayedInGlobalAddressBook', ]),
         ('memberOfGroup',       groups),
+        # shadowAccount integration.
+        ('shadowLastChange', ['0']),
+        # Amavisd integration.
+        ('amavisLocal', ['TRUE']),
         ]
 
     return dn, ldif
