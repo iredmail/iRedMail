@@ -201,7 +201,7 @@ cleanup_replace_mysql_config()
     echo 'export status_cleanup_replace_mysql_config="DONE"' >> ${STATUS_FILE}
 }
 
-cleanup_amavisd_preconfig()
+cleanup_update_compile_spamassassin_rules()
 {
     # Required on Gentoo and FreeBSD to start Amavisd-new.
     ECHO_INFO "Updating SpamAssassin rules (sa-update), please wait ..."
@@ -210,11 +210,16 @@ cleanup_amavisd_preconfig()
     ECHO_INFO "Compiling SpamAssassin rulesets (sa-compile), please wait ..."
     ${BIN_SA_COMPILE} &>/dev/null
 
+    echo 'export status_cleanup_update_compile_spamassassin_rules="DONE"' >> ${STATUS_FILE}
+}
+
+cleanup_update_clamav_signatures()
+{
     # Update clamav before start clamav-clamd service.
     ECHO_INFO "Updating ClamAV database (freshclam), please wait ..."
     freshclam
 
-    echo 'export status_cleanup_amavisd_preconfig="DONE"' >> ${STATUS_FILE}
+    echo 'export status_cleanup_update_clamav_signatures="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_backup_scripts()
@@ -373,13 +378,8 @@ EOF
     cat ${DOC_FILE} >> /tmp/.links.eml
     ${DOVECOT_DELIVER} -c ${DOVECOT_CONF} -f root@${HOSTNAME} -d ${tip_recipient} < /tmp/.links.eml
 
-    # Don't execute 'cleanup_amavisd_preconfig' before sending emails.
-    if [ X"${DISTRO}" == X'GENTOO' \
-        -o X"${DISTRO}" == X'FREEBSD' \
-        -o X"${DISTRO}" == X'OPENBSD' \
-        ]; then
-        check_status_before_run cleanup_amavisd_preconfig
-    fi
+    check_status_before_run cleanup_update_compile_spamassassin_rules
+    check_status_before_run cleanup_update_clamav_signatures
 
     cat <<EOF
 ********************************************************************

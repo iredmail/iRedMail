@@ -26,7 +26,7 @@ rcm_install()
         ECHO_DEBUG "Set correct permission for Roundcubemail: ${RCM_HTTPD_ROOT}."
         chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${RCM_HTTPD_ROOT}
         chown -R ${HTTPD_USER}:${HTTPD_GROUP} ${RCM_HTTPD_ROOT}/{temp,logs}
-        chmod 0000 ${RCM_HTTPD_ROOT}/{CHANGELOG,INSTALL,LICENSE,README,UPGRADING,installer,SQL}
+        chmod 0000 ${RCM_HTTPD_ROOT}/{CHANGELOG,INSTALL,LICENSE,README*,UPGRADING,installer,SQL}
     fi
 
     cd ${RCM_HTTPD_ROOT}/config/
@@ -198,6 +198,8 @@ rcm_config()
     # Allow browser-autocompletion on login form.
     # 0 - disabled, 1 - username and host only, 2 - username, host, password
     perl -pi -e 's#(.*login_autocomplete.*=)(.*)#${1} 2;#' main.inc.php
+
+    perl -pi -e 's#(.*ip_check.*=)(.*)#${1} true;#' main.inc.php
 
     # If users authentication is not case sensitive this must be enabled
     perl -pi -e 's#(.*login_lc.*=)(.*)#${1} true;#' main.inc.php
@@ -377,9 +379,6 @@ EOF
     perl -pi -e 's#(.*upload_max_filesize.*)5M#${1}10M#' ${RCM_HTTPD_ROOT}/.htaccess
     perl -pi -e 's#(.*post_max_size.*)6M#${1}12M#' ${RCM_HTTPD_ROOT}/.htaccess
 
-    ECHO_DEBUG "Patch: Display Username."
-    perl -pi -e 's#(.*id="taskbar">)#${1}\n<span style="padding-right: 3px;"><roundcube:object name="username" /></span>#' ${RCM_HTTPD_ROOT}/skins/default/includes/taskbar.html
-
     cat >> ${TIP_FILE} <<EOF
 Roundcube webmail:
     * Configuration files:
@@ -426,7 +425,7 @@ rcm_plugin_password()
     cd ${RCM_HTTPD_ROOT}/plugins/password/ && \
         cp config.inc.php.dist config.inc.php
 
-    if [ X"${BACKEND}" == X"PGSQL" ]; then
+    if [ X"${BACKEND}" == X'PGSQL' ]; then
         # Patch to escape single quote while updating password
         cd ${RCM_HTTPD_ROOT}
         patch -p0 <${PATCH_DIR}/roundcubemail/password_driver_pgsql.patch &>/dev/null
