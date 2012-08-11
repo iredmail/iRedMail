@@ -152,8 +152,9 @@ export PKG_DIALOG="dialog"
 export BIN_BZIP2='bzip2'
 export PKG_BZIP2='bzip2'
 
-# Shell: /sbin/nologin.
+# Shells
 export SHELL_NOLOGIN='/sbin/nologin'
+export SHELL_BASH='/bin/bash'
 
 # Check hardware architecture.
 arch="$(uname -m)"
@@ -316,14 +317,16 @@ elif [ X"${KERNEL_NAME}" == X"FREEBSD" ]; then
     if echo "${DISTRO_VERSION}" | grep '^7' &>/dev/null ; then
         export UNSUPPORTED_RELEASE='YES'
     fi
+
+    export SHELL_BASH='/usr/local/bin/bash'
 elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DISTRO='OPENBSD'
     export DISTRO_VERSION="$(uname -r)"
 
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/etc/rc.d'
-
     export RC_CONF_LOCAL='/etc/rc.conf.local'
+    export SHELL_BASH='/usr/local/bin/bash'
 else
     # Not support *BSD and other distrobutions yet.
     echo "Error: Your OS is not supported yet."

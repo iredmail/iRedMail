@@ -240,7 +240,7 @@ cleanup_backup_scripts()
         # Add cron job
         cat >> ${CRON_SPOOL_DIR}/root <<EOF
 # ${PROG_NAME}: Backup OpenLDAP data on 03:00 AM
-0   3   *   *   *   bash ${BACKUP_SCRIPT_OPENLDAP}
+0   3   *   *   *   ${SHELL_BASH} {${BACKUP_SCRIPT_OPENLDAP}
 EOF
 
         cat >> ${TIP_FILE} <<EOF
@@ -270,7 +270,7 @@ EOF
         # Add cron job
         cat >> ${CRON_SPOOL_DIR}/root <<EOF
 # ${PROG_NAME}: Backup MySQL databases on 03:30 AM
-30   3   *   *   *   bash ${BACKUP_SCRIPT_MYSQL}
+30   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_MYSQL}
 EOF
 
         cat >> ${TIP_FILE} <<EOF
@@ -294,7 +294,7 @@ EOF
     #   Add cron job
     #   cat >> ${CRON_SPOOL_DIR}/root <<EOF
 ## Backup on 03:30 AM
-#30   3   *   *   *   bash ${BACKUP_SCRIPT_PGSQL}
+#30   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_PGSQL}
 #EOF
     #fi
 
