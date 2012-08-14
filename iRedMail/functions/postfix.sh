@@ -531,7 +531,6 @@ postfix_config_tls()
     ECHO_DEBUG "Enable TLS/SSL support in Postfix."
 
     postconf -e smtpd_tls_security_level='may'
-    postconf -e smtpd_enforce_tls='no'
     postconf -e smtpd_tls_loglevel='0'
     postconf -e smtpd_tls_key_file="${SSL_KEY_FILE}"
     postconf -e smtpd_tls_cert_file="${SSL_CERT_FILE}"
@@ -548,7 +547,7 @@ postfix_config_tls()
 
     cat >> ${POSTFIX_FILE_MASTER_CF} <<EOF
 submission inet n       -       n       -       -       smtpd
-  -o smtpd_enforce_tls=yes
+  -o smtpd_tls_security_level=encrypt
   -o smtpd_sasl_auth_enable=yes
   -o smtpd_client_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
 #  -o content_filter=smtp-amavis:[${AMAVISD_SERVER}]:10026
