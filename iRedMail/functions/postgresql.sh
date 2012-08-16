@@ -70,7 +70,7 @@ pgsql_initialize()
     ECHO_DEBUG "Copy iRedMail SSL cert/key with strict permission."
     # SSL is enabled by default on Ubuntu.
     [ X"${DISTRO}" == X'FREEBSD' ] && \
-        perl -pi -e 's/^#(ssl.=.)off(.*)#${1}on${2}#' ${PGSQL_CONF_POSTGRESQL}
+        perl -pi -e 's/^#(ssl.=.)off(.*)/${1}on${2}/' ${PGSQL_CONF_POSTGRESQL}
 
     ECHO_DEBUG "Start PostgreSQL server"
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
