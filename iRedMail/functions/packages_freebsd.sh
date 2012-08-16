@@ -26,13 +26,17 @@ install_all()
     ENABLED_SERVICES=''     # Scripts under /usr/local/etc/rc.d/
     DISABLED_SERVICES=''    # Scripts under /usr/local/etc/rc.d/
 
+    # Extension used for backup file during in-place editing.
+    SED_EXTENSION="iredmail"
+    CMD_SED="sed -i ${SED_EXTENSION}"
+
     # Make it don't popup dialog while building ports.
     export PACKAGE_BUILDING='yes'
     export BATCH='yes'
     export WANT_OPENLDAP_VER='24'
     export WANT_MYSQL_VER='55'
     export WANT_PGSQL_VER='91'
-    export WANT_POSTFIX_VER='27'
+    export WANT_POSTFIX_VER='28'
 
     freebsd_add_make_conf 'WITHOUT_X11' 'yes'
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${WANT_OPENLDAP_VER}"
@@ -42,13 +46,18 @@ install_all()
     freebsd_add_make_conf 'APACHE_PORT' 'www/apache22'
     freebsd_add_make_conf 'WITH_SASL' 'yes'
 
-    for i in openldap${WANT_OPENLDAP_VER} mysql postgresql${WANT_PGSQL_VER} postgresql${WANT_PGSQL_VER}-contrib \
+    for p in \
+        openldap${WANT_OPENLDAP_VER} \
+        openldap${WANT_OPENLDAP_VER}-sasl-client \
+        openldap${WANT_OPENLDAP_VER}-client \
+        mysql mysql${WANT_MYSQL_VER}-client \
+        postgresql${WANT_PGSQL_VER} postgresql${WANT_PGSQL_VER}-contrib \
         m4 libiconv cyrus-sasl2 perl openslp dovecot2 policyd2 \
         ca_root_nss libssh2 curl libusb pth gnupg p5-IO-Socket-SSL \
         p5-Archive-Tar p5-Net-DNS p5-Mail-SpamAssassin p5-Authen-SASL \
         amavisd-new clamav apr python27 apache22 php5 php5-extensions \
         php5-gd roundcube postfix MySQLdb p7zip; do
-        mkdir -p /var/db/ports/${i} 2>/dev/null
+        mkdir -p /var/db/ports/${p} 2>/dev/null
     done
 
     # m4. DEPENDENCE.
@@ -64,20 +73,23 @@ EOF
 
     # Cyrus-SASL2. DEPENDENCE.
     cat > /var/db/ports/cyrus-sasl2/options <<EOF
-WITH_BDB=true
-WITHOUT_MYSQL=true
-WITHOUT_PGSQL=true
-WITHOUT_SQLITE=true
-WITH_DEV_URANDOM=true
-WITHOUT_ALWAYSTRUE=true
-WITH_KEEP_DB_OPEN=true
-WITHOUT_AUTHDAEMOND=true
-WITHOUT_LOGIN=true
-WITHOUT_PLAIN=true
-WITHOUT_CRAM=true
-WITHOUT_DIGEST=true
-WITHOUT_OTP=true
-WITHOUT_NTLM=true
+OPTIONS_FILE_SET+=BDB
+OPTIONS_FILE_UNSET+=MYSQL
+OPTIONS_FILE_UNSET+=PGSQL
+OPTIONS_FILE_UNSET+=SQLITE
+OPTIONS_FILE_UNSET+=SQLITE3
+OPTIONS_FILE_UNSET+=ALWAYSTRUE
+OPTIONS_FILE_UNSET+=AUTHDAEMOND
+OPTIONS_FILE_SET+=DEV_URANDOM
+OPTIONS_FILE_SET+=KEEP_DB_OPEN
+OPTIONS_FILE_UNSET+=OBSOLETE_CRAM_ATTR
+OPTIONS_FILE_UNSET+=CRAM
+OPTIONS_FILE_UNSET+=DIGEST
+OPTIONS_FILE_UNSET+=LOGIN
+OPTIONS_FILE_UNSET+=NTLM
+OPTIONS_FILE_UNSET+=OTP
+OPTIONS_FILE_UNSET+=PLAIN
+OPTIONS_FILE_UNSET+=SCRAM
 EOF
 
     # Perl 5.8. REQUIRED.
@@ -95,171 +107,208 @@ EOF
 
     # OpenSLP. DEPENDENCE.
     cat > /var/db/ports/openslp/options <<EOF
-WITH_SLP_SECURITY=true
-WITH_ASYNC_API=true
+OPTIONS_FILE_SET+=SLP_SECURITY
+OPTIONS_FILE_SET+=ASYNC_API
 EOF
 
     # LDAP/MySQL/PGSQL client libraries and tools
     #ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-client databases/mysql${WANT_MYSQL_VER}-client databases/postgresql${WANT_PGSQL_VER}-client"
 
     # OpenLDAP v2.4. REQUIRED for LDAP backend.
+    cat > /var/db/ports/openldap${WANT_OPENLDAP_VER}/options <<EOF
+OPTIONS_FILE_UNSET+=ACCESSLOG
+OPTIONS_FILE_UNSET+=ACI
+OPTIONS_FILE_UNSET+=AUDITLOG
+OPTIONS_FILE_SET+=BDB
+OPTIONS_FILE_UNSET+=COLLECT
+OPTIONS_FILE_UNSET+=CONSTRAINT
+OPTIONS_FILE_UNSET+=DDS
+OPTIONS_FILE_UNSET+=DEREF
+OPTIONS_FILE_UNSET+=DNSSRV
+OPTIONS_FILE_UNSET+=DYNACL
+OPTIONS_FILE_SET+=DYNAMIC_BACKENDS
+OPTIONS_FILE_UNSET+=DYNGROUP
+OPTIONS_FILE_UNSET+=DYNLIST
+OPTIONS_FILE_UNSET+=FETCH
+OPTIONS_FILE_UNSET+=MDB
+OPTIONS_FILE_UNSET+=MEMBEROF
+OPTIONS_FILE_UNSET+=ODBC
+OPTIONS_FILE_UNSET+=PASSWD
+OPTIONS_FILE_UNSET+=PERL
+OPTIONS_FILE_UNSET+=PPOLICY
+OPTIONS_FILE_UNSET+=PROXYCACHE
+OPTIONS_FILE_UNSET+=REFINT
+OPTIONS_FILE_UNSET+=RELAY
+OPTIONS_FILE_UNSET+=RETCODE
+OPTIONS_FILE_UNSET+=RLOOKUPS
+OPTIONS_FILE_UNSET+=RWM
+OPTIONS_FILE_SET+=SASL
+OPTIONS_FILE_SET+=SEQMOD
+OPTIONS_FILE_UNSET+=SHELL
+OPTIONS_FILE_UNSET+=SLAPI
+OPTIONS_FILE_UNSET+=SLP
+OPTIONS_FILE_UNSET+=SMBPWD
+OPTIONS_FILE_UNSET+=SOCK
+OPTIONS_FILE_SET+=SSSVLV
+OPTIONS_FILE_SET+=SYNCPROV
+OPTIONS_FILE_SET+=TCP_WRAPPERS
+OPTIONS_FILE_UNSET+=TRANSLUCENT
+OPTIONS_FILE_UNSET+=UNIQUE
+OPTIONS_FILE_UNSET+=VALSORT
+EOF
+
+    cat > /var/db/ports/openldap${WANT_OPENLDAP_VER}-client/options <<EOF
+OPTIONS_FILE_UNSET+=FETCH
+OPTIONS_FILE_SET+=SASL
+EOF
+
+    cat > /var/db/ports/openldap${WANT_OPENLDAP_VER}-sasl-client/options <<EOF
+OPTIONS_FILE_UNSET+=FETCH
+OPTIONS_FILE_SET+=SASL
+EOF
+
+    # MySQL server. Required in both backend OpenLDAP and MySQL.
+    # Server
+    cat > /var/db/ports/mysql/options <<EOF
+OPTIONS_FILE_SET+=OPENSSL
+OPTIONS_FILE_UNSET+=FASTMTX
+EOF
+
+    # mysql client
+    cat > /var/db/ports/mysql${WANT_MYSQL_VER}-client/options <<EOF
+OPTIONS_FILE_SET+=OPENSSL
+OPTIONS_FILE_UNSET+=FASTMTX
+EOF
+
+    # PostgreSQL
+    cat > /var/db/ports/postgresql${WANT_PGSQL_VER}/options <<EOF
+OPTIONS_FILE_SET+=NLS
+OPTIONS_FILE_UNSET+=DTRACE
+OPTIONS_FILE_UNSET+=PAM
+OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_UNSET+=MIT_KRB5
+OPTIONS_FILE_UNSET+=HEIMDAL_KRB5
+OPTIONS_FILE_UNSET+=GSSAPI
+OPTIONS_FILE_UNSET+=OPTIMIZED_CFLAGS
+OPTIONS_FILE_SET+=XML
+OPTIONS_FILE_SET+=TZDATA
+OPTIONS_FILE_UNSET+=DEBUG
+OPTIONS_FILE_SET+=ICU
+OPTIONS_FILE_SET+=INTDATE
+OPTIONS_FILE_SET+=SSL
+EOF
+
+    cat > /var/db/ports/postgresql${WANT_PGSQL_VER}-contrib/options <<EOF
+OPTIONS_FILE_UNSET+=OSSP_UUID
+EOF
+
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        cat > /var/db/ports/openldap${WANT_OPENLDAP_VER}/options <<EOF
-WITH_SASL=true
-WITH_FETCH=true
-WITH_DYNACL=true
-WITH_ACI=true
-WITH_BDB=true
-WITH_DNSSRV=true
-WITH_PASSWD=true
-WITH_PERL=true
-WITH_RELAY=true
-WITHOUT_SHELL=true
-WITH_SOCK=true
-WITHOUT_ODBC=true
-WITH_RLOOKUPS=true
-WITH_SLP=true
-WITH_SLAPI=true
-WITH_TCP_WRAPPERS=true
-WITH_ACCESSLOG=true
-WITH_AUDITLOG=true
-WITH_COLLECT=true
-WITH_CONSTRAINT=true
-WITH_DDS=true
-WITH_DEREF=true
-WITH_DYNGROUP=true
-WITH_DYNLIST=true
-WITH_MEMBEROF=true
-WITH_PPOLICY=true
-WITH_PROXYCACHE=true
-WITH_REFINT=true
-WITH_RETCODE=true
-WITH_RWM=true
-WITH_SEQMOD=true
-WITH_SSSVLV=true
-WITH_SYNCPROV=true
-WITH_TRANSLUCENT=true
-WITH_UNIQUE=true
-WITH_VALSORT=true
-WITH_SMBPWD=true
-WITH_DYNAMIC_BACKENDS=true
-EOF
-
-        ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-server"
-        ENABLED_SERVICES="${ENABLED_SERVICES} slapd"
-
+        ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-server databases/mysql${WANT_MYSQL_VER}-server"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${LDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ALL_PORTS="${ALL_PORTS} databases/mysql${WANT_MYSQL_VER}-server"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cat > /var/db/ports/postgresql${WANT_PGSQL_VER}/options <<EOF
-WITH_NLS=true
-WITHOUT_DTRACE=true
-WITHOUT_PAM=true
-WITHOUT_LDAP=true
-WITHOUT_MIT_KRB5=true
-WITHOUT_HEIMDAL_KRB5=true
-WITHOUT_GSSAPI=true
-WITHOUT_OPTIMIZED_CFLAGS=true
-WITH_XML=true
-WITH_TZDATA=true
-WITHOUT_DEBUG=true
-WITH_ICU=true
-WITH_INTDATE=true
-WITH_SSL=true
-EOF
-
-        cat > /var/db/ports/postgresql${WANT_PGSQL_VER}-contrib/options <<EOF
-WITHOUT_OSSP_UUID=true
-EOF
-
         ALL_PORTS="${ALL_PORTS} databases/postgresql${WANT_PGSQL_VER}-server databases/postgresql${WANT_PGSQL_VER}-contrib"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
     fi
 
-    # MySQL server. Required in both backend OpenLDAP and MySQL.
-    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-        cat > /var/db/ports/mysql/options <<EOF
-WITH_OPENSSL=true
-WITHOUT_FASTMTX=true
-EOF
-        ALL_PORTS="${ALL_PORTS} databases/mysql${WANT_MYSQL_VER}-server"
-
-        ENABLED_SERVICES="${ENABLED_SERVICES} mysql-server"
-    fi
-
     # Dovecot v2.0.x. REQUIRED.
     cat > /var/db/ports/dovecot2/options <<EOF
-WITH_KQUEUE=true
-WITH_SSL=true
-WITHOUT_GSSAPI=true
-WITHOUT_VPOPMAIL=true
-WITH_LDAP=true
-WITH_PGSQL=true
-WITH_MYSQL=true
-WITHOUT_SQLITE=true
+OPTIONS_FILE_SET+=DOCS
+OPTIONS_FILE_SET+=EXAMPLES
+OPTIONS_FILE_UNSET+=GSSAPI
+OPTIONS_FILE_SET+=KQUEUE
+OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_SET+=LIBWRAP
+OPTIONS_FILE_UNSET+=MYSQL
+OPTIONS_FILE_UNSET+=PGSQL
+OPTIONS_FILE_UNSET+=SOLR
+OPTIONS_FILE_UNSET+=SQLITE
+OPTIONS_FILE_SET+=SSL
+OPTIONS_FILE_UNSET+=VPOPMAIL
 EOF
 
     # Note: dovecot-sieve will install dovecot first.
     ALL_PORTS="${ALL_PORTS} mail/dovecot2 mail/dovecot2-pigeonhole"
     ENABLED_SERVICES="${ENABLED_SERVICES} dovecot"
 
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/dovecot2/options
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/dovecot2/options
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/dovecot2/options
+    fi
+    rm -f /var/db/ports/dovecot2/options${SED_EXTENSION} &>/dev/null
+
     # ca_root_nss. DEPENDENCE.
     cat >/var/db/ports/ca_root_nss/options <<EOF
-WITHOUT_ETCSYMLINK=true
+OPTIONS_FILE_SET+=ETCSYMLINK
 EOF
 
     # libssh2. DEPENDENCE.
     cat > /var/db/ports/libssh2/options <<EOF
-WITHOUT_GCRYPT=true
+OPTIONS_FILE_UNSET+=GCRYPT
+OPTIONS_FILE_UNSET+=TRACE
+OPTIONS_FILE_SET+=ZLIB
 EOF
 
     # Curl. DEPENDENCE.
     cat > /var/db/ports/curl/options <<EOF
-WITHOUT_CARES=true
-WITHOUT_CURL_DEBUG=true
-WITHOUT_GNUTLS=true
-WITH_IPV6=true
-WITHOUT_KERBEROS4=true
-WITHOUT_LDAP=true
-WITHOUT_LDAPS=true
-WITH_LIBIDN=true
-WITH_LIBSSH2=true
-WITH_NTLM=true
-WITH_OPENSSL=true
-WITH_PROXY=true
-WITHOUT_TRACKMEMORY=true
+OPTIONS_FILE_UNSET+=CARES
+OPTIONS_FILE_UNSET+=CURL_DEBUG
+OPTIONS_FILE_UNSET+=GNUTLS
+OPTIONS_FILE_SET+=IPV6
+OPTIONS_FILE_UNSET+=KERBEROS4
+OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_UNSET+=LDAPS
+OPTIONS_FILE_SET+=LIBIDN
+OPTIONS_FILE_SET+=LIBSSH2
+OPTIONS_FILE_UNSET+=NTLM
+OPTIONS_FILE_SET+=OPENSSL
+OPTIONS_FILE_SET+=CA_BUNDLE
+OPTIONS_FILE_SET+=PROXY
+OPTIONS_FILE_UNSET+=RTMP
+OPTIONS_FILE_UNSET+=TRACKMEMORY
 EOF
 
     # libusb. DEPENDENCE.
     cat > /var/db/ports/libusb/options <<EOF
-WITHOUT_SGML=true
+OPTIONS_FILE_UNSET+=SGML
 EOF
 
     # pth. DEPENDENCE.
     cat > /var/db/ports/pth/options <<EOF
-WITH_OPTIMIZED_CFLAGS=true
+OPTIONS_FILE_SET+=OPTIMIZED_CFLAGS
 EOF
 
     # GnuPG. DEPENDENCE.
     cat > /var/db/ports/gnupg/options <<EOF
-WITH_LDAP=true
-WITH_SCDAEMON=true
-WITH_CURL=true
-WITH_GPGSM=true
-WITH_CAMELLIA=true
-WITH_KDNS=true
-WITH_NLS=true
+OPTIONS_FILE_UNSET+=PINENTRY
+OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_SET+=SCDAEMON
+OPTIONS_FILE_SET+=CURL
+OPTIONS_FILE_UNSET+=GPGSM
+OPTIONS_FILE_SET+=KDNS
+OPTIONS_FILE_UNSET+=STD_SOCKET
+OPTIONS_FILE_SET+=NLS
 EOF
 
     # p5-IO-Socket-SSL. DEPENDENCE.
     cat > /var/db/ports/p5-IO-Socket-SSL/options <<EOF
-WITH_IDN=true
+OPTIONS_FILE_SET+=EXAMPLES
+OPTIONS_FILE_SET+=IDN
+OPTIONS_FILE_SET+=IPV6
 EOF
 
     cat > /var/db/ports/p5-Archive-Tar/options <<EOF
-WITH_TEXT_DIFF=true
+OPTIONS_FILE_SET+=TEXTDIFF
 EOF
 
     cat > /var/db/ports/p5-Net-DNS/options <<EOF
-WITH_IPV6=true
+OPTIONS_FILE_SET+=IPV6
+OPTIONS_FILE_SET+=IDN
 EOF
 
     # SpamAssassin. REQUIRED.
@@ -270,97 +319,120 @@ WITH_SACOMPILE=true
 WITH_DKIM=true
 WITH_SSL=true
 WITH_GNUPG=true
-WITH_MYSQL=true
+WITHOUT_MYSQL=true
 WITHOUT_PGSQL=true
 WITH_RAZOR=true
 WITH_SPF_QUERY=true
 WITH_RELAY_COUNTRY=true
 EOF
 
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        ${CMD_SED} -e 's#WITHOUT_MYSQL=true#WITH_MYSQL=true#' /var/db/ports/p5-Mail-SpamAssassin/options
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ${CMD_SED} -e 's#WITHOUT_PGSQL=true#WITH_PGSQL=true#' /var/db/ports/p5-Mail-SpamAssassin/options
+    fi
+    rm -f /var/db/ports/p5-Mail-SpamAssassin/options${SED_EXTENSION} &>/dev/null
+
     ALL_PORTS="${ALL_PORTS} devel/pth security/gnupg dns/p5-Net-DNS mail/p5-Mail-SpamAssassin"
     DISABLED_SERVICES="${DISABLED_SERVICES} spamd"
 
     cat > /var/db/ports/p5-Authen-SASL/options <<EOF
-WITH_KERBEROS=true
+OPTIONS_FILE_SET+=KERBEROS
 EOF
 
     # AlterMIME. REQUIRED.
     ALL_PORTS="${ALL_PORTS} security/p5-Authen-SASL mail/altermime"
 
     cat > /var/db/ports/p7zip/options <<EOF
-WITH_MINIMAL=true
+OPTIONS_FILE_SET+=MINIMAL
+OPTIONS_FILE_SET+=MODULES
 EOF
 
     # Amavisd-new. REQUIRED.
     cat > /var/db/ports/amavisd-new/options <<EOF
-WITH_IPV6=true
-WITH_BDB=true
-WITH_SNMP=true
-WITHOUT_SQLITE=true
-WITH_MYSQL=true
-WITHOUT_PGSQL=true
-WITH_LDAP=true
-WITH_SASL=true
-WITHOUT_MILTER=true
-WITH_SPAMASSASSIN=true
-WITH_P0F=true
-WITH_ALTERMIME=true
-WITH_FILE=true
-WITHOUT_RAR=true
-WITH_UNRAR=true
-WITH_ARJ=true
-WITH_UNARJ=true
-WITH_LHA=true
-WITH_ARC=true
-WITH_NOMARCH=true
-WITH_CAB=true
-WITH_RPM=true
-WITH_ZOO=true
-WITH_UNZOO=true
-WITH_LZOP=true
-WITH_FREEZE=true
-WITH_P7ZIP=true
-WITH_MSWORD=true
-WITH_TNEF=true
+OPTIONS_FILE_SET+=IPV6
+OPTIONS_FILE_SET+=BDB
+OPTIONS_FILE_SET+=SNMP
+OPTIONS_FILE_UNSET+=SQLITE
+OPTIONS_FILE_UNSET+=MYSQL
+OPTIONS_FILE_UNSET+=PGSQL
+OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_SET+=SASL
+OPTIONS_FILE_SET+=SPAMASSASSIN
+OPTIONS_FILE_SET+=P0F
+OPTIONS_FILE_SET+=ALTERMIME
+OPTIONS_FILE_SET+=FILE
+OPTIONS_FILE_UNSET+=RAR
+OPTIONS_FILE_SET+=UNRAR
+OPTIONS_FILE_SET+=ARJ
+OPTIONS_FILE_SET+=UNARJ
+OPTIONS_FILE_SET+=LHA
+OPTIONS_FILE_SET+=ARC
+OPTIONS_FILE_SET+=NOMARCH
+OPTIONS_FILE_SET+=CAB
+OPTIONS_FILE_SET+=RPM
+OPTIONS_FILE_SET+=ZOO
+OPTIONS_FILE_SET+=UNZOO
+OPTIONS_FILE_SET+=LZOP
+OPTIONS_FILE_SET+=FREEZE
+OPTIONS_FILE_SET+=P7ZIP
+OPTIONS_FILE_SET+=MSWORD
+OPTIONS_FILE_SET+=TNEF
 EOF
 
-    # Disable RAR support on amd64 since it requires 32-bit libraries
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/amavisd-new/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/amavisd-new/options
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/amavisd-new/options
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/amavisd-new/options
+    fi
+    rm -f /var/db/ports/amavisd-new/options${SED_EXTENSION} &>/dev/null
+
+    # Enable RAR support on amd64 since it requires 32-bit libraries
     # installed under /usr/lib32.
-    if [ X"${ARCH}" == X"${i386}" ]; then
-        cat >> /var/db/ports/amavisd-new/options <<EOF
-WITH_RAR=true
-EOF
-    else
-        cat >> /var/db/ports/amavisd-new/options <<EOF
-WITHOUT_RAR=true
-EOF
+    if [ X"${ARCH}" != X"${i386}" ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=RAR#OPTIONS_FILE_SET+=RAR#' /var/db/ports/amavisd-new/options
+        rm -f /var/db/ports/amavisd-new/options${SED_EXTENSION} &>/dev/null
     fi
 
     ALL_PORTS="${ALL_PORTS} security/amavisd-new"
-    ENABLED_SERVICES="${ENABLED_SERVICES} amavisd"
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME}"
 
     # Postfix. REQUIRED.
     cat > /var/db/ports/postfix/options <<EOF
-WITH_PCRE=true
-WITHOUT_SASL2=true
-WITHOUT_DOVECOT=true
-WITH_DOVECOT2=true
-WITHOUT_SASLKRB5=true
-WITHOUT_SASLKMIT=true
-WITH_TLS=true
-WITH_BDB=true
-WITH_MYSQL=true
-WITH_PGSQL=true
-WITHOUT_SQLITE=true
-WITH_OPENLDAP=true
-WITH_LDAP_SASL=true
-WITH_CDB=true
-WITHOUT_NIS=true
-WITHOUT_VDA=true
-WITHOUT_TEST=true
-WITHOUT_SPF=true
-WITHOUT_INST_BASE=true
+OPTIONS_FILE_SET+=PCRE
+OPTIONS_FILE_SET+=SASL2
+OPTIONS_FILE_UNSET+=DOVECOT
+OPTIONS_FILE_SET+=DOVECOT2
+OPTIONS_FILE_UNSET+=SASLKRB5
+OPTIONS_FILE_UNSET+=SASLKMIT
+OPTIONS_FILE_SET+=TLS
+OPTIONS_FILE_SET+=BDB
+OPTIONS_FILE_UNSET+=MYSQL
+OPTIONS_FILE_UNSET+=PGSQL
+OPTIONS_FILE_UNSET+=SQLITE
+OPTIONS_FILE_UNSET+=OPENLDAP
+OPTIONS_FILE_UNSET+=LDAP_SASL
+OPTIONS_FILE_SET+=CDB
+OPTIONS_FILE_UNSET+=NIS
+OPTIONS_FILE_UNSET+=VDA
+OPTIONS_FILE_UNSET+=TEST
+OPTIONS_FILE_UNSET+=SPF
+OPTIONS_FILE_UNSET+=INST_BASE
 EOF
+
+    # Enable ldap/mysql/pgsql support in Postfix
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=OPENLDAP#OPTIONS_FILE_SET+=OPENLDAP#' /var/db/ports/postfix/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP_SASL#OPTIONS_FILE_SET+=LDAP_SASL#' /var/db/ports/postfix/options
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/postfix/options
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/postfix/options
+    fi
+    rm -f /var/db/ports/postfix/options${SED_EXTENSION} &>/dev/null
 
     ALL_PORTS="${ALL_PORTS} devel/pcre mail/postfix${WANT_POSTFIX_VER}"
     ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
@@ -368,128 +440,151 @@ EOF
 
     # Apr. DEPENDENCE.
     cat > /var/db/ports/apr/options <<EOF
-WITH_THREADS=true
-WITH_IPV6=true
-WITH_GDBM=true
-WITH_BDB=true
-WITHOUT_NDBM=true
-WITH_LDAP=true
-WITH_MYSQL=true
-WITHOUT_PGSQL=true
+OPTIONS_FILE_SET+=THREADS
+OPTIONS_FILE_SET+=IPV6
+OPTIONS_FILE_SET+=DEVRANDOM
+OPTIONS_FILE_SET+=BDB
+OPTIONS_FILE_SET+=GDBM
+OPTIONS_FILE_UNSET+=MYSQL
+OPTIONS_FILE_UNSET+=NDBM
+OPTIONS_FILE_UNSET+=PGSQL
+OPTIONS_FILE_UNSET+=SQLITE
+OPTIONS_FILE_UNSET+=DEVELOPER_ONLY
 EOF
+
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/apr/options
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/apr/options
+    fi
+    rm -f /var/db/ports/apr/options${SED_EXTENSION} &>/dev/null
 
     # Python v2.7
     cat > /var/db/ports/python27/options <<EOF
-WITH_THREADS=true
-WITHOUT_SEM=true
-WITHOUT_PTH=true
-WITH_UCS4=true
-WITH_PYMALLOC=true
-WITH_IPV6=true
-WITH_FPECTL=true
+OPTIONS_FILE_SET+=EXAMPLES
+OPTIONS_FILE_SET+=FPECTL
+OPTIONS_FILE_SET+=IPV6
+OPTIONS_FILE_SET+=NLS
+OPTIONS_FILE_UNSET+=PTH
+OPTIONS_FILE_SET+=PYMALLOC
+OPTIONS_FILE_UNSET+=SEM
+OPTIONS_FILE_SET+=THREADS
+OPTIONS_FILE_UNSET+=UCS2
+OPTIONS_FILE_SET+=UCS4
 EOF
 
     # Apache v2.2.x. REQUIRED.
     cat > /var/db/ports/apache22/options <<EOF
-WITH_APR_FROM_PORTS=true
-WITH_THREADS=true
-WITH_MYSQL=true
-WITHOUT_PGSQL=true
-WITHOUT_SQLITE=true
-WITH_IPV6=true
-WITH_BDB=true
-WITH_AUTH_BASIC=true
-WITH_AUTH_DIGEST=true
-WITH_AUTHN_FILE=true
-WITH_AUTHN_DBD=true
-WITH_AUTHN_DBM=true
-WITH_AUTHN_ANON=true
-WITH_AUTHN_DEFAULT=true
-WITH_AUTHN_ALIAS=true
-WITH_AUTHZ_HOST=true
-WITH_AUTHZ_GROUPFILE=true
-WITH_AUTHZ_USER=true
-WITH_AUTHZ_DBM=true
-WITH_AUTHZ_OWNER=true
-WITH_AUTHZ_DEFAULT=true
-WITH_CACHE=true
-WITH_DISK_CACHE=true
-WITH_FILE_CACHE=true
-WITH_MEM_CACHE=true
-WITH_DAV=true
-WITH_DAV_FS=true
-WITH_BUCKETEER=true
-WITH_CASE_FILTER=true
-WITH_CASE_FILTER_IN=true
-WITH_EXT_FILTER=true
-WITH_LOG_FORENSIC=true
-WITH_OPTIONAL_HOOK_EXPORT=true
-WITH_OPTIONAL_HOOK_IMPORT=true
-WITH_OPTIONAL_FN_IMPORT=true
-WITH_OPTIONAL_FN_EXPORT=true
-WITH_LDAP=true
-WITH_AUTHNZ_LDAP=true
-WITH_ACTIONS=true
-WITH_ALIAS=true
-WITH_ASIS=true
-WITH_AUTOINDEX=true
-WITH_CERN_META=true
-WITH_CGI=true
-WITH_CHARSET_LITE=true
-WITH_DBD=true
-WITH_DEFLATE=true
-WITH_DIR=true
-WITH_DUMPIO=true
-WITH_ENV=true
-WITH_EXPIRES=true
-WITH_HEADERS=true
-WITH_IMAGEMAP=true
-WITH_INCLUDE=true
-WITH_INFO=true
-WITH_LOG_CONFIG=true
-WITH_LOGIO=true
-WITH_MIME=true
-WITH_MIME_MAGIC=true
-WITH_NEGOTIATION=true
-WITH_REWRITE=true
-WITH_SETENVIF=true
-WITH_SPELING=true
-WITH_STATUS=true
-WITH_UNIQUE_ID=true
-WITH_USERDIR=true
-WITH_USERTRACK=true
-WITH_VHOST_ALIAS=true
-WITH_FILTER=true
-WITH_VERSION=true
-WITH_PROXY=true
-WITH_PROXY_CONNECT=true
-WITH_PATCH_PROXY_CONNECT=true
-WITH_PROXY_FTP=true
-WITH_PROXY_HTTP=true
-WITH_PROXY_AJP=true
-WITH_PROXY_BALANCER=true
-WITH_SSL=true
-WITH_SUEXEC=true
-WITH_CGID=true
+OPTIONS_FILE_SET+=THREADS
+OPTIONS_FILE_UNSET+=MYSQL
+OPTIONS_FILE_UNSET+=PGSQL
+OPTIONS_FILE_UNSET+=SQLITE
+OPTIONS_FILE_SET+=IPV6
+OPTIONS_FILE_SET+=BDB
+OPTIONS_FILE_SET+=AUTH_BASIC
+OPTIONS_FILE_SET+=AUTH_DIGEST
+OPTIONS_FILE_SET+=AUTHN_FILE
+OPTIONS_FILE_SET+=AUTHN_DBD
+OPTIONS_FILE_SET+=AUTHN_DBM
+OPTIONS_FILE_SET+=AUTHN_ANON
+OPTIONS_FILE_SET+=AUTHN_DEFAULT
+OPTIONS_FILE_SET+=AUTHN_ALIAS
+OPTIONS_FILE_SET+=AUTHZ_HOST
+OPTIONS_FILE_SET+=AUTHZ_GROUPFILE
+OPTIONS_FILE_SET+=AUTHZ_USER
+OPTIONS_FILE_SET+=AUTHZ_DBM
+OPTIONS_FILE_SET+=AUTHZ_OWNER
+OPTIONS_FILE_SET+=AUTHZ_DEFAULT
+OPTIONS_FILE_SET+=CACHE
+OPTIONS_FILE_SET+=DISK_CACHE
+OPTIONS_FILE_SET+=FILE_CACHE
+OPTIONS_FILE_SET+=MEM_CACHE
+OPTIONS_FILE_SET+=DAV
+OPTIONS_FILE_SET+=DAV_FS
+OPTIONS_FILE_SET+=BUCKETEER
+OPTIONS_FILE_SET+=CASE_FILTER
+OPTIONS_FILE_SET+=CASE_FILTER_IN
+OPTIONS_FILE_SET+=EXT_FILTER
+OPTIONS_FILE_SET+=LOG_FORENSIC
+OPTIONS_FILE_SET+=OPTIONAL_HOOK_EXPORT
+OPTIONS_FILE_SET+=OPTIONAL_HOOK_IMPORT
+OPTIONS_FILE_SET+=OPTIONAL_FN_IMPORT
+OPTIONS_FILE_SET+=OPTIONAL_FN_EXPORT
+OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_UNSET+=AUTHNZ_LDAP
+OPTIONS_FILE_SET+=ACTIONS
+OPTIONS_FILE_SET+=ALIAS
+OPTIONS_FILE_SET+=ASIS
+OPTIONS_FILE_SET+=AUTOINDEX
+OPTIONS_FILE_SET+=CERN_META
+OPTIONS_FILE_SET+=CGI
+OPTIONS_FILE_SET+=CHARSET_LITE
+OPTIONS_FILE_SET+=DBD
+OPTIONS_FILE_SET+=DEFLATE
+OPTIONS_FILE_SET+=DIR
+OPTIONS_FILE_SET+=DUMPIO
+OPTIONS_FILE_SET+=ENV
+OPTIONS_FILE_SET+=EXPIRES
+OPTIONS_FILE_SET+=HEADERS
+OPTIONS_FILE_SET+=IMAGEMAP
+OPTIONS_FILE_SET+=INCLUDE
+OPTIONS_FILE_SET+=INFO
+OPTIONS_FILE_SET+=LOG_CONFIG
+OPTIONS_FILE_SET+=LOGIO
+OPTIONS_FILE_SET+=MIME
+OPTIONS_FILE_SET+=MIME_MAGIC
+OPTIONS_FILE_SET+=NEGOTIATION
+OPTIONS_FILE_SET+=REWRITE
+OPTIONS_FILE_SET+=SETENVIF
+OPTIONS_FILE_SET+=SPELING
+OPTIONS_FILE_SET+=STATUS
+OPTIONS_FILE_SET+=UNIQUE_ID
+OPTIONS_FILE_SET+=USERDIR
+OPTIONS_FILE_SET+=USERTRACK
+OPTIONS_FILE_SET+=VHOST_ALIAS
+OPTIONS_FILE_SET+=FILTER
+OPTIONS_FILE_SET+=SUBSTITUTE
+OPTIONS_FILE_SET+=VERSION
+OPTIONS_FILE_SET+=PROXY
+OPTIONS_FILE_SET+=PROXY_CONNECT
+OPTIONS_FILE_SET+=PROXY_FTP
+OPTIONS_FILE_SET+=PROXY_HTTP
+OPTIONS_FILE_SET+=PROXY_AJP
+OPTIONS_FILE_SET+=PROXY_BALANCER
+OPTIONS_FILE_UNSET+=PROXY_SCGI
+OPTIONS_FILE_SET+=SSL
+OPTIONS_FILE_SET+=SUEXEC
+OPTIONS_FILE_UNSET+=SUEXEC_RSRCLIMIT
+OPTIONS_FILE_SET+=REQTIMEOUT
+OPTIONS_FILE_SET+=CGID
 EOF
+
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/apache22/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=AUTHNZ_LDAP#OPTIONS_FILE_SET+=AUTHNZ_LDAP#' /var/db/ports/apache22/options
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/apache22/options
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/apache22/options
+    fi
+    rm -f /var/db/ports/apache22/options${SED_EXTENSION} &>/dev/null
 
     ALL_PORTS="${ALL_PORTS} www/apache22"
     ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
 
     # PHP5. REQUIRED.
     cat > /var/db/ports/php5/options <<EOF
-WITH_CLI=true
-WITH_CGI=true
-WITH_APACHE=true
-WITHOUT_DEBUG=true
-WITH_SUHOSIN=true
-WITH_MULTIBYTE=true
-WITH_IPV6=true
-WITH_MAILHEAD=true
-WITH_REDIRECT=true
-WITH_DISCARD=true
-WITH_FASTCGI=true
-WITH_PATHINFO=true
+OPTIONS_FILE_SET+=CLI
+OPTIONS_FILE_SET+=CGI
+OPTIONS_FILE_SET+=FPM
+OPTIONS_FILE_SET+=APACHE
+OPTIONS_FILE_UNSET+=AP2FILTER
+OPTIONS_FILE_UNSET+=EMBED
+OPTIONS_FILE_UNSET+=DEBUG
+OPTIONS_FILE_UNSET+=DTRACE
+OPTIONS_FILE_SET+=IPV6
+OPTIONS_FILE_SET+=MAILHEAD
+OPTIONS_FILE_SET+=LINKTHR
 EOF
 
     ALL_PORTS="${ALL_PORTS} lang/php5"
@@ -501,82 +596,97 @@ EOF
     #    install
 
     cat > /var/db/ports/php5-extensions/options <<EOF
-WITH_BCMATH=true
-WITH_BZ2=true
-WITHOUT_CALENDAR=true
-WITH_CTYPE=true
-WITH_CURL=true
-WITHOUT_DBA=true
-WITHOUT_DBASE=true
-WITH_DOM=true
-WITHOUT_EXIF=true
-WITH_FILEINFO=true
-WITH_FILTER=true
-WITHOUT_FRIBIDI=true
-WITH_FTP=true
-WITH_GD=true
-WITH_GETTEXT=true
-WITHOUT_GMP=true
-WITH_HASH=true
-WITH_ICONV=true
-WITH_IMAP=true
-WITHOUT_INTERBASE=true
-WITH_JSON=true
-WITH_LDAP=true
-WITH_MBSTRING=true
-WITH_MCRYPT=true
-WITH_MHASH=true
-WITH_MING=true
-WITHOUT_MSSQL=true
-WITH_MYSQL=true
-WITH_MYSQLI=true
-WITHOUT_NCURSES=true
-WITHOUT_ODBC=true
-WITH_OPENSSL=true
-WITHOUT_PCNTL=true
-WITH_PCRE=true
-WITHOUT_PDF=true
-WITH_PDO=true
-WITH_PDO_SQLITE=true
-WITH_PGSQL=true
-WITH_POSIX=true
-WITH_PSPELL=true
-WITHOUT_READLINE=true
-WITH_RECODE=true
-WITH_SESSION=true
-WITHOUT_SHMOP=true
-WITH_SIMPLEXML=true
-WITH_SNMP=true
-WITHOUT_SOAP=true
-WITH_SOCKETS=true
-WITH_SPL=true
-WITH_SQLITE=true
-WITHOUT_SYBASE_CT=true
-WITHOUT_SYSVMSG=true
-WITHOUT_SYSVSEM=true
-WITHOUT_SYSVSHM=true
-WITHOUT_TIDY=true
-WITH_TOKENIZER=true
-WITHOUT_WDDX=true
-WITH_XML=true
-WITH_XMLREADER=true
-WITH_XMLRPC=true
-WITH_XMLWRITER=true
-WITH_XSL=true
-WITHOUT_YAZ=true
-WITH_ZIP=true
-WITH_ZLIB=true
+OPTIONS_FILE_SET+=BCMATH
+OPTIONS_FILE_SET+=BZ2
+OPTIONS_FILE_SET+=CALENDAR
+OPTIONS_FILE_SET+=CTYPE
+OPTIONS_FILE_SET+=CURL
+OPTIONS_FILE_UNSET+=DBA
+OPTIONS_FILE_SET+=DOM
+OPTIONS_FILE_SET+=EXIF
+OPTIONS_FILE_SET+=FILEINFO
+OPTIONS_FILE_SET+=FILTER
+OPTIONS_FILE_SET+=FTP
+OPTIONS_FILE_SET+=GD
+OPTIONS_FILE_SET+=GETTEXT
+OPTIONS_FILE_UNSET+=GMP
+OPTIONS_FILE_SET+=HASH
+OPTIONS_FILE_SET+=ICONV
+OPTIONS_FILE_SET+=IMAP
+OPTIONS_FILE_UNSET+=INTERBASE
+OPTIONS_FILE_SET+=JSON
+OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_SET+=MBSTRING
+OPTIONS_FILE_SET+=MCRYPT
+OPTIONS_FILE_UNSET+=MSSQL
+OPTIONS_FILE_UNSET+=MYSQL
+OPTIONS_FILE_UNSET+=MYSQLI
+OPTIONS_FILE_UNSET+=ODBC
+OPTIONS_FILE_SET+=OPENSSL
+OPTIONS_FILE_UNSET+=PCNTL
+OPTIONS_FILE_UNSET+=PDF
+OPTIONS_FILE_SET+=PDO
+OPTIONS_FILE_SET+=PDO_SQLITE
+OPTIONS_FILE_SET+=PGSQL
+OPTIONS_FILE_SET+=PHAR
+OPTIONS_FILE_SET+=POSIX
+OPTIONS_FILE_SET+=PSPELL
+OPTIONS_FILE_UNSET+=READLINE
+OPTIONS_FILE_SET+=RECODE
+OPTIONS_FILE_SET+=SESSION
+OPTIONS_FILE_UNSET+=SHMOP
+OPTIONS_FILE_SET+=SIMPLEXML
+OPTIONS_FILE_SET+=SNMP
+OPTIONS_FILE_SET+=SOAP
+OPTIONS_FILE_SET+=SOCKETS
+OPTIONS_FILE_SET+=SQLITE3
+OPTIONS_FILE_UNSET+=SYBASE_CT
+OPTIONS_FILE_UNSET+=SYSVMSG
+OPTIONS_FILE_UNSET+=SYSVSEM
+OPTIONS_FILE_UNSET+=SYSVSHM
+OPTIONS_FILE_UNSET+=TIDY
+OPTIONS_FILE_SET+=TOKENIZER
+OPTIONS_FILE_UNSET+=WDDX
+OPTIONS_FILE_SET+=XML
+OPTIONS_FILE_SET+=XMLREADER
+OPTIONS_FILE_SET+=XMLRPC
+OPTIONS_FILE_SET+=XMLWRITER
+OPTIONS_FILE_SET+=XSL
+OPTIONS_FILE_SET+=ZIP
+OPTIONS_FILE_SET+=ZLIB
 EOF
 
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/php5-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/php5-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQLI#OPTIONS_FILE_SET+=MYSQLI#' /var/db/ports/php5-extensions/options
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/php5-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQLI#OPTIONS_FILE_SET+=MYSQLI#' /var/db/ports/php5-extensions/options
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/php5-extensions/options
+    fi
+    rm -f /var/db/ports/php5-extensions/options${SED_EXTENSION} &>/dev/null
+
     cat > /var/db/ports/php5-gd/options <<EOF
-WITH_T1LIB=true
-WITHOUT_TRUETYPE=true
-WITHOUT_JIS=true
+OPTIONS_FILE_SET+=T1LIB
+OPTIONS_FILE_UNSET+=TRUETYPE
+OPTIONS_FILE_UNSET+=JIS
+OPTIONS_FILE_UNSET+=X11
+OPTIONS_FILE_UNSET+=VPX
 EOF
 
     # PHP extensions
     if [ X"${REQUIRE_PHP}" == X"YES" -o X"${USE_WEBMAIL}" == X"YES" ]; then
-        ALL_PORTS="${ALL_PORTS} mail/php5-imap graphics/php5-gd archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt databases/php5-mysql security/php5-openssl www/php5-session net/php5-ldap textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml databases/php5-mysqli"
+        ALL_PORTS="${ALL_PORTS} mail/php5-imap graphics/php5-gd archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt security/php5-openssl www/php5-session textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml"
+
+        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+            ALL_PORTS="${ALL_PORTS} net/php5-ldap databases/php5-mysql databases/php5-mysqli"
+        elif [ X"${BACKEND}" == X'MYSQL' ]; then
+            ALL_PORTS="${ALL_PORTS} databases/php5-mysql databases/php5-mysqli"
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            ALL_PORTS="${ALL_PORTS} databases/php5-pgsql"
+        fi
     fi
 
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
@@ -585,28 +695,31 @@ EOF
         ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         # Policyd v2.x
+        cat > /var/db/ports/policyd2/options <<EOF
+OPTIONS_FILE_UNSET+=MYSQL
+OPTIONS_FILE_SET+=PostgreSQL
+OPTIONS_FILE_UNSET+=SQLite
+EOF
+
         ALL_PORTS="${ALL_PORTS} mail/policyd2"
         ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
-
-        cat > /var/db/ports/policyd2/options <<EOF
-WITHOUT_MYSQL=true
-WITH_PostgreSQL=true
-WITHOUT_SQLite=true
-EOF
     fi
 
     # ClamAV. REQUIRED.
     cat > /var/db/ports/clamav/options <<EOF
-WITH_ARC=true
-WITH_ARJ=true
-WITH_LHA=true
-WITH_UNZOO=true
-WITH_UNRAR=true
-WITH_ICONV=true
-WITHOUT_MILTER=true
-WITHOUT_LDAP=true
-WITHOUT_STDERR=true
-WITHOUT_EXPERIMENTAL=true
+OPTIONS_FILE_SET+=ARC
+OPTIONS_FILE_SET+=ARJ
+OPTIONS_FILE_SET+=DOCS
+OPTIONS_FILE_UNSET+=EXPERIMENTAL
+OPTIONS_FILE_SET+=ICONV
+OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_SET+=LHA
+OPTIONS_FILE_UNSET+=LLVM
+OPTIONS_FILE_UNSET+=MILTER
+OPTIONS_FILE_UNSET+=STDERR
+OPTIONS_FILE_SET+=TESTS
+OPTIONS_FILE_SET+=UNRAR
+OPTIONS_FILE_SET+=UNZOO
 EOF
 
     ALL_PORTS="${ALL_PORTS} security/clamav"
@@ -614,19 +727,30 @@ EOF
 
     # Roundcube.
     cat > /var/db/ports/roundcube/options <<EOF
-WITH_MYSQL=true
-WITHOUT_PGSQL=true
-WITHOUT_SQLITE=true
-WITH_SSL=true
-WITH_LDAP=true
-WITH_PSPELL=true
-WITHOUT_NSC=true
-WITH_AUTOCOMP=true
+OPTIONS_FILE_SET+=GD
+OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_UNSET+=NSC
+OPTIONS_FILE_SET+=PSPELL
+OPTIONS_FILE_SET+=SSL
+OPTIONS_FILE_UNSET+=MYSQL
+OPTIONS_FILE_UNSET+=PGSQL
+OPTIONS_FILE_UNSET+=SQLITE
 EOF
+
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/roundcube/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/roundcube/options
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/roundcube/options
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/roundcube/options
+    fi
+    rm -f /var/db/ports/roundcube/options${SED_EXTENSION} &>/dev/null
 
     # Python-MySQLdb
     cat > /var/db/ports/MySQLdb/options <<EOF
-WITH_MYSQLCLIENT_R=true
+OPTIONS_FILE_SET+=DOCS
+OPTIONS_FILE_SET+=MYSQLCLIENT_R
 EOF
 
     # Roundcube webmail.
@@ -660,17 +784,21 @@ EOF
         ALL_PORTS="${ALL_PORTS} databases/phppgadmin"
     fi
 
-    # iRedAPD.
-    if [ X"${USE_IREDAPD}" == X"YES" ]; then
-        # python-ldap.
-        ALL_PORTS="${ALL_PORTS} net/py-ldap2"
-        ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
+    # Python database interfaces
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ALL_PORTS="${ALL_PORTS} net/py-ldap2 databases/py-MySQLdb"
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ALL_PORTS="${ALL_PORTS} databases/py-MySQLdb"
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ALL_PORTS="${ALL_PORTS} databases/py-psycopg2"
     fi
 
-    # iRedAdmin.
-    # mod_wsgi.
-    ALL_PORTS="${ALL_PORTS} www/mod_wsgi www/webpy devel/py-Jinja2 databases/py-MySQLdb net/py-netifaces"
-    [ X"${USE_IREDAPD}" != X"YES" ] && ALL_PORTS="${ALL_PORTS} net/py-ldap2"
+    # iRedAPD
+    ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
+
+    # iRedAdmin
+    # mod_wsgi
+    ALL_PORTS="${ALL_PORTS} www/mod_wsgi www/webpy devel/py-Jinja2 net/py-netifaces"
 
     # Fail2ban.
     #if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
@@ -681,23 +809,6 @@ EOF
 
     # Misc
     ALL_PORTS="${ALL_PORTS} sysutils/logwatch"
-
-    if [ X"${BACKEND}" == X'PGSQL' ]; then
-        # Enable PGSQL support, disable LDAP/MySQL support.
-        for opt_file in \
-            /var/db/ports/p5-Mail-SpamAssassin/options \
-            /var/db/ports/amavisd-new/options \
-            /var/db/ports/apr/options \
-            /var/db/ports/apache22/options \
-            /var/db/ports/roundcube/options \
-            ; do
-            if [ -f ${opt_file} ]; then
-                perl -pi -e 's#WITH_LDAP=true#WITHOUT_LDAP=true#' ${opt_file}
-                perl -pi -e 's#WITH_MYSQL=true#WITHOUT_MYSQL=true#' ${opt_file}
-                perl -pi -e 's#WITHOUT_PGSQL=true#WITH_PGSQL=true#' ${opt_file}
-            fi
-        done
-    fi
 
     # Fetch all source tarballs.
     ECHO_INFO "Fetching all distfile for required packages (make fetch-recursive)"
@@ -730,12 +841,21 @@ EOF
             status="\$status_install_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 cd /usr/ports/${i} && \
-                    ECHO_INFO "Installing port: ${i} ..."
+                    ECHO_INFO "Installing port: ${i} $(date '+%Y-%m-%d %H:%M:%S')..."
                     echo "export status_install_port_${portname}='processing'" >> ${STATUS_FILE}
+
+                    # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
+                    start_time="$(date +%s)"
+
+                    # Compiling
                     make clean && make install clean
 
                     if [ X"$?" == X"0" ]; then
                         echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}
+
+                        # Log used time
+                        used_time="$(($(date +%s)-start_time))"
+                        echo "# Used time: ${used_time} seconds, about $((used_time/60)) minutes" >> ${STATUS_FILE}
                     else
                         ECHO_ERROR "Port was not success installed, please fix it manually and then re-execute this script."
                         exit 255
