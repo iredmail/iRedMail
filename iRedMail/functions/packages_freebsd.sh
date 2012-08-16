@@ -835,9 +835,12 @@ EOF
     # Install all packages.
     ECHO_INFO "==== Install packages ===="
 
+    start_time="$(date +%s)"
     for i in ${ALL_PORTS}; do
         if [ X"${i}" != X'' ]; then
-            portname="$( echo ${i} | tr -d '-' | tr -d '/' | tr -d '\.' )"
+            # Remove special characters in port name: -, /, '.'.
+            portname="$( echo ${i} | tr -d '[-/\.]')"
+
             status="\$status_install_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 cd /usr/ports/${i} && \
@@ -845,7 +848,7 @@ EOF
                     echo "export status_install_port_${portname}='processing'" >> ${STATUS_FILE}
 
                     # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
-                    start_time="$(date +%s)"
+                    port_start_time="$(date +%s)"
 
                     # Compiling
                     make clean && make install clean
@@ -854,8 +857,8 @@ EOF
                         echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}
 
                         # Log used time
-                        used_time="$(($(date +%s)-start_time))"
-                        echo "# Used time: ${used_time} seconds, about $((used_time/60)) minutes" >> ${STATUS_FILE}
+                        used_time="$(($(date +%s)-port_start_time))"
+                        echo "# Used time (${i}): ${used_time} seconds, about $((used_time/60)) minutes" >> ${STATUS_FILE}
                     else
                         ECHO_ERROR "Port was not success installed, please fix it manually and then re-execute this script."
                         exit 255
@@ -865,6 +868,10 @@ EOF
             fi
         fi
     done
+
+    # Log used time
+    all_used_time="$(($(date +%s)-start_time))"
+    echo "# Total time: ${all_used_time} seconds, about $((all_used_time/60)) minutes" >> ${STATUS_FILE}
 
     echo 'export status_install_all="DONE"' >> ${STATUS_FILE}
 }
