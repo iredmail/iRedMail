@@ -240,7 +240,7 @@ cleanup_backup_scripts()
         # Add cron job
         cat >> ${CRON_SPOOL_DIR}/root <<EOF
 # ${PROG_NAME}: Backup OpenLDAP data on 03:00 AM
-0   3   *   *   *   ${SHELL_BASH} {${BACKUP_SCRIPT_OPENLDAP}
+0   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_OPENLDAP}
 EOF
 
         cat >> ${TIP_FILE} <<EOF
@@ -397,9 +397,7 @@ EOF
     # Webmail.
     if [ X"${USE_WEBMAIL}" == X"YES" ]; then
         cat <<EOF
-* - Webmail: http://${HOSTNAME}/mail/ or httpS://${HOSTNAME}/mail/
-*   + Account: ${FIRST_USER}@${FIRST_DOMAIN}, Password: ${FIRST_USER_PASSWD_PLAIN}
-*
+* - Webmail: httpS://${HOSTNAME}/mail/
 EOF
     fi
 
@@ -407,10 +405,13 @@ EOF
     if [ X"${USE_IREDADMIN}" == X"YES" ]; then
         cat <<EOF
 * - Admin Panel (iRedAdmin): httpS://${HOSTNAME}/iredadmin/
+EOF
+    fi
+
+    cat <<EOF
 *   + Username: ${SITE_ADMIN_NAME}, Password: ${SITE_ADMIN_PASSWD}
 *
 EOF
-    fi
 
     # Reboot system to enable mail related services.
     # - FreeBSD: sendmail is binding to port '25'

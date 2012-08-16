@@ -474,6 +474,8 @@ SSL cert keys (size: ${SSL_KEY_SIZE}):
     - ${SSL_KEY_FILE}
 
 EOF
+
+    echo 'export status_gen_pem_key="DONE"' >> ${STATUS_FILE}
 }
 
 # Add alias entry in Postfix /etc/postfix/aliases.

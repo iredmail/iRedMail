@@ -302,65 +302,53 @@ rcm_config()
     'hosts'         => array('${LDAP_SERVER_HOST}'),
     'port'          => ${LDAP_SERVER_PORT},
     'use_tls'       => false,
+    'ldap_version'  => '${LDAP_BIND_VERSION}',
+    'user_specific' => true, // If true the base_dn, bind_dn and bind_pass default to the user's IMAP login.
 
     // Search accounts in the same domain.
-    'user_specific' => true, // If true the base_dn, bind_dn and bind_pass default to the user's IMAP login.
     'base_dn'       => '${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
     'bind_dn'       => '${LDAP_ATTR_USER_RDN}=%u@%d,${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
 
+    'hidden'        => false,
+    'searchonly'    => false,
     'writable'      => false,
-    'ldap_version'  => '${LDAP_BIND_VERSION}',
-    'search_fields' => array('mail', 'cn', 'givenName', 'sn', 'street'),
-    'name_field'    => 'cn',
-    'email_field'   => 'mail',
-    'surname_field' => 'sn',
-    'firstname_field' => 'givenName',
-    'department_field' => 'departmentnumber',
-    'organization_field' => 'o',
-    'street_field' => 'street',
-    'locality_field'     => 'l',
-    'sort'          => 'cn',
-    'scope'         => 'sub',
-    'filter'        => '(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK})(|(objectClass=${LDAP_OBJECTCLASS_MAILGROUP})(objectClass=${LDAP_OBJECTCLASS_MAILALIAS})(objectClass=${LDAP_OBJECTCLASS_MAILUSER})))',
-    'fuzzy_search'  => true);
+    'search_fields' => array('mail', 'cn', 'sn', 'givenName', 'street', 'telephoneNumber', 'mobile', 'stree', 'postalCode'),
 
-// Personal LDAP address book.
-/*
-\$rcmail_config['ldap_public']["ldap_personal"] = array(
-    'name'          => 'Personal LDAP Address Book',
-    'hosts'         => array('${LDAP_SERVER_HOST}'),
-    'port'          => ${LDAP_SERVER_PORT},
-    'use_tls'       => false,
-    'user_specific' => true,
-    'base_dn'       => '${LDAP_ATTR_USER_RDN}=%u@%d,${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
-    'bind_dn'       => '${LDAP_ATTR_USER_RDN}=%u@%d,${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
-    'writable'      => true,
-    'LDAP_Object_Classes' => array('top', 'inetOrgPerson'),
-    'required_fields'     => array('givenName', 'sn', 'mail'),
-    'LDAP_rdn'      => 'cn',
-    'ldap_version'  => '${LDAP_BIND_VERSION}',
-    'search_fields' => array('mail', 'cn', 'givenName', 'sn', 'telephoneNumber', 'homePhone', 'mobile', 'street', 'postalCode', 'l', 'c', 'o', 'description', 'departmentNumber', ),
+    // mapping of contact fields to directory attributes
+    //   for every attribute one can specify the number of values (limit) allowed.
+    //   default is 1, a wildcard * means unlimited
     'fieldmap' => array(
-        // Roundcube  => LDAP
+        // Roundcube  => LDAP:limit
         'name'        => 'cn',
-        'firstname'   => 'givenName',
         'surname'     => 'sn',
-        'email'       => 'mail',
-        'department'  => 'departmentNumber',
-        'phone:home'  => 'homePhone',
+        'firstname'   => 'givenName',
+        'title'       => 'title',
+        'email'       => 'mail:*',
         'phone:work'  => 'telephoneNumber',
         'phone:mobile' => 'mobile',
         'street'      => 'street',
         'zipcode'     => 'postalCode',
-        //'locality'    => 'l',
-        'organization' => 'o',
+        //'region'      => 'st',
+        'locality'    => 'l',
+        'department'  => 'departmentNumber',
+        'notes'       => 'description',
+        // these currently don't work:
+        //'phone:workfax' => 'facsimileTelephoneNumber',
+        //'photo'        => 'jpegPhoto',
+        //'organization' => 'o',
+        //'manager'      => 'manager',
+        //'assistant'    => 'secretary',
     ),
     'sort'          => 'cn',
-    'scope'         => 'list',
-    'filter'        => '(objectClass=inetOrgPerson)',
-    'fuzzy_search'  => true);
+    'scope'         => 'sub',
+    'filter'        => '(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK})(|(objectClass=${LDAP_OBJECTCLASS_MAILGROUP})(objectClass=${LDAP_OBJECTCLASS_MAILALIAS})(objectClass=${LDAP_OBJECTCLASS_MAILUSER})))',
+    'fuzzy_search'  => true,
+    'vlv'           => false,   // Enable Virtual List View to more efficiently fetch paginated data (if server supports it)
+    'sizelimit'     => '0',     // Enables you to limit the count of entries fetched. Setting this to 0 means no limit.
+    'timelimit'     => '0',     // Sets the number of seconds how long is spend on the search. Setting this to 0 means no limit.
+    'referrals'     => false,  // Sets the LDAP_OPT_REFERRALS option. Mostly used in multi-domain Active Directory setups
+);
 
-*/
 // end of config file
 ?>
 EOF
