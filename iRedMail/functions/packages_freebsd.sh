@@ -390,9 +390,9 @@ EOF
     fi
     rm -f /var/db/ports/amavisd-new/options${SED_EXTENSION} &>/dev/null
 
-    # Enable RAR support on amd64 since it requires 32-bit libraries
+    # Enable RAR support on i386 only since it requires 32-bit libraries
     # installed under /usr/lib32.
-    if [ X"${ARCH}" != X"${i386}" ]; then
+    if [ X"${ARCH}" == X'i386' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=RAR#OPTIONS_FILE_SET+=RAR#' /var/db/ports/amavisd-new/options
         rm -f /var/db/ports/amavisd-new/options${SED_EXTENSION} &>/dev/null
     fi
