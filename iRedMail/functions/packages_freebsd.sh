@@ -36,7 +36,7 @@ install_all()
     export WANT_OPENLDAP_VER='24'
     export WANT_MYSQL_VER='55'
     export WANT_PGSQL_VER='91'
-    export WANT_POSTFIX_VER='28'
+    export WANT_POSTFIX_VER='27'
 
     freebsd_add_make_conf 'WITHOUT_X11' 'yes'
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${WANT_OPENLDAP_VER}"
