@@ -844,7 +844,7 @@ EOF
             status="\$status_install_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 cd /usr/ports/${i} && \
-                    ECHO_INFO "Installing port: ${i} $(date '+%Y-%m-%d %H:%M:%S')..."
+                    ECHO_INFO "Installing port: ${i} ($(date '+%Y-%m-%d %H:%M:%S')) ..."
                     echo "export status_install_port_${portname}='processing'" >> ${STATUS_FILE}
 
                     # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)

@@ -178,13 +178,7 @@ EOF
             checkspf.tsql \
             greylisting.tsql \
             accounting.tsql; do
-            if [ -f $i ]; then
-                if [ -f convert-tsql ]; then
-                    bash convert-tsql ${policyd_sql_type} $i >> ${tmp_sql}
-                elif [ -f convert ]; then
-                    bash convert ${policyd_sql_type} $i >> ${tmp_sql}
-                fi
-            fi
+            [ -f $i ] && bash convert-tsql ${policyd_sql_type} $i >> ${tmp_sql}
         done >> ${tmp_sql}
 
         unset policyd_sql_type
