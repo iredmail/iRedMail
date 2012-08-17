@@ -111,12 +111,9 @@ OPTIONS_FILE_SET+=SLP_SECURITY
 OPTIONS_FILE_SET+=ASYNC_API
 EOF
 
-    # LDAP/MySQL/PGSQL client libraries and tools
-    #ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-client databases/mysql${WANT_MYSQL_VER}-client databases/postgresql${WANT_PGSQL_VER}-client"
-
-    # OpenLDAP v2.4. REQUIRED for LDAP backend.
+    # OpenLDAP. REQUIRED for LDAP backend.
     cat > /var/db/ports/openldap${WANT_OPENLDAP_VER}/options <<EOF
-OPTIONS_FILE_UNSET+=ACCESSLOG
+OPTIONS_FILE_SET+=ACCESSLOG
 OPTIONS_FILE_UNSET+=ACI
 OPTIONS_FILE_UNSET+=AUDITLOG
 OPTIONS_FILE_SET+=BDB
@@ -145,7 +142,7 @@ OPTIONS_FILE_UNSET+=RWM
 OPTIONS_FILE_SET+=SASL
 OPTIONS_FILE_SET+=SEQMOD
 OPTIONS_FILE_UNSET+=SHELL
-OPTIONS_FILE_UNSET+=SLAPI
+OPTIONS_FILE_SET+=SLAPI
 OPTIONS_FILE_UNSET+=SLP
 OPTIONS_FILE_UNSET+=SMBPWD
 OPTIONS_FILE_UNSET+=SOCK
@@ -819,7 +816,7 @@ EOF
             status="\$status_fetch_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 ECHO_INFO "Fetching required distfiles for port: ${i}"
-                cd /usr/ports/${i} && make fetch-recursive
+                cd /usr/ports/${i} && make WITH_COMPAT=yes fetch-recursive
                 if [ X"$?" == X"0" ]; then
                     echo "export status_fetch_port_${portname}='DONE'" >> ${STATUS_FILE}
                 else
@@ -851,7 +848,13 @@ EOF
                     port_start_time="$(date +%s)"
 
                     # Compiling
-                    make clean && make install clean
+                    port_pkg_name="$(make -V PKGNAME)"
+                    if [ ! -d /var/db/pkg/${port_pkg_name} ]; then
+                        make clean
+                        make install clean
+                    else
+                        ECHO_INFO "[SKIP] Package was already installed (/var/db/pkg/${port_pkg_name})."
+                    fi
 
                     if [ X"$?" == X"0" ]; then
                         # Log used time

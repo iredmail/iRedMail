@@ -92,6 +92,16 @@ cluebringer_config()
         perl -pi -e 's/^(DB_Type=).*/${1}pgsql/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Host=).*/${1}$ENV{PGSQL_SERVER}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Port=).*/${1}$ENV{PGSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
+
+        if [ X"${DISTRO}" == X'FREEBSD' ]; then
+            # Comment out all default DSN settings
+            perl -pi -e 's/^(DSN=.*)/#${1}/g' ${CLUEBRINGER_CONF}
+            perl -pi -e 's/^(Username=.*)/#${1}/g' ${CLUEBRINGER_CONF}
+            perl -pi -e 's/^(Password=.*)/#${1}/g' ${CLUEBRINGER_CONF}
+
+            # Enable Pg
+            perl -pi -e 's#^(.database.)$#${1}\nDSN=DBI:Pg:host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}#' ${CLUEBRINGER_CONF}
+        fi
     fi
 
     # Database
