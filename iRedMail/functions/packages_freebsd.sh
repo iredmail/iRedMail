@@ -442,14 +442,17 @@ OPTIONS_FILE_SET+=IPV6
 OPTIONS_FILE_SET+=DEVRANDOM
 OPTIONS_FILE_SET+=BDB
 OPTIONS_FILE_SET+=GDBM
+OPTIONS_FILE_UNSET+=LDAP
 OPTIONS_FILE_UNSET+=MYSQL
 OPTIONS_FILE_UNSET+=NDBM
 OPTIONS_FILE_UNSET+=PGSQL
 OPTIONS_FILE_UNSET+=SQLITE
-OPTIONS_FILE_UNSET+=DEVELOPER_ONLY
 EOF
 
-    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/apr/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/apr/options
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/apr/options
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/apr/options
@@ -557,6 +560,9 @@ OPTIONS_FILE_SET+=CGID
 EOF
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        # apr bdb
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/apache22/options
+        # ldap auth module
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/apache22/options
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=AUTHNZ_LDAP#OPTIONS_FILE_SET+=AUTHNZ_LDAP#' /var/db/ports/apache22/options
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
@@ -816,7 +822,7 @@ EOF
             status="\$status_fetch_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 ECHO_INFO "Fetching required distfiles for port: ${i}"
-                cd /usr/ports/${i} && make WITH_COMPAT=yes fetch-recursive
+                cd /usr/ports/${i} && make WITH_COMPAT=yes DISABLE_LICENSES=yes fetch-recursive
                 if [ X"$?" == X"0" ]; then
                     echo "export status_fetch_port_${portname}='DONE'" >> ${STATUS_FILE}
                 else
@@ -857,11 +863,11 @@ EOF
                     fi
 
                     if [ X"$?" == X"0" ]; then
+                        echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}
+
                         # Log used time
                         used_time="$(($(date +%s)-port_start_time))"
                         echo "# Used time (${i}): ${used_time} seconds, about $((used_time/60)) minutes" >> ${STATUS_FILE}
-
-                        echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}
                     else
                         ECHO_ERROR "Port was not success installed, please fix it manually and then re-execute this script."
                         exit 255
