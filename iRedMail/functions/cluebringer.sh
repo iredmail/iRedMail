@@ -178,8 +178,13 @@ EOF
             checkspf.tsql \
             greylisting.tsql \
             accounting.tsql; do
-            # accounting.tsql is shipped in 2.0.11.
-            [ -f $i ] && bash convert ${policyd_sql_type} $i >> ${tmp_sql}
+            if [ -f $i ]; then
+                if [ -f convert-tsql ]; then
+                    bash convert-tsql ${policyd_sql_type} $i >> ${tmp_sql}
+                elif [ -f convert ]; then
+                    bash convert ${policyd_sql_type} $i >> ${tmp_sql}
+                fi
+            fi
         done >> ${tmp_sql}
 
         unset policyd_sql_type

@@ -818,7 +818,7 @@ EOF
             portname="$( echo ${i} | tr -d '-' | tr -d '/' | tr -d '\.' )"
             status="\$status_fetch_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
-                ECHO_INFO "Fetching all distfiles for port: ${i}"
+                ECHO_INFO "Fetching required distfiles for port: ${i}"
                 cd /usr/ports/${i} && make fetch-recursive
                 if [ X"$?" == X"0" ]; then
                     echo "export status_fetch_port_${portname}='DONE'" >> ${STATUS_FILE}
@@ -854,11 +854,11 @@ EOF
                     make clean && make install clean
 
                     if [ X"$?" == X"0" ]; then
-                        echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}
-
                         # Log used time
                         used_time="$(($(date +%s)-port_start_time))"
                         echo "# Used time (${i}): ${used_time} seconds, about $((used_time/60)) minutes" >> ${STATUS_FILE}
+
+                        echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}
                     else
                         ECHO_ERROR "Port was not success installed, please fix it manually and then re-execute this script."
                         exit 255
