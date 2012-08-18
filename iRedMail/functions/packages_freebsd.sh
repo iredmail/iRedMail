@@ -822,9 +822,16 @@ EOF
             status="\$status_fetch_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 ECHO_INFO "Fetching required distfiles for port: ${i}"
-                cd /usr/ports/${i} && make WITH_COMPAT=yes DISABLE_LICENSES=yes fetch-recursive
+                cd /usr/ports/${i}
+
+                # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
+                port_start_time="$(date +%s)"
+
+                make WITH_COMPAT=yes DISABLE_LICENSES=yes fetch-recursive
                 if [ X"$?" == X"0" ]; then
-                    echo "export status_fetch_port_${portname}='DONE'" >> ${STATUS_FILE}
+                    # Log used time
+                    used_time="$(($(date +%s)-port_start_time))"
+                    echo "export status_fetch_port_${portname}='DONE'  # ${used_time} seconds, ~$((used_time/60)) minutes" >> ${STATUS_FILE}
                 else
                     ECHO_ERROR "Tarballs were not downloaded correctly, please fix it manually and then re-execute iRedMail.sh."
                     exit 255
@@ -854,13 +861,7 @@ EOF
                     port_start_time="$(date +%s)"
 
                     # Compiling
-                    port_pkg_name="$(make -V PKGNAME)"
-                    if [ ! -d /var/db/pkg/${port_pkg_name} ]; then
-                        make clean
-                        make install clean
-                    else
-                        ECHO_INFO "[SKIP] Package was already installed (/var/db/pkg/${port_pkg_name})."
-                    fi
+                    make clean && make install clean
 
                     if [ X"$?" == X"0" ]; then
                         # Log used time
