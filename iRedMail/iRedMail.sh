@@ -148,7 +148,7 @@ EOF
 
 
 # Create SSL/TLS cert file.
-check_status_before_run gen_pem_key
+check_status_before_run generate_ssl_keys
 
 # User/Group: vmail
 check_status_before_run add_required_users

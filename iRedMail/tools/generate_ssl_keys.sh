@@ -63,7 +63,7 @@ export SSL_CERT_FILE="${ROOTDIR}/certs/iRedMail_CA.pem"
 export SSL_KEY_FILE="${ROOTDIR}/private/iRedMail.key"
 
 # Create SSL certs/private files.
-gen_pem_key()
+generate_ssl_keys()
 {
     # Create necessary directories.
     mkdir -p {certs,private} 2>/dev/null
@@ -78,7 +78,7 @@ gen_pem_key()
     chmod 0444 ${SSL_KEY_FILE}
 }
 
-gen_pem_key && cat <<EOF
+generate_ssl_keys && cat <<EOF
 SSL keys were generated:
     - ${SSL_CERT_FILE}
     - ${SSL_KEY_FILE}

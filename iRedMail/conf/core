@@ -450,7 +450,7 @@ gen_ldap_passwd()
 }
 
 # Create SSL certs/private files.
-gen_pem_key()
+generate_ssl_keys()
 {
     ECHO_INFO "Create SSL certification files."
 
@@ -475,7 +475,7 @@ SSL cert keys (size: ${SSL_KEY_SIZE}):
 
 EOF
 
-    echo 'export status_gen_pem_key="DONE"' >> ${STATUS_FILE}
+    echo 'export status_generate_ssl_keys="DONE"' >> ${STATUS_FILE}
 }
 
 # Add alias entry in Postfix /etc/postfix/aliases.
