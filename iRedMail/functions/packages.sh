@@ -100,7 +100,7 @@ install_all()
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
 
         elif [ X"${DISTRO}" == X'GENTOO' ]; then
-            ALL_PKGS="${ALL_PKGS} mysql mod_auth_mysql"
+            ALL_PKGS="${ALL_PKGS} mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} mysql-client cyrus-sasl--mysql mysql-server"
@@ -172,7 +172,7 @@ install_all()
         fi
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} apache php"
+        ALL_PKGS="${ALL_PKGS} apache php mod_auth_mysql"
         gentoo_add_use_flags 'dev-libs/apr-util' 'ldap'
         gentoo_add_use_flags 'www-servers/apache' 'ssl doc ldap suexec'
         gentoo_add_make_conf 'APACHE2_MODULES' 'actions alias auth_basic authn_alias authn_anon authn_dbm authn_default authn_file authz_dbm authz_default authz_groupfile authz_host authz_owner authz_user autoindex cache cgi cgid dav dav_fs dav_lock deflate dir disk_cache env expires ext_filter file_cache filter headers include info log_config logio mem_cache mime mime_magic negotiation rewrite setenvif speling status unique_id userdir usertrack vhost_alias auth_digest authn_dbd log_forensic proxy proxy_ajp proxy_balancer proxy_connect proxy_ftp proxy_http proxy_scgi substitute version'
