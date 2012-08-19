@@ -235,7 +235,7 @@ EOF
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Configure Apache."
         # With Apache2.2 it now wants to load an Accept Filter.
-        echo 'accf_http_load="YES"' >> /boot/loader.conf
+        echo 'accf_http_load="YES"' >> /boot/loader.conf &>/dev/null
 
         # Change 'Deny from all' to 'Allow from all'.
         sed -i '.iredmailtmp' '/Each directory to/,/Note that from/s#Deny\ from\ all#Allow\ from\ all#' ${HTTPD_CONF}

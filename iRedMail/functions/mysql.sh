@@ -47,13 +47,20 @@ mysql_initialize()
     ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialize ..."
     sleep 5
 
-    echo '' > ${MYSQL_INIT_SQL}
+    ECHO_DEBUG "Grant access privilege from ${LOCAL_ADDRESS} ..."
+    if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
+        mysql -u${MYSQL_ROOT_USER} <<EOF
+GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${SQL_HOSTNAME}' IDENTIFIED BY '${MYSQL_ROOT_PASSWD}';
+EOF
+    fi
 
     ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
     mysqladmin --user=root password "${MYSQL_ROOT_PASSWD}"
 
+    echo '' > ${MYSQL_INIT_SQL}
+
     cat >> ${MYSQL_INIT_SQL} <<EOF
-/* Delete anonymouse user. */
+-- Delete anonymouse user.
 USE mysql;
 
 DELETE FROM user WHERE User='';
