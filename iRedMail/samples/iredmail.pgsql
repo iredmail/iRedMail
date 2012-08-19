@@ -64,6 +64,7 @@ CREATE TABLE domain (
     mailboxes INT8 NOT NULL DEFAULT 0,
     -- Max mailbox quota in this domain. e.g. 1073741824 (1GB).
     maxquota INT8 NOT NULL DEFAULT 0,
+    -- Not used. Historical.
     quota INT8 NOT NULL DEFAULT 0,
     -- Per-domain transport. e.g. dovecot, smtp:[192.168.1.1]:25
     transport VARCHAR(255) NOT NULL DEFAULT 'dovecot',
@@ -263,10 +264,11 @@ CREATE TABLE anyone_shares (
     PRIMARY KEY (from_user)
 );
 
---
--- Table used_quota. Used to store realtime mailbox quota in Dovecot.
+-- used_quota
+-- Used to store realtime mailbox quota in Dovecot.
 -- WARNING: Works only with Dovecot 1.2+.
 --
+-- Note: Don't touch this table, it will be updated by Dovecot automatically.
 CREATE TABLE used_quota (
     username VARCHAR(255) NOT NULL,
     bytes INT8 NOT NULL DEFAULT 0,
