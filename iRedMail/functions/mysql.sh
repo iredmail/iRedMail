@@ -48,7 +48,7 @@ mysql_initialize()
     sleep 5
 
     ECHO_DEBUG "Grant access privilege from ${LOCAL_ADDRESS} ..."
-    if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
+    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
         mysql -u${MYSQL_ROOT_USER} <<EOF
 GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${SQL_HOSTNAME}' IDENTIFIED BY '${MYSQL_ROOT_PASSWD}';
 EOF

@@ -582,10 +582,18 @@ install_pkg_gentoo()
             status="\$status_install_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 ECHO_INFO "Installing package (${pkgs_counter} of ${pkgs_total}): ${pkg}"
+                echo "export status_install_port_${portname}='processing'" >> ${STATUS_FILE}
+
+                # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
+                port_start_time="$(date +%s)"
+
                 emerge ${GENTOO_EMERGE_INSTALL_OPTIONS} ${pkg}
 
                 if [ X"$?" == X"0" ]; then
-                    echo "export status_install_port_${portname}='DONE'" >> ${STATUS_FILE}
+                    # Log used time
+                    used_time="$(($(date +%s)-port_start_time))"
+
+                    echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~$((used_time/60)) minutes" >> ${STATUS_FILE}
                 else
                     ECHO_ERROR "Installation failed, please check the terminal output."
                     ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
