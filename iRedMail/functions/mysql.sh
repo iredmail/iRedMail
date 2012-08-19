@@ -47,15 +47,18 @@ mysql_initialize()
     ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialize ..."
     sleep 5
 
-    ECHO_DEBUG "Grant access privilege from ${LOCAL_ADDRESS} ..."
-    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+    if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
+        ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
+        mysqladmin --user=root password "${MYSQL_ROOT_PASSWD}"
+    else
+        ECHO_DEBUG "Grant access privilege from ${LOCAL_ADDRESS} ..."
         mysql -u${MYSQL_ROOT_USER} <<EOF
+-- Set root password
+UPDATE mysql.user SET Password = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User = 'root';
+-- Allow access from SQL_HOSTNAME with password
 GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${SQL_HOSTNAME}' IDENTIFIED BY '${MYSQL_ROOT_PASSWD}';
 EOF
     fi
-
-    ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
-    mysqladmin --user=root password "${MYSQL_ROOT_PASSWD}"
 
     echo '' > ${MYSQL_INIT_SQL}
 
