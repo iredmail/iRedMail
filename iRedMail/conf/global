@@ -567,6 +567,13 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export LIST_ALL_PKGS="pkg_info | awk '{print $1}'"
     export LIST_FILES_IN_PKG='pkg_info -L'
 
+    # Port directory
+    export PORT_WRKDIRPREFIX='/usr/ports'
+    if [ -f /etc/make.conf ]; then
+        port_dir="$(grep WRKDIRPREFIX /etc/make.conf 2>/dev/null | awk '{print $2}')"
+        [ ! -z ${port_dir} ] && export PORT_WRKDIRPREFIX="${port_dir}"
+    fi
+
     # Service control.
     export enable_service="enable_service_freebsd"
     export disable_service="disable_service_freebsd"

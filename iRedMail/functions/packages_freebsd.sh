@@ -822,7 +822,7 @@ EOF
             status="\$status_fetch_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 ECHO_INFO "Fetching required distfiles for port: ${i}"
-                cd /usr/ports/${i}
+                cd ${PORT_WRKDIRPREFIX}/${i}
 
                 # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
                 port_start_time="$(date +%s)"
@@ -853,7 +853,7 @@ EOF
 
             status="\$status_install_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
-                cd /usr/ports/${i} && \
+                cd ${PORT_WRKDIRPREFIX}/${i} && \
                     ECHO_INFO "Installing port: ${i} ($(date '+%Y-%m-%d %H:%M:%S')) ..."
                     echo "export status_install_port_${portname}='processing'" >> ${STATUS_FILE}
 
