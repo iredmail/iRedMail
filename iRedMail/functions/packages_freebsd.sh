@@ -818,7 +818,7 @@ EOF
 
     for i in ${ALL_PORTS}; do
         if [ X"${i}" != X'' ]; then
-            portname="$( echo ${i} | tr -d '-' | tr -d '/' | tr -d '\.' )"
+            portname="$( echo ${i} | tr '/' '_' | tr -d '[-\.]')"
             status="\$status_fetch_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
                 ECHO_INFO "Fetching required distfiles for port: ${i}"
@@ -849,7 +849,7 @@ EOF
     for i in ${ALL_PORTS}; do
         if [ X"${i}" != X'' ]; then
             # Remove special characters in port name: -, /, '.'.
-            portname="$( echo ${i} | tr -d '[-/\.]')"
+            portname="$( echo ${i} | tr '/' '_' | tr -d '[-\.]')"
 
             status="\$status_install_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then

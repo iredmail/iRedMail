@@ -60,11 +60,7 @@ export LOCAL_ADDRESS='127.0.0.1'
 # Hostname used in MySQL GRANT command.
 # Usually it's 'localhost', but not in FreeBSD Jail (use ${LOCAL_ADDRESS} or
 # hostname of Jail instead).
-if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
-    export SQL_HOSTNAME='localhost'
-else
-    export SQL_HOSTNAME="${LOCAL_ADDRESS}"
-fi
+export SQL_HOSTNAME='localhost'
 
 # OpenLDAP
 export LDAP_SERVER_HOST="${LOCAL_ADDRESS}"
