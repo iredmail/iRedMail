@@ -569,10 +569,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
 
     # Port directory
     export PORT_WRKDIRPREFIX='/usr/ports'
-    if [ -f /etc/make.conf ]; then
-        port_dir="$(grep WRKDIRPREFIX /etc/make.conf 2>/dev/null | awk '{print $2}')"
-        [ ! -z ${port_dir} ] && export PORT_WRKDIRPREFIX="${port_dir}"
-    fi
 
     # Service control.
     export enable_service="enable_service_freebsd"

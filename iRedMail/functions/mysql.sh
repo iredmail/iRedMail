@@ -51,7 +51,7 @@ mysql_initialize()
         ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
         mysqladmin --user=root password "${MYSQL_ROOT_PASSWD}"
     else
-        ECHO_DEBUG "Grant access privilege from ${LOCAL_ADDRESS} ..."
+        ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${LOCAL_ADDRESS} ..."
         mysql -u${MYSQL_ROOT_USER} <<EOF
 -- Set root password
 USE mysql;
