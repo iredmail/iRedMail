@@ -54,9 +54,12 @@ mysql_initialize()
         ECHO_DEBUG "Grant access privilege from ${LOCAL_ADDRESS} ..."
         mysql -u${MYSQL_ROOT_USER} <<EOF
 -- Set root password
-UPDATE mysql.user SET Password = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User = 'root';
+USE mysql;
+UPDATE user SET Password = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User = 'root';
 -- Allow access from SQL_HOSTNAME with password
 GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${SQL_HOSTNAME}' IDENTIFIED BY '${MYSQL_ROOT_PASSWD}';
+-- Allow GRANT privilege
+UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='${SQL_HOSTNAME}';
 EOF
     fi
 
