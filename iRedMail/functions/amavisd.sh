@@ -581,6 +581,13 @@ EOF
         fi
     fi
 
+    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+        # ACL
+        cat >> ${AMAVISD_CONF} <<EOF
+@inet_acl = qw(${LOCAL_ADDRESS});
+EOF
+    fi
+
     cat >> ${AMAVISD_CONF} <<EOF
 
 1;  # insure a defined return
@@ -608,7 +615,7 @@ ${AMAVISD_SERVER}:10025 inet n  -   -   -   -  smtpd
     -o smtpd_recipient_restrictions=permit_mynetworks,reject
     -o smtpd_end_of_data_restrictions=
     -o mynetworks_style=host
-    -o mynetworks=127.0.0.0/8
+    -o mynetworks=${AMAVISD_MYNETWORKS}
     -o strict_rfc821_envelopes=yes
     -o smtpd_error_sleep_time=0
     -o smtpd_soft_error_limit=1001
