@@ -232,6 +232,7 @@ EOF
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/dovecot2/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/dovecot2/options
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/dovecot2/options
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
