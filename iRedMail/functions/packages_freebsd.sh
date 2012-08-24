@@ -815,7 +815,8 @@ EOF
     ALL_PORTS="${ALL_PORTS} sysutils/logwatch"
 
     # Fetch all source tarballs.
-    ECHO_INFO "Fetching all distfile for required packages (make fetch-recursive)"
+    ECHO_INFO "Ports tree: ${PORT_WRKDIRPREFIX}"
+    ECHO_INFO "Fetching all distfiles for required packages (make fetch-recursive)"
 
     for i in ${ALL_PORTS}; do
         if [ X"${i}" != X'' ]; then
