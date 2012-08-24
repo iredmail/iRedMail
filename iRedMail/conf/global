@@ -54,8 +54,10 @@ export ENABLE_BACKEND_PGSQL='NO'
 export DIALOG_SELECTABLE_AWSTATS='YES'
 
 # For better distributed deployment
-# IP address of localhost. usually it's 127.0.0.1, but not in FreeBSD Jail.
-export LOCAL_ADDRESS='127.0.0.1'
+#
+# IP address of localhost.
+# Usually it's 127.0.0.1, but not in FreeBSD Jail.
+export LOCAL_ADDRESS="${LOCAL_ADDRESS:=127.0.0.1}"
 
 # Hostname used in MySQL GRANT command.
 # Usually it's 'localhost', but not in FreeBSD Jail (use ${LOCAL_ADDRESS} or
