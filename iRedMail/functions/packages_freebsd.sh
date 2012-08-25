@@ -56,7 +56,7 @@ install_all()
         ca_root_nss libssh2 curl libusb pth gnupg p5-IO-Socket-SSL \
         p5-Archive-Tar p5-Net-DNS p5-Mail-SpamAssassin p5-Authen-SASL \
         amavisd-new clamav apr python27 apache22 php5 php5-extensions \
-        php5-gd roundcube postfix MySQLdb p7zip; do
+        php5-gd roundcube postfix MySQLdb p7zip phpMyAdmin; do
         mkdir -p /var/db/ports/${p} 2>/dev/null
     done
 
@@ -682,7 +682,7 @@ EOF
 
     # PHP extensions
     if [ X"${REQUIRE_PHP}" == X"YES" -o X"${USE_WEBMAIL}" == X"YES" ]; then
-        ALL_PORTS="${ALL_PORTS} mail/php5-imap graphics/php5-gd archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt security/php5-openssl www/php5-session textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml"
+        ALL_PORTS="${ALL_PORTS} mail/php5-imap archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt security/php5-openssl www/php5-session textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ALL_PORTS="${ALL_PORTS} net/php5-ldap databases/php5-mysql databases/php5-mysqli"
@@ -731,7 +731,7 @@ EOF
 
     # Roundcube.
     cat > /var/db/ports/roundcube/options <<EOF
-OPTIONS_FILE_SET+=GD
+OPTIONS_FILE_UNSET+=GD
 OPTIONS_FILE_UNSET+=LDAP
 OPTIONS_FILE_UNSET+=NSC
 OPTIONS_FILE_SET+=PSPELL
@@ -779,6 +779,20 @@ EOF
     fi
 
     # phpMyAdmin.
+    cat > /var/db/ports/phpMyAdmin/options <<EOF
+OPTIONS_FILE_UNSET+=APC
+OPTIONS_FILE_SET+=BZ2
+OPTIONS_FILE_UNSET+=GD
+OPTIONS_FILE_SET+=MCRYPT
+OPTIONS_FILE_SET+=OPENSSL
+OPTIONS_FILE_UNSET+=PDF
+OPTIONS_FILE_UNSET+=SUPHP
+OPTIONS_FILE_SET+=ZIP
+OPTIONS_FILE_SET+=ZLIB
+OPTIONS_FILE_SET+=MYSQL
+OPTIONS_FILE_SET+=MYSQLI
+EOF
+
     if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
         ALL_PORTS="${ALL_PORTS} databases/phpmyadmin"
     fi
