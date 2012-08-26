@@ -51,8 +51,15 @@ pgsql_initialize()
 
     backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
 
-    ECHO_DEBUG "Listen on only localhost"
-    perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}localhost${2}#' ${PGSQL_CONF_POSTGRESQL}
+    ECHO_DEBUG "Listen on address: ${LOCAL_ADDRESS}"
+    if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
+        perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}localhost${2}#' ${PGSQL_CONF_POSTGRESQL}
+    else
+        perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}$ENV{LOCAL_ADDRESS}${2}#' ${PGSQL_CONF_POSTGRESQL}
+
+        # Allow remote access
+        echo "host   all all ${LOCAL_ADDRESS}/32 md5" >> ${PGSQL_CONF_PG_HBA}
+    fi
 
     ECHO_DEBUG "Set client_min_messages to ERROR."
     perl -pi -e 's#.*(client_min_messages =).*#${1} error#' ${PGSQL_CONF_POSTGRESQL}
