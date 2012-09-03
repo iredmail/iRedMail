@@ -55,37 +55,37 @@
 # Modify below variables to fit your need ----
 #########################################################
 # Where to store backup copies.
-BACKUP_ROOTDIR='/var/vmail/backup'
+export BACKUP_ROOTDIR='/var/vmail/backup'
 
 # MySQL user and password.
-MYSQL_USER='root'
-MYSQL_PASSWD='passwd'
+export MYSQL_USER='root'
+export MYSQL_PASSWD='passwd'
 
 # Databases we should backup.
 # Multiple databases MUST be seperated by SPACE.
 # Your iRedMail server might have below databases:
 # mysql, roundcubemail, policyd (or postfixpolicyd), amavisd, iredadmin
-DATABASES='mysql roundcubemail policyd amavisd iredadmin'
+export DATABASES='mysql roundcubemail policyd amavisd iredadmin'
 
 # Database character set for ALL databases.
 # Note: Currently, it doesn't support to specify character set for each databases.
-DB_CHARACTER_SET="utf8"
+export DB_CHARACTER_SET="utf8"
 
 # Compress plain SQL file: YES, NO.
-COMPRESS="YES"
+export COMPRESS="YES"
 
 # Delete plain SQL files after compressed. Compressed copy will be remained.
-DELETE_PLAIN_SQL_FILE="YES"
+export DELETE_PLAIN_SQL_FILE="YES"
 
 #########################################################
 # You do *NOT* need to modify below lines.
 #########################################################
 # Commands.
-CMD_DATE='/bin/date'
-CMD_DU='du -sh'
-CMD_COMPRESS='bzip2 -9'
-CMD_MYSQLDUMP='mysqldump'
-CMD_MYSQL='mysql'
+export CMD_DATE='/bin/date'
+export CMD_DU='du -sh'
+export CMD_COMPRESS='bzip2 -9'
+export CMD_MYSQLDUMP='mysqldump'
+export CMD_MYSQL='mysql'
 
 # Date.
 export YEAR="$(${CMD_DATE} +%Y)"
