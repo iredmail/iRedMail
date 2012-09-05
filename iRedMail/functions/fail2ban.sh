@@ -48,7 +48,7 @@ action      = iptables[name=ssh, port="ssh", protocol=tcp]
 #               sendmail-whois[name=ssh, dest=root, sender=fail2ban@mail.com]
 logpath     = ${FAIL2BAN_SSHD_LOGFILE}
 maxretry    = 5
-ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 192.168.1.0/24
+ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 
 [roundcube-iredmail]
 enabled     = true
@@ -58,7 +58,7 @@ logpath     = ${RCM_LOGFILE}
 findtime    = 3600
 maxretry    = 5
 bantime     = 3600
-ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 192.168.1.0/24
+ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 
 [dovecot-iredmail]
 enabled     = true
@@ -68,7 +68,7 @@ logpath     = ${DOVECOT_LOG_FILE}
 maxretry    = 5
 findtime    = 300
 bantime     = 3600
-ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 192.168.1.0/24
+ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 
 [postfix-iredmail]
 enabled     = true
@@ -78,7 +78,7 @@ action      = iptables-multiport[name=postfix, port="${FAIL2BAN_DISABLED_SERVICE
 logpath     = ${MAILLOG}
 bantime     = 3600
 maxretry    = 5
-ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 192.168.1.0/24
+ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 EOF
 
     ECHO_DEBUG "Create filter: ${FAIL2BAN_FILTER_DIR}/${FAIL2BAN_FILTER_ROUNDCUBE}.conf."
