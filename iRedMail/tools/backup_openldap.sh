@@ -59,13 +59,13 @@
 #########################################################
 
 # Where to store backup copies.
-BACKUP_ROOTDIR='/var/vmail/backup'
+export BACKUP_ROOTDIR='/var/vmail/backup'
 
 # Compress plain SQL file: YES, NO.
-COMPRESS="YES"
+export COMPRESS="YES"
 
 # Delete plain LDIF files after compressed. Compressed copy will be remained.
-DELETE_PLAIN_LDIF_FILE="YES"
+export DELETE_PLAIN_LDIF_FILE="YES"
 
 #########################################################
 # You do *NOT* need to modify below lines.
@@ -74,9 +74,9 @@ DELETE_PLAIN_LDIF_FILE="YES"
 export PATH="$PATH:/usr/sbin:/usr/local/sbin/"
 
 # Commands.
-CMD_DATE='/bin/date'
-CMD_DU='du -sh'
-CMD_COMPRESS='bzip2 -9'
+export CMD_DATE='/bin/date'
+export CMD_DU='du -sh'
+export CMD_COMPRESS='bzip2 -9'
 
 if [ -f /etc/ldap/slapd.conf ]; then
     export CMD_SLAPCAT='slapcat -f /etc/ldap/slapd.conf'
