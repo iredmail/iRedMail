@@ -80,6 +80,8 @@ export DELETE_PLAIN_SQL_FILE="YES"
 #########################################################
 # You do *NOT* need to modify below lines.
 #########################################################
+export PATH='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin'
+
 # Commands.
 export CMD_DATE='/bin/date'
 export CMD_DU='du -sh'
