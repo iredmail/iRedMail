@@ -376,6 +376,28 @@ disable_service_rh()
     done
 }
 
+enable_service_suse()
+{
+    services="$@"
+    for i in $services; do
+        if [ -x /etc/init.d/$i ]; then
+            ECHO_DEBUG "Enable service: $i."
+            systemctl enable ${i}.service
+        fi
+    done
+}
+
+disable_service_suse()
+{
+    services="$@"
+    for i in $services; do
+        if [ -x /etc/init.d/$i ]; then
+            ECHO_DEBUG "Disable service: $i."
+            systemctl disable ${i}.service >/dev/null
+        fi
+    done
+}
+
 enable_service_debian()
 {
     services="$@"

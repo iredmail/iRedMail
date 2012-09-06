@@ -78,7 +78,7 @@ EOF
     chmod +x ${IREDAPD_ROOT_DIR}/iredapd/src/iredapd.py
 
     ECHO_DEBUG "Make iredapd start after system startup."
-    eval ${enable_service} iredapd >/dev/null
+    eval ${enable_service} iredapd &>/dev/null
     export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
 
     # Set file permission.

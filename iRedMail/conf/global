@@ -430,8 +430,8 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export LIST_FILES_IN_PKG='rpm -ql'
 
     # Service control.
-    export enable_service='enable_service_rh'
-    export disable_service='disable_service_rh'
+    export enable_service='enable_service_suse'
+    export disable_service='disable_service_suse'
 
     # Syslog config file: syslog.
     export SYSLOG_CONF='/etc/rsyslog.conf'
