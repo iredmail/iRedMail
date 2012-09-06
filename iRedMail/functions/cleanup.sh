@@ -282,21 +282,23 @@ EOF
     fi
 
     # Backup PostgreSQL databases
-    #if [ X"${BACKEND}" == X'PGSQL' ]; then
-    #   ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_PGSQL}"
-    #
-    #   backup_file ${BACKUP_SCRIPT_PGSQL}
-    #   cp ${TOOLS_DIR}/backup_pgsql.sh ${BACKUP_SCRIPT_PGSQL}
-    #   chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_PGSQL}
-    #   chmod 0700 ${BACKUP_SCRIPT_PGSQL}
-    #
-    #   TODO
-    #   Add cron job
-    #   cat >> ${CRON_SPOOL_DIR}/root <<EOF
-## Backup on 03:30 AM
-#30   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_PGSQL}
-#EOF
-    #fi
+    if [ X"${BACKEND}" == X'PGSQL' ]; then
+        ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_PGSQL}"
+
+        backup_file ${BACKUP_SCRIPT_PGSQL}
+        cp ${TOOLS_DIR}/backup_pgsql.sh ${BACKUP_SCRIPT_PGSQL}
+        chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_PGSQL}
+        chmod 0700 ${BACKUP_SCRIPT_PGSQL}
+
+        perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_PGSQL}
+        perl -pi -e 's#^(export DATABASES=).*#${1}"$ENV{PGSQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_PGSQL}
+
+        # Add cron job
+        cat >> ${CRON_SPOOL_DIR}/root <<EOF
+# Backup on 03:01 AM
+1   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_PGSQL}
+EOF
+    fi
 
     echo 'export status_cleanup_backup_scripts="DONE"' >> ${STATUS_FILE}
 }

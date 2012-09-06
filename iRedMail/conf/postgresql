@@ -27,8 +27,6 @@
 export PGSQL_SYS_USER='postgres'
 export PGSQL_SYS_GROUP='postgres'
 
-export PGSQL_ROOT_USER='postgres'
-
 export PGSQL_SYS_USER_HOME='/var/lib/postgresql'
 
 export PGSQL_VERSION='9.1'  # Required on Gentoo
@@ -69,7 +67,6 @@ elif [ X"${DISTRO}" == X'GENTOO' ]; then
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PGSQL_SYS_USER='pgsql'
     export PGSQL_SYS_GROUP='pgsql'
-    export PGSQL_ROOT_USER='pgsql'
     export PGSQL_SYS_USER_HOME='/usr/local/pgsql'
 
     export PGSQL_CONF_DIR="${PGSQL_SYS_USER_HOME}/data"
@@ -80,7 +77,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export PGSQL_SYS_USER='_postgresql'
     export PGSQL_SYS_GROUP='_postgresql'
-    export PGSQL_ROOT_USER='_postgresql'
     export PGSQL_SYS_USER_HOME='/var/postgresql'
 
     export PGSQL_CONF_DIR="${PGSQL_SYS_USER_HOME}/data"
@@ -94,6 +90,7 @@ else
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"
 fi
 
+export PGSQL_ROOT_USER="${PGSQL_SYS_USER}"
 export PGSQL_RC_SCRIPT="${DIR_RC_SCRIPTS}/${PGSQL_RC_SCRIPT_NAME}"
 
 # ~/.pgpass
