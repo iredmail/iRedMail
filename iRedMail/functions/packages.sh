@@ -438,13 +438,25 @@ EOF
     # RC script ready in early stage.
 
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH} python-psycopg2${PKG_ARCH}"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH} MySQL-python${PKG_ARCH}"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} MySQL-python${PKG_ARCH}"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2${PKG_ARCH}"
+
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} python-ldap"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysql"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysql"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
+
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} python-ldap python-psycopg2 python-mysqldb"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
+
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} python-ldap"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap mysql-python"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-python"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} psycopg"
+
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py-ldap py-mysql"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py-mysql"
@@ -455,19 +467,19 @@ EOF
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2${PKG_ARCH} python-webpy.noarch MySQL-python${PKG_ARCH} mod_wsgi${PKG_ARCH}"
+        ALL_PKGS="${ALL_PKGS} python-jinja2${PKG_ARCH} python-webpy.noarch mod_wsgi${PKG_ARCH}"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-mysql python-xml"
+        ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-xml"
 
         # openSUSE-12.1: Web.py will be installed locally with command 'easy_install'.
         [ X"${DISTRO_CODENAME}" == X'asparagus' ] && ALL_PKGS="${ALL_PKGS} python-distribute"
         [ X"${DISTRO_CODENAME}" == X'mantis' ] && ALL_PKGS="${ALL_PKGS} python-web.py"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-mysqldb python-jinja2 python-netifaces python-webpy"
+        ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-jinja2 python-netifaces python-webpy"
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        ALL_PKGS="${ALL_PKGS} jinja webpy mysql-python mod_wsgi"
+        ALL_PKGS="${ALL_PKGS} jinja webpy mod_wsgi"
 
         gentoo_add_use_flags 'dev-python/jinja' 'examples i18n vim-syntax'
         # Don't use python-3

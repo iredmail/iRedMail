@@ -67,7 +67,7 @@ add_user_iredadmin()
         groupadd ${IREDADMIN_HTTPD_GROUP} 2>/dev/null
         useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_USER} 2>/dev/null
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        groupadd ${IREDADMIN_HTTPD_GROUP}
+        groupadd ${IREDADMIN_HTTPD_GROUP} &>/dev/null
         useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_USER} 2>/dev/null
     else
         useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} ${IREDADMIN_HTTPD_GROUP}
@@ -87,7 +87,7 @@ add_user_iredapd()
         groupadd ${IREDAPD_DAEMON_GROUP}
         useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDAPD_DAEMON_GROUP} ${IREDAPD_DAEMON_USER} 2>/dev/null
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        groupadd ${IREDAPD_DAEMON_GROUP}
+        groupadd ${IREDAPD_DAEMON_GROUP} &>/dev/null
         useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDAPD_DAEMON_GROUP} ${IREDAPD_DAEMON_USER} 2>/dev/null
     else
         useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" ${IREDAPD_DAEMON_USER}

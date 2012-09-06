@@ -86,22 +86,14 @@ cluebringer_config()
         perl -pi -e 's/^(DB_Type=).*/${1}mysql/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Host=).*/${1}$ENV{MYSQL_SERVER}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Port=).*/${1}$ENV{MYSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
+
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        perl -pi -e 's/^(#*)(DSN=DBI:Pg:).*/${2}host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+        # Comment out all default DSN settings
+        perl -pi -e 's/^(DSN=.*)/#${1}/g' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(Username=.*)/#${1}/g' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(Password=.*)/#${1}/g' ${CLUEBRINGER_CONF}
 
-        perl -pi -e 's/^(DB_Type=).*/${1}pgsql/' ${CLUEBRINGER_CONF}
-        perl -pi -e 's/^(DB_Host=).*/${1}$ENV{PGSQL_SERVER}/' ${CLUEBRINGER_CONF}
-        perl -pi -e 's/^(DB_Port=).*/${1}$ENV{PGSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
-
-        if [ X"${DISTRO}" == X'FREEBSD' ]; then
-            # Comment out all default DSN settings
-            perl -pi -e 's/^(DSN=.*)/#${1}/g' ${CLUEBRINGER_CONF}
-            perl -pi -e 's/^(Username=.*)/#${1}/g' ${CLUEBRINGER_CONF}
-            perl -pi -e 's/^(Password=.*)/#${1}/g' ${CLUEBRINGER_CONF}
-
-            # Enable Pg
-            perl -pi -e 's#^(.database.)$#${1}\nDSN=DBI:Pg:host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}#' ${CLUEBRINGER_CONF}
-        fi
+        perl -pi -e 's#^(.database.)$#${1}\nDSN=DBI:Pg:host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}#' ${CLUEBRINGER_CONF}
     fi
 
     # Database
@@ -462,5 +454,11 @@ EOF
 </Directory>
 EOF
 
+    if [ X"${DISTRO}" == X'SUSE' -a X"${BACKEND}" == X'PGSQL' ]; then
+        # Don't enable Cluebringer webui since we don't have Apache module mod_auth_pgsql
+        backup_file ${CLUEBRINGER_HTTPD_CONF}
+        rm ${CLUEBRINGER_HTTPD_CONF} &>/dev/null
+        backup_file ${CLUEBRINGER_HTTPD_CONF}
+    fi
     echo 'export status_cluebringer_webui_config="DONE"' >> ${STATUS_FILE}
 }
