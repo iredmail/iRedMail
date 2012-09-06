@@ -837,7 +837,7 @@ EOF
             portname="$( echo ${i} | tr '/' '_' | tr -d '[-\.]')"
             status="\$status_fetch_port_$portname"
             if [ X"$(eval echo ${status})" != X"DONE" ]; then
-                ECHO_INFO "Fetching required distfiles for port: ${i}"
+                ECHO_INFO "Fetching all distfiles for port ${i} and dependencies"
                 cd ${PORT_WRKDIRPREFIX}/${i}
 
                 # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
@@ -853,7 +853,7 @@ EOF
                     exit 255
                 fi
             else
-                ECHO_INFO "[SKIP] Fetching distfiles for port: ${i}."
+                ECHO_INFO "[SKIP] Fetching all distfiles for port ${i} and dependencies"
             fi
         fi
     done
