@@ -26,13 +26,21 @@
 export RCM_VERSION='0.8.1'
 export RCM_TARBALL="roundcubemail-${RCM_VERSION}.tar.gz"
 
-# HTTPD related
+# Apache related settings
 if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    # Install Roundcube via ports tree
+    export RCM_USE_SOURCE='NO'
+
     export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcube"
     export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
+
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    # Install Roundcube with binary package
+    export RCM_USE_SOURCE='NO'
+
     export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcubemail"
     export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
+
 else
     export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcubemail-${RCM_VERSION}"
     export RCM_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/roundcubemail"

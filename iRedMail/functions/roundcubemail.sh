@@ -12,8 +12,7 @@ rcm_install()
     echo "export RCM_DB_USER='${RCM_DB_USER}'" >> ${CONFIG_FILE}
     echo "export RCM_DB_PASSWD='${RCM_DB_PASSWD}'" >> ${CONFIG_FILE}
 
-    # FreeBSD: install via ports tree.
-    if [ X"${DISTRO}" != X"FREEBSD" -a X"${DISTRO}" != X'OPENBSD' ]; then
+    if [ X"${RCM_USE_SOURCE}" != X'YES' ]; then
         cd ${MISC_DIR}
 
         # Extract source tarball.
