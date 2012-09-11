@@ -231,6 +231,7 @@ enabledService: managesievesecured
 enabledService: sieve
 enabledService: sievesecured
 enabledService: smtp
+enabledService: smtpsecured
 enabledService: deliver
 enabledService: lda
 enabledService: forward
