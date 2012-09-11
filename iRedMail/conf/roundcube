@@ -25,6 +25,7 @@
 # ---------------------------------------
 export RCM_VERSION='0.8.1'
 export RCM_TARBALL="roundcubemail-${RCM_VERSION}.tar.gz"
+export RCM_USE_SOURCE='YES'
 
 # Apache related settings
 if [ X"${DISTRO}" == X"FREEBSD" ]; then
