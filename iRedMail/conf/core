@@ -76,7 +76,7 @@ ECHO_ERROR()
 
 ECHO_DEBUG()
 {
-    if [ X"${_DEBUG}" == X"YES" ]; then
+    if [ X"${IREDMAIL_DEBUG}" == X"YES" ]; then
         if [ X"$1" == X"-n" ]; then
             shift 1
             if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
@@ -114,11 +114,11 @@ backup_file()
         for conf_file in $@; do
             if [ -f ${conf_file} ]; then
                 if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-                    if [ X"${_DEBUG}" == X"YES" ]; then
+                    if [ X"${IREDMAIL_DEBUG}" == X"YES" ]; then
                         echo -e "\033[43m${_BACKUP_FLAG}\033[0m ${conf_file} -> $(basename ${conf_file}).${DATE}."
                     fi
                 else
-                    if [ X"${_DEBUG}" == X"YES" ]; then
+                    if [ X"${IREDMAIL_DEBUG}" == X"YES" ]; then
                         echo -e "${_BACKUP_FLAG} ${conf_file} -> $(basename ${conf_file}).${DATE}."
                     fi
                 fi

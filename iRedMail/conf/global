@@ -30,7 +30,7 @@ export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
 export LC_ALL=C
 
 # Debug mode: YES, NO.
-export _DEBUG="${_DEBUG:=NO}"
+export IREDMAIL_DEBUG="${IREDMAIL_DEBUG:=NO}"
 
 # -----------------
 # ---- Generic ----
