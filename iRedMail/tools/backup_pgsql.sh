@@ -42,10 +42,11 @@
 #########################################################
 # Modify below variables to fit your need ----
 #########################################################
-# Administrator user name. Usually, it's postgres.
-# FreeBSD: pgsql
-# OpenBSD: _postgresql
-export PGSQL_ROOT_USER='_postgresql'
+# System user used to run PostgreSQL daemon.
+#   - On Linux, it's postgres.
+#   - On FreeBSD, it's pgsql.
+#   - On OpenBSD, it's _postgresql.
+export PGSQL_SYS_USER='postgres'
 
 # Where to store backup copies.
 export BACKUP_ROOTDIR='/var/vmail/backup'
@@ -92,11 +93,11 @@ export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
 # Check and create directories.
 [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} 2>/dev/null
 
-# Get HOME directory of PGSQL_ROOT_USER
-export PGSQL_ROOT_USER_HOME="$(su - ${PGSQL_ROOT_USER} -c 'echo $HOME')"
+# Get HOME directory of PGSQL_SYS_USER
+export PGSQL_SYS_USER_HOME="$(su - ${PGSQL_SYS_USER} -c 'echo $HOME')"
 
 # Initialize log file.
-echo "* Starting backup: ${TIMESTAMP}." >${LOGFILE}
+echo "* Starting at: ${YEAR}-${MONTH}-${DAY}-${TIME}." >${LOGFILE}
 echo "* Backup directory: ${BACKUP_DIR}." >>${LOGFILE}
 
 # Backup.
@@ -105,14 +106,14 @@ for db in ${DATABASES}; do
     output_sql="${db}-${TIMESTAMP}.sql"
 
     # Verify db existence
-    su - "${PGSQL_ROOT_USER}" -c "psql -d ${db} -c '\q' >/dev/null 2>&1"
+    su - "${PGSQL_SYS_USER}" -c "psql -d ${db} -c '\q' >/dev/null 2>&1"
 
     # Dump
     if [ X"$?" == X'0' ]; then
-        su - "${PGSQL_ROOT_USER}" -c "${CMD_PG_DUMP} ${db} > ${PGSQL_ROOT_USER_HOME}/${output_sql}"
+        su - "${PGSQL_SYS_USER}" -c "${CMD_PG_DUMP} ${db} > ${PGSQL_SYS_USER_HOME}/${output_sql}"
 
         # Move to backup directory.
-        mv ${PGSQL_ROOT_USER_HOME}/${output_sql} ${BACKUP_DIR}
+        mv ${PGSQL_SYS_USER_HOME}/${output_sql} ${BACKUP_DIR}
 
         # Compress
         if [ X"${COMPRESS}" == X"YES" ]; then
