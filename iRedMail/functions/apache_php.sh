@@ -375,6 +375,8 @@ Apache & PHP:
     * Directories:
         - ${HTTPD_SERVERROOT}
         - ${HTTPD_DOCUMENTROOT}
+    * See also:
+        - ${HTTPD_DOCUMENTROOT}/index.html
 
 EOF
 
