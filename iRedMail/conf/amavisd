@@ -31,6 +31,8 @@ export AMAVISD_DKIM_SELECTOR='dkim'
 export AMAVISD_DKIM_DIR='/var/lib/dkim'
 export AMAVISD_RC_SCRIPT_NAME='amavisd'
 
+export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
+
 # Database used to store incoming & outgoing email related information.
 export AMAVISD_DB_NAME='amavisd'
 export AMAVISD_DB_USER='amavisd'
@@ -49,7 +51,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
 
     if [ X"${DISTRO_VERSION}" == X"5" ]; then
         export AMAVISD_CONF='/etc/amavisd.conf'
-        export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
     elif [ X"${DISTRO_VERSION}" == X"6" ]; then
         export AMAVISD_CONF='/etc/amavisd/amavisd.conf'
     fi
@@ -103,7 +104,6 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
 
     export AMAVISD_CONF='/etc/amavisd.conf'
-    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
     export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
     export AMAVISD_MYHOME='/var/amavis'
@@ -121,7 +121,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export AMAVISD_CONF='/usr/local/etc/amavisd.conf'
     export AMAVISD_DKIM_CONF='/usr/local/etc/amavisd.conf'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
-    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
     # Override location of command 'altermime'
     export ALTERMIME_BIN='/usr/local/bin/altermime'
@@ -135,7 +134,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export AMAVISD_CONF='/etc/amavisd.conf'
     export AMAVISD_DKIM_CONF='/etc/amavisd.conf'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd.schema'
-    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
     export AMAVISD_DKIM_DIR='/var/amavisd/dkim'
 
