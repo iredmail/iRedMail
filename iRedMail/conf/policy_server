@@ -35,12 +35,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' ]; then
         export USE_CLUEBRINGER='YES'
         export USE_POLICYD='NO'
     fi
-
-elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" != X'lucid' ]; then
-        export USE_CLUEBRINGER='YES'
-        export USE_POLICYD='NO'
-    fi
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     if [ X"${BACKEND}" == X'PGSQL' ]; then
         export USE_CLUEBRINGER='YES'

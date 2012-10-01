@@ -169,6 +169,7 @@ EOF
     if [ X"${DISTRO}" == X"RHEL" ]; then
         # Enable wsgi.
         perl -pi -e 's/#(LoadModule.*wsgi_module.*modules.*mod_wsgi.so)/${1}/' ${HTTPD_CONF_DIR}/wsgi.conf
+
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         a2ensite default-ssl >/dev/null
 
@@ -178,12 +179,6 @@ EOF
         [ X"${BACKEND}" == X"OPENLDAP" ] && a2enmod authnz_ldap > /dev/null
         [ X"${BACKEND}" == X"MYSQL" ] && a2enmod auth_mysql > /dev/null
         [ X"${BACKEND}" == X"PGSQL" ] && a2enmod 000_auth_pgsql > /dev/null
-
-        # Ubuntu 10.04.
-        # Comments starting with '#' are deprecated.
-        if [ X"${DISTRO_CODENAME}" == X"lucid" ]; then
-            [ -d /etc/php5/cli/conf.d/ ] && perl -pi -e 's/(\s*)#/\1;/' /etc/php5/cli/conf.d/*.ini
-        fi
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         a2enmod deflate &>/dev/null

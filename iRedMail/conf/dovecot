@@ -78,9 +78,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'squeeze' \
-        -o X"${DISTRO_CODENAME}" == X'lucid' \
-        ]; then
+    if [ X"${DISTRO_CODENAME}" == X'squeeze' ]; then
         export DOVECOT_VERSION='1.2'
     fi
 

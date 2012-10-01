@@ -180,10 +180,6 @@ fi
 export HTTPD_CGIBIN_DIR="${HTTPD_SERVERROOT}/cgi-bin"
 
 # PHP connection type.
-if [ X"${DISTRO_CODENAME}" == X"lucid" ]; then
-    export PHP_CONN_TYPE='mysql'
-else
-    export PHP_CONN_TYPE='mysqli'
-fi
+export PHP_CONN_TYPE='mysqli'
 
 [ X"${BACKEND}" == X"PGSQL" ] && export PHP_CONN_TYPE='pgsql'

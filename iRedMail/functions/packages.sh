@@ -159,9 +159,7 @@ install_all()
         # Authentication modules
         ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql libapache2-mod-auth-pgsql"
 
-        if [ X"${DISTRO_CODENAME}" == X'squeeze' \
-            -o X"${DISTRO_CODENAME}" == X'lucid' \
-            ]; then
+        if [ X"${DISTRO_CODENAME}" == X'squeeze' ]; then
             ALL_PKGS="${ALL_PKGS} php5-mhash"
         fi
 
@@ -250,27 +248,6 @@ install_all()
             ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
         fi
 
-        if [ X"${DISTRO_CODENAME}" == X"lucid" ]; then
-            # Don't invoke dbconfig-common on Ubuntu.
-            dpkg-divert --rename /etc/dbconfig-common/postfix-policyd.conf
-            mkdir -p /etc/dbconfig-common/ 2>/dev/null
-            cat > /etc/dbconfig-common/postfix-policyd.conf <<EOF
-dbc_install='true'
-dbc_upgrade='false'
-dbc_remove=''
-dbc_dbtype='mysql'
-dbc_dbuser='postfix-policyd'
-dbc_dbpass="${POLICYD_DB_PASSWD}"
-dbc_dbserver=''
-dbc_dbport=''
-dbc_dbname='postfixpolicyd'
-dbc_dbadmin='root'
-dbc_basepath=''
-dbc_ssl=''
-dbc_authmethod_admin=''
-dbc_authmethod_user=''
-EOF
-        fi
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} policyd"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
@@ -306,9 +283,7 @@ EOF
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d"
 
-        if [ X"${DISTRO_CODENAME}" != X'squeeze' \
-            -a X"${DISTRO_CODENAME}" != X'lucid' \
-            ]; then
+        if [ X"${DISTRO_CODENAME}" != X'squeeze' ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-managesieved dovecot-sieve"
 
             if [ X"${BACKEND}" == X"OPENLDAP" ]; then

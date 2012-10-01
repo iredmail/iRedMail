@@ -28,7 +28,4 @@ export MANAGESIEVE_PORT='4190'
 if [ X"${DISTRO}" == X'RHEL' ]; then
     # RHEL 5
     [ X"${DISTRO_VERSION}" == X"5" ] && export MANAGESIEVE_PORT='2000'
-elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-    # Ubuntu 10.04
-    [ X"${DISTRO_CODENAME}" == X"lucid" ] && export MANAGESIEVE_PORT='2000'
 fi

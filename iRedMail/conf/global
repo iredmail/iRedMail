@@ -258,22 +258,20 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         export DISTRO='UBUNTU'
 
         # Ubuntu version number and code name:
-        #   - 10.04: lucid (Long Term Support by Ubuntu)
         #   - 12.04: precise (Long Term support by Ubuntu)
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
 
         # Support PGSQL backend on Ubuntu 11.10 and later releases
-        if [ X"${DISTRO_CODENAME}" != X"lucid" ]; then
-            export ENABLE_BACKEND_PGSQL='YES'
-        fi
+        export ENABLE_BACKEND_PGSQL='YES'
 
         # Unsupported releases.
         #   - 8.04: hardy
         #   - 8.10: intrepid
         #   - 9.04: jaunty
         #   - 9.10: karmic
+        #   - 10.04: lucid
         #   - 10.10: maverick
         #   - 11.04: natty
         #   - 11.10: oneiric
@@ -281,6 +279,7 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
             -o X"${DISTRO_CODENAME}" == X'intrepid' \
             -o X"${DISTRO_CODENAME}" == X'jaunty' \
             -o X"${DISTRO_CODENAME}" == X'karmic' \
+            -o X"${DISTRO_CODENAME}" == X'lucid' \
             -o X"${DISTRO_CODENAME}" == X'maverick' \
             -o X"${DISTRO_CODENAME}" == X'natty' \
             -o X"${DISTRO_CODENAME}" == X'oneiric' \
