@@ -404,7 +404,7 @@ EOF
     AuthUserFile /dev/null
 
     # Database related.
-    AuthMySQL_Password_Table admin
+    AuthMySQL_Password_Table mailbox
     Auth_MySQL_Username_Field username
     Auth_MySQL_Password_Field password
 

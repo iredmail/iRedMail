@@ -2,6 +2,7 @@ iRedMail-0.9.0:
     * Drop support for Ubuntu 10.04 (lucid), please use the latest LTS edition
       12.04 (precise) instead.
     * Fixed:
+        + Incorrect SQL table name in Cluebringer httpd config file.
         + Empty value of AMAVISD_VIRUSMAILS_DIR on RHEL/CENTOS/Scientific 6.
           Thanks kislik <kislik _at_ centrum.cz> for the report.
 
