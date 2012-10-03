@@ -1,4 +1,5 @@
 iRedMail-0.9.0:
+    * Drop support for FreeBSD 8.x.
     * Drop support for Ubuntu 10.04 (lucid), please use the latest LTS edition
       12.04 (precise) instead.
     * Fixed:
