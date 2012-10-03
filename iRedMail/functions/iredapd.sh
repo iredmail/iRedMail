@@ -168,7 +168,7 @@ EOF
         if ! grep 'iredapd.log' /etc/newsyslog.conf &>/dev/null; then
             # Define command used to restart iRedAPD service after rotated
             cat >> /etc/newsyslog.conf <<EOF
-${IREDAPD_LOG_FILE}    ${SYS_ROOT_USER}:${SYS_ROOT_GROUP}   640  7     *    24    Z "${DIR_RC_SCRIPTS}/iredapd restart"
+${IREDAPD_LOG_FILE}    ${SYS_ROOT_USER}:${SYS_ROOT_GROUP}   640  7     *    24    Z "${DIR_RC_SCRIPTS}/iredapd restart >/dev/null"
 EOF
         fi
     fi
