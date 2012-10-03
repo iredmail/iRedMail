@@ -31,12 +31,10 @@ export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin.conf"
 
 # Install phpPgAdmin with binary packages.
 if [ X"${DISTRO}" == X'SUSE' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'mantis' ]; then
-        export PHPPGADMIN_USE_SOURCE='NO'
-        export PHPPGADMIN_HTTPD_ROOT="${HTTPD_DOCUMENTROOT}/phpPgAdmin"
-        export PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK="${PHPMYADMIN_HTTPD_ROOT}"
-        export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin"
-    fi
+    export PHPPGADMIN_USE_SOURCE='NO'
+    export PHPPGADMIN_HTTPD_ROOT="${HTTPD_DOCUMENTROOT}/phpPgAdmin"
+    export PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK="${PHPMYADMIN_HTTPD_ROOT}"
+    export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin"
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export PHPPGADMIN_USE_SOURCE='NO'
     export PHPPGADMIN_HTTPD_ROOT="/usr/share/phppgadmin"

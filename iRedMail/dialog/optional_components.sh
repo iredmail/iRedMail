@@ -26,9 +26,7 @@
 # Detect selectable menu items
 if [ X"${DISTRO}" == X'SUSE' ]; then
     # Apache module mod_auth_pgsql is not available
-    if [ X"${DISTRO_CODENAME}" == X'mantis' ]; then
-        [ X"${BACKEND}" == X'PGSQL' ] && export DIALOG_SELECTABLE_AWSTATS='NO'
-    fi
+    [ X"${BACKEND}" == X'PGSQL' ] && export DIALOG_SELECTABLE_AWSTATS='NO'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     # Binary/port Awstats is not available
     export DIALOG_SELECTABLE_AWSTATS='NO'

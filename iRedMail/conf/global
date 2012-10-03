@@ -238,21 +238,18 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         export DISTRO_VERSION="$(grep 'VERSION' /etc/SuSE-release | awk '{print $3}')"
 
         # code name
-        #   - 12.1: asparagus
         #   - 12.2: mantis
         export DISTRO_CODENAME="$(grep 'CODENAME' /etc/SuSE-release | awk '{print $3}' |tr [A-Z] [a-z])"
 
-        # Unsupported releases
-        #   - 11.x
-        #   - 10.x
-        if echo "${DISTRO_VERSION}" | grep '^1[0|1]' &>/dev/null ; then
-            # Both 10.x and 11.x are unsupported
+        # Unsupported releases: 10.x, 11.x, 12.1 (asparagus).
+        if echo "${DISTRO_VERSION}" | grep '^1[01]' &>/dev/null ; then
+            export UNSUPPORTED_RELEASE='YES'
+        elif echo "${DISTRO_VERSION}" | grep '^12\.1' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
 
-        if [ X"${DISTRO_CODENAME}" == X'mantis' ]; then
-            export ENABLE_BACKEND_PGSQL='YES'
-        fi
+        export ENABLE_BACKEND_PGSQL='YES'
+
     elif [ -f /etc/lsb-release ]; then
         # Ubuntu
         export DISTRO='UBUNTU'

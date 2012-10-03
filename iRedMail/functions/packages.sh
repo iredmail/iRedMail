@@ -269,15 +269,12 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        [ X"${DISTRO_CODENAME}" == X'asparagus' ] && ALL_PKGS="${ALL_PKGS} dovecot20"
-        [ X"${DISTRO_CODENAME}" == X'mantis' ] && ALL_PKGS="${ALL_PKGS} dovecot21"
+        ALL_PKGS="${ALL_PKGS} dovecot21"
 
         if [ X"${BACKEND}" == X"MYSQL" ]; then
-            [ X"${DISTRO_CODENAME}" == X'asparagus' ] && ALL_PKGS="${ALL_PKGS} dovecot20-backend-mysql"
-            [ X"${DISTRO_CODENAME}" == X'mantis' ] && ALL_PKGS="${ALL_PKGS} dovecot21-backend-mysql"
+            ALL_PKGS="${ALL_PKGS} dovecot21-backend-mysql"
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            [ X"${DISTRO_CODENAME}" == X'asparagus' ] && ALL_PKGS="${ALL_PKGS} dovecot20-backend-pgsql"
-            [ X"${DISTRO_CODENAME}" == X'mantis' ] && ALL_PKGS="${ALL_PKGS} dovecot21-backend-pgsql"
+            ALL_PKGS="${ALL_PKGS} dovecot21-backend-pgsql"
         fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -445,11 +442,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} python-jinja2${PKG_ARCH} python-webpy.noarch mod_wsgi${PKG_ARCH}"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-xml"
-
-        # openSUSE-12.1: Web.py will be installed locally with command 'easy_install'.
-        [ X"${DISTRO_CODENAME}" == X'asparagus' ] && ALL_PKGS="${ALL_PKGS} python-distribute"
-        [ X"${DISTRO_CODENAME}" == X'mantis' ] && ALL_PKGS="${ALL_PKGS} python-web.py"
+        ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-xml python-web.py"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-jinja2 python-netifaces python-webpy"
@@ -543,13 +536,6 @@ install_all()
         fi
         eval ${install_pkg} ${ALL_PKGS}
 
-        if [ X"${DISTRO}" == X"SUSE" \
-            -a X"${DISTRO_CODENAME}" == X'asparagus' \
-            -a X"${USE_IREDADMIN}" == X'YES' \
-            ]; then
-            ECHO_DEBUG "Install web.py (${MISC_DIR}/web.py-*.tar.bz)."
-            easy_install ${MISC_DIR}/web.py-*.tar.gz >/dev/null
-        fi
         echo 'export status_install_all_pkgs="DONE"' >> ${STATUS_FILE}
     }
 

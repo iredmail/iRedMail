@@ -1,7 +1,9 @@
 iRedMail-0.9.0:
-    * Drop support for FreeBSD 8.x.
-    * Drop support for Ubuntu 10.04 (lucid), please use the latest LTS edition
-      12.04 (precise) instead.
+    * Drop support for below distributions and releases:
+        + FreeBSD 8.x.
+        + Ubuntu 10.04 (lucid). Please use 12.04 (precise) instead.
+        + openSUSE 12.1 (asparagus). Please use 12.2 (mantis) instead.
+
     * Fixed:
         + Incorrect SQL table name in Cluebringer httpd config file.
         + Empty value of AMAVISD_VIRUSMAILS_DIR on RHEL/CENTOS/Scientific 6.

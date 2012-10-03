@@ -23,17 +23,6 @@ phpmyadmin_install()
         ln -s ${PHPMYADMIN_HTTPD_ROOT} ${PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK} >/dev/null
     fi
 
-    ECHO_DEBUG "Create directory alias for phpMyAdmin in Apache: ${HTTPD_CONF_DIR}/phpmyadmin.conf."
-    if [ X"${DISTRO_CODENAME}" != X'mantis' ]; then
-        cat > ${HTTPD_CONF_DIR}/phpmyadmin.conf <<EOF
-${CONF_MSG}
-# Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
-<Directory "${PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK}/">
-    Options -Indexes
-</Directory>
-EOF
-    fi
-
     # Make phpMyAdmin can be accessed via HTTPS only.
     perl -pi -e 's#^(</VirtualHost>)#Alias /phpmyadmin "$ENV{PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
 
