@@ -448,6 +448,11 @@ amavisd_config_general()
 
 \$sql_allow_8bit_address = 1;
 \$timestamp_fmt_mysql = 1;
+
+# a string to prepend to Subject (for local recipients only) if mail could
+# not be decoded or checked entirely, e.g. due to password-protected archives
+#\$undecipherable_subject_tag = '***UNCHECKED*** ';  # undef disables it
+\$undecipherable_subject_tag = undef;
 EOF
 
     # Write dkim settings.
@@ -585,6 +590,13 @@ EOF
         # ACL
         cat >> ${AMAVISD_CONF} <<EOF
 @inet_acl = qw(${LOCAL_ADDRESS});
+EOF
+    fi
+
+    # Don't send email with subject "UNCHECKED contents in mail FROM xxx".
+    if [ X"${AMAVISD_VERSION}" == X'2.7' ]; then
+        cat >> ${AMAVISD_CONF} <<EOF
+delete \$admin_maps_by_ccat{&CC_UNCHECKED};
 EOF
     fi
 

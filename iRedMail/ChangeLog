@@ -1,4 +1,6 @@
 iRedMail-0.9.0:
+    * Dovecot will send an email to postmaster@ if user's mailbox is larger
+      than or equal to 95% full.
     * Drop support for below distributions and releases:
         + FreeBSD 8.x.
         + Ubuntu 10.04 (lucid). Please use 12.04 (precise) instead.
