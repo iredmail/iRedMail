@@ -217,7 +217,7 @@ sn: ${USERNAME}
 givenName: ${USERNAME}
 uid: ${USERNAME}
 shadowLastChange: 0
-amavisLocal: true
+amavisLocal: TRUE
 enabledService: internal
 enabledService: doveadm
 enabledService: lib-storage

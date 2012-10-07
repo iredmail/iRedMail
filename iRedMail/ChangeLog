@@ -7,6 +7,9 @@ iRedMail-0.9.0:
         + openSUSE 12.1 (asparagus). Please use 12.2 (mantis) instead.
 
     * Fixed:
+        + amavisLocal=true should be amavisLocal=TRUE (upper cases) in
+          tools/create_mail_user_OpenLDAP.sh.
+          Thanks soxgoon @https://bitbucket.org/ (issue #6)
         + Incorrect SQL table name in Cluebringer httpd config file.
         + Empty value of AMAVISD_VIRUSMAILS_DIR on RHEL/CENTOS/Scientific 6.
           Thanks kislik <kislik _at_ centrum.cz> for the report.
