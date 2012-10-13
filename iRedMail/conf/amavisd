@@ -49,16 +49,18 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
 
+    export AMAVISD_MYHOME='/var/spool/amavisd'
+    export AMAVISD_QUARANTINEDIR="${AMAVISD_MYHOME}/quarantine"
+    export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
+
     if [ X"${DISTRO_VERSION}" == X"5" ]; then
         export AMAVISD_CONF='/etc/amavisd.conf'
     elif [ X"${DISTRO_VERSION}" == X"6" ]; then
         export AMAVISD_CONF='/etc/amavisd/amavisd.conf'
+        export AMAVISD_VIRUSMAILS_DIR="${AMAVISD_QUARANTINEDIR}"
     fi
 
     export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
-    export AMAVISD_MYHOME='/var/spool/amavisd'
-    export AMAVISD_QUARANTINEDIR="${AMAVISD_MYHOME}/quarantine"
-    export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
 
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     # openSUSE-12.1/12.2 ships Amavisd-new-2.7.0

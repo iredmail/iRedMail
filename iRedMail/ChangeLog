@@ -13,6 +13,7 @@ iRedMail-0.9.0:
           Thanks soxgoon @https://bitbucket.org/ (issue #6)
         + Incorrect SQL table name in Cluebringer httpd config file.
         + Empty value of AMAVISD_VIRUSMAILS_DIR on RHEL/CENTOS/Scientific 6.
+          This issue causes cron job deletes DKIM pem files.
           Thanks kislik <kislik _at_ centrum.cz> for the report.
 
 iRedMail-0.8.2:
