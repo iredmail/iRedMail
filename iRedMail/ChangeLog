@@ -1,3 +1,8 @@
+iRedMail-0.9.0:
+    * Fixed:
+        - Incorrect LDAP uri in cluebringer Apache config file.
+          Thanks labasus <labas _at_ gmx.co.uk> for the report.
+
 iRedMail-0.8.3:
     * Works on Ubuntu 12.10 (quantal).
     * Dovecot will send an email to postmaster@ if user's mailbox is larger
