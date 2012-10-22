@@ -1,8 +1,3 @@
-iRedMail-0.9.0:
-    * Fixed:
-        - Incorrect LDAP uri in cluebringer Apache config file.
-          Thanks labasus <labas _at_ gmx.co.uk> for the report.
-
 iRedMail-0.8.3:
     * Works on Ubuntu 12.10 (quantal).
     * Dovecot will send an email to postmaster@ if user's mailbox is larger
@@ -13,6 +8,8 @@ iRedMail-0.8.3:
         + openSUSE 12.1 (asparagus). Please use 12.2 (mantis) instead.
 
     * Fixed:
+        + Incorrect LDAP uri in cluebringer Apache config file.
+          Thanks labasus <labas _at_ gmx.co.uk> for the report.
         + amavisLocal=true should be amavisLocal=TRUE (upper cases) in
           tools/create_mail_user_OpenLDAP.sh.
           Thanks soxgoon @https://bitbucket.org/ (issue #6)

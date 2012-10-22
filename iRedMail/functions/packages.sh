@@ -243,6 +243,9 @@ install_all()
             elif [ X"${BACKEND}" == X"PGSQL" ]; then
                 ALL_PKGS="${ALL_PKGS} postfix-cluebringer-pgsql"
             fi
+        else
+            ALL_PKGS="${ALL_PKGS} postfix-policyd"
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
         fi
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
