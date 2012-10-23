@@ -96,6 +96,7 @@ postfix_config_basic()
     postconf -e mynetworks_style="subnet"
     postconf -e smtpd_data_restrictions='reject_unauth_pipelining'
     postconf -e smtpd_reject_unlisted_recipient='yes'   # Default
+    postconf -e smtpd_reject_unlisted_sender='yes'
     postconf -e smtpd_sender_restrictions="permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"
     postconf -e delay_warning_time='0h'
     postconf -e maximal_queue_lifetime='1d'
@@ -151,9 +152,6 @@ postfix_config_basic()
     postconf -e virtual_uid_maps="static:${VMAIL_USER_UID}"
     postconf -e virtual_gid_maps="static:${VMAIL_USER_GID}"
     postconf -e virtual_mailbox_base="${STORAGE_BASE_DIR}"
-
-    # Reject unlisted sender
-    postconf -e smtpd_reject_unlisted_sender='yes'
 
     # Simple backscatter block method.
     #postconf -e header_checks="pcre:${POSTFIX_FILE_HEADER_CHECKS}"
