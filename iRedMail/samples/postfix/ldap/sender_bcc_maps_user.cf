@@ -7,6 +7,6 @@ bind_dn         = cn=vmail,dc=example,dc=com
 bind_pw         = RBUuFDo31MJbLkJgrwkaKkmRg7Cldw
 search_base     = ou=Users,domainName=%d,PH_LDAP_BASEDN
 scope           = one
-query_filter    = (&(mail=%s)(objectClass=mailUser)(accountStatus=active)(enabledService=mail)(enabledService=senderbcc))
+query_filter    = (&(|(mail=%s)(&(enabledService=shadowaddress)(shadowAddress=%s)))(objectClass=mailUser)(accountStatus=active)(enabledService=mail)(enabledService=senderbcc))
 result_attribute= userSenderBccAddress
 debuglevel      = 0

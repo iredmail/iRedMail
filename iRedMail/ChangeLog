@@ -1,3 +1,8 @@
+iRedMail-0.8.4:
+    * Fixed:
+        - Cannot handle alias domain in Postfix per-user bcc.
+          Thanks Ward De Backer <wdb _at_ stabe.be> for the report.
+
 iRedMail-0.8.3:
     * Works on Ubuntu 12.10 (quantal).
     * Dovecot will send an email to postmaster@ if user's mailbox is larger
