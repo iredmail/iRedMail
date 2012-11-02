@@ -65,6 +65,8 @@ postfix_config_basic()
     fi
 
     # Use ipv4 only
+    # Comment out the parameter first to avoid duplicate entries
+    perl -pi -e 's/^(inet_protocols*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
     postconf -e inet_protocols='ipv4'
 
     # Do not set virtual_alias_domains.
