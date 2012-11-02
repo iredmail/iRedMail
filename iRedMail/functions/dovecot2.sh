@@ -432,9 +432,9 @@ enable_dovecot2()
         if [ -f /etc/login.conf ]; then
             if ! grep '^dovecot:' /etc/login.conf &>/dev/null; then
                 cat >> /etc/login.conf <<EOF
-dovecot:\
-        :openfiles-cur=512:\
-        :openfiles-max=2048:\
+dovecot:\\
+        :openfiles-cur=512:\\
+        :openfiles-max=2048:\\
         :tc=daemon:
 EOF
             fi
