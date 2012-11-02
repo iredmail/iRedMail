@@ -372,6 +372,7 @@ EOF
 
     cat ${TIP_FILE} >> /tmp/.tips.eml
     ${DOVECOT_DELIVER} -c ${DOVECOT_CONF} -f root@${HOSTNAME} -d ${tip_recipient} < /tmp/.tips.eml
+    rm -f /tmp/.tips.eml &>/dev/null
 
     cat > /tmp/.links.eml <<EOF
 From: root@${HOSTNAME}
@@ -381,6 +382,7 @@ Subject: Useful resources for iRedMail administrator
 EOF
     cat ${DOC_FILE} >> /tmp/.links.eml
     ${DOVECOT_DELIVER} -c ${DOVECOT_CONF} -f root@${HOSTNAME} -d ${tip_recipient} < /tmp/.links.eml
+    rm -f /tmp/.links.eml &>/dev/null
 
     if [ X"${DISTRO}" == X'GENTOO' \
         -o X"${DISTRO}" == X'FREEBSD' \
