@@ -1,4 +1,5 @@
 iRedMail-0.8.4:
+    * Works on OpenBSD 5.2.
     * Fixed:
         - Cannot handle alias domain in Postfix per-user bcc.
           Thanks Ward De Backer <wdb _at_ stabe.be> for the report.
