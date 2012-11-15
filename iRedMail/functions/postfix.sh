@@ -82,6 +82,11 @@ postfix_config_basic()
     postconf -e myhostname="${HOSTNAME}"
     postconf -e myorigin="${HOSTNAME}"
 
+    # Disable the rewriting of the form "user%domain" to "user@domain".
+    postconf -e allow_percent_hack="no"
+    # Disable the rewriting of "site!user" into "user@site".
+    postconf -e swap_bangpath="no"
+
     # Remove the characters before first dot in myhostname is mydomain.
     echo "${HOSTNAME}" | grep '\..*\.' >/dev/null 2>&1
     if [ X"$?" == X"0" ]; then
@@ -101,8 +106,8 @@ postfix_config_basic()
     postconf -e smtpd_reject_unlisted_sender='yes'
     postconf -e smtpd_sender_restrictions="permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"
     postconf -e delay_warning_time='0h'
-    postconf -e maximal_queue_lifetime='1d'
-    postconf -e bounce_queue_lifetime='1d'
+    postconf -e maximal_queue_lifetime='4h'
+    postconf -e bounce_queue_lifetime='4h'
     postconf -e recipient_delimiter='+'
     postconf -e proxy_read_maps='$canonical_maps $lmtp_generic_maps $local_recipient_maps $mydestination $mynetworks $recipient_bcc_maps $recipient_canonical_maps $relay_domains $relay_recipient_maps $relocated_maps $sender_bcc_maps $sender_canonical_maps $smtp_generic_maps $smtpd_sender_login_maps $transport_maps $virtual_alias_domains $virtual_alias_maps $virtual_mailbox_domains $virtual_mailbox_maps $smtpd_sender_restrictions'
 
