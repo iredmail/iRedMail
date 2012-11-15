@@ -4,7 +4,7 @@ iRedMail-0.8.4:
           Thanks Ward De Backer <wdb _at_ stabe.be> for the report.
 
     * Package update:
-        + Roundcube webmail -> 0.8.3
+        + Roundcube webmail -> 0.8.4
 
 iRedMail-0.8.3:
     * Works on OpenBSD 5.2.
