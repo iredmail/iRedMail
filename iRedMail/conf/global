@@ -539,6 +539,9 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export PKG_DIALOG="dialog"
     export PKG_BZIP2="bzip2"
 
+    # make.conf
+    export GENTOO_CONF_MAKE_CONF='/etc/portage/make.conf'
+
     # Options used for install package
     export GENTOO_EMERGE_INSTALL_OPTIONS='--binpkg-respect-use --buildpkg'
     export GENTOO_CONF_PACKAGE_USE='/etc/portage/package.use'
@@ -580,6 +583,7 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CRON_SPOOL_DIR='/var/cron/tabs'
 
     export ETC_SYSCONFIG_DIR='/etc/defaults'
+    export FREEBSD_MAKE_CONF='/etc/make.conf'
 
     # IPFW rule file.
     export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/ipfw.rules"
