@@ -58,12 +58,16 @@
 -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
 
 # ejabberd
-#-A INPUT -p tcp -m multiport --dport 5222,5223,5280 -j ACCEPT
+#-A INPUT -p tcp --dport 5222 -j ACCEPT
+#-A INPUT -p tcp --dport 5223 -j ACCEPT
+#-A INPUT -p tcp --dport 5280 -j ACCEPT
 
 # ldap/ldaps
-#-A INPUT -p tcp -m multiport --dport 389,636 -j ACCEPT
+#-A INPUT -p tcp --dport 389 -j ACCEPT
+#-A INPUT -p tcp --dport 636 -j ACCEPT
 
 # ftp.
-#-A INPUT -p tcp -m multiport --dport 21,20 -j ACCEPT
+#-A INPUT -p tcp --dport 20 -j ACCEPT
+#-A INPUT -p tcp --dport 21 -j ACCEPT
 
 COMMIT
