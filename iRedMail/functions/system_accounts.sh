@@ -47,9 +47,9 @@ add_user_vmail()
 
     cat >> ${TIP_FILE} <<EOF
 Mail Storage:
-    - Path:
-        + ${VMAIL_USER_HOME_DIR}
-        + ${STORAGE_MAILBOX_DIR}
+    - Root directory: ${VMAIL_USER_HOME_DIR}
+    - Mailboxes: ${STORAGE_MAILBOX_DIR}
+    - Backup scripts and copies: ${BACKUP_DIR}
 
 EOF
 

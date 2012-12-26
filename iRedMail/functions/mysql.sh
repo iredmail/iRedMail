@@ -82,12 +82,10 @@ EOF
     cat >> ${TIP_FILE} <<EOF
 MySQL:
     * Bind account (read-only):
-        - Name: ${VMAIL_DB_BIND_USER}, Password: ${VMAIL_DB_BIND_PASSWD}
+        - Username: ${VMAIL_DB_BIND_USER}, Password: ${VMAIL_DB_BIND_PASSWD}
     * Vmail admin account (read-write):
-        - Name: ${VMAIL_DB_ADMIN_USER}, Password: ${VMAIL_DB_ADMIN_PASSWD}
-    * Database stored in: /var/lib/mysql
+        - Username: ${VMAIL_DB_ADMIN_USER}, Password: ${VMAIL_DB_ADMIN_PASSWD}
     * RC script: ${MYSQLD_RC_SCRIPT}
-    * Log file: /var/log/mysqld.log
     * See also:
         - ${MYSQL_INIT_SQL}
 

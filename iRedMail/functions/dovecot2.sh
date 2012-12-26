@@ -395,15 +395,16 @@ Dovecot:
         - ${DOVECOT_CONF}
         - ${DOVECOT_LDAP_CONF} (For OpenLDAP backend)
         - ${DOVECOT_MYSQL_CONF} (For MySQL backend)
-        - ${DOVECOT_REALTIME_QUOTA_CONF}
-        - ${DOVECOT_SHARE_FOLDER_CONF} (share folder)
-    * RC script: ${DIR_RC_SCRIPTS}/dovecot
+        - ${DOVECOT_PGSQL_CONF} (For PostgreSQL backend)
+        - ${DOVECOT_REALTIME_QUOTA_CONF} (For real-time quota usage)
+        - ${DOVECOT_SHARE_FOLDER_CONF} (For IMAP sharing folder)
+    * RC script: ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME}
     * Log files:
-        - ${DOVECOT_LOGROTATE_FILE}
         - ${DOVECOT_LOG_FILE}
         - ${SIEVE_LOG_FILE}
     * See also:
         - ${DOVECOT_GLOBAL_SIEVE_FILE}
+        - Logrotate config file: ${DOVECOT_LOGROTATE_FILE}
 
 EOF
 

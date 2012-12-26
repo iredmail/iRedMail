@@ -313,6 +313,8 @@ EOF
 EOF
     done
 
+    echo '' >> ${TIP_FILE}
+
     echo 'export status_postfix_config_vhost_ldap="DONE"' >> ${STATUS_FILE}
 }
 
