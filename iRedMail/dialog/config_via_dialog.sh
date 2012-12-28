@@ -78,7 +78,7 @@ NOTE:
 " 20 76 "${VMAIL_USER_HOME_DIR}" 2>/tmp/vmail_user_home_dir
 
 export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"
-rm -f /tmp/vmail_user_home_dir
+rm -f /tmp/vmail_user_home_dir &>/dev/null
 
 export STORAGE_BASE_DIR="${VMAIL_USER_HOME_DIR}"
 export STORAGE_MAILBOX_DIR="${STORAGE_BASE_DIR}/${STORAGE_NODE}"
@@ -98,60 +98,57 @@ echo "export BACKUP_SCRIPT_MYSQL='${BACKUP_SCRIPT_MYSQL}'" >>${CONFIG_FILE}
 echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${CONFIG_FILE}
 
 # --------------------------------------------------
-# --------------------- Backend --------------------
+# --------------------- Backends --------------------
 # --------------------------------------------------
-# PGSQL is available on Ubuntu 11.04, 11.10.
+export DIALOG_AVAILABLE_BACKENDS=''
+if [ X"${ENABLE_BACKEND_LDAPD}" == X"YES" ]; then
+    export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} ldapd The_OpenBSD_built-in_LDAP_server off"
+fi
+if [ X"${ENABLE_BACKEND_OPENLDAP}" == X"YES" ]; then
+    export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} OpenLDAP An_open_source_implementation_of_LDAP_protocol off"
+fi
+
+if [ X"${ENABLE_BACKEND_MYSQL}" == X"YES" ]; then
+    export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} MySQL Most_popular_open_source_database off"
+fi
+
 if [ X"${ENABLE_BACKEND_PGSQL}" == X"YES" ]; then
-    ${DIALOG} \
-    --title "Choose your preferred backend used to store mail accounts" \
-    --radiolist "\
-We provide two backends and the homologous webmail programs:
-+------------+---------------+---------------------------+
-| Backend    | Web Mail      | Web-based management tool |
-+------------+---------------+---------------------------+
-| OpenLDAP   |               | iRedAdmin, phpLDAPadmin   |
-+------------+               +---------------------------+
-| MySQL      | Roundcube     | iRedAdmin, phpMyAdmin     |
-+------------+               +---------------------------+
-| PostgreSQL |               | iRedAdmin, phpPgAdmin     |
-+------------+---------------+---------------------------+
-TIP: Use SPACE key to select item.
-" 20 76 3 \
-    'OpenLDAP' 'An open source implementation of LDAP protocol' 'on' \
-    'MySQL' "The world's most popular open source database" 'off' \
-    'PostgreSQL' 'Powerful, open source database system' 'off' \
-    2>/tmp/backend
-
-else
-    ${DIALOG} \
-    --title "Choose your preferred backend used to store mail accounts" \
-    --radiolist "\
-We provide two backends and the homologous webmail programs:
-+------------+---------------+---------------------------+
-| Backend    | Web Mail      | Web-based management tool |
-+------------+---------------+---------------------------+
-| OpenLDAP   |               | iRedAdmin, phpLDAPadmin   |
-+------------+ Roundcube     +---------------------------+
-| MySQL      |               | iRedAdmin, phpMyAdmin     |
-+------------+---------------+---------------------------+
-
-TIP: Use SPACE key to select item.
-" 20 76 3 \
-    'OpenLDAP' 'An open source implementation of LDAP protocol' 'on' \
-    'MySQL' "The world's most popular open source database" 'off' \
-    2>/tmp/backend
+    export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} PostgreSQL Powerful,_open_source_database_system off"
 fi
 
-BACKEND_ORIG="$(cat /tmp/backend)"
-if [ X"${BACKEND_ORIG}" == X'OpenLDAP' ]; then
+while : ; do
+    ${DIALOG} \
+    --title "Choose your preferred backend used to store mail accounts" \
+    --radiolist "\
++-----------------+---------------+---------------------------+
+| Backend         | Web Mail      | Web-based management tool |
++-----------------+---------------+---------------------------+
+| OpenLDAP, ldapd |               | iRedAdmin, phpLDAPadmin   |
++-----------------+               +---------------------------+
+| MySQL           | Roundcube     | iRedAdmin, phpMyAdmin     |
++-----------------+               +---------------------------+
+| PostgreSQL      |               | iRedAdmin, phpPgAdmin     |
++-----------------+---------------+---------------------------+
+TIP: Use SPACE key to select item.
+" 20 76 4 ${DIALOG_AVAILABLE_BACKENDS} 2>/tmp/backend
+
+    BACKEND_ORIG="$(cat /tmp/backend | tr '[a-z]' '[A-Z]')"
+    [ X"${BACKEND_ORIG}" != X"" ] && break
+done
+
+if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
     export BACKEND='OPENLDAP'
-elif [ X"${BACKEND_ORIG}" == X'MySQL' ]; then
+elif [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
+    export BACKEND='OPENLDAP'
+elif [ X"${BACKEND_ORIG}" == X'MYSQL' ]; then
     export BACKEND='MYSQL'
-elif [ X"${BACKEND_ORIG}" == X'PostgreSQL' ]; then
+elif [ X"${BACKEND_ORIG}" == X'POSTGRESQL' ]; then
     export BACKEND='PGSQL'
+    export BACKEND_ORIG='PGSQL'
 fi
+echo "export BACKEND_ORIG='${BACKEND_ORIG}'" >> ${CONFIG_FILE}
 echo "export BACKEND='${BACKEND}'" >> ${CONFIG_FILE}
-rm -f /tmp/backend
+rm -f /tmp/backend &>/dev/null
 
 # Read-only SQL user/role, used to query mail accounts in Postfix, Dovecot.
 export VMAIL_DB_BIND_PASSWD="$(${RANDOM_STRING})"

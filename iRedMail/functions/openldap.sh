@@ -319,7 +319,7 @@ index objectClass                                   eq,pres
 index uidNumber,gidNumber,uid,memberUid,loginShell  eq,pres
 index homeDirectory,mailMessageStore                eq,pres
 index ou,cn,mail,surname,givenname,telephoneNumber  eq,pres,sub
-index nisMapName,nisMapEntry                        eq,pres,sub
+#index nisMapName,nisMapEntry                        eq,pres,sub
 index shadowLastChange                              eq,pres
 
 #

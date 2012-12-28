@@ -28,7 +28,7 @@ if [ X"${DISTRO}" == X'SUSE' ]; then
     # Apache module mod_auth_pgsql is not available
     [ X"${BACKEND}" == X'PGSQL' ] && export DIALOG_SELECTABLE_AWSTATS='NO'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    # Binary/port Awstats is not available
+    # Binary/port Awstats is not available in 5.2 and earlier releases
     export DIALOG_SELECTABLE_AWSTATS='NO'
 fi
 
@@ -37,16 +37,27 @@ fi
 # Note: item_descrition must be concatenated by '_'.
 export LIST_OF_OPTIONAL_COMPONENTS=''
 
-if [ X"${DIALOG_SELECTABLE_AWSTATS}" == X'YES' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Awstats Advanced_web_and_mail_log_analyzer on"
+if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpLDAPadmin Web-based_LDAP_management_tool on"
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpMyAdmin Web-based_MySQL_management_tool on"
+elif [ X"${BACKEND}" == X'MYSQL' ]; then
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpMyAdmin Web-based_MySQL_management_tool on"
+elif [ X"${BACKEND}" == X'PGSQL' ]; then
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpMyAdmin Web-based_MySQL_management_tool on"
 fi
+
+if [ X"${DIALOG_SELECTABLE_AWSTATS}" == X'YES' ]; then
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpPgAdmin Web-based_PostgreSQL_management_tool on"
+fi
+
+# Fail2ban
+LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Fail2ban Ban_IP_with_too_many_password_failures on"
 
 export tmp_config_optional_components="${ROOTDIR}/.optional_components"
 
-if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-    ${DIALOG} \
-    --title "Optional Components for ${BACKEND_ORIG} backend" \
-    --checklist "\
+${DIALOG} \
+--title "Optional components" \
+--checklist "\
 Note:
     * DKIM is recommended.
     * SPF validation (Sender Policy Framework) is enabled by default.
@@ -54,53 +65,11 @@ Note:
     * Refer to file for more detail after installation:
       ${TIP_FILE}
 " 20 76 8 \
-    "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
-    "iRedAdmin" "Official web-based Admin Panel" "on" \
-    "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
-    "phpLDAPadmin" "Web-based OpenLDAP management tool" "on" \
-    "phpMyAdmin" "Web-based MySQL management tool" "on" \
-    ${LIST_OF_OPTIONAL_COMPONENTS} \
-    "Fail2ban" "Ban IP with too many password failures" "on" \
-    2>${tmp_config_optional_components}
-
-elif [ X"${BACKEND}" == X"MYSQL" ]; then
-    ${DIALOG} \
-    --title "Optional Components for ${BACKEND_ORIG} backend" \
-    --checklist "\
-Note:
-    * DKIM is recommended.
-    * SPF validation (Sender Policy Framework) is enabled by default.
-    * DNS record (TXT type) are required for both SPF and DKIM.
-    * Please refer to file for more detail after installation:
-      ${TIP_FILE}
-" 20 76 8 \
-    "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
-    "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
-    "phpMyAdmin" "Web-based MySQL management tool" "on" \
-    "iRedAdmin" "Official web-based Admin Panel" "on" \
-    ${LIST_OF_OPTIONAL_COMPONENTS} \
-    "Fail2ban" "Ban IP with too many password failures" "on" \
-    2>${tmp_config_optional_components}
-
-elif [ X"${BACKEND}" == X"PGSQL" ]; then
-    ${DIALOG} \
-    --title "Optional Components for ${BACKEND_ORIG} backend" \
-    --checklist "\
-Note:
-    * DKIM is recommended.
-    * SPF validation (Sender Policy Framework) is enabled by default.
-    * DNS record (TXT type) are required for both SPF and DKIM.
-    * Please refer to file for more detail after installation:
-      ${TIP_FILE}
-" 20 76 8 \
-    "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
-    "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
-    "iRedAdmin" "Official web-based Admin Panel" "on" \
-    "phpPgAdmin" "Web-based MySQL management tool" "on" \
-    ${LIST_OF_OPTIONAL_COMPONENTS} \
-    "Fail2ban" "Ban IP with too many password failures" "on" \
-    2>${tmp_config_optional_components}
-fi
+"DKIM signing/verification" "DomainKeys Identified Mail" "on" \
+"iRedAdmin" "Official web-based Admin Panel" "on" \
+"Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
+${LIST_OF_OPTIONAL_COMPONENTS} \
+2>${tmp_config_optional_components}
 
 OPTIONAL_COMPONENTS="$(cat ${tmp_config_optional_components})"
 rm -f ${tmp_config_optional_components} &>/dev/null
