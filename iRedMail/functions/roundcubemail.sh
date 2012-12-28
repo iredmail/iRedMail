@@ -283,7 +283,7 @@ rcm_config()
     # after message delete/move, the next message will be displayed
     perl -pi -e 's#(.*display_next.*=).*#${1} true;#' main.inc.php
 
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         export LDAP_SERVER_HOST LDAP_SERVER_PORT LDAP_BIND_VERSION LDAP_BASEDN LDAP_ATTR_DOMAIN_RDN LDAP_ATTR_USER_RDN
         cd ${RCM_HTTPD_ROOT}/config/
         ECHO_DEBUG "Setting global LDAP address book in Roundcube."

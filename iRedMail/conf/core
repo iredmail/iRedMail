@@ -468,7 +468,13 @@ gen_ldap_passwd()
     else
         SLAPPASSWD='/usr/sbin/slappasswd'
     fi
-    ${SLAPPASSWD} -h {SSHA} -s "${1}"
+
+    password="${1}"
+    if [ -x ${SLAPPASSWD} ]; then
+        ${SLAPPASSWD} -h {SSHA} -s "${password}"
+    else
+        python ${TOOLS_DIR}/generate_ssha_password.py ${password}
+    fi
 }
 
 # Create SSL certs/private files.

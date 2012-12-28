@@ -33,7 +33,7 @@ export LDAP_BIND_VERSION='3'
 export OPENLDAP_DAEMON_USER='ldap'
 export OPENLDAP_DAEMON_GROUP='ldap'
 
-export LDAP_RC_SCRIPT_NAME='slapd'
+export OPENLDAP_RC_SCRIPT_NAME='slapd'
 
 # Configuration files.
 export OPENLDAP_CONF_ROOT='/etc/openldap'
@@ -58,7 +58,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     # OpenLDAP version.
     if [ X"${DISTRO_VERSION}" == X"5" ]; then
         export OPENLDAP_VERSION='2.3'
-        export LDAP_RC_SCRIPT_NAME='ldap'
+        export OPENLDAP_RC_SCRIPT_NAME='ldap'
     else
         export OPENLDAP_VERSION='2.4'
     fi
@@ -84,7 +84,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/openldap"
 
     # RC script
-    export LDAP_RC_SCRIPT_NAME='ldap'
+    export OPENLDAP_RC_SCRIPT_NAME='ldap'
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # OpenLDAP version.
@@ -150,7 +150,7 @@ else
 fi
 
 # RC script.
-export LDAP_RC_SCRIPT="${DIR_RC_SCRIPTS}/${LDAP_RC_SCRIPT_NAME}"
+export OPENLDAP_RC_SCRIPT="${DIR_RC_SCRIPTS}/${OPENLDAP_RC_SCRIPT_NAME}"
 
 export OPENLDAP_SCHEMA_DIR="${OPENLDAP_CONF_ROOT}/schema"
 export OPENLDAP_SLAPD_CONF="${OPENLDAP_CONF_ROOT}/slapd.conf"

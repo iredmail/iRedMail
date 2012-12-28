@@ -59,7 +59,7 @@ install_all()
     #
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # OpenLDAP server & client.
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${LDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
         if [ X"${DISTRO}" == X"RHEL" ]; then
             ALL_PKGS="${ALL_PKGS} openldap${PKG_ARCH} openldap-clients${PKG_ARCH} openldap-servers${PKG_ARCH} mysql-server${PKG_ARCH} mysql${PKG_ARCH}"
@@ -74,8 +74,13 @@ install_all()
             ALL_PKGS="${ALL_PKGS} openldap mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} cyrus-sasl--ldap openldap-server openldap-client mysql-server mysql-client"
-            PKG_SCRIPTS="${PKG_SCRIPTS} ${LDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
+            if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
+                ALL_PKGS="${ALL_PKGS} openldap-server"
+                PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
+            fi
+
+            ALL_PKGS="${ALL_PKGS} cyrus-sasl--ldap openldap-client mysql-server mysql-client"
+            PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
 
         fi
     elif [ X"${BACKEND}" == X"MYSQL" ]; then

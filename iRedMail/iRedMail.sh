@@ -73,6 +73,7 @@ check_env
 # defined in it.
 . ${CONF_DIR}/apache_php
 . ${CONF_DIR}/openldap
+. ${CONF_DIR}/ldapd
 . ${CONF_DIR}/phpldapadmin
 . ${CONF_DIR}/mysql
 . ${CONF_DIR}/postgresql
@@ -106,7 +107,7 @@ fi
 . ${FUNCTIONS_DIR}/system_accounts.sh
 
 . ${FUNCTIONS_DIR}/apache_php.sh
-. ${FUNCTIONS_DIR}/openldap.sh
+. ${FUNCTIONS_DIR}/ldap_server.sh
 . ${FUNCTIONS_DIR}/mysql.sh
 . ${FUNCTIONS_DIR}/postgresql.sh
 

@@ -20,7 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-spamd_config()
+openbsd_spamd_config()
 {
     # Enable PF, spamd, spamlogd.
     cat >> ${RC_CONF_LOCAL} <<EOF
@@ -57,7 +57,7 @@ policy_server_config()
 
     # OpenBSD special
     if [ X"${USE_SPAMD}" == X'YES' ]; then
-        check_status_before_run spamd_config
+        check_status_before_run openbsd_spamd_config
     fi
 
     echo 'export status_policy_server_config="DONE"' >> ${STATUS_FILE}
