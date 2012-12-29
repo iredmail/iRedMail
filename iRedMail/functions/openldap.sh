@@ -26,7 +26,7 @@
 
 openldap_config()
 {
-    ECHO_INFO "Configure OpenLDAP server (Storing mail accounts)."
+    ECHO_INFO "Configure LDAP server: OpenLDAP."
 
     ECHO_DEBUG "Stoping OpenLDAP."
     ${OPENLDAP_RC_SCRIPT} stop &>/dev/null

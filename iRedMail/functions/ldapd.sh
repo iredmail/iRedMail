@@ -23,7 +23,7 @@
 
 ldapd_config()
 {
-    ECHO_INFO "Configure ldapd(8) daemon"
+    ECHO_INFO "Configure LDAP server: ldapd(8)."
 
     # Enable ldapd in rc.conf.local
     cat >> ${RC_CONF_LOCAL} <<EOF
@@ -40,9 +40,18 @@ EOF
     chmod 0600 ${LDAPD_CONF}
 
     ECHO_DEBUG "Update config file: ${LDAPD_CONF}"
+    export LDAP_SUFFIX LDAP_BASEDN LDAP_ADMIN_BASEDN
+    export LDAP_ROOTDN LDAP_ROOTPW
+    export LDAP_BINDDN LDAP_ADMIN_DN
     perl -pi -e 's#PH_LDAP_SUFFIX#$ENV{LDAP_SUFFIX}#g' ${LDAPD_CONF}
+    perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#g' ${LDAPD_CONF}
+    perl -pi -e 's#PH_LDAP_ADMIN_BASEDN#$ENV{LDAP_ADMIN_BASEDN}#g' ${LDAPD_CONF}
+
     perl -pi -e 's#PH_LDAP_ROOTDN#$ENV{LDAP_ROOTDN}#g' ${LDAPD_CONF}
     perl -pi -e 's#PH_LDAP_ROOTPW#$ENV{LDAP_ROOTPW_SSHA}#g' ${LDAPD_CONF}
+
+    perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#g' ${LDAPD_CONF}
+    perl -pi -e 's#PH_LDAP_ADMIN_DN#$ENV{LDAP_ADMIN_DN}#g' ${LDAPD_CONF}
 
     ECHO_DEBUG "Start ldapd"
     ${DIR_RC_SCRIPTS}/${LDAPD_RC_SCRIPT_NAME} restart &>/dev/null
