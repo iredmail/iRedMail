@@ -480,7 +480,7 @@ gen_ldap_passwd()
 # Create SSL certs/private files.
 generate_ssl_keys()
 {
-    ECHO_INFO "Create SSL certification files."
+    ECHO_INFO "Create self-signed SSL certification files."
 
     # Create necessary directories.
     mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} 2>/dev/null
