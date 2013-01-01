@@ -56,8 +56,14 @@ EOF
     ECHO_DEBUG "Start ldapd"
     ${DIR_RC_SCRIPTS}/${LDAPD_RC_SCRIPT_NAME} restart &>/dev/null
 
+    ECHO_DEBUG "Sleep 5 seconds for LDAP daemon initialize ..."
+    sleep 5
+
     ECHO_DEBUG "Populate LDAP tree"
-    ldapadd -x -D "${LDAP_ROOTDN}" -w "${LDAP_ROOTPW}" -f ${LDAP_INIT_LDIF} >/dev/null
+    ldapadd -x \
+        -h ${LDAP_SERVER_HOST} -p ${LDAP_SERVER_PORT} \
+        -D "${LDAP_ROOTDN}" -w "${LDAP_ROOTPW}" \
+        -f ${LDAP_INIT_LDIF}
 
     echo 'export status_ldapd_config="DONE"' >> ${STATUS_FILE}
 }
