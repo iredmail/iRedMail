@@ -112,15 +112,15 @@ ldap_server_config()
     ldap_generate_populate_ldif
     export LDAP_ROOTPW_SSHA="$(gen_ldap_passwd ${LDAP_ROOTPW})"
 
-    if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
+    if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
+        . ${FUNCTIONS_DIR}/ldapd.sh
+
+        check_status_before_run ldapd_config
+    else:
         . ${FUNCTIONS_DIR}/openldap.sh
 
         check_status_before_run openldap_config && \
         check_status_before_run openldap_data_initialize
 
-    elif [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-        . ${FUNCTIONS_DIR}/ldapd.sh
-
-        check_status_before_run ldapd_config
     fi
 }

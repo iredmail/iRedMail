@@ -74,7 +74,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} openldap mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
+            if [ X"${BACKEND_ORIG}" != X'LDAPD' ]; then
                 ALL_PKGS="${ALL_PKGS} openldap-server"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
             fi
