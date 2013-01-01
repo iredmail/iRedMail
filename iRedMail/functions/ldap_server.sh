@@ -116,7 +116,7 @@ ldap_server_config()
         . ${FUNCTIONS_DIR}/ldapd.sh
 
         check_status_before_run ldapd_config
-    else:
+    else
         . ${FUNCTIONS_DIR}/openldap.sh
 
         check_status_before_run openldap_config && \
