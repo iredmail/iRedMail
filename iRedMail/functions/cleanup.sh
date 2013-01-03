@@ -425,8 +425,8 @@ EOF
     cat <<EOF
 
 ********************************************************************
-* Congratulations, mail server setup complete. Please refer to tip
-* file for more information:
+* Congratulations, mail server setup completed successfully. Please
+* read below file for more information:
 *
 *   - ${TIP_FILE}
 *
