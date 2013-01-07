@@ -65,16 +65,17 @@ VMAIL_USER_HOME_DIR="/var/vmail"
 ${DIALOG} \
     --title "Default mail storage path" \
     --inputbox "\
-Please specify a directory for mail storage.
+Please specify a directory (in lowercase) used to store user mailboxes.
 Default is: ${VMAIL_USER_HOME_DIR}
 
 EXAMPLE:
 
     * ${VMAIL_USER_HOME_DIR}
 
-NOTE:
+NOTES:
 
-    * It may take large disk space.
+    * Depends on the mail traffic, it may take large disk space.
+    * Path will be converted to lowercases.
 " 20 76 "${VMAIL_USER_HOME_DIR}" 2>/tmp/vmail_user_home_dir
 
 export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"
