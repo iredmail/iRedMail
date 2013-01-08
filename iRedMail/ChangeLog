@@ -1,4 +1,7 @@
 iRedMail-0.8.4:
+    * New SQL columns in `vmail.mailbox` for per-user restriction, used by
+      iRedAPD:
+      allowedsenders, rejectedsenders, allowedrecipients, rejectedrecipients
     * Now supports OpenBSD built-in LDAP daemon: ldapd(8).
     * Fixed:
         - Cannot handle alias domain in Postfix per-user bcc.
