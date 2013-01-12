@@ -70,6 +70,11 @@ openldap_config()
         cat >> ${OPENLDAP_SYSCONFIG_CONF} <<EOF
 OPTS="-f ${OPENLDAP_SLAPD_CONF} -h 'ldaps:// ldap:// ldapi://%2fvar%2frun%2fopenldap%2fslapd.sock'"
 EOF
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Enable TLS/SSL support
+        cat >> ${RC_CONF_LOCAL} <<EOF
+slapd_flags='-u _openldap -h ldap:///\ ldaps:///'
+EOF
     fi
 
     ###################
