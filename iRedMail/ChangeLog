@@ -10,6 +10,7 @@ iRedMail-0.8.4:
 
     * Package update:
         + Roundcube webmail -> 0.8.4
+        + phpMyAdmin -> 3.5.5
 
 iRedMail-0.8.3:
     * Works on OpenBSD 5.2.
