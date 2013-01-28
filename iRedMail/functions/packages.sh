@@ -120,7 +120,8 @@ install_all()
             ALL_PKGS="${ALL_PKGS} postgresql-server${PKG_ARCH} postgresql-contrib${PKG_ARCH}"
 
             # For Awstats.
-            [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} mod_auth_pgsql${PKG_ARCH}"
+            [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ] && \
+                ALL_PKGS="${ALL_PKGS} mod_auth_pgsql${PKG_ARCH}"
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib postfix-postgresql"
