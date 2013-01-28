@@ -142,6 +142,11 @@ CREATE INDEX msgs_idx_mess_id  ON msgs (message_id); -- useful with pen pals
 CREATE INDEX msgs_idx_time_iso ON msgs (time_iso);
 CREATE INDEX msgs_idx_time_num ON msgs (time_num);   -- optional
 
+CREATE INDEX msgs_idx_mail_id   ON msgs (mail_id);
+CREATE INDEX msgs_idx_content   ON msgs (content);
+CREATE INDEX msgs_idx_quar_type ON msgs (quar_type);
+-- CREATE INDEX msgs_idx_content_time_num ON msgs (content, time_num);
+
 -- per-recipient information related to each processed message;
 -- NOTE: records in msgrcpt without corresponding msgs.mail_id record are
 --  orphaned and should be ignored and eventually deleted by external utilities
