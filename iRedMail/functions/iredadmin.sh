@@ -46,7 +46,7 @@ iredadmin_config()
     ln -s ${IREDADMIN_HTTPD_ROOT} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK} 2>/dev/null
 
     ECHO_DEBUG "Set correct permission for iRedAdmin: ${IREDADMIN_HTTPD_ROOT}."
-    chown -R ${IREDADMIN_HTTPD_USER}:${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_ROOT}
+    chown -R ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} ${IREDADMIN_HTTPD_ROOT}
     chmod -R 0555 ${IREDADMIN_HTTPD_ROOT}
 
     # Copy sample configure file.
@@ -60,7 +60,7 @@ iredadmin_config()
         cp settings.ini.pgsql.sample settings.ini
     fi
 
-    chown -R ${IREDADMIN_HTTPD_USER}:${IREDADMIN_HTTPD_GROUP} settings.ini
+    chown -R ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} settings.ini
     chmod 0400 settings.ini
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -96,8 +96,8 @@ EOF
         # iRedAdmin runs as WSGI application with Apache + mod_wsgi
         cat > ${IREDADMIN_HTTPD_CONF} <<EOF
 WSGISocketPrefix /var/run/wsgi
-WSGIDaemonProcess iredadmin user=${IREDADMIN_HTTPD_USER} threads=15
-WSGIProcessGroup ${IREDADMIN_HTTPD_GROUP}
+WSGIDaemonProcess iredadmin user=${IREDADMIN_USER_NAME} threads=15
+WSGIProcessGroup ${IREDADMIN_GROUP_NAME}
 
 AddType text/html .py
 

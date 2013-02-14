@@ -13,26 +13,38 @@ add_user_vmail()
     [ -d ${homedir} ] || mkdir -p ${homedir}
     [ -d ${STORAGE_MAILBOX_DIR} ] || mkdir -p ${STORAGE_MAILBOX_DIR}
 
-    ECHO_DEBUG "Create system user/group: vmail:vmail."
+    ECHO_DEBUG "Create system account: ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} (${VMAIL_USER_UID}:${VMAIL_USER_GID})."
 
-    # It will create a group with the same name as vmail user name.
+    # vmail/vmail must has the same UID/GID on all supported Linux/BSD
+    # distributions, required by cluster environment. e.g. GlusterFS.
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        pw useradd -n ${VMAIL_USER_NAME} -s ${SHELL_NOLOGIN} -d ${VMAIL_USER_HOME_DIR} -m 2>/dev/null
+        pw groupadd -g ${VMAIL_USER_GID} -n ${VMAIL_GROUP_NAME}
+        pw useradd -m \
+            -u ${VMAIL_USER_UID} \
+            -g ${VMAIL_GROUP_NAME} \
+            -s ${SHELL_NOLOGIN} \
+            -d ${VMAIL_USER_HOME_DIR} \
+            -n ${VMAIL_USER_NAME}
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        groupadd ${VMAIL_GROUP_NAME}
-        useradd -d ${VMAIL_USER_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${VMAIL_GROUP_NAME} ${VMAIL_USER_NAME}
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        # Note: package 'postfix-mysql' will create vmail:vmail, with uid/gid=303.
-        groupadd ${VMAIL_GROUP_NAME} 2>/dev/null
-        useradd -m -d ${VMAIL_USER_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${VMAIL_GROUP_NAME} ${VMAIL_USER_NAME} 2>/dev/null
+        groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME}
+        # Don't use -m to create new home directory
+        useradd \
+            -u ${VMAIL_USER_UID} \
+            -g ${VMAIL_GROUP_NAME} \
+            -s ${SHELL_NOLOGIN} \
+            -d ${VMAIL_USER_HOME_DIR} \
+            ${VMAIL_USER_NAME}
     else
-        useradd -m -d ${VMAIL_USER_HOME_DIR} -s ${SHELL_NOLOGIN} ${VMAIL_USER_NAME} 2>/dev/null
+        # Note: on openSUSE, package 'postfix-mysql' will create vmail:vmail with uid/gid=303.
+        groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME}
+        useradd -m \
+            -u ${VMAIL_USER_UID} \
+            -g ${VMAIL_GROUP_NAME} \
+            -s ${SHELL_NOLOGIN} \
+            -d ${VMAIL_USER_HOME_DIR} \
+            ${VMAIL_USER_NAME}
     fi
     rm -f ${VMAIL_USER_HOME_DIR}/.* 2>/dev/null
-
-    # Export vmail user uid/gid.
-    export VMAIL_USER_UID="$(id -u ${VMAIL_USER_NAME})"
-    export VMAIL_USER_GID="$(id -g ${VMAIL_USER_NAME})"
 
     # Set permission for exist home directory.
     if [ -d ${VMAIL_USER_HOME_DIR} ]; then
@@ -58,19 +70,25 @@ EOF
 
 add_user_iredadmin()
 {
-    ECHO_DEBUG "Create system user: iredadmin."
+    ECHO_DEBUG "Create system account: ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} (${IREDADMIN_USER_UID}:${IREDADMIN_USER_GID})"
 
     # Low privilege user used to run iRedAdmin.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -n ${IREDADMIN_HTTPD_USER}
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        groupadd ${IREDADMIN_HTTPD_GROUP} 2>/dev/null
-        useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_USER} 2>/dev/null
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        groupadd ${IREDADMIN_HTTPD_GROUP} &>/dev/null
-        useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDADMIN_HTTPD_GROUP} ${IREDADMIN_HTTPD_USER} 2>/dev/null
+        pw groupadd -g ${IREDADMIN_USER_GID} -n ${IREDADMIN_USER_NAME}
+        pw useradd -m \
+            -u ${IREDADMIN_USER_GID} \
+            -g ${IREDADMIN_GROUP_NAME} \
+            -s ${SHELL_NOLOGIN} \
+            -d ${IREDADMIN_HOME_DIR} \
+            -n ${IREDADMIN_USER_NAME}
     else
-        useradd -m -d ${IREDADMIN_HOME_DIR} -s ${SHELL_NOLOGIN} ${IREDADMIN_HTTPD_GROUP}
+        groupadd -g ${IREDADMIN_USER_GID} ${IREDADMIN_GROUP_NAME}
+        useradd -m \
+            -u ${IREDADMIN_USER_UID} \
+            -g ${IREDADMIN_GROUP_NAME} \
+            -s ${SHELL_NOLOGIN} \
+            -d ${IREDADMIN_HOME_DIR} \
+            ${IREDADMIN_USER_NAME}
     fi
 
     echo 'export status_add_user_iredadmin="DONE"' >> ${STATUS_FILE}
@@ -78,19 +96,25 @@ add_user_iredadmin()
 
 add_user_iredapd()
 {
-    ECHO_DEBUG "Create system user: iredapd."
+    ECHO_DEBUG "Create system account: ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_GROUP} (${IREDAPD_DAEMON_USER_UID}:${IREDAPD_DAEMON_USER_GID})."
 
     # Low privilege user used to run iRedAPD daemon.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" -n ${IREDAPD_DAEMON_USER}
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        groupadd ${IREDAPD_DAEMON_GROUP}
-        useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDAPD_DAEMON_GROUP} ${IREDAPD_DAEMON_USER} 2>/dev/null
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        groupadd ${IREDAPD_DAEMON_GROUP} &>/dev/null
-        useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -g ${IREDAPD_DAEMON_GROUP} ${IREDAPD_DAEMON_USER} 2>/dev/null
+        pw groupadd -g ${IREDAPD_DAEMON_USER_GID} -n ${IREDAPD_DAEMON_GROUP}
+        pw useradd -m \
+            -u ${IREDAPD_DAEMON_USER_GID} \
+            -g ${IREDAPD_DAEMON_GROUP} \
+            -s ${SHELL_NOLOGIN} \
+            -d ${IREDAPD_HOME_DIR} \
+            -n ${IREDAPD_DAEMON_USER}
     else
-        useradd -m -d ${IREDAPD_HOME_DIR} -s ${SHELL_NOLOGIN} -c "iRedAPD daemon user" ${IREDAPD_DAEMON_USER}
+        groupadd -g ${IREDAPD_DAEMON_USER_GID} ${IREDAPD_DAEMON_GROUP}
+        useradd -m \
+            -u ${IREDAPD_DAEMON_USER_UID} \
+            -g ${IREDAPD_DAEMON_GROUP} \
+            -s ${SHELL_NOLOGIN} \
+            -d ${IREDAPD_HOME_DIR} \
+            ${IREDAPD_DAEMON_USER}
     fi
 
     echo 'export status_add_user_iredapd="DONE"' >> ${STATUS_FILE}

@@ -96,10 +96,18 @@ export IREDAPD_BIND_HOST="${LOCAL_ADDRESS}"
 # For managesieve service and software.
 export USE_MANAGESIEVE='YES'    # Use managesieve service.
 
-# vmail user. uid and gid should be export after user added.
+# vmail user/group name, uid and gid.
 export VMAIL_USER_NAME='vmail'
 export VMAIL_GROUP_NAME='vmail'
-export VMAIL_DB_ADMIN_USER="${VMAIL_USER_NAME}admin"
+
+# Specify UID/GID for system accounts: vmail, iredadmin, iredapd.
+# Required by cluster environment. e.g. GlusterFS.
+export VMAIL_USER_UID='2000'
+export VMAIL_USER_GID='2000'
+export IREDADMIN_USER_UID='2001'
+export IREDADMIN_USER_GID='2001'
+export IREDAPD_DAEMON_USER_UID='2002'
+export IREDAPD_DAEMON_USER_GID='2002'
 
 # Default SQL database name used to store mail accounts.
 export VMAIL_DB='vmail'
