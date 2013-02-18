@@ -898,9 +898,9 @@ EOF
         fi
     done
 
-    # Log used time
+    # Log and print used time
     all_used_time="$(($(date +%s)-start_time))"
-    echo "# Total time: ${all_used_time} seconds, about $((all_used_time/60)) minutes" >> ${STATUS_FILE}
+    ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds (~ $((all_used_time/60)) minutes)"
 
     echo 'export status_install_all="DONE"' >> ${STATUS_FILE}
 }
