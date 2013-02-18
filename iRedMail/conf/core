@@ -38,6 +38,23 @@ ECHO_INFO()
     fi
 }
 
+ECHO_SKIP()
+{
+    if [ X"$1" == X"-n" ]; then
+        shift 1
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -ne "\033[42m${_SKIP_FLAG}\033[0m $@"
+        else
+            echo -ne "${_SKIP_FLAG} $@"
+        fi
+    else
+        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
+            echo -e "\033[42m${_SKIP_FLAG}\033[0m $@"
+        else
+            echo -e "${_SKIP_FLAG} $@"
+        fi
+    fi
+}
 ECHO_QUESTION()
 {
     if [ X"$1" == X"-n" ]; then
@@ -279,11 +296,7 @@ check_status_before_run()
     if [ X"$(eval echo \$${_status})" != X"DONE" ]; then
         $1
     else
-        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-            echo -e "\033[46m<<< SKIP >>>\033[0m Skip function: $1."
-        else
-            echo -e "<<< SKIP >>> Skip function: $1."
-        fi
+        ECHO_SKIP "Function: $1."
     fi
 }
 

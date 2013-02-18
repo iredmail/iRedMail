@@ -127,6 +127,7 @@ export STATUS_FILE="${ROOTDIR}/.status"
 
 # Output flag.
 export _INFO_FLAG="< INFO >"
+export _SKIP_FLAG="< SKIP >"
 export _ERROR_FLAG="< ERROR >"
 export _QUESTION_FLAG="< Question >"
 export _BACKUP_FLAG="< Backup >"

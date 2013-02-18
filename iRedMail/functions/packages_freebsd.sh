@@ -201,7 +201,7 @@ OPTIONS_FILE_UNSET+=OSSP_UUID
 EOF
 
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-server databases/mysql${WANT_MYSQL_VER}-server"
+        ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-sasl-client net/openldap${WANT_OPENLDAP_VER}-server databases/mysql${WANT_MYSQL_VER}-server"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         ALL_PORTS="${ALL_PORTS} databases/mysql${WANT_MYSQL_VER}-server"
@@ -439,6 +439,7 @@ EOF
 
     # Apr. DEPENDENCE.
     cat > /var/db/ports/apr/options <<EOF
+OPTIONS_FILE_SET+=SSL
 OPTIONS_FILE_SET+=THREADS
 OPTIONS_FILE_SET+=IPV6
 OPTIONS_FILE_SET+=DEVRANDOM
@@ -449,6 +450,7 @@ OPTIONS_FILE_UNSET+=MYSQL
 OPTIONS_FILE_UNSET+=NDBM
 OPTIONS_FILE_UNSET+=PGSQL
 OPTIONS_FILE_UNSET+=SQLITE
+OPTIONS_FILE_UNSET+=FREETDS
 EOF
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
@@ -557,6 +559,7 @@ OPTIONS_FILE_UNSET+=PROXY_SCGI
 OPTIONS_FILE_SET+=SSL
 OPTIONS_FILE_SET+=SUEXEC
 OPTIONS_FILE_UNSET+=SUEXEC_RSRCLIMIT
+OPTIONS_FILE_SET+=SUEXEC_USERDIR
 OPTIONS_FILE_SET+=REQTIMEOUT
 OPTIONS_FILE_SET+=CGID
 EOF
@@ -831,7 +834,7 @@ EOF
 
     # Fetch all source tarballs.
     ECHO_INFO "Ports tree: ${PORT_WRKDIRPREFIX}"
-    ECHO_INFO "Fetching all distfiles for required packages (make fetch-recursive)"
+    ECHO_INFO "Fetching all distfiles for required ports (make fetch-recursive)"
 
     for i in ${ALL_PORTS}; do
         if [ X"${i}" != X'' ]; then
@@ -854,7 +857,7 @@ EOF
                     exit 255
                 fi
             else
-                ECHO_INFO "[SKIP] Fetching all distfiles for port ${i} and dependencies"
+                ECHO_SKIP "Fetching all distfiles for port ${i} and dependencies"
             fi
         fi
     done
@@ -890,7 +893,7 @@ EOF
                         exit 255
                     fi
             else
-                ECHO_INFO "[SKIP] Installing port: ${i}."
+                ECHO_SKIP "Installing port: ${i}."
             fi
         fi
     done
