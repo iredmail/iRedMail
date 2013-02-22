@@ -280,6 +280,10 @@ EOF
     # Tips.
     cat >> ${TIP_FILE} <<EOF
 Policyd (cluebringer):
+    * Web UI:
+        - URL: httpS://${HOSTNAME}/cluebringer/
+        - Username: ${FIRST_USER}@${FIRST_DOMAIN}
+        - Password: ${FIRST_USER_PASSWD_PLAIN}
     * Configuration files:
         - ${CLUEBRINGER_CONF}
         - ${CLUEBRINGER_WEBUI_CONF}
