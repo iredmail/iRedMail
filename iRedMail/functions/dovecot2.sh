@@ -86,6 +86,10 @@ dovecot2_config()
         perl -pi -e 's#PH_PASSDB_DRIVER#sql#' ${DOVECOT_CONF}
     fi
 
+    # Master user.
+    perl -pi -e 's#PH_DOVECOT_MASTER_USER_PASSWORD_FILE#$ENV{DOVECOT_MASTER_USER_PASSWORD_FILE}#' ${DOVECOT_CONF}
+    touch ${DOVECOT_MASTER_USER_PASSWORD_FILE}
+
     perl -pi -e 's#PH_AUTH_SOCKET_PATH#$ENV{DOVECOT_AUTH_SOCKET_PATH}#' ${DOVECOT_CONF}
 
     # Quota.

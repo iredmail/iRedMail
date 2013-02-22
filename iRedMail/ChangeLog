@@ -1,4 +1,5 @@
 iRedMail-0.8.4:
+    * Enable Dovecot Master User by default, but no pre-defined account.
     * New SQL columns in `vmail.mailbox` for per-user restriction, used by
       iRedAPD:
       allowedsenders, rejectedsenders, allowedrecipients, rejectedrecipients

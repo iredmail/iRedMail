@@ -53,13 +53,8 @@ export DOVECOT_QUOTA_TYPE='dict:user::proxy::quotadict'
 export SIEVE_RULE_FILENAME='dovecot.sieve'
 export DOVECOT_GLOBAL_SIEVE_FILE="${SIEVE_DIR}/${SIEVE_RULE_FILENAME}"
 
-# Dovecot config files
-export DOVECOT_CONF='/etc/dovecot/dovecot.conf'
-export DOVECOT_LDAP_CONF='/etc/dovecot/dovecot-ldap.conf'
-export DOVECOT_MYSQL_CONF='/etc/dovecot/dovecot-mysql.conf'
-export DOVECOT_PGSQL_CONF='/etc/dovecot/dovecot-pgsql.conf'
-export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot/dovecot-used-quota.conf'
-export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot/dovecot-share-folder.conf'
+# Directory used to store Dovecot config files
+export DOVECOT_CONF_DIR='/etc/dovecot'
 
 # Path to Dovecot deliver agant
 export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
@@ -67,12 +62,7 @@ export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
 if [ X"${DISTRO}" == X"RHEL" ]; then
     if [ X"${DISTRO_VERSION}" == X"5" ]; then
         export DOVECOT_VERSION='1.2'
-        export DOVECOT_CONF='/etc/dovecot.conf'
-        export DOVECOT_LDAP_CONF='/etc/dovecot-ldap.conf'
-        export DOVECOT_MYSQL_CONF='/etc/dovecot-mysql.conf'
-        export DOVECOT_PGSQL_CONF='/etc/dovecot-pgsql.conf'
-        export DOVECOT_REALTIME_QUOTA_CONF='/etc/dovecot-used-quota.conf'
-        export DOVECOT_SHARE_FOLDER_CONF='/etc/dovecot-share-folder.conf'
+        export DOVECOT_CONF_DIR='/etc'
     fi
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
@@ -85,12 +75,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    export DOVECOT_CONF='/usr/local/etc/dovecot/dovecot.conf'
-    export DOVECOT_LDAP_CONF='/usr/local/etc/dovecot/dovecot-ldap.conf'
-    export DOVECOT_MYSQL_CONF='/usr/local/etc/dovecot/dovecot-mysql.conf'
-    export DOVECOT_PGSQL_CONF='/usr/local/etc/dovecot/dovecot-pgsql.conf'
-    export DOVECOT_REALTIME_QUOTA_CONF='/usr/local/etc/dovecot/dovecot-used-quota.conf'
-    export DOVECOT_SHARE_FOLDER_CONF='/usr/local/etc/dovecot/dovecot-share-folder.conf'
+    export DOVECOT_CONF_DIR='/usr/local/etc/dovecot'
     export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -100,6 +85,15 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export DOVECOT_DOVEADM_BIN='/usr/local/bin/doveadm'
 
 fi
+
+# Dovecot config files
+export DOVECOT_CONF="${DOVECOT_CONF_DIR}/dovecot.conf"
+export DOVECOT_LDAP_CONF="${DOVECOT_CONF_DIR}/dovecot-ldap.conf"
+export DOVECOT_MYSQL_CONF="${DOVECOT_CONF_DIR}/dovecot-mysql.conf"
+export DOVECOT_PGSQL_CONF="${DOVECOT_CONF_DIR}/dovecot-pgsql.conf"
+export DOVECOT_REALTIME_QUOTA_CONF="${DOVECOT_CONF_DIR}/dovecot-used-quota.conf"
+export DOVECOT_SHARE_FOLDER_CONF="${DOVECOT_CONF_DIR}/dovecot-share-folder.conf"
+export DOVECOT_MASTER_USER_PASSWORD_FILE="${DOVECOT_CONF_DIR}/dovecot-master-users-passwd"
 
 # Log & logrotate files.
 export DOVECOT_LOG_FILE='/var/log/dovecot.log'
