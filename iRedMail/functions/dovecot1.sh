@@ -72,6 +72,13 @@ mail_gid = ${VMAIL_USER_GID}
 first_valid_uid = ${VMAIL_USER_UID}
 last_valid_uid = ${VMAIL_USER_UID}
 
+# Master user.
+# Master users are able to log in as other users. It's also possible to
+# directly log in as any user using a master password, although this isn't
+# recommended.
+# Reference: http://wiki1.dovecot.org/Authentication/MasterUsers
+auth_master_user_separator = *
+
 #
 # Debug options.
 #
@@ -303,7 +310,18 @@ protocol pop3 {
 auth default {
     mechanisms = plain login
     user = ${VMAIL_USER_NAME}
+
+    # Master user.
+    passdb passwd-file {
+        args = ${DOVECOT_MASTER_USER_PASSWORD_FILE}
+        master = yes
+    }
 EOF
+
+    # Master user password file.
+    touch ${DOVECOT_MASTER_USER_PASSWORD_FILE}
+    chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOVECOT_MASTER_USER_PASSWORD_FILE}
+    chmod 0550 ${DOVECOT_MASTER_USER_PASSWORD_FILE}
 
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         cat >> ${DOVECOT_CONF} <<EOF
