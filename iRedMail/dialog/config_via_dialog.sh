@@ -210,8 +210,8 @@ Configuration completed.
 ***************************** WARNING ***********************************
 *************************************************************************
 *                                                                       *
-* Please do remember to *MOVE* configuration file after installation    *
-* completed successfully.                                               *
+* Below file contains sensitive infomation (username/password), please  *
+* do remember to *MOVE* it to a safe place after installation.          *
 *                                                                       *
 *   * ${CONFIG_FILE}
 *                                                                       *
