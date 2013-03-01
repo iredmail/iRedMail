@@ -22,7 +22,7 @@
 
 export USE_IREDAPD='YES'
 
-export IREDAPD_VERSION='1.3.8'
+export IREDAPD_VERSION='1.4.0'
 export IREDAPD_DAEMON_USER='iredapd'
 export IREDAPD_DAEMON_GROUP='iredapd'
 export IREDAPD_HOME_DIR='/home/iredapd'
@@ -35,6 +35,4 @@ export IREDAPD_LISTEN_PORT='7777'
 
 export IREDAPD_PID_FILE='/var/run/iredapd.pid'
 export IREDAPD_LOG_FILE='/var/log/iredapd.log'
-export IREDAPD_RR_PID_FILE='/var/run/iredapd-rr.pid'
-export IREDAPD_RR_LOG_FILE='/var/log/iredapd-rr.log'
 export IREDAPD_LOGROTATE_FILE="${LOGROTATE_DIR}/iredapd"

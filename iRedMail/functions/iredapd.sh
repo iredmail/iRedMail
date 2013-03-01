@@ -43,39 +43,16 @@ iredapd_config()
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.opensuse ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X"GENTOO" ]; then
-        cp ${SAMPLE_DIR}/gentoo.iredapd.runscript ${DIR_RC_SCRIPTS}/iredapd
-        chmod +x ${DIR_RC_SCRIPTS}/iredapd
+        cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.gentoo ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # Create rc script
-        cat > ${DIR_RC_SCRIPTS}/iredapd <<EOF
-#!/bin/sh
-daemon='python ${IREDAPD_ROOT_DIR}/iredapd/src/iredapd.py ${IREDAPD_ROOT_DIR}/iredapd/etc/iredapd.ini'
-
-. /etc/rc.d/rc.subr
-
-rc_reload=NO
-rc_cmd \$1
-EOF
-
-        cat > ${DIR_RC_SCRIPTS}/iredapd-rr <<EOF
-#!/bin/sh
-daemon='python ${IREDAPD_ROOT_DIR}/iredapd/src/iredapd-rr.py ${IREDAPD_ROOT_DIR}/iredapd/etc/iredapd-rr.ini'
-
-. /etc/rc.d/rc.subr
-
-rc_reload=NO
-rc_cmd \$1
-EOF
-
-        chmod 0755 ${DIR_RC_SCRIPTS}/iredapd-rr
+        cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd
     else
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
     fi
 
     chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
-    chmod +x ${IREDAPD_ROOT_DIR}/iredapd/src/iredapd.py
 
     ECHO_DEBUG "Make iredapd start after system startup."
     eval ${enable_service} iredapd &>/dev/null
@@ -83,62 +60,52 @@ EOF
 
     # Set file permission.
     chown -R ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_USER} ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
-    chmod -R 0755 ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
+    chmod -R 0555 ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
 
     # Copy sample config file.
-    cd ${IREDAPD_ROOT_DIR}/iredapd/etc/
-    cp iredapd.ini.sample iredapd.ini
-    chmod -R 0500 iredapd.ini
+    cd ${IREDAPD_ROOT_DIR}/iredapd/
+    cp settings.py.sample settings.py
+    chmod -R 0500 settings.py
 
-    # Config iredapd.
-    perl -pi -e 's#^(listen_addr).*#${1} = $ENV{IREDAPD_BIND_HOST}#' iredapd.ini
-    perl -pi -e 's#^(listen_port).*#${1} = $ENV{IREDAPD_LISTEN_PORT}#' iredapd.ini
+    # General settings.
+    perl -pi -e 's#^(listen_address).*#${1} = "$ENV{IREDAPD_BIND_HOST}"#' settings.py
+    perl -pi -e 's#^(listen_port).*#${1} = "$ENV{IREDAPD_LISTEN_PORT}"#' settings.py
+    perl -pi -e 's#^(run_as_user).*#${1} = "$ENV{IREDAPD_DAEMON_USER}"#' settings.py
+    perl -pi -e 's#^(log_level).*#${1} = "info"#' settings.py
 
-    perl -pi -e 's#^(run_as_user).*#${1} = $ENV{IREDAPD_DAEMON_USER}#' iredapd.ini
-    perl -pi -e 's#^(run_as_daemon).*#${1} = yes#' iredapd.ini
+    # Backend.
+    [ X"${BACKEND}" == X'OPENLDAP' ] && perl -pi -e 's#^(backend).*#${1} = "ldap"#' settings.py
+    [ X"${BACKEND}" == X'MYSQL' ] && perl -pi -e 's#^(backend).*#${1} = "mysql"#' settings.py
+    [ X"${BACKEND}" == X'PGSQL' ] && perl -pi -e 's#^(backend).*#${1} = "pgsql"#' settings.py
 
-    perl -pi -e 's#^(log_level).*#${1} = info#' iredapd.ini
+    # Backend related parameters.
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        perl -pi -e 's#^(ldap_uri).*#${1} = "ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}"#' settings.py
+        perl -pi -e 's#^(ldap_binddn).*#${1} = "$ENV{LDAP_BINDDN}"#' settings.py
+        perl -pi -e 's#^(ldap_bindpw).*#${1} = "$ENV{LDAP_BINDPW}"#' settings.py
+        perl -pi -e 's#^(ldap_basedn).*#${1} = "$ENV{LDAP_BASEDN}"#' settings.py
 
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        # Set backend.
-        perl -pi -e 's#^(backend).*#${1} = ldap#' iredapd.ini
-
-        # Configure OpenLDAP server related stuffs.
-        perl -pi -e 's#^(uri).*#${1} = ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}#' iredapd.ini
-        perl -pi -e 's#^(binddn).*#${1} = $ENV{LDAP_BINDDN}#' iredapd.ini
-        perl -pi -e 's#^(bindpw).*#${1} = $ENV{LDAP_BINDPW}#' iredapd.ini
-        perl -pi -e 's#^(basedn).*#${1} = $ENV{LDAP_BASEDN}#' iredapd.ini
-
-        # Enable plugins.
-        perl -pi -e 's#^(plugins).*#${1} = ldap_maillist_access_policy, block_amavisd_blacklisted_senders#' iredapd.ini
+        perl -pi -e 's#^(plugins).*#${1} = ["ldap_maillist_access_policy", "ldap_amavisd_block_blacklisted_senders"]#' settings.py
 
     elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
-        # Set backend.
-        if [ X"${BACKEND}" == X'MYSQL' ]; then
-            perl -pi -e 's#^(backend).*#${1} = mysql#' iredapd.ini
-        else
-            perl -pi -e 's#^(backend).*#${1} = pgsql#' iredapd.ini
-        fi
+        perl -pi -e 's#^(sql_server).*#${1} = "$ENV{SQL_SERVER}"#' settings.py
+        perl -pi -e 's#^(sql_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' settings.py
+        perl -pi -e 's#^(sql_db).*#${1} = "$ENV{VMAIL_DB}"#' settings.py
+        perl -pi -e 's#^(sql_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' settings.py
+        perl -pi -e 's#^(sql_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' settings.py
 
-        # Configure MySQL server related stuffs.
-        perl -pi -e 's#^(server).*#${1} = $ENV{SQL_SERVER}#' iredapd.ini
-        perl -pi -e 's#^(port).*#${1} = $ENV{SQL_SERVER_PORT}#' iredapd.ini
-        perl -pi -e 's#^(db).*#${1} = $ENV{VMAIL_DB}#' iredapd.ini
-        perl -pi -e 's#^(user).*#${1} = $ENV{VMAIL_DB_BIND_USER}#' iredapd.ini
-        perl -pi -e 's#^(password).*#${1} = $ENV{VMAIL_DB_BIND_PASSWD}#' iredapd.ini
-
-        # Enable plugins.
-        perl -pi -e 's#^(plugins).*#${1} = sql_alias_access_policy#' iredapd.ini
+        perl -pi -e 's#^(plugins).*#${1} = ["sql_alias_access_policy"]#' settings.py
     fi
 
     # FreeBSD: Start iredapd when system start up.
     freebsd_enable_service_in_rc_conf 'iredapd_enable' 'YES'
 
+    # Log rotate
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         ECHO_DEBUG "Setting logrotate for iRedAPD log file."
         cat > ${IREDAPD_LOGROTATE_FILE} <<EOF
 ${CONF_MSG}
-${IREDAPD_LOG_FILE} ${IREDAPD_RR_LOG_FILE} {
+${IREDAPD_LOG_FILE}
     compress
     weekly
     rotate 10
@@ -180,7 +147,7 @@ iRedAPD - Postfix Policy Daemon:
     * Related files:
         - ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}/
         - ${IREDAPD_ROOT_DIR}/iredapd/
-        - ${IREDAPD_ROOT_DIR}/iredapd/etc/iredapd.ini
+        - ${IREDAPD_ROOT_DIR}/iredapd/etc/settings.py
 EOF
 
     echo 'export status_iredapd_config="DONE"' >> ${STATUS_FILE}
