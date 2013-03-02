@@ -10,6 +10,8 @@ iRedMail-0.8.4:
           Thanks Ward De Backer <wdb _at_ stabe.be> for the report.
 
     * Package update:
+        + iRedAPD -> 1.4.0
+        + iRedAdmin (open source edition) -> 0.2.1
         + Roundcube webmail -> 0.8.4
         + phpMyAdmin -> 3.5.5
 
