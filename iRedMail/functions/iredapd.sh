@@ -94,7 +94,7 @@ iredapd_config()
         perl -pi -e 's#^(sql_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' settings.py
         perl -pi -e 's#^(sql_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' settings.py
 
-        perl -pi -e 's#^(plugins).*#${1} = ["sql_alias_access_policy"]#' settings.py
+        perl -pi -e 's#^(plugins).*#${1} = ["sql_alias_access_policy", "sql_user_restrictions"]#' settings.py
     fi
 
     # FreeBSD: Start iredapd when system start up.

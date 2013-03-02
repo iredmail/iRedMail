@@ -21,7 +21,7 @@
 #---------------------------------------------------------------------
 
 # For phpLDAPadmin.
-export PLA_VERSION='1.2.2'
+export PLA_VERSION='1.2.3'
 export PLA_TARBALL="phpldapadmin-${PLA_VERSION}.tgz"
 
 # Install phpLDAPadmin with source tarball.
