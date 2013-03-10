@@ -85,24 +85,6 @@ else
 fi
 MISCLIST="$(cat ${ROOTDIR}/${PKGMISC} | awk -F'misc/' '{print $2}')"
 
-
-mirror_notify()
-{
-    cat <<EOF
-*********************************************************************
-**************************** Mirrors ********************************
-*********************************************************************
-* If you can't fetch packages, please try to use another mirror site
-* listed in below url:
-*
-*   - http://code.google.com/p/iredmail/wiki/Mirrors
-*
-*********************************************************************
-EOF
-
-    echo 'export status_mirror_notify="DONE"' >> ${STATUS_FILE}
-}
-
 prepare_dirs()
 {
     ECHO_DEBUG "Creating necessary directories ..."
