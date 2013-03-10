@@ -26,7 +26,6 @@
 
 export MYSQL_MY_CNF='/etc/my.cnf'
 export MYSQL_SOCKET='/var/lib/mysql/mysql.sock'
-export MYSQL_ROOT_USER='root'
 
 export MYSQL_RC_SCRIPT_NAME='mysql'
 
