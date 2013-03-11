@@ -330,7 +330,7 @@ EOF
     #perl -pi -e 's#^(error_reporting.*=)#${1} E_ERROR;#' ${PHP_INI}
 
     ECHO_DEBUG "Disable several functions: ${PHP_INI}."
-    perl -pi -e 's#^(disable_functions.*=)(.*)#${1}show_source,system,shell_exec,passthru,exec,phpinfo,proc_open ; ${2}#' ${PHP_INI}
+    perl -pi -e 's#^(disable_functions.*=)(.*)#${1}$ENV{PHP_DISABLED_FUNCTIONS}; ${2}#' ${PHP_INI}
 
     ECHO_DEBUG "Hide PHP Version in Apache from remote users requests: ${PHP_INI}."
     perl -pi -e 's#^(expose_php.*=)#${1} Off;#' ${PHP_INI}
@@ -361,18 +361,20 @@ EOF
     fi
 
     cat >> ${TIP_FILE} <<EOF
-Apache & PHP:
+Apache:
     * Configuration files:
         - ${HTTPD_CONF_ROOT}
         - ${HTTPD_CONF}
         - ${HTTPD_CONF_DIR}/*
-        - ${PHP_INI}
     * Directories:
         - ${HTTPD_SERVERROOT}
         - ${HTTPD_DOCUMENTROOT}
     * See also:
         - ${HTTPD_DOCUMENTROOT}/index.html
 
+PHP:
+    * Configuration file: ${PHP_INI}
+    * Disabled functions: ${PHP_DISABLED_FUNCTIONS}
 EOF
 
     echo 'export status_apache_php_config="DONE"' >> ${STATUS_FILE}
