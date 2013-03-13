@@ -1,0 +1,3383 @@
+# Chinese (Taiwan) translations for PROJECT.
+# Copyright (C) 2011 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: zhb@iredmail.org\n"
+"POT-Creation-Date: 2013-03-13 14:18+0800\n"
+"PO-Revision-Date: 2011-09-09 16:39+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: zh_TW <LL@li.org>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: ../templates/default/dbmail_mysql/search.html:71
+#: ../templates/default/ldap/search.html:128
+#: ../templates/default/mysql/search.html:151
+#: ../templates/default/pgsql/search.html:151
+#, python-format
+msgid "%d admin(s) found."
+msgstr "找到 %d 個管理員。"
+
+#: ../templates/default/ldap/search.html:67
+#, python-format
+msgid "%d domain(s) found."
+msgstr "找到 %d 個網域。"
+
+#: ../templates/default/mysql/search.html:73
+#: ../templates/default/pgsql/search.html:73
+#, python-format
+msgid "%d domains(s) found."
+msgstr "找到 %d 個網域。"
+
+#: ../templates/default/dbmail_mysql/search.html:209
+#: ../templates/default/ldap/search.html:295
+#: ../templates/default/mysql/search.html:279
+#: ../templates/default/pgsql/search.html:279
+#, python-format
+msgid "%d mail alias(es) found."
+msgstr "找到 %d 個郵件別名。"
+
+#: ../templates/default/ldap/search.html:242
+#, python-format
+msgid "%d mail list(s) found."
+msgstr "找到 %d 個郵件列表。"
+
+#: ../templates/default/dbmail_mysql/search.html:135
+#: ../templates/default/ldap/search.html:182
+#: ../templates/default/mysql/search.html:216
+#: ../templates/default/pgsql/search.html:216
+#, python-format
+msgid "%d user(s) found."
+msgstr "找到 %d 個用戶"
+
+#: ../templates/default/macros/ldap.html:16
+#, python-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:330
+#: ../templates/default/dbmail_mysql/domain/profile.html:338
+#: ../templates/default/ldap/domain/profile.html:392
+#: ../templates/default/ldap/domain/profile.html:399
+#: ../templates/default/ldap/domain/profile.html:407
+#: ../templates/default/mysql/domain/profile.html:406
+#: ../templates/default/mysql/domain/profile.html:414
+#: ../templates/default/pgsql/domain/profile.html:388
+#: ../templates/default/pgsql/domain/profile.html:396
+#, python-format
+msgid "%s account(s) exist."
+msgstr "已有 %s 個帳號。"
+
+#: ../templates/default/dashboard.html:106
+#, python-format
+msgid "%s days, %s hours, %s minutes."
+msgstr "%s 天，%s 小時，%s 分鐘。"
+
+#: ../templates/default/macros/policyd.html:44
+msgid "1 Day"
+msgstr "1天"
+
+#: ../templates/default/macros/policyd.html:44
+msgid "1 Hour"
+msgstr "1小時"
+
+#: ../templates/default/macros/policyd.html:44
+msgid "1 Minute"
+msgstr "1分鐘"
+
+#: ../templates/default/macros/general.html:757
+#, python-format
+msgid "<a href='%s'>Domain and sub-domain users</a>"
+msgstr "<a href='%s'>網域和子網域的用戶</a>"
+
+#: ../templates/default/macros/general.html:755
+#, python-format
+msgid "<a href='%s'>Domain users</a>"
+msgstr "<a href='%s'>網域用戶</a>"
+
+#: ../templates/default/macros/general.html:759
+#, python-format
+msgid "<a href='%s'>Members</a>"
+msgstr "<a href='%s'>成員</a>"
+
+#: ../templates/default/ldap/maillist/profile.html:88
+#: ../templates/default/macros/general.html:763
+#: ../templates/default/mysql/alias/profile.html:77
+#: ../templates/default/pgsql/alias/profile.html:77
+#, python-format
+msgid "<a href='%s'>Members</a> and <a href='%s'>moderators</a>"
+msgstr "<a href='%s'>成員</a>和<a href='%s'>管理員</a>"
+
+#: ../templates/default/macros/general.html:761
+#, python-format
+msgid "<a href='%s'>Moderators</a>"
+msgstr "<a href='%s'>管理員</a>"
+
+#: ../templates/default/ldap/maillist/profile.html:84
+#: ../templates/default/mysql/alias/profile.html:73
+#: ../templates/default/pgsql/alias/profile.html:73
+#, python-format
+msgid "<a href='%s'>Users under domain <strong>%s</strong></a>"
+msgstr "<a href='%s'>網域 <strong>%s</strong> 內的用戶</a>"
+
+#: ../templates/default/ldap/maillist/profile.html:85
+#: ../templates/default/mysql/alias/profile.html:74
+#: ../templates/default/pgsql/alias/profile.html:74
+#, python-format
+msgid ""
+"<a href='%s'>Users under domain <strong>%s</strong></a> and its sub-"
+"domains"
+msgstr "<a href='%s'>網域 <strong>%s</strong></a> 和子網域的用戶"
+
+#: ../templates/default/amavisd/inout.html:72
+#: ../templates/default/amavisd/inout.html:83
+msgid "About mail logs"
+msgstr "關於郵件日誌"
+
+#: ../templates/default/amavisd/quarantined.html:59
+msgid "About quarantined mails"
+msgstr "關於已隔離郵件。"
+
+#: ../templates/default/ldap/user/profile.html:218
+msgid "Account NOT exists."
+msgstr "帳號不存在。"
+
+#: ../templates/default/macros/general.html:243
+msgid "Account activities"
+msgstr "帳號活動"
+
+#: ../templates/default/macros/msgHandlers.html:181
+#: ../templates/default/macros/msgHandlers.html:207
+#: ../templates/default/macros/msgHandlers.html:219
+#: ../templates/default/macros/msgHandlers.html:243
+msgid "Account already exists, please choose another username."
+msgstr "帳號已存在，請選擇其他名稱。"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:390
+#: ../templates/default/mysql/domain/profile.html:468
+#: ../templates/default/pgsql/domain/profile.html:450
+msgid "Account does not exist."
+msgstr "帳號不存在。"
+
+#: ../templates/default/macros/general.html:199
+msgid "Account is active, but marked as backup MX."
+msgstr ""
+
+#: ../templates/default/macros/general.html:192
+#: ../templates/default/macros/general.html:194
+msgid "Account is active, but relay to other host"
+msgstr ""
+
+#: ../templates/default/macros/general.html:188
+msgid "Account is active."
+msgstr "帳號已啟用"
+
+#: ../templates/default/macros/general.html:201
+#: ../templates/default/macros/general.html:202
+msgid "Account is disabled."
+msgstr "帳號已停用。"
+
+#: ../templates/default/macros/general.html:209
+msgid "Account is domain admin"
+msgstr "帳號已停用。"
+
+#: ../templates/default/macros/general.html:211
+msgid "Account is global admin"
+msgstr "不是全域管理員。"
+
+#: ../templates/default/dbmail_mysql/search.html:50
+#: ../templates/default/ldap/search.html:48
+#: ../templates/default/mysql/search.html:51
+#: ../templates/default/pgsql/search.html:51
+msgid "Account status"
+msgstr "帳號狀態"
+
+#: ../templates/default/dbmail_mysql/search.html:41
+#: ../templates/default/ldap/search.html:37
+#: ../templates/default/mysql/search.html:41
+#: ../templates/default/pgsql/search.html:41
+msgid "Account type"
+msgstr "帳號類型"
+
+#: ../templates/default/macros/general.html:898
+msgid "Activate account"
+msgstr "啟用帳號"
+
+#: ../templates/default/dbmail_mysql/search.html:51
+#: ../templates/default/ldap/search.html:49
+#: ../templates/default/mysql/search.html:52
+#: ../templates/default/pgsql/search.html:52
+msgid "Active"
+msgstr "啟用"
+
+#: ../templates/default/layout.html:106
+#: ../templates/default/dbmail_mysql/alias/create.html:82
+#: ../templates/default/dbmail_mysql/user/create.html:132
+#: ../templates/default/ldap/alias/create.html:102
+#: ../templates/default/ldap/maillist/create.html:100
+#: ../templates/default/ldap/maillist/profile.html:56
+#: ../templates/default/ldap/user/create.html:170
+#: ../templates/default/macros/general.html:704
+#: ../templates/default/macros/general.html:745
+#: ../templates/default/mysql/alias/create.html:96
+#: ../templates/default/mysql/user/create.html:143
+#: ../templates/default/pgsql/alias/create.html:96
+#: ../templates/default/pgsql/user/create.html:143
+#: ../templates/default/policyd/blacklist/create.html:50
+#: ../templates/default/policyd/whitelist/create.html:44
+msgid "Add"
+msgstr "新增"
+
+#: ../templates/default/macros/general.html:892
+msgid "Add account"
+msgstr "新增帳號"
+
+#: ../templates/default/dbmail_mysql/admin/create.html:13
+#: ../templates/default/dbmail_mysql/admin/create.html:25
+#: ../templates/default/dbmail_mysql/admin/create.html:28
+#: ../templates/default/dbmail_mysql/admin/list.html:31
+#: ../templates/default/ldap/admin/create.html:13
+#: ../templates/default/ldap/admin/create.html:25
+#: ../templates/default/ldap/admin/create.html:28
+#: ../templates/default/ldap/admin/list.html:31
+#: ../templates/default/mysql/admin/create.html:13
+#: ../templates/default/mysql/admin/create.html:25
+#: ../templates/default/mysql/admin/create.html:28
+#: ../templates/default/mysql/admin/list.html:31
+#: ../templates/default/pgsql/admin/create.html:13
+#: ../templates/default/pgsql/admin/create.html:25
+#: ../templates/default/pgsql/admin/create.html:28
+#: ../templates/default/pgsql/admin/list.html:31
+msgid "Add admin"
+msgstr "新增管理員"
+
+#: ../templates/default/policyd/wblist.html:49
+#: ../templates/default/policyd/blacklist/create.html:11
+#: ../templates/default/policyd/blacklist/create.html:26
+#: ../templates/default/policyd/blacklist/create.html:28
+#: ../templates/default/policyd/whitelist/create.html:26
+msgid "Add blacklist"
+msgstr "新增黑名單"
+
+#: ../templates/default/dbmail_mysql/domain/create.html:7
+#: ../templates/default/dbmail_mysql/domain/create.html:20
+#: ../templates/default/dbmail_mysql/domain/create.html:24
+#: ../templates/default/dbmail_mysql/domain/list.html:31
+#: ../templates/default/ldap/domain/create.html:9
+#: ../templates/default/ldap/domain/create.html:23
+#: ../templates/default/ldap/domain/create.html:27
+#: ../templates/default/ldap/domain/list.html:31
+#: ../templates/default/macros/general.html:736
+#: ../templates/default/macros/ldap.html:32
+#: ../templates/default/macros/mysql.html:26
+#: ../templates/default/mysql/domain/create.html:7
+#: ../templates/default/mysql/domain/create.html:20
+#: ../templates/default/mysql/domain/create.html:24
+#: ../templates/default/mysql/domain/list.html:31
+#: ../templates/default/pgsql/domain/create.html:7
+#: ../templates/default/pgsql/domain/create.html:20
+#: ../templates/default/pgsql/domain/create.html:24
+#: ../templates/default/pgsql/domain/list.html:31
+msgid "Add domain"
+msgstr "新增網域"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:415
+#: ../templates/default/dbmail_mysql/user/profile.html:155
+#: ../templates/default/ldap/user/profile.html:272
+#: ../templates/default/mysql/domain/profile.html:493
+#: ../templates/default/mysql/user/profile.html:156
+#: ../templates/default/pgsql/domain/profile.html:475
+#: ../templates/default/pgsql/user/profile.html:156
+msgid "Add mail alias"
+msgstr "新增郵件別名"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:9
+#: ../templates/default/dbmail_mysql/alias/create.html:55
+#: ../templates/default/ldap/alias/create.html:10
+#: ../templates/default/ldap/alias/create.html:74
+#: ../templates/default/mysql/alias/create.html:10
+#: ../templates/default/mysql/alias/create.html:69
+#: ../templates/default/pgsql/alias/create.html:10
+#: ../templates/default/pgsql/alias/create.html:69
+#, python-format
+msgid "Add mail alias under domain: %s"
+msgstr "在網域 %s 內新增郵件別名"
+
+#: ../templates/default/ldap/domain/profile.html:475
+#: ../templates/default/ldap/user/profile.html:230
+msgid "Add mail list"
+msgstr "新增郵件列表"
+
+#: ../templates/default/ldap/maillist/create.html:10
+#: ../templates/default/ldap/maillist/create.html:74
+#, python-format
+msgid "Add mail list under domain: %s."
+msgstr "在網域 %s 內新增郵件列表"
+
+#: ../templates/default/ldap/maillist/profile.html:383
+msgid "Add members"
+msgstr "新增成員"
+
+#: ../templates/default/ldap/maillist/profile.html:397
+msgid "Add moderators"
+msgstr "新增管理員"
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:164
+#: ../templates/default/ldap/alias/profile.html:114
+#: ../templates/default/mysql/alias/profile.html:169
+#: ../templates/default/pgsql/alias/profile.html:169
+msgid "Add new members"
+msgstr "新增成員"
+
+#: ../templates/default/mysql/alias/profile.html:177
+#: ../templates/default/pgsql/alias/profile.html:177
+msgid "Add new moderators"
+msgstr "新增管理員"
+
+#: ../templates/default/dbmail_mysql/alias/list.html:73
+#: ../templates/default/dbmail_mysql/domain/list.html:137
+#: ../templates/default/dbmail_mysql/user/list.html:103
+#: ../templates/default/ldap/alias/list.html:100
+#: ../templates/default/ldap/domain/list.html:189
+#: ../templates/default/ldap/maillist/list.html:100
+#: ../templates/default/ldap/user/list.html:141
+#: ../templates/default/mysql/alias/list.html:86
+#: ../templates/default/mysql/domain/list.html:146
+#: ../templates/default/mysql/user/list.html:121
+#: ../templates/default/pgsql/alias/list.html:86
+#: ../templates/default/pgsql/domain/list.html:146
+#: ../templates/default/pgsql/user/list.html:121
+msgid "Add one"
+msgstr "新增一個"
+
+#: ../templates/default/macros/msgHandlers.html:108
+#: ../templates/default/macros/msgHandlers.html:153
+#: ../templates/default/macros/msgHandlers.html:188
+#: ../templates/default/macros/msgHandlers.html:228
+#: ../templates/default/macros/msgHandlers.html:260
+msgid "Add one more?"
+msgstr "新增一個？"
+
+#: ../templates/default/dbmail_mysql/user/create.html:13
+#: ../templates/default/dbmail_mysql/user/create.html:78
+#: ../templates/default/ldap/user/create.html:14
+#: ../templates/default/ldap/user/create.html:116
+#: ../templates/default/mysql/user/create.html:14
+#: ../templates/default/mysql/user/create.html:89
+#: ../templates/default/pgsql/user/create.html:14
+#: ../templates/default/pgsql/user/create.html:89
+#, python-format
+msgid "Add user under domain: %s"
+msgstr "在網域 %s 內新增用戶"
+
+#: ../templates/default/policyd/wblist.html:48
+#: ../templates/default/policyd/blacklist/create.html:25
+#: ../templates/default/policyd/whitelist/create.html:11
+#: ../templates/default/policyd/whitelist/create.html:25
+#: ../templates/default/policyd/whitelist/create.html:28
+msgid "Add whitelist"
+msgstr "新增白名單"
+
+#: ../templates/default/layout.html:110
+#: ../templates/default/dbmail_mysql/search.html:45
+#: ../templates/default/ldap/search.html:43
+#: ../templates/default/mysql/search.html:46
+#: ../templates/default/panel/log.html:83
+#: ../templates/default/pgsql/search.html:46
+msgid "Admin"
+msgstr "管理員"
+
+#: ../templates/default/layout.html:85
+#: ../templates/default/amavisd/inout.html:36
+#: ../templates/default/amavisd/quarantined.html:30
+#: ../templates/default/panel/log.html:11
+#: ../templates/default/panel/log.html:22
+#: ../templates/default/panel/log.html:29
+msgid "Admin Log"
+msgstr "管理員日誌"
+
+#: ../templates/default/macros/msgHandlers.html:188
+msgid "Admin created."
+msgstr ""
+
+#: ../templates/default/macros/general.html:890
+msgid "Admin login"
+msgstr "管理員登入"
+
+#: ../templates/default/macros/msgHandlers.html:182
+msgid "Admin not exist."
+msgstr "管理員不存在。"
+
+#: ../templates/default/layout.html:78
+#: ../templates/default/ldap/alias/create.html:20
+#: ../templates/default/ldap/alias/list.html:24
+#: ../templates/default/ldap/alias/profile.html:34
+#: ../templates/default/ldap/domain/profile.html:103
+#: ../templates/default/ldap/maillist/create.html:20
+#: ../templates/default/ldap/maillist/list.html:26
+#: ../templates/default/ldap/maillist/profile.html:36
+#: ../templates/default/ldap/user/admin.html:25
+#: ../templates/default/ldap/user/create.html:24
+#: ../templates/default/ldap/user/list.html:26
+#: ../templates/default/ldap/user/profile.html:104
+#: ../templates/default/panel/log.html:55
+msgid "Admins"
+msgstr "管理員"
+
+#: ../templates/default/ldap/user/admin.html:15
+#: ../templates/default/ldap/user/admin.html:54
+#, python-format
+msgid "Admins under domain: %s"
+msgstr "網域 %s 的用戶"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:55
+#: ../templates/default/dbmail_mysql/user/profile.html:56
+#: ../templates/default/ldap/domain/profile.html:123
+#: ../templates/default/ldap/user/profile.html:123
+#: ../templates/default/mysql/domain/profile.html:66
+#: ../templates/default/mysql/user/profile.html:72
+#: ../templates/default/pgsql/domain/profile.html:67
+#: ../templates/default/pgsql/user/profile.html:72
+msgid "Advanced"
+msgstr "進階設定"
+
+#: ../templates/default/layout.html:118
+#: ../templates/default/dbmail_mysql/search.html:43
+#: ../templates/default/dbmail_mysql/alias/create.html:51
+#: ../templates/default/dbmail_mysql/alias/list.html:28
+#: ../templates/default/dbmail_mysql/user/create.html:74
+#: ../templates/default/dbmail_mysql/user/list.html:31
+#: ../templates/default/ldap/search.html:40
+#: ../templates/default/ldap/alias/create.html:70
+#: ../templates/default/ldap/alias/list.html:47
+#: ../templates/default/ldap/maillist/create.html:70
+#: ../templates/default/ldap/maillist/list.html:49
+#: ../templates/default/ldap/user/admin.html:50
+#: ../templates/default/ldap/user/create.html:112
+#: ../templates/default/ldap/user/list.html:51
+#: ../templates/default/mysql/search.html:43
+#: ../templates/default/mysql/alias/create.html:65
+#: ../templates/default/mysql/alias/list.html:41
+#: ../templates/default/mysql/user/create.html:85
+#: ../templates/default/mysql/user/list.html:45
+#: ../templates/default/pgsql/search.html:43
+#: ../templates/default/pgsql/alias/create.html:65
+#: ../templates/default/pgsql/alias/list.html:41
+#: ../templates/default/pgsql/user/create.html:85
+#: ../templates/default/pgsql/user/list.html:45
+msgid "Alias"
+msgstr "郵件別名"
+
+#: ../templates/default/macros/ldap.html:97
+msgid "Alias account"
+msgstr "帳號別名"
+
+#: ../templates/default/ldap/domain/profile.html:217
+#: ../templates/default/ldap/domain/profile.html:228
+#: ../templates/default/mysql/domain/profile.html:280
+#: ../templates/default/pgsql/domain/profile.html:281
+msgid "Alias domains"
+msgstr "網域別名"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:49
+#: ../templates/default/dbmail_mysql/alias/list.html:26
+#: ../templates/default/dbmail_mysql/alias/profile.html:23
+#: ../templates/default/dbmail_mysql/domain/list.html:56
+#: ../templates/default/dbmail_mysql/domain/profile.html:34
+#: ../templates/default/dbmail_mysql/domain/profile.html:54
+#: ../templates/default/dbmail_mysql/user/create.html:72
+#: ../templates/default/dbmail_mysql/user/list.html:29
+#: ../templates/default/dbmail_mysql/user/profile.html:34
+#: ../templates/default/dbmail_mysql/user/profile.html:51
+#: ../templates/default/ldap/search.html:81
+#: ../templates/default/ldap/alias/create.html:19
+#: ../templates/default/ldap/alias/list.html:23
+#: ../templates/default/ldap/alias/profile.html:32
+#: ../templates/default/ldap/domain/list.html:56
+#: ../templates/default/ldap/domain/profile.html:102
+#: ../templates/default/ldap/domain/profile.html:121
+#: ../templates/default/ldap/maillist/create.html:19
+#: ../templates/default/ldap/maillist/list.html:25
+#: ../templates/default/ldap/maillist/profile.html:35
+#: ../templates/default/ldap/user/admin.html:24
+#: ../templates/default/ldap/user/create.html:23
+#: ../templates/default/ldap/user/list.html:25
+#: ../templates/default/ldap/user/profile.html:103
+#: ../templates/default/ldap/user/profile.html:119
+#: ../templates/default/mysql/search.html:84
+#: ../templates/default/mysql/alias/create.html:18
+#: ../templates/default/mysql/alias/list.html:21
+#: ../templates/default/mysql/alias/profile.html:23
+#: ../templates/default/mysql/domain/list.html:56
+#: ../templates/default/mysql/domain/profile.html:44
+#: ../templates/default/mysql/domain/profile.html:64
+#: ../templates/default/mysql/user/create.html:22
+#: ../templates/default/mysql/user/list.html:23
+#: ../templates/default/mysql/user/profile.html:51
+#: ../templates/default/pgsql/search.html:84
+#: ../templates/default/pgsql/alias/create.html:18
+#: ../templates/default/pgsql/alias/list.html:21
+#: ../templates/default/pgsql/alias/profile.html:23
+#: ../templates/default/pgsql/domain/list.html:56
+#: ../templates/default/pgsql/domain/profile.html:45
+#: ../templates/default/pgsql/domain/profile.html:65
+#: ../templates/default/pgsql/user/create.html:22
+#: ../templates/default/pgsql/user/list.html:23
+#: ../templates/default/pgsql/user/profile.html:51
+msgid "Aliases"
+msgstr "別名"
+
+#: ../templates/default/dbmail_mysql/alias/list.html:32
+#: ../templates/default/ldap/alias/list.html:51
+#: ../templates/default/mysql/alias/list.html:45
+#: ../templates/default/pgsql/alias/list.html:45
+#, python-format
+msgid "Aliases under domain: %s."
+msgstr "網域 %s 的別名："
+
+#: ../templates/default/policyd/wblist.html:43
+#: ../templates/default/policyd/blacklist/create.html:24
+#: ../templates/default/policyd/whitelist/create.html:24
+msgid "All Blacklists"
+msgstr "所有黑名單"
+
+#: ../templates/default/policyd/wblist.html:45
+#: ../templates/default/policyd/blacklist/create.html:23
+#: ../templates/default/policyd/whitelist/create.html:23
+msgid "All Whitelists"
+msgstr "所有白名單"
+
+#: ../templates/default/ldap/user/profile.html:388
+msgid "All accounts"
+msgstr "所有帳號"
+
+#: ../templates/default/dbmail_mysql/admin/create.html:24
+#: ../templates/default/dbmail_mysql/admin/list.html:29
+#: ../templates/default/dbmail_mysql/admin/profile.html:28
+#: ../templates/default/ldap/admin/create.html:24
+#: ../templates/default/ldap/admin/list.html:29
+#: ../templates/default/ldap/admin/profile.html:35
+#: ../templates/default/mysql/admin/create.html:24
+#: ../templates/default/mysql/admin/list.html:29
+#: ../templates/default/mysql/admin/profile.html:28
+#: ../templates/default/pgsql/admin/create.html:24
+#: ../templates/default/pgsql/admin/list.html:29
+#: ../templates/default/pgsql/admin/profile.html:28
+msgid "All admins"
+msgstr "所有管理員"
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:20
+#: ../templates/default/dbmail_mysql/domain/create.html:18
+#: ../templates/default/dbmail_mysql/domain/list.html:29
+#: ../templates/default/dbmail_mysql/domain/profile.html:31
+#: ../templates/default/dbmail_mysql/user/profile.html:30
+#: ../templates/default/ldap/alias/create.html:15
+#: ../templates/default/ldap/alias/list.html:19
+#: ../templates/default/ldap/alias/profile.html:28
+#: ../templates/default/ldap/domain/create.html:21
+#: ../templates/default/ldap/domain/list.html:29
+#: ../templates/default/ldap/domain/profile.html:98
+#: ../templates/default/ldap/maillist/create.html:15
+#: ../templates/default/ldap/maillist/list.html:21
+#: ../templates/default/ldap/maillist/profile.html:30
+#: ../templates/default/ldap/user/admin.html:20
+#: ../templates/default/ldap/user/create.html:19
+#: ../templates/default/ldap/user/list.html:21
+#: ../templates/default/ldap/user/profile.html:98
+#: ../templates/default/mysql/alias/create.html:15
+#: ../templates/default/mysql/alias/list.html:18
+#: ../templates/default/mysql/alias/profile.html:20
+#: ../templates/default/mysql/domain/create.html:18
+#: ../templates/default/mysql/domain/list.html:29
+#: ../templates/default/mysql/domain/profile.html:41
+#: ../templates/default/mysql/user/create.html:19
+#: ../templates/default/mysql/user/list.html:20
+#: ../templates/default/mysql/user/profile.html:47
+#: ../templates/default/pgsql/alias/create.html:15
+#: ../templates/default/pgsql/alias/list.html:18
+#: ../templates/default/pgsql/alias/profile.html:20
+#: ../templates/default/pgsql/domain/create.html:18
+#: ../templates/default/pgsql/domain/list.html:29
+#: ../templates/default/pgsql/domain/profile.html:42
+#: ../templates/default/pgsql/user/create.html:19
+#: ../templates/default/pgsql/user/list.html:20
+#: ../templates/default/pgsql/user/profile.html:47
+msgid "All domains"
+msgstr "所有網域"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:36
+#: ../templates/default/ldap/domain/list.html:36
+#: ../templates/default/mysql/domain/list.html:36
+#: ../templates/default/pgsql/domain/list.html:36
+msgid "All domains under your control."
+msgstr "您管理的所有郵件網域。"
+
+#: ../templates/default/dbmail_mysql/admin/list.html:35
+#: ../templates/default/ldap/admin/list.html:35
+#: ../templates/default/mysql/admin/list.html:35
+#: ../templates/default/pgsql/admin/list.html:35
+msgid "All mail administrators."
+msgstr "所有網域管理員。"
+
+#: ../templates/default/policyd/blacklist/create.html:73
+#: ../templates/default/policyd/whitelist/create.html:67
+msgid "All sub-domains"
+msgstr "所有子網域"
+
+#: ../templates/default/dbmail_mysql/search.html:178
+#: ../templates/default/dbmail_mysql/domain/list.html:88
+#: ../templates/default/dbmail_mysql/domain/list.html:90
+#: ../templates/default/dbmail_mysql/domain/list.html:96
+#: ../templates/default/dbmail_mysql/domain/list.html:98
+#: ../templates/default/mysql/domain/list.html:97
+#: ../templates/default/mysql/domain/list.html:99
+#: ../templates/default/mysql/domain/list.html:105
+#: ../templates/default/mysql/domain/list.html:107
+#: ../templates/default/mysql/user/list.html:111
+#: ../templates/default/pgsql/domain/list.html:97
+#: ../templates/default/pgsql/domain/list.html:99
+#: ../templates/default/pgsql/domain/list.html:105
+#: ../templates/default/pgsql/domain/list.html:107
+#: ../templates/default/pgsql/user/list.html:111
+msgid "Allocated"
+msgstr "已分配"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:26
+#: ../templates/default/dbmail_mysql/user/create.html:35
+#: ../templates/default/ldap/alias/create.html:47
+#: ../templates/default/ldap/maillist/create.html:48
+#: ../templates/default/ldap/user/create.html:78
+#: ../templates/default/mysql/alias/create.html:38
+#: ../templates/default/mysql/user/create.html:44
+#: ../templates/default/pgsql/alias/create.html:38
+#: ../templates/default/pgsql/user/create.html:44
+#, python-format
+msgid "Already exceed max number of account limit (%s)."
+msgstr "已經超過最大帳號數量限制（%s）。"
+
+#: ../templates/default/amavisd/inout.html:173
+#: ../templates/default/amavisd/quarantined.html:94
+#: ../templates/default/dbmail_mysql/search.html:123
+#: ../templates/default/dbmail_mysql/search.html:196
+#: ../templates/default/dbmail_mysql/search.html:249
+#: ../templates/default/dbmail_mysql/admin/list.html:88
+#: ../templates/default/dbmail_mysql/alias/list.html:89
+#: ../templates/default/dbmail_mysql/domain/list.html:159
+#: ../templates/default/dbmail_mysql/user/list.html:121
+#: ../templates/default/ldap/search.html:119
+#: ../templates/default/ldap/search.html:171
+#: ../templates/default/ldap/search.html:231
+#: ../templates/default/ldap/search.html:285
+#: ../templates/default/ldap/search.html:335
+#: ../templates/default/ldap/admin/list.html:86
+#: ../templates/default/ldap/alias/list.html:114
+#: ../templates/default/ldap/domain/list.html:208
+#: ../templates/default/ldap/maillist/list.html:114
+#: ../templates/default/ldap/maillist/profile.html:193
+#: ../templates/default/ldap/maillist/profile.html:239
+#: ../templates/default/ldap/maillist/profile.html:321
+#: ../templates/default/ldap/maillist/profile.html:366
+#: ../templates/default/ldap/user/admin.html:147
+#: ../templates/default/ldap/user/list.html:165
+#: ../templates/default/mysql/search.html:141
+#: ../templates/default/mysql/search.html:203
+#: ../templates/default/mysql/search.html:266
+#: ../templates/default/mysql/search.html:319
+#: ../templates/default/mysql/admin/list.html:98
+#: ../templates/default/mysql/alias/list.html:100
+#: ../templates/default/mysql/domain/list.html:166
+#: ../templates/default/mysql/user/list.html:137
+#: ../templates/default/panel/log.html:123
+#: ../templates/default/pgsql/search.html:141
+#: ../templates/default/pgsql/search.html:203
+#: ../templates/default/pgsql/search.html:266
+#: ../templates/default/pgsql/search.html:319
+#: ../templates/default/pgsql/admin/list.html:98
+#: ../templates/default/pgsql/alias/list.html:100
+#: ../templates/default/pgsql/domain/list.html:166
+#: ../templates/default/pgsql/user/list.html:137
+#: ../templates/default/policyd/wblist.html:108
+msgid "Apply"
+msgstr "套用"
+
+#: ../templates/default/macros/general.html:470
+#, python-format
+msgid "At least %s characters, but no more than %s."
+msgstr "必須是 %s - %s 個字元。"
+
+#: ../templates/default/macros/general.html:472
+#, python-format
+msgid "At least %s characters."
+msgstr "至少 %s 個字元。"
+
+#: ../templates/default/amavisd/quarantined_raw.html:10
+msgid "Attachments"
+msgstr "附件"
+
+#: ../templates/default/macros/general.html:537
+msgid "Available quota:"
+msgstr "可用空間配額"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:51
+#: ../templates/default/dbmail_mysql/user/profile.html:52
+#: ../templates/default/ldap/domain/profile.html:118
+#: ../templates/default/mysql/domain/profile.html:61
+#: ../templates/default/mysql/user/profile.html:67
+#: ../templates/default/pgsql/domain/profile.html:62
+#: ../templates/default/pgsql/user/profile.html:67
+msgid "BCC"
+msgstr "密送"
+
+#: ../templates/default/macros/general.html:619
+msgid "BCC incoming emails to single address"
+msgstr "將接收到的郵件密送（BCC）到指定的郵件地址"
+
+#: ../templates/default/macros/ldap.html:80
+#: ../templates/default/macros/ldap.html:100
+msgid "BCC incoming mails to other address"
+msgstr "將接收到的郵件密送（BCC）到其它郵件地址"
+
+#: ../templates/default/macros/general.html:631
+msgid "BCC outgoing emails to single address"
+msgstr "將外發的郵件密送（BCC）到其它郵件地址"
+
+#: ../templates/default/macros/ldap.html:81
+#: ../templates/default/macros/ldap.html:101
+msgid "BCC outgoing mails to other address"
+msgstr "將外發的郵件密送（BCC）到其它郵件地址"
+
+#: ../templates/default/macros/general.html:455
+msgid "Backup MX does not work with custom relay"
+msgstr ""
+
+#: ../templates/default/macros/amavisd.html:33
+msgid "Banned"
+msgstr ""
+
+#: ../templates/default/policyd/wblist.html:12
+msgid "Blacklist"
+msgstr "黑名單"
+
+#: ../templates/default/policyd/blacklist/create.html:45
+msgid "Blacklist HELO records"
+msgstr "HELO 黑名單記錄"
+
+#: ../templates/default/policyd/blacklist/create.html:39
+msgid "Blacklist records"
+msgstr "黑名單記錄"
+
+#: ../templates/default/layout.html:99 ../templates/default/layout.html:123
+#: ../templates/default/policyd/wblist.html:55
+msgid "Blacklists"
+msgstr "黑名單"
+
+#: ../templates/default/ldap/user/profile.html:344
+msgid "Bypass mails from below senders"
+msgstr "放行來自以下發件人的郵件"
+
+#: ../templates/default/ldap/user/profile.html:358
+msgid "Bypass mails sent to below recipients"
+msgstr "允許發送給以下收件人"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:53
+#: ../templates/default/ldap/domain/profile.html:120
+#: ../templates/default/mysql/domain/profile.html:63
+#: ../templates/default/pgsql/domain/profile.html:64
+msgid "Catch-all"
+msgstr "Catch-all 地址"
+
+#: ../templates/default/ldap/domain/profile.html:300
+#: ../templates/default/mysql/domain/profile.html:248
+#: ../templates/default/pgsql/domain/profile.html:249
+msgid "Catch-all Addresses"
+msgstr "Catch-all 地址"
+
+#: ../templates/default/ldap/domain/profile.html:309
+#: ../templates/default/mysql/domain/profile.html:257
+#: ../templates/default/pgsql/domain/profile.html:258
+msgid "Catch-all address may receive many spam emails."
+msgstr "Catch-all 帳號可能會收到很多垃圾郵件。"
+
+#: ../templates/default/macros/ldap.html:113
+msgid "Check this box in order to enable other services"
+msgstr "勾選這個選項來啟用所有電子郵件相關服務"
+
+#: ../templates/default/amavisd/inout.html:169
+#: ../templates/default/amavisd/quarantined.html:85
+#: ../templates/default/dbmail_mysql/search.html:118
+#: ../templates/default/dbmail_mysql/search.html:191
+#: ../templates/default/dbmail_mysql/search.html:244
+#: ../templates/default/dbmail_mysql/admin/list.html:83
+#: ../templates/default/dbmail_mysql/alias/list.html:82
+#: ../templates/default/dbmail_mysql/domain/list.html:152
+#: ../templates/default/dbmail_mysql/user/list.html:114
+#: ../templates/default/ldap/search.html:114
+#: ../templates/default/ldap/search.html:166
+#: ../templates/default/ldap/search.html:226
+#: ../templates/default/ldap/search.html:280
+#: ../templates/default/ldap/search.html:330
+#: ../templates/default/ldap/admin/list.html:81
+#: ../templates/default/ldap/alias/list.html:109
+#: ../templates/default/ldap/domain/list.html:203
+#: ../templates/default/ldap/maillist/list.html:109
+#: ../templates/default/ldap/maillist/profile.html:190
+#: ../templates/default/ldap/maillist/profile.html:236
+#: ../templates/default/ldap/maillist/profile.html:318
+#: ../templates/default/ldap/maillist/profile.html:363
+#: ../templates/default/ldap/user/admin.html:144
+#: ../templates/default/ldap/user/list.html:152
+#: ../templates/default/mysql/search.html:136
+#: ../templates/default/mysql/search.html:198
+#: ../templates/default/mysql/search.html:261
+#: ../templates/default/mysql/search.html:314
+#: ../templates/default/mysql/admin/list.html:93
+#: ../templates/default/mysql/alias/list.html:95
+#: ../templates/default/mysql/domain/list.html:161
+#: ../templates/default/mysql/user/list.html:132
+#: ../templates/default/panel/log.html:119
+#: ../templates/default/pgsql/search.html:136
+#: ../templates/default/pgsql/search.html:198
+#: ../templates/default/pgsql/search.html:261
+#: ../templates/default/pgsql/search.html:314
+#: ../templates/default/pgsql/admin/list.html:93
+#: ../templates/default/pgsql/alias/list.html:95
+#: ../templates/default/pgsql/domain/list.html:161
+#: ../templates/default/pgsql/user/list.html:132
+#: ../templates/default/policyd/wblist.html:105
+msgid "Choose Action"
+msgstr "選擇操作"
+
+#: ../templates/default/macros/amavisd.html:69
+msgid "Choose activity type"
+msgstr "選擇活動類型"
+
+#: ../templates/default/macros/general.html:662
+msgid "Company/Organization Name"
+msgstr "公司/組織名稱"
+
+#: ../templates/default/macros/general.html:493
+msgid "Confirm new password"
+msgstr "確認新密碼"
+
+#: ../templates/default/layout.html:157
+msgid "Contact webmaster"
+msgstr "聯繫管理員"
+
+#: ../templates/default/panel/license.html:49
+msgid "Contacts"
+msgstr "帳號活動"
+
+#: ../templates/default/ldap/domain/profile.html:188
+msgid "Content of disclaimer will be appended to outgoing emails."
+msgstr "免責聲明的內容會被自動附加到送出的電子郵件尾部。"
+
+#: ../templates/default/policyd/blacklist/create.html:78
+msgid ""
+"Could be a FQDN (Fully Qualified Domain Name) or IP address which "
+"enclosed in square brackets, for example <u>[1.2.3.4]</u>"
+msgstr "可以是一個 FQDN （完整主機名）或以中括號包圍的 IP 地址，例如 <u>[1.2.3.4]</u>"
+
+#: ../templates/default/macros/msgHandlers.html:139
+#: ../templates/default/macros/msgHandlers.html:176
+#: ../templates/default/macros/msgHandlers.html:177
+msgid "Current password is incorrect."
+msgstr "當前密碼錯誤。"
+
+#: ../templates/default/macros/policyd.html:35
+#: ../templates/default/macros/policyd.html:86
+msgid "Current value:"
+msgstr "當前值："
+
+#: ../templates/default/macros/policyd.html:60
+#: ../templates/default/macros/policyd.html:85
+msgid "Custom:"
+msgstr "自訂："
+
+#: ../templates/default/macros/ldap.html:98
+#: ../templates/default/macros/mysql.html:68
+msgid "Customize mail filter rule"
+msgstr "自訂郵件過濾規則"
+
+#: ../templates/default/macros/ldap.html:99
+#: ../templates/default/macros/mysql.html:69
+msgid "Customize mail filter rule over TLS/SSL"
+msgstr "自訂郵件過濾規則（使用 TLS/SSL 加密傳輸）"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:111
+#: ../templates/default/dbmail_mysql/domain/list.html:125
+#: ../templates/default/ldap/domain/list.html:153
+#: ../templates/default/ldap/domain/list.html:166
+#: ../templates/default/ldap/domain/list.html:179
+#: ../templates/default/mysql/search.html:116
+#: ../templates/default/mysql/search.html:125
+#: ../templates/default/mysql/domain/list.html:120
+#: ../templates/default/mysql/domain/list.html:134
+#: ../templates/default/pgsql/search.html:116
+#: ../templates/default/pgsql/search.html:125
+#: ../templates/default/pgsql/domain/list.html:120
+#: ../templates/default/pgsql/domain/list.html:134
+msgid "DISABLED"
+msgstr "停用"
+
+#: ../templates/default/policyd/wblist.html:26
+msgid "DNS Name"
+msgstr "用戶名"
+
+#: ../templates/default/policyd/blacklist/create.html:70
+#: ../templates/default/policyd/whitelist/create.html:64
+msgid "DNS name"
+msgstr "DNS 主機名"
+
+#: ../templates/default/dashboard.html:6 ../templates/default/layout.html:74
+msgid "Dashboard"
+msgstr "控制台"
+
+#: ../templates/default/amavisd/inout.html:110
+#: ../templates/default/macros/amavisd.html:13
+msgid "Date"
+msgstr "日期"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:374
+#: ../templates/default/ldap/domain/profile.html:445
+#: ../templates/default/mysql/domain/profile.html:452
+#: ../templates/default/pgsql/domain/profile.html:434
+msgid "Default mail group(s) of new user"
+msgstr "新建立用戶的預設郵件群組"
+
+#: ../templates/default/macros/general.html:726
+msgid "Default quota of new user"
+msgstr "新建立用戶的預設空間配額"
+
+#: ../templates/default/dbmail_mysql/search.html:121
+#: ../templates/default/dbmail_mysql/search.html:194
+#: ../templates/default/dbmail_mysql/search.html:247
+#: ../templates/default/dbmail_mysql/admin/list.html:86
+#: ../templates/default/dbmail_mysql/alias/list.html:87
+#: ../templates/default/dbmail_mysql/domain/list.html:157
+#: ../templates/default/dbmail_mysql/user/list.html:119
+#: ../templates/default/ldap/search.html:117
+#: ../templates/default/ldap/search.html:169
+#: ../templates/default/ldap/search.html:229
+#: ../templates/default/ldap/search.html:283
+#: ../templates/default/ldap/search.html:333
+#: ../templates/default/ldap/admin/list.html:84
+#: ../templates/default/ldap/alias/list.html:112
+#: ../templates/default/ldap/domain/list.html:206
+#: ../templates/default/ldap/maillist/list.html:112
+#: ../templates/default/ldap/user/list.html:155
+#: ../templates/default/mysql/search.html:139
+#: ../templates/default/mysql/search.html:201
+#: ../templates/default/mysql/search.html:264
+#: ../templates/default/mysql/search.html:317
+#: ../templates/default/mysql/admin/list.html:96
+#: ../templates/default/mysql/alias/list.html:98
+#: ../templates/default/mysql/domain/list.html:164
+#: ../templates/default/mysql/user/list.html:135
+#: ../templates/default/pgsql/search.html:139
+#: ../templates/default/pgsql/search.html:201
+#: ../templates/default/pgsql/search.html:264
+#: ../templates/default/pgsql/search.html:317
+#: ../templates/default/pgsql/admin/list.html:96
+#: ../templates/default/pgsql/alias/list.html:98
+#: ../templates/default/pgsql/domain/list.html:164
+#: ../templates/default/pgsql/user/list.html:135
+#: ../templates/default/policyd/wblist.html:106
+msgid "Delete"
+msgstr "刪除"
+
+#: ../templates/default/macros/general.html:894
+msgid "Delete account"
+msgstr "刪除帳號"
+
+#: ../templates/default/amavisd/inout.html:171
+#: ../templates/default/amavisd/quarantined.html:90
+#: ../templates/default/panel/log.html:121
+msgid "Delete all in database"
+msgstr "刪除資料庫裡的所有記錄"
+
+#: ../templates/default/amavisd/inout.html:170
+#: ../templates/default/amavisd/quarantined.html:87
+#: ../templates/default/panel/log.html:120
+msgid "Delete selected"
+msgstr "刪除所選擇的記錄"
+
+#: ../templates/default/policyd/wblist.html:67
+msgid "Description"
+msgstr "描述"
+
+#: ../templates/default/ldap/domain/profile.html:491
+msgid "Directory of mailbox storage"
+msgstr "存放郵件的目錄"
+
+#: ../templates/default/dbmail_mysql/search.html:120
+#: ../templates/default/dbmail_mysql/search.html:193
+#: ../templates/default/dbmail_mysql/search.html:246
+#: ../templates/default/dbmail_mysql/admin/list.html:85
+#: ../templates/default/ldap/search.html:116
+#: ../templates/default/ldap/search.html:168
+#: ../templates/default/ldap/search.html:228
+#: ../templates/default/ldap/search.html:282
+#: ../templates/default/ldap/search.html:332
+#: ../templates/default/ldap/admin/list.html:83
+#: ../templates/default/ldap/alias/list.html:111
+#: ../templates/default/ldap/domain/list.html:205
+#: ../templates/default/ldap/maillist/list.html:111
+#: ../templates/default/ldap/user/list.html:154
+#: ../templates/default/mysql/search.html:138
+#: ../templates/default/mysql/search.html:200
+#: ../templates/default/mysql/search.html:263
+#: ../templates/default/mysql/search.html:316
+#: ../templates/default/mysql/admin/list.html:95
+#: ../templates/default/mysql/alias/list.html:97
+#: ../templates/default/mysql/domain/list.html:163
+#: ../templates/default/mysql/user/list.html:134
+#: ../templates/default/pgsql/search.html:138
+#: ../templates/default/pgsql/search.html:200
+#: ../templates/default/pgsql/search.html:263
+#: ../templates/default/pgsql/search.html:316
+#: ../templates/default/pgsql/admin/list.html:95
+#: ../templates/default/pgsql/alias/list.html:97
+#: ../templates/default/pgsql/domain/list.html:163
+#: ../templates/default/pgsql/user/list.html:134
+msgid "Disable"
+msgstr "停用"
+
+#: ../templates/default/macros/general.html:896
+msgid "Disable account"
+msgstr "停用帳號"
+
+#: ../templates/default/dbmail_mysql/search.html:52
+#: ../templates/default/ldap/search.html:50
+#: ../templates/default/mysql/search.html:53
+#: ../templates/default/pgsql/search.html:53
+msgid "Disabled"
+msgstr "已停用"
+
+#: ../templates/default/ldap/domain/profile.html:179
+msgid "Disclaimer"
+msgstr "免責聲明"
+
+#: ../templates/default/dbmail_mysql/search.html:80
+#: ../templates/default/dbmail_mysql/search.html:143
+#: ../templates/default/dbmail_mysql/search.html:218
+#: ../templates/default/dbmail_mysql/admin/list.html:49
+#: ../templates/default/dbmail_mysql/alias/list.html:49
+#: ../templates/default/dbmail_mysql/user/list.html:53
+#: ../templates/default/ldap/search.html:137
+#: ../templates/default/ldap/search.html:191
+#: ../templates/default/ldap/search.html:251
+#: ../templates/default/ldap/search.html:304
+#: ../templates/default/ldap/admin/list.html:49
+#: ../templates/default/ldap/alias/list.html:68
+#: ../templates/default/ldap/maillist/list.html:69
+#: ../templates/default/ldap/maillist/profile.html:142
+#: ../templates/default/ldap/maillist/profile.html:269
+#: ../templates/default/ldap/user/admin.html:70
+#: ../templates/default/ldap/user/list.html:71
+#: ../templates/default/macros/general.html:664
+#: ../templates/default/mysql/search.html:160
+#: ../templates/default/mysql/search.html:224
+#: ../templates/default/mysql/search.html:288
+#: ../templates/default/mysql/admin/list.html:49
+#: ../templates/default/mysql/alias/list.html:62
+#: ../templates/default/mysql/user/list.html:67
+#: ../templates/default/pgsql/search.html:160
+#: ../templates/default/pgsql/search.html:224
+#: ../templates/default/pgsql/search.html:288
+#: ../templates/default/pgsql/admin/list.html:49
+#: ../templates/default/pgsql/alias/list.html:62
+#: ../templates/default/pgsql/user/list.html:67
+msgid "Display Name"
+msgstr "顯示名稱"
+
+#: ../templates/default/macros/ldap.html:102
+#: ../templates/default/macros/ldap.html:106
+msgid "Display mail address in global LDAP address book"
+msgstr "在全域 LDAP 通訊錄中顯示該帳號的郵件地址"
+
+#: ../templates/default/macros/general.html:377
+msgid "Displayed in Global LDAP Address Book"
+msgstr "在全域 LDAP 通訊錄中顯示"
+
+#: ../templates/default/layout.html:109
+#: ../templates/default/dbmail_mysql/domain/list.html:52
+#: ../templates/default/ldap/search.html:41
+#: ../templates/default/ldap/search.html:77
+#: ../templates/default/ldap/domain/list.html:51
+#: ../templates/default/mysql/search.html:45
+#: ../templates/default/mysql/search.html:80
+#: ../templates/default/mysql/domain/list.html:52
+#: ../templates/default/pgsql/search.html:45
+#: ../templates/default/pgsql/search.html:80
+#: ../templates/default/pgsql/domain/list.html:52
+msgid "Domain"
+msgstr "網域名"
+
+#: ../templates/default/dbmail_mysql/admin/list.html:13
+#: ../templates/default/ldap/admin/list.html:13
+#: ../templates/default/macros/ldap.html:41
+#: ../templates/default/macros/mysql.html:35
+#: ../templates/default/mysql/admin/list.html:13
+#: ../templates/default/pgsql/admin/list.html:13
+msgid "Domain Admins"
+msgstr "網域管理員"
+
+#: ../templates/default/macros/general.html:647
+msgid "Domain Name"
+msgstr "郵件網域名稱"
+
+#: ../templates/default/macros/general.html:241
+msgid "Domain activities"
+msgstr "網域活動"
+
+#: ../templates/default/macros/general.html:404
+msgid "Domain admin"
+msgstr "域管理员"
+
+#: ../templates/default/macros/ldap.html:79
+msgid "Domain alias"
+msgstr "郵件網域別名"
+
+#: ../templates/default/macros/msgHandlers.html:97
+msgid "Domain already exists. Please check both primary or alias domains."
+msgstr "帳號已存在，請檢查郵件網域名稱及別名。"
+
+#: ../templates/default/ldap/user/profile.html:387
+msgid "Domain and its sub-domains"
+msgstr "郵件網域及其子網域"
+
+#: ../templates/default/macros/msgHandlers.html:108
+msgid "Domain created."
+msgstr "郵件網域已建立。"
+
+#: ../templates/default/macros/msgHandlers.html:95
+msgid "Domain name is empty."
+msgstr "郵件網域名稱為空白。"
+
+#: ../templates/default/macros/amavisd.html:65
+msgid "Domain name or mail address"
+msgstr "網域名稱或郵件地址。"
+
+#: ../templates/default/macros/msgHandlers.html:128
+msgid "Domain name or username is missed."
+msgstr "沒有網域名稱或用戶名。"
+
+#: ../templates/default/macros/general.html:712
+msgid "Domain quota size"
+msgstr "郵件網域的總郵箱空間配額"
+
+#: ../templates/default/macros/msgHandlers.html:130
+msgid ""
+"Domain quota size exceeded. Please contact your administrator or service "
+"provider to increase it."
+msgstr "網域空間配額已達最大限制。請聯絡系統管理員或服務提供者來增加。"
+
+#: ../templates/default/panel/log.html:47
+msgid "Domains"
+msgstr "網域名稱"
+
+#: ../templates/default/layout.html:75
+#: ../templates/default/dbmail_mysql/domain/list.html:17
+#: ../templates/default/ldap/domain/list.html:17
+#: ../templates/default/mysql/domain/list.html:17
+#: ../templates/default/pgsql/domain/list.html:17
+msgid "Domains and Accounts"
+msgstr "網域和帳號"
+
+#: ../templates/default/ldap/domain/profile.html:194
+msgid "Dump disclaimer automatically"
+msgstr "如何自動匯出免責聲明"
+
+#: ../templates/default/amavisd/inout.html:129
+#: ../templates/default/amavisd/inout.html:139
+#: ../templates/default/dbmail_mysql/search.html:94
+#: ../templates/default/dbmail_mysql/search.html:156
+#: ../templates/default/dbmail_mysql/search.html:231
+#: ../templates/default/dbmail_mysql/admin/list.html:63
+#: ../templates/default/dbmail_mysql/admin/list.html:67
+#: ../templates/default/dbmail_mysql/admin/profile.html:23
+#: ../templates/default/dbmail_mysql/alias/list.html:63
+#: ../templates/default/dbmail_mysql/alias/list.html:65
+#: ../templates/default/dbmail_mysql/alias/profile.html:15
+#: ../templates/default/dbmail_mysql/alias/profile.html:116
+#: ../templates/default/dbmail_mysql/domain/list.html:70
+#: ../templates/default/dbmail_mysql/domain/list.html:78
+#: ../templates/default/dbmail_mysql/domain/profile.html:26
+#: ../templates/default/dbmail_mysql/user/list.html:67
+#: ../templates/default/dbmail_mysql/user/list.html:70
+#: ../templates/default/dbmail_mysql/user/profile.html:25
+#: ../templates/default/ldap/search.html:96
+#: ../templates/default/ldap/search.html:152
+#: ../templates/default/ldap/search.html:207
+#: ../templates/default/ldap/search.html:267
+#: ../templates/default/ldap/search.html:317
+#: ../templates/default/ldap/admin/list.html:67
+#: ../templates/default/ldap/admin/list.html:69
+#: ../templates/default/ldap/admin/profile.html:23
+#: ../templates/default/ldap/alias/list.html:90
+#: ../templates/default/ldap/alias/list.html:92
+#: ../templates/default/ldap/alias/profile.html:15
+#: ../templates/default/ldap/domain/list.html:100
+#: ../templates/default/ldap/domain/list.html:114
+#: ../templates/default/ldap/domain/profile.html:33
+#: ../templates/default/ldap/maillist/list.html:89
+#: ../templates/default/ldap/maillist/list.html:91
+#: ../templates/default/ldap/maillist/profile.html:16
+#: ../templates/default/ldap/maillist/profile.html:167
+#: ../templates/default/ldap/maillist/profile.html:294
+#: ../templates/default/ldap/user/admin.html:96
+#: ../templates/default/ldap/user/admin.html:99
+#: ../templates/default/ldap/user/list.html:97
+#: ../templates/default/ldap/user/list.html:107
+#: ../templates/default/ldap/user/profile.html:43
+#: ../templates/default/macros/amavisd.html:108
+#: ../templates/default/macros/general.html:900
+#: ../templates/default/mysql/search.html:94
+#: ../templates/default/mysql/search.html:174
+#: ../templates/default/mysql/search.html:237
+#: ../templates/default/mysql/search.html:301
+#: ../templates/default/mysql/admin/list.html:63
+#: ../templates/default/mysql/admin/list.html:67
+#: ../templates/default/mysql/admin/profile.html:23
+#: ../templates/default/mysql/alias/list.html:76
+#: ../templates/default/mysql/alias/list.html:78
+#: ../templates/default/mysql/alias/profile.html:15
+#: ../templates/default/mysql/alias/profile.html:123
+#: ../templates/default/mysql/alias/profile.html:157
+#: ../templates/default/mysql/domain/list.html:71
+#: ../templates/default/mysql/domain/list.html:87
+#: ../templates/default/mysql/domain/profile.html:36
+#: ../templates/default/mysql/user/list.html:84
+#: ../templates/default/mysql/user/list.html:88
+#: ../templates/default/mysql/user/profile.html:42
+#: ../templates/default/pgsql/search.html:94
+#: ../templates/default/pgsql/search.html:174
+#: ../templates/default/pgsql/search.html:237
+#: ../templates/default/pgsql/search.html:301
+#: ../templates/default/pgsql/admin/list.html:63
+#: ../templates/default/pgsql/admin/list.html:67
+#: ../templates/default/pgsql/admin/profile.html:23
+#: ../templates/default/pgsql/alias/list.html:76
+#: ../templates/default/pgsql/alias/list.html:78
+#: ../templates/default/pgsql/alias/profile.html:15
+#: ../templates/default/pgsql/alias/profile.html:123
+#: ../templates/default/pgsql/alias/profile.html:157
+#: ../templates/default/pgsql/domain/list.html:71
+#: ../templates/default/pgsql/domain/list.html:87
+#: ../templates/default/pgsql/domain/profile.html:37
+#: ../templates/default/pgsql/user/list.html:84
+#: ../templates/default/pgsql/user/list.html:88
+#: ../templates/default/pgsql/user/profile.html:42
+msgid "Edit account profile"
+msgstr "編輯帳號屬性"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:56
+#: ../templates/default/dbmail_mysql/alias/list.html:37
+#: ../templates/default/dbmail_mysql/user/create.html:79
+#: ../templates/default/dbmail_mysql/user/list.html:40
+#: ../templates/default/ldap/alias/create.html:75
+#: ../templates/default/ldap/alias/list.html:55
+#: ../templates/default/ldap/maillist/create.html:75
+#: ../templates/default/ldap/maillist/list.html:57
+#: ../templates/default/ldap/user/admin.html:58
+#: ../templates/default/ldap/user/create.html:117
+#: ../templates/default/ldap/user/list.html:59
+#: ../templates/default/macros/amavisd.html:106
+#: ../templates/default/mysql/alias/create.html:70
+#: ../templates/default/mysql/alias/list.html:50
+#: ../templates/default/mysql/user/create.html:90
+#: ../templates/default/mysql/user/list.html:54
+#: ../templates/default/pgsql/alias/create.html:70
+#: ../templates/default/pgsql/alias/list.html:50
+#: ../templates/default/pgsql/user/create.html:90
+#: ../templates/default/pgsql/user/list.html:54
+msgid "Edit domain profile"
+msgstr "編輯網域屬性"
+
+#: ../templates/default/dbmail_mysql/search.html:177
+#: ../templates/default/dbmail_mysql/domain/list.html:88
+#: ../templates/default/dbmail_mysql/domain/list.html:96
+#: ../templates/default/dbmail_mysql/user/list.html:90
+#: ../templates/default/ldap/domain/list.html:125
+#: ../templates/default/ldap/domain/list.html:134
+#: ../templates/default/ldap/user/admin.html:120
+#: ../templates/default/ldap/user/list.html:128
+#: ../templates/default/mysql/domain/list.html:97
+#: ../templates/default/mysql/domain/list.html:105
+#: ../templates/default/mysql/user/list.html:110
+#: ../templates/default/pgsql/domain/list.html:97
+#: ../templates/default/pgsql/domain/list.html:105
+#: ../templates/default/pgsql/user/list.html:110
+msgid "Edit quota setting"
+msgstr "編輯空間配額設定"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:213
+#: ../templates/default/ldap/user/profile.html:332
+#, python-format
+msgid "Email address of alias account must end with domain name(s): %s."
+msgstr "別名帳號的郵件地址必須以下列網域名稱結尾：%s。"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:198
+#: ../templates/default/ldap/user/profile.html:319
+msgid "Email addresses of alias accounts"
+msgstr "別名帳號的郵件地址"
+
+#: ../templates/default/dashboard.html:80
+#: ../templates/default/dbmail_mysql/search.html:178
+#: ../templates/default/mysql/user/list.html:111
+#: ../templates/default/pgsql/user/list.html:111
+msgid "Emails"
+msgstr "郵件"
+
+#: ../templates/default/ldap/domain/profile.html:314
+#: ../templates/default/mysql/domain/profile.html:262
+#: ../templates/default/pgsql/domain/profile.html:263
+msgid ""
+"Emails delivered to non-exist mail accounts will be forwarded to catch-"
+"all address(es)."
+msgstr "當郵件寄送給不存在的帳號時將會被轉發到 catch-all 地址。"
+
+#: ../templates/default/ldap/domain/profile.html:239
+#: ../templates/default/mysql/domain/profile.html:309
+#: ../templates/default/pgsql/domain/profile.html:310
+#, python-format
+msgid ""
+"Emails sent to <em><strong>user@[ALIAS_DOMAIN]</strong></em> will be "
+"delivered to <em><strong>user@%s</strong></em>."
+msgstr ""
+"發送給 <em><strong>user@[ALIAS_DOMAIN]</strong></em> 的郵件將會被遞送到 "
+"<em><strong>user@%s</strong></em>。"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:212
+#: ../templates/default/ldap/user/profile.html:331
+#, python-format
+msgid "Emails sent to alias accounts will be delivered to user %s."
+msgstr "發送給別名地址的郵件將會被遞送給用戶 %s。"
+
+#: ../templates/default/macros/msgHandlers.html:253
+msgid "Empty address is not allowed."
+msgstr "不允許空白地址。"
+
+#: ../templates/default/macros/msgHandlers.html:66
+msgid "Empty password is not allowed."
+msgstr "不允許空白密碼。"
+
+#: ../templates/default/dbmail_mysql/search.html:119
+#: ../templates/default/dbmail_mysql/search.html:192
+#: ../templates/default/dbmail_mysql/search.html:245
+#: ../templates/default/dbmail_mysql/admin/list.html:84
+#: ../templates/default/ldap/search.html:115
+#: ../templates/default/ldap/search.html:167
+#: ../templates/default/ldap/search.html:227
+#: ../templates/default/ldap/search.html:281
+#: ../templates/default/ldap/search.html:331
+#: ../templates/default/ldap/admin/list.html:82
+#: ../templates/default/ldap/alias/list.html:110
+#: ../templates/default/ldap/domain/list.html:204
+#: ../templates/default/ldap/maillist/list.html:110
+#: ../templates/default/ldap/user/list.html:153
+#: ../templates/default/mysql/search.html:137
+#: ../templates/default/mysql/search.html:199
+#: ../templates/default/mysql/search.html:262
+#: ../templates/default/mysql/search.html:315
+#: ../templates/default/mysql/admin/list.html:94
+#: ../templates/default/mysql/alias/list.html:96
+#: ../templates/default/mysql/domain/list.html:162
+#: ../templates/default/mysql/user/list.html:133
+#: ../templates/default/pgsql/search.html:137
+#: ../templates/default/pgsql/search.html:199
+#: ../templates/default/pgsql/search.html:262
+#: ../templates/default/pgsql/search.html:315
+#: ../templates/default/pgsql/admin/list.html:94
+#: ../templates/default/pgsql/alias/list.html:96
+#: ../templates/default/pgsql/domain/list.html:162
+#: ../templates/default/pgsql/user/list.html:133
+msgid "Enable"
+msgstr "啟用"
+
+#: ../templates/default/ldap/user/profile.html:314
+msgid "Enable alias account"
+msgstr "啟用別名帳號"
+
+#: ../templates/default/ldap/domain/profile.html:293
+#: ../templates/default/mysql/domain/profile.html:241
+#: ../templates/default/pgsql/domain/profile.html:242
+msgid "Enable catch-all"
+msgstr "啟用 catch-all 地址"
+
+#: ../templates/default/ldap/domain/profile.html:207
+msgid "Enable domain alias"
+msgstr "啟用網域別名"
+
+#: ../templates/default/mysql/domain/profile.html:382
+msgid "Enable greylisting for this domain"
+msgstr "啟用這個網域"
+
+#: ../templates/default/ldap/user/profile.html:281
+#: ../templates/default/mysql/user/profile.html:171
+#: ../templates/default/pgsql/user/profile.html:171
+msgid "Enable mail forwarding"
+msgstr "啟用郵件轉發"
+
+#: ../templates/default/macros/policyd.html:7
+msgid "Enable recipient throttling"
+msgstr "啟用收件限制"
+
+#: ../templates/default/macros/policyd.html:5
+msgid "Enable sender throttling"
+msgstr "啟用發件限制"
+
+#: ../templates/default/macros/general.html:435
+msgid "Enable this account"
+msgstr "啟用這個帳號"
+
+#: ../templates/default/macros/general.html:433
+msgid "Enable this domain"
+msgstr "啟用這個網域"
+
+#: ../templates/default/macros/ldap.html:110
+#: ../templates/default/macros/mysql.html:75
+#: ../templates/default/macros/mysql.html:81
+msgid "Enabled Services"
+msgstr "已啟用的郵件服務"
+
+#: ../templates/default/ldap/user/profile.html:386
+#: ../templates/default/policyd/blacklist/create.html:67
+#: ../templates/default/policyd/whitelist/create.html:61
+msgid "Entire domain"
+msgstr "整個網域"
+
+#: ../templates/default/dashboard.html:17
+msgid "Error while checking new version of iRedAdmin-Pro:"
+msgstr "檢查新版本時發生錯誤："
+
+#: ../templates/default/panel/license.html:61
+msgid "Error while geting license info:"
+msgstr "檢查新版本時發生錯誤：%s"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:32
+#: ../templates/default/dbmail_mysql/user/create.html:48
+#: ../templates/default/ldap/alias/create.html:39
+#: ../templates/default/ldap/alias/create.html:47
+#: ../templates/default/ldap/maillist/create.html:40
+#: ../templates/default/ldap/maillist/create.html:48
+#: ../templates/default/ldap/user/create.html:72
+#: ../templates/default/ldap/user/create.html:82
+#: ../templates/default/macros/msgHandlers.html:22
+#: ../templates/default/macros/msgHandlers.html:24
+#: ../templates/default/mysql/alias/create.html:44
+#: ../templates/default/mysql/user/create.html:57
+#: ../templates/default/pgsql/alias/create.html:44
+#: ../templates/default/pgsql/user/create.html:57
+msgid "Error:"
+msgstr "錯誤："
+
+#: ../templates/default/macros/general.html:888
+msgid "Events"
+msgstr "事件"
+
+#: ../templates/default/ldap/maillist/profile.html:83
+#: ../templates/default/mysql/alias/profile.html:72
+#: ../templates/default/pgsql/alias/profile.html:72
+msgid "Everyone can send mail to this address"
+msgstr "所有人都可以發送郵件到這個地址"
+
+#: ../templates/default/macros/msgHandlers.html:131
+msgid ""
+"Exceeded domain account limit. Please contact your administrator or "
+"service provider to increase it."
+msgstr "帳號數已達網域的最大限制。請聯絡系統管理員或服務提供者來增加。"
+
+#: ../templates/default/panel/license.html:39
+msgid "Expire date"
+msgstr "過期時間"
+
+#: ../templates/default/panel/license.html:23
+msgid "Expired"
+msgstr "過期時間"
+
+#: ../templates/default/policyd/wblist.html:68
+msgid "Expired Date"
+msgstr "過期時間"
+
+#: ../templates/default/ldap/admin/profile.html:83
+#: ../templates/default/ldap/alias/profile.html:79
+#: ../templates/default/ldap/domain/profile.html:164
+#: ../templates/default/ldap/maillist/profile.html:110
+#: ../templates/default/ldap/user/profile.html:179
+msgid "Export account to"
+msgstr "將帳號導出為"
+
+#: ../templates/default/ldap/maillist/profile.html:203
+msgid "External Members"
+msgstr "外部成員"
+
+#: ../templates/default/ldap/maillist/profile.html:329
+msgid "External moderators"
+msgstr "外部管理員"
+
+#: ../templates/default/macros/ldap.html:93
+#: ../templates/default/macros/mysql.html:66
+msgid "Fetching mails via IMAP"
+msgstr "通過 IMAP 協議收取郵件"
+
+#: ../templates/default/macros/ldap.html:94
+#: ../templates/default/macros/mysql.html:67
+msgid "Fetching mails via IMAP over TLS/SSL"
+msgstr "通過 IMAP 協議收取郵件（使用 TLS/SSL 加密傳輸）"
+
+#: ../templates/default/macros/ldap.html:91
+#: ../templates/default/macros/mysql.html:64
+msgid "Fetching mails via POP3"
+msgstr "通過 POP3 協議收取郵件"
+
+#: ../templates/default/macros/ldap.html:92
+#: ../templates/default/macros/mysql.html:65
+msgid "Fetching mails via POP3 over TLS/SSL"
+msgstr "通過 POP3 協議收取郵件（使用 TLS/SSL 加密傳輸）"
+
+#: ../templates/default/panel/log.html:45
+msgid "Filter:"
+msgstr "過濾："
+
+#: ../templates/default/macros/general.html:796
+msgid "First Page"
+msgstr "第一頁"
+
+#: ../templates/default/macros/general.html:676
+msgid "First name"
+msgstr "第一頁"
+
+#: ../templates/default/macros/general.html:606
+msgid "For advanced settings and further information please see"
+msgstr ""
+
+#: ../templates/default/ldap/user/profile.html:383
+msgid "Format of sender and recipient"
+msgstr "收發件人的格式"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:180
+#: ../templates/default/ldap/user/profile.html:296
+#: ../templates/default/mysql/user/profile.html:193
+#: ../templates/default/pgsql/user/profile.html:193
+msgid "Forward mails to address"
+msgstr "將郵件轉發到指定地址"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:50
+#: ../templates/default/ldap/user/profile.html:117
+#: ../templates/default/mysql/user/profile.html:66
+#: ../templates/default/pgsql/user/profile.html:66
+msgid "Forwarding"
+msgstr "轉發"
+
+#: ../templates/default/macros/ldap.html:96
+msgid "Forwarding mails to other addresses"
+msgstr "將郵件轉發到其它地址"
+
+#: ../templates/default/ldap/admin/profile.html:73
+#: ../templates/default/ldap/user/profile.html:160
+msgid "Full name"
+msgstr ""
+
+#: ../templates/default/dbmail_mysql/admin/profile.html:44
+#: ../templates/default/dbmail_mysql/alias/profile.html:36
+#: ../templates/default/dbmail_mysql/domain/profile.html:50
+#: ../templates/default/dbmail_mysql/user/profile.html:49
+#: ../templates/default/ldap/admin/profile.html:52
+#: ../templates/default/ldap/alias/profile.html:47
+#: ../templates/default/ldap/domain/profile.html:117
+#: ../templates/default/ldap/maillist/profile.html:53
+#: ../templates/default/ldap/user/profile.html:116
+#: ../templates/default/mysql/admin/profile.html:44
+#: ../templates/default/mysql/alias/profile.html:36
+#: ../templates/default/mysql/domain/profile.html:60
+#: ../templates/default/mysql/user/profile.html:65
+#: ../templates/default/pgsql/admin/profile.html:44
+#: ../templates/default/pgsql/alias/profile.html:36
+#: ../templates/default/pgsql/domain/profile.html:61
+#: ../templates/default/pgsql/user/profile.html:65
+msgid "General"
+msgstr "一般設定"
+
+#: ../templates/default/dbmail_mysql/search.html:82
+#: ../templates/default/dbmail_mysql/admin/list.html:51
+#: ../templates/default/ldap/search.html:139
+#: ../templates/default/ldap/admin/list.html:51
+#: ../templates/default/macros/ldap.html:49
+#: ../templates/default/mysql/search.html:162
+#: ../templates/default/mysql/admin/list.html:51
+#: ../templates/default/pgsql/search.html:162
+#: ../templates/default/pgsql/admin/list.html:51
+msgid "Global Admin"
+msgstr "全域管理員"
+
+#: ../templates/default/macros/general.html:406
+msgid "Global admin"
+msgstr "全域管理員"
+
+#: ../templates/default/macros/ldap.html:121
+#: ../templates/default/macros/mysql.html:78
+msgid "Greylisting"
+msgstr ""
+
+#: ../templates/default/policyd/wblist.html:27
+msgid "HELO Identities"
+msgstr "HELO 識別"
+
+#: ../templates/default/policyd/blacklist/create.html:76
+msgid "HELO identity"
+msgstr "HELO 識別"
+
+#: ../templates/default/dashboard.html:99
+msgid "Hostname"
+msgstr "主機名"
+
+#: ../templates/default/panel/log.html:84
+#: ../templates/default/policyd/blacklist/create.html:58
+#: ../templates/default/policyd/whitelist/create.html:52
+msgid "IP Address"
+msgstr "IP 地址"
+
+#: ../templates/default/policyd/wblist.html:24
+msgid "IP Addresses"
+msgstr "IP 地址"
+
+#: ../templates/default/dbmail_mysql/user/create.html:53
+#: ../templates/default/mysql/user/create.html:62
+#: ../templates/default/pgsql/user/create.html:62
+msgid "Increase it now?"
+msgstr "現在增加？"
+
+#: ../templates/default/ldap/maillist/profile.html:384
+msgid ""
+"Input mail addresses of either internal or external members below, "
+"multiple addresses must be seperated by comma, space or new line."
+msgstr "在下方輸入內部成員或外部成員的郵件地址，多個地址必須用逗號、空格或新的一行分隔。"
+
+#: ../templates/default/ldap/maillist/profile.html:398
+msgid ""
+"Input mail addresses of either internal or external moderators below, "
+"multiple addresses must be seperated by comma, space or new line."
+msgstr "在下方輸入內部管理員或外部管理員的郵件地址，多個地址必須用逗號、空格或新的一行分隔。"
+
+#: ../templates/default/ldap/user/profile.html:373
+msgid "Install iRedAPD"
+msgstr "安裝 iRedAPD"
+
+#: ../templates/default/ldap/maillist/profile.html:133
+msgid "Internal Members"
+msgstr "內部成員"
+
+#: ../templates/default/ldap/maillist/profile.html:257
+msgid "Internal Moderators"
+msgstr "內部管理員"
+
+#: ../templates/default/macros/msgHandlers.html:89
+#: ../templates/default/macros/msgHandlers.html:126
+#: ../templates/default/macros/msgHandlers.html:170
+#: ../templates/default/macros/msgHandlers.html:210
+#: ../templates/default/macros/msgHandlers.html:245
+#: ../templates/default/macros/msgHandlers.html:279
+#: ../templates/default/macros/msgHandlers.html:304
+#: ../templates/default/macros/msgHandlers.html:323
+#: ../templates/default/macros/msgHandlers.html:347
+msgid "Invalid action."
+msgstr "無效的操作。"
+
+#: ../templates/default/macros/msgHandlers.html:303
+#: ../templates/default/macros/msgHandlers.html:324
+msgid "Invalid domain name or mail address."
+msgstr "無效的網域名稱或郵件地址"
+
+#: ../templates/default/macros/msgHandlers.html:93
+msgid "Invalid domain name."
+msgstr "無效的網域名稱。"
+
+#: ../templates/default/macros/msgHandlers.html:94
+#: ../templates/default/macros/msgHandlers.html:129
+#: ../templates/default/macros/msgHandlers.html:180
+#: ../templates/default/macros/msgHandlers.html:345
+msgid "Invalid mail address."
+msgstr "無效的郵件地址。"
+
+#: ../templates/default/macros/msgHandlers.html:291
+msgid "Invalid product id."
+msgstr "無效的請求資料。"
+
+#: ../templates/default/macros/msgHandlers.html:305
+msgid "Invalid request data."
+msgstr "無效的請求資料。"
+
+#: ../templates/default/macros/msgHandlers.html:208
+msgid "Invalid username."
+msgstr "無效的用戶名。"
+
+#: ../templates/default/macros/general.html:217
+msgid "Is a global admin."
+msgstr "全域管理員。"
+
+#: ../templates/default/ldap/admin/create.html:44
+#: ../templates/default/mysql/admin/create.html:44
+#: ../templates/default/pgsql/admin/create.html:44
+msgid ""
+"It is recommended to mark user as domain admin in user profile page "
+"instead of creating separate admin account."
+msgstr ""
+
+#: ../templates/default/ldap/alias/create.html:111
+msgid ""
+"It's better to use mail list instead of alias, since we have mail deliver"
+" restriction for mail list."
+msgstr "建議您使用郵件列表來代替別名，便於進行郵件投遞權限控制。"
+
+#: ../templates/default/ldap/search.html:194
+#: ../templates/default/ldap/user/admin.html:73
+#: ../templates/default/ldap/user/list.html:74
+msgid "Job Title"
+msgstr "職位"
+
+#: ../templates/default/macros/general.html:320
+msgid "Job Title/Responsibility"
+msgstr "職位/職責"
+
+#: ../templates/default/dbmail_mysql/search.html:35
+#: ../templates/default/ldap/search.html:31
+#: ../templates/default/mysql/search.html:35
+#: ../templates/default/pgsql/search.html:35
+msgid "Keyword"
+msgstr "關鍵字"
+
+#: ../templates/default/macros/amavisd.html:11
+msgid "Kind"
+msgstr ""
+
+#: ../templates/default/dbmail_mysql/user/list.html:56
+msgid "Last Login"
+msgstr "最後登入"
+
+#: ../templates/default/macros/general.html:877
+msgid "Last Page"
+msgstr "最後一頁"
+
+#: ../templates/default/macros/general.html:677
+msgid "Last name"
+msgstr "主機名"
+
+#: ../templates/default/panel/license.html:54
+msgid "Latest version"
+msgstr ""
+
+#: ../templates/default/macros/general.html:604
+#, python-format
+msgid "Leave it empty to use <a href='%s'>domain setting</a>."
+msgstr "或留空白以使用 <a href='%s'>網域設定</a>。"
+
+#: ../templates/default/ldap/domain/profile.html:501
+msgid "Leave it empty to use server-wide default setting."
+msgstr "保持空白表示使用預設設定。"
+
+#: ../templates/default/layout.html:45 ../templates/default/layout.html:83
+#: ../templates/default/panel/license.html:3
+msgid "License"
+msgstr ""
+
+#: ../templates/default/panel/license.html:10
+msgid "License info"
+msgstr ""
+
+#: ../templates/default/panel/license.html:21
+msgid "License is active"
+msgstr "帳號已啟用"
+
+#: ../templates/default/panel/license.html:18
+msgid "License status"
+msgstr "帳號狀態"
+
+#: ../templates/default/panel/license.html:43
+msgid "Lifetime license"
+msgstr ""
+
+#: ../templates/default/dbmail_mysql/domain/list.html:122
+#: ../templates/default/dbmail_mysql/domain/list.html:127
+#: ../templates/default/ldap/domain/list.html:173
+#: ../templates/default/mysql/search.html:123
+#: ../templates/default/mysql/domain/list.html:131
+#: ../templates/default/mysql/domain/list.html:136
+#: ../templates/default/pgsql/search.html:123
+#: ../templates/default/pgsql/domain/list.html:131
+#: ../templates/default/pgsql/domain/list.html:136
+msgid "List all mail aliases."
+msgstr "列出所有郵件別名。"
+
+#: ../templates/default/ldap/domain/list.html:160
+msgid "List all mail lists."
+msgstr "列出所有郵件列表。"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:108
+#: ../templates/default/dbmail_mysql/domain/list.html:113
+#: ../templates/default/ldap/domain/list.html:147
+#: ../templates/default/ldap/domain/list.html:150
+#: ../templates/default/mysql/search.html:114
+#: ../templates/default/mysql/domain/list.html:117
+#: ../templates/default/mysql/domain/list.html:122
+#: ../templates/default/pgsql/search.html:114
+#: ../templates/default/pgsql/domain/list.html:117
+#: ../templates/default/pgsql/domain/list.html:122
+msgid "List all mail users."
+msgstr "列出所有郵件用戶。"
+
+#: ../templates/default/ldap/search.html:80
+#: ../templates/default/ldap/domain/list.html:55
+msgid "Lists"
+msgstr "郵件列表"
+
+#: ../templates/default/layout.html:53
+#, python-format
+msgid "Logged in as %s"
+msgstr "登入帳號：%s"
+
+#: ../templates/default/login.html:64
+msgid "Login"
+msgstr "登入"
+
+#: ../templates/default/macros/msgHandlers.html:62
+msgid "Login required"
+msgstr "需要先登入才能進行操作"
+
+#: ../templates/default/login.html:7 ../templates/default/login.html:42
+msgid "Login to manage your mail domains & accounts"
+msgstr "登入管理您的郵件網域和帳號"
+
+#: ../templates/default/layout.html:48
+msgid "Logout"
+msgstr "登出"
+
+#: ../templates/default/dbmail_mysql/search.html:81
+#: ../templates/default/dbmail_mysql/search.html:144
+#: ../templates/default/dbmail_mysql/search.html:219
+#: ../templates/default/dbmail_mysql/admin/list.html:50
+#: ../templates/default/dbmail_mysql/alias/create.html:65
+#: ../templates/default/dbmail_mysql/alias/list.html:50
+#: ../templates/default/dbmail_mysql/user/create.html:89
+#: ../templates/default/dbmail_mysql/user/list.html:54
+#: ../templates/default/ldap/search.html:138
+#: ../templates/default/ldap/search.html:192
+#: ../templates/default/ldap/search.html:252
+#: ../templates/default/ldap/search.html:305
+#: ../templates/default/ldap/admin/list.html:50
+#: ../templates/default/ldap/alias/create.html:85
+#: ../templates/default/ldap/alias/list.html:69
+#: ../templates/default/ldap/maillist/create.html:83
+#: ../templates/default/ldap/maillist/list.html:70
+#: ../templates/default/ldap/maillist/profile.html:143
+#: ../templates/default/ldap/maillist/profile.html:211
+#: ../templates/default/ldap/maillist/profile.html:270
+#: ../templates/default/ldap/maillist/profile.html:338
+#: ../templates/default/ldap/user/admin.html:71
+#: ../templates/default/ldap/user/create.html:128
+#: ../templates/default/ldap/user/list.html:72
+#: ../templates/default/macros/general.html:640
+#: ../templates/default/mysql/search.html:161
+#: ../templates/default/mysql/search.html:225
+#: ../templates/default/mysql/search.html:289
+#: ../templates/default/mysql/admin/list.html:50
+#: ../templates/default/mysql/alias/create.html:79
+#: ../templates/default/mysql/alias/list.html:63
+#: ../templates/default/mysql/user/create.html:100
+#: ../templates/default/mysql/user/list.html:68
+#: ../templates/default/pgsql/search.html:161
+#: ../templates/default/pgsql/search.html:225
+#: ../templates/default/pgsql/search.html:289
+#: ../templates/default/pgsql/admin/list.html:50
+#: ../templates/default/pgsql/alias/create.html:79
+#: ../templates/default/pgsql/alias/list.html:63
+#: ../templates/default/pgsql/user/create.html:100
+#: ../templates/default/pgsql/user/list.html:68
+msgid "Mail Address"
+msgstr "郵件地址"
+
+#: ../templates/default/macros/msgHandlers.html:108
+msgid "Mail Alias"
+msgstr "郵件別名"
+
+#: ../templates/default/dbmail_mysql/alias/list.html:12
+#: ../templates/default/ldap/alias/list.html:14
+#: ../templates/default/mysql/alias/list.html:13
+#: ../templates/default/pgsql/alias/list.html:13
+msgid "Mail Aliases"
+msgstr "郵件別名"
+
+#: ../templates/default/amavisd/quarantined_raw.html:6
+msgid "Mail Body"
+msgstr "郵件內文"
+
+#: ../templates/default/ldap/search.html:253
+#: ../templates/default/ldap/maillist/list.html:71
+msgid "Mail Deliver Restriction"
+msgstr "郵件收發限制"
+
+#: ../templates/default/amavisd/quarantined_raw.html:20
+msgid "Mail Headers"
+msgstr "郵件標頭"
+
+#: ../templates/default/layout.html:115
+#: ../templates/default/ldap/search.html:39
+#: ../templates/default/ldap/alias/create.html:69
+#: ../templates/default/ldap/alias/list.html:46
+#: ../templates/default/ldap/maillist/create.html:69
+#: ../templates/default/ldap/maillist/list.html:48
+#: ../templates/default/ldap/user/admin.html:49
+#: ../templates/default/ldap/user/create.html:111
+#: ../templates/default/ldap/user/list.html:50
+#: ../templates/default/macros/msgHandlers.html:108
+msgid "Mail List"
+msgstr "郵件列表"
+
+#: ../templates/default/ldap/alias/create.html:18
+#: ../templates/default/ldap/alias/list.html:22
+#: ../templates/default/ldap/alias/profile.html:31
+#: ../templates/default/ldap/domain/profile.html:101
+#: ../templates/default/ldap/maillist/create.html:18
+#: ../templates/default/ldap/maillist/list.html:16
+#: ../templates/default/ldap/maillist/list.html:24
+#: ../templates/default/ldap/maillist/profile.html:33
+#: ../templates/default/ldap/user/admin.html:23
+#: ../templates/default/ldap/user/create.html:22
+#: ../templates/default/ldap/user/list.html:24
+#: ../templates/default/ldap/user/profile.html:102
+msgid "Mail Lists"
+msgstr "郵件列表"
+
+#: ../templates/default/dbmail_mysql/user/list.html:14
+#: ../templates/default/ldap/user/list.html:16
+#: ../templates/default/mysql/user/list.html:15
+#: ../templates/default/pgsql/user/list.html:15
+msgid "Mail Users"
+msgstr "郵件用戶"
+
+#: ../templates/default/macros/msgHandlers.html:144
+msgid "Mail address already exists, please choose another one."
+msgstr "帳號已存在，請選擇其他用戶名。"
+
+#: ../templates/default/macros/msgHandlers.html:260
+msgid "Mail alias created."
+msgstr ""
+
+#: ../templates/default/macros/msgHandlers.html:228
+msgid "Mail list created."
+msgstr ""
+
+#: ../templates/default/ldap/maillist/list.html:53
+#, python-format
+msgid "Mail lists under domain: %s"
+msgstr "網域 %s 內的郵件列表"
+
+#: ../templates/default/amavisd/inout.html:85
+#, python-format
+msgid ""
+"Mail logs of incoming and outgoing mails which older than %d days will be"
+" deleted from database permanantly."
+msgstr "超過 %d 天後的郵件收發記錄，會被自動刪除。"
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:105
+#: ../templates/default/ldap/alias/profile.html:92
+#: ../templates/default/mysql/alias/profile.html:102
+#: ../templates/default/pgsql/alias/profile.html:102
+msgid "Mail sent to alias will be forwarded to members."
+msgstr "發送給別名的郵件將會被轉發給成員。"
+
+#: ../templates/default/macros/ldap.html:113
+msgid "Mail service"
+msgstr "郵件服務"
+
+#: ../templates/default/dbmail_mysql/user/list.html:91
+#: ../templates/default/macros/general.html:527
+msgid "Mailbox Quota"
+msgstr "郵箱空間配額"
+
+#: ../templates/default/amavisd/inout.html:45
+#, python-format
+msgid "Mails Sent by Domain: %s"
+msgstr "網域 %s 發出的郵件"
+
+#: ../templates/default/amavisd/inout.html:48
+#, python-format
+msgid "Mails Sent by User: %s"
+msgstr "用戶 %s 發出的郵件"
+
+#: ../templates/default/macros/msgHandlers.html:302
+msgid "Mails were deleted."
+msgstr "郵件已刪除。"
+
+#: ../templates/default/macros/msgHandlers.html:301
+msgid "Mails were released."
+msgstr "郵件已釋放。"
+
+#: ../templates/default/ldap/domain/profile.html:192
+msgid "Make sure disclaimer work as expected:"
+msgstr "確保免責聲明正常工作："
+
+#: ../templates/default/ldap/user/profile.html:373
+msgid "Make sure you have iRedAPD work as expected:"
+msgstr "確保 iRedAPD 工作正常："
+
+#: ../templates/default/macros/ldap.html:5
+#: ../templates/default/macros/mysql.html:5
+msgid "Managed Domains"
+msgstr "管理的網域"
+
+#: ../templates/default/macros/general.html:446
+msgid "Mark as backup MX"
+msgstr ""
+
+#: ../templates/default/ldap/user/list.html:157
+msgid "Mark as domain admin"
+msgstr "所有網域管理員。"
+
+#: ../templates/default/macros/ldap.html:88
+msgid "Mark as domain administrator"
+msgstr "所有網域管理員。"
+
+#: ../templates/default/ldap/user/list.html:161
+#: ../templates/default/macros/general.html:387
+msgid "Mark as global admin"
+msgstr "標記為全域管理員"
+
+#: ../templates/default/macros/general.html:402
+msgid "Mark this user as"
+msgstr ""
+
+#: ../templates/default/macros/policyd.html:71
+msgid "Max size of single outgoing email"
+msgstr "單封郵件的最大容量"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:353
+#: ../templates/default/ldap/domain/profile.html:422
+#: ../templates/default/mysql/domain/profile.html:429
+#: ../templates/default/pgsql/domain/profile.html:411
+msgid "Maximal password length"
+msgstr "最長密碼長度"
+
+#: ../templates/default/macros/msgHandlers.html:212
+#: ../templates/default/macros/msgHandlers.html:250
+msgid "Member assigned success."
+msgstr "成功新增成員。"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:123
+#: ../templates/default/ldap/user/profile.html:240
+#: ../templates/default/mysql/user/profile.html:124
+#: ../templates/default/pgsql/user/profile.html:124
+msgid "Member of Mail Aliases"
+msgstr "郵件別名的成員"
+
+#: ../templates/default/ldap/user/profile.html:193
+msgid "Member of Mail Lists"
+msgstr "郵件列表的成員"
+
+#: ../templates/default/macros/msgHandlers.html:213
+#: ../templates/default/macros/msgHandlers.html:251
+msgid "Member removed success."
+msgstr "成功刪除成員。"
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:104
+#: ../templates/default/ldap/alias/profile.html:91
+#: ../templates/default/ldap/maillist/profile.html:54
+#: ../templates/default/ldap/maillist/profile.html:86
+#: ../templates/default/mysql/alias/profile.html:75
+#: ../templates/default/mysql/alias/profile.html:101
+#: ../templates/default/pgsql/alias/profile.html:75
+#: ../templates/default/pgsql/alias/profile.html:101
+msgid "Members"
+msgstr "成員"
+
+#: ../templates/default/panel/log.html:85
+msgid "Message"
+msgstr "訊息"
+
+#: ../templates/default/ldap/maillist/profile.html:129
+msgid "Messages sent to mail list will be delivered to its members."
+msgstr "發送到郵件列表的郵件將會被投遞給成員。"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:346
+#: ../templates/default/ldap/domain/profile.html:415
+#: ../templates/default/mysql/domain/profile.html:422
+#: ../templates/default/pgsql/domain/profile.html:404
+msgid "Minimal password length"
+msgstr "最短密碼長度"
+
+#: ../templates/default/macros/general.html:327
+msgid "Mobile"
+msgstr "手機"
+
+#: ../templates/default/ldap/maillist/profile.html:55
+#: ../templates/default/ldap/maillist/profile.html:87
+#: ../templates/default/mysql/alias/profile.html:76
+#: ../templates/default/mysql/alias/profile.html:138
+#: ../templates/default/pgsql/alias/profile.html:76
+#: ../templates/default/pgsql/alias/profile.html:138
+msgid "Moderators"
+msgstr "管理員"
+
+#: ../templates/default/macros/msgHandlers.html:214
+msgid "Moderators assigned success."
+msgstr "成功新增管理員。"
+
+#: ../templates/default/macros/msgHandlers.html:215
+msgid "Moderators removed success."
+msgstr "成功刪除管理員。"
+
+#: ../templates/default/ldap/domain/profile.html:251
+#: ../templates/default/mysql/domain/profile.html:190
+#: ../templates/default/mysql/user/profile.html:212
+#: ../templates/default/pgsql/domain/profile.html:191
+#: ../templates/default/pgsql/user/profile.html:212
+msgid "Monitor incoming emails via BCC"
+msgstr "通過 BCC 監控接收到的郵件"
+
+#: ../templates/default/ldap/domain/profile.html:258
+#: ../templates/default/mysql/domain/profile.html:197
+#: ../templates/default/mysql/user/profile.html:219
+#: ../templates/default/pgsql/domain/profile.html:198
+#: ../templates/default/pgsql/user/profile.html:219
+msgid "Monitor outgoing emails via BCC"
+msgstr "通過 BCC 監控發出的郵件"
+
+#: ../templates/default/ldap/domain/profile.html:315
+#: ../templates/default/mysql/domain/profile.html:263
+#: ../templates/default/pgsql/domain/profile.html:264
+msgid "Multiple addresses MUST be seperated by comma (,)."
+msgstr "多個地址必須用英文逗號(,)分隔。"
+
+#: ../templates/default/ldap/domain/profile.html:272
+#: ../templates/default/ldap/user/profile.html:487
+#: ../templates/default/mysql/domain/profile.html:211
+#: ../templates/default/mysql/user/profile.html:232
+#: ../templates/default/pgsql/domain/profile.html:212
+#: ../templates/default/pgsql/user/profile.html:232
+msgid "Multiple addresses are NOT supported."
+msgstr "不接受指定多個地址。"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:53
+#: ../templates/default/ldap/search.html:78
+#: ../templates/default/ldap/domain/list.html:52
+#: ../templates/default/mysql/search.html:81
+#: ../templates/default/mysql/domain/list.html:53
+#: ../templates/default/pgsql/search.html:81
+#: ../templates/default/pgsql/domain/list.html:53
+msgid "Name"
+msgstr "用戶名"
+
+#: ../templates/default/macros/general.html:776
+msgid "Need a random password?"
+msgstr "需要一個隨機密碼？"
+
+#: ../templates/default/dashboard.html:119
+msgid "Network"
+msgstr "網路"
+
+#: ../templates/default/macros/general.html:487
+msgid "New password"
+msgstr "新密碼"
+
+#: ../templates/default/macros/msgHandlers.html:193
+#, python-format
+msgid "New password must NOT contain more than %s characters."
+msgstr "新密碼不得多於 %s 個字元。"
+
+#: ../templates/default/macros/msgHandlers.html:191
+#, python-format
+msgid "New password must contain at least %s characters."
+msgstr "新密碼必須包含至少 %s 個字元。"
+
+#: ../templates/default/macros/msgHandlers.html:140
+#: ../templates/default/macros/msgHandlers.html:178
+msgid "New passwords are not match."
+msgstr "新密碼不符。"
+
+#: ../templates/default/layout.html:31
+msgid "New version available"
+msgstr ""
+
+#: ../templates/default/dashboard.html:14
+#, python-format
+msgid ""
+"New version of iRedAdmin-Pro, %s, is now available for upgrading. <a "
+"href='%s/system/license' class='button green'>Details</a>"
+msgstr ""
+
+#: ../templates/default/layout.html:154
+msgid "News & Announments"
+msgstr "新聞與公告"
+
+#: ../templates/default/macros/general.html:873
+msgid "Next Page"
+msgstr "下一頁"
+
+#: ../templates/default/macros/msgHandlers.html:175
+msgid "No account selected."
+msgstr "未選擇任何帳號"
+
+#: ../templates/default/panel/log.html:108
+msgid "No admin log."
+msgstr "沒有管理員日誌。"
+
+#: ../templates/default/macros/msgHandlers.html:102
+#: ../templates/default/macros/msgHandlers.html:127
+#: ../templates/default/macros/msgHandlers.html:220
+#: ../templates/default/macros/msgHandlers.html:246
+msgid "No domain under control."
+msgstr "您管理的所有郵件網域。"
+
+#: ../templates/default/ldap/maillist/profile.html:226
+msgid "No external members."
+msgstr "沒有外部成員。"
+
+#: ../templates/default/ldap/maillist/profile.html:353
+msgid "No external moderators."
+msgstr "沒有外部管理員"
+
+#: ../templates/default/dbmail_mysql/user/create.html:40
+#: ../templates/default/ldap/user/create.html:64
+#: ../templates/default/mysql/user/create.html:49
+#: ../templates/default/pgsql/user/create.html:49
+msgid "No free domain quota left."
+msgstr "沒有足夠的網域可用容量。"
+
+#: ../templates/default/amavisd/inout.html:158
+msgid "No incoming mails."
+msgstr "沒有已收到的郵件。"
+
+#: ../templates/default/ldap/maillist/profile.html:180
+msgid "No internal members."
+msgstr "沒有內部成員。"
+
+#: ../templates/default/ldap/maillist/profile.html:308
+msgid "No internal moderators."
+msgstr "沒有內部管理員"
+
+#: ../templates/default/ldap/user/admin.html:133
+msgid "No mail admin available."
+msgstr "沒有郵件網域。"
+
+#: ../templates/default/dbmail_mysql/alias/list.html:73
+#: ../templates/default/ldap/alias/list.html:100
+#: ../templates/default/mysql/alias/list.html:86
+#: ../templates/default/pgsql/alias/list.html:86
+msgid "No mail alias available."
+msgstr "沒有郵件別名。"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:136
+#: ../templates/default/dbmail_mysql/domain/list.html:140
+#: ../templates/default/ldap/domain/list.html:188
+#: ../templates/default/ldap/domain/list.html:192
+#: ../templates/default/macros/msgHandlers.html:145
+#: ../templates/default/mysql/domain/list.html:145
+#: ../templates/default/mysql/domain/list.html:149
+#: ../templates/default/pgsql/domain/list.html:145
+#: ../templates/default/pgsql/domain/list.html:149
+msgid "No mail domain available."
+msgstr "沒有郵件網域。"
+
+#: ../templates/default/ldap/maillist/list.html:100
+msgid "No mail list available."
+msgstr "沒有郵件列表。"
+
+#: ../templates/default/dbmail_mysql/user/list.html:103
+#: ../templates/default/ldap/user/list.html:141
+#: ../templates/default/mysql/user/list.html:121
+#: ../templates/default/pgsql/user/list.html:121
+msgid "No mail user available."
+msgstr "沒有用戶。"
+
+#: ../templates/default/macros/msgHandlers.html:221
+msgid "No moderator selected."
+msgstr "沒有選擇任何管理員。"
+
+#: ../templates/default/macros/general.html:474
+#, python-format
+msgid "No more than %s characters."
+msgstr "不可大於 %s 個字元。"
+
+#: ../templates/default/amavisd/inout.html:156
+msgid "No outgoing mails."
+msgstr "沒有已發送的郵件。"
+
+#: ../templates/default/macros/amavisd.html:46
+msgid "No quarantined mails."
+msgstr "沒有已隔離的郵件。"
+
+#: ../templates/default/policyd/wblist.html:95
+msgid "No records."
+msgstr "沒有記錄。"
+
+#: ../templates/default/macros/msgHandlers.html:100
+msgid "No such domain."
+msgstr "沒有這個網域。"
+
+#: ../templates/default/macros/general.html:220
+msgid "Not a global admin."
+msgstr "不是全域管理員。"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:23
+#: ../templates/default/dbmail_mysql/user/create.html:32
+#: ../templates/default/ldap/alias/create.html:39
+#: ../templates/default/macros/msgHandlers.html:254
+#: ../templates/default/mysql/alias/create.html:35
+#: ../templates/default/mysql/user/create.html:41
+#: ../templates/default/pgsql/alias/create.html:35
+#: ../templates/default/pgsql/user/create.html:41
+msgid "Not allowed to create mail alias under this domain."
+msgstr "不允許在此網域內建立郵件別名。"
+
+#: ../templates/default/ldap/maillist/create.html:40
+#: ../templates/default/macros/msgHandlers.html:222
+msgid "Not allowed to create mail list under this domain."
+msgstr "不允許在此網域內建立郵件列表。"
+
+#: ../templates/default/ldap/user/create.html:69
+#: ../templates/default/ldap/user/create.html:72
+#: ../templates/default/macros/msgHandlers.html:147
+msgid "Not allowed to create mail user under this domain."
+msgstr "不允許在此網域內建立郵件用戶。"
+
+#: ../templates/default/ldap/user/profile.html:373
+#: ../templates/default/policyd/blacklist/create.html:83
+#: ../templates/default/policyd/whitelist/create.html:72
+msgid "Note"
+msgstr "注意"
+
+#: ../templates/default/dashboard.html:71
+msgid "Number of aliases"
+msgstr "郵件別名數量"
+
+#: ../templates/default/dashboard.html:60
+msgid "Number of domains"
+msgstr "郵件網域數量"
+
+#: ../templates/default/macros/policyd.html:20
+msgid "Number of max incoming emails"
+msgstr "最多允許接收多少封郵件"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:335
+#: ../templates/default/ldap/domain/profile.html:404
+#: ../templates/default/mysql/domain/profile.html:411
+#: ../templates/default/pgsql/domain/profile.html:393
+msgid "Number of max mail aliases"
+msgstr "郵件別名的最大數量"
+
+#: ../templates/default/ldap/domain/profile.html:397
+msgid "Number of max mail lists"
+msgstr "郵件列表的最大數量"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:327
+#: ../templates/default/ldap/domain/profile.html:389
+#: ../templates/default/mysql/domain/profile.html:403
+#: ../templates/default/pgsql/domain/profile.html:385
+msgid "Number of max mail users"
+msgstr "郵件用戶的最大數量"
+
+#: ../templates/default/macros/policyd.html:18
+msgid "Number of max outgoing emails"
+msgstr "最多允許發送多少封郵件"
+
+#: ../templates/default/dashboard.html:66
+msgid "Number of users"
+msgstr "郵件用戶數量"
+
+#: ../templates/default/macros/general.html:481
+msgid "Old password"
+msgstr "舊密碼"
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:165
+#: ../templates/default/dbmail_mysql/user/profile.html:181
+#: ../templates/default/dbmail_mysql/user/profile.html:199
+#: ../templates/default/ldap/alias/profile.html:115
+#: ../templates/default/ldap/user/profile.html:297
+#: ../templates/default/ldap/user/profile.html:320
+#: ../templates/default/mysql/alias/profile.html:170
+#: ../templates/default/mysql/alias/profile.html:178
+#: ../templates/default/mysql/user/profile.html:194
+#: ../templates/default/pgsql/alias/profile.html:170
+#: ../templates/default/pgsql/alias/profile.html:178
+#: ../templates/default/pgsql/user/profile.html:194
+msgid "One mail address per line."
+msgstr "每行只能填一個郵件地址。"
+
+#: ../templates/default/macros/general.html:911
+#: ../templates/default/policyd/blacklist/create.html:40
+#: ../templates/default/policyd/blacklist/create.html:46
+#: ../templates/default/policyd/whitelist/create.html:40
+msgid "One record per line."
+msgstr "一行填一個記錄。"
+
+#: ../templates/default/macros/msgHandlers.html:341
+msgid "Operation completed."
+msgstr "操作已完成。"
+
+#: ../templates/default/macros/msgHandlers.html:108
+msgid "Or create other mail accounts:"
+msgstr "或建立其它郵件帳號："
+
+#: ../templates/default/login.html:60
+#: ../templates/default/dbmail_mysql/admin/profile.html:45
+#: ../templates/default/dbmail_mysql/user/profile.html:55
+#: ../templates/default/ldap/admin/profile.html:53
+#: ../templates/default/ldap/user/profile.html:122
+#: ../templates/default/mysql/admin/profile.html:45
+#: ../templates/default/mysql/user/profile.html:71
+#: ../templates/default/pgsql/admin/profile.html:45
+#: ../templates/default/pgsql/user/profile.html:71
+msgid "Password"
+msgstr "密碼"
+
+#: ../templates/default/macros/msgHandlers.html:141
+#: ../templates/default/macros/msgHandlers.html:179
+msgid "Password is empty."
+msgstr "密碼為空白。"
+
+#: ../templates/default/macros/msgHandlers.html:143
+msgid "Password is too long."
+msgstr "密碼過長。"
+
+#: ../templates/default/macros/msgHandlers.html:142
+msgid "Password is too short."
+msgstr "密碼太短。"
+
+#: ../templates/default/macros/msgHandlers.html:64
+msgid "Password of cn=vmailadmin is incorrect."
+msgstr "當前密碼錯誤。"
+
+#: ../templates/default/ldap/user/profile.html:471
+#: ../templates/default/mysql/user/profile.html:396
+#: ../templates/default/pgsql/user/profile.html:396
+msgid "Path to mailbox"
+msgstr "郵件路徑"
+
+#: ../templates/default/ldap/domain/profile.html:273
+#: ../templates/default/ldap/user/profile.html:488
+#: ../templates/default/mysql/domain/profile.html:212
+#: ../templates/default/mysql/user/profile.html:233
+#: ../templates/default/pgsql/domain/profile.html:213
+#: ../templates/default/pgsql/user/profile.html:233
+msgid "Per-domain bcc settings will override per-user bcc settings."
+msgstr "網域級別的 BCC 設定，將會覆蓋網域內個別用戶的 BCC 設定。"
+
+#: ../templates/default/macros/ldap.html:121
+#: ../templates/default/mysql/domain/profile.html:391
+msgid "Per-user greylisting setting has higher priority"
+msgstr ""
+
+#: ../templates/default/macros/general.html:590
+msgid ""
+"Per-user relay setting will override per-domain relay setting you set in "
+"this page."
+msgstr "針對個別用戶的中繼轉發設定，將會覆蓋本頁中針對單個網域的設定。"
+
+#: ../templates/default/ldap/domain/profile.html:366
+#: ../templates/default/mysql/domain/profile.html:131
+#: ../templates/default/pgsql/domain/profile.html:132
+msgid "Per-user sender throttling has higher priority."
+msgstr ""
+
+#: ../templates/default/macros/msgHandlers.html:98
+#: ../templates/default/macros/msgHandlers.html:171
+#: ../templates/default/macros/msgHandlers.html:306
+#: ../templates/default/macros/msgHandlers.html:325
+msgid "Permission denied."
+msgstr "權限受限。"
+
+#: ../templates/default/ldap/domain/profile.html:180
+msgid "Plain text only"
+msgstr "只允許使用純文字"
+
+#: ../templates/default/ldap/user/admin.html:133
+msgid ""
+"Please either mark mail user as domain admin or create a separate admin "
+"account."
+msgstr ""
+
+#: ../templates/default/macros/msgHandlers.html:146
+msgid "Please select at least one account."
+msgstr "請至少選擇一個帳號進行操作。"
+
+#: ../templates/default/macros/msgHandlers.html:101
+msgid "Please select at least one domain to apply action."
+msgstr "請至少選擇一個網域名稱進行操作。"
+
+#: ../templates/default/macros/general.html:606
+msgid "Postfix manual page"
+msgstr ""
+
+#: ../templates/default/layout.html:42
+msgid "Preferences"
+msgstr "偏好設定"
+
+#: ../templates/default/macros/general.html:366
+msgid "Preferred language"
+msgstr "偏好的語言"
+
+#: ../templates/default/macros/general.html:800
+msgid "Previous Page"
+msgstr "上一頁"
+
+#: ../templates/default/panel/license.html:29
+msgid "Product name"
+msgstr "主機名"
+
+#: ../templates/default/dbmail_mysql/admin/profile.html:29
+#: ../templates/default/dbmail_mysql/admin/profile.html:60
+#: ../templates/default/ldap/admin/profile.html:36
+#: ../templates/default/ldap/admin/profile.html:56
+#: ../templates/default/mysql/admin/profile.html:60
+#: ../templates/default/pgsql/admin/profile.html:60
+msgid "Profile of admin:"
+msgstr "管理員屬性："
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:24
+#: ../templates/default/dbmail_mysql/alias/profile.html:43
+#: ../templates/default/ldap/alias/profile.html:33
+#: ../templates/default/ldap/alias/profile.html:54
+#: ../templates/default/mysql/alias/profile.html:24
+#: ../templates/default/mysql/alias/profile.html:43
+#: ../templates/default/pgsql/alias/profile.html:24
+#: ../templates/default/pgsql/alias/profile.html:43
+msgid "Profile of alias:"
+msgstr "別名屬性："
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:32
+#: ../templates/default/dbmail_mysql/domain/profile.html:71
+#: ../templates/default/ldap/domain/profile.html:136
+#: ../templates/default/mysql/domain/profile.html:82
+#: ../templates/default/pgsql/domain/profile.html:83
+msgid "Profile of domain:"
+msgstr "網域屬性："
+
+#: ../templates/default/ldap/maillist/profile.html:34
+#: ../templates/default/ldap/maillist/profile.html:60
+msgid "Profile of mail list:"
+msgstr "郵件列表屬性："
+
+#: ../templates/default/dbmail_mysql/user/profile.html:33
+#: ../templates/default/dbmail_mysql/user/profile.html:71
+#: ../templates/default/ldap/user/profile.html:101
+#: ../templates/default/ldap/user/profile.html:138
+#: ../templates/default/mysql/user/profile.html:50
+#: ../templates/default/mysql/user/profile.html:87
+#: ../templates/default/pgsql/user/profile.html:50
+#: ../templates/default/pgsql/user/profile.html:87
+msgid "Profile of user:"
+msgstr "用戶屬性："
+
+#: ../templates/default/macros/msgHandlers.html:125
+#: ../templates/default/macros/msgHandlers.html:211
+#: ../templates/default/macros/msgHandlers.html:252
+msgid "Profile updated failed."
+msgstr "屬性更新失敗。"
+
+#: ../templates/default/macros/msgHandlers.html:88
+#: ../templates/default/macros/msgHandlers.html:124
+#: ../templates/default/macros/msgHandlers.html:169
+#: ../templates/default/macros/msgHandlers.html:209
+#: ../templates/default/macros/msgHandlers.html:244
+msgid "Profile updated success."
+msgstr "屬性已更新。"
+
+#: ../templates/default/panel/license.html:34
+msgid "Purchase date"
+msgstr ""
+
+#: ../templates/default/dashboard.html:46
+#: ../templates/default/macros/amavisd.html:70
+msgid "Quarantined"
+msgstr "已隔離"
+
+#: ../templates/default/layout.html:93
+#: ../templates/default/amavisd/quarantined.html:18
+#: ../templates/default/amavisd/quarantined.html:44
+#: ../templates/default/macros/amavisd.html:93
+#: ../templates/default/macros/amavisd.html:95
+#: ../templates/default/panel/log.html:36
+msgid "Quarantined Mails"
+msgstr "已隔離的郵件"
+
+#: ../templates/default/amavisd/quarantined.html:38
+#, python-format
+msgid "Quarantined Mails of Domain: %s"
+msgstr "網域 %s 的被隔離郵件。"
+
+#: ../templates/default/amavisd/quarantined.html:41
+#, python-format
+msgid "Quarantined Mails of User: %s"
+msgstr "用戶 %s 的被隔離郵件。"
+
+#: ../templates/default/amavisd/quarantined.html:61
+msgid ""
+"Quarantined mails are not delivered to users' mailboxes yet, you can "
+"either delete them or release them. Mails will be delivered to user "
+"mailboxes after released."
+msgstr "已隔離的郵件還沒有被發送到用戶郵箱，你可以刪除或釋放它們。釋放後，郵件會被重新發送給用戶。"
+
+#: ../templates/default/amavisd/quarantined.html:64
+#, python-format
+msgid ""
+"Quarantined mails older than %d days will be deleted from database "
+"permanantly."
+msgstr "被隔離的郵件記錄，超過 %d 天後會被自動刪除。"
+
+#: ../templates/default/dbmail_mysql/search.html:146
+#: ../templates/default/dbmail_mysql/domain/list.html:54
+#: ../templates/default/dbmail_mysql/user/list.html:55
+#: ../templates/default/ldap/search.html:195
+#: ../templates/default/ldap/domain/list.html:53
+#: ../templates/default/ldap/maillist/profile.html:145
+#: ../templates/default/ldap/maillist/profile.html:272
+#: ../templates/default/ldap/user/admin.html:74
+#: ../templates/default/ldap/user/list.html:75
+#: ../templates/default/mysql/search.html:82
+#: ../templates/default/mysql/search.html:227
+#: ../templates/default/mysql/domain/list.html:54
+#: ../templates/default/mysql/user/list.html:73
+#: ../templates/default/pgsql/search.html:82
+#: ../templates/default/pgsql/search.html:227
+#: ../templates/default/pgsql/domain/list.html:54
+#: ../templates/default/pgsql/user/list.html:73
+msgid "Quota"
+msgstr "配額"
+
+#: ../templates/default/macros/policyd.html:32
+msgid "Quota size of all outgoing emails"
+msgstr "所有外发郵件的总容量"
+
+#: ../templates/default/dashboard.html:28
+#: ../templates/default/macros/amavisd.html:71
+msgid "Received"
+msgstr "收到的郵件"
+
+#: ../templates/default/layout.html:89
+#: ../templates/default/amavisd/inout.html:21
+#: ../templates/default/amavisd/inout.html:62
+#: ../templates/default/macros/amavisd.html:83
+#: ../templates/default/macros/amavisd.html:87
+#: ../templates/default/panel/log.html:32
+msgid "Received Mails"
+msgstr "收到的郵件"
+
+#: ../templates/default/amavisd/inout.html:56
+#, python-format
+msgid "Received Mails of Domain: %s"
+msgstr "網域 %s 收到的郵件"
+
+#: ../templates/default/amavisd/inout.html:59
+#, python-format
+msgid "Received Mails of User: %s"
+msgstr "用戶 %s 收到的郵件"
+
+#: ../templates/default/macros/ldap.html:95
+#: ../templates/default/macros/mysql.html:61
+msgid "Receiving mails for this account on mail server"
+msgstr "允許在服務器上接收發送給這個帳號的郵件"
+
+#: ../templates/default/amavisd/inout.html:108
+#: ../templates/default/macros/amavisd.html:10
+msgid "Recipient"
+msgstr "收件人"
+
+#: ../templates/default/policyd/blacklist/create.html:56
+#: ../templates/default/policyd/whitelist/create.html:50
+msgid "Record format"
+msgstr "格式"
+
+#: ../templates/default/macros/msgHandlers.html:275
+#, python-format
+msgid "Records are added. <a href=\"%s\" target=\"_blank\">View them now</a>"
+msgstr "記錄已新增。<a href=\"%s\" target=\"_blank\">立即查看</a>"
+
+#: ../templates/default/ldap/user/profile.html:351
+msgid "Reject mails from below senders"
+msgstr "拒收來自以下發件人的郵件"
+
+#: ../templates/default/ldap/user/profile.html:365
+msgid "Reject mails sent to below recipients"
+msgstr "禁止發送郵件給以下收件人"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:52
+#: ../templates/default/dbmail_mysql/user/profile.html:53
+#: ../templates/default/ldap/domain/profile.html:119
+#: ../templates/default/ldap/user/profile.html:118
+#: ../templates/default/mysql/domain/profile.html:62
+#: ../templates/default/mysql/user/profile.html:68
+#: ../templates/default/pgsql/domain/profile.html:63
+#: ../templates/default/pgsql/user/profile.html:68
+msgid "Relay"
+msgstr "中繼轉發"
+
+#: ../templates/default/macros/general.html:573
+msgid "Relay without verifying local recipients"
+msgstr ""
+
+#: ../templates/default/macros/general.html:565
+msgid "Relay/Transport Setting"
+msgstr "中繼轉發設定"
+
+#: ../templates/default/panel/license.html:83
+msgid "Release Notes of latest version"
+msgstr ""
+
+#: ../templates/default/amavisd/quarantined.html:86
+msgid "Release selected"
+msgstr "釋放已選擇的項目"
+
+#: ../templates/default/login.html:72
+msgid "Remember me"
+msgstr "記住我"
+
+#: ../templates/default/ldap/maillist/profile.html:191
+#: ../templates/default/ldap/maillist/profile.html:237
+#: ../templates/default/ldap/maillist/profile.html:319
+#: ../templates/default/ldap/maillist/profile.html:364
+msgid "Remove from list"
+msgstr "從列表移除"
+
+#: ../templates/default/panel/license.html:70
+msgid "Renew license"
+msgstr ""
+
+#: ../templates/default/ldap/domain/profile.html:502
+msgid "Sample"
+msgstr "範例"
+
+#: ../templates/default/macros/general.html:595
+msgid "Sample relay settings"
+msgstr ""
+
+#: ../templates/default/dbmail_mysql/user/profile.html:171
+#: ../templates/default/ldap/user/profile.html:288
+#: ../templates/default/mysql/user/profile.html:184
+#: ../templates/default/pgsql/user/profile.html:184
+msgid "Save a copy in mailbox"
+msgstr "保留一份郵件在原郵箱中"
+
+#: ../templates/default/macros/general.html:230
+msgid "Save changes"
+msgstr "儲存變更設定"
+
+#: ../templates/default/amavisd/inout.html:75
+#: ../templates/default/amavisd/quarantined.html:53
+#: ../templates/default/dbmail_mysql/search.html:20
+#: ../templates/default/dbmail_mysql/search.html:37
+#: ../templates/default/ldap/search.html:15
+#: ../templates/default/ldap/search.html:33
+#: ../templates/default/mysql/search.html:20
+#: ../templates/default/mysql/search.html:37
+#: ../templates/default/pgsql/search.html:20
+#: ../templates/default/pgsql/search.html:37
+msgid "Search"
+msgstr "搜尋"
+
+#: ../templates/default/macros/amavisd.html:58
+msgid "Search activities"
+msgstr "搜尋活動"
+
+#: ../templates/default/macros/msgHandlers.html:343
+msgid "Search keyword could not be empty."
+msgstr "要搜尋的關鍵字不允許為空白。"
+
+#: ../templates/default/layout.html:37
+msgid "Search mail accounts"
+msgstr "或建立其它郵件帳號："
+
+#: ../templates/default/dbmail_mysql/search.html:64
+#: ../templates/default/ldap/search.html:61
+#: ../templates/default/mysql/search.html:65
+#: ../templates/default/pgsql/search.html:65
+msgid "Search results."
+msgstr "搜尋結果。"
+
+#: ../templates/default/macros/policyd.html:60
+msgid "Seconds"
+msgstr "秒"
+
+#: ../templates/default/error_csrf.html:7
+msgid ""
+"Security token did not match. Please refresh current page and re-perform "
+"form action."
+msgstr "安全標記不符合，請重新整理頁面並再操作一次。"
+
+#: ../templates/default/macros/msgHandlers.html:132
+#: ../templates/default/macros/msgHandlers.html:172
+#: ../templates/default/macros/msgHandlers.html:216
+#: ../templates/default/macros/msgHandlers.html:247
+msgid "Selected accounts were deleted."
+msgstr "已刪除所選擇的帳號。"
+
+#: ../templates/default/macros/msgHandlers.html:133
+#: ../templates/default/macros/msgHandlers.html:173
+#: ../templates/default/macros/msgHandlers.html:217
+#: ../templates/default/macros/msgHandlers.html:248
+msgid "Selected accounts were disabled."
+msgstr "已停用所選擇的帳號。"
+
+#: ../templates/default/macros/msgHandlers.html:134
+#: ../templates/default/macros/msgHandlers.html:174
+#: ../templates/default/macros/msgHandlers.html:218
+#: ../templates/default/macros/msgHandlers.html:249
+msgid "Selected accounts were enabled."
+msgstr "已啟用所選擇的帳號。"
+
+#: ../templates/default/macros/msgHandlers.html:135
+msgid "Selected accounts were marked as domain admin."
+msgstr "已啟用所選擇的帳號。"
+
+#: ../templates/default/macros/msgHandlers.html:137
+msgid "Selected accounts were marked as global admin."
+msgstr "已啟用所選擇的帳號。"
+
+#: ../templates/default/macros/msgHandlers.html:136
+msgid "Selected accounts were unmarked as domain admin."
+msgstr "已啟用所選擇的帳號。"
+
+#: ../templates/default/macros/msgHandlers.html:138
+msgid "Selected accounts were unmarked as global admin."
+msgstr "已啟用所選擇的帳號。"
+
+#: ../templates/default/macros/msgHandlers.html:90
+msgid "Selected domains were deleted."
+msgstr "已刪除所選擇的網域。"
+
+#: ../templates/default/macros/msgHandlers.html:91
+msgid "Selected domains were disabled."
+msgstr "已停用所選擇的網域。"
+
+#: ../templates/default/macros/msgHandlers.html:92
+msgid "Selected domains were enabled."
+msgstr "已啟用所選擇的網域。"
+
+#: ../templates/default/macros/msgHandlers.html:289
+#: ../templates/default/macros/msgHandlers.html:322
+msgid "Selected log records were deleted."
+msgstr "已刪除所選擇的日誌。"
+
+#: ../templates/default/macros/msgHandlers.html:277
+msgid "Selected records were deleted."
+msgstr "已刪除所選擇的記錄。"
+
+#: ../templates/default/panel/license.html:77
+msgid "Send me an email with download link"
+msgstr ""
+
+#: ../templates/default/amavisd/inout.html:107
+#: ../templates/default/macros/amavisd.html:9
+#: ../templates/default/policyd/wblist.html:25
+msgid "Sender"
+msgstr "發件人"
+
+#: ../templates/default/policyd/blacklist/create.html:64
+#: ../templates/default/policyd/whitelist/create.html:58
+msgid "Sender address"
+msgstr "發件人地址"
+
+#: ../templates/default/macros/ldap.html:89
+#: ../templates/default/macros/mysql.html:62
+msgid "Sending mails via SMTP"
+msgstr "通過 SMTP 協議發送郵件"
+
+#: ../templates/default/macros/ldap.html:90
+#: ../templates/default/macros/mysql.html:63
+msgid "Sending mails via SMTP over TLS/SSL"
+msgstr "通過 SMTP 協議收取郵件（使用 TLS/SSL 加密傳輸）"
+
+#: ../templates/default/dashboard.html:33
+#: ../templates/default/macros/amavisd.html:72
+msgid "Sent"
+msgstr "已發送"
+
+#: ../templates/default/layout.html:88
+#: ../templates/default/amavisd/inout.html:19
+#: ../templates/default/amavisd/inout.html:51
+#: ../templates/default/macros/amavisd.html:82
+#: ../templates/default/macros/amavisd.html:86
+#: ../templates/default/panel/log.html:31
+msgid "Sent Mails"
+msgstr "已發送的郵件"
+
+#: ../templates/default/dashboard.html:111
+msgid "Server Load"
+msgstr "伺服器負載"
+
+#: ../templates/default/macros/msgHandlers.html:96
+msgid ""
+"Server-side size limit exceeded. Please increase \"sizelimit\" in your "
+"LDAP server."
+msgstr "已達到伺服器端的查詢限制，請增大 LDAP 伺服器的 'sizelimit' 參數。"
+
+#: ../templates/default/macros/msgHandlers.html:67
+msgid "Session expired, please re-login."
+msgstr "登入資料過期，請重新登入。"
+
+#: ../templates/default/macros/general.html:540
+msgid "Set to 0 for unlimited."
+msgstr "設定為 0 表示無限制。"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:364
+#: ../templates/default/ldap/domain/profile.html:434
+#: ../templates/default/mysql/domain/profile.html:441
+#: ../templates/default/pgsql/domain/profile.html:423
+msgid "Set value to -1 means not allowed to create this kind of account."
+msgstr "設定為 -1 表示禁止建立此類帳號。"
+
+#: ../templates/default/ldap/domain/profile.html:433
+msgid "Set value to 0 for unlimited."
+msgstr "設定為 0 表示無限制。"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:125
+#: ../templates/default/dbmail_mysql/domain/profile.html:363
+#: ../templates/default/dbmail_mysql/user/profile.html:113
+#: ../templates/default/ldap/domain/profile.html:367
+#: ../templates/default/ldap/user/profile.html:438
+#: ../templates/default/mysql/domain/profile.html:132
+#: ../templates/default/mysql/domain/profile.html:363
+#: ../templates/default/mysql/domain/profile.html:439
+#: ../templates/default/mysql/user/profile.html:357
+#: ../templates/default/pgsql/domain/profile.html:133
+#: ../templates/default/pgsql/domain/profile.html:364
+#: ../templates/default/pgsql/domain/profile.html:421
+#: ../templates/default/pgsql/user/profile.html:357
+msgid "Set value to 0 or leave it empty for unlimited."
+msgstr "設定為 0 或保持空白表示無限制。"
+
+#: ../templates/default/policyd/blacklist/create.html:60
+#: ../templates/default/policyd/whitelist/create.html:54
+msgid "Single IP Address"
+msgstr "單個 IP 地址"
+
+#: ../templates/default/policyd/blacklist/create.html:72
+#: ../templates/default/policyd/whitelist/create.html:66
+msgid "Single domain"
+msgstr "單個網域"
+
+#: ../templates/default/ldap/user/profile.html:385
+#: ../templates/default/policyd/blacklist/create.html:66
+#: ../templates/default/policyd/whitelist/create.html:60
+msgid "Single user"
+msgstr "單個用戶"
+
+#: ../templates/default/amavisd/inout.html:109
+#: ../templates/default/macros/amavisd.html:12
+msgid "Size"
+msgstr "大小"
+
+#: ../templates/default/macros/amavisd.html:29
+msgid "Spam"
+msgstr ""
+
+#: ../templates/default/dashboard.html:23
+msgid "Statistics of latest 24 hours"
+msgstr "最近 24 小時的統計"
+
+#: ../templates/default/macros/general.html:501
+msgid "Store password in plain text"
+msgstr ""
+
+#: ../templates/default/dbmail_mysql/search.html:178
+#: ../templates/default/dbmail_mysql/user/list.html:91
+#: ../templates/default/mysql/user/list.html:111
+#: ../templates/default/pgsql/user/list.html:111
+msgid "Stored"
+msgstr "已使用"
+
+#: ../templates/default/dashboard.html:79
+msgid "Stored emails"
+msgstr "儲存的郵件"
+
+#: ../templates/default/amavisd/inout.html:106
+#: ../templates/default/macros/amavisd.html:8
+msgid "Subject"
+msgstr "主旨"
+
+#: ../templates/default/ldap/maillist/profile.html:387
+#: ../templates/default/ldap/maillist/profile.html:401
+#: ../templates/default/panel/log.html:68
+msgid "Submit"
+msgstr "送出"
+
+#: ../templates/default/macros/msgHandlers.html:99
+msgid "Submited domain name is incorrect."
+msgstr "送出的網域名稱不正確"
+
+#: ../templates/default/policyd/blacklist/create.html:61
+#: ../templates/default/policyd/whitelist/create.html:55
+msgid "Subnet"
+msgstr "子網域"
+
+#: ../templates/default/layout.html:155
+msgid "Support"
+msgstr "技術支援"
+
+#: ../templates/default/layout.html:80
+msgid "System"
+msgstr "系統"
+
+#: ../templates/default/dashboard.html:53
+msgid "System Information"
+msgstr "系統資訊"
+
+#: ../templates/default/macros/general.html:335
+#: ../templates/default/macros/general.html:344
+msgid "Telephone Number"
+msgstr "電話號碼"
+
+#: ../templates/default/policyd/blacklist/create.html:83
+#: ../templates/default/policyd/whitelist/create.html:72
+msgid "The forward and reverse DNS name must match otherwise it will not work."
+msgstr "DNS 的正向和反向解析必須都符合才能起作用。"
+
+#: ../templates/default/ldap/user/profile.html:379
+msgid "This is per-user white/blacklist."
+msgstr "針對單個用戶的黑白名單。"
+
+#: ../templates/default/ldap/domain/profile.html:122
+#: ../templates/default/ldap/user/profile.html:120
+#: ../templates/default/mysql/domain/profile.html:65
+#: ../templates/default/mysql/user/profile.html:69
+#: ../templates/default/pgsql/domain/profile.html:66
+#: ../templates/default/pgsql/user/profile.html:69
+msgid "Throttling"
+msgstr "郵件收發限制"
+
+#: ../templates/default/panel/log.html:82
+msgid "Time"
+msgstr "時間"
+
+#: ../templates/default/macros/policyd.html:47
+msgid "Time Unit"
+msgstr "單位時間"
+
+#: ../templates/default/dashboard.html:145
+msgid "Top 10 recipients"
+msgstr "Top 10 收件人"
+
+#: ../templates/default/dashboard.html:132
+msgid "Top 10 senders"
+msgstr "Top 10 發件人"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:88
+#: ../templates/default/dbmail_mysql/domain/list.html:90
+#: ../templates/default/dbmail_mysql/domain/list.html:98
+#: ../templates/default/mysql/domain/list.html:97
+#: ../templates/default/mysql/domain/list.html:99
+#: ../templates/default/mysql/domain/list.html:107
+#: ../templates/default/pgsql/domain/list.html:97
+#: ../templates/default/pgsql/domain/list.html:99
+#: ../templates/default/pgsql/domain/list.html:107
+msgid "Total"
+msgstr "總共"
+
+#: ../templates/default/dbmail_mysql/search.html:169
+#: ../templates/default/dbmail_mysql/search.html:171
+#: ../templates/default/dbmail_mysql/domain/list.html:96
+#: ../templates/default/dbmail_mysql/domain/list.html:98
+#: ../templates/default/dbmail_mysql/user/list.html:82
+#: ../templates/default/dbmail_mysql/user/list.html:84
+#: ../templates/default/ldap/search.html:217
+#: ../templates/default/ldap/domain/list.html:134
+#: ../templates/default/ldap/domain/list.html:136
+#: ../templates/default/ldap/maillist/profile.html:174
+#: ../templates/default/ldap/maillist/profile.html:301
+#: ../templates/default/ldap/user/admin.html:110
+#: ../templates/default/ldap/user/admin.html:112
+#: ../templates/default/ldap/user/list.html:118
+#: ../templates/default/ldap/user/list.html:120
+#: ../templates/default/macros/general.html:417
+#: ../templates/default/mysql/search.html:249
+#: ../templates/default/mysql/domain/list.html:105
+#: ../templates/default/mysql/domain/list.html:107
+#: ../templates/default/mysql/user/list.html:102
+#: ../templates/default/mysql/user/list.html:104
+#: ../templates/default/pgsql/search.html:249
+#: ../templates/default/pgsql/domain/list.html:105
+#: ../templates/default/pgsql/domain/list.html:107
+#: ../templates/default/pgsql/user/list.html:102
+#: ../templates/default/pgsql/user/list.html:104
+msgid "Unlimited"
+msgstr "無限制"
+
+#: ../templates/default/ldap/user/admin.html:145
+#: ../templates/default/ldap/user/list.html:158
+msgid "Unmark as domain admin"
+msgstr "所有網域管理員。"
+
+#: ../templates/default/ldap/user/list.html:162
+msgid "Unmark as global admin"
+msgstr "標記為全域管理員"
+
+#: ../templates/default/ldap/maillist/profile.html:83
+#: ../templates/default/macros/general.html:753
+#: ../templates/default/macros/general.html:765
+#: ../templates/default/mysql/alias/profile.html:72
+#: ../templates/default/pgsql/alias/profile.html:72
+msgid "Unrestricted"
+msgstr "無限制"
+
+#: ../templates/default/panel/license.html:84
+msgid "Upgrade tutorials"
+msgstr ""
+
+#: ../templates/default/dashboard.html:105
+msgid "Uptime"
+msgstr "運作時間"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:88
+#: ../templates/default/dbmail_mysql/domain/list.html:90
+#: ../templates/default/dbmail_mysql/domain/list.html:96
+#: ../templates/default/dbmail_mysql/domain/list.html:98
+#: ../templates/default/macros/general.html:549
+#: ../templates/default/mysql/domain/list.html:97
+#: ../templates/default/mysql/domain/list.html:99
+#: ../templates/default/mysql/domain/list.html:105
+#: ../templates/default/mysql/domain/list.html:107
+msgid "Used"
+msgstr "已使用"
+
+#: ../templates/default/layout.html:113
+#: ../templates/default/dbmail_mysql/search.html:42
+#: ../templates/default/dbmail_mysql/alias/create.html:50
+#: ../templates/default/dbmail_mysql/alias/list.html:27
+#: ../templates/default/dbmail_mysql/user/create.html:73
+#: ../templates/default/dbmail_mysql/user/list.html:30
+#: ../templates/default/ldap/search.html:38
+#: ../templates/default/ldap/alias/create.html:68
+#: ../templates/default/ldap/alias/list.html:45
+#: ../templates/default/ldap/maillist/create.html:68
+#: ../templates/default/ldap/maillist/list.html:47
+#: ../templates/default/ldap/user/admin.html:48
+#: ../templates/default/ldap/user/create.html:110
+#: ../templates/default/ldap/user/list.html:49
+#: ../templates/default/macros/msgHandlers.html:108
+#: ../templates/default/mysql/search.html:42
+#: ../templates/default/mysql/alias/create.html:64
+#: ../templates/default/mysql/alias/list.html:40
+#: ../templates/default/mysql/user/create.html:84
+#: ../templates/default/mysql/user/list.html:44
+#: ../templates/default/pgsql/search.html:42
+#: ../templates/default/pgsql/alias/create.html:64
+#: ../templates/default/pgsql/alias/list.html:40
+#: ../templates/default/pgsql/user/create.html:84
+#: ../templates/default/pgsql/user/list.html:44
+msgid "User"
+msgstr "用戶"
+
+#: ../templates/default/macros/msgHandlers.html:153
+msgid "User created."
+msgstr ""
+
+#: ../templates/default/dbmail_mysql/search.html:145
+#: ../templates/default/ldap/search.html:193
+#: ../templates/default/ldap/maillist/profile.html:144
+#: ../templates/default/ldap/maillist/profile.html:271
+#: ../templates/default/ldap/user/admin.html:72
+#: ../templates/default/ldap/user/list.html:73
+#: ../templates/default/macros/general.html:313
+#: ../templates/default/mysql/search.html:226
+#: ../templates/default/mysql/user/list.html:69
+#: ../templates/default/pgsql/search.html:226
+#: ../templates/default/pgsql/user/list.html:69
+msgid "User/Employee ID"
+msgstr ""
+
+#: ../templates/default/login.html:55
+msgid "Username"
+msgstr "用戶名"
+
+#: ../templates/default/macros/msgHandlers.html:65
+msgid "Username must be an valid email address."
+msgstr "用戶名必須是一個有效的郵件地址。"
+
+#: ../templates/default/macros/msgHandlers.html:63
+msgid "Username or password is incorrect."
+msgstr "用戶名或密碼錯誤"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:48
+#: ../templates/default/dbmail_mysql/alias/list.html:25
+#: ../templates/default/dbmail_mysql/alias/profile.html:22
+#: ../templates/default/dbmail_mysql/domain/list.html:55
+#: ../templates/default/dbmail_mysql/domain/profile.html:33
+#: ../templates/default/dbmail_mysql/user/create.html:71
+#: ../templates/default/dbmail_mysql/user/list.html:28
+#: ../templates/default/dbmail_mysql/user/profile.html:32
+#: ../templates/default/ldap/search.html:79
+#: ../templates/default/ldap/alias/create.html:17
+#: ../templates/default/ldap/alias/list.html:21
+#: ../templates/default/ldap/alias/profile.html:30
+#: ../templates/default/ldap/domain/list.html:54
+#: ../templates/default/ldap/domain/profile.html:100
+#: ../templates/default/ldap/maillist/create.html:17
+#: ../templates/default/ldap/maillist/list.html:23
+#: ../templates/default/ldap/maillist/profile.html:32
+#: ../templates/default/ldap/user/admin.html:22
+#: ../templates/default/ldap/user/create.html:21
+#: ../templates/default/ldap/user/list.html:23
+#: ../templates/default/ldap/user/profile.html:100
+#: ../templates/default/mysql/search.html:83
+#: ../templates/default/mysql/alias/create.html:17
+#: ../templates/default/mysql/alias/list.html:20
+#: ../templates/default/mysql/alias/profile.html:22
+#: ../templates/default/mysql/domain/list.html:55
+#: ../templates/default/mysql/domain/profile.html:43
+#: ../templates/default/mysql/user/create.html:21
+#: ../templates/default/mysql/user/list.html:22
+#: ../templates/default/mysql/user/profile.html:49
+#: ../templates/default/pgsql/search.html:83
+#: ../templates/default/pgsql/alias/create.html:17
+#: ../templates/default/pgsql/alias/list.html:20
+#: ../templates/default/pgsql/alias/profile.html:22
+#: ../templates/default/pgsql/domain/list.html:55
+#: ../templates/default/pgsql/domain/profile.html:44
+#: ../templates/default/pgsql/user/create.html:21
+#: ../templates/default/pgsql/user/list.html:22
+#: ../templates/default/pgsql/user/profile.html:49
+msgid "Users"
+msgstr "用戶"
+
+#: ../templates/default/dbmail_mysql/user/list.html:35
+#: ../templates/default/ldap/user/list.html:55
+#: ../templates/default/mysql/user/list.html:49
+#: ../templates/default/pgsql/user/list.html:49
+#, python-format
+msgid "Users under domain: %s"
+msgstr "網域 %s 的用戶"
+
+#: ../templates/default/ldap/search.html:266
+#: ../templates/default/ldap/maillist/list.html:88
+msgid "View members"
+msgstr "查看成員"
+
+#: ../templates/default/dashboard.html:40
+#: ../templates/default/macros/amavisd.html:31
+msgid "Virus"
+msgstr "病毒"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:390
+#: ../templates/default/ldap/user/profile.html:218
+#: ../templates/default/macros/msgHandlers.html:36
+#: ../templates/default/macros/msgHandlers.html:38
+#: ../templates/default/mysql/domain/profile.html:468
+#: ../templates/default/pgsql/domain/profile.html:258
+#: ../templates/default/pgsql/domain/profile.html:450
+msgid "Warning"
+msgstr "警告"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:54
+#: ../templates/default/ldap/user/profile.html:121
+#: ../templates/default/mysql/user/profile.html:70
+#: ../templates/default/pgsql/user/profile.html:70
+msgid "White/Blacklist"
+msgstr "黑/白名單"
+
+#: ../templates/default/policyd/wblist.html:10
+msgid "Whitelist"
+msgstr "白名單"
+
+#: ../templates/default/ldap/user/profile.html:380
+msgid "Whitelist has higher priority than blacklist."
+msgstr "白名單比黑名單具有更高優先等級。"
+
+#: ../templates/default/policyd/whitelist/create.html:39
+msgid "Whitelist records"
+msgstr "白名單記錄"
+
+#: ../templates/default/layout.html:98 ../templates/default/layout.html:122
+#: ../templates/default/policyd/wblist.html:53
+msgid "Whitelists"
+msgstr "白名單"
+
+#: ../templates/default/ldap/maillist/profile.html:97
+#: ../templates/default/mysql/alias/profile.html:86
+#: ../templates/default/pgsql/alias/profile.html:86
+msgid "Who can send email to this list"
+msgstr "允許發送郵件到這個列表"
+
+#: ../templates/default/panel/license.html:55
+#, python-format
+msgid "You are running version %s"
+msgstr ""
+
+#: ../templates/default/ldap/user/create.html:82
+#, python-format
+msgid "You can NOT create more users under domain %s."
+msgstr "您無法在網域 %s 內建立更多的郵件用戶。"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:39
+#: ../templates/default/ldap/alias/create.html:52
+#: ../templates/default/mysql/alias/create.html:51
+#: ../templates/default/pgsql/alias/create.html:51
+#, python-format
+msgid "You can create <strong>%d</strong> more mail alias(es) under domain %s."
+msgstr "您還可以建立 <strong>%d</strong> 個郵件別名（網域 %s）。"
+
+#: ../templates/default/ldap/maillist/create.html:53
+#, python-format
+msgid "You can create <strong>%d</strong> more mail list(s) under domain %s."
+msgstr "還能建立 <strong>%d</strong> 個郵件列表（網域 %s）。"
+
+#: ../templates/default/dbmail_mysql/user/create.html:61
+#: ../templates/default/ldap/user/create.html:93
+#: ../templates/default/mysql/user/create.html:70
+#: ../templates/default/pgsql/user/create.html:70
+#, python-format
+msgid "You can create <strong>%d</strong> more mail user(s) under domain %s."
+msgstr "您還可以建立 <strong>%d</strong> 個郵件用戶（網域 %s）。"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:32
+#: ../templates/default/mysql/alias/create.html:44
+#: ../templates/default/pgsql/alias/create.html:44
+#, python-format
+msgid "You can't create mail aliases under domain %s."
+msgstr "您無法在網域 %s 內建立郵件別名。"
+
+#: ../templates/default/ldap/alias/create.html:47
+#, python-format
+msgid "You can't create more mail aliases under domain %s."
+msgstr "您無法在網域 %s 內建立更多的郵件別名。"
+
+#: ../templates/default/ldap/maillist/create.html:48
+#, python-format
+msgid "You can't create more mail lists under domain %s."
+msgstr "您無法在網域 %s 內建立更多郵件列表。"
+
+#: ../templates/default/dbmail_mysql/search.html:255
+#: ../templates/default/ldap/search.html:341
+#: ../templates/default/mysql/search.html:325
+#: ../templates/default/pgsql/search.html:325
+msgid "Your search returned no hits."
+msgstr "沒有符合搜尋條件的記錄。"
+
+#: ../templates/default/macros/general.html:598
+msgid "default transport"
+msgstr ""
+
+#: ../templates/default/macros/general.html:602
+msgid ""
+"forward emails to host example.com through port 25. The [] form is "
+"required when you specify an IP address instead of a hostname, or disable"
+" MX DNS lookup."
+msgstr ""
+
+#: ../templates/default/layout.html:66
+msgid "iRedMail Admin Panel"
+msgstr "iRedMail 管理平台"
+
+#: ../templates/default/macros/general.html:601
+msgid "receive but discard email, useful for mailboxes like noreply@example.com"
+msgstr ""
+
+#: ../templates/default/macros/general.html:192
+msgid "without verifying local recipients"
+msgstr ""
+

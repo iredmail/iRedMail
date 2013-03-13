@@ -375,6 +375,7 @@ Apache:
 PHP:
     * Configuration file: ${PHP_INI}
     * Disabled functions: ${PHP_DISABLED_FUNCTIONS}
+
 EOF
 
     echo 'export status_apache_php_config="DONE"' >> ${STATUS_FILE}
