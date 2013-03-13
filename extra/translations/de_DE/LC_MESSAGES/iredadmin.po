@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  iRedAdmin-Pro-\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2013-03-13 14:18+0800\n"
+"POT-Creation-Date: 2013-03-13 18:21+0800\n"
 "PO-Revision-Date: 2011-06-10 23:46+0800\n"
 "Last-Translator: Norman Schemel <norman@schemel.eu>\n"
 "Language-Team: de_DE <zhb@iredmail.org>\n"
@@ -182,20 +182,20 @@ msgstr "Konto ist aktiv, aber verweist auf einen anderen Host."
 
 #: ../templates/default/macros/general.html:188
 msgid "Account is active."
-msgstr "Dieses Konto ist aktiv."
+msgstr "Konto ist aktiv."
 
 #: ../templates/default/macros/general.html:201
 #: ../templates/default/macros/general.html:202
 msgid "Account is disabled."
-msgstr "Dieses Konto ist inaktiv."
+msgstr "Konto ist inaktiv."
 
 #: ../templates/default/macros/general.html:209
 msgid "Account is domain admin"
-msgstr "Dieses Konto ist inaktiv."
+msgstr "Konto des Domain Admins"
 
 #: ../templates/default/macros/general.html:211
 msgid "Account is global admin"
-msgstr "Ist kein globaler Administrator."
+msgstr "Konto des globalen Administrators."
 
 #: ../templates/default/dbmail_mysql/search.html:50
 #: ../templates/default/ldap/search.html:48
@@ -1356,8 +1356,8 @@ msgid ""
 "Emails delivered to non-exist mail accounts will be forwarded to catch-"
 "all address(es)."
 msgstr ""
-"E-Mails an nicht eingerichtete Postfächer oder Aliasse werden an die "
-"Catch-All-Adresse weitergeleitet."
+"E-Mails an nicht eingerichtete Postfächer oder Alias werden an die Catch-"
+"All-Adresse weitergeleitet."
 
 #: ../templates/default/ldap/domain/profile.html:239
 #: ../templates/default/mysql/domain/profile.html:309
@@ -1756,15 +1756,15 @@ msgid ""
 "instead of creating separate admin account."
 msgstr ""
 "Es wird empfohlen den Benutzer als Domain-Administrator auf der Profil-"
-"Seitezu markieren, anstatt einen separaten Administrator zu erstellen."
+"Seite zu markieren, anstatt einen separaten Administrator zu erstellen."
 
 #: ../templates/default/ldap/alias/create.html:111
 msgid ""
 "It's better to use mail list instead of alias, since we have mail deliver"
 " restriction for mail list."
 msgstr ""
-"Verwenden Sie Mailing Listen statt Aliasse: Sie können Beschränkungen nur"
-" für Mailing Listen festlegen."
+"Verwenden Sie Mailing Listen statt Alias: Sie können Beschränkungen nur "
+"für Mailing Listen festlegen."
 
 #: ../templates/default/ldap/search.html:194
 #: ../templates/default/ldap/user/admin.html:73
@@ -1797,7 +1797,7 @@ msgstr "Letzte Seite"
 
 #: ../templates/default/macros/general.html:677
 msgid "Last name"
-msgstr "Hostname"
+msgstr "Nachname"
 
 #: ../templates/default/panel/license.html:54
 msgid "Latest version"
@@ -1845,7 +1845,7 @@ msgstr "Lifetime Lizenz"
 #: ../templates/default/pgsql/domain/list.html:131
 #: ../templates/default/pgsql/domain/list.html:136
 msgid "List all mail aliases."
-msgstr "Alle Aliasse zeigen."
+msgstr "Alle Alias zeigen."
 
 #: ../templates/default/ldap/domain/list.html:160
 msgid "List all mail lists."
@@ -1943,7 +1943,7 @@ msgstr "Neuen Alias anlegen."
 #: ../templates/default/mysql/alias/list.html:13
 #: ../templates/default/pgsql/alias/list.html:13
 msgid "Mail Aliases"
-msgstr "Aliasse"
+msgstr "Alias"
 
 #: ../templates/default/amavisd/quarantined_raw.html:6
 msgid "Mail Body"
@@ -2074,16 +2074,16 @@ msgstr "Markiere als Backup-MX"
 
 #: ../templates/default/ldap/user/list.html:157
 msgid "Mark as domain admin"
-msgstr "Alle E-Mail Administratoren."
+msgstr "Als Domain-Admin markieren"
 
 #: ../templates/default/macros/ldap.html:88
 msgid "Mark as domain administrator"
-msgstr "Alle E-Mail Administratoren."
+msgstr "Als Domain-Admin markieren"
 
 #: ../templates/default/ldap/user/list.html:161
 #: ../templates/default/macros/general.html:387
 msgid "Mark as global admin"
-msgstr "Als globalen Administrator verwenden"
+msgstr "Als globalen Administrator markieren"
 
 #: ../templates/default/macros/general.html:402
 msgid "Mark this user as"
@@ -2091,7 +2091,7 @@ msgstr "Markiere Benutzer als"
 
 #: ../templates/default/macros/policyd.html:71
 msgid "Max size of single outgoing email"
-msgstr "Maximale Größe einer einzelnen ausgehenden Mail"
+msgstr "Maximale Größe einer einzelnen ausgehenden E-Mail"
 
 #: ../templates/default/dbmail_mysql/domain/profile.html:353
 #: ../templates/default/ldap/domain/profile.html:422
@@ -2110,7 +2110,7 @@ msgstr "Mitglied erfolgreich hinzugefügt."
 #: ../templates/default/mysql/user/profile.html:124
 #: ../templates/default/pgsql/user/profile.html:124
 msgid "Member of Mail Aliases"
-msgstr "Mitglied folgender Aliasse"
+msgstr "Mitglied folgender Alias"
 
 #: ../templates/default/ldap/user/profile.html:193
 msgid "Member of Mail Lists"
@@ -2310,7 +2310,7 @@ msgstr "Keine verfügbaren Domains."
 #: ../templates/default/mysql/alias/list.html:86
 #: ../templates/default/pgsql/alias/list.html:86
 msgid "No mail alias available."
-msgstr "Keine Aliasse vorhanden."
+msgstr "Keine Alias vorhanden."
 
 #: ../templates/default/dbmail_mysql/domain/list.html:136
 #: ../templates/default/dbmail_mysql/domain/list.html:140
@@ -2322,7 +2322,7 @@ msgstr "Keine Aliasse vorhanden."
 #: ../templates/default/pgsql/domain/list.html:145
 #: ../templates/default/pgsql/domain/list.html:149
 msgid "No mail domain available."
-msgstr "Keine verfügbaren Domains."
+msgstr "Keine Domains vorhanden."
 
 #: ../templates/default/ldap/maillist/list.html:100
 msgid "No mail list available."
@@ -2333,7 +2333,7 @@ msgstr "Keine Mailinglisten vorhanden."
 #: ../templates/default/mysql/user/list.html:121
 #: ../templates/default/pgsql/user/list.html:121
 msgid "No mail user available."
-msgstr "Keine Benutzer verfügbar."
+msgstr "Keine Benutzer vorhanden."
 
 #: ../templates/default/macros/msgHandlers.html:221
 msgid "No moderator selected."
@@ -2543,8 +2543,8 @@ msgid ""
 "Please either mark mail user as domain admin or create a separate admin "
 "account."
 msgstr ""
-"Es wird empfohlen den Benutzer als Domain-Administrator auf der Profil-"
-"Seitezu markieren, anstatt einen separaten Administrator zu erstellen."
+"Bitte setzen Sie entweder den Status 'Domain-Admin' für ein bestehendes "
+"E-Mail Konto oder erstellen Sie ein neues Konto für den 'Domain-Admin'."
 
 #: ../templates/default/macros/msgHandlers.html:146
 msgid "Please select at least one account."
@@ -2572,7 +2572,7 @@ msgstr "Vorherige Seite"
 
 #: ../templates/default/panel/license.html:29
 msgid "Product name"
-msgstr "Hostname"
+msgstr "Anwendung"
 
 #: ../templates/default/dbmail_mysql/admin/profile.html:29
 #: ../templates/default/dbmail_mysql/admin/profile.html:60
@@ -2884,19 +2884,19 @@ msgstr "Die ausgewählten Konten wurden aktiviert"
 
 #: ../templates/default/macros/msgHandlers.html:135
 msgid "Selected accounts were marked as domain admin."
-msgstr "Die ausgewählten Konten wurden aktiviert"
+msgstr "Die ausgewählten Konten wurden als Domain Admin markiert."
 
 #: ../templates/default/macros/msgHandlers.html:137
 msgid "Selected accounts were marked as global admin."
-msgstr "Die ausgewählten Konten wurden aktiviert"
+msgstr "Die ausgewählten Konten wurden als globaler Admin markiert."
 
 #: ../templates/default/macros/msgHandlers.html:136
 msgid "Selected accounts were unmarked as domain admin."
-msgstr "Die ausgewählten Konten wurden aktiviert"
+msgstr "Der Status 'Domain-Admin' der ausgewählten Konten wurde aufgehoben."
 
 #: ../templates/default/macros/msgHandlers.html:138
 msgid "Selected accounts were unmarked as global admin."
-msgstr "Die ausgewählten Konten wurden aktiviert"
+msgstr "Der Status 'globaler Admin' der ausgewählten Konten wurde aufgehoben."
 
 #: ../templates/default/macros/msgHandlers.html:90
 msgid "Selected domains were deleted."
@@ -2932,7 +2932,7 @@ msgstr "Absender"
 #: ../templates/default/policyd/blacklist/create.html:64
 #: ../templates/default/policyd/whitelist/create.html:58
 msgid "Sender address"
-msgstr "Absender Adresse"
+msgstr "Adresse des Absenders"
 
 #: ../templates/default/macros/ldap.html:89
 #: ../templates/default/macros/mysql.html:62
@@ -3019,7 +3019,7 @@ msgstr "Einzelne Domain"
 #: ../templates/default/policyd/blacklist/create.html:66
 #: ../templates/default/policyd/whitelist/create.html:60
 msgid "Single user"
-msgstr "Einzelne Adresse"
+msgstr "Einzelner Benutzer"
 
 #: ../templates/default/amavisd/inout.html:109
 #: ../templates/default/macros/amavisd.html:12
@@ -3167,11 +3167,11 @@ msgstr "Unbegrenzt"
 #: ../templates/default/ldap/user/admin.html:145
 #: ../templates/default/ldap/user/list.html:158
 msgid "Unmark as domain admin"
-msgstr "Alle E-Mail Administratoren."
+msgstr "Status 'Domain-Admin' aufheben"
 
 #: ../templates/default/ldap/user/list.html:162
 msgid "Unmark as global admin"
-msgstr "Als globalen Administrator verwenden"
+msgstr "Status 'globaler Admin' aufheben"
 
 #: ../templates/default/ldap/maillist/profile.html:83
 #: ../templates/default/macros/general.html:753
@@ -3428,9 +3428,9 @@ msgid ""
 "required when you specify an IP address instead of a hostname, or disable"
 " MX DNS lookup."
 msgstr ""
-"Weiterleitung der E-Mails zu Host example.com über Port 25.Die Syntax [] "
-"ist Pflicht für die Angabe einer IP-Adresse anstatt eines Hostnamens oder"
-" zum deaktivieren des MX DNS Lookups."
+"Weiterleitung der E-Mails zu Host example.com über Port 25. Die Syntax []"
+" ist Pflicht für die Angabe einer IP-Adresse anstatt eines Hostnamens "
+"oder zum deaktivieren des MX DNS Lookups."
 
 #: ../templates/default/layout.html:66
 msgid "iRedMail Admin Panel"
