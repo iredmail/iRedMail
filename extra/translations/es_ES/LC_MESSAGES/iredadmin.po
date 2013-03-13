@@ -23,18 +23,18 @@ msgstr ""
 #: ../templates/default/pgsql/search.html:151
 #, python-format
 msgid "%d admin(s) found."
-msgstr "%d listas de mail encontradas."
+msgstr "%d admin(s) encontrados."
 
 #: ../templates/default/ldap/search.html:67
 #, python-format
 msgid "%d domain(s) found."
-msgstr "%d listas de mail encontradas."
+msgstr "%d dominio(s) encontrados."
 
 #: ../templates/default/mysql/search.html:73
 #: ../templates/default/pgsql/search.html:73
 #, python-format
 msgid "%d domains(s) found."
-msgstr "%d listas de mail encontradas."
+msgstr "%d dominio(s) encontrados."
 
 #: ../templates/default/dbmail_mysql/search.html:209
 #: ../templates/default/ldap/search.html:295
@@ -42,12 +42,12 @@ msgstr "%d listas de mail encontradas."
 #: ../templates/default/pgsql/search.html:279
 #, python-format
 msgid "%d mail alias(es) found."
-msgstr "%d direcciones de mail encontradas."
+msgstr "%d alias de correo encontradas."
 
 #: ../templates/default/ldap/search.html:242
 #, python-format
 msgid "%d mail list(s) found."
-msgstr "%d listas de mail encontradas."
+msgstr "%d listas de correo encontradas."
 
 #: ../templates/default/dbmail_mysql/search.html:135
 #: ../templates/default/ldap/search.html:182
@@ -95,12 +95,12 @@ msgstr "1 Minuto"
 #: ../templates/default/macros/general.html:757
 #, python-format
 msgid "<a href='%s'>Domain and sub-domain users</a>"
-msgstr "<a href='%s'>Usuarios de dominios y sub-dominios</a>"
+msgstr "<a href='%s'>Usuarios de dominio y sub-dominio</a>"
 
 #: ../templates/default/macros/general.html:755
 #, python-format
 msgid "<a href='%s'>Domain users</a>"
-msgstr "<a href='%s'>Usuarios de dominios</a>"
+msgstr "<a href='%s'>Usuarios de dominio</a>"
 
 #: ../templates/default/macros/general.html:759
 #, python-format
@@ -141,11 +141,11 @@ msgstr ""
 #: ../templates/default/amavisd/inout.html:72
 #: ../templates/default/amavisd/inout.html:83
 msgid "About mail logs"
-msgstr "Mail logs"
+msgstr "Acerca de logs de Correo"
 
 #: ../templates/default/amavisd/quarantined.html:59
 msgid "About quarantined mails"
-msgstr "No hay mails en cuarentena."
+msgstr "Acerca de correos en cuarentena."
 
 #: ../templates/default/ldap/user/profile.html:218
 msgid "Account NOT exists."
@@ -153,7 +153,7 @@ msgstr "La cuenta no existe."
 
 #: ../templates/default/macros/general.html:243
 msgid "Account activities"
-msgstr "La cuenta está activa."
+msgstr "Actividades de Cuenta"
 
 #: ../templates/default/macros/msgHandlers.html:181
 #: ../templates/default/macros/msgHandlers.html:207
@@ -170,12 +170,12 @@ msgstr "La cuenta no existe."
 
 #: ../templates/default/macros/general.html:199
 msgid "Account is active, but marked as backup MX."
-msgstr ""
+msgstr "La cuenta esta activa, pero marcada como MX de respaldo"
 
 #: ../templates/default/macros/general.html:192
 #: ../templates/default/macros/general.html:194
 msgid "Account is active, but relay to other host"
-msgstr ""
+msgstr "La cuenta esta activa, pero retransmite a otro host"
 
 #: ../templates/default/macros/general.html:188
 msgid "Account is active."
@@ -188,36 +188,36 @@ msgstr "La cuenta está deshabilitada."
 
 #: ../templates/default/macros/general.html:209
 msgid "Account is domain admin"
-msgstr "La cuenta está deshabilitada."
+msgstr "La cuenta es administrador de dominio."
 
 #: ../templates/default/macros/general.html:211
 msgid "Account is global admin"
-msgstr "No hay administrador global"
+msgstr "La cuenta es administrador global"
 
 #: ../templates/default/dbmail_mysql/search.html:50
 #: ../templates/default/ldap/search.html:48
 #: ../templates/default/mysql/search.html:51
 #: ../templates/default/pgsql/search.html:51
 msgid "Account status"
-msgstr "La cuenta está activa."
+msgstr "Estado de la cuenta"
 
 #: ../templates/default/dbmail_mysql/search.html:41
 #: ../templates/default/ldap/search.html:37
 #: ../templates/default/mysql/search.html:41
 #: ../templates/default/pgsql/search.html:41
 msgid "Account type"
-msgstr "Editar perfil del cuenta"
+msgstr "Tipo de cuenta"
 
 #: ../templates/default/macros/general.html:898
 msgid "Activate account"
-msgstr "Cuenta activa"
+msgstr "Activar cuenta"
 
 #: ../templates/default/dbmail_mysql/search.html:51
 #: ../templates/default/ldap/search.html:49
 #: ../templates/default/mysql/search.html:52
 #: ../templates/default/pgsql/search.html:52
 msgid "Active"
-msgstr "Fecha"
+msgstr "Activa"
 
 #: ../templates/default/layout.html:106
 #: ../templates/default/dbmail_mysql/alias/create.html:82
@@ -266,7 +266,7 @@ msgstr "Añadir administrador"
 #: ../templates/default/policyd/blacklist/create.html:28
 #: ../templates/default/policyd/whitelist/create.html:26
 msgid "Add blacklist"
-msgstr "Añadir blacklist"
+msgstr "Añadir lista negra"
 
 #: ../templates/default/dbmail_mysql/domain/create.html:7
 #: ../templates/default/dbmail_mysql/domain/create.html:20
@@ -341,7 +341,7 @@ msgstr "Añadir nuevos miembros"
 #: ../templates/default/mysql/alias/profile.html:177
 #: ../templates/default/pgsql/alias/profile.html:177
 msgid "Add new moderators"
-msgstr "Añadir moderadores"
+msgstr "Añadir nuevos moderadores"
 
 #: ../templates/default/dbmail_mysql/alias/list.html:73
 #: ../templates/default/dbmail_mysql/domain/list.html:137
@@ -377,7 +377,7 @@ msgstr "Añadir uno más?"
 #: ../templates/default/pgsql/user/create.html:89
 #, python-format
 msgid "Add user under domain: %s"
-msgstr "Usuarios bajo el dominio: %s"
+msgstr "Agregar Usuarios bajo el dominio: %s"
 
 #: ../templates/default/policyd/wblist.html:48
 #: ../templates/default/policyd/blacklist/create.html:25
@@ -385,7 +385,7 @@ msgstr "Usuarios bajo el dominio: %s"
 #: ../templates/default/policyd/whitelist/create.html:25
 #: ../templates/default/policyd/whitelist/create.html:28
 msgid "Add whitelist"
-msgstr "Añadir whitelist"
+msgstr "Añadir lista blanca"
 
 #: ../templates/default/layout.html:110
 #: ../templates/default/dbmail_mysql/search.html:45
@@ -407,7 +407,7 @@ msgstr "Log del administrador"
 
 #: ../templates/default/macros/msgHandlers.html:188
 msgid "Admin created."
-msgstr ""
+msgstr "Administrador creado"
 
 #: ../templates/default/macros/general.html:890
 msgid "Admin login"
@@ -437,7 +437,7 @@ msgstr "Administradores"
 #: ../templates/default/ldap/user/admin.html:54
 #, python-format
 msgid "Admins under domain: %s"
-msgstr "Usuarios bajo el dominio: %s"
+msgstr "Administradores bajo el dominio: %s"
 
 #: ../templates/default/dbmail_mysql/domain/profile.html:55
 #: ../templates/default/dbmail_mysql/user/profile.html:56
@@ -479,7 +479,7 @@ msgstr "Alias"
 
 #: ../templates/default/macros/ldap.html:97
 msgid "Alias account"
-msgstr "Cuenta alias"
+msgstr "Alias de la cuenta"
 
 #: ../templates/default/ldap/domain/profile.html:217
 #: ../templates/default/ldap/domain/profile.html:228
@@ -548,13 +548,13 @@ msgstr "Alias bajo el dominio: %s."
 #: ../templates/default/policyd/blacklist/create.html:24
 #: ../templates/default/policyd/whitelist/create.html:24
 msgid "All Blacklists"
-msgstr "Todas las blacklist"
+msgstr "Todas las listas negras"
 
 #: ../templates/default/policyd/wblist.html:45
 #: ../templates/default/policyd/blacklist/create.html:23
 #: ../templates/default/policyd/whitelist/create.html:23
 msgid "All Whitelists"
-msgstr "Todas las whitelist"
+msgstr "Todas las listas blancas"
 
 #: ../templates/default/ldap/user/profile.html:388
 msgid "All accounts"
@@ -662,7 +662,7 @@ msgstr "Asignado"
 #: ../templates/default/pgsql/user/create.html:44
 #, python-format
 msgid "Already exceed max number of account limit (%s)."
-msgstr "Se ha excedido el número máximo del límite de la cuenta (%s)."
+msgstr "Se ha excedido el número máximo de límite de cuentas (%s)."
 
 #: ../templates/default/amavisd/inout.html:173
 #: ../templates/default/amavisd/quarantined.html:94
@@ -757,36 +757,36 @@ msgstr "Copia oculta de los correos salientes a otra dirección"
 
 #: ../templates/default/macros/general.html:455
 msgid "Backup MX does not work with custom relay"
-msgstr ""
+msgstr "Respaldo de MX no funciona con retransmision personalizada"
 
 #: ../templates/default/macros/amavisd.html:33
 msgid "Banned"
-msgstr ""
+msgstr "Prohibido"
 
 #: ../templates/default/policyd/wblist.html:12
 msgid "Blacklist"
-msgstr "Blacklist"
+msgstr "Lista Negra"
 
 #: ../templates/default/policyd/blacklist/create.html:45
 msgid "Blacklist HELO records"
-msgstr "Registros Blacklist HELO "
+msgstr "Registros HELO de Lista Negra"
 
 #: ../templates/default/policyd/blacklist/create.html:39
 msgid "Blacklist records"
-msgstr "Registros Blacklist"
+msgstr "Registros Lista Negra"
 
 #: ../templates/default/layout.html:99 ../templates/default/layout.html:123
 #: ../templates/default/policyd/wblist.html:55
 msgid "Blacklists"
-msgstr "Blacklist"
+msgstr "Lista Negra"
 
 #: ../templates/default/ldap/user/profile.html:344
 msgid "Bypass mails from below senders"
-msgstr "Pasar mails de los emisores siguientes"
+msgstr "Pasar correos de los emisores siguientes"
 
 #: ../templates/default/ldap/user/profile.html:358
 msgid "Bypass mails sent to below recipients"
-msgstr "Pasar mails enviados a los siguientes receptores"
+msgstr "Pasar correos enviados a los siguientes receptores"
 
 #: ../templates/default/dbmail_mysql/domain/profile.html:53
 #: ../templates/default/ldap/domain/profile.html:120
@@ -805,11 +805,11 @@ msgstr "Recolector de todas las direcciones no existentes"
 #: ../templates/default/mysql/domain/profile.html:257
 #: ../templates/default/pgsql/domain/profile.html:258
 msgid "Catch-all address may receive many spam emails."
-msgstr "Cuenta por defecto, puede recibir mucho SPAM."
+msgstr "Cuenta por defecto, puede estar recibiendo mucho SPAM."
 
 #: ../templates/default/macros/ldap.html:113
 msgid "Check this box in order to enable other services"
-msgstr "Seleccionar para habilitar otros servicios relativos al mail."
+msgstr "Seleccionar para habilitar otros servicios relativos al correo"
 
 #: ../templates/default/amavisd/inout.html:169
 #: ../templates/default/amavisd/quarantined.html:85
@@ -874,11 +874,11 @@ msgstr "Contactar con el webmaster"
 
 #: ../templates/default/panel/license.html:49
 msgid "Contacts"
-msgstr "La cuenta está activa."
+msgstr "Contactos"
 
 #: ../templates/default/ldap/domain/profile.html:188
 msgid "Content of disclaimer will be appended to outgoing emails."
-msgstr "Contenido del disclaimer que aparecerá en los mails enviados."
+msgstr "Contenido del disclaimer que aparecerá en los correos enviados."
 
 #: ../templates/default/policyd/blacklist/create.html:78
 msgid ""
@@ -907,12 +907,12 @@ msgstr "Actual:"
 #: ../templates/default/macros/ldap.html:98
 #: ../templates/default/macros/mysql.html:68
 msgid "Customize mail filter rule"
-msgstr "Personalizar regla de filtrado de mail"
+msgstr "Personalizar regla de filtrado de correo"
 
 #: ../templates/default/macros/ldap.html:99
 #: ../templates/default/macros/mysql.html:69
 msgid "Customize mail filter rule over TLS/SSL"
-msgstr "Personalizar regla de filtrado de mail sobre TLS/SSL"
+msgstr "Personalizar regla de filtrado de correo sobre TLS/SSL"
 
 #: ../templates/default/dbmail_mysql/domain/list.html:111
 #: ../templates/default/dbmail_mysql/domain/list.html:125
@@ -937,7 +937,7 @@ msgstr "Nombre del DNS"
 #: ../templates/default/policyd/blacklist/create.html:70
 #: ../templates/default/policyd/whitelist/create.html:64
 msgid "DNS name"
-msgstr "Nombre de usuario"
+msgstr "Nombre del DNS"
 
 #: ../templates/default/dashboard.html:6 ../templates/default/layout.html:74
 msgid "Dashboard"
