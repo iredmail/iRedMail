@@ -3,6 +3,7 @@ You can simply copy them to iRedAdmin-Pro folder 'i18n/', then restart Apache to
 
 Updated translations (March 13, 2013):
 
+    + Slovenian (sl_SI). Thanks Marko Kobal <marko.kobal _at_ arctur.si>.
     + French (fr_FR). Thanks Shafeek Sumser <shafeeks _at_ gmail.com>.
     + Portuguese (Brazilian, pt_BR). Thanks Wendell Martins Borges <perlporter _at_ gmail.com>.
     + Finnish (fi_FI). Thanks Teemu Harjula <teemu.harjula _at_ tietovirta.fi>.
