@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2013-03-13 14:18+0800\n"
+"POT-Creation-Date: 2013-03-13 19:05+0800\n"
 "PO-Revision-Date: 2011-09-22 08:40+0200\n"
 "Last-Translator: Teemu Harjula <teemu.harjula@tietovirta.fi>\n"
 "Language-Team: fi_FI <LL@li.org>\n"
@@ -95,17 +95,17 @@ msgstr "1 minuutti"
 #: ../templates/default/macros/general.html:757
 #, python-format
 msgid "<a href='%s'>Domain and sub-domain users</a>"
-msgstr "<a href='%s'>Domain and sub-domain users</a>"
+msgstr "<a href='%s'>Domainin ja alidomainin käyttäjät</a>"
 
 #: ../templates/default/macros/general.html:755
 #, python-format
 msgid "<a href='%s'>Domain users</a>"
-msgstr "<a href='%s'>Domain users</a>"
+msgstr "<a href='%s'>Domain käyttäjät</a>"
 
 #: ../templates/default/macros/general.html:759
 #, python-format
 msgid "<a href='%s'>Members</a>"
-msgstr "<a href='%s'>Members</a>"
+msgstr "<a href='%s'>Jäsenet</a>"
 
 #: ../templates/default/ldap/maillist/profile.html:88
 #: ../templates/default/macros/general.html:763
@@ -113,19 +113,19 @@ msgstr "<a href='%s'>Members</a>"
 #: ../templates/default/pgsql/alias/profile.html:77
 #, python-format
 msgid "<a href='%s'>Members</a> and <a href='%s'>moderators</a>"
-msgstr "<a href='%s'>Members</a> and <a href='%s'>moderators</a>"
+msgstr "<a href='%s'>Jäsenet</a> ja <a href='%s'>moderaattorit</a>"
 
 #: ../templates/default/macros/general.html:761
 #, python-format
 msgid "<a href='%s'>Moderators</a>"
-msgstr "<a href='%s'>Moderators</a>"
+msgstr "<a href='%s'>Moderaattorit</a>"
 
 #: ../templates/default/ldap/maillist/profile.html:84
 #: ../templates/default/mysql/alias/profile.html:73
 #: ../templates/default/pgsql/alias/profile.html:73
 #, python-format
 msgid "<a href='%s'>Users under domain <strong>%s</strong></a>"
-msgstr "<a href='%s'>Users under domain <strong>%s</strong></a>"
+msgstr "<a href='%s'>Käyttäjiä domainissa <strong>%s</strong></a>"
 
 #: ../templates/default/ldap/maillist/profile.html:85
 #: ../templates/default/mysql/alias/profile.html:74
@@ -135,8 +135,8 @@ msgid ""
 "<a href='%s'>Users under domain <strong>%s</strong></a> and its sub-"
 "domains"
 msgstr ""
-"<a href='%s'>Users under domain <strong>%s</strong></a> and its sub-"
-"domains"
+"<a href='%s'>Käyttäjää domainissa <strong>%s</strong></a> ja sen "
+"alidomaineissa"
 
 #: ../templates/default/amavisd/inout.html:72
 #: ../templates/default/amavisd/inout.html:83
@@ -170,12 +170,12 @@ msgstr "Tiliä ei löydy."
 
 #: ../templates/default/macros/general.html:199
 msgid "Account is active, but marked as backup MX."
-msgstr ""
+msgstr "Tili on aktiivinen, mutta merkitty vara MX."
 
 #: ../templates/default/macros/general.html:192
 #: ../templates/default/macros/general.html:194
 msgid "Account is active, but relay to other host"
-msgstr ""
+msgstr "Tili on aktiivinen, mutta välitetty toiselle palvelimelle"
 
 #: ../templates/default/macros/general.html:188
 msgid "Account is active."
@@ -407,7 +407,7 @@ msgstr "Ylläpitäjän logi"
 
 #: ../templates/default/macros/msgHandlers.html:188
 msgid "Admin created."
-msgstr ""
+msgstr "Ylläpitäjä luotu."
 
 #: ../templates/default/macros/general.html:890
 msgid "Admin login"
@@ -761,7 +761,7 @@ msgstr ""
 
 #: ../templates/default/macros/amavisd.html:33
 msgid "Banned"
-msgstr ""
+msgstr "Kielletty"
 
 #: ../templates/default/policyd/wblist.html:12
 msgid "Blacklist"
@@ -1159,7 +1159,7 @@ msgstr "Domain ja sen ali-domainit"
 
 #: ../templates/default/macros/msgHandlers.html:108
 msgid "Domain created."
-msgstr ""
+msgstr "Domain luotu."
 
 #: ../templates/default/macros/msgHandlers.html:95
 msgid "Domain name is empty."
@@ -1568,7 +1568,7 @@ msgstr "Ensimmäinen sivu"
 
 #: ../templates/default/macros/general.html:606
 msgid "For advanced settings and further information please see"
-msgstr ""
+msgstr "Lisäasetukset ja lisätiedot"
 
 #: ../templates/default/ldap/user/profile.html:383
 msgid "Format of sender and recipient"
@@ -1595,7 +1595,7 @@ msgstr "Edelleenohjaa sähköpostit toiseen osoitteeseen"
 #: ../templates/default/ldap/admin/profile.html:73
 #: ../templates/default/ldap/user/profile.html:160
 msgid "Full name"
-msgstr ""
+msgstr "Koko nimi"
 
 #: ../templates/default/dbmail_mysql/admin/profile.html:44
 #: ../templates/default/dbmail_mysql/alias/profile.html:36
@@ -1636,7 +1636,7 @@ msgstr "Globaali ylläpitäjä"
 #: ../templates/default/macros/ldap.html:121
 #: ../templates/default/macros/mysql.html:78
 msgid "Greylisting"
-msgstr ""
+msgstr "Harmaalistaus"
 
 #: ../templates/default/policyd/wblist.html:27
 msgid "HELO Identities"
@@ -1747,6 +1747,8 @@ msgid ""
 "It is recommended to mark user as domain admin in user profile page "
 "instead of creating separate admin account."
 msgstr ""
+"On suositeltavaa merkitä käyttäjä domain adminiksi käyttäjäprofiilissa "
+"erillisen admin tilin luonnin sijasta."
 
 #: ../templates/default/ldap/alias/create.html:111
 msgid ""
@@ -1791,7 +1793,7 @@ msgstr "Isäntänimi"
 
 #: ../templates/default/panel/license.html:54
 msgid "Latest version"
-msgstr ""
+msgstr "Viimeisin versio"
 
 #: ../templates/default/macros/general.html:604
 #, python-format
@@ -1805,11 +1807,11 @@ msgstr "Jätä tyhjäksi käyttääksesi palvelinlaajuisia oletusasetuksia."
 #: ../templates/default/layout.html:45 ../templates/default/layout.html:83
 #: ../templates/default/panel/license.html:3
 msgid "License"
-msgstr ""
+msgstr "Lisenssi"
 
 #: ../templates/default/panel/license.html:10
 msgid "License info"
-msgstr ""
+msgstr "Lisenssin tiedot"
 
 #: ../templates/default/panel/license.html:21
 msgid "License is active"
@@ -1821,7 +1823,7 @@ msgstr "Tilin tila"
 
 #: ../templates/default/panel/license.html:43
 msgid "Lifetime license"
-msgstr ""
+msgstr "Elinikäinen lisenssi"
 
 #: ../templates/default/dbmail_mysql/domain/list.html:122
 #: ../templates/default/dbmail_mysql/domain/list.html:127
@@ -1987,11 +1989,11 @@ msgstr "Sähköpostiosoite on käytössä, valitse jokin muu."
 
 #: ../templates/default/macros/msgHandlers.html:260
 msgid "Mail alias created."
-msgstr ""
+msgstr "Sähköpostialias luotu."
 
 #: ../templates/default/macros/msgHandlers.html:228
 msgid "Mail list created."
-msgstr ""
+msgstr "Sähköpostilista luotu."
 
 #: ../templates/default/ldap/maillist/list.html:53
 #, python-format
@@ -2056,7 +2058,7 @@ msgstr "Hallitut domainit"
 
 #: ../templates/default/macros/general.html:446
 msgid "Mark as backup MX"
-msgstr ""
+msgstr "Merkitse vara MX"
 
 #: ../templates/default/ldap/user/list.html:157
 msgid "Mark as domain admin"
@@ -2073,7 +2075,7 @@ msgstr "Merkitse globaaliksi ylläpitäjäksi"
 
 #: ../templates/default/macros/general.html:402
 msgid "Mark this user as"
-msgstr ""
+msgstr "Merkitse tämä käyttäjä"
 
 #: ../templates/default/macros/policyd.html:71
 msgid "Max size of single outgoing email"
@@ -2224,7 +2226,7 @@ msgstr "Antamasi salasanat eivät täsmää"
 
 #: ../templates/default/layout.html:31
 msgid "New version available"
-msgstr ""
+msgstr "Uusi versio saatavilla"
 
 #: ../templates/default/dashboard.html:14
 #, python-format
@@ -2232,6 +2234,8 @@ msgid ""
 "New version of iRedAdmin-Pro, %s, is now available for upgrading. <a "
 "href='%s/system/license' class='button green'>Details</a>"
 msgstr ""
+"Uusi versio iRedAdmin-Pro, %s, on saatavilla. <a href='%s/system/license'"
+" class='button green'>Details</a>"
 
 #: ../templates/default/layout.html:154
 msgid "News & Announments"
@@ -2336,7 +2340,7 @@ msgstr "Ei karanteenissa olevia sähköposteja."
 
 #: ../templates/default/policyd/wblist.html:95
 msgid "No records."
-msgstr ""
+msgstr "Ei tietoja."
 
 #: ../templates/default/macros/msgHandlers.html:100
 msgid "No such domain."
@@ -2525,6 +2529,8 @@ msgid ""
 "Please either mark mail user as domain admin or create a separate admin "
 "account."
 msgstr ""
+"Merkitse sähköpostikäyttäjä domainin ylläpitäjäksi tai luo erillinen "
+"ylläpitotunnus."
 
 #: ../templates/default/macros/msgHandlers.html:146
 msgid "Please select at least one account."
@@ -2536,7 +2542,7 @@ msgstr "Valitse vähintää yksi domain käyttääksesi toimintoa."
 
 #: ../templates/default/macros/general.html:606
 msgid "Postfix manual page"
-msgstr ""
+msgstr "Postfix ohjesivu"
 
 #: ../templates/default/layout.html:42
 msgid "Preferences"
@@ -2614,7 +2620,7 @@ msgstr "Profiilin päivitys onnistui."
 
 #: ../templates/default/panel/license.html:34
 msgid "Purchase date"
-msgstr ""
+msgstr "Ostopäivä"
 
 #: ../templates/default/dashboard.html:46
 #: ../templates/default/macros/amavisd.html:70
@@ -2748,7 +2754,7 @@ msgstr "Välityspalvelin"
 
 #: ../templates/default/macros/general.html:573
 msgid "Relay without verifying local recipients"
-msgstr ""
+msgstr "Välitä varmistamatta paikallisia vastaanottajia"
 
 #: ../templates/default/macros/general.html:565
 msgid "Relay/Transport Setting"
@@ -2756,7 +2762,7 @@ msgstr "Välityspalvelinasetukset"
 
 #: ../templates/default/panel/license.html:83
 msgid "Release Notes of latest version"
-msgstr ""
+msgstr "Uusimman version julkaisutiedot"
 
 #: ../templates/default/amavisd/quarantined.html:86
 msgid "Release selected"
@@ -2775,7 +2781,7 @@ msgstr "Poista listasta"
 
 #: ../templates/default/panel/license.html:70
 msgid "Renew license"
-msgstr ""
+msgstr "Uusi lisenssi"
 
 #: ../templates/default/ldap/domain/profile.html:502
 msgid "Sample"
@@ -2783,7 +2789,7 @@ msgstr "Malli"
 
 #: ../templates/default/macros/general.html:595
 msgid "Sample relay settings"
-msgstr ""
+msgstr "Malliasetukset"
 
 #: ../templates/default/dbmail_mysql/user/profile.html:171
 #: ../templates/default/ldap/user/profile.html:288
@@ -2900,7 +2906,7 @@ msgstr "Valitut tietueet poistettiin."
 
 #: ../templates/default/panel/license.html:77
 msgid "Send me an email with download link"
-msgstr ""
+msgstr "Lähetä latauslinkki sähköpostilla"
 
 #: ../templates/default/amavisd/inout.html:107
 #: ../templates/default/macros/amavisd.html:9
@@ -3009,7 +3015,7 @@ msgstr "Koko"
 
 #: ../templates/default/macros/amavisd.html:29
 msgid "Spam"
-msgstr ""
+msgstr "Roskaposti"
 
 #: ../templates/default/dashboard.html:23
 msgid "Statistics of latest 24 hours"
@@ -3161,7 +3167,7 @@ msgstr "Rajoittamaton"
 
 #: ../templates/default/panel/license.html:84
 msgid "Upgrade tutorials"
-msgstr ""
+msgstr "Päivitä "
 
 #: ../templates/default/dashboard.html:105
 msgid "Uptime"
@@ -3209,7 +3215,7 @@ msgstr "Käyttäjä"
 
 #: ../templates/default/macros/msgHandlers.html:153
 msgid "User created."
-msgstr ""
+msgstr "Käyttäjä luotu."
 
 #: ../templates/default/dbmail_mysql/search.html:145
 #: ../templates/default/ldap/search.html:193
@@ -3223,7 +3229,7 @@ msgstr ""
 #: ../templates/default/pgsql/search.html:226
 #: ../templates/default/pgsql/user/list.html:69
 msgid "User/Employee ID"
-msgstr ""
+msgstr "Käyttäjä/Työntekijä ID"
 
 #: ../templates/default/login.html:55
 msgid "Username"
@@ -3340,7 +3346,7 @@ msgstr "Kuka voi lähettää sähköpostia tähän listaan."
 #: ../templates/default/panel/license.html:55
 #, python-format
 msgid "You are running version %s"
-msgstr ""
+msgstr "Käytössäsi on versio %s"
 
 #: ../templates/default/ldap/user/create.html:82
 #, python-format
@@ -3394,7 +3400,7 @@ msgstr "Hakusi ei tuottanut tuloksia."
 
 #: ../templates/default/macros/general.html:598
 msgid "default transport"
-msgstr ""
+msgstr "oletusliikenne"
 
 #: ../templates/default/macros/general.html:602
 msgid ""
@@ -3410,8 +3416,10 @@ msgstr "iRedMail Ylläpitopaneeli"
 #: ../templates/default/macros/general.html:601
 msgid "receive but discard email, useful for mailboxes like noreply@example.com"
 msgstr ""
+"Vastaanota mutta hävitä sähköposti. Hyödyllinen esim. noreply@example.com"
+" laatikoiden kanssa."
 
 #: ../templates/default/macros/general.html:192
 msgid "without verifying local recipients"
-msgstr ""
+msgstr "varmistamatta paikallisia vastaanottajia"
 
