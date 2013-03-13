@@ -1,4 +1,3 @@
-# Italian (Italy) translations for iRedAdmin Pro.
 # Copyright (C) 2011 ORGANIZATION
 # This file is distributed under the same license as the iRedAdmin Pro
 # project.
@@ -8,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: iRedAdmin Pro 1.6.2\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2013-03-13 14:18+0800\n"
+"POT-Creation-Date: 2013-03-13 17:29+0800\n"
 "PO-Revision-Date: 2011-08-18 23:16+0100\n"
 "Last-Translator: Alberto Baudacci <a.baudacci@gmail.com>\n"
 "Language-Team: Graphite <alberto@graphite.eu>\n"
@@ -56,7 +55,7 @@ msgstr "%d mail list trovata(e)."
 #: ../templates/default/pgsql/search.html:216
 #, python-format
 msgid "%d user(s) found."
-msgstr "%d user(s) found."
+msgstr "%d utente(i) trovati."
 
 #: ../templates/default/macros/ldap.html:16
 #, python-format
@@ -171,12 +170,12 @@ msgstr "L'account non esiste."
 
 #: ../templates/default/macros/general.html:199
 msgid "Account is active, but marked as backup MX."
-msgstr ""
+msgstr "Accout attivo, ma marcato come backup"
 
 #: ../templates/default/macros/general.html:192
 #: ../templates/default/macros/general.html:194
 msgid "Account is active, but relay to other host"
-msgstr ""
+msgstr "Accoutn attivo, ma relativo ad altro host"
 
 #: ../templates/default/macros/general.html:188
 msgid "Account is active."
@@ -408,7 +407,7 @@ msgstr "Log Admin"
 
 #: ../templates/default/macros/msgHandlers.html:188
 msgid "Admin created."
-msgstr ""
+msgstr "Admin Creato"
 
 #: ../templates/default/macros/general.html:890
 msgid "Admin login"
@@ -416,7 +415,7 @@ msgstr "Login Admin"
 
 #: ../templates/default/macros/msgHandlers.html:182
 msgid "Admin not exist."
-msgstr "L'Admin non esiste."
+msgstr "Admin non esiste."
 
 #: ../templates/default/layout.html:78
 #: ../templates/default/ldap/alias/create.html:20
@@ -758,11 +757,11 @@ msgstr "BCC dei messaggi in uscita verso un altro indirizzo"
 
 #: ../templates/default/macros/general.html:455
 msgid "Backup MX does not work with custom relay"
-msgstr ""
+msgstr "Il Server MX  di backup non lavora con il relay server"
 
 #: ../templates/default/macros/amavisd.html:33
 msgid "Banned"
-msgstr ""
+msgstr "Bannato"
 
 #: ../templates/default/policyd/wblist.html:12
 msgid "Blacklist"
@@ -1518,7 +1517,7 @@ msgstr "Scadenza"
 
 #: ../templates/default/policyd/wblist.html:68
 msgid "Expired Date"
-msgstr "Scadenza"
+msgstr "Data di Scadenza"
 
 #: ../templates/default/ldap/admin/profile.html:83
 #: ../templates/default/ldap/alias/profile.html:79
@@ -1570,7 +1569,7 @@ msgstr "Prima Pagina"
 
 #: ../templates/default/macros/general.html:606
 msgid "For advanced settings and further information please see"
-msgstr ""
+msgstr "Per un avanzato settaggio e futeure informazioni,  vedi"
 
 #: ../templates/default/ldap/user/profile.html:383
 msgid "Format of sender and recipient"
@@ -1597,7 +1596,7 @@ msgstr "Inoltro messaggi ad altri indirizzi"
 #: ../templates/default/ldap/admin/profile.html:73
 #: ../templates/default/ldap/user/profile.html:160
 msgid "Full name"
-msgstr ""
+msgstr "Nome  completo"
 
 #: ../templates/default/dbmail_mysql/admin/profile.html:44
 #: ../templates/default/dbmail_mysql/alias/profile.html:36
@@ -1638,7 +1637,7 @@ msgstr "Admin Globale"
 #: ../templates/default/macros/ldap.html:121
 #: ../templates/default/macros/mysql.html:78
 msgid "Greylisting"
-msgstr ""
+msgstr "Greylisting"
 
 #: ../templates/default/policyd/wblist.html:27
 msgid "HELO Identities"
@@ -1749,6 +1748,8 @@ msgid ""
 "It is recommended to mark user as domain admin in user profile page "
 "instead of creating separate admin account."
 msgstr ""
+"E' raccomandato to marcare l'utente come amministratore di dominio nel "
+"pagina di profiloal posto di creare un separato amministratore"
 
 #: ../templates/default/ldap/alias/create.html:111
 msgid ""
@@ -1777,7 +1778,7 @@ msgstr "Parola chiave"
 
 #: ../templates/default/macros/amavisd.html:11
 msgid "Kind"
-msgstr ""
+msgstr "Tipo"
 
 #: ../templates/default/dbmail_mysql/user/list.html:56
 msgid "Last Login"
@@ -1793,7 +1794,7 @@ msgstr "Nome Host"
 
 #: ../templates/default/panel/license.html:54
 msgid "Latest version"
-msgstr ""
+msgstr "Ultima versione"
 
 #: ../templates/default/macros/general.html:604
 #, python-format
@@ -1809,11 +1810,11 @@ msgstr "Lasciare vuoto per utilizzare le impostazioni di default del server."
 #: ../templates/default/layout.html:45 ../templates/default/layout.html:83
 #: ../templates/default/panel/license.html:3
 msgid "License"
-msgstr ""
+msgstr "Licenza"
 
 #: ../templates/default/panel/license.html:10
 msgid "License info"
-msgstr ""
+msgstr "Informazioni sulla Licenza"
 
 #: ../templates/default/panel/license.html:21
 msgid "License is active"
@@ -1825,7 +1826,7 @@ msgstr "Stato account"
 
 #: ../templates/default/panel/license.html:43
 msgid "Lifetime license"
-msgstr ""
+msgstr "Licenza illimitata"
 
 #: ../templates/default/dbmail_mysql/domain/list.html:122
 #: ../templates/default/dbmail_mysql/domain/list.html:127
@@ -1991,11 +1992,11 @@ msgstr "Indirizzo mail già esistente, sceglietene uno diverso."
 
 #: ../templates/default/macros/msgHandlers.html:260
 msgid "Mail alias created."
-msgstr ""
+msgstr "Alias mail creata"
 
 #: ../templates/default/macros/msgHandlers.html:228
 msgid "Mail list created."
-msgstr ""
+msgstr "Lista mail creata"
 
 #: ../templates/default/ldap/maillist/list.html:53
 #, python-format
@@ -2060,7 +2061,7 @@ msgstr "Domini gestiti"
 
 #: ../templates/default/macros/general.html:446
 msgid "Mark as backup MX"
-msgstr ""
+msgstr "Marca come Backup MX"
 
 #: ../templates/default/ldap/user/list.html:157
 msgid "Mark as domain admin"
@@ -2077,7 +2078,7 @@ msgstr "Impostare come Amministratore Globale."
 
 #: ../templates/default/macros/general.html:402
 msgid "Mark this user as"
-msgstr ""
+msgstr "Marca qquesto utente come"
 
 #: ../templates/default/macros/policyd.html:71
 msgid "Max size of single outgoing email"
@@ -2228,7 +2229,7 @@ msgstr "Le nuove password non corrispondono."
 
 #: ../templates/default/layout.html:31
 msgid "New version available"
-msgstr ""
+msgstr "Nuova versione disponibile"
 
 #: ../templates/default/dashboard.html:14
 #, python-format
@@ -2236,6 +2237,9 @@ msgid ""
 "New version of iRedAdmin-Pro, %s, is now available for upgrading. <a "
 "href='%s/system/license' class='button green'>Details</a>"
 msgstr ""
+"Nuova versione di iRedAdmin-Pro, %s, è ora disponibile per "
+"l'aggiornamento.<ahref='%s/system/license' class='button "
+"green'>Dettagli</a>"
 
 #: ../templates/default/layout.html:154
 msgid "News & Announments"
@@ -2499,7 +2503,7 @@ msgstr ""
 #: ../templates/default/macros/ldap.html:121
 #: ../templates/default/mysql/domain/profile.html:391
 msgid "Per-user greylisting setting has higher priority"
-msgstr ""
+msgstr "Per -User greylisting impostazione ha un alta priorità"
 
 #: ../templates/default/macros/general.html:590
 msgid ""
@@ -2513,7 +2517,7 @@ msgstr ""
 #: ../templates/default/mysql/domain/profile.html:131
 #: ../templates/default/pgsql/domain/profile.html:132
 msgid "Per-user sender throttling has higher priority."
-msgstr ""
+msgstr "Per limitazione mittente ha un alta priorita "
 
 #: ../templates/default/macros/msgHandlers.html:98
 #: ../templates/default/macros/msgHandlers.html:171
@@ -2531,6 +2535,8 @@ msgid ""
 "Please either mark mail user as domain admin or create a separate admin "
 "account."
 msgstr ""
+"Prego,  definisci la mail utente come amministratore or crea un separato "
+"utente amministratore"
 
 #: ../templates/default/macros/msgHandlers.html:146
 msgid "Please select at least one account."
@@ -2542,7 +2548,7 @@ msgstr "Per eseguire l'azione selezionare almeno un dominio."
 
 #: ../templates/default/macros/general.html:606
 msgid "Postfix manual page"
-msgstr ""
+msgstr "Postifix manuale"
 
 #: ../templates/default/layout.html:42
 msgid "Preferences"
@@ -2558,7 +2564,7 @@ msgstr "Pagina Precedente"
 
 #: ../templates/default/panel/license.html:29
 msgid "Product name"
-msgstr "Nome Host"
+msgstr "Nome del Prodotto"
 
 #: ../templates/default/dbmail_mysql/admin/profile.html:29
 #: ../templates/default/dbmail_mysql/admin/profile.html:60
@@ -2620,7 +2626,7 @@ msgstr "Profilo aggiornato con successo"
 
 #: ../templates/default/panel/license.html:34
 msgid "Purchase date"
-msgstr ""
+msgstr "Data di acquisto"
 
 #: ../templates/default/dashboard.html:46
 #: ../templates/default/macros/amavisd.html:70
@@ -2754,7 +2760,7 @@ msgstr "Relay"
 
 #: ../templates/default/macros/general.html:573
 msgid "Relay without verifying local recipients"
-msgstr ""
+msgstr "Relay senza verifcare destinatari locali "
 
 #: ../templates/default/macros/general.html:565
 msgid "Relay/Transport Setting"
@@ -2762,7 +2768,7 @@ msgstr "Impostazioni di Trasmissione/Trasporto"
 
 #: ../templates/default/panel/license.html:83
 msgid "Release Notes of latest version"
-msgstr ""
+msgstr "Release Notes dell'ultima versione"
 
 #: ../templates/default/amavisd/quarantined.html:86
 msgid "Release selected"
@@ -2781,7 +2787,7 @@ msgstr "Rimuovi dalla lista"
 
 #: ../templates/default/panel/license.html:70
 msgid "Renew license"
-msgstr ""
+msgstr "Rinnova licenza"
 
 #: ../templates/default/ldap/domain/profile.html:502
 msgid "Sample"
@@ -2789,7 +2795,7 @@ msgstr "Esempio"
 
 #: ../templates/default/macros/general.html:595
 msgid "Sample relay settings"
-msgstr ""
+msgstr "Esmpio di configurazione Relay"
 
 #: ../templates/default/dbmail_mysql/user/profile.html:171
 #: ../templates/default/ldap/user/profile.html:288
@@ -2906,7 +2912,7 @@ msgstr "Gli elementi selezionati sono stati cancellati."
 
 #: ../templates/default/panel/license.html:77
 msgid "Send me an email with download link"
-msgstr ""
+msgstr "Invia una mail con il link di download"
 
 #: ../templates/default/amavisd/inout.html:107
 #: ../templates/default/macros/amavisd.html:9
@@ -3015,7 +3021,7 @@ msgstr "Dimensione"
 
 #: ../templates/default/macros/amavisd.html:29
 msgid "Spam"
-msgstr ""
+msgstr "Spam"
 
 #: ../templates/default/dashboard.html:23
 msgid "Statistics of latest 24 hours"
@@ -3023,7 +3029,7 @@ msgstr "Statistiche delle ultime 24 ore"
 
 #: ../templates/default/macros/general.html:501
 msgid "Store password in plain text"
-msgstr ""
+msgstr "registra la password in chiaro (Plain Text)"
 
 #: ../templates/default/dbmail_mysql/search.html:178
 #: ../templates/default/dbmail_mysql/user/list.html:91
@@ -3167,7 +3173,7 @@ msgstr "Senza restrizioni"
 
 #: ../templates/default/panel/license.html:84
 msgid "Upgrade tutorials"
-msgstr ""
+msgstr "Aggiornamento Tutorials"
 
 #: ../templates/default/dashboard.html:105
 msgid "Uptime"
@@ -3215,7 +3221,7 @@ msgstr "Utente"
 
 #: ../templates/default/macros/msgHandlers.html:153
 msgid "User created."
-msgstr ""
+msgstr "Utente Creato"
 
 #: ../templates/default/dbmail_mysql/search.html:145
 #: ../templates/default/ldap/search.html:193
@@ -3229,7 +3235,7 @@ msgstr ""
 #: ../templates/default/pgsql/search.html:226
 #: ../templates/default/pgsql/user/list.html:69
 msgid "User/Employee ID"
-msgstr ""
+msgstr "Utente/Matriola Dipendente"
 
 #: ../templates/default/login.html:55
 msgid "Username"
@@ -3346,12 +3352,12 @@ msgstr "Chi può spedire messaggi a questa mail list"
 #: ../templates/default/panel/license.html:55
 #, python-format
 msgid "You are running version %s"
-msgstr ""
+msgstr "Tu stai usando la version %s."
 
 #: ../templates/default/ldap/user/create.html:82
 #, python-format
 msgid "You can NOT create more users under domain %s."
-msgstr "Non si possono creare altri utenti nel dominio %s"
+msgstr "Non si possono creare altri utenti nel dominio %s."
 
 #: ../templates/default/dbmail_mysql/alias/create.html:39
 #: ../templates/default/ldap/alias/create.html:52
@@ -3400,7 +3406,7 @@ msgstr "Nessun risultato per la ricerca effettuata."
 
 #: ../templates/default/macros/general.html:598
 msgid "default transport"
-msgstr ""
+msgstr "Trasporto di default"
 
 #: ../templates/default/macros/general.html:602
 msgid ""
@@ -3408,6 +3414,9 @@ msgid ""
 "required when you specify an IP address instead of a hostname, or disable"
 " MX DNS lookup."
 msgstr ""
+"inoltra i messaggi a example.com host attraverso la porta 25.  il [] "
+"modulo èrichiesto quando tu specifici un indirizzo IP di un host , oppure"
+" disattivare il MX DNS Lookup"
 
 #: ../templates/default/layout.html:66
 msgid "iRedMail Admin Panel"
@@ -3416,8 +3425,10 @@ msgstr "Pannello Amministrazione iRedMail"
 #: ../templates/default/macros/general.html:601
 msgid "receive but discard email, useful for mailboxes like noreply@example.com"
 msgstr ""
+"ricevi ma scarta il messagio, utile per le mailbox come "
+"noreplay@example.com"
 
 #: ../templates/default/macros/general.html:192
 msgid "without verifying local recipients"
-msgstr ""
+msgstr "senza verificare i destinatri locali"
 
