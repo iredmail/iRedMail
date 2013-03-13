@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2013-03-13 14:18+0800\n"
+"POT-Creation-Date: 2013-03-13 20:01+0800\n"
 "PO-Revision-Date: 2012-10-01 12:13-0300\n"
 "Last-Translator: Julio C. Oliveira <julioc@paranet.com.br>\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -755,11 +755,11 @@ msgstr "Emails enviados CCO para outro endereço"
 
 #: ../templates/default/macros/general.html:455
 msgid "Backup MX does not work with custom relay"
-msgstr ""
+msgstr "Um Backup MX não funciona com relay customizado"
 
 #: ../templates/default/macros/amavisd.html:33
 msgid "Banned"
-msgstr ""
+msgstr "Banido"
 
 #: ../templates/default/policyd/wblist.html:12
 msgid "Blacklist"
@@ -926,12 +926,13 @@ msgstr "Personaliza as regras do filtro de email sobre TLS/SSL"
 #: ../templates/default/pgsql/search.html:125
 #: ../templates/default/pgsql/domain/list.html:120
 #: ../templates/default/pgsql/domain/list.html:134
+
 msgid "DISABLED"
-msgstr "DESABILITADO"
+msgstr "Desabilitada"
 
 #: ../templates/default/policyd/wblist.html:26
 msgid "DNS Name"
-msgstr "Nome no DNS"
+msgstr "DESABILITADO"
 
 #: ../templates/default/policyd/blacklist/create.html:70
 #: ../templates/default/policyd/whitelist/create.html:64
@@ -1598,7 +1599,7 @@ msgstr "Encaminhando emails para outro endereço"
 #: ../templates/default/ldap/admin/profile.html:73
 #: ../templates/default/ldap/user/profile.html:160
 msgid "Full name"
-msgstr ""
+msgstr "Nome Completo"
 
 #: ../templates/default/dbmail_mysql/admin/profile.html:44
 #: ../templates/default/dbmail_mysql/alias/profile.html:36
@@ -1781,7 +1782,7 @@ msgstr "Palavra-chave"
 
 #: ../templates/default/macros/amavisd.html:11
 msgid "Kind"
-msgstr ""
+msgstr "Tipo"
 
 #: ../templates/default/dbmail_mysql/user/list.html:56
 msgid "Last Login"
@@ -2761,7 +2762,7 @@ msgstr "Retransmissão"
 
 #: ../templates/default/macros/general.html:573
 msgid "Relay without verifying local recipients"
-msgstr ""
+msgstr "Relay sem verificação de destinatários locais"
 
 #: ../templates/default/macros/general.html:565
 msgid "Relay/Transport Setting"
@@ -3022,7 +3023,7 @@ msgstr "Tamanho"
 
 #: ../templates/default/macros/amavisd.html:29
 msgid "Spam"
-msgstr ""
+msgstr "SPAM"
 
 #: ../templates/default/dashboard.html:23
 msgid "Statistics of latest 24 hours"
@@ -3238,7 +3239,7 @@ msgstr "Usuário criado."
 #: ../templates/default/pgsql/search.html:226
 #: ../templates/default/pgsql/user/list.html:69
 msgid "User/Employee ID"
-msgstr ""
+msgstr "ID Usuário/Empregado"
 
 #: ../templates/default/login.html:55
 msgid "Username"
@@ -3439,5 +3440,5 @@ msgstr ""
 
 #: ../templates/default/macros/general.html:192
 msgid "without verifying local recipients"
-msgstr ""
+msgstr "sem verificar os destinatários locais"
 
