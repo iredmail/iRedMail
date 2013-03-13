@@ -1,2 +1,12 @@
 This folder contains all translations for the latest iRedAdmin-Pro.
 You can simply copy them to iRedAdmin-Pro folder 'i18n/', then restart Apache to use them.
+
+Updated translations:
+
+    + Finnish (fi_FI). Thanks Teemu Harjula <teemu.harjula _at_ tietovirta.fi>.
+    + Itilian (it_IT). Thanks Nicolas Cauchie <nicolas _at_
+      franceoxygene.fr>, and Alberto Baudacci <a.baudacci _at_ me.com>.
+    + Netherlands (nl_NL). Thanks Luc Verhoeven <lverhoeven _at_ vcn.nl>.
+    + German (de_DE). Thanks Ivo Schindler <ivo.schindler _at_ i-web.ch>,
+      and Martin <info _at_ netzwerk-design.net>.
+    + Czech (cs_CZ). Thanks Roman Pudil <roman _at_ webhosting.fm>.
