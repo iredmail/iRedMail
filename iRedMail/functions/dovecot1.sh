@@ -383,8 +383,8 @@ EOF
         client {
             path = ${DOVECOT_SOCKET_MUX}
             mode = 0666
-            user = postfix
-            group = postfix
+            user = ${POSTFIX_DAEMON_USER}
+            group = ${POSTFIX_DAEMON_GROUP}
         }
     }
 }

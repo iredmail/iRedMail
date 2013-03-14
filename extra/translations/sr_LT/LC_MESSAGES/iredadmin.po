@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2013-03-14 15:43+0800\n"
-"PO-Revision-Date: 2013-03-14 15:43+0800\n"
+"POT-Creation-Date: 2013-03-14 21:34+0800\n"
+"PO-Revision-Date: 2013-03-14 21:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: sr_CS <LL@li.org>\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
@@ -101,7 +101,7 @@ msgstr "<a href='%s'>Domenski and pod-domenski korisnici</a>"
 #: ../templates/default/macros/general.html:755
 #, python-format
 msgid "<a href='%s'>Domain users</a>"
-msgstr "<a href='%s'>Domenki korisnici</a>"
+msgstr "<a href='%s'>Domenski korisnici</a>"
 
 #: ../templates/default/macros/general.html:759
 #, python-format
@@ -135,9 +135,7 @@ msgstr "<a href='%s'>Korisnici na domenu <strong>%s</strong></a>"
 msgid ""
 "<a href='%s'>Users under domain <strong>%s</strong></a> and its sub-"
 "domains"
-msgstr ""
-"<a href='%s'>Korisnici na domenu <strong>%s</strong></a> i na pod-\"\n"
-"\"domenu\""
+msgstr "<a href='%s'>Korisnici na domenu <strong>%s</strong></a> i na pod-domenu\""
 
 #: ../templates/default/amavisd/inout.html:72
 #: ../templates/default/amavisd/inout.html:83
@@ -555,7 +553,7 @@ msgstr "Sve crne liste"
 #: ../templates/default/policyd/blacklist/create.html:23
 #: ../templates/default/policyd/whitelist/create.html:23
 msgid "All Whitelists"
-msgstr "ve bele liste\""
+msgstr "Sve bele liste"
 
 #: ../templates/default/ldap/user/profile.html:388
 msgid "All accounts"
@@ -708,7 +706,7 @@ msgstr "Već prelazi maksimalni broj limita naloga (%s)."
 #: ../templates/default/pgsql/user/list.html:137
 #: ../templates/default/policyd/wblist.html:108
 msgid "Apply"
-msgstr "Primeniti"
+msgstr "Primeni"
 
 #: ../templates/default/macros/general.html:470
 #, python-format
@@ -879,7 +877,7 @@ msgstr "Kontakti"
 
 #: ../templates/default/ldap/domain/profile.html:188
 msgid "Content of disclaimer will be appended to outgoing emails."
-msgstr "Sadržaj odricanja će biti dodat na odlazne pošte."
+msgstr "Sadržaj odricanja će biti dodati na odlazne pošte."
 
 #: ../templates/default/policyd/blacklist/create.html:78
 msgid ""
@@ -1329,7 +1327,7 @@ msgstr "Uređivanje kvota podešavanja"
 #: ../templates/default/ldap/user/profile.html:332
 #, python-format
 msgid "Email address of alias account must end with domain name(s): %s."
-msgstr "Adresa  pošte  ili  alias  naloga  mora da se završava imenom domena: %s."
+msgstr "Adresa pošte ili alias naloga mora da se završava imenom domena: %s."
 
 #: ../templates/default/dbmail_mysql/user/profile.html:198
 #: ../templates/default/ldap/user/profile.html:319
@@ -1361,8 +1359,8 @@ msgid ""
 "Emails sent to <em><strong>user@[ALIAS_DOMAIN]</strong></em> will be "
 "delivered to <em><strong>user@%s</strong></em>."
 msgstr ""
-"E-pošte poslate na <em><strong>user@[ALIAS_DOMAIN]</strong></em> će "
-"bitidopremljene na <em><strong>user@%s</strong></em>."
+"E-pošte poslate na <em><strong>user@[ALIAS_DOMAIN]</strong></em> će biti "
+"dopremljene na <em><strong>user@%s</strong></em>."
 
 #: ../templates/default/dbmail_mysql/user/profile.html:212
 #: ../templates/default/ldap/user/profile.html:331
@@ -1724,7 +1722,7 @@ msgstr "Nevažeća adresa e-pošte."
 
 #: ../templates/default/macros/msgHandlers.html:291
 msgid "Invalid product id."
-msgstr "nevažeći id. proizvoda"
+msgstr "Nevažeći id. proizvoda"
 
 #: ../templates/default/macros/msgHandlers.html:305
 msgid "Invalid request data."
@@ -1746,14 +1744,14 @@ msgid ""
 "instead of creating separate admin account."
 msgstr ""
 "Preporučuje se označavanje korisnika kao administrator domena u "
-"korisnickom profilu umesto pravljenja odvojenog administratorskog naloga."
+"korisničkom profilu umesto pravljenja odvojenog administratorskog naloga."
 
 #: ../templates/default/ldap/alias/create.html:111
 msgid ""
 "It's better to use mail list instead of alias, since we have mail deliver"
 " restriction for mail list."
 msgstr ""
-"Bolje je koristiti poštansku listu nego li aliase, jer imamo ogranicenja "
+"Bolje je koristiti poštansku listu nego li aliase, jer imamo ograničenja "
 "na mail listu."
 
 #: ../templates/default/ldap/search.html:194
@@ -1796,7 +1794,7 @@ msgstr "Zadnja verzija"
 #: ../templates/default/macros/general.html:604
 #, python-format
 msgid "Leave it empty to use <a href='%s'>domain setting</a>."
-msgstr "Ostaviti prazno, koristiti  <a href='%s'>domain setting</a>."
+msgstr "Ostaviti prazno, koristiti <a href='%s'>domain setting</a>."
 
 #: ../templates/default/ldap/domain/profile.html:501
 msgid "Leave it empty to use server-wide default setting."
@@ -2135,7 +2133,7 @@ msgstr "Najmanja dužina lozinke"
 
 #: ../templates/default/macros/general.html:327
 msgid "Mobile"
-msgstr "Mobile"
+msgstr "Mobilni"
 
 #: ../templates/default/ldap/maillist/profile.html:55
 #: ../templates/default/ldap/maillist/profile.html:87
@@ -2659,7 +2657,7 @@ msgstr ""
 msgid ""
 "Quarantined mails older than %d days will be deleted from database "
 "permanantly."
-msgstr "Pošta u karantinu starija od %d dana će biti obrisana iz bazetrajno."
+msgstr "Pošta u karantinu starija od %d dana će biti obrisana iz baze trajno."
 
 #: ../templates/default/dbmail_mysql/search.html:146
 #: ../templates/default/dbmail_mysql/domain/list.html:54
@@ -3041,7 +3039,7 @@ msgstr "Naslov"
 #: ../templates/default/ldap/maillist/profile.html:401
 #: ../templates/default/panel/log.html:68
 msgid "Submit"
-msgstr "Predati"
+msgstr "Primeni"
 
 #: ../templates/default/macros/msgHandlers.html:99
 msgid "Submited domain name is incorrect."
@@ -3322,7 +3320,7 @@ msgstr "Bela lista"
 
 #: ../templates/default/ldap/user/profile.html:380
 msgid "Whitelist has higher priority than blacklist."
-msgstr "Bela lista ima veci prioritet od crne iste."
+msgstr "Bela lista ima veći prioritet od crne liste."
 
 #: ../templates/default/policyd/whitelist/create.html:39
 msgid "Whitelist records"
@@ -3331,7 +3329,7 @@ msgstr "Zapisi bele liste"
 #: ../templates/default/layout.html:98 ../templates/default/layout.html:122
 #: ../templates/default/policyd/wblist.html:53
 msgid "Whitelists"
-msgstr "Whitelists"
+msgstr "Bele liste"
 
 #: ../templates/default/ldap/maillist/profile.html:97
 #: ../templates/default/mysql/alias/profile.html:86
@@ -3396,7 +3394,7 @@ msgstr "Vaša pretraga nije dala rezultate."
 
 #: ../templates/default/macros/general.html:598
 msgid "default transport"
-msgstr "Zadan transport"
+msgstr "default transport"
 
 #: ../templates/default/macros/general.html:602
 msgid ""
