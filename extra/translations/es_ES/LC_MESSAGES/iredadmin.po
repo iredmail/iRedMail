@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  iRedAdmin-Pro-1.4.1\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2013-03-13 14:18+0800\n"
+"POT-Creation-Date: 2013-03-15 10:29+0800\n"
 "PO-Revision-Date: 2011-08-08 13:02+0100\n"
 "Last-Translator: Lucas <lucas@landm.net>\n"
 "Language-Team: es_ES <LL@li.org>\n"
@@ -1351,8 +1351,8 @@ msgid ""
 "Emails delivered to non-exist mail accounts will be forwarded to catch-"
 "all address(es)."
 msgstr ""
-"Correos electronicos entregados a cuentas de correo que no existen serán enviadas a la "
-"dirección por defecto."
+"Correos electronicos entregados a cuentas de correo que no existen serán "
+"enviadas a la dirección por defecto."
 
 #: ../templates/default/ldap/domain/profile.html:239
 #: ../templates/default/mysql/domain/profile.html:309
@@ -1504,8 +1504,8 @@ msgid ""
 "Exceeded domain account limit. Please contact your administrator or "
 "service provider to increase it."
 msgstr ""
-"Limite de cuentas de domino excedida. Por favor contacte con el administrador del "
-"servicio para incrementarla."
+"Limite de cuentas de domino excedida. Por favor contacte con el "
+"administrador del servicio para incrementarla."
 
 #: ../templates/default/panel/license.html:39
 msgid "Expire date"
@@ -1747,8 +1747,8 @@ msgid ""
 "It is recommended to mark user as domain admin in user profile page "
 "instead of creating separate admin account."
 msgstr ""
-"Es recomendado marcar un usuario como administrador de dominio el la pagina de perfil"
-"en lugar de crear una cuenta de administrador separada."
+"Es recomendado marcar un usuario como administrador de dominio el la "
+"pagina de perfilen lugar de crear una cuenta de administrador separada."
 
 #: ../templates/default/ldap/alias/create.html:111
 msgid ""
@@ -2234,7 +2234,7 @@ msgid ""
 "New version of iRedAdmin-Pro, %s, is now available for upgrading. <a "
 "href='%s/system/license' class='button green'>Details</a>"
 msgstr ""
-"Nueva version de iRedAdmin-Pro, %s, esta disponible para actualizar <a " 
+"Nueva version de iRedAdmin-Pro, %s, esta disponible para actualizar <a "
 "href='%s/system/license' class='button green'>Details</a>"
 
 #: ../templates/default/layout.html:154
@@ -2328,7 +2328,9 @@ msgstr "No hay moderador seleccionado."
 #: ../templates/default/macros/general.html:474
 #, python-format
 msgid "No more than %s characters."
-msgstr "La nueva contraseña no debe contener más de <strong>%s</strong> caracteres."
+msgstr ""
+"La nueva contraseña no debe contener más de <strong>%s</strong> "
+"caracteres."
 
 #: ../templates/default/amavisd/inout.html:156
 msgid "No outgoing mails."
@@ -2530,7 +2532,9 @@ msgstr "Sólo texto en plano"
 msgid ""
 "Please either mark mail user as domain admin or create a separate admin "
 "account."
-msgstr "Por favor marque el correo del usuario como un admin de dominio o cree una cuenta de admin separada"
+msgstr ""
+"Por favor marque el correo del usuario como un admin de dominio o cree "
+"una cuenta de admin separada"
 
 #: ../templates/default/macros/msgHandlers.html:146
 msgid "Please select at least one account."
@@ -2653,8 +2657,8 @@ msgid ""
 "mailboxes after released."
 msgstr ""
 "Los correos en cuarentena no se entregan a los buzones aun, podrás "
-"borrarlos o liberarlos. Los correos se entregarán en los buzones después de"
-" liberarse."
+"borrarlos o liberarlos. Los correos se entregarán en los buzones después "
+"de liberarse."
 
 #: ../templates/default/amavisd/quarantined.html:64
 #, python-format
@@ -2662,8 +2666,8 @@ msgid ""
 "Quarantined mails older than %d days will be deleted from database "
 "permanantly."
 msgstr ""
-"Correos en quarentena con más de %d días serán borrados de la base de datos"
-" permanentemente."
+"Correos en quarentena con más de %d días serán borrados de la base de "
+"datos permanentemente."
 
 #: ../templates/default/dbmail_mysql/search.html:146
 #: ../templates/default/dbmail_mysql/domain/list.html:54
