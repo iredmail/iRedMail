@@ -1,12 +1,9 @@
 This folder contains all translations for the latest iRedAdmin-Pro.
 You can simply copy them to iRedAdmin-Pro folder 'i18n/', then restart Apache to use them.
 
-Not updated yet:
-
-    + Tradition Chinese (zh_TW)
-
 New and updated translations (March 14, 2013):
 
+    + Tradition Chinese (zh_TW). Thanks Ho ho <ho.irdmail _at_ gmail.com>.
     + Polish (pl_PL). Thanks Adrian Grygier <adi _at_ zwami.pl>.
     + Spain (es_ES). Thanks Luis Armando Perez Marin.
     + Czech (cs_CZ). Thanks Roman Pudil <roman _at_ webhosting.fm>.

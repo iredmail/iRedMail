@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2013-03-13 14:18+0800\n"
-"PO-Revision-Date: 2011-09-09 16:39+0800\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2013-03-15 11:16+0800\n"
+"PO-Revision-Date: 2013-03-15 11:09+0800\n"
+"Last-Translator: Ho <ho.iredmail@gmail.com>\n"
 "Language-Team: zh_TW <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
@@ -168,12 +168,12 @@ msgstr "帳號不存在。"
 
 #: ../templates/default/macros/general.html:199
 msgid "Account is active, but marked as backup MX."
-msgstr ""
+msgstr "帳號已啟用，但被標記為備份 MX"
 
 #: ../templates/default/macros/general.html:192
 #: ../templates/default/macros/general.html:194
 msgid "Account is active, but relay to other host"
-msgstr ""
+msgstr "帳號已啟用，但被中繼轉發至另主機名"
 
 #: ../templates/default/macros/general.html:188
 msgid "Account is active."
@@ -405,7 +405,7 @@ msgstr "管理員日誌"
 
 #: ../templates/default/macros/msgHandlers.html:188
 msgid "Admin created."
-msgstr ""
+msgstr "管理員已建立"
 
 #: ../templates/default/macros/general.html:890
 msgid "Admin login"
@@ -755,11 +755,11 @@ msgstr "將外發的郵件密送（BCC）到其它郵件地址"
 
 #: ../templates/default/macros/general.html:455
 msgid "Backup MX does not work with custom relay"
-msgstr ""
+msgstr "備份 MX 在自訂中繼轉發中不能運作"
 
 #: ../templates/default/macros/amavisd.html:33
 msgid "Banned"
-msgstr ""
+msgstr "禁止"
 
 #: ../templates/default/policyd/wblist.html:12
 msgid "Blacklist"
@@ -928,12 +928,12 @@ msgstr "停用"
 
 #: ../templates/default/policyd/wblist.html:26
 msgid "DNS Name"
-msgstr "用戶名"
+msgstr "DNS 域名系統名稱"
 
 #: ../templates/default/policyd/blacklist/create.html:70
 #: ../templates/default/policyd/whitelist/create.html:64
 msgid "DNS name"
-msgstr "DNS 主機名"
+msgstr "DNS 域名系統名稱"
 
 #: ../templates/default/dashboard.html:6 ../templates/default/layout.html:74
 msgid "Dashboard"
@@ -1557,7 +1557,7 @@ msgstr "第一頁"
 
 #: ../templates/default/macros/general.html:606
 msgid "For advanced settings and further information please see"
-msgstr ""
+msgstr "更多高級設定及資訊，請參考"
 
 #: ../templates/default/ldap/user/profile.html:383
 msgid "Format of sender and recipient"
@@ -1584,7 +1584,7 @@ msgstr "將郵件轉發到其它地址"
 #: ../templates/default/ldap/admin/profile.html:73
 #: ../templates/default/ldap/user/profile.html:160
 msgid "Full name"
-msgstr ""
+msgstr "全名"
 
 #: ../templates/default/dbmail_mysql/admin/profile.html:44
 #: ../templates/default/dbmail_mysql/alias/profile.html:36
@@ -1625,7 +1625,7 @@ msgstr "全域管理員"
 #: ../templates/default/macros/ldap.html:121
 #: ../templates/default/macros/mysql.html:78
 msgid "Greylisting"
-msgstr ""
+msgstr "灰名單"
 
 #: ../templates/default/policyd/wblist.html:27
 msgid "HELO Identities"
@@ -1729,7 +1729,7 @@ msgstr "全域管理員。"
 msgid ""
 "It is recommended to mark user as domain admin in user profile page "
 "instead of creating separate admin account."
-msgstr ""
+msgstr "建議在用戶屬性頁面將用戶標記為域管理員，而不是創建獨立的管理員帳號。"
 
 #: ../templates/default/ldap/alias/create.html:111
 msgid ""
@@ -1756,7 +1756,7 @@ msgstr "關鍵字"
 
 #: ../templates/default/macros/amavisd.html:11
 msgid "Kind"
-msgstr ""
+msgstr "性質"
 
 #: ../templates/default/dbmail_mysql/user/list.html:56
 msgid "Last Login"
@@ -1772,7 +1772,7 @@ msgstr "主機名"
 
 #: ../templates/default/panel/license.html:54
 msgid "Latest version"
-msgstr ""
+msgstr "最新版本"
 
 #: ../templates/default/macros/general.html:604
 #, python-format
@@ -1786,11 +1786,11 @@ msgstr "保持空白表示使用預設設定。"
 #: ../templates/default/layout.html:45 ../templates/default/layout.html:83
 #: ../templates/default/panel/license.html:3
 msgid "License"
-msgstr ""
+msgstr "許可證"
 
 #: ../templates/default/panel/license.html:10
 msgid "License info"
-msgstr ""
+msgstr "許可證資訊"
 
 #: ../templates/default/panel/license.html:21
 msgid "License is active"
@@ -1802,7 +1802,7 @@ msgstr "帳號狀態"
 
 #: ../templates/default/panel/license.html:43
 msgid "Lifetime license"
-msgstr ""
+msgstr "終生許可證"
 
 #: ../templates/default/dbmail_mysql/domain/list.html:122
 #: ../templates/default/dbmail_mysql/domain/list.html:127
@@ -1968,11 +1968,11 @@ msgstr "帳號已存在，請選擇其他用戶名。"
 
 #: ../templates/default/macros/msgHandlers.html:260
 msgid "Mail alias created."
-msgstr ""
+msgstr "郵件別名已建立"
 
 #: ../templates/default/macros/msgHandlers.html:228
 msgid "Mail list created."
-msgstr ""
+msgstr "郵件列表已建立"
 
 #: ../templates/default/ldap/maillist/list.html:53
 #, python-format
@@ -2035,7 +2035,7 @@ msgstr "管理的網域"
 
 #: ../templates/default/macros/general.html:446
 msgid "Mark as backup MX"
-msgstr ""
+msgstr "標記為備份 MX"
 
 #: ../templates/default/ldap/user/list.html:157
 msgid "Mark as domain admin"
@@ -2052,7 +2052,7 @@ msgstr "標記為全域管理員"
 
 #: ../templates/default/macros/general.html:402
 msgid "Mark this user as"
-msgstr ""
+msgstr "標記此用家為"
 
 #: ../templates/default/macros/policyd.html:71
 msgid "Max size of single outgoing email"
@@ -2203,7 +2203,7 @@ msgstr "新密碼不符。"
 
 #: ../templates/default/layout.html:31
 msgid "New version available"
-msgstr ""
+msgstr "有新版本可用"
 
 #: ../templates/default/dashboard.html:14
 #, python-format
@@ -2211,6 +2211,8 @@ msgid ""
 "New version of iRedAdmin-Pro, %s, is now available for upgrading. <a "
 "href='%s/system/license' class='button green'>Details</a>"
 msgstr ""
+"iRedAdmin-Pro 有新版本（%s）可以升級。<a href='%s/system/license' class='button "
+"\"\"green'>詳細信息</a>"
 
 #: ../templates/default/layout.html:154
 msgid "News & Announments"
@@ -2472,7 +2474,7 @@ msgstr "網域級別的 BCC 設定，將會覆蓋網域內個別用戶的 BCC �
 #: ../templates/default/macros/ldap.html:121
 #: ../templates/default/mysql/domain/profile.html:391
 msgid "Per-user greylisting setting has higher priority"
-msgstr ""
+msgstr "針對單個用戶的灰名單設定具有更高優先級別"
 
 #: ../templates/default/macros/general.html:590
 msgid ""
@@ -2484,7 +2486,7 @@ msgstr "針對個別用戶的中繼轉發設定，將會覆蓋本頁中針對單
 #: ../templates/default/mysql/domain/profile.html:131
 #: ../templates/default/pgsql/domain/profile.html:132
 msgid "Per-user sender throttling has higher priority."
-msgstr ""
+msgstr "針對單個用戶的發件節流設定具有更高優先級別"
 
 #: ../templates/default/macros/msgHandlers.html:98
 #: ../templates/default/macros/msgHandlers.html:171
@@ -2501,7 +2503,7 @@ msgstr "只允許使用純文字"
 msgid ""
 "Please either mark mail user as domain admin or create a separate admin "
 "account."
-msgstr ""
+msgstr "建議在用戶屬性頁面將用戶標記為管理員，而不是創建獨立的管理員帳號。"
 
 #: ../templates/default/macros/msgHandlers.html:146
 msgid "Please select at least one account."
@@ -2513,7 +2515,7 @@ msgstr "請至少選擇一個網域名稱進行操作。"
 
 #: ../templates/default/macros/general.html:606
 msgid "Postfix manual page"
-msgstr ""
+msgstr "Postfix 說明頁"
 
 #: ../templates/default/layout.html:42
 msgid "Preferences"
@@ -2591,7 +2593,7 @@ msgstr "屬性已更新。"
 
 #: ../templates/default/panel/license.html:34
 msgid "Purchase date"
-msgstr ""
+msgstr "購買日期"
 
 #: ../templates/default/dashboard.html:46
 #: ../templates/default/macros/amavisd.html:70
@@ -2720,7 +2722,7 @@ msgstr "中繼轉發"
 
 #: ../templates/default/macros/general.html:573
 msgid "Relay without verifying local recipients"
-msgstr ""
+msgstr "直接轉發，不檢查本地收件人是否存在"
 
 #: ../templates/default/macros/general.html:565
 msgid "Relay/Transport Setting"
@@ -2728,7 +2730,7 @@ msgstr "中繼轉發設定"
 
 #: ../templates/default/panel/license.html:83
 msgid "Release Notes of latest version"
-msgstr ""
+msgstr "最新版本發行說明"
 
 #: ../templates/default/amavisd/quarantined.html:86
 msgid "Release selected"
@@ -2747,7 +2749,7 @@ msgstr "從列表移除"
 
 #: ../templates/default/panel/license.html:70
 msgid "Renew license"
-msgstr ""
+msgstr "更新許可證"
 
 #: ../templates/default/ldap/domain/profile.html:502
 msgid "Sample"
@@ -2755,7 +2757,7 @@ msgstr "範例"
 
 #: ../templates/default/macros/general.html:595
 msgid "Sample relay settings"
-msgstr ""
+msgstr "範本中繼設定"
 
 #: ../templates/default/dbmail_mysql/user/profile.html:171
 #: ../templates/default/ldap/user/profile.html:288
@@ -2870,7 +2872,7 @@ msgstr "已刪除所選擇的記錄。"
 
 #: ../templates/default/panel/license.html:77
 msgid "Send me an email with download link"
-msgstr ""
+msgstr "把下載連結傳送給我"
 
 #: ../templates/default/amavisd/inout.html:107
 #: ../templates/default/macros/amavisd.html:9
@@ -2975,7 +2977,7 @@ msgstr "大小"
 
 #: ../templates/default/macros/amavisd.html:29
 msgid "Spam"
-msgstr ""
+msgstr "垃圾"
 
 #: ../templates/default/dashboard.html:23
 msgid "Statistics of latest 24 hours"
@@ -2983,7 +2985,7 @@ msgstr "最近 24 小時的統計"
 
 #: ../templates/default/macros/general.html:501
 msgid "Store password in plain text"
-msgstr ""
+msgstr "密碼儲存為純文本文件"
 
 #: ../templates/default/dbmail_mysql/search.html:178
 #: ../templates/default/dbmail_mysql/user/list.html:91
@@ -3127,7 +3129,7 @@ msgstr "無限制"
 
 #: ../templates/default/panel/license.html:84
 msgid "Upgrade tutorials"
-msgstr ""
+msgstr "升級教學"
 
 #: ../templates/default/dashboard.html:105
 msgid "Uptime"
@@ -3175,7 +3177,7 @@ msgstr "用戶"
 
 #: ../templates/default/macros/msgHandlers.html:153
 msgid "User created."
-msgstr ""
+msgstr "用戶已建立"
 
 #: ../templates/default/dbmail_mysql/search.html:145
 #: ../templates/default/ldap/search.html:193
@@ -3189,7 +3191,7 @@ msgstr ""
 #: ../templates/default/pgsql/search.html:226
 #: ../templates/default/pgsql/user/list.html:69
 msgid "User/Employee ID"
-msgstr ""
+msgstr "用戶/職員 識別碼"
 
 #: ../templates/default/login.html:55
 msgid "Username"
@@ -3306,7 +3308,7 @@ msgstr "允許發送郵件到這個列表"
 #: ../templates/default/panel/license.html:55
 #, python-format
 msgid "You are running version %s"
-msgstr ""
+msgstr "你正在使用版本 %s"
 
 #: ../templates/default/ldap/user/create.html:82
 #, python-format
@@ -3360,14 +3362,14 @@ msgstr "沒有符合搜尋條件的記錄。"
 
 #: ../templates/default/macros/general.html:598
 msgid "default transport"
-msgstr ""
+msgstr "默認的 transport"
 
 #: ../templates/default/macros/general.html:602
 msgid ""
 "forward emails to host example.com through port 25. The [] form is "
 "required when you specify an IP address instead of a hostname, or disable"
 " MX DNS lookup."
-msgstr ""
+msgstr "將轉發郵件到 example.com 的 25 端口。當使用 IP 地址作為主機名或禁止使用 MX 查詢時必須使用括號 []。"
 
 #: ../templates/default/layout.html:66
 msgid "iRedMail Admin Panel"
@@ -3375,9 +3377,9 @@ msgstr "iRedMail 管理平台"
 
 #: ../templates/default/macros/general.html:601
 msgid "receive but discard email, useful for mailboxes like noreply@example.com"
-msgstr ""
+msgstr "接收但丟棄郵件，適合用於不接受回覆郵件的帳號，例如 noreply@example.com"
 
 #: ../templates/default/macros/general.html:192
 msgid "without verifying local recipients"
-msgstr ""
+msgstr "不檢查本地收件人是否存在"
 
