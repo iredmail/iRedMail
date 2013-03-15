@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  iRedAdmin-Pro-1.4.1\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2013-03-15 10:29+0800\n"
+"POT-Creation-Date: 2013-03-13 14:18+0800\n"
 "PO-Revision-Date: 2011-08-08 13:02+0100\n"
 "Last-Translator: Lucas <lucas@landm.net>\n"
 "Language-Team: es_ES <LL@li.org>\n"
@@ -1351,8 +1351,8 @@ msgid ""
 "Emails delivered to non-exist mail accounts will be forwarded to catch-"
 "all address(es)."
 msgstr ""
-"Correos electronicos entregados a cuentas de correo que no existen serán "
-"enviadas a la dirección por defecto."
+"Correos electronicos entregados a cuentas de correo que no existen serán enviadas a la "
+"dirección por defecto."
 
 #: ../templates/default/ldap/domain/profile.html:239
 #: ../templates/default/mysql/domain/profile.html:309
@@ -1504,8 +1504,8 @@ msgid ""
 "Exceeded domain account limit. Please contact your administrator or "
 "service provider to increase it."
 msgstr ""
-"Limite de cuentas de domino excedida. Por favor contacte con el "
-"administrador del servicio para incrementarla."
+"Limite de cuentas de domino excedida. Por favor contacte con el administrador del "
+"servicio para incrementarla."
 
 #: ../templates/default/panel/license.html:39
 msgid "Expire date"
@@ -1747,8 +1747,8 @@ msgid ""
 "It is recommended to mark user as domain admin in user profile page "
 "instead of creating separate admin account."
 msgstr ""
-"Es recomendado marcar un usuario como administrador de dominio el la "
-"pagina de perfilen lugar de crear una cuenta de administrador separada."
+"Es recomendado marcar un usuario como administrador de dominio el la pagina de perfil"
+"en lugar de crear una cuenta de administrador separada."
 
 #: ../templates/default/ldap/alias/create.html:111
 msgid ""
@@ -2234,7 +2234,7 @@ msgid ""
 "New version of iRedAdmin-Pro, %s, is now available for upgrading. <a "
 "href='%s/system/license' class='button green'>Details</a>"
 msgstr ""
-"Nueva version de iRedAdmin-Pro, %s, esta disponible para actualizar <a "
+"Nueva version de iRedAdmin-Pro, %s, esta disponible para actualizar <a " 
 "href='%s/system/license' class='button green'>Details</a>"
 
 #: ../templates/default/layout.html:154
@@ -2328,9 +2328,7 @@ msgstr "No hay moderador seleccionado."
 #: ../templates/default/macros/general.html:474
 #, python-format
 msgid "No more than %s characters."
-msgstr ""
-"La nueva contraseña no debe contener más de <strong>%s</strong> "
-"caracteres."
+msgstr "No debe contener más de <strong>%s</strong> caracteres."
 
 #: ../templates/default/amavisd/inout.html:156
 msgid "No outgoing mails."
@@ -2532,9 +2530,7 @@ msgstr "Sólo texto en plano"
 msgid ""
 "Please either mark mail user as domain admin or create a separate admin "
 "account."
-msgstr ""
-"Por favor marque el correo del usuario como un admin de dominio o cree "
-"una cuenta de admin separada"
+msgstr "Por favor marque el correo del usuario como un admin de dominio o cree una cuenta de admin separada"
 
 #: ../templates/default/macros/msgHandlers.html:146
 msgid "Please select at least one account."
@@ -2657,8 +2653,8 @@ msgid ""
 "mailboxes after released."
 msgstr ""
 "Los correos en cuarentena no se entregan a los buzones aun, podrás "
-"borrarlos o liberarlos. Los correos se entregarán en los buzones después "
-"de liberarse."
+"borrarlos o liberarlos. Los correos se entregarán en los buzones después de"
+" liberarse."
 
 #: ../templates/default/amavisd/quarantined.html:64
 #, python-format
@@ -2666,8 +2662,8 @@ msgid ""
 "Quarantined mails older than %d days will be deleted from database "
 "permanantly."
 msgstr ""
-"Correos en quarentena con más de %d días serán borrados de la base de "
-"datos permanentemente."
+"Correos en quarentena con más de %d días serán borrados de la base de datos"
+" permanentemente."
 
 #: ../templates/default/dbmail_mysql/search.html:146
 #: ../templates/default/dbmail_mysql/domain/list.html:54
@@ -2912,7 +2908,7 @@ msgstr "Cuentas seleccionadas que serán borradas."
 
 #: ../templates/default/panel/license.html:77
 msgid "Send me an email with download link"
-msgstr ""
+msgstr "Enviarme un correo con el enlace de descarga"
 
 #: ../templates/default/amavisd/inout.html:107
 #: ../templates/default/macros/amavisd.html:9
@@ -2928,12 +2924,12 @@ msgstr "Dirección del emisor"
 #: ../templates/default/macros/ldap.html:89
 #: ../templates/default/macros/mysql.html:62
 msgid "Sending mails via SMTP"
-msgstr "Enviando mails vía SMTP"
+msgstr "Enviando correos vía SMTP"
 
 #: ../templates/default/macros/ldap.html:90
 #: ../templates/default/macros/mysql.html:63
 msgid "Sending mails via SMTP over TLS/SSL"
-msgstr "Enviando mails vía SMTP vía TLS/SSL"
+msgstr "Enviando correos vía SMTP vía TLS/SSL"
 
 #: ../templates/default/dashboard.html:33
 #: ../templates/default/macros/amavisd.html:72
@@ -2947,7 +2943,7 @@ msgstr "Enviado"
 #: ../templates/default/macros/amavisd.html:86
 #: ../templates/default/panel/log.html:31
 msgid "Sent Mails"
-msgstr "Mails enviados"
+msgstr "Correos enviados"
 
 #: ../templates/default/dashboard.html:111
 msgid "Server Load"
@@ -2959,7 +2955,7 @@ msgid ""
 "LDAP server."
 msgstr ""
 "Límite de tamaño excedido en el servidor. Por favor incremente el "
-"\"sizelimit\" en tu servidor LDAP."
+"\"sizelimit\" en su servidor LDAP."
 
 #: ../templates/default/macros/msgHandlers.html:67
 msgid "Session expired, please re-login."
@@ -3019,7 +3015,7 @@ msgstr "Tamaño"
 
 #: ../templates/default/macros/amavisd.html:29
 msgid "Spam"
-msgstr ""
+msgstr "Correo Basura"
 
 #: ../templates/default/dashboard.html:23
 msgid "Statistics of latest 24 hours"
@@ -3027,18 +3023,18 @@ msgstr "Estadísticas de las últimas 24 horas"
 
 #: ../templates/default/macros/general.html:501
 msgid "Store password in plain text"
-msgstr ""
+msgstr "Guardar contraseña en texto plano"
 
 #: ../templates/default/dbmail_mysql/search.html:178
 #: ../templates/default/dbmail_mysql/user/list.html:91
 #: ../templates/default/mysql/user/list.html:111
 #: ../templates/default/pgsql/user/list.html:111
 msgid "Stored"
-msgstr "En uso"
+msgstr "Almacenado"
 
 #: ../templates/default/dashboard.html:79
 msgid "Stored emails"
-msgstr "Mails almacenados"
+msgstr "Correos almacenados"
 
 #: ../templates/default/amavisd/inout.html:106
 #: ../templates/default/macros/amavisd.html:8
@@ -3081,12 +3077,12 @@ msgstr "Numero de telefono"
 #: ../templates/default/policyd/whitelist/create.html:72
 msgid "The forward and reverse DNS name must match otherwise it will not work."
 msgstr ""
-"La resolución directa e inversa del DNS tienen que coincidir o no "
+"La resolución directa e inversa del DNS tienen que coincidir de otra manera no"
 "funcionará."
 
 #: ../templates/default/ldap/user/profile.html:379
 msgid "This is per-user white/blacklist."
-msgstr "Esta es la lista white/blacklist por usuario."
+msgstr "Esta es la lista blanca/negra por usuario."
 
 #: ../templates/default/ldap/domain/profile.html:122
 #: ../templates/default/ldap/user/profile.html:120
@@ -3095,7 +3091,7 @@ msgstr "Esta es la lista white/blacklist por usuario."
 #: ../templates/default/pgsql/domain/profile.html:66
 #: ../templates/default/pgsql/user/profile.html:69
 msgid "Throttling"
-msgstr "Throttling"
+msgstr "Limitacion"
 
 #: ../templates/default/panel/log.html:82
 msgid "Time"
@@ -3157,11 +3153,11 @@ msgstr "Sin Limite"
 #: ../templates/default/ldap/user/admin.html:145
 #: ../templates/default/ldap/user/list.html:158
 msgid "Unmark as domain admin"
-msgstr "Todos los administradores."
+msgstr "Desmarcar como administrador de dominio"
 
 #: ../templates/default/ldap/user/list.html:162
 msgid "Unmark as global admin"
-msgstr "Marcar como administrador global"
+msgstr "Desmarcar como administrador global"
 
 #: ../templates/default/ldap/maillist/profile.html:83
 #: ../templates/default/macros/general.html:753
@@ -3173,11 +3169,11 @@ msgstr "Sin restricciones"
 
 #: ../templates/default/panel/license.html:84
 msgid "Upgrade tutorials"
-msgstr ""
+msgstr "Actualizar tutoriales"
 
 #: ../templates/default/dashboard.html:105
 msgid "Uptime"
-msgstr "Tiempo desde que se inició"
+msgstr "Tiempo Activo"
 
 #: ../templates/default/dbmail_mysql/domain/list.html:88
 #: ../templates/default/dbmail_mysql/domain/list.html:90
@@ -3221,7 +3217,7 @@ msgstr "Usuario"
 
 #: ../templates/default/macros/msgHandlers.html:153
 msgid "User created."
-msgstr ""
+msgstr "Usuario creado."
 
 #: ../templates/default/dbmail_mysql/search.html:145
 #: ../templates/default/ldap/search.html:193
@@ -3235,7 +3231,7 @@ msgstr ""
 #: ../templates/default/pgsql/search.html:226
 #: ../templates/default/pgsql/user/list.html:69
 msgid "User/Employee ID"
-msgstr ""
+msgstr "Usuario/Empleado ID"
 
 #: ../templates/default/login.html:55
 msgid "Username"
@@ -3247,7 +3243,7 @@ msgstr "El nombre de usuario tiene que ser una dirección de email válida."
 
 #: ../templates/default/macros/msgHandlers.html:63
 msgid "Username or password is incorrect."
-msgstr "El usuario o la password es incorrecta."
+msgstr "El usuario o la contraseña es incorrecta."
 
 #: ../templates/default/dbmail_mysql/alias/create.html:48
 #: ../templates/default/dbmail_mysql/alias/list.html:25
@@ -3324,24 +3320,24 @@ msgstr "Aviso"
 #: ../templates/default/mysql/user/profile.html:70
 #: ../templates/default/pgsql/user/profile.html:70
 msgid "White/Blacklist"
-msgstr "White/Blacklist"
+msgstr "Lista Blanca/Lista Negra"
 
 #: ../templates/default/policyd/wblist.html:10
 msgid "Whitelist"
-msgstr "Whitelist"
+msgstr "Lista Blanca"
 
 #: ../templates/default/ldap/user/profile.html:380
 msgid "Whitelist has higher priority than blacklist."
-msgstr "Whitelist tiene más prioridad que la blacklist."
+msgstr "Lista Blanca tiene más prioridad que la Lista Blanca."
 
 #: ../templates/default/policyd/whitelist/create.html:39
 msgid "Whitelist records"
-msgstr "Registros whitelist"
+msgstr "Registros de Lista Blanca"
 
 #: ../templates/default/layout.html:98 ../templates/default/layout.html:122
 #: ../templates/default/policyd/wblist.html:53
 msgid "Whitelists"
-msgstr "Usuarios de correo"
+msgstr "Listas Blancas"
 
 #: ../templates/default/ldap/maillist/profile.html:97
 #: ../templates/default/mysql/alias/profile.html:86
@@ -3352,12 +3348,12 @@ msgstr "Quién puede enviar mail a esta lista"
 #: ../templates/default/panel/license.html:55
 #, python-format
 msgid "You are running version %s"
-msgstr ""
+msgstr "Estas ejecutando la version %s"
 
 #: ../templates/default/ldap/user/create.html:82
 #, python-format
 msgid "You can NOT create more users under domain %s."
-msgstr "No puede crear más usuarios bajo el dominio %s."
+msgstr "NO puede crear más usuarios bajo el dominio %s."
 
 #: ../templates/default/dbmail_mysql/alias/create.html:39
 #: ../templates/default/ldap/alias/create.html:52
@@ -3365,12 +3361,12 @@ msgstr "No puede crear más usuarios bajo el dominio %s."
 #: ../templates/default/pgsql/alias/create.html:51
 #, python-format
 msgid "You can create <strong>%d</strong> more mail alias(es) under domain %s."
-msgstr "Puede crear <strong>%d</strong> cuentas alias más bajo el dominio %s."
+msgstr "Puede crear <strong>%d</strong> mas alias de correo bajo el dominio %s."
 
 #: ../templates/default/ldap/maillist/create.html:53
 #, python-format
 msgid "You can create <strong>%d</strong> more mail list(s) under domain %s."
-msgstr "Puede crear <strong>%d</strong> listas de correo más bajo el dominio %s."
+msgstr "Puede crear <strong>%d</strong> mas listas de correo bajo el dominio %s."
 
 #: ../templates/default/dbmail_mysql/user/create.html:61
 #: ../templates/default/ldap/user/create.html:93
@@ -3378,19 +3374,19 @@ msgstr "Puede crear <strong>%d</strong> listas de correo más bajo el dominio %s
 #: ../templates/default/pgsql/user/create.html:70
 #, python-format
 msgid "You can create <strong>%d</strong> more mail user(s) under domain %s."
-msgstr "Puede crear <strong>%d</strong> cuentas de correo más bajo el dominio %s."
+msgstr "Puede crear <strong>%d</strong> mas cuentas de correo bajo el dominio %s."
 
 #: ../templates/default/dbmail_mysql/alias/create.html:32
 #: ../templates/default/mysql/alias/create.html:44
 #: ../templates/default/pgsql/alias/create.html:44
 #, python-format
 msgid "You can't create mail aliases under domain %s."
-msgstr "No puede crear más cuentas alias bajo el dominio %s."
+msgstr "No puede crear más alias de correo bajo el dominio %s."
 
 #: ../templates/default/ldap/alias/create.html:47
 #, python-format
 msgid "You can't create more mail aliases under domain %s."
-msgstr "No puede crear más cuentas alias bajo el dominio %s."
+msgstr "No puede crear más alias de correo bajo el dominio %s."
 
 #: ../templates/default/ldap/maillist/create.html:48
 #, python-format
@@ -3406,14 +3402,16 @@ msgstr "La búsqueda no devuelve resultados."
 
 #: ../templates/default/macros/general.html:598
 msgid "default transport"
-msgstr ""
+msgstr "transporte por defecto"
 
 #: ../templates/default/macros/general.html:602
 msgid ""
 "forward emails to host example.com through port 25. The [] form is "
 "required when you specify an IP address instead of a hostname, or disable"
 " MX DNS lookup."
-msgstr ""
+msgstr "Reenviar correos al host example.com por el puerto 25. El [] formulario es "
+"requerido cuando tu especificas una direccion IP dentro de un nombre de host, o deshabilitar"
+" la busqueda MX DNS."
 
 #: ../templates/default/layout.html:66
 msgid "iRedMail Admin Panel"
@@ -3421,9 +3419,9 @@ msgstr "Panel de administración iRedMail"
 
 #: ../templates/default/macros/general.html:601
 msgid "receive but discard email, useful for mailboxes like noreply@example.com"
-msgstr ""
+msgstr "correo recibido pero descartado, util para buzones como noreply@example.com"
 
 #: ../templates/default/macros/general.html:192
 msgid "without verifying local recipients"
-msgstr ""
+msgstr "sin verificar receptores locales"
 
