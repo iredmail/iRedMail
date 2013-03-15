@@ -3,11 +3,11 @@ You can simply copy them to iRedAdmin-Pro folder 'i18n/', then restart Apache to
 
 Not updated yet:
 
-    + Spain (es_ES).
     + Tradition Chinese (zh_TW)
 
 New and updated translations (March 14, 2013):
 
+    + Spain (es_ES). Thanks Luis Armando Perez Marin.
     + Russian (ru_RU). Thanks Taylor D <hoper.me _at_ gmail.com>.
     + Serbian (Latin, sr_LT). Thanks Robert Bogdan <rbogdan _at_ color.rs>.
     + Slovenian (sl_SI). Thanks Marko Kobal <marko.kobal _at_ arctur.si>.
