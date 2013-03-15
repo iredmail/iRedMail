@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2013-03-13 14:18+0800\n"
-"PO-Revision-Date: 2011-10-05 11:27+0200\n"
-"Last-Translator: Krzysztof Skurzyński <k.skurzynski@kospel.pl>\n"
+"POT-Creation-Date: 2013-03-15 10:40+0800\n"
+"PO-Revision-Date: 2013-03-15 00:53+0100\n"
+"Last-Translator: Adrian Grygier <adi@zwami.pl>\n"
 "Language-Team: pl_PL <LL@li.org>\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
 "(n%100<10 || n%100>=20) ? 1 : 2)\n"
@@ -169,12 +169,12 @@ msgstr "Konto nie istnieje."
 
 #: ../templates/default/macros/general.html:199
 msgid "Account is active, but marked as backup MX."
-msgstr ""
+msgstr "Konto jest aktywne, ale oznaczone jako zapasowy MX."
 
 #: ../templates/default/macros/general.html:192
 #: ../templates/default/macros/general.html:194
 msgid "Account is active, but relay to other host"
-msgstr ""
+msgstr "Konto jest aktywne, ale przekazuje do innego hosta"
 
 #: ../templates/default/macros/general.html:188
 msgid "Account is active."
@@ -314,7 +314,7 @@ msgstr "Dodaj alias pocztowy w domenie %s"
 #: ../templates/default/ldap/domain/profile.html:475
 #: ../templates/default/ldap/user/profile.html:230
 msgid "Add mail list"
-msgstr "Dodaj listę mailingową"
+msgstr "Dodaj listę mailową"
 
 #: ../templates/default/ldap/maillist/create.html:10
 #: ../templates/default/ldap/maillist/create.html:74
@@ -406,7 +406,7 @@ msgstr "Log administracyjny"
 
 #: ../templates/default/macros/msgHandlers.html:188
 msgid "Admin created."
-msgstr ""
+msgstr "Administrator utworzony."
 
 #: ../templates/default/macros/general.html:890
 msgid "Admin login"
@@ -756,11 +756,11 @@ msgstr "DW wychodzącą pocztę na inny adres"
 
 #: ../templates/default/macros/general.html:455
 msgid "Backup MX does not work with custom relay"
-msgstr ""
+msgstr "Zapasowy MX nie działa z niestandardowym przekazywaniem"
 
 #: ../templates/default/macros/amavisd.html:33
 msgid "Banned"
-msgstr ""
+msgstr "Zbanowany"
 
 #: ../templates/default/policyd/wblist.html:12
 msgid "Blacklist"
@@ -1158,7 +1158,7 @@ msgstr "Domena i poddomeny"
 
 #: ../templates/default/macros/msgHandlers.html:108
 msgid "Domain created."
-msgstr ""
+msgstr "Domena utworzona."
 
 #: ../templates/default/macros/msgHandlers.html:95
 msgid "Domain name is empty."
@@ -1566,7 +1566,7 @@ msgstr "Pierwsza strona"
 
 #: ../templates/default/macros/general.html:606
 msgid "For advanced settings and further information please see"
-msgstr ""
+msgstr "W celu zaawansowanej konfiguracji i dodatkowych informacji proszę zobaczyć"
 
 #: ../templates/default/ldap/user/profile.html:383
 msgid "Format of sender and recipient"
@@ -1593,7 +1593,7 @@ msgstr "Przekazywanie poczty na inne adresy"
 #: ../templates/default/ldap/admin/profile.html:73
 #: ../templates/default/ldap/user/profile.html:160
 msgid "Full name"
-msgstr ""
+msgstr "Pełna nazwa"
 
 #: ../templates/default/dbmail_mysql/admin/profile.html:44
 #: ../templates/default/dbmail_mysql/alias/profile.html:36
@@ -1634,7 +1634,7 @@ msgstr "Administrator globalny"
 #: ../templates/default/macros/ldap.html:121
 #: ../templates/default/macros/mysql.html:78
 msgid "Greylisting"
-msgstr ""
+msgstr "Szara lista"
 
 #: ../templates/default/policyd/wblist.html:27
 msgid "HELO Identities"
@@ -1642,7 +1642,7 @@ msgstr "Znaczniki HELO"
 
 #: ../templates/default/policyd/blacklist/create.html:76
 msgid "HELO identity"
-msgstr "Znaczniki HELO"
+msgstr "Znacznik HELO"
 
 #: ../templates/default/dashboard.html:99
 msgid "Hostname"
@@ -1745,6 +1745,9 @@ msgid ""
 "It is recommended to mark user as domain admin in user profile page "
 "instead of creating separate admin account."
 msgstr ""
+"Zaleca się, aby oznaczyć użytkownika jako administratora domeny na "
+"stronie profilu użytkownika zamiast tworzyć oddzielne konto "
+"administratora."
 
 #: ../templates/default/ldap/alias/create.html:111
 msgid ""
@@ -1773,7 +1776,7 @@ msgstr "Słowo kluczowe"
 
 #: ../templates/default/macros/amavisd.html:11
 msgid "Kind"
-msgstr ""
+msgstr "Rodzaj"
 
 #: ../templates/default/dbmail_mysql/user/list.html:56
 msgid "Last Login"
@@ -1789,7 +1792,7 @@ msgstr "Nazwa hosta"
 
 #: ../templates/default/panel/license.html:54
 msgid "Latest version"
-msgstr ""
+msgstr "Ostatnia wersja"
 
 #: ../templates/default/macros/general.html:604
 #, python-format
@@ -1803,11 +1806,11 @@ msgstr "Pozostaw puste aby użyć ustawień domyślnych."
 #: ../templates/default/layout.html:45 ../templates/default/layout.html:83
 #: ../templates/default/panel/license.html:3
 msgid "License"
-msgstr ""
+msgstr "Licencja"
 
 #: ../templates/default/panel/license.html:10
 msgid "License info"
-msgstr ""
+msgstr "Informacje o licencji"
 
 #: ../templates/default/panel/license.html:21
 msgid "License is active"
@@ -1819,7 +1822,7 @@ msgstr "Status konta"
 
 #: ../templates/default/panel/license.html:43
 msgid "Lifetime license"
-msgstr ""
+msgstr "Licencja dożywotnia"
 
 #: ../templates/default/dbmail_mysql/domain/list.html:122
 #: ../templates/default/dbmail_mysql/domain/list.html:127
@@ -1955,7 +1958,7 @@ msgstr "Nagłówki"
 #: ../templates/default/ldap/user/list.html:50
 #: ../templates/default/macros/msgHandlers.html:108
 msgid "Mail List"
-msgstr "Lista mailingowa"
+msgstr "Lista mailowa"
 
 #: ../templates/default/ldap/alias/create.html:18
 #: ../templates/default/ldap/alias/list.html:22
@@ -1970,7 +1973,7 @@ msgstr "Lista mailingowa"
 #: ../templates/default/ldap/user/list.html:24
 #: ../templates/default/ldap/user/profile.html:102
 msgid "Mail Lists"
-msgstr "Listy mailingowe"
+msgstr "Listy mailowe"
 
 #: ../templates/default/dbmail_mysql/user/list.html:14
 #: ../templates/default/ldap/user/list.html:16
@@ -1985,11 +1988,11 @@ msgstr "Adres pocztowy już istnieje. Proszę wybrać inny."
 
 #: ../templates/default/macros/msgHandlers.html:260
 msgid "Mail alias created."
-msgstr ""
+msgstr "Utworzono alias pocztowy."
 
 #: ../templates/default/macros/msgHandlers.html:228
 msgid "Mail list created."
-msgstr ""
+msgstr "Utworzono listę mailową."
 
 #: ../templates/default/ldap/maillist/list.html:53
 #, python-format
@@ -2054,7 +2057,7 @@ msgstr "Zarządzane domeny"
 
 #: ../templates/default/macros/general.html:446
 msgid "Mark as backup MX"
-msgstr ""
+msgstr "Oznacz jako zapasowy MX"
 
 #: ../templates/default/ldap/user/list.html:157
 msgid "Mark as domain admin"
@@ -2071,7 +2074,7 @@ msgstr "Zaznacz jako administratora globalnego"
 
 #: ../templates/default/macros/general.html:402
 msgid "Mark this user as"
-msgstr ""
+msgstr "Oznacz tego użytkownika jako"
 
 #: ../templates/default/macros/policyd.html:71
 msgid "Max size of single outgoing email"
@@ -2098,7 +2101,7 @@ msgstr "Używa aliasów"
 
 #: ../templates/default/ldap/user/profile.html:193
 msgid "Member of Mail Lists"
-msgstr "Należy do list mailingowych"
+msgstr "Należy do list mailiowych"
 
 #: ../templates/default/macros/msgHandlers.html:213
 #: ../templates/default/macros/msgHandlers.html:251
@@ -2122,9 +2125,7 @@ msgstr "Wiadomość"
 
 #: ../templates/default/ldap/maillist/profile.html:129
 msgid "Messages sent to mail list will be delivered to its members."
-msgstr ""
-"Wiadomości wysłane na listę mailingową zostaną doręczone do jej "
-"użytkowników."
+msgstr "Wiadomości wysłane na listę mailową zostaną doręczone do jej użytkowników."
 
 #: ../templates/default/dbmail_mysql/domain/profile.html:346
 #: ../templates/default/ldap/domain/profile.html:415
@@ -2224,7 +2225,7 @@ msgstr "Nowa hasła różnią się."
 
 #: ../templates/default/layout.html:31
 msgid "New version available"
-msgstr ""
+msgstr "Dostępna nowa wersja"
 
 #: ../templates/default/dashboard.html:14
 #, python-format
@@ -2232,6 +2233,8 @@ msgid ""
 "New version of iRedAdmin-Pro, %s, is now available for upgrading. <a "
 "href='%s/system/license' class='button green'>Details</a>"
 msgstr ""
+"Nowa wersja iRedAdmin-Pro, %s jest teraz dostępna do uaktualnienia. <a "
+"href='%s/system/license' class='button green'>Szczegóły</a>"
 
 #: ../templates/default/layout.html:154
 msgid "News & Announments"
@@ -2308,7 +2311,7 @@ msgstr "Nie utworzono domen pocztowych"
 
 #: ../templates/default/ldap/maillist/list.html:100
 msgid "No mail list available."
-msgstr "Nie utworzono list mailingowych"
+msgstr "Nie utworzono list mailowych"
 
 #: ../templates/default/dbmail_mysql/user/list.html:103
 #: ../templates/default/ldap/user/list.html:141
@@ -2360,7 +2363,7 @@ msgstr "Nie masz uprawnień do tworzenia aliasów w tej domenie."
 #: ../templates/default/ldap/maillist/create.html:40
 #: ../templates/default/macros/msgHandlers.html:222
 msgid "Not allowed to create mail list under this domain."
-msgstr "Nie masz uprawnień do tworzenia list mailingowych w tej domenie."
+msgstr "Nie masz uprawnień do tworzenia list mailowych w tej domenie."
 
 #: ../templates/default/ldap/user/create.html:69
 #: ../templates/default/ldap/user/create.html:72
@@ -2395,7 +2398,7 @@ msgstr "Maksymalna liczba aliasów pocztowych"
 
 #: ../templates/default/ldap/domain/profile.html:397
 msgid "Number of max mail lists"
-msgstr "Maksymalna liczba list mailingowych"
+msgstr "Maksymalna liczba list mailowych"
 
 #: ../templates/default/dbmail_mysql/domain/profile.html:327
 #: ../templates/default/ldap/domain/profile.html:389
@@ -2523,6 +2526,8 @@ msgid ""
 "Please either mark mail user as domain admin or create a separate admin "
 "account."
 msgstr ""
+"Proszę albo oznaczyć użytkownika poczty jako administratora domeny lub "
+"utworzyć osobne konto administratora."
 
 #: ../templates/default/macros/msgHandlers.html:146
 msgid "Please select at least one account."
@@ -2534,7 +2539,7 @@ msgstr "Aby wykonać działanie wybierz przynajmniej jedną domeną"
 
 #: ../templates/default/macros/general.html:606
 msgid "Postfix manual page"
-msgstr ""
+msgstr "Strona podręcznika Postfix"
 
 #: ../templates/default/layout.html:42
 msgid "Preferences"
@@ -2612,7 +2617,7 @@ msgstr "Aktualizacja profilu zakończona sukcesem."
 
 #: ../templates/default/panel/license.html:34
 msgid "Purchase date"
-msgstr ""
+msgstr "Data zakupu"
 
 #: ../templates/default/dashboard.html:46
 #: ../templates/default/macros/amavisd.html:70
@@ -2746,7 +2751,7 @@ msgstr "Przekazy"
 
 #: ../templates/default/macros/general.html:573
 msgid "Relay without verifying local recipients"
-msgstr ""
+msgstr "Przekaż bez sprawdzania lokalnych odbiorców"
 
 #: ../templates/default/macros/general.html:565
 msgid "Relay/Transport Setting"
@@ -2754,7 +2759,7 @@ msgstr "Ustawienia transportu/przekazów"
 
 #: ../templates/default/panel/license.html:83
 msgid "Release Notes of latest version"
-msgstr ""
+msgstr "Informacje o wydaniu najnowszej wersji"
 
 #: ../templates/default/amavisd/quarantined.html:86
 msgid "Release selected"
@@ -2773,7 +2778,7 @@ msgstr "Usuń z listy"
 
 #: ../templates/default/panel/license.html:70
 msgid "Renew license"
-msgstr ""
+msgstr "Odnów licencję"
 
 #: ../templates/default/ldap/domain/profile.html:502
 msgid "Sample"
@@ -2781,7 +2786,7 @@ msgstr "Przykład"
 
 #: ../templates/default/macros/general.html:595
 msgid "Sample relay settings"
-msgstr ""
+msgstr "Przykładowe ustawienia przekazywania"
 
 #: ../templates/default/dbmail_mysql/user/profile.html:171
 #: ../templates/default/ldap/user/profile.html:288
@@ -2898,7 +2903,7 @@ msgstr "Wybrane pola zostały usunięte."
 
 #: ../templates/default/panel/license.html:77
 msgid "Send me an email with download link"
-msgstr ""
+msgstr "Wyślij do mnie email z odnośnikiem do pobrania"
 
 #: ../templates/default/amavisd/inout.html:107
 #: ../templates/default/macros/amavisd.html:9
@@ -3007,7 +3012,7 @@ msgstr "Wielkość"
 
 #: ../templates/default/macros/amavisd.html:29
 msgid "Spam"
-msgstr ""
+msgstr "Spam"
 
 #: ../templates/default/dashboard.html:23
 msgid "Statistics of latest 24 hours"
@@ -3161,7 +3166,7 @@ msgstr "Bez ograniczeń"
 
 #: ../templates/default/panel/license.html:84
 msgid "Upgrade tutorials"
-msgstr ""
+msgstr "Samouczki uaktualniania"
 
 #: ../templates/default/dashboard.html:105
 msgid "Uptime"
@@ -3209,7 +3214,7 @@ msgstr "Użytkownik"
 
 #: ../templates/default/macros/msgHandlers.html:153
 msgid "User created."
-msgstr ""
+msgstr "Użytkownik utworzony."
 
 #: ../templates/default/dbmail_mysql/search.html:145
 #: ../templates/default/ldap/search.html:193
@@ -3223,7 +3228,7 @@ msgstr ""
 #: ../templates/default/pgsql/search.html:226
 #: ../templates/default/pgsql/user/list.html:69
 msgid "User/Employee ID"
-msgstr ""
+msgstr "ID Użytkownika/Pracownika"
 
 #: ../templates/default/login.html:55
 msgid "Username"
@@ -3340,7 +3345,7 @@ msgstr "Kto może wysyłać pocztę na tą listę"
 #: ../templates/default/panel/license.html:55
 #, python-format
 msgid "You are running version %s"
-msgstr ""
+msgstr "Używasz wersji %s"
 
 #: ../templates/default/ldap/user/create.html:82
 #, python-format
@@ -3360,7 +3365,7 @@ msgstr ""
 #: ../templates/default/ldap/maillist/create.html:53
 #, python-format
 msgid "You can create <strong>%d</strong> more mail list(s) under domain %s."
-msgstr "Możesz jeszcze utworzyć <strong>%d</strong> list mailingowych w domenie %s"
+msgstr "Możesz jeszcze utworzyć <strong>%d</strong> list mailowych w domenie %s"
 
 #: ../templates/default/dbmail_mysql/user/create.html:61
 #: ../templates/default/ldap/user/create.html:93
@@ -3385,7 +3390,7 @@ msgstr "Nie można utworzyć więcej aliasów w domenie %s."
 #: ../templates/default/ldap/maillist/create.html:48
 #, python-format
 msgid "You can't create more mail lists under domain %s."
-msgstr "Nie można utworzyć więcej list w domenie %s."
+msgstr "Nie można utworzyć więcej list mailowych w domenie %s."
 
 #: ../templates/default/dbmail_mysql/search.html:255
 #: ../templates/default/ldap/search.html:341
@@ -3396,7 +3401,7 @@ msgstr "Wyszukiwanie nie dało wyniku"
 
 #: ../templates/default/macros/general.html:598
 msgid "default transport"
-msgstr ""
+msgstr "domyślny transport"
 
 #: ../templates/default/macros/general.html:602
 msgid ""
@@ -3404,6 +3409,9 @@ msgid ""
 "required when you specify an IP address instead of a hostname, or disable"
 " MX DNS lookup."
 msgstr ""
+"przekazuj emaile do hosta example.com przez port 25. Wymagane jest "
+"podanie danych w postaci [] podczas wpisywania adresu IP zamiast nazwy "
+"hosta lub należy wyłączyć wyszukiwanie MX DNS."
 
 #: ../templates/default/layout.html:66
 msgid "iRedMail Admin Panel"
@@ -3412,8 +3420,10 @@ msgstr "Panel administracyjny iRedMail"
 #: ../templates/default/macros/general.html:601
 msgid "receive but discard email, useful for mailboxes like noreply@example.com"
 msgstr ""
+"odbieraj ale wyrzucaj emaile, przydatne dla skrzynek typu "
+"noreply@example.com"
 
 #: ../templates/default/macros/general.html:192
 msgid "without verifying local recipients"
-msgstr ""
+msgstr "bez sprawdzania lokalnych odbiorców"
 
