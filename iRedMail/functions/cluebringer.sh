@@ -106,10 +106,23 @@ cluebringer_config()
     # Get SQL structure template file.
     tmp_sql="/tmp/cluebringer_init_sql.${RANDOM}${RANDOM}"
     if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" ]; then
-        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+        DB_SAMPLE_FILE_NAME='DATABASE.mysql'
+
+        if [ X"${DISTRO}" == X'SUSE' ]; then
+            DB_SAMPLE_FILE_NAME='policyd.mysql.sql'
             cat > ${tmp_sql} <<EOF
+CREATE DATABASE ${CLUEBRINGER_DB_NAME};
+USE ${CLUEBRINGER_DB_NAME};
+EOF
+        fi
+
+        DB_SAMPLE_FILE="$(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep "/${DB_SAMPLE_FILE_NAME}$")"
+        perl -pi -e 's#TYPE=#ENGINE=#g' ${DB_SAMPLE_FILE}
+
+        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+            cat >> ${tmp_sql} <<EOF
 -- Import SQL structure template.
-SOURCE $(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep '/DATABASE.mysql$');
+SOURCE ${DB_SAMPLE_FILE};
 
 -- Grant privileges.
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_DB_USER}"@"${SQL_HOSTNAME}" IDENTIFIED BY "${CLUEBRINGER_DB_PASSWD}";

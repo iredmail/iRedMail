@@ -246,11 +246,12 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         # openSUSE
         export DISTRO='SUSE'
 
-        # Version number. e.g. 12.1
+        # Version number. e.g. 12.3
         export DISTRO_VERSION="$(grep 'VERSION' /etc/SuSE-release | awk '{print $3}')"
 
         # code name
         #   - 12.2: mantis
+        #   - 12.3: dartmouth
         export DISTRO_CODENAME="$(grep 'CODENAME' /etc/SuSE-release | awk '{print $3}' |tr [A-Z] [a-z])"
 
         # Unsupported releases: 10.x, 11.x, 12.1 (asparagus).
