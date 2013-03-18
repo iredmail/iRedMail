@@ -95,7 +95,7 @@ install_all()
         elif [ X"${DISTRO}" == X"SUSE" ]; then
             ALL_PKGS="${ALL_PKGS} mysql-community-server mysql-community-server-client"
 
-            [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} postfix-mysql apache2-mod_auth_mysql"
+            [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} postfix-mysql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # MySQL server and client.

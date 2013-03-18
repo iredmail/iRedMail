@@ -52,7 +52,15 @@ policy_server_config()
         ECHO_INFO "Configure Policyd (postfix policy server, code name cluebringer)."
         check_status_before_run cluebringer_user
         check_status_before_run cluebringer_config
-        check_status_before_run cluebringer_webui_config
+
+        # openSUSE-12.3 doesn't have Apache module mod_auth_mysql & mod_auth_pgsql.
+        if [ X"${DISTRO}" == X'SUSE' ]; then
+            if [ X"${DISTRO_CODENAME}" == X'mantis' ]; then
+                check_status_before_run cluebringer_webui_config
+            fi
+        else
+            check_status_before_run cluebringer_webui_config
+        fi
     fi
 
     # OpenBSD special

@@ -49,9 +49,12 @@ postfix_config_basic()
         perl -pi -e 's/^#(tlsmgr.*)/${1}/' ${POSTFIX_FILE_MASTER_CF}
 
         # Set postfix:myhostname in /etc/sysconfig/postfix.
-        perl -pi -e 's#^(POSTFIX_MYHOSTNAME=).*#${1}"$ENV{'HOSTNAME'}"#' ${POSTFIX_SYSCONFIG_CONF}
+        perl -pi -e 's#^(POSTFIX_MYHOSTNAME=).*#${1}"$ENV{HOSTNAME}"#' ${POSTFIX_SYSCONFIG_CONF}
         #postfix:message_size_limit
-        perl -pi -e 's#^(POSTFIX_ADD_MESSAGE_SIZE_LIMIT=).*#${1}"$ENV{'MESSAGE_SIZE_LIMIT'}"#' ${POSTFIX_SYSCONFIG_CONF}
+        perl -pi -e 's#^(POSTFIX_ADD_MESSAGE_SIZE_LIMIT=).*#${1}"$ENV{MESSAGE_SIZE_LIMIT}"#' ${POSTFIX_SYSCONFIG_CONF}
+        perl -pi -e 's#^(POSTFIX_INET_PROTO=).*#${1}"ipv4"#' ${POSTFIX_SYSCONFIG_CONF}
+        perl -pi -e 's#^(POSTFIX_CHROOT=).*#${1}"yes"#' ${POSTFIX_SYSCONFIG_CONF}
+        perl -pi -e 's#^(POSTFIX_UPDATE_CHROOT_JAIL=).*#${1}"yes"#' ${POSTFIX_SYSCONFIG_CONF}
 
         # Append two lines in /etc/services to avoid below error:
         # '0.0.0.0:smtps: Servname not supported for ai_socktype'
@@ -59,9 +62,23 @@ postfix_config_basic()
         echo 'smtps            465/tcp    # smtp over ssl' >> /etc/services
 
         # Unset below settings since we don't use them.
-        postconf -e canonical_maps=''
-        postconf -e relocated_maps=''
-        postconf -e sender_canonical_maps=''
+        perl -pi -e 's/^(smtp*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(virtual*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(relay*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(alias*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(canonical*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(sender*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(recipient*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(transport*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(inet_protocols*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(relocated_maps*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(smtpd_sasl_auth_enable*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+
+        perl -pi -e 's/^(POSTFIX_UPDATE_MAPS=).*/${1}"no"/' ${POSTFIX_SYSCONFIG_CONF}
+
+        # Don't invoke /usr/sbin/config.postfix to use hard-coded settings
+        perl -pi -e 's,(/usr/sbin/config.postfix),#${1},' /etc/init.d/postfix
+        perl -pi -e 's,(/usr/sbin/config.postfix),#${1},' /etc/postfix/system/config_postfix
     fi
 
     # Use ipv4 only
@@ -70,6 +87,7 @@ postfix_config_basic()
     postconf -e inet_protocols='ipv4'
 
     # Do not set virtual_alias_domains.
+    perl -pi -e 's/^(virtual_alias_domains*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
     postconf -e virtual_alias_domains=''
 
     ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
@@ -83,9 +101,9 @@ postfix_config_basic()
     postconf -e myorigin="${HOSTNAME}"
 
     # Disable the rewriting of the form "user%domain" to "user@domain".
-    postconf -e allow_percent_hack="no"
+    postconf -e allow_percent_hack='no'
     # Disable the rewriting of "site!user" into "user@site".
-    postconf -e swap_bangpath="no"
+    postconf -e swap_bangpath='no'
 
     # Remove the characters before first dot in myhostname is mydomain.
     echo "${HOSTNAME}" | grep '\..*\.' >/dev/null 2>&1
@@ -97,14 +115,20 @@ postfix_config_basic()
     fi
 
     postconf -e mydestination="\$myhostname, localhost, localhost.localdomain, localhost.\$myhostname"
-    postconf -e biff="no"   # Do not notify local user.
+    postconf -e biff='no'   # Do not notify local user.
     postconf -e inet_interfaces="all"
     postconf -e mynetworks="127.0.0.0/8"
     postconf -e mynetworks_style="subnet"
     postconf -e smtpd_data_restrictions='reject_unauth_pipelining'
     postconf -e smtpd_reject_unlisted_recipient='yes'   # Default
     postconf -e smtpd_reject_unlisted_sender='yes'
+
+    # Sender restrictions
     postconf -e smtpd_sender_restrictions="permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"
+
+    #[ X"${DISTRO}" == X'SUSE' ] && \
+    #    perl -pi -e 's#^(POSTFIX_SMTPD_SENDER_RESTRICTIONS=).*#${1}"permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"#' ${POSTFIX_SYSCONFIG_CONF}
+
     postconf -e delay_warning_time='0h'
     postconf -e maximal_queue_lifetime='4h'
     postconf -e bounce_queue_lifetime='4h'
@@ -117,6 +141,8 @@ postfix_config_basic()
     # HELO restriction
     postconf -e smtpd_helo_required="yes"
     postconf -e smtpd_helo_restrictions="permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_helo_access pcre:${POSTFIX_FILE_HELO_ACCESS}"
+    #[ X"${DISTRO}" == X'SUSE' ] && \
+    #    perl -pi -e 's#^(POSTFIX_SMTPD_HELO_RESTRICTIONS=).*#${1}"permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_helo_access pcre:$ENV{POSTFIX_FILE_HELO_ACCESS}"#' ${POSTFIX_SYSCONFIG_CONF}
 
     backup_file ${POSTFIX_FILE_HELO_ACCESS}
     cp -f ${SAMPLE_DIR}/postfix/helo_access.pcre ${POSTFIX_FILE_HELO_ACCESS}
@@ -127,7 +153,7 @@ postfix_config_basic()
     postconf -e maximal_backoff_time='1800s'    # default '4000s' in postfix-2.4.
 
     # Avoid duplicate recipient messages. Default is 'yes'.
-    postconf -e enable_original_recipient="no"
+    postconf -e enable_original_recipient='no'
 
     # Disable the SMTP VRFY command. This stops some techniques used to
     # harvest email addresses.
@@ -159,33 +185,6 @@ postfix_config_basic()
     postconf -e virtual_uid_maps="static:${VMAIL_USER_UID}"
     postconf -e virtual_gid_maps="static:${VMAIL_USER_GID}"
     postconf -e virtual_mailbox_base="${STORAGE_BASE_DIR}"
-
-    # Simple backscatter block method.
-    #postconf -e header_checks="pcre:${POSTFIX_FILE_HEADER_CHECKS}"
-    cat >> ${POSTFIX_FILE_HEADER_CHECKS} <<EOF
-# *******************************************************************
-# Reference:
-#   http://www.postfix.org/header_checks.5.html
-#   http://www.postfix.org/BACKSCATTER_README.html#real
-# *******************************************************************
-
-# Use your real hostname to replace 'porcupine.org'.
-#if /^Received:/
-#/^Received: +from +(porcupine\.org) +/
-#    reject forged client name in Received: header: $1
-#/^Received: +from +[^ ]+ +\(([^ ]+ +[he]+lo=|[he]+lo +)(porcupine\.org)\)/
-#    reject forged client name in Received: header: $2
-#/^Received:.* +by +(porcupine\.org)\b/
-#    reject forged mail server name in Received: header: $1
-#endif
-#/^Message-ID:.* <!&!/ DUNNO
-#/^Message-ID:.*@(porcupine\.org)/
-#    reject forged domain name in Message-ID: header: $1
-
-# Replace internal IP address by external IP address or whatever you
-# want. Required 'smtpd_sasl_authenticated_header=yes' in postfix.
-#/(^Received:.*\[).*(\].*Authenticated sender:.*by REPLACED_BY_YOUR_HOSTNAME.*iRedMail.*)/ REPLACE ${1}REPLACED_BY_YOUR_IP_ADDRESS${2}
-EOF
 
     if [ X"${DISTRO}" == X'GENTOO' ]; then
         cat >> ${SYSLOG_CONF} <<EOF
@@ -504,12 +503,15 @@ postfix_config_sasl()
     postconf -e smtpd_sasl_local_domain=''
     postconf -e broken_sasl_auth_clients="yes"
     postconf -e smtpd_sasl_security_options="noanonymous"
-    [ X"${DISTRO}" == X"SUSE" ] && \
+    if [ X"${DISTRO}" == X"SUSE" ]; then
+        perl -pi -e 's#^(POSTFIX_SMTP_AUTH_SERVER=).*#${1}"yes"#' ${POSTFIX_SYSCONFIG_CONF} && \
+        perl -pi -e 's#^(POSTFIX_SMTP_AUTH=).*#${1}"yes"#' ${POSTFIX_SYSCONFIG_CONF} && \
         perl -pi -e 's#^(POSTFIX_SMTP_AUTH_OPTIONS=).*#${1}"noanonymous"#' ${POSTFIX_SYSCONFIG_CONF}
+    fi
 
     # Report the SASL authenticated user name in Received message header.
     # Default is 'no'.
-    postconf -e smtpd_sasl_authenticated_header="no"
+    postconf -e smtpd_sasl_authenticated_header='no'
 
     POSTCONF_IREDAPD=''
     if [ X"${USE_IREDAPD}" == X"YES" ]; then
@@ -524,10 +526,20 @@ postfix_config_sasl()
     if [ X"${USE_CLUEBRINGER}" == X"YES" ]; then
         postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
         postconf -e smtpd_end_of_data_restrictions="check_policy_service inet:${CLUEBRINGER_BIND_HOST}:${CLUEBRINGER_BIND_PORT}"
+
+        #[ X"${DISTRO}" == X'SUSE' ] && \
+        #    perl -pi -e 's#^(POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS=).*#${1}"reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, $ENV{POSTCONF_IREDAPD} $ENV{POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"#' ${POSTFIX_SYSCONFIG_CONF}
+
     elif [ X"${USE_POLICYD}" == X"YES" ]; then
         postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, check_policy_service inet:${POLICYD_BIND_HOST}:${POLICYD_BIND_PORT}"
+
+        #[ X"${DISTRO}" == X'SUSE' ] && \
+        #    perl -pi -e 's#^(POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS=).*#${1}"reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, $ENV{POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, check_policy_service inet:$ENV{POLICYD_BIND_HOST}:$ENV{POLICYD_BIND_PORT}"#' ${POSTFIX_SYSCONFIG_CONF}
     else
         postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
+
+        #[ X"${DISTRO}" == X'SUSE' ] && \
+        #    perl -pi -e 's#^(POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS=).*#${1}"reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, $ENV{POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"#' ${POSTFIX_SYSCONFIG_CONF}
     fi
 
     echo 'export status_postfix_config_sasl="DONE"' >> ${STATUS_FILE}

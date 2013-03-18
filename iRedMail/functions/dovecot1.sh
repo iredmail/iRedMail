@@ -93,14 +93,6 @@ auth_master_user_separator = *
 #log_timestamp = "%Y-%m-%d %H:%M:%S "
 log_path = ${DOVECOT_LOG_FILE}
 
-#login_processes_count = 3
-#login_max_processes_count = 128
-#login_max_connections = 256
-
-# Maximum number of running mail processes. Default is 512.
-# When this limit is reached, new users aren't allowed to log in.
-#max_mail_processes = 512
-
 # Set max process size in megabytes. Default is 256.
 # Most of the memory goes to mmap()ing files, so it shouldn't harm
 # much even if this limit is set pretty high.
