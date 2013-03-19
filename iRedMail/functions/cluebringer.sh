@@ -74,8 +74,13 @@ cluebringer_config()
 
     # IP to listen on, * for all
     perl -pi -e 's/^(host=).*/${1}$ENV{CLUEBRINGER_BIND_HOST}/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^#(host=).*/${1}$ENV{CLUEBRINGER_BIND_HOST}/' ${CLUEBRINGER_CONF}
     # Port to run on
     perl -pi -e 's/^#(port=).*/${1}$ENV{CLUEBRINGER_BIND_PORT}/' ${CLUEBRINGER_CONF}
+
+    # How many seconds before we retry a DB connection
+    perl -pi -e 's/^#(bypass_timeout=).*/${1}10/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's#^(bypass_timeout=).*#${1}10#' ${CLUEBRINGER_CONF}
 
     #
     # Configure '[database]' section.
@@ -106,10 +111,9 @@ cluebringer_config()
     # Get SQL structure template file.
     tmp_sql="/tmp/cluebringer_init_sql.${RANDOM}${RANDOM}"
     if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" ]; then
-        DB_SAMPLE_FILE_NAME='DATABASE.mysql'
+        DB_SAMPLE_FILE_NAME='policyd.mysql.sql'
 
         if [ X"${DISTRO}" == X'SUSE' ]; then
-            DB_SAMPLE_FILE_NAME='policyd.mysql.sql'
             cat > ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME};
 USE ${CLUEBRINGER_DB_NAME};

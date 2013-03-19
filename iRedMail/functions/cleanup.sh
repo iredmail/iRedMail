@@ -154,7 +154,7 @@ cleanup_replace_firewall_rules()
                     else
                         # openSUSE will use /etc/init.d/SuSEfirewall2_{init,setup} instead.
                         if [ X"${DISTRO}" != X"SUSE" ]; then
-                            ${DIR_RC_SCRIPTS}/iptables restart
+                            ${DIR_RC_SCRIPTS}/iptables restart >/dev/null
                         fi
                     fi
                     ;;
@@ -357,7 +357,11 @@ EOF
     [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
 
     # Start Dovecot to deliver emails.
-    bash -xv ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME} restart #&>/dev/null
+    ECHO_INFO "Deliver administration emails to ${FIRST_USER}@${FIRST_DOMAIN}."
+    [ X"${BACKEND}" == X'OPENLDAP' ] && ${DIR_RC_SCRIPTS}/${OPENLDAP_RC_SCRIPT_NAME} restart &>/dev/null
+    [ X"${BACKEND}" == X'MYSQL' ] && ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} restart &>/dev/null
+    [ X"${BACKEND}" == X'PGSQL' ] && ${DIR_RC_SCRIPTS}/${PGSQL_RC_SCRIPT_NAME} restart &>/dev/null
+    ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME} restart &>/dev/null
     sleep 3
 
     # Send tip file to the mail server admin and/or first mail user.
