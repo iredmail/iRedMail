@@ -59,7 +59,7 @@ export LDAP_BASEDN="o=${LDAP_BASEDN_NAME},${LDAP_SUFFIX}"
 export LDAP_ADMIN_BASEDN="o=${LDAP_ATTR_DOMAINADMIN_DN_NAME},${LDAP_SUFFIX}"
 rm -f /tmp/ldap_suffix
 
-cat >> ${CONFIG_FILE} <<EOF
+cat >> ${IREDMAIL_CONFIG_FILE} <<EOF
 export dn2dnsname="${dn2dnsname}"
 export LDAP_SUFFIX="${LDAP_SUFFIX}"
 export LDAP_SUFFIX_MAJOR="${LDAP_SUFFIX_MAJOR}"
@@ -91,5 +91,5 @@ WARNING:
     fi
 done
 
-echo "export LDAP_ROOTPW='${LDAP_ROOTPW}'" >>${CONFIG_FILE}
+echo "export LDAP_ROOTPW='${LDAP_ROOTPW}'" >>${IREDMAIL_CONFIG_FILE}
 rm -f /tmp/ldap_rootpw

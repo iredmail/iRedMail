@@ -357,7 +357,7 @@ EOF
     [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
 
     # Start Dovecot to deliver emails.
-    ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME} restart &>/dev/null
+    bash -xv ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME} restart #&>/dev/null
     sleep 3
 
     # Send tip file to the mail server admin and/or first mail user.

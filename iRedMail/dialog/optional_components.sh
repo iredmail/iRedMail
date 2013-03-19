@@ -78,50 +78,50 @@ OPTIONAL_COMPONENTS="$(cat ${tmp_config_optional_components})"
 rm -f ${tmp_config_optional_components} &>/dev/null
 
 echo ${OPTIONAL_COMPONENTS} | grep -i '\<SPF\>' >/dev/null 2>&1
-[ X"$?" == X"0" ] && export ENABLE_SPF='YES' && echo "export ENABLE_SPF='YES'" >>${CONFIG_FILE}
+[ X"$?" == X"0" ] && export ENABLE_SPF='YES' && echo "export ENABLE_SPF='YES'" >>${IREDMAIL_CONFIG_FILE}
 
 echo ${OPTIONAL_COMPONENTS} | grep -i '\<DKIM\>' >/dev/null 2>&1
-[ X"$?" == X"0" ] && export ENABLE_DKIM='YES' && echo "export ENABLE_DKIM='YES'" >>${CONFIG_FILE}
+[ X"$?" == X"0" ] && export ENABLE_DKIM='YES' && echo "export ENABLE_DKIM='YES'" >>${IREDMAIL_CONFIG_FILE}
 
 echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' >/dev/null 2>&1
-[ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${CONFIG_FILE}
+[ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'roundcubemail' &>/dev/null; then
     export USE_WEBMAIL='YES'
     export USE_RCM='YES'
     export REQUIRE_PHP='YES'
-    echo "export USE_WEBMAIL='YES'" >> ${CONFIG_FILE}
-    echo "export USE_RCM='YES'" >> ${CONFIG_FILE}
-    echo "export REQUIRE_PHP='YES'" >> ${CONFIG_FILE}
+    echo "export USE_WEBMAIL='YES'" >> ${IREDMAIL_CONFIG_FILE}
+    echo "export USE_RCM='YES'" >> ${IREDMAIL_CONFIG_FILE}
+    echo "export REQUIRE_PHP='YES'" >> ${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'phpldapadmin' &>/dev/null; then
     export USE_PHPLDAPADMIN='YES'
     export REQUIRE_PHP='YES'
-    echo "export USE_PHPLDAPADMIN='YES'" >>${CONFIG_FILE}
-    echo "export REQUIRE_PHP='YES'" >> ${CONFIG_FILE}
+    echo "export USE_PHPLDAPADMIN='YES'" >>${IREDMAIL_CONFIG_FILE}
+    echo "export REQUIRE_PHP='YES'" >> ${IREDMAIL_CONFIG_FILE}
 fi
 
 echo ${OPTIONAL_COMPONENTS} | grep -i 'phpmyadmin' >/dev/null 2>&1
 if [ X"$?" == X"0" ]; then
     export USE_PHPMYADMIN='YES'
-    echo "export USE_PHPMYADMIN='YES'" >>${CONFIG_FILE}
-    echo "export REQUIRE_PHP='YES'" >> ${CONFIG_FILE}
+    echo "export USE_PHPMYADMIN='YES'" >>${IREDMAIL_CONFIG_FILE}
+    echo "export REQUIRE_PHP='YES'" >> ${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'phppgadmin' &>/dev/null; then
     export USE_PHPPGADMIN='YES'
-    echo "export USE_PHPPGADMIN='YES'" >>${CONFIG_FILE}
+    echo "export USE_PHPPGADMIN='YES'" >>${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'awstats' &>/dev/null; then
     export USE_AWSTATS='YES'
-    echo "export USE_AWSTATS='YES'" >>${CONFIG_FILE}
+    echo "export USE_AWSTATS='YES'" >>${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'fail2ban' &>/dev/null; then
     export USE_FAIL2BAN='YES'
-    echo "export USE_FAIL2BAN='YES'" >>${CONFIG_FILE}
+    echo "export USE_FAIL2BAN='YES'" >>${IREDMAIL_CONFIG_FILE}
 fi
 
 # Used when you use awstats.

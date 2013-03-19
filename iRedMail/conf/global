@@ -123,7 +123,7 @@ export DOMAIN_ADMIN_NAME='postmaster'
 # Tools.
 export CONFIG_VIA_DIALOG="${DIALOG_DIR}/config_via_dialog.sh"
 # Note: config file will be sourced in file 'conf/core', function 'check_env()'.
-export CONFIG_FILE="${ROOTDIR}/config"
+export IREDMAIL_CONFIG_FILE="${ROOTDIR}/config"
 export TIP_FILE="${ROOTDIR}/${PROG_NAME}.tips"
 export DOC_FILE="${ROOTDIR}/Documentations"
 export STATUS_FILE="${ROOTDIR}/.status"

@@ -42,7 +42,7 @@ WARNING:
     [ X"${PGSQL_ROOT_PASSWD}" != X"" ] && break
 done
 
-echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${CONFIG_FILE}
+echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
 # PGSQL_ROOT_USER is defined in conf/postgresql
-echo "export PGSQL_ROOT_USER='${PGSQL_ROOT_USER}'" >>${CONFIG_FILE}
+echo "export PGSQL_ROOT_USER='${PGSQL_ROOT_USER}'" >>${IREDMAIL_CONFIG_FILE}
 rm -f /tmp/pgsql_rootpw

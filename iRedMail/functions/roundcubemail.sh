@@ -9,8 +9,8 @@ rcm_install()
 {
     ECHO_INFO "Configure Roundcube webmail."
 
-    echo "export RCM_DB_USER='${RCM_DB_USER}'" >> ${CONFIG_FILE}
-    echo "export RCM_DB_PASSWD='${RCM_DB_PASSWD}'" >> ${CONFIG_FILE}
+    echo "export RCM_DB_USER='${RCM_DB_USER}'" >> ${IREDMAIL_CONFIG_FILE}
+    echo "export RCM_DB_PASSWD='${RCM_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
     if [ X"${RCM_USE_SOURCE}" == X'YES' ]; then
         cd ${MISC_DIR}

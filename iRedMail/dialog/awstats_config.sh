@@ -49,7 +49,7 @@ EXAMPLE:
         [ X"${AWSTATS_USERNAME}" != X"" ] && break
     done
 
-    echo "export AWSTATS_USERNAME='${AWSTATS_USERNAME}'" >>${CONFIG_FILE}
+    echo "export AWSTATS_USERNAME='${AWSTATS_USERNAME}'" >>${IREDMAIL_CONFIG_FILE}
     rm -f /tmp/awstats_username
 
     # Set password for awstats user.
@@ -69,6 +69,6 @@ WARNING:
         [ X"${AWSTATS_PASSWD}" != X"" ] && break
     done
 
-    echo "export AWSTATS_PASSWD='${AWSTATS_PASSWD}'" >>${CONFIG_FILE}
+    echo "export AWSTATS_PASSWD='${AWSTATS_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
     rm -f /tmp/awstats_passwd
 fi

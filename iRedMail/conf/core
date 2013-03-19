@@ -207,9 +207,9 @@ check_env()
     # Check config tool: dialog.
     check_pkg ${BIN_DIALOG} ${PKG_DIALOG}
 
-    ECHO_INFO -n "Checking configuration file: ${CONFIG_FILE} ..."
-    if [ -f ${CONFIG_FILE} ]; then
-        grep '^#EOF$' ${CONFIG_FILE} >/dev/null
+    ECHO_INFO -n "Checking configuration file: ${IREDMAIL_CONFIG_FILE} ..."
+    if [ -f ${IREDMAIL_CONFIG_FILE} ]; then
+        grep '^#EOF$' ${IREDMAIL_CONFIG_FILE} >/dev/null
 
         if [ X"$?" == X"0" ]; then
             echo -e " [FOUND]"
@@ -217,8 +217,8 @@ check_env()
             read_setting ${AUTO_USE_EXISTING_CONFIG_FILE}
             case $ANSWER in
                 Y|y )
-                    ECHO_INFO "Use config file: ${CONFIG_FILE} for mail server setting."
-                    . ${CONFIG_FILE}
+                    ECHO_INFO "Use config file: ${IREDMAIL_CONFIG_FILE} for mail server setting."
+                    . ${IREDMAIL_CONFIG_FILE}
 
                     # Check installation status.
                     # After each component installation was completed, there
@@ -244,7 +244,7 @@ EOF
                     fi
                     ;;
                 N|n|* )
-                    echo "Skip configuration file: ${CONFIG_FILE}."
+                    echo "Skip configuration file: ${IREDMAIL_CONFIG_FILE}."
                     . ${CONFIG_VIA_DIALOG}
                     ;;
             esac

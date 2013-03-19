@@ -30,7 +30,7 @@
 trap "exit 255" 2
 
 # Initialize config file.
-echo '' > ${CONFIG_FILE}
+echo '' > ${IREDMAIL_CONFIG_FILE}
 
 if [ X"${DISTRO}" == X"FREEBSD" ]; then
     DIALOG='dialog'
@@ -84,19 +84,19 @@ rm -f /tmp/vmail_user_home_dir &>/dev/null
 export STORAGE_BASE_DIR="${VMAIL_USER_HOME_DIR}"
 export STORAGE_MAILBOX_DIR="${STORAGE_BASE_DIR}/${STORAGE_NODE}"
 export SIEVE_DIR="${VMAIL_USER_HOME_DIR}/sieve"
-echo "export VMAIL_USER_HOME_DIR='${VMAIL_USER_HOME_DIR}'" >> ${CONFIG_FILE}
-echo "export STORAGE_BASE_DIR='${VMAIL_USER_HOME_DIR}'" >> ${CONFIG_FILE}
-echo "export STORAGE_MAILBOX_DIR='${STORAGE_MAILBOX_DIR}'" >> ${CONFIG_FILE}
-echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${CONFIG_FILE}
+echo "export VMAIL_USER_HOME_DIR='${VMAIL_USER_HOME_DIR}'" >> ${IREDMAIL_CONFIG_FILE}
+echo "export STORAGE_BASE_DIR='${VMAIL_USER_HOME_DIR}'" >> ${IREDMAIL_CONFIG_FILE}
+echo "export STORAGE_MAILBOX_DIR='${STORAGE_MAILBOX_DIR}'" >> ${IREDMAIL_CONFIG_FILE}
+echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${IREDMAIL_CONFIG_FILE}
 
 export BACKUP_DIR="${VMAIL_USER_HOME_DIR}/backup"
 export BACKUP_SCRIPT_OPENLDAP="${BACKUP_DIR}/backup_openldap.sh"
 export BACKUP_SCRIPT_MYSQL="${BACKUP_DIR}/backup_mysql.sh"
 export BACKUP_SCRIPT_PGSQL="${BACKUP_DIR}/backup_pgsql.sh"
-echo "export BACKUP_DIR='${BACKUP_DIR}'" >>${CONFIG_FILE}
-echo "export BACKUP_SCRIPT_OPENLDAP='${BACKUP_SCRIPT_OPENLDAP}'" >>${CONFIG_FILE}
-echo "export BACKUP_SCRIPT_MYSQL='${BACKUP_SCRIPT_MYSQL}'" >>${CONFIG_FILE}
-echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${CONFIG_FILE}
+echo "export BACKUP_DIR='${BACKUP_DIR}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export BACKUP_SCRIPT_OPENLDAP='${BACKUP_SCRIPT_OPENLDAP}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export BACKUP_SCRIPT_MYSQL='${BACKUP_SCRIPT_MYSQL}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${IREDMAIL_CONFIG_FILE}
 
 # --------------------------------------------------
 # --------------------- Backends --------------------
@@ -147,23 +147,23 @@ elif [ X"${BACKEND_ORIG}" == X'POSTGRESQL' ]; then
     export BACKEND='PGSQL'
     export BACKEND_ORIG='PGSQL'
 fi
-echo "export BACKEND_ORIG='${BACKEND_ORIG}'" >> ${CONFIG_FILE}
-echo "export BACKEND='${BACKEND}'" >> ${CONFIG_FILE}
+echo "export BACKEND_ORIG='${BACKEND_ORIG}'" >> ${IREDMAIL_CONFIG_FILE}
+echo "export BACKEND='${BACKEND}'" >> ${IREDMAIL_CONFIG_FILE}
 rm -f /tmp/backend &>/dev/null
 
 # Read-only SQL user/role, used to query mail accounts in Postfix, Dovecot.
 export VMAIL_DB_BIND_PASSWD="$(${RANDOM_STRING})"
-echo "export VMAIL_DB_BIND_PASSWD='${VMAIL_DB_BIND_PASSWD}'" >> ${CONFIG_FILE}
+echo "export VMAIL_DB_BIND_PASSWD='${VMAIL_DB_BIND_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
 # For database management: vmail.
 export VMAIL_DB_ADMIN_PASSWD="$(${RANDOM_STRING})"
-echo "export VMAIL_DB_ADMIN_PASSWD='${VMAIL_DB_ADMIN_PASSWD}'" >> ${CONFIG_FILE}
+echo "export VMAIL_DB_ADMIN_PASSWD='${VMAIL_DB_ADMIN_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
 # LDAP bind dn & password.
 export LDAP_BINDPW="$(${RANDOM_STRING})"
 export LDAP_ADMIN_PW="$(${RANDOM_STRING})"
-echo "export LDAP_BINDPW='${LDAP_BINDPW}'" >> ${CONFIG_FILE}
-echo "export LDAP_ADMIN_PW='${LDAP_ADMIN_PW}'" >> ${CONFIG_FILE}
+echo "export LDAP_BINDPW='${LDAP_BINDPW}'" >> ${IREDMAIL_CONFIG_FILE}
+echo "export LDAP_ADMIN_PW='${LDAP_ADMIN_PW}'" >> ${IREDMAIL_CONFIG_FILE}
 
 if [ X"${BACKEND}" == X"OPENLDAP" ]; then
     . ${DIALOG_DIR}/ldap_config.sh
@@ -188,8 +188,8 @@ elif [ X"${BACKEND}" == X'PGSQL' ]; then
     export SQL_ROOT_PASSWD="${PGSQL_ROOT_PASSWD}"
 fi
 
-echo "export SQL_SERVER='${SQL_SERVER}'" >> ${CONFIG_FILE}
-echo "export SQL_SERVER_PORT='${SQL_SERVER_PORT}'" >> ${CONFIG_FILE}
+echo "export SQL_SERVER='${SQL_SERVER}'" >> ${IREDMAIL_CONFIG_FILE}
+echo "export SQL_SERVER_PORT='${SQL_SERVER_PORT}'" >> ${IREDMAIL_CONFIG_FILE}
 
 # Virtual domain configuration.
 . ${DIALOG_DIR}/virtual_domain_config.sh
@@ -198,7 +198,7 @@ echo "export SQL_SERVER_PORT='${SQL_SERVER_PORT}'" >> ${CONFIG_FILE}
 . ${DIALOG_DIR}/optional_components.sh
 
 # Append EOF tag in config file.
-echo "#EOF" >> ${CONFIG_FILE}
+echo "#EOF" >> ${IREDMAIL_CONFIG_FILE}
 
 #
 # Ending message.
@@ -213,7 +213,7 @@ Configuration completed.
 * Below file contains sensitive infomation (username/password), please  *
 * do remember to *MOVE* it to a safe place after installation.          *
 *                                                                       *
-*   * ${CONFIG_FILE}
+*   * ${IREDMAIL_CONFIG_FILE}
 *                                                                       *
 *************************************************************************
 EOF
