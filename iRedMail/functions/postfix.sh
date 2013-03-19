@@ -72,13 +72,15 @@ postfix_config_basic()
         perl -pi -e 's/^(transport*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
         perl -pi -e 's/^(inet_protocols*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
         perl -pi -e 's/^(relocated_maps*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
-        perl -pi -e 's/^(smtpd_sasl_auth_enable*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(tls_*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's/^(mailbox*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
 
         perl -pi -e 's/^(POSTFIX_UPDATE_MAPS=).*/${1}"no"/' ${POSTFIX_SYSCONFIG_CONF}
 
         # Don't invoke /usr/sbin/config.postfix to use hard-coded settings
-        perl -pi -e 's,(/usr/sbin/config.postfix),#${1},' /etc/init.d/postfix
-        perl -pi -e 's,(/usr/sbin/config.postfix),#${1},' /etc/postfix/system/config_postfix
+        for f in /etc/init.d/postfix /etc/postfix/system/config_postfix; do
+            [ -f $f ] && perl -pi -e 's,(/usr/sbin/config.postfix),#${1},' $f
+        done
     fi
 
     # Use ipv4 only
@@ -126,9 +128,6 @@ postfix_config_basic()
     # Sender restrictions
     postconf -e smtpd_sender_restrictions="permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"
 
-    #[ X"${DISTRO}" == X'SUSE' ] && \
-    #    perl -pi -e 's#^(POSTFIX_SMTPD_SENDER_RESTRICTIONS=).*#${1}"permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"#' ${POSTFIX_SYSCONFIG_CONF}
-
     postconf -e delay_warning_time='0h'
     postconf -e maximal_queue_lifetime='4h'
     postconf -e bounce_queue_lifetime='4h'
@@ -141,8 +140,6 @@ postfix_config_basic()
     # HELO restriction
     postconf -e smtpd_helo_required="yes"
     postconf -e smtpd_helo_restrictions="permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_helo_access pcre:${POSTFIX_FILE_HELO_ACCESS}"
-    #[ X"${DISTRO}" == X'SUSE' ] && \
-    #    perl -pi -e 's#^(POSTFIX_SMTPD_HELO_RESTRICTIONS=).*#${1}"permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_helo_access pcre:$ENV{POSTFIX_FILE_HELO_ACCESS}"#' ${POSTFIX_SYSCONFIG_CONF}
 
     backup_file ${POSTFIX_FILE_HELO_ACCESS}
     cp -f ${SAMPLE_DIR}/postfix/helo_access.pcre ${POSTFIX_FILE_HELO_ACCESS}
@@ -527,19 +524,12 @@ postfix_config_sasl()
         postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
         postconf -e smtpd_end_of_data_restrictions="check_policy_service inet:${CLUEBRINGER_BIND_HOST}:${CLUEBRINGER_BIND_PORT}"
 
-        #[ X"${DISTRO}" == X'SUSE' ] && \
-        #    perl -pi -e 's#^(POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS=).*#${1}"reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, $ENV{POSTCONF_IREDAPD} $ENV{POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"#' ${POSTFIX_SYSCONFIG_CONF}
-
     elif [ X"${USE_POLICYD}" == X"YES" ]; then
         postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, check_policy_service inet:${POLICYD_BIND_HOST}:${POLICYD_BIND_PORT}"
 
-        #[ X"${DISTRO}" == X'SUSE' ] && \
-        #    perl -pi -e 's#^(POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS=).*#${1}"reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, $ENV{POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, check_policy_service inet:$ENV{POLICYD_BIND_HOST}:$ENV{POLICYD_BIND_PORT}"#' ${POSTFIX_SYSCONFIG_CONF}
     else
         postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
 
-        #[ X"${DISTRO}" == X'SUSE' ] && \
-        #    perl -pi -e 's#^(POSTFIX_SMTPD_RECIPIENT_RESTRICTIONS=).*#${1}"reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, $ENV{POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"#' ${POSTFIX_SYSCONFIG_CONF}
     fi
 
     echo 'export status_postfix_config_sasl="DONE"' >> ${STATUS_FILE}
