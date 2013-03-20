@@ -154,7 +154,7 @@ cleanup_replace_firewall_rules()
                     else
                         # openSUSE will use /etc/init.d/SuSEfirewall2_{init,setup} instead.
                         if [ X"${DISTRO}" != X"SUSE" ]; then
-                            ${DIR_RC_SCRIPTS}/iptables restart >/dev/null
+                            ${DIR_RC_SCRIPTS}/iptables restart &>/dev/null
                         fi
                     fi
                     ;;
