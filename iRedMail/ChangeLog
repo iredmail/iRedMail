@@ -5,6 +5,8 @@ iRedMail-0.8.4:
       allowedsenders, rejectedsenders, allowedrecipients, rejectedrecipients
     * Now supports OpenBSD built-in LDAP daemon: ldapd(8).
     * Fixed:
+        - Add new alias 'virusalert' in Postfix for Amavisd.
+          Thanks Frankstar <frankstar.at _at_ gmail.com> for the report.
         - Not enable OpenLDAP TLS/SSL support on OpenBSD by default.
         - Cannot handle alias domain in Postfix per-user bcc.
           Thanks Ward De Backer <wdb _at_ stabe.be> for the report.

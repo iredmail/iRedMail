@@ -256,6 +256,7 @@ EOF
 
     # Add postfix alias for user: amavis.
     add_postfix_alias ${AMAVISD_SYS_USER} ${SYS_ROOT_USER}
+    add_postfix_alias 'virusalert' ${SYS_ROOT_USER}
 
     # Make sure that clamav is configured to init supplementary
     # groups when it drops priviledges, and that you add the
