@@ -27,7 +27,7 @@ allUsers = conn.search_s(
     basedn,
     ldap.SCOPE_SUBTREE,
     "(objectClass=mailExternalUser)",
-    ['memberOfGroup', 'shadowAddress'],
+    ['memberOfGroup'],
 )
 
 total = len(allUsers)
