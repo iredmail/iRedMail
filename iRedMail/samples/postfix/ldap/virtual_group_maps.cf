@@ -7,6 +7,6 @@ bind_dn         = cn=vmail,dc=example,dc=com
 bind_pw         = RBUuFDo31MJbLkJgrwkaKkmRg7Cldw
 search_base     = PH_LDAP_BASEDN
 scope           = sub
-query_filter    = (&(memberOfGroup=%s)(accountStatus=active)(enabledService=mail)(enabledService=deliver)(|(objectClass=mailUser)(objectClass=mailExternalUser)))
+query_filter    = (&(accountStatus=active)(enabledService=mail)(enabledService=deliver)(|(memberOfGroup=%s)(shadowAddress=%s))(|(objectClass=mailUser)(objectClass=mailExternalUser)))
 result_attribute= mail
 debuglevel      = 0

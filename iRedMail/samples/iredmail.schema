@@ -371,4 +371,4 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.6 NAME 'mailExternalUser'
     DESC 'Mail External User' SUP top STRUCTURAL
     MUST ( memberOfGroup )
     MAY ( accountStatus $ mail $ enabledService $ description $
-        cn $ mailHost $ accountSetting ))
+        cn $ mailHost $ accountSetting $ shadowAddress ))
