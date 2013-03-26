@@ -1,7 +1,7 @@
 iRedMail-0.8.4:
     * Enable Dovecot Master User by default, but no pre-defined account.
-    * New SQL columns in `vmail.mailbox` for per-user restriction, used by
-      iRedAPD:
+    * [SQL] New SQL columns in `vmail.mailbox` for per-user restriction, used
+      by iRedAPD:
       allowedsenders, rejectedsenders, allowedrecipients, rejectedrecipients
     * Now supports OpenBSD built-in LDAP daemon: ldapd(8).
     * Fixed:
@@ -10,8 +10,8 @@ iRedMail-0.8.4:
           Thanks Soundar Rajan <soundarajan _at_ take10.in> for the report.
         - Add new alias 'virusalert' in Postfix for Amavisd.
           Thanks Frankstar <frankstar.at _at_ gmail.com> for the report.
-        - Not enable OpenLDAP TLS/SSL support on OpenBSD by default.
-        - Cannot handle alias domain in Postfix per-user bcc.
+        - [ldap] Not enable OpenLDAP TLS/SSL support on OpenBSD by default.
+        - [ldap] Cannot handle alias domain in Postfix per-user bcc.
           Thanks Ward De Backer <wdb _at_ stabe.be> for the report.
 
     * Package update:

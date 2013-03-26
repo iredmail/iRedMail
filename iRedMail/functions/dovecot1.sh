@@ -175,6 +175,7 @@ PERCENT=\${1}
 
 cat << EOF | ${DOVECOT_DELIVER} -d \${USER} -c ${DOVECOT_CONF}
 From: no-reply@${HOSTNAME}
+To: \${USER}
 Subject: Mailbox Quota Warning: \${PERCENT}% Full.
 
 Your mailbox is now \${PERCENT}% full, please clean up some mails for
