@@ -109,3 +109,22 @@ whitelist_from_dkim       *@gmail.com *@paypal.com
 
 # Locales.
 ok_locales          all
+
+# Some sample custom file rules. Refer to SpamAssassin wiki site for more
+# details: http://wiki.apache.org/spamassassin/WritingRules
+#
+# Filter Headers.
+# -- Subject
+#header LOCAL_DEMONSTRATION_SUBJECT      Subject =~ /\btest\b/i
+#score LOCAL_DEMONSTRATION_SUBJECT       0.1
+# -- From
+#header LOCAL_DEMONSTRATION_FROM From =~ /test\.com/i
+#score LOCAL_DEMONSTRATION_FROM  0.1
+# -- Look at all the headers and match if any of them contain the specified regex:
+#header LOCAL_DEMONSTRATION_ALL  ALL =~ /test\.com/i
+#score LOCAL_DEMONSTRATION_ALL   0.1
+#
+# Filter mail body.
+#body LOCAL_DEMONSTRATION_RULE /test/
+#score LOCAL_DEMONSTRATION_RULE 0.1
+#describe LOCAL_DEMONSTRATION_RULE This is a simple test rule
