@@ -1,16 +1,17 @@
 #!/usr/bin/env bash
 
 # Author:   Zhang Huangbin (zhb _at_ iredmail.org)
-# Purpose: Add new OpenLDAP user for postfix mail server.
+# Purpose:  Add new OpenLDAP user for postfix mail server.
 # Project:  iRedMail (http://www.iredmail.org/)
 
 # --------------------------- WARNING ------------------------------
-# This script only works under iRedMail >= 0.3.3 due to ldap schema
+# This script only works under iRedMail >= 0.8.4 due to ldap schema
 # changes.
 # ------------------------------------------------------------------
 
 # --------------------------- USAGE --------------------------------
-# Please change variables below to fit your env:
+# 1) Please change variables below to fit your env:
+#
 #   - In 'Global Setting' section:
 #       * STORAGE_BASE_DIRECTORY
 #
@@ -34,6 +35,16 @@
 #
 #   - Optional variables:
 #       * SEND_WELCOME_MSG
+#
+# 2) Execute this script with domain name and username (without @domain) directly:
+#
+#       shell# bash create_mail_user_OpenLDAP.sh example.com new_user
+#
+#    It will create a mail user with mail address "new_user@example.com".
+#    To add multiple mail users, just list all usernames:
+#
+#       shell# bash create_mail_user_OpenLDAP.sh example.com new_user new_user2 new_user3
+#
 # ------------------------------------------------------------------
 
 # Source functions.
