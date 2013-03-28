@@ -17,7 +17,7 @@ iRedMail-0.8.4:
     * Package update:
         + iRedAPD -> 1.4.0
         + iRedAdmin (open source edition) -> 0.2.1
-        + Roundcube webmail -> 0.8.5
+        + Roundcube webmail -> 0.8.6
         + phpMyAdmin -> 3.5.5
         + phpLDAPadmin -> 1.2.3
 
