@@ -1,3 +1,9 @@
+iRedMail-0.8.5:
+    * New SQL column and LDAP attribute for mail domain, used to store
+      preferred language for newly created mail users.
+      - SQL: column domain.defaultlang
+      - OpenLDAP: attribute 'preferredLanguage' for mailDomain object
+
 iRedMail-0.8.4:
     * Enable Dovecot Master User by default, but no pre-defined account.
     * [SQL] New SQL columns in `vmail.mailbox` for per-user restriction, used

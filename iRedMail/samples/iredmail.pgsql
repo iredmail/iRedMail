@@ -69,6 +69,8 @@ CREATE TABLE domain (
     -- Per-domain transport. e.g. dovecot, smtp:[192.168.1.1]:25
     transport VARCHAR(255) NOT NULL DEFAULT 'dovecot',
     backupmx INT2 NOT NULL DEFAULT 0,
+    -- Default preferred language for newly created mail user.
+    defaultlanguage VARCHAR(5) NOT NULL DEFAULT 'en_US',
     -- Default quota size for newly created mail account.
     defaultuserquota INT8 NOT NULL DEFAULT '1024',
     -- List of mail alias addresses, Newly created user will be
