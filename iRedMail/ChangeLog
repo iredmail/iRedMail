@@ -4,6 +4,11 @@ iRedMail-0.8.5:
       - SQL: column domain.defaultlang
       - OpenLDAP: attribute 'preferredLanguage' for mailDomain object
 
+    * Fixed:
+        + [FreeBSD] Force all ports to use database/db48 by setting
+          'WANT_BDB_VER=48' in /etc/make.conf.
+          Thanks hunci <hunci _at_ hunci.sk> for the report.
+
 iRedMail-0.8.4:
     * Enable Dovecot Master User by default, but no pre-defined account.
     * [SQL] New SQL columns in `vmail.mailbox` for per-user restriction, used

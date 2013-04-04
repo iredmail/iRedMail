@@ -37,6 +37,7 @@ install_all()
     export WANT_MYSQL_VER='55'
     export WANT_PGSQL_VER='91'
     export WANT_POSTFIX_VER='27'
+    export WANT_BDB_VER='48'
 
     freebsd_add_make_conf 'WITHOUT_X11' 'yes'
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${WANT_OPENLDAP_VER}"
@@ -45,6 +46,7 @@ install_all()
     freebsd_add_make_conf 'PYTHON_DEFAULT_VERSION' 'python2.7'
     freebsd_add_make_conf 'APACHE_PORT' 'www/apache22'
     freebsd_add_make_conf 'WITH_SASL' 'yes'
+    freebsd_add_make_conf 'WANT_BDB_VER' "${WANT_BDB_VER}"
 
     for p in \
         openldap${WANT_OPENLDAP_VER} \
