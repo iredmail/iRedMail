@@ -105,7 +105,7 @@ iredapd_config()
         ECHO_DEBUG "Setting logrotate for iRedAPD log file."
         cat > ${IREDAPD_LOGROTATE_FILE} <<EOF
 ${CONF_MSG}
-${IREDAPD_LOG_FILE}
+${IREDAPD_LOG_FILE} {
     compress
     weekly
     rotate 10
