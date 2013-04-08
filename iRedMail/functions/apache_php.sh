@@ -286,15 +286,7 @@ EOF
     backup_file ${HTTPD_DOCUMENTROOT}/robots.txt
     cat >> ${HTTPD_DOCUMENTROOT}/robots.txt <<EOF
 User-agent: *
-Disallow: /mail
-Disallow: /webmail
-Disallow: /roundcube
-Disallow: /phpldapadmin
-Disallow: /ldap
-Disallow: /mysql
-Disallow: /phpmyadmin
-Disallow: /awstats
-Disallow: /iredadmin
+Disallow: /
 EOF
 
     # Add alias for Apache daemon user

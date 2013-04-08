@@ -44,9 +44,7 @@ rcm_config_httpd()
     cat > ${HTTPD_CONF_DIR}/roundcubemail.conf <<EOF
 ${CONF_MSG}
 # Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
-Alias /mail "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
-Alias /webmail "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
-Alias /roundcube "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
+#Alias /mail "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
 <Directory "${RCM_HTTPD_ROOT_SYMBOL_LINK}/">
     Options -Indexes
 </Directory>
@@ -54,8 +52,6 @@ EOF
 
     # Make Roundcube can be accessed via HTTPS.
     perl -pi -e 's#^(</VirtualHost>)#Alias /mail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#^(</VirtualHost>)#Alias /webmail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#^(</VirtualHost>)#Alias /roundcube "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     # Redirect home page to webmail by default
     backup_file ${HTTPD_DOCUMENTROOT}/index.html
