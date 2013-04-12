@@ -46,11 +46,11 @@ if [ X"${BACKEND}" == X'OPENLDAP' ]; then
 elif [ X"${BACKEND}" == X'MYSQL' ]; then
     LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpMyAdmin Web-based_MySQL_management_tool on"
 elif [ X"${BACKEND}" == X'PGSQL' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpMyAdmin Web-based_MySQL_management_tool on"
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpPgAdmin Web-based_PostgreSQL_management_tool on"
 fi
 
 if [ X"${DIALOG_SELECTABLE_AWSTATS}" == X'YES' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpPgAdmin Web-based_PostgreSQL_management_tool on"
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Awstats Advanced_web_and_mail_log_analyzer on"
 fi
 
 # Fail2ban
