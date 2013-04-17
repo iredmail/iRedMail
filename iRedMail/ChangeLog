@@ -3,6 +3,9 @@ iRedMail-0.8.5:
       preferred language for newly created mail users.
       - SQL: column domain.defaultlang
       - OpenLDAP: attribute 'preferredLanguage' for mailDomain object
+    * Package update:
+        + phpMyAdmin -> 3.5.8
+        + Roundcube webmail -> 0.9.0
 
 iRedMail-0.8.4:
     * Enable Dovecot Master User by default, but no pre-defined account.
