@@ -35,7 +35,7 @@ check_user root
 check_hostname
 
 # Where to fetch/store binary packages and source tarball.
-export MIRROR='http://iredmail.org/yum'
+export IREDMAIL_MIRROR="${IREDMAIL_MIRROR:=http://iredmail.org}/yum"
 export PKG_DIR="${ROOTDIR}/pkgs"
 export MISC_DIR="${ROOTDIR}/misc"
 
@@ -105,7 +105,7 @@ fetch_misc()
     ECHO_INFO "Fetching source tarballs ..."
 
     for i in ${MISCLIST}; do
-        url="${MIRROR}/misc/${i}"
+        url="${IREDMAIL_MIRROR}/misc/${i}"
         ECHO_INFO "+ ${misc_count} of ${misc_total}: ${url}"
 
         ${FETCH_CMD} "${url}"
@@ -157,7 +157,7 @@ create_repo_rhel()
     cat > ${LOCAL_REPO_FILE} <<EOF
 [${LOCAL_REPO_NAME}]
 name=${LOCAL_REPO_NAME}
-baseurl=http://iredmail.org/yum/rpms/${DISTRO_VERSION}/
+baseurl=${IREDMAIL_MIRROR}/yum/rpms/${DISTRO_VERSION}/
 enabled=1
 gpgcheck=0
 EOF
@@ -167,7 +167,7 @@ EOF
         cat >> ${LOCAL_REPO_FILE} <<EOF
 [iRedMail-Dovecot-12]
 name=iRedMail-Dovecot-12
-baseurl=http://iredmail.org/yum/rpms/dovecot/rhel${DISTRO_VERSION}/
+baseurl=${IREDMAIL_MIRROR}/yum/rpms/dovecot/rhel${DISTRO_VERSION}/
 enabled=1
 gpgcheck=0
 EOF
@@ -187,7 +187,7 @@ create_repo_suse()
 
 [iRedMail]
 name=iRedMail
-baseurl=http://iredmail.org/yum/opensuse/${DISTRO_VERSION}/
+baseurl=${IREDMAIL_MIRROR}/yum/opensuse/${DISTRO_VERSION}/
 enabled=1
 autorefresh=1
 path=/
@@ -205,7 +205,7 @@ check_new_iredmail()
     # we should take more care of.
     # iRedMail version number, OS distribution, release version, code name, backend.
     ECHO_INFO "Checking new version of iRedMail ..."
-    ${FETCH_CMD} "http://iredmail.org/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
+    ${FETCH_CMD} "${IREDMAIL_MIRROR}/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
 
     UPDATE_AVAILABLE='NO'
     if ls iredmail_os* &>/dev/null; then
@@ -221,7 +221,7 @@ check_new_iredmail()
         echo ''
         ECHO_ERROR "Your iRedMail version (${PROG_VERSION}) is out of date, please"
         ECHO_ERROR "download the latest version and try again:"
-        ECHO_ERROR "http://iredmail.org/download.html"
+        ECHO_ERROR "http://www.iredmail.org/download.html"
         echo ''
         exit 255
     fi
