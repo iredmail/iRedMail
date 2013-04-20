@@ -35,7 +35,7 @@ check_user root
 check_hostname
 
 # Where to fetch/store binary packages and source tarball.
-export IREDMAIL_MIRROR="${IREDMAIL_MIRROR:=http://iredmail.org}/yum"
+export IREDMAIL_MIRROR="${IREDMAIL_MIRROR:=http://iredmail.org}"
 export PKG_DIR="${ROOTDIR}/pkgs"
 export MISC_DIR="${ROOTDIR}/misc"
 
@@ -105,7 +105,7 @@ fetch_misc()
     ECHO_INFO "Fetching source tarballs ..."
 
     for i in ${MISCLIST}; do
-        url="${IREDMAIL_MIRROR}/misc/${i}"
+        url="${IREDMAIL_MIRROR}/yum/misc/${i}"
         ECHO_INFO "+ ${misc_count} of ${misc_total}: ${url}"
 
         ${FETCH_CMD} "${url}"
