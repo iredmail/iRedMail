@@ -212,6 +212,7 @@ EOF
     # ---- SENDER THROTTLE ----
     perl -pi -e 's#^(SENDERTHROTTLE=)(.*)#${1}0#' ${POLICYD_CONF}
     # ---- RECIPIENT THROTTLE ----
+    # Note: recipient throttle doesn't work in Postfix smtpd_end_of_data_restrictions.
     perl -pi -e 's#^(RECIPIENTTHROTTLE=)(.*)#${1}0#' ${POLICYD_CONF}
 
     # ---- RCPT ACL ----
@@ -238,7 +239,7 @@ EOF
     perl -pi -e 's#^(GID=)(.*)#${1}$ENV{policyd_group_id}#' ${POLICYD_THROTTLE_CONF}
 
     # ---- RECIPIENT THROTTLE ----
-    perl -pi -e 's#^(RECIPIENTTHROTTLE=)(.*)#${1}1#' ${POLICYD_THROTTLE_CONF}
+    perl -pi -e 's#^(RECIPIENTTHROTTLE=)(.*)#${1}0#' ${POLICYD_THROTTLE_CONF}
 
     # ------------------ DISABLE ALL OTHER FEATURES -----------------
     # ---- WHITELISTING ----
