@@ -1,0 +1,3399 @@
+# Copyright (C) 2013 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2013.
+#
+
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: zhb@iredmail.org\n"
+"POT-Creation-Date: 2013-04-22 11:12+0800\n"
+"PO-Revision-Date: 2013-04-22 11:12+0800\n"
+"Last-Translator: GotoCloud <gotocloud@gotocloud.co.kr>\n"
+"Language-Team: Ko-KR <gotocloud@gotocloud.co.kr>\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 0.9.6\n"
+
+#: ../templates/default/dbmail_mysql/search.html:71
+#: ../templates/default/ldap/search.html:128
+#: ../templates/default/mysql/search.html:151
+#: ../templates/default/pgsql/search.html:151
+#, python-format
+msgid "%d admin(s) found."
+msgstr "%d 개의 관리자가 검색되었습니다."
+
+#: ../templates/default/ldap/search.html:67
+#, python-format
+msgid "%d domain(s) found."
+msgstr "%d 개의 도메인이 검색되었습니다."
+
+#: ../templates/default/mysql/search.html:73
+#: ../templates/default/pgsql/search.html:73
+#, python-format
+msgid "%d domains(s) found."
+msgstr "%d 개의 도메인이 검색되었습니다."
+
+#: ../templates/default/dbmail_mysql/search.html:209
+#: ../templates/default/ldap/search.html:295
+#: ../templates/default/mysql/search.html:279
+#: ../templates/default/pgsql/search.html:279
+#, python-format
+msgid "%d mail alias(es) found."
+msgstr "%d 개의 메일 별칭이 검색되었습니다."
+
+#: ../templates/default/ldap/search.html:242
+#, python-format
+msgid "%d mail list(s) found."
+msgstr "%d 개의 메일 리스트가 검색되었습니다."
+
+#: ../templates/default/dbmail_mysql/search.html:135
+#: ../templates/default/ldap/search.html:182
+#: ../templates/default/mysql/search.html:216
+#: ../templates/default/pgsql/search.html:216
+#, python-format
+msgid "%d user(s) found."
+msgstr "%d 개의 사용자 계정이 검색되었습니다."
+
+#: ../templates/default/macros/ldap.html:16
+#, python-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:330
+#: ../templates/default/dbmail_mysql/domain/profile.html:338
+#: ../templates/default/ldap/domain/profile.html:394
+#: ../templates/default/ldap/domain/profile.html:401
+#: ../templates/default/ldap/domain/profile.html:409
+#: ../templates/default/mysql/domain/profile.html:407
+#: ../templates/default/mysql/domain/profile.html:415
+#: ../templates/default/pgsql/domain/profile.html:389
+#: ../templates/default/pgsql/domain/profile.html:397
+#, python-format
+msgid "%s account(s) exist."
+msgstr "%s 계정이 이미 존재합니다."
+
+#: ../templates/default/dashboard.html:106
+#, python-format
+msgid "%s days, %s hours, %s minutes."
+msgstr "%s 일, %s 시, %s 분"
+
+#: ../templates/default/macros/policyd.html:44
+msgid "1 Day"
+msgstr "하루"
+
+#: ../templates/default/macros/policyd.html:44
+msgid "1 Hour"
+msgstr "한 시간"
+
+#: ../templates/default/macros/policyd.html:44
+msgid "1 Minute"
+msgstr "일 분"
+
+#: ../templates/default/macros/general.html:762
+#, python-format
+msgid "<a href='%s'>Domain and sub-domain users</a>"
+msgstr "<a href='%s'>도메인 및 하부 도메인 사용자</a>"
+
+#: ../templates/default/macros/general.html:760
+#, python-format
+msgid "<a href='%s'>Domain users</a>"
+msgstr "<a href='%s'>도메인 사용자</a>"
+
+#: ../templates/default/macros/general.html:764
+#, python-format
+msgid "<a href='%s'>Members</a>"
+msgstr "<a href='%s'>구성원</a>"
+
+#: ../templates/default/ldap/maillist/profile.html:88
+#: ../templates/default/macros/general.html:768
+#: ../templates/default/mysql/alias/profile.html:77
+#: ../templates/default/pgsql/alias/profile.html:77
+#, python-format
+msgid "<a href='%s'>Members</a> and <a href='%s'>moderators</a>"
+msgstr "<a href='%s'>구성원</a> 및 <a href='%s'>승인자</a>"
+
+#: ../templates/default/macros/general.html:766
+#, python-format
+msgid "<a href='%s'>Moderators</a>"
+msgstr "<a href='%s'>승인자</a>"
+
+#: ../templates/default/ldap/maillist/profile.html:84
+#: ../templates/default/mysql/alias/profile.html:73
+#: ../templates/default/pgsql/alias/profile.html:73
+#, python-format
+msgid "<a href='%s'>Users under domain <strong>%s</strong></a>"
+msgstr "<a href='%s'>도메인 사용자<strong>%s</strong></a>"
+
+#: ../templates/default/ldap/maillist/profile.html:85
+#: ../templates/default/mysql/alias/profile.html:74
+#: ../templates/default/pgsql/alias/profile.html:74
+#, python-format
+msgid ""
+"<a href='%s'>Users under domain <strong>%s</strong></a> and its sub-"
+"domains"
+msgstr "<a href='%s'> 도메인 및 하부 도메인 사용자 <strong>%s</strong></a>"
+
+#: ../templates/default/amavisd/inout.html:72
+#: ../templates/default/amavisd/inout.html:83
+msgid "About mail logs"
+msgstr "메일 로그 정보"
+
+#: ../templates/default/amavisd/quarantined.html:59
+msgid "About quarantined mails"
+msgstr "격리된 메일 정보"
+
+#: ../templates/default/ldap/user/profile.html:218
+msgid "Account NOT exists."
+msgstr "계정이 존재하지 않습니다."
+
+#: ../templates/default/macros/general.html:243
+msgid "Account activities"
+msgstr "계정 활동 내역"
+
+#: ../templates/default/macros/msgHandlers.html:181
+#: ../templates/default/macros/msgHandlers.html:207
+#: ../templates/default/macros/msgHandlers.html:219
+#: ../templates/default/macros/msgHandlers.html:243
+msgid "Account already exists, please choose another username."
+msgstr "계정이 이미 존재합니다. 다른 사용자 계정을 입력하세요."
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:390
+#: ../templates/default/mysql/domain/profile.html:472
+#: ../templates/default/pgsql/domain/profile.html:454
+msgid "Account does not exist."
+msgstr "계정이 존재하지 않습니다."
+
+#: ../templates/default/macros/general.html:199
+msgid "Account is active, but marked as backup MX."
+msgstr "계정이 활성화 되었으나 백업 MX로 지정되어 있습니다."
+
+#: ../templates/default/macros/general.html:192
+#: ../templates/default/macros/general.html:194
+msgid "Account is active, but relay to other host"
+msgstr "계정이 활성화 되었으나 다른 호스트로 전달됩니다."
+
+#: ../templates/default/macros/general.html:188
+msgid "Account is active."
+msgstr "계정이 활성화 되었습니다."
+
+#: ../templates/default/macros/general.html:201
+#: ../templates/default/macros/general.html:202
+msgid "Account is disabled."
+msgstr "계정을 사용할 수 없습니다."
+
+#: ../templates/default/macros/general.html:209
+msgid "Account is domain admin"
+msgstr "도메인 관리자 계정입니다."
+
+#: ../templates/default/macros/general.html:211
+msgid "Account is global admin"
+msgstr "최상위 관리자 계정입니다."
+
+#: ../templates/default/dbmail_mysql/search.html:50
+#: ../templates/default/ldap/search.html:48
+#: ../templates/default/mysql/search.html:51
+#: ../templates/default/pgsql/search.html:51
+msgid "Account status"
+msgstr "계정 상태"
+
+#: ../templates/default/dbmail_mysql/search.html:41
+#: ../templates/default/ldap/search.html:37
+#: ../templates/default/mysql/search.html:41
+#: ../templates/default/pgsql/search.html:41
+msgid "Account type"
+msgstr "계정 유형"
+
+#: ../templates/default/macros/general.html:903
+msgid "Activate account"
+msgstr "계정 활성화"
+
+#: ../templates/default/dbmail_mysql/search.html:51
+#: ../templates/default/ldap/search.html:49
+#: ../templates/default/mysql/search.html:52
+#: ../templates/default/pgsql/search.html:52
+msgid "Active"
+msgstr "활성화"
+
+#: ../templates/default/layout.html:106
+#: ../templates/default/dbmail_mysql/alias/create.html:82
+#: ../templates/default/dbmail_mysql/user/create.html:132
+#: ../templates/default/ldap/alias/create.html:102
+#: ../templates/default/ldap/maillist/create.html:100
+#: ../templates/default/ldap/maillist/profile.html:56
+#: ../templates/default/ldap/user/create.html:175
+#: ../templates/default/macros/general.html:708
+#: ../templates/default/macros/general.html:750
+#: ../templates/default/mysql/alias/create.html:96
+#: ../templates/default/mysql/user/create.html:145
+#: ../templates/default/pgsql/alias/create.html:96
+#: ../templates/default/pgsql/user/create.html:145
+#: ../templates/default/policyd/blacklist/create.html:50
+#: ../templates/default/policyd/whitelist/create.html:44
+msgid "Add"
+msgstr "추가"
+
+#: ../templates/default/macros/general.html:897
+msgid "Add account"
+msgstr "계정 추가"
+
+#: ../templates/default/dbmail_mysql/admin/create.html:13
+#: ../templates/default/dbmail_mysql/admin/create.html:25
+#: ../templates/default/dbmail_mysql/admin/create.html:28
+#: ../templates/default/dbmail_mysql/admin/list.html:31
+#: ../templates/default/ldap/admin/create.html:13
+#: ../templates/default/ldap/admin/create.html:25
+#: ../templates/default/ldap/admin/create.html:28
+#: ../templates/default/ldap/admin/list.html:31
+#: ../templates/default/mysql/admin/create.html:13
+#: ../templates/default/mysql/admin/create.html:25
+#: ../templates/default/mysql/admin/create.html:28
+#: ../templates/default/mysql/admin/list.html:31
+#: ../templates/default/pgsql/admin/create.html:13
+#: ../templates/default/pgsql/admin/create.html:25
+#: ../templates/default/pgsql/admin/create.html:28
+#: ../templates/default/pgsql/admin/list.html:31
+msgid "Add admin"
+msgstr "관리자 추가"
+
+#: ../templates/default/policyd/wblist.html:49
+#: ../templates/default/policyd/blacklist/create.html:11
+#: ../templates/default/policyd/blacklist/create.html:26
+#: ../templates/default/policyd/blacklist/create.html:28
+#: ../templates/default/policyd/whitelist/create.html:26
+msgid "Add blacklist"
+msgstr "블랙리스트 추가"
+
+#: ../templates/default/dbmail_mysql/domain/create.html:7
+#: ../templates/default/dbmail_mysql/domain/create.html:20
+#: ../templates/default/dbmail_mysql/domain/create.html:24
+#: ../templates/default/dbmail_mysql/domain/list.html:31
+#: ../templates/default/ldap/domain/create.html:9
+#: ../templates/default/ldap/domain/create.html:23
+#: ../templates/default/ldap/domain/create.html:27
+#: ../templates/default/ldap/domain/list.html:31
+#: ../templates/default/macros/general.html:740
+#: ../templates/default/macros/ldap.html:32
+#: ../templates/default/macros/mysql.html:26
+#: ../templates/default/mysql/domain/create.html:7
+#: ../templates/default/mysql/domain/create.html:20
+#: ../templates/default/mysql/domain/create.html:24
+#: ../templates/default/mysql/domain/list.html:31
+#: ../templates/default/pgsql/domain/create.html:7
+#: ../templates/default/pgsql/domain/create.html:20
+#: ../templates/default/pgsql/domain/create.html:24
+#: ../templates/default/pgsql/domain/list.html:31
+msgid "Add domain"
+msgstr "도메인 추가"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:415
+#: ../templates/default/dbmail_mysql/user/profile.html:155
+#: ../templates/default/ldap/user/profile.html:272
+#: ../templates/default/mysql/domain/profile.html:497
+#: ../templates/default/mysql/user/profile.html:156
+#: ../templates/default/pgsql/domain/profile.html:479
+#: ../templates/default/pgsql/user/profile.html:156
+msgid "Add mail alias"
+msgstr "메일 별칭 추가"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:9
+#: ../templates/default/dbmail_mysql/alias/create.html:55
+#: ../templates/default/ldap/alias/create.html:10
+#: ../templates/default/ldap/alias/create.html:74
+#: ../templates/default/mysql/alias/create.html:10
+#: ../templates/default/mysql/alias/create.html:69
+#: ../templates/default/pgsql/alias/create.html:10
+#: ../templates/default/pgsql/alias/create.html:69
+#, python-format
+msgid "Add mail alias under domain: %s"
+msgstr "%s 도메인의 메일 별칭 추가"
+
+#: ../templates/default/ldap/domain/profile.html:483
+#: ../templates/default/ldap/user/profile.html:230
+msgid "Add mail list"
+msgstr "메일 리스트 추가"
+
+#: ../templates/default/ldap/maillist/create.html:10
+#: ../templates/default/ldap/maillist/create.html:74
+#, python-format
+msgid "Add mail list under domain: %s."
+msgstr "%s 도메인의 메일 리스트 추가"
+
+#: ../templates/default/ldap/maillist/profile.html:383
+msgid "Add members"
+msgstr "구성원 추가"
+
+#: ../templates/default/ldap/maillist/profile.html:397
+msgid "Add moderators"
+msgstr "승인자 추가"
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:164
+#: ../templates/default/ldap/alias/profile.html:114
+#: ../templates/default/mysql/alias/profile.html:169
+#: ../templates/default/pgsql/alias/profile.html:169
+msgid "Add new members"
+msgstr "신규 구성원 추가"
+
+#: ../templates/default/mysql/alias/profile.html:177
+#: ../templates/default/pgsql/alias/profile.html:177
+msgid "Add new moderators"
+msgstr "신규 승인자 추가"
+
+#: ../templates/default/dbmail_mysql/alias/list.html:73
+#: ../templates/default/dbmail_mysql/domain/list.html:137
+#: ../templates/default/dbmail_mysql/user/list.html:103
+#: ../templates/default/ldap/alias/list.html:100
+#: ../templates/default/ldap/domain/list.html:189
+#: ../templates/default/ldap/maillist/list.html:100
+#: ../templates/default/ldap/user/list.html:141
+#: ../templates/default/mysql/alias/list.html:86
+#: ../templates/default/mysql/domain/list.html:146
+#: ../templates/default/mysql/user/list.html:121
+#: ../templates/default/pgsql/alias/list.html:86
+#: ../templates/default/pgsql/domain/list.html:146
+#: ../templates/default/pgsql/user/list.html:121
+msgid "Add one"
+msgstr "추가하시겠습니까?"
+
+#: ../templates/default/macros/msgHandlers.html:108
+#: ../templates/default/macros/msgHandlers.html:153
+#: ../templates/default/macros/msgHandlers.html:188
+#: ../templates/default/macros/msgHandlers.html:228
+#: ../templates/default/macros/msgHandlers.html:260
+msgid "Add one more?"
+msgstr "계속 추가 하시겠습니까?"
+
+#: ../templates/default/dbmail_mysql/user/create.html:13
+#: ../templates/default/dbmail_mysql/user/create.html:78
+#: ../templates/default/ldap/user/create.html:15
+#: ../templates/default/ldap/user/create.html:120
+#: ../templates/default/mysql/user/create.html:15
+#: ../templates/default/mysql/user/create.html:90
+#: ../templates/default/pgsql/user/create.html:15
+#: ../templates/default/pgsql/user/create.html:90
+#, python-format
+msgid "Add user under domain: %s"
+msgstr "%s 도메인 사용자 추가"
+
+#: ../templates/default/policyd/wblist.html:48
+#: ../templates/default/policyd/blacklist/create.html:25
+#: ../templates/default/policyd/whitelist/create.html:11
+#: ../templates/default/policyd/whitelist/create.html:25
+#: ../templates/default/policyd/whitelist/create.html:28
+msgid "Add whitelist"
+msgstr "화이트리스트 추가"
+
+#: ../templates/default/layout.html:110
+#: ../templates/default/dbmail_mysql/search.html:45
+#: ../templates/default/ldap/search.html:43
+#: ../templates/default/mysql/search.html:46
+#: ../templates/default/panel/log.html:83
+#: ../templates/default/pgsql/search.html:46
+msgid "Admin"
+msgstr "관리자"
+
+#: ../templates/default/layout.html:85
+#: ../templates/default/amavisd/inout.html:36
+#: ../templates/default/amavisd/quarantined.html:30
+#: ../templates/default/panel/log.html:11
+#: ../templates/default/panel/log.html:22
+#: ../templates/default/panel/log.html:29
+msgid "Admin Log"
+msgstr "관리 로그"
+
+#: ../templates/default/macros/msgHandlers.html:188
+msgid "Admin created."
+msgstr "관리자가 생성되었습니다."
+
+#: ../templates/default/macros/general.html:895
+msgid "Admin login"
+msgstr "관리자가 로그인하였습니다."
+
+#: ../templates/default/macros/msgHandlers.html:182
+msgid "Admin not exist."
+msgstr "관리자가 존재하지 않습니다."
+
+#: ../templates/default/layout.html:78
+#: ../templates/default/ldap/alias/create.html:20
+#: ../templates/default/ldap/alias/list.html:24
+#: ../templates/default/ldap/alias/profile.html:34
+#: ../templates/default/ldap/domain/profile.html:107
+#: ../templates/default/ldap/maillist/create.html:20
+#: ../templates/default/ldap/maillist/list.html:26
+#: ../templates/default/ldap/maillist/profile.html:36
+#: ../templates/default/ldap/user/admin.html:25
+#: ../templates/default/ldap/user/create.html:25
+#: ../templates/default/ldap/user/list.html:26
+#: ../templates/default/ldap/user/profile.html:104
+#: ../templates/default/panel/log.html:55
+msgid "Admins"
+msgstr "관리자"
+
+#: ../templates/default/ldap/user/admin.html:15
+#: ../templates/default/ldap/user/admin.html:54
+#, python-format
+msgid "Admins under domain: %s"
+msgstr "%s 도메인 관리자"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:55
+#: ../templates/default/dbmail_mysql/user/profile.html:56
+#: ../templates/default/ldap/domain/profile.html:127
+#: ../templates/default/ldap/user/profile.html:123
+#: ../templates/default/mysql/domain/profile.html:67
+#: ../templates/default/mysql/user/profile.html:72
+#: ../templates/default/pgsql/domain/profile.html:68
+#: ../templates/default/pgsql/user/profile.html:72
+msgid "Advanced"
+msgstr "추가 사항"
+
+#: ../templates/default/layout.html:118
+#: ../templates/default/dbmail_mysql/search.html:43
+#: ../templates/default/dbmail_mysql/alias/create.html:51
+#: ../templates/default/dbmail_mysql/alias/list.html:28
+#: ../templates/default/dbmail_mysql/user/create.html:74
+#: ../templates/default/dbmail_mysql/user/list.html:31
+#: ../templates/default/ldap/search.html:40
+#: ../templates/default/ldap/alias/create.html:70
+#: ../templates/default/ldap/alias/list.html:47
+#: ../templates/default/ldap/maillist/create.html:70
+#: ../templates/default/ldap/maillist/list.html:49
+#: ../templates/default/ldap/user/admin.html:50
+#: ../templates/default/ldap/user/create.html:116
+#: ../templates/default/ldap/user/list.html:51
+#: ../templates/default/mysql/search.html:43
+#: ../templates/default/mysql/alias/create.html:65
+#: ../templates/default/mysql/alias/list.html:41
+#: ../templates/default/mysql/user/create.html:86
+#: ../templates/default/mysql/user/list.html:45
+#: ../templates/default/pgsql/search.html:43
+#: ../templates/default/pgsql/alias/create.html:65
+#: ../templates/default/pgsql/alias/list.html:41
+#: ../templates/default/pgsql/user/create.html:86
+#: ../templates/default/pgsql/user/list.html:45
+msgid "Alias"
+msgstr "별칭"
+
+#: ../templates/default/macros/ldap.html:97
+msgid "Alias account"
+msgstr "계정 별칭"
+
+#: ../templates/default/ldap/domain/profile.html:221
+#: ../templates/default/ldap/domain/profile.html:232
+#: ../templates/default/mysql/domain/profile.html:281
+#: ../templates/default/pgsql/domain/profile.html:282
+msgid "Alias domains"
+msgstr "도메인 별칭"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:49
+#: ../templates/default/dbmail_mysql/alias/list.html:26
+#: ../templates/default/dbmail_mysql/alias/profile.html:23
+#: ../templates/default/dbmail_mysql/domain/list.html:56
+#: ../templates/default/dbmail_mysql/domain/profile.html:34
+#: ../templates/default/dbmail_mysql/domain/profile.html:54
+#: ../templates/default/dbmail_mysql/user/create.html:72
+#: ../templates/default/dbmail_mysql/user/list.html:29
+#: ../templates/default/dbmail_mysql/user/profile.html:34
+#: ../templates/default/dbmail_mysql/user/profile.html:51
+#: ../templates/default/ldap/search.html:81
+#: ../templates/default/ldap/alias/create.html:19
+#: ../templates/default/ldap/alias/list.html:23
+#: ../templates/default/ldap/alias/profile.html:32
+#: ../templates/default/ldap/domain/list.html:56
+#: ../templates/default/ldap/domain/profile.html:106
+#: ../templates/default/ldap/domain/profile.html:125
+#: ../templates/default/ldap/maillist/create.html:19
+#: ../templates/default/ldap/maillist/list.html:25
+#: ../templates/default/ldap/maillist/profile.html:35
+#: ../templates/default/ldap/user/admin.html:24
+#: ../templates/default/ldap/user/create.html:24
+#: ../templates/default/ldap/user/list.html:25
+#: ../templates/default/ldap/user/profile.html:103
+#: ../templates/default/ldap/user/profile.html:119
+#: ../templates/default/mysql/search.html:84
+#: ../templates/default/mysql/alias/create.html:18
+#: ../templates/default/mysql/alias/list.html:21
+#: ../templates/default/mysql/alias/profile.html:23
+#: ../templates/default/mysql/domain/list.html:56
+#: ../templates/default/mysql/domain/profile.html:45
+#: ../templates/default/mysql/domain/profile.html:65
+#: ../templates/default/mysql/user/create.html:23
+#: ../templates/default/mysql/user/list.html:23
+#: ../templates/default/mysql/user/profile.html:51
+#: ../templates/default/pgsql/search.html:84
+#: ../templates/default/pgsql/alias/create.html:18
+#: ../templates/default/pgsql/alias/list.html:21
+#: ../templates/default/pgsql/alias/profile.html:23
+#: ../templates/default/pgsql/domain/list.html:56
+#: ../templates/default/pgsql/domain/profile.html:46
+#: ../templates/default/pgsql/domain/profile.html:66
+#: ../templates/default/pgsql/user/create.html:23
+#: ../templates/default/pgsql/user/list.html:23
+#: ../templates/default/pgsql/user/profile.html:51
+msgid "Aliases"
+msgstr "별칭"
+
+#: ../templates/default/dbmail_mysql/alias/list.html:32
+#: ../templates/default/ldap/alias/list.html:51
+#: ../templates/default/mysql/alias/list.html:45
+#: ../templates/default/pgsql/alias/list.html:45
+#, python-format
+msgid "Aliases under domain: %s."
+msgstr "%s 도메인의 별칭"
+
+#: ../templates/default/policyd/wblist.html:43
+#: ../templates/default/policyd/blacklist/create.html:24
+#: ../templates/default/policyd/whitelist/create.html:24
+msgid "All Blacklists"
+msgstr "전체 블랙리스트"
+
+#: ../templates/default/policyd/wblist.html:45
+#: ../templates/default/policyd/blacklist/create.html:23
+#: ../templates/default/policyd/whitelist/create.html:23
+msgid "All Whitelists"
+msgstr "전체 화이트리스트"
+
+#: ../templates/default/ldap/user/profile.html:388
+msgid "All accounts"
+msgstr "모든 계정"
+
+#: ../templates/default/dbmail_mysql/admin/create.html:24
+#: ../templates/default/dbmail_mysql/admin/list.html:29
+#: ../templates/default/dbmail_mysql/admin/profile.html:28
+#: ../templates/default/ldap/admin/create.html:24
+#: ../templates/default/ldap/admin/list.html:29
+#: ../templates/default/ldap/admin/profile.html:35
+#: ../templates/default/mysql/admin/create.html:24
+#: ../templates/default/mysql/admin/list.html:29
+#: ../templates/default/mysql/admin/profile.html:28
+#: ../templates/default/pgsql/admin/create.html:24
+#: ../templates/default/pgsql/admin/list.html:29
+#: ../templates/default/pgsql/admin/profile.html:28
+msgid "All admins"
+msgstr "모든 관리자"
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:20
+#: ../templates/default/dbmail_mysql/domain/create.html:18
+#: ../templates/default/dbmail_mysql/domain/list.html:29
+#: ../templates/default/dbmail_mysql/domain/profile.html:31
+#: ../templates/default/dbmail_mysql/user/profile.html:30
+#: ../templates/default/ldap/alias/create.html:15
+#: ../templates/default/ldap/alias/list.html:19
+#: ../templates/default/ldap/alias/profile.html:28
+#: ../templates/default/ldap/domain/create.html:21
+#: ../templates/default/ldap/domain/list.html:29
+#: ../templates/default/ldap/domain/profile.html:102
+#: ../templates/default/ldap/maillist/create.html:15
+#: ../templates/default/ldap/maillist/list.html:21
+#: ../templates/default/ldap/maillist/profile.html:30
+#: ../templates/default/ldap/user/admin.html:20
+#: ../templates/default/ldap/user/create.html:20
+#: ../templates/default/ldap/user/list.html:21
+#: ../templates/default/ldap/user/profile.html:98
+#: ../templates/default/mysql/alias/create.html:15
+#: ../templates/default/mysql/alias/list.html:18
+#: ../templates/default/mysql/alias/profile.html:20
+#: ../templates/default/mysql/domain/create.html:18
+#: ../templates/default/mysql/domain/list.html:29
+#: ../templates/default/mysql/domain/profile.html:42
+#: ../templates/default/mysql/user/create.html:20
+#: ../templates/default/mysql/user/list.html:20
+#: ../templates/default/mysql/user/profile.html:47
+#: ../templates/default/pgsql/alias/create.html:15
+#: ../templates/default/pgsql/alias/list.html:18
+#: ../templates/default/pgsql/alias/profile.html:20
+#: ../templates/default/pgsql/domain/create.html:18
+#: ../templates/default/pgsql/domain/list.html:29
+#: ../templates/default/pgsql/domain/profile.html:43
+#: ../templates/default/pgsql/user/create.html:20
+#: ../templates/default/pgsql/user/list.html:20
+#: ../templates/default/pgsql/user/profile.html:47
+msgid "All domains"
+msgstr "모든 도메인"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:36
+#: ../templates/default/ldap/domain/list.html:36
+#: ../templates/default/mysql/domain/list.html:36
+#: ../templates/default/pgsql/domain/list.html:36
+msgid "All domains under your control."
+msgstr "관리 가능한 모든 도메인"
+
+#: ../templates/default/dbmail_mysql/admin/list.html:35
+#: ../templates/default/ldap/admin/list.html:35
+#: ../templates/default/mysql/admin/list.html:35
+#: ../templates/default/pgsql/admin/list.html:35
+msgid "All mail administrators."
+msgstr "모든 메일 관리자"
+
+#: ../templates/default/policyd/blacklist/create.html:73
+#: ../templates/default/policyd/whitelist/create.html:67
+msgid "All sub-domains"
+msgstr "모든 하부 도메인"
+
+#: ../templates/default/dbmail_mysql/search.html:178
+#: ../templates/default/dbmail_mysql/domain/list.html:88
+#: ../templates/default/dbmail_mysql/domain/list.html:90
+#: ../templates/default/dbmail_mysql/domain/list.html:96
+#: ../templates/default/dbmail_mysql/domain/list.html:98
+#: ../templates/default/mysql/domain/list.html:97
+#: ../templates/default/mysql/domain/list.html:99
+#: ../templates/default/mysql/domain/list.html:105
+#: ../templates/default/mysql/domain/list.html:107
+#: ../templates/default/mysql/user/list.html:111
+#: ../templates/default/pgsql/domain/list.html:97
+#: ../templates/default/pgsql/domain/list.html:99
+#: ../templates/default/pgsql/domain/list.html:105
+#: ../templates/default/pgsql/domain/list.html:107
+#: ../templates/default/pgsql/user/list.html:111
+msgid "Allocated"
+msgstr "할당됨"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:26
+#: ../templates/default/dbmail_mysql/user/create.html:35
+#: ../templates/default/ldap/alias/create.html:47
+#: ../templates/default/ldap/maillist/create.html:48
+#: ../templates/default/ldap/user/create.html:82
+#: ../templates/default/mysql/alias/create.html:38
+#: ../templates/default/mysql/user/create.html:45
+#: ../templates/default/pgsql/alias/create.html:38
+#: ../templates/default/pgsql/user/create.html:45
+#, python-format
+msgid "Already exceed max number of account limit (%s)."
+msgstr "전체 계정의 수 (%s)를 초과했습니다."
+
+#: ../templates/default/amavisd/inout.html:173
+#: ../templates/default/amavisd/quarantined.html:94
+#: ../templates/default/dbmail_mysql/search.html:123
+#: ../templates/default/dbmail_mysql/search.html:196
+#: ../templates/default/dbmail_mysql/search.html:249
+#: ../templates/default/dbmail_mysql/admin/list.html:88
+#: ../templates/default/dbmail_mysql/alias/list.html:89
+#: ../templates/default/dbmail_mysql/domain/list.html:159
+#: ../templates/default/dbmail_mysql/user/list.html:121
+#: ../templates/default/ldap/search.html:119
+#: ../templates/default/ldap/search.html:171
+#: ../templates/default/ldap/search.html:231
+#: ../templates/default/ldap/search.html:285
+#: ../templates/default/ldap/search.html:335
+#: ../templates/default/ldap/admin/list.html:86
+#: ../templates/default/ldap/alias/list.html:114
+#: ../templates/default/ldap/domain/list.html:208
+#: ../templates/default/ldap/maillist/list.html:114
+#: ../templates/default/ldap/maillist/profile.html:193
+#: ../templates/default/ldap/maillist/profile.html:239
+#: ../templates/default/ldap/maillist/profile.html:321
+#: ../templates/default/ldap/maillist/profile.html:366
+#: ../templates/default/ldap/user/admin.html:147
+#: ../templates/default/ldap/user/list.html:165
+#: ../templates/default/mysql/search.html:141
+#: ../templates/default/mysql/search.html:203
+#: ../templates/default/mysql/search.html:266
+#: ../templates/default/mysql/search.html:319
+#: ../templates/default/mysql/admin/list.html:98
+#: ../templates/default/mysql/alias/list.html:100
+#: ../templates/default/mysql/domain/list.html:166
+#: ../templates/default/mysql/user/list.html:137
+#: ../templates/default/panel/log.html:123
+#: ../templates/default/pgsql/search.html:141
+#: ../templates/default/pgsql/search.html:203
+#: ../templates/default/pgsql/search.html:266
+#: ../templates/default/pgsql/search.html:319
+#: ../templates/default/pgsql/admin/list.html:98
+#: ../templates/default/pgsql/alias/list.html:100
+#: ../templates/default/pgsql/domain/list.html:166
+#: ../templates/default/pgsql/user/list.html:137
+#: ../templates/default/policyd/wblist.html:108
+msgid "Apply"
+msgstr "적용"
+
+#: ../templates/default/macros/general.html:474
+#, python-format
+msgid "At least %s characters, but no more than %s."
+msgstr "최소 %s 자 이상, 최대 %s 이하"
+
+#: ../templates/default/macros/general.html:476
+#, python-format
+msgid "At least %s characters."
+msgstr "최소 %s 자"
+
+#: ../templates/default/amavisd/quarantined_raw.html:10
+msgid "Attachments"
+msgstr "첨부"
+
+#: ../templates/default/macros/general.html:541
+msgid "Available quota:"
+msgstr "사용 가능 용량"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:51
+#: ../templates/default/dbmail_mysql/user/profile.html:52
+#: ../templates/default/ldap/domain/profile.html:122
+#: ../templates/default/mysql/domain/profile.html:62
+#: ../templates/default/mysql/user/profile.html:67
+#: ../templates/default/pgsql/domain/profile.html:63
+#: ../templates/default/pgsql/user/profile.html:67
+msgid "BCC"
+msgstr "숨은참조"
+
+#: ../templates/default/macros/general.html:623
+msgid "BCC incoming emails to single address"
+msgstr "숨은 참조로 수신되는 메일을 다른 주소로 전달"
+
+#: ../templates/default/macros/ldap.html:80
+#: ../templates/default/macros/ldap.html:100
+msgid "BCC incoming mails to other address"
+msgstr "숨은 참조로 수신되는 메일 전달 주소"
+
+#: ../templates/default/macros/general.html:635
+msgid "BCC outgoing emails to single address"
+msgstr "숨은 참조로 발송되는 메일을 다른 주소로 전달"
+
+#: ../templates/default/macros/ldap.html:81
+#: ../templates/default/macros/ldap.html:101
+msgid "BCC outgoing mails to other address"
+msgstr "숨은 참조로 발송되는 메일 전달 주소"
+
+#: ../templates/default/macros/general.html:459
+msgid "Backup MX does not work with custom relay"
+msgstr "사용자 지정 릴레이에서는 MX 백업이 동작하지 않습니다."
+
+#: ../templates/default/macros/amavisd.html:33
+msgid "Banned"
+msgstr "차단됨"
+
+#: ../templates/default/policyd/wblist.html:12
+msgid "Blacklist"
+msgstr "블랙리스트"
+
+#: ../templates/default/policyd/blacklist/create.html:45
+msgid "Blacklist HELO records"
+msgstr "블랙리스트 HELO 레코드"
+
+#: ../templates/default/policyd/blacklist/create.html:39
+msgid "Blacklist records"
+msgstr "블랙리스트 레코드"
+
+#: ../templates/default/layout.html:99 ../templates/default/layout.html:123
+#: ../templates/default/policyd/wblist.html:55
+msgid "Blacklists"
+msgstr "블랙리스트"
+
+#: ../templates/default/ldap/user/profile.html:344
+msgid "Bypass mails from below senders"
+msgstr "다음 송신자 메일은 바이패스합니다."
+
+#: ../templates/default/ldap/user/profile.html:358
+msgid "Bypass mails sent to below recipients"
+msgstr "다음 수신자 메일은 바이패스합니다."
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:53
+#: ../templates/default/ldap/domain/profile.html:124
+#: ../templates/default/mysql/domain/profile.html:64
+#: ../templates/default/pgsql/domain/profile.html:65
+msgid "Catch-all"
+msgstr "메일 검사"
+
+#: ../templates/default/ldap/domain/profile.html:304
+#: ../templates/default/mysql/domain/profile.html:249
+#: ../templates/default/pgsql/domain/profile.html:250
+msgid "Catch-all Addresses"
+msgstr "다음의 주소 검사"
+
+#: ../templates/default/ldap/domain/profile.html:313
+#: ../templates/default/mysql/domain/profile.html:258
+#: ../templates/default/pgsql/domain/profile.html:259
+msgid "Catch-all address may receive many spam emails."
+msgstr "스팸 메일을 다량으로 수신하는 메일 주소를 검사합니다."
+
+#: ../templates/default/macros/ldap.html:113
+msgid "Check this box in order to enable other services"
+msgstr "다른 서비스 활성화를 위해 메일 박스를 체크합니다."
+
+#: ../templates/default/amavisd/inout.html:169
+#: ../templates/default/amavisd/quarantined.html:85
+#: ../templates/default/dbmail_mysql/search.html:118
+#: ../templates/default/dbmail_mysql/search.html:191
+#: ../templates/default/dbmail_mysql/search.html:244
+#: ../templates/default/dbmail_mysql/admin/list.html:83
+#: ../templates/default/dbmail_mysql/alias/list.html:82
+#: ../templates/default/dbmail_mysql/domain/list.html:152
+#: ../templates/default/dbmail_mysql/user/list.html:114
+#: ../templates/default/ldap/search.html:114
+#: ../templates/default/ldap/search.html:166
+#: ../templates/default/ldap/search.html:226
+#: ../templates/default/ldap/search.html:280
+#: ../templates/default/ldap/search.html:330
+#: ../templates/default/ldap/admin/list.html:81
+#: ../templates/default/ldap/alias/list.html:109
+#: ../templates/default/ldap/domain/list.html:203
+#: ../templates/default/ldap/maillist/list.html:109
+#: ../templates/default/ldap/maillist/profile.html:190
+#: ../templates/default/ldap/maillist/profile.html:236
+#: ../templates/default/ldap/maillist/profile.html:318
+#: ../templates/default/ldap/maillist/profile.html:363
+#: ../templates/default/ldap/user/admin.html:144
+#: ../templates/default/ldap/user/list.html:152
+#: ../templates/default/mysql/search.html:136
+#: ../templates/default/mysql/search.html:198
+#: ../templates/default/mysql/search.html:261
+#: ../templates/default/mysql/search.html:314
+#: ../templates/default/mysql/admin/list.html:93
+#: ../templates/default/mysql/alias/list.html:95
+#: ../templates/default/mysql/domain/list.html:161
+#: ../templates/default/mysql/user/list.html:132
+#: ../templates/default/panel/log.html:119
+#: ../templates/default/pgsql/search.html:136
+#: ../templates/default/pgsql/search.html:198
+#: ../templates/default/pgsql/search.html:261
+#: ../templates/default/pgsql/search.html:314
+#: ../templates/default/pgsql/admin/list.html:93
+#: ../templates/default/pgsql/alias/list.html:95
+#: ../templates/default/pgsql/domain/list.html:161
+#: ../templates/default/pgsql/user/list.html:132
+#: ../templates/default/policyd/wblist.html:105
+msgid "Choose Action"
+msgstr "할일을 선택하세요."
+
+#: ../templates/default/macros/amavisd.html:69
+msgid "Choose activity type"
+msgstr "유형을 선택하세요."
+
+#: ../templates/default/macros/general.html:666
+msgid "Company/Organization Name"
+msgstr "회사/조직 이름"
+
+#: ../templates/default/macros/general.html:497
+msgid "Confirm new password"
+msgstr "신규 암호 확인"
+
+#: ../templates/default/layout.html:157
+msgid "Contact webmaster"
+msgstr "웹마스트 연락처"
+
+#: ../templates/default/panel/license.html:49
+msgid "Contacts"
+msgstr "연락처"
+
+#: ../templates/default/ldap/domain/profile.html:192
+msgid "Content of disclaimer will be appended to outgoing emails."
+msgstr "발송되는 메일에 권리 사항이 추가됩니다."
+
+#: ../templates/default/policyd/blacklist/create.html:78
+msgid ""
+"Could be a FQDN (Fully Qualified Domain Name) or IP address which "
+"enclosed in square brackets, for example <u>[1.2.3.4]</u>"
+msgstr "FQDN (Fully Qualified Domain Name)이나 <u>[1.2.3.4]</u> 형태의 IP 주소가 허용됩니다."
+
+#: ../templates/default/macros/msgHandlers.html:139
+#: ../templates/default/macros/msgHandlers.html:176
+#: ../templates/default/macros/msgHandlers.html:177
+msgid "Current password is incorrect."
+msgstr "암호가 일치하지 않습니다."
+
+#: ../templates/default/macros/policyd.html:35
+#: ../templates/default/macros/policyd.html:86
+msgid "Current value:"
+msgstr "현재 설정값"
+
+#: ../templates/default/macros/policyd.html:60
+#: ../templates/default/macros/policyd.html:85
+msgid "Custom:"
+msgstr "사용자 지정"
+
+#: ../templates/default/macros/ldap.html:98
+#: ../templates/default/macros/mysql.html:68
+msgid "Customize mail filter rule"
+msgstr "메일 필터 규칙을 지정합니다."
+
+#: ../templates/default/macros/ldap.html:99
+#: ../templates/default/macros/mysql.html:69
+msgid "Customize mail filter rule over TLS/SSL"
+msgstr "TLS/SSL의 메일 필터 규칙을 지정합니다."
+
+#: ../templates/default/dbmail_mysql/domain/list.html:111
+#: ../templates/default/dbmail_mysql/domain/list.html:125
+#: ../templates/default/ldap/domain/list.html:153
+#: ../templates/default/ldap/domain/list.html:166
+#: ../templates/default/ldap/domain/list.html:179
+#: ../templates/default/mysql/search.html:116
+#: ../templates/default/mysql/search.html:125
+#: ../templates/default/mysql/domain/list.html:120
+#: ../templates/default/mysql/domain/list.html:134
+#: ../templates/default/pgsql/search.html:116
+#: ../templates/default/pgsql/search.html:125
+#: ../templates/default/pgsql/domain/list.html:120
+#: ../templates/default/pgsql/domain/list.html:134
+msgid "DISABLED"
+msgstr "비활성화됨"
+
+#: ../templates/default/policyd/wblist.html:26
+msgid "DNS Name"
+msgstr "DNS 이름"
+
+#: ../templates/default/policyd/blacklist/create.html:70
+#: ../templates/default/policyd/whitelist/create.html:64
+msgid "DNS name"
+msgstr "DNS 이름"
+
+#: ../templates/default/dashboard.html:6 ../templates/default/layout.html:74
+msgid "Dashboard"
+msgstr "대시보드"
+
+#: ../templates/default/amavisd/inout.html:110
+#: ../templates/default/macros/amavisd.html:13
+msgid "Date"
+msgstr "일시"
+
+#: ../templates/default/ldap/domain/profile.html:448
+#: ../templates/default/macros/general.html:747
+#: ../templates/default/mysql/domain/profile.html:454
+#: ../templates/default/pgsql/domain/profile.html:436
+
+msgid "Default language for new user"
+msgstr "신규 사용자의 기본 용량"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:374
+#: ../templates/default/ldap/domain/profile.html:453
+#: ../templates/default/mysql/domain/profile.html:456
+#: ../templates/default/pgsql/domain/profile.html:438
+msgid "Default mail group(s) of new user"
+msgstr "신규 사용자의 기본 메일 그룹"
+
+#: ../templates/default/macros/general.html:730
+msgid "Default quota of new user"
+msgstr "신규 사용자의 기본 용량"
+
+#: ../templates/default/dbmail_mysql/search.html:121
+#: ../templates/default/dbmail_mysql/search.html:194
+#: ../templates/default/dbmail_mysql/search.html:247
+#: ../templates/default/dbmail_mysql/admin/list.html:86
+#: ../templates/default/dbmail_mysql/alias/list.html:87
+#: ../templates/default/dbmail_mysql/domain/list.html:157
+#: ../templates/default/dbmail_mysql/user/list.html:119
+#: ../templates/default/ldap/search.html:117
+#: ../templates/default/ldap/search.html:169
+#: ../templates/default/ldap/search.html:229
+#: ../templates/default/ldap/search.html:283
+#: ../templates/default/ldap/search.html:333
+#: ../templates/default/ldap/admin/list.html:84
+#: ../templates/default/ldap/alias/list.html:112
+#: ../templates/default/ldap/domain/list.html:206
+#: ../templates/default/ldap/maillist/list.html:112
+#: ../templates/default/ldap/user/list.html:155
+#: ../templates/default/mysql/search.html:139
+#: ../templates/default/mysql/search.html:201
+#: ../templates/default/mysql/search.html:264
+#: ../templates/default/mysql/search.html:317
+#: ../templates/default/mysql/admin/list.html:96
+#: ../templates/default/mysql/alias/list.html:98
+#: ../templates/default/mysql/domain/list.html:164
+#: ../templates/default/mysql/user/list.html:135
+#: ../templates/default/pgsql/search.html:139
+#: ../templates/default/pgsql/search.html:201
+#: ../templates/default/pgsql/search.html:264
+#: ../templates/default/pgsql/search.html:317
+#: ../templates/default/pgsql/admin/list.html:96
+#: ../templates/default/pgsql/alias/list.html:98
+#: ../templates/default/pgsql/domain/list.html:164
+#: ../templates/default/pgsql/user/list.html:135
+#: ../templates/default/policyd/wblist.html:106
+msgid "Delete"
+msgstr "삭제"
+
+#: ../templates/default/macros/general.html:899
+msgid "Delete account"
+msgstr "계정 삭제"
+
+#: ../templates/default/amavisd/inout.html:171
+#: ../templates/default/amavisd/quarantined.html:90
+#: ../templates/default/panel/log.html:121
+msgid "Delete all in database"
+msgstr "데이터베이스에서 모두 삭제"
+
+#: ../templates/default/amavisd/inout.html:170
+#: ../templates/default/amavisd/quarantined.html:87
+#: ../templates/default/panel/log.html:120
+msgid "Delete selected"
+msgstr "선택 항목 삭제"
+
+#: ../templates/default/policyd/wblist.html:67
+msgid "Description"
+msgstr "설명"
+
+#: ../templates/default/ldap/domain/profile.html:501
+msgid "Directory of mailbox storage"
+msgstr "메일박스 저장 공간 디렉토리"
+
+#: ../templates/default/dbmail_mysql/search.html:120
+#: ../templates/default/dbmail_mysql/search.html:193
+#: ../templates/default/dbmail_mysql/search.html:246
+#: ../templates/default/dbmail_mysql/admin/list.html:85
+#: ../templates/default/ldap/search.html:116
+#: ../templates/default/ldap/search.html:168
+#: ../templates/default/ldap/search.html:228
+#: ../templates/default/ldap/search.html:282
+#: ../templates/default/ldap/search.html:332
+#: ../templates/default/ldap/admin/list.html:83
+#: ../templates/default/ldap/alias/list.html:111
+#: ../templates/default/ldap/domain/list.html:205
+#: ../templates/default/ldap/maillist/list.html:111
+#: ../templates/default/ldap/user/list.html:154
+#: ../templates/default/mysql/search.html:138
+#: ../templates/default/mysql/search.html:200
+#: ../templates/default/mysql/search.html:263
+#: ../templates/default/mysql/search.html:316
+#: ../templates/default/mysql/admin/list.html:95
+#: ../templates/default/mysql/alias/list.html:97
+#: ../templates/default/mysql/domain/list.html:163
+#: ../templates/default/mysql/user/list.html:134
+#: ../templates/default/pgsql/search.html:138
+#: ../templates/default/pgsql/search.html:200
+#: ../templates/default/pgsql/search.html:263
+#: ../templates/default/pgsql/search.html:316
+#: ../templates/default/pgsql/admin/list.html:95
+#: ../templates/default/pgsql/alias/list.html:97
+#: ../templates/default/pgsql/domain/list.html:163
+#: ../templates/default/pgsql/user/list.html:134
+msgid "Disable"
+msgstr "비활성화"
+
+#: ../templates/default/macros/general.html:901
+msgid "Disable account"
+msgstr "계정 비활성화"
+
+#: ../templates/default/dbmail_mysql/search.html:52
+#: ../templates/default/ldap/search.html:50
+#: ../templates/default/mysql/search.html:53
+#: ../templates/default/pgsql/search.html:53
+msgid "Disabled"
+msgstr "비활성화됨"
+
+#: ../templates/default/ldap/domain/profile.html:183
+msgid "Disclaimer"
+msgstr "권리사항"
+
+#: ../templates/default/dbmail_mysql/search.html:80
+#: ../templates/default/dbmail_mysql/search.html:143
+#: ../templates/default/dbmail_mysql/search.html:218
+#: ../templates/default/dbmail_mysql/admin/list.html:49
+#: ../templates/default/dbmail_mysql/alias/list.html:49
+#: ../templates/default/dbmail_mysql/user/list.html:53
+#: ../templates/default/ldap/search.html:137
+#: ../templates/default/ldap/search.html:191
+#: ../templates/default/ldap/search.html:251
+#: ../templates/default/ldap/search.html:304
+#: ../templates/default/ldap/admin/list.html:49
+#: ../templates/default/ldap/alias/list.html:68
+#: ../templates/default/ldap/maillist/list.html:69
+#: ../templates/default/ldap/maillist/profile.html:142
+#: ../templates/default/ldap/maillist/profile.html:269
+#: ../templates/default/ldap/user/admin.html:70
+#: ../templates/default/ldap/user/list.html:71
+#: ../templates/default/macros/general.html:668
+#: ../templates/default/mysql/search.html:160
+#: ../templates/default/mysql/search.html:224
+#: ../templates/default/mysql/search.html:288
+#: ../templates/default/mysql/admin/list.html:49
+#: ../templates/default/mysql/alias/list.html:62
+#: ../templates/default/mysql/user/list.html:67
+#: ../templates/default/pgsql/search.html:160
+#: ../templates/default/pgsql/search.html:224
+#: ../templates/default/pgsql/search.html:288
+#: ../templates/default/pgsql/admin/list.html:49
+#: ../templates/default/pgsql/alias/list.html:62
+#: ../templates/default/pgsql/user/list.html:67
+msgid "Display Name"
+msgstr "표시 이름"
+
+#: ../templates/default/macros/ldap.html:102
+#: ../templates/default/macros/ldap.html:106
+msgid "Display mail address in global LDAP address book"
+msgstr "LDAP 주소록에 표시되는 메일 주소"
+
+#: ../templates/default/macros/general.html:381
+msgid "Displayed in Global LDAP Address Book"
+msgstr "LDAP 주소록에 표시됨"
+
+#: ../templates/default/layout.html:109
+#: ../templates/default/dbmail_mysql/domain/list.html:52
+#: ../templates/default/ldap/search.html:41
+#: ../templates/default/ldap/search.html:77
+#: ../templates/default/ldap/domain/list.html:51
+#: ../templates/default/mysql/search.html:45
+#: ../templates/default/mysql/search.html:80
+#: ../templates/default/mysql/domain/list.html:52
+#: ../templates/default/pgsql/search.html:45
+#: ../templates/default/pgsql/search.html:80
+#: ../templates/default/pgsql/domain/list.html:52
+msgid "Domain"
+msgstr "도메인"
+
+#: ../templates/default/dbmail_mysql/admin/list.html:13
+#: ../templates/default/ldap/admin/list.html:13
+#: ../templates/default/macros/ldap.html:41
+#: ../templates/default/macros/mysql.html:35
+#: ../templates/default/mysql/admin/list.html:13
+#: ../templates/default/pgsql/admin/list.html:13
+msgid "Domain Admins"
+msgstr "도메인 관리자"
+
+#: ../templates/default/macros/general.html:651
+msgid "Domain Name"
+msgstr "도메인 이름"
+
+#: ../templates/default/macros/general.html:241
+msgid "Domain activities"
+msgstr "도메인 활동"
+
+#: ../templates/default/macros/general.html:408
+msgid "Domain admin"
+msgstr "도메인 관리자"
+
+#: ../templates/default/macros/ldap.html:79
+msgid "Domain alias"
+msgstr "도메인 별칭"
+
+#: ../templates/default/macros/msgHandlers.html:97
+msgid "Domain already exists. Please check both primary or alias domains."
+msgstr "도메인이 존재합니다. 주도메인 또는 도메인 별칭을 체크하세요."
+
+#: ../templates/default/ldap/user/profile.html:387
+msgid "Domain and its sub-domains"
+msgstr "도메인 및 하부 도메인"
+
+#: ../templates/default/macros/msgHandlers.html:108
+msgid "Domain created."
+msgstr "도메인이 생성되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:95
+msgid "Domain name is empty."
+msgstr "도메인 이름이 비어 있습니다."
+
+#: ../templates/default/macros/amavisd.html:65
+msgid "Domain name or mail address"
+msgstr "도메인 이름 또는 메일 주소"
+
+#: ../templates/default/macros/msgHandlers.html:128
+msgid "Domain name or username is missed."
+msgstr "도메인 이름 또는 사용자 이름이 비어 있습니다."
+
+#: ../templates/default/macros/general.html:716
+msgid "Domain quota size"
+msgstr "도메인 용량"
+
+#: ../templates/default/macros/msgHandlers.html:130
+msgid ""
+"Domain quota size exceeded. Please contact your administrator or service "
+"provider to increase it."
+msgstr "도메인 용량을 초과했습니다. 관리자에게 연락하여 용량을 확장하십시오."
+
+#: ../templates/default/panel/log.html:47
+msgid "Domains"
+msgstr "도메인"
+
+#: ../templates/default/layout.html:75
+#: ../templates/default/dbmail_mysql/domain/list.html:17
+#: ../templates/default/ldap/domain/list.html:17
+#: ../templates/default/mysql/domain/list.html:17
+#: ../templates/default/pgsql/domain/list.html:17
+msgid "Domains and Accounts"
+msgstr "도메인 및 계정"
+
+#: ../templates/default/ldap/domain/profile.html:198
+msgid "Dump disclaimer automatically"
+msgstr "권리 사항을 자동으로 출력합니다."
+
+#: ../templates/default/amavisd/inout.html:129
+#: ../templates/default/amavisd/inout.html:139
+#: ../templates/default/dbmail_mysql/search.html:94
+#: ../templates/default/dbmail_mysql/search.html:156
+#: ../templates/default/dbmail_mysql/search.html:231
+#: ../templates/default/dbmail_mysql/admin/list.html:63
+#: ../templates/default/dbmail_mysql/admin/list.html:67
+#: ../templates/default/dbmail_mysql/admin/profile.html:23
+#: ../templates/default/dbmail_mysql/alias/list.html:63
+#: ../templates/default/dbmail_mysql/alias/list.html:65
+#: ../templates/default/dbmail_mysql/alias/profile.html:15
+#: ../templates/default/dbmail_mysql/alias/profile.html:116
+#: ../templates/default/dbmail_mysql/domain/list.html:70
+#: ../templates/default/dbmail_mysql/domain/list.html:78
+#: ../templates/default/dbmail_mysql/domain/profile.html:26
+#: ../templates/default/dbmail_mysql/user/list.html:67
+#: ../templates/default/dbmail_mysql/user/list.html:70
+#: ../templates/default/dbmail_mysql/user/profile.html:25
+#: ../templates/default/ldap/search.html:96
+#: ../templates/default/ldap/search.html:152
+#: ../templates/default/ldap/search.html:207
+#: ../templates/default/ldap/search.html:267
+#: ../templates/default/ldap/search.html:317
+#: ../templates/default/ldap/admin/list.html:67
+#: ../templates/default/ldap/admin/list.html:69
+#: ../templates/default/ldap/admin/profile.html:23
+#: ../templates/default/ldap/alias/list.html:90
+#: ../templates/default/ldap/alias/list.html:92
+#: ../templates/default/ldap/alias/profile.html:15
+#: ../templates/default/ldap/domain/list.html:100
+#: ../templates/default/ldap/domain/list.html:114
+#: ../templates/default/ldap/domain/profile.html:34
+#: ../templates/default/ldap/maillist/list.html:89
+#: ../templates/default/ldap/maillist/list.html:91
+#: ../templates/default/ldap/maillist/profile.html:16
+#: ../templates/default/ldap/maillist/profile.html:167
+#: ../templates/default/ldap/maillist/profile.html:294
+#: ../templates/default/ldap/user/admin.html:96
+#: ../templates/default/ldap/user/admin.html:99
+#: ../templates/default/ldap/user/list.html:97
+#: ../templates/default/ldap/user/list.html:107
+#: ../templates/default/ldap/user/profile.html:43
+#: ../templates/default/macros/amavisd.html:108
+#: ../templates/default/macros/general.html:905
+#: ../templates/default/mysql/search.html:94
+#: ../templates/default/mysql/search.html:174
+#: ../templates/default/mysql/search.html:237
+#: ../templates/default/mysql/search.html:301
+#: ../templates/default/mysql/admin/list.html:63
+#: ../templates/default/mysql/admin/list.html:67
+#: ../templates/default/mysql/admin/profile.html:23
+#: ../templates/default/mysql/alias/list.html:76
+#: ../templates/default/mysql/alias/list.html:78
+#: ../templates/default/mysql/alias/profile.html:15
+#: ../templates/default/mysql/alias/profile.html:123
+#: ../templates/default/mysql/alias/profile.html:157
+#: ../templates/default/mysql/domain/list.html:71
+#: ../templates/default/mysql/domain/list.html:87
+#: ../templates/default/mysql/domain/profile.html:37
+#: ../templates/default/mysql/user/list.html:84
+#: ../templates/default/mysql/user/list.html:88
+#: ../templates/default/mysql/user/profile.html:42
+#: ../templates/default/pgsql/search.html:94
+#: ../templates/default/pgsql/search.html:174
+#: ../templates/default/pgsql/search.html:237
+#: ../templates/default/pgsql/search.html:301
+#: ../templates/default/pgsql/admin/list.html:63
+#: ../templates/default/pgsql/admin/list.html:67
+#: ../templates/default/pgsql/admin/profile.html:23
+#: ../templates/default/pgsql/alias/list.html:76
+#: ../templates/default/pgsql/alias/list.html:78
+#: ../templates/default/pgsql/alias/profile.html:15
+#: ../templates/default/pgsql/alias/profile.html:123
+#: ../templates/default/pgsql/alias/profile.html:157
+#: ../templates/default/pgsql/domain/list.html:71
+#: ../templates/default/pgsql/domain/list.html:87
+#: ../templates/default/pgsql/domain/profile.html:38
+#: ../templates/default/pgsql/user/list.html:84
+#: ../templates/default/pgsql/user/list.html:88
+#: ../templates/default/pgsql/user/profile.html:42
+msgid "Edit account profile"
+msgstr "계정 프로필 수정"
+
+#: ../templates/default/dbmail_mysql/alias/create.html:56
+#: ../templates/default/dbmail_mysql/alias/list.html:37
+#: ../templates/default/dbmail_mysql/user/create.html:79
+#: ../templates/default/dbmail_mysql/user/list.html:40
+#: ../templates/default/ldap/alias/create.html:75
+#: ../templates/default/ldap/alias/list.html:55
+#: ../templates/default/ldap/maillist/create.html:75
+#: ../templates/default/ldap/maillist/list.html:57
+#: ../templates/default/ldap/user/admin.html:58
+#: ../templates/default/ldap/user/create.html:121
+#: ../templates/default/ldap/user/list.html:59
+#: ../templates/default/macros/amavisd.html:106
+#: ../templates/default/mysql/alias/create.html:70
+#: ../templates/default/mysql/alias/list.html:50
+#: ../templates/default/mysql/user/create.html:91
+#: ../templates/default/mysql/user/list.html:54
+#: ../templates/default/pgsql/alias/create.html:70
+#: ../templates/default/pgsql/alias/list.html:50
+#: ../templates/default/pgsql/user/create.html:91
+#: ../templates/default/pgsql/user/list.html:54
+msgid "Edit domain profile"
+msgstr "도메인 프로필 수정"
+
+#: ../templates/default/dbmail_mysql/search.html:177
+#: ../templates/default/dbmail_mysql/domain/list.html:88
+#: ../templates/default/dbmail_mysql/domain/list.html:96
+#: ../templates/default/dbmail_mysql/user/list.html:90
+#: ../templates/default/ldap/domain/list.html:125
+#: ../templates/default/ldap/domain/list.html:134
+#: ../templates/default/ldap/user/admin.html:120
+#: ../templates/default/ldap/user/list.html:128
+#: ../templates/default/mysql/domain/list.html:97
+#: ../templates/default/mysql/domain/list.html:105
+#: ../templates/default/mysql/user/list.html:110
+#: ../templates/default/pgsql/domain/list.html:97
+#: ../templates/default/pgsql/domain/list.html:105
+#: ../templates/default/pgsql/user/list.html:110
+msgid "Edit quota setting"
+msgstr "메일 용량 설정"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:213
+#: ../templates/default/ldap/user/profile.html:332
+#, python-format
+msgid "Email address of alias account must end with domain name(s): %s."
+msgstr "계정의 별칭 메일 주소는 도메인 이름 %s로 끝나야 합니다."
+
+#: ../templates/default/dbmail_mysql/user/profile.html:198
+#: ../templates/default/ldap/user/profile.html:319
+msgid "Email addresses of alias accounts"
+msgstr "별칭 계정의 이메일 주소"
+
+#: ../templates/default/dashboard.html:80
+#: ../templates/default/dbmail_mysql/search.html:178
+#: ../templates/default/mysql/user/list.html:111
+#: ../templates/default/pgsql/user/list.html:111
+msgid "Emails"
+msgstr "이메일"
+
+#: ../templates/default/ldap/domain/profile.html:318
+#: ../templates/default/mysql/domain/profile.html:263
+#: ../templates/default/pgsql/domain/profile.html:264
+msgid ""
+"Emails delivered to non-exist mail accounts will be forwarded to catch-"
+"all address(es)."
+msgstr "존재하지 않는 계정으로 전송되는 모든 메일을 검사합니다."
+
+#: ../templates/default/ldap/domain/profile.html:243
+#: ../templates/default/mysql/domain/profile.html:310
+#: ../templates/default/pgsql/domain/profile.html:311
+#, python-format
+msgid ""
+"Emails sent to <em><strong>user@[ALIAS_DOMAIN]</strong></em> will be "
+"delivered to <em><strong>user@%s</strong></em>."
+msgstr ""
+"<em><strong>user@[ALIAS_DOMAIN]</strong></em>로 전송되는 메일은 "
+"<em><strong>user@%s</strong></em>로 전달됩니다."
+
+#: ../templates/default/dbmail_mysql/user/profile.html:212
+#: ../templates/default/ldap/user/profile.html:331
+#, python-format
+msgid "Emails sent to alias accounts will be delivered to user %s."
+msgstr "별칭 계정으로 전송되는 메일은 %s 사용자에게 전달됩니다."
+
+#: ../templates/default/macros/msgHandlers.html:253
+msgid "Empty address is not allowed."
+msgstr "메일 주소는 공란으로 둘 수 없습니다."
+
+#: ../templates/default/macros/msgHandlers.html:66
+msgid "Empty password is not allowed."
+msgstr "암호는 공란으로 둘 수 없습니다."
+
+#: ../templates/default/dbmail_mysql/search.html:119
+#: ../templates/default/dbmail_mysql/search.html:192
+#: ../templates/default/dbmail_mysql/search.html:245
+#: ../templates/default/dbmail_mysql/admin/list.html:84
+#: ../templates/default/ldap/search.html:115
+#: ../templates/default/ldap/search.html:167
+#: ../templates/default/ldap/search.html:227
+#: ../templates/default/ldap/search.html:281
+#: ../templates/default/ldap/search.html:331
+#: ../templates/default/ldap/admin/list.html:82
+#: ../templates/default/ldap/alias/list.html:110
+#: ../templates/default/ldap/domain/list.html:204
+#: ../templates/default/ldap/maillist/list.html:110
+#: ../templates/default/ldap/user/list.html:153
+#: ../templates/default/mysql/search.html:137
+#: ../templates/default/mysql/search.html:199
+#: ../templates/default/mysql/search.html:262
+#: ../templates/default/mysql/search.html:315
+#: ../templates/default/mysql/admin/list.html:94
+#: ../templates/default/mysql/alias/list.html:96
+#: ../templates/default/mysql/domain/list.html:162
+#: ../templates/default/mysql/user/list.html:133
+#: ../templates/default/pgsql/search.html:137
+#: ../templates/default/pgsql/search.html:199
+#: ../templates/default/pgsql/search.html:262
+#: ../templates/default/pgsql/search.html:315
+#: ../templates/default/pgsql/admin/list.html:94
+#: ../templates/default/pgsql/alias/list.html:96
+#: ../templates/default/pgsql/domain/list.html:162
+#: ../templates/default/pgsql/user/list.html:133
+msgid "Enable"
+msgstr "활성화"
+
+#: ../templates/default/ldap/user/profile.html:314
+msgid "Enable alias account"
+msgstr "계정 별칭 활성화"
+
+#: ../templates/default/ldap/domain/profile.html:297
+#: ../templates/default/mysql/domain/profile.html:242
+#: ../templates/default/pgsql/domain/profile.html:243
+msgid "Enable catch-all"
+msgstr "전체 검사 활성화"
+
+#: ../templates/default/ldap/domain/profile.html:211
+msgid "Enable domain alias"
+msgstr "도메인 별칭 활성화"
+
+#: ../templates/default/mysql/domain/profile.html:383
+msgid "Enable greylisting for this domain"
+msgstr "이 도메인을 의심 상태로 변경합니다."
+
+#: ../templates/default/ldap/user/profile.html:281
+#: ../templates/default/mysql/user/profile.html:171
+#: ../templates/default/pgsql/user/profile.html:171
+msgid "Enable mail forwarding"
+msgstr "메일 전달 활성화"
+
+#: ../templates/default/macros/policyd.html:7
+msgid "Enable recipient throttling"
+msgstr "수신자 제한 할성화"
+
+#: ../templates/default/macros/policyd.html:5
+msgid "Enable sender throttling"
+msgstr "발송자 제한 활성화"
+
+#: ../templates/default/macros/general.html:439
+msgid "Enable this account"
+msgstr "계정 활성화"
+
+#: ../templates/default/macros/general.html:437
+msgid "Enable this domain"
+msgstr "도메인 활성화"
+
+#: ../templates/default/macros/ldap.html:110
+#: ../templates/default/macros/mysql.html:75
+#: ../templates/default/macros/mysql.html:81
+msgid "Enabled Services"
+msgstr "서비스가 활성화되었습니다."
+
+#: ../templates/default/ldap/user/profile.html:386
+#: ../templates/default/policyd/blacklist/create.html:67
+#: ../templates/default/policyd/whitelist/create.html:61
+msgid "Entire domain"
+msgstr "모든 도메인"
+
+#: ../templates/default/dashboard.html:17
+msgid "Error while checking new version of iRedAdmin-Pro:"
+msgstr "iRedAdmin-Pro의 새버전 확인이 실패했습니다."
+
+#: ../templates/default/panel/license.html:61
+msgid "Error while geting license info:"
+msgstr "라이선스 정보를 얻을 수 없습니다."
+
+#: ../templates/default/dbmail_mysql/alias/create.html:32
+#: ../templates/default/dbmail_mysql/user/create.html:48
+#: ../templates/default/ldap/alias/create.html:39
+#: ../templates/default/ldap/alias/create.html:47
+#: ../templates/default/ldap/maillist/create.html:40
+#: ../templates/default/ldap/maillist/create.html:48
+#: ../templates/default/ldap/user/create.html:76
+#: ../templates/default/ldap/user/create.html:86
+#: ../templates/default/macros/msgHandlers.html:22
+#: ../templates/default/macros/msgHandlers.html:24
+#: ../templates/default/mysql/alias/create.html:44
+#: ../templates/default/mysql/user/create.html:58
+#: ../templates/default/pgsql/alias/create.html:44
+#: ../templates/default/pgsql/user/create.html:58
+msgid "Error:"
+msgstr "에러"
+
+#: ../templates/default/macros/general.html:893
+msgid "Events"
+msgstr "이벤트"
+
+#: ../templates/default/ldap/maillist/profile.html:83
+#: ../templates/default/mysql/alias/profile.html:72
+#: ../templates/default/pgsql/alias/profile.html:72
+msgid "Everyone can send mail to this address"
+msgstr "모든 사람이 이 주소로 메일을 보낼 수 있습니다."
+
+#: ../templates/default/macros/msgHandlers.html:131
+msgid ""
+"Exceeded domain account limit. Please contact your administrator or "
+"service provider to increase it."
+msgstr "도메인 계정 한도를 초과했습니다. 관리자에게 연락하여 한도를 증가시키세요."
+
+#: ../templates/default/panel/license.html:39
+msgid "Expire date"
+msgstr "완료 일시"
+
+#: ../templates/default/panel/license.html:23
+msgid "Expired"
+msgstr "완료됨"
+
+#: ../templates/default/policyd/wblist.html:68
+msgid "Expired Date"
+msgstr "완료된 날짜"
+
+#: ../templates/default/ldap/admin/profile.html:83
+#: ../templates/default/ldap/alias/profile.html:79
+#: ../templates/default/ldap/domain/profile.html:168
+#: ../templates/default/ldap/maillist/profile.html:110
+#: ../templates/default/ldap/user/profile.html:179
+msgid "Export account to"
+msgstr "계정 내보내기"
+
+#: ../templates/default/ldap/maillist/profile.html:203
+msgid "External Members"
+msgstr "외부 구성원"
+
+#: ../templates/default/ldap/maillist/profile.html:329
+msgid "External moderators"
+msgstr "외부 승인자"
+
+#: ../templates/default/macros/ldap.html:93
+#: ../templates/default/macros/mysql.html:66
+msgid "Fetching mails via IMAP"
+msgstr "IMAP으로 메일을 가져옴"
+
+#: ../templates/default/macros/ldap.html:94
+#: ../templates/default/macros/mysql.html:67
+msgid "Fetching mails via IMAP over TLS/SSL"
+msgstr "TSL/SSL 보안 IMAP으로 메일을 가져옴"
+
+#: ../templates/default/macros/ldap.html:91
+#: ../templates/default/macros/mysql.html:64
+msgid "Fetching mails via POP3"
+msgstr "POP3로 메일을 가져옴"
+
+#: ../templates/default/macros/ldap.html:92
+#: ../templates/default/macros/mysql.html:65
+msgid "Fetching mails via POP3 over TLS/SSL"
+msgstr "TSL/SSL 보안 POP3로 메일을 가져옴"
+
+#: ../templates/default/panel/log.html:45
+msgid "Filter:"
+msgstr "필터"
+
+#: ../templates/default/macros/general.html:801
+msgid "First Page"
+msgstr "첫 페이지"
+
+#: ../templates/default/macros/general.html:680
+msgid "First name"
+msgstr "이름"
+
+#: ../templates/default/macros/general.html:610
+msgid "For advanced settings and further information please see"
+msgstr "추가 설정 및 관련 정보는 다음을 참조하세요."
+
+#: ../templates/default/ldap/user/profile.html:383
+msgid "Format of sender and recipient"
+msgstr "송신자 및 수신자 형식"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:180
+#: ../templates/default/ldap/user/profile.html:296
+#: ../templates/default/mysql/user/profile.html:193
+#: ../templates/default/pgsql/user/profile.html:193
+msgid "Forward mails to address"
+msgstr "메일을 전달할 주소"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:50
+#: ../templates/default/ldap/user/profile.html:117
+#: ../templates/default/mysql/user/profile.html:66
+#: ../templates/default/pgsql/user/profile.html:66
+msgid "Forwarding"
+msgstr "전달"
+
+#: ../templates/default/macros/ldap.html:96
+msgid "Forwarding mails to other addresses"
+msgstr "메일을 다른 주소로 전달"
+
+#: ../templates/default/ldap/admin/profile.html:73
+#: ../templates/default/ldap/user/profile.html:160
+msgid "Full name"
+msgstr "이름"
+
+#: ../templates/default/dbmail_mysql/admin/profile.html:44
+#: ../templates/default/dbmail_mysql/alias/profile.html:36
+#: ../templates/default/dbmail_mysql/domain/profile.html:50
+#: ../templates/default/dbmail_mysql/user/profile.html:49
+#: ../templates/default/ldap/admin/profile.html:52
+#: ../templates/default/ldap/alias/profile.html:47
+#: ../templates/default/ldap/domain/profile.html:121
+#: ../templates/default/ldap/maillist/profile.html:53
+#: ../templates/default/ldap/user/profile.html:116
+#: ../templates/default/mysql/admin/profile.html:44
+#: ../templates/default/mysql/alias/profile.html:36
+#: ../templates/default/mysql/domain/profile.html:61
+#: ../templates/default/mysql/user/profile.html:65
+#: ../templates/default/pgsql/admin/profile.html:44
+#: ../templates/default/pgsql/alias/profile.html:36
+#: ../templates/default/pgsql/domain/profile.html:62
+#: ../templates/default/pgsql/user/profile.html:65
+msgid "General"
+msgstr "일반"
+
+#: ../templates/default/dbmail_mysql/search.html:82
+#: ../templates/default/dbmail_mysql/admin/list.html:51
+#: ../templates/default/ldap/search.html:139
+#: ../templates/default/ldap/admin/list.html:51
+#: ../templates/default/macros/ldap.html:49
+#: ../templates/default/mysql/search.html:162
+#: ../templates/default/mysql/admin/list.html:51
+#: ../templates/default/pgsql/search.html:162
+#: ../templates/default/pgsql/admin/list.html:51
+msgid "Global Admin"
+msgstr "최상위 관리자"
+
+#: ../templates/default/macros/general.html:410
+msgid "Global admin"
+msgstr "최상위 관리자"
+
+#: ../templates/default/macros/ldap.html:121
+#: ../templates/default/macros/mysql.html:78
+msgid "Greylisting"
+msgstr "의심 설정"
+
+#: ../templates/default/policyd/wblist.html:27
+msgid "HELO Identities"
+msgstr "HELO 인식자(Identities)"
+
+#: ../templates/default/policyd/blacklist/create.html:76
+msgid "HELO identity"
+msgstr "HELO 인식자(Identity)"
+
+#: ../templates/default/dashboard.html:99
+msgid "Hostname"
+msgstr "호스트네임"
+
+#: ../templates/default/panel/log.html:84
+#: ../templates/default/policyd/blacklist/create.html:58
+#: ../templates/default/policyd/whitelist/create.html:52
+msgid "IP Address"
+msgstr "IP 주소"
+
+#: ../templates/default/policyd/wblist.html:24
+msgid "IP Addresses"
+msgstr "IP 주소"
+
+#: ../templates/default/dbmail_mysql/user/create.html:53
+#: ../templates/default/mysql/user/create.html:63
+#: ../templates/default/pgsql/user/create.html:63
+msgid "Increase it now?"
+msgstr "이 항목을 증가하겠습니까?"
+
+#: ../templates/default/ldap/maillist/profile.html:384
+msgid ""
+"Input mail addresses of either internal or external members below, "
+"multiple addresses must be seperated by comma, space or new line."
+msgstr ""
+"내부 또는 외부 구성원의 메일 주소를 입력하세요. \"\n"
+"\"메일 주소는 쉼표, 공란 또는 새 라인으로 구분되어야 합니다"
+
+#: ../templates/default/ldap/maillist/profile.html:398
+msgid ""
+"Input mail addresses of either internal or external moderators below, "
+"multiple addresses must be seperated by comma, space or new line."
+msgstr ""
+"내부 또는 외부 승인자의 메일 주소를 입력하세요. \"\n"
+"\"메일 주소는 쉼표, 공란 또는 새 라인으로 구분되어야 합니다"
+
+#: ../templates/default/ldap/user/profile.html:373
+msgid "Install iRedAPD"
+msgstr "iRedAPD 설치"
+
+#: ../templates/default/ldap/maillist/profile.html:133
+msgid "Internal Members"
+msgstr "내부 구성원"
+
+#: ../templates/default/ldap/maillist/profile.html:257
+msgid "Internal Moderators"
+msgstr "내부 승인자"
+
+#: ../templates/default/macros/msgHandlers.html:89
+#: ../templates/default/macros/msgHandlers.html:126
+#: ../templates/default/macros/msgHandlers.html:170
+#: ../templates/default/macros/msgHandlers.html:210
+#: ../templates/default/macros/msgHandlers.html:245
+#: ../templates/default/macros/msgHandlers.html:279
+#: ../templates/default/macros/msgHandlers.html:304
+#: ../templates/default/macros/msgHandlers.html:323
+#: ../templates/default/macros/msgHandlers.html:347
+msgid "Invalid action."
+msgstr "잘못 선택했습니다."
+
+#: ../templates/default/macros/msgHandlers.html:303
+#: ../templates/default/macros/msgHandlers.html:324
+msgid "Invalid domain name or mail address."
+msgstr "도메인 이름이나 메일 주소가 잘못되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:93
+msgid "Invalid domain name."
+msgstr "도메인 이름이 잘못되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:94
+#: ../templates/default/macros/msgHandlers.html:129
+#: ../templates/default/macros/msgHandlers.html:180
+#: ../templates/default/macros/msgHandlers.html:345
+msgid "Invalid mail address."
+msgstr "메일 주소가 잘못되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:291
+msgid "Invalid product id."
+msgstr "제품 id가 잘못되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:305
+msgid "Invalid request data."
+msgstr "요청 데이터가 잘못되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:208
+msgid "Invalid username."
+msgstr "사용자 이름이 유효하지 않습니다."
+
+#: ../templates/default/macros/general.html:217
+msgid "Is a global admin."
+msgstr "최상위 관리자 입니다."
+
+#: ../templates/default/ldap/admin/create.html:44
+#: ../templates/default/mysql/admin/create.html:44
+#: ../templates/default/pgsql/admin/create.html:44
+msgid ""
+"It is recommended to mark user as domain admin in user profile page "
+"instead of creating separate admin account."
+msgstr "관리자 계정을 별도로 생성하지 말고 사용자 프로필 페이지에서 사용자 계정을 도메인 계정으로 지정할 것을 권장합니다."
+
+#: ../templates/default/ldap/alias/create.html:111
+msgid ""
+"It's better to use mail list instead of alias, since we have mail deliver"
+" restriction for mail list."
+msgstr "메일 리스트 기반으로 전송 제한을 적용하므로 별칭보다는 메일 리스트를 사용할 것을 권장합니다."
+
+#: ../templates/default/ldap/search.html:194
+#: ../templates/default/ldap/user/admin.html:73
+#: ../templates/default/ldap/user/list.html:74
+msgid "Job Title"
+msgstr "직위"
+
+#: ../templates/default/macros/general.html:320
+msgid "Job Title/Responsibility"
+msgstr "직위/직급"
+
+#: ../templates/default/dbmail_mysql/search.html:35
+#: ../templates/default/ldap/search.html:31
+#: ../templates/default/mysql/search.html:35
+#: ../templates/default/pgsql/search.html:35
+msgid "Keyword"
+msgstr "키워드"
+
+#: ../templates/default/macros/amavisd.html:11
+msgid "Kind"
+msgstr "종류"
+
+#: ../templates/default/dbmail_mysql/user/list.html:56
+msgid "Last Login"
+msgstr "최종 로그인"
+
+#: ../templates/default/macros/general.html:882
+msgid "Last Page"
+msgstr "마지막 페이지"
+
+#: ../templates/default/macros/general.html:681
+msgid "Last name"
+msgstr "성"
+
+#: ../templates/default/panel/license.html:54
+msgid "Latest version"
+msgstr "최신 버전"
+
+#: ../templates/default/macros/general.html:608
+#, python-format
+msgid "Leave it empty to use <a href='%s'>domain setting</a>."
+msgstr "공란으로 두면 <a href='%s'> 도메인 설정</a>이 적용됩니다."
+
+#: ../templates/default/ldap/domain/profile.html:511
+msgid "Leave it empty to use server-wide default setting."
+msgstr "공란으로 두면 서버의 기본 설정이 적용됩니다."
+
+#: ../templates/default/layout.html:45 ../templates/default/layout.html:83
+#: ../templates/default/panel/license.html:3
+msgid "License"
+msgstr "라이선스"
+
+#: ../templates/default/panel/license.html:10
+msgid "License info"
+msgstr "라이선스 정보"
+
+#: ../templates/default/panel/license.html:21
+msgid "License is active"
+msgstr "라이선스가 활성화 되었습니다."
+
+#: ../templates/default/panel/license.html:18
+msgid "License status"
+msgstr "라이선스 상태"
+
+#: ../templates/default/panel/license.html:43
+msgid "Lifetime license"
+msgstr "무제한 라이선스"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:122
+#: ../templates/default/dbmail_mysql/domain/list.html:127
+#: ../templates/default/ldap/domain/list.html:173
+#: ../templates/default/mysql/search.html:123
+#: ../templates/default/mysql/domain/list.html:131
+#: ../templates/default/mysql/domain/list.html:136
+#: ../templates/default/pgsql/search.html:123
+#: ../templates/default/pgsql/domain/list.html:131
+#: ../templates/default/pgsql/domain/list.html:136
+msgid "List all mail aliases."
+msgstr "모든 메일 별칭 표시"
+
+#: ../templates/default/ldap/domain/list.html:160
+msgid "List all mail lists."
+msgstr "모든 메일 리스트 표시"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:108
+#: ../templates/default/dbmail_mysql/domain/list.html:113
+#: ../templates/default/ldap/domain/list.html:147
+#: ../templates/default/ldap/domain/list.html:150
+#: ../templates/default/mysql/search.html:114
+#: ../templates/default/mysql/domain/list.html:117
+#: ../templates/default/mysql/domain/list.html:122
+#: ../templates/default/pgsql/search.html:114
+#: ../templates/default/pgsql/domain/list.html:117
+#: ../templates/default/pgsql/domain/list.html:122
+msgid "List all mail users."
+msgstr "모든 메일 사용자 표시"
+
+#: ../templates/default/ldap/search.html:80
+#: ../templates/default/ldap/domain/list.html:55
+msgid "Lists"
+msgstr "메일 리스트"
+
+#: ../templates/default/layout.html:53
+#, python-format
+msgid "Logged in as %s"
+msgstr "%s로 로그인했습니다."
+
+#: ../templates/default/login.html:64
+msgid "Login"
+msgstr "로그인"
+
+#: ../templates/default/macros/msgHandlers.html:62
+msgid "Login required"
+msgstr "로그인이 필요합니다."
+
+#: ../templates/default/login.html:7 ../templates/default/login.html:42
+msgid "Login to manage your mail domains & accounts"
+msgstr "메일 계정과 도메인 관리를 위해 로그인하세요"
+
+#: ../templates/default/layout.html:48
+msgid "Logout"
+msgstr "로그아웃"
+
+#: ../templates/default/dbmail_mysql/search.html:81
+#: ../templates/default/dbmail_mysql/search.html:144
+#: ../templates/default/dbmail_mysql/search.html:219
+#: ../templates/default/dbmail_mysql/admin/list.html:50
+#: ../templates/default/dbmail_mysql/alias/create.html:65
+#: ../templates/default/dbmail_mysql/alias/list.html:50
+#: ../templates/default/dbmail_mysql/user/create.html:89
+#: ../templates/default/dbmail_mysql/user/list.html:54
+#: ../templates/default/ldap/search.html:138
+#: ../templates/default/ldap/search.html:192
+#: ../templates/default/ldap/search.html:252
+#: ../templates/default/ldap/search.html:305
+#: ../templates/default/ldap/admin/list.html:50
+#: ../templates/default/ldap/alias/create.html:85
+#: ../templates/default/ldap/alias/list.html:69
+#: ../templates/default/ldap/maillist/create.html:83
+#: ../templates/default/ldap/maillist/list.html:70
+#: ../templates/default/ldap/maillist/profile.html:143
+#: ../templates/default/ldap/maillist/profile.html:211
+#: ../templates/default/ldap/maillist/profile.html:270
+#: ../templates/default/ldap/maillist/profile.html:338
+#: ../templates/default/ldap/user/admin.html:71
+#: ../templates/default/ldap/user/create.html:132
+#: ../templates/default/ldap/user/list.html:72
+#: ../templates/default/macros/general.html:644
+#: ../templates/default/mysql/search.html:161
+#: ../templates/default/mysql/search.html:225
+#: ../templates/default/mysql/search.html:289
+#: ../templates/default/mysql/admin/list.html:50
+#: ../templates/default/mysql/alias/create.html:79
+#: ../templates/default/mysql/alias/list.html:63
+#: ../templates/default/mysql/user/create.html:101
+#: ../templates/default/mysql/user/list.html:68
+#: ../templates/default/pgsql/search.html:161
+#: ../templates/default/pgsql/search.html:225
+#: ../templates/default/pgsql/search.html:289
+#: ../templates/default/pgsql/admin/list.html:50
+#: ../templates/default/pgsql/alias/create.html:79
+#: ../templates/default/pgsql/alias/list.html:63
+#: ../templates/default/pgsql/user/create.html:101
+#: ../templates/default/pgsql/user/list.html:68
+msgid "Mail Address"
+msgstr "메일 주소"
+
+#: ../templates/default/macros/msgHandlers.html:108
+msgid "Mail Alias"
+msgstr "메일 별칭"
+
+#: ../templates/default/dbmail_mysql/alias/list.html:12
+#: ../templates/default/ldap/alias/list.html:14
+#: ../templates/default/mysql/alias/list.html:13
+#: ../templates/default/pgsql/alias/list.html:13
+msgid "Mail Aliases"
+msgstr "메일 별칭"
+
+#: ../templates/default/amavisd/quarantined_raw.html:6
+msgid "Mail Body"
+msgstr "메일 본문"
+
+#: ../templates/default/ldap/search.html:253
+#: ../templates/default/ldap/maillist/list.html:71
+msgid "Mail Deliver Restriction"
+msgstr "메일 전송 제한"
+
+#: ../templates/default/amavisd/quarantined_raw.html:20
+msgid "Mail Headers"
+msgstr "메일 헤더"
+
+#: ../templates/default/layout.html:115
+#: ../templates/default/ldap/search.html:39
+#: ../templates/default/ldap/alias/create.html:69
+#: ../templates/default/ldap/alias/list.html:46
+#: ../templates/default/ldap/maillist/create.html:69
+#: ../templates/default/ldap/maillist/list.html:48
+#: ../templates/default/ldap/user/admin.html:49
+#: ../templates/default/ldap/user/create.html:115
+#: ../templates/default/ldap/user/list.html:50
+#: ../templates/default/macros/msgHandlers.html:108
+msgid "Mail List"
+msgstr "메일 리스트"
+
+#: ../templates/default/ldap/alias/create.html:18
+#: ../templates/default/ldap/alias/list.html:22
+#: ../templates/default/ldap/alias/profile.html:31
+#: ../templates/default/ldap/domain/profile.html:105
+#: ../templates/default/ldap/maillist/create.html:18
+#: ../templates/default/ldap/maillist/list.html:16
+#: ../templates/default/ldap/maillist/list.html:24
+#: ../templates/default/ldap/maillist/profile.html:33
+#: ../templates/default/ldap/user/admin.html:23
+#: ../templates/default/ldap/user/create.html:23
+#: ../templates/default/ldap/user/list.html:24
+#: ../templates/default/ldap/user/profile.html:102
+msgid "Mail Lists"
+msgstr "메일 리스트"
+
+#: ../templates/default/dbmail_mysql/user/list.html:14
+#: ../templates/default/ldap/user/list.html:16
+#: ../templates/default/mysql/user/list.html:15
+#: ../templates/default/pgsql/user/list.html:15
+msgid "Mail Users"
+msgstr "메일 사용자"
+
+#: ../templates/default/macros/msgHandlers.html:144
+msgid "Mail address already exists, please choose another one."
+msgstr "메일 주소가 존재합니다. 다른 주소를 입력하세요."
+
+#: ../templates/default/macros/msgHandlers.html:260
+msgid "Mail alias created."
+msgstr "메일 별칭이 생성되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:228
+msgid "Mail list created."
+msgstr "메일 리스트가 생성되었습니다."
+
+#: ../templates/default/ldap/maillist/list.html:53
+#, python-format
+msgid "Mail lists under domain: %s"
+msgstr "%s 도메인의 메일 리스트"
+
+#: ../templates/default/amavisd/inout.html:85
+#, python-format
+msgid ""
+"Mail logs of incoming and outgoing mails which older than %d days will be"
+" deleted from database permanantly."
+msgstr "%d 일 이상된 송수신 메일 로그는 데이터베이스에서 완전히 삭제됩니다."
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:105
+#: ../templates/default/ldap/alias/profile.html:92
+#: ../templates/default/mysql/alias/profile.html:102
+#: ../templates/default/pgsql/alias/profile.html:102
+msgid "Mail sent to alias will be forwarded to members."
+msgstr "메일 별칭으로 전송된 메일은 구성원에게 전달됩니다."
+
+#: ../templates/default/macros/ldap.html:113
+msgid "Mail service"
+msgstr "메일 서비스"
+
+#: ../templates/default/dbmail_mysql/user/list.html:91
+#: ../templates/default/macros/general.html:531
+msgid "Mailbox Quota"
+msgstr "메일 박스 용량"
+
+#: ../templates/default/amavisd/inout.html:45
+#, python-format
+msgid "Mails Sent by Domain: %s"
+msgstr "%s 도메인에서 발송된 메일"
+
+#: ../templates/default/amavisd/inout.html:48
+#, python-format
+msgid "Mails Sent by User: %s"
+msgstr "%s 사용자로부터 발송된 메일"
+
+#: ../templates/default/macros/msgHandlers.html:302
+msgid "Mails were deleted."
+msgstr "메일이 삭제되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:301
+msgid "Mails were released."
+msgstr "메일이 배포되었습니다."
+
+#: ../templates/default/ldap/domain/profile.html:196
+msgid "Make sure disclaimer work as expected:"
+msgstr "권리 사항을 확인하십시오."
+
+#: ../templates/default/ldap/user/profile.html:373
+msgid "Make sure you have iRedAPD work as expected:"
+msgstr "iRedAPD가 정상 동작하는지 확인하십시오."
+
+#: ../templates/default/macros/ldap.html:5
+#: ../templates/default/macros/mysql.html:5
+msgid "Managed Domains"
+msgstr "관리 도메인"
+
+#: ../templates/default/macros/general.html:450
+msgid "Mark as backup MX"
+msgstr "백업 MX로 지정"
+
+#: ../templates/default/ldap/user/list.html:157
+msgid "Mark as domain admin"
+msgstr "도메인 관리자로 지정"
+
+#: ../templates/default/macros/ldap.html:88
+msgid "Mark as domain administrator"
+msgstr "도메인 관리자로 지정"
+
+#: ../templates/default/ldap/user/list.html:161
+#: ../templates/default/macros/general.html:391
+msgid "Mark as global admin"
+msgstr "최상위 관리자로 지정"
+
+#: ../templates/default/macros/general.html:406
+msgid "Mark this user as"
+msgstr "사용자 역할 지정"
+
+#: ../templates/default/macros/policyd.html:71
+msgid "Max size of single outgoing email"
+msgstr "외부 발송 메일 최대 용량"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:353
+#: ../templates/default/ldap/domain/profile.html:424
+#: ../templates/default/mysql/domain/profile.html:430
+#: ../templates/default/pgsql/domain/profile.html:412
+msgid "Maximal password length"
+msgstr "암호 최대 길이"
+
+#: ../templates/default/macros/msgHandlers.html:212
+#: ../templates/default/macros/msgHandlers.html:250
+msgid "Member assigned success."
+msgstr "구성원 할당 성공"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:123
+#: ../templates/default/ldap/user/profile.html:240
+#: ../templates/default/mysql/user/profile.html:124
+#: ../templates/default/pgsql/user/profile.html:124
+msgid "Member of Mail Aliases"
+msgstr "메일 별칭의 구성원"
+
+#: ../templates/default/ldap/user/profile.html:193
+msgid "Member of Mail Lists"
+msgstr "메일 리스트의 구성원"
+
+#: ../templates/default/macros/msgHandlers.html:213
+#: ../templates/default/macros/msgHandlers.html:251
+msgid "Member removed success."
+msgstr "구성원 삭제 성공"
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:104
+#: ../templates/default/ldap/alias/profile.html:91
+#: ../templates/default/ldap/maillist/profile.html:54
+#: ../templates/default/ldap/maillist/profile.html:86
+#: ../templates/default/mysql/alias/profile.html:75
+#: ../templates/default/mysql/alias/profile.html:101
+#: ../templates/default/pgsql/alias/profile.html:75
+#: ../templates/default/pgsql/alias/profile.html:101
+msgid "Members"
+msgstr "구성원"
+
+#: ../templates/default/panel/log.html:85
+msgid "Message"
+msgstr "메시지"
+
+#: ../templates/default/ldap/maillist/profile.html:129
+msgid "Messages sent to mail list will be delivered to its members."
+msgstr "메일 리스트의 구성원에게 메시지가 전송됩니다."
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:346
+#: ../templates/default/ldap/domain/profile.html:417
+#: ../templates/default/mysql/domain/profile.html:423
+#: ../templates/default/pgsql/domain/profile.html:405
+msgid "Minimal password length"
+msgstr "암호 최소 길이"
+
+#: ../templates/default/macros/general.html:327
+msgid "Mobile"
+msgstr "모바일"
+
+#: ../templates/default/ldap/maillist/profile.html:55
+#: ../templates/default/ldap/maillist/profile.html:87
+#: ../templates/default/mysql/alias/profile.html:76
+#: ../templates/default/mysql/alias/profile.html:138
+#: ../templates/default/pgsql/alias/profile.html:76
+#: ../templates/default/pgsql/alias/profile.html:138
+msgid "Moderators"
+msgstr "승인자"
+
+#: ../templates/default/macros/msgHandlers.html:214
+msgid "Moderators assigned success."
+msgstr "승인자 할당 성공"
+
+#: ../templates/default/macros/msgHandlers.html:215
+msgid "Moderators removed success."
+msgstr "승인자 삭제 성공"
+
+#: ../templates/default/ldap/domain/profile.html:255
+#: ../templates/default/mysql/domain/profile.html:191
+#: ../templates/default/mysql/user/profile.html:212
+#: ../templates/default/pgsql/domain/profile.html:192
+#: ../templates/default/pgsql/user/profile.html:212
+msgid "Monitor incoming emails via BCC"
+msgstr "숨은 참조로 수신되는 메일 감시"
+
+#: ../templates/default/ldap/domain/profile.html:262
+#: ../templates/default/mysql/domain/profile.html:198
+#: ../templates/default/mysql/user/profile.html:219
+#: ../templates/default/pgsql/domain/profile.html:199
+#: ../templates/default/pgsql/user/profile.html:219
+msgid "Monitor outgoing emails via BCC"
+msgstr "숨은 참조로 발송되는 메일 감시"
+
+#: ../templates/default/ldap/domain/profile.html:319
+#: ../templates/default/mysql/domain/profile.html:264
+#: ../templates/default/pgsql/domain/profile.html:265
+msgid "Multiple addresses MUST be seperated by comma (,)."
+msgstr "메일 주소는 쉼표(,)로 구분해야 합니다."
+
+#: ../templates/default/ldap/domain/profile.html:276
+#: ../templates/default/ldap/user/profile.html:487
+#: ../templates/default/mysql/domain/profile.html:212
+#: ../templates/default/mysql/user/profile.html:232
+#: ../templates/default/pgsql/domain/profile.html:213
+#: ../templates/default/pgsql/user/profile.html:232
+msgid "Multiple addresses are NOT supported."
+msgstr "여러 개의 메일 주소는 지원되지 않습니다."
+
+#: ../templates/default/dbmail_mysql/domain/list.html:53
+#: ../templates/default/ldap/search.html:78
+#: ../templates/default/ldap/domain/list.html:52
+#: ../templates/default/mysql/search.html:81
+#: ../templates/default/mysql/domain/list.html:53
+#: ../templates/default/pgsql/search.html:81
+#: ../templates/default/pgsql/domain/list.html:53
+msgid "Name"
+msgstr "이름"
+
+#: ../templates/default/macros/general.html:781
+msgid "Need a random password?"
+msgstr "랜덤 암호는 다음과 같습니다."
+
+#: ../templates/default/dashboard.html:119
+msgid "Network"
+msgstr "네트워크"
+
+#: ../templates/default/macros/general.html:491
+msgid "New password"
+msgstr "신규 암호"
+
+#: ../templates/default/macros/msgHandlers.html:193
+#, python-format
+msgid "New password must NOT contain more than %s characters."
+msgstr "신규 암호는 최대 %s 자 이하로 제한됩니다."
+
+#: ../templates/default/macros/msgHandlers.html:191
+#, python-format
+msgid "New password must contain at least %s characters."
+msgstr "신규 암호는 최소 %s 이상이어야 합니다."
+
+#: ../templates/default/macros/msgHandlers.html:140
+#: ../templates/default/macros/msgHandlers.html:178
+msgid "New passwords are not match."
+msgstr "암호가 일치하지 않습니다."
+
+#: ../templates/default/layout.html:31
+msgid "New version available"
+msgstr "새 버전을 사용할 수 있습니다."
+
+#: ../templates/default/dashboard.html:14
+#, python-format
+msgid ""
+"New version of iRedAdmin-Pro, %s, is now available for upgrading. <a "
+"href='%s/system/license' class='button green'>Details</a>"
+msgstr ""
+"iRedAdmin-Pro %s 버전으로 업그레이드 가능합니다.<a \"\n"
+"\"href='%s/system/license' class='button green'>상세 정보</a"
+
+#: ../templates/default/layout.html:154
+msgid "News & Announments"
+msgstr "뉴스 및 공지"
+
+#: ../templates/default/macros/general.html:878
+msgid "Next Page"
+msgstr "다음 페이지"
+
+#: ../templates/default/macros/msgHandlers.html:175
+msgid "No account selected."
+msgstr "계정이 선택되지 않았습니다."
+
+#: ../templates/default/panel/log.html:108
+msgid "No admin log."
+msgstr "관리 로그가 없습니다."
+
+#: ../templates/default/macros/msgHandlers.html:102
+#: ../templates/default/macros/msgHandlers.html:127
+#: ../templates/default/macros/msgHandlers.html:220
+#: ../templates/default/macros/msgHandlers.html:246
+msgid "No domain under control."
+msgstr "관리 가능한 도메인이 없습니다."
+
+#: ../templates/default/ldap/maillist/profile.html:226
+msgid "No external members."
+msgstr "외부 구성원이 없습니다."
+
+#: ../templates/default/ldap/maillist/profile.html:353
+msgid "No external moderators."
+msgstr "외부 승인자가 없습니다."
+
+#: ../templates/default/dbmail_mysql/user/create.html:40
+#: ../templates/default/ldap/user/create.html:68
+#: ../templates/default/mysql/user/create.html:50
+#: ../templates/default/pgsql/user/create.html:50
+msgid "No free domain quota left."
+msgstr "도메인 용량이 남아있지 않습니다."
+
+#: ../templates/default/amavisd/inout.html:158
+msgid "No incoming mails."
+msgstr "수신된 메일이 없습니다."
+
+#: ../templates/default/ldap/maillist/profile.html:180
+msgid "No internal members."
+msgstr "내부 구성원이 없습니다."
+
+#: ../templates/default/ldap/maillist/profile.html:308
+msgid "No internal moderators."
+msgstr "내부 승인자가 없습니다."
+
+#: ../templates/default/ldap/user/admin.html:133
+msgid "No mail admin available."
+msgstr "메일 관리자가 없습니다."
+
+#: ../templates/default/dbmail_mysql/alias/list.html:73
+#: ../templates/default/ldap/alias/list.html:100
+#: ../templates/default/mysql/alias/list.html:86
+#: ../templates/default/pgsql/alias/list.html:86
+msgid "No mail alias available."
+msgstr "메일 별칭을 사용할 수 없습니다."
+
+#: ../templates/default/dbmail_mysql/domain/list.html:136
+#: ../templates/default/dbmail_mysql/domain/list.html:140
+#: ../templates/default/ldap/domain/list.html:188
+#: ../templates/default/ldap/domain/list.html:192
+#: ../templates/default/macros/msgHandlers.html:145
+#: ../templates/default/mysql/domain/list.html:145
+#: ../templates/default/mysql/domain/list.html:149
+#: ../templates/default/pgsql/domain/list.html:145
+#: ../templates/default/pgsql/domain/list.html:149
+msgid "No mail domain available."
+msgstr "메일 도메인을 사용할 수 없습니다."
+
+#: ../templates/default/ldap/maillist/list.html:100
+msgid "No mail list available."
+msgstr "메일 리스트를 사용할 수 없습니다."
+
+#: ../templates/default/dbmail_mysql/user/list.html:103
+#: ../templates/default/ldap/user/list.html:141
+#: ../templates/default/mysql/user/list.html:121
+#: ../templates/default/pgsql/user/list.html:121
+msgid "No mail user available."
+msgstr "메일 사용자를 사용할 수 없습니다."
+
+#: ../templates/default/macros/msgHandlers.html:221
+msgid "No moderator selected."
+msgstr "승인자가 선택되지 않았습니다."
+
+#: ../templates/default/macros/general.html:478
+#, python-format
+msgid "No more than %s characters."
+msgstr "%s 자 이상은 허용되지 않습니다."
+
+#: ../templates/default/amavisd/inout.html:156
+msgid "No outgoing mails."
+msgstr "외부로 발송된 메일이 없습니다."
+
+#: ../templates/default/macros/amavisd.html:46
+msgid "No quarantined mails."
+msgstr "격리된 메일이 없습니다."
+
+#: ../templates/default/policyd/wblist.html:95
+msgid "No records."
+msgstr "기록이 없습니다."
+
+#: ../templates/default/macros/msgHandlers.html:100
+msgid "No such domain."
+msgstr "도메인이 존재하지 않습니다."
+
+#: ../templates/default/macros/general.html:220
+msgid "Not a global admin."
+msgstr "최상위 관리자가 아닙니다."
+
+#: ../templates/default/dbmail_mysql/alias/create.html:23
+#: ../templates/default/dbmail_mysql/user/create.html:32
+#: ../templates/default/ldap/alias/create.html:39
+#: ../templates/default/macros/msgHandlers.html:254
+#: ../templates/default/mysql/alias/create.html:35
+#: ../templates/default/mysql/user/create.html:42
+#: ../templates/default/pgsql/alias/create.html:35
+#: ../templates/default/pgsql/user/create.html:42
+msgid "Not allowed to create mail alias under this domain."
+msgstr "이 도메인에는 메일 별칭 생성이 허용되지 않습니다."
+
+#: ../templates/default/ldap/maillist/create.html:40
+#: ../templates/default/macros/msgHandlers.html:222
+msgid "Not allowed to create mail list under this domain."
+msgstr "이 도메인에는 메일 리스트 생성이 허용되지 않습니다."
+
+#: ../templates/default/ldap/user/create.html:73
+#: ../templates/default/ldap/user/create.html:76
+#: ../templates/default/macros/msgHandlers.html:147
+msgid "Not allowed to create mail user under this domain."
+msgstr "이 도메인에는 메일 사용자 생성이 허용되지 않습니다."
+
+#: ../templates/default/ldap/user/profile.html:373
+#: ../templates/default/policyd/blacklist/create.html:83
+#: ../templates/default/policyd/whitelist/create.html:72
+msgid "Note"
+msgstr "주의사항"
+
+#: ../templates/default/dashboard.html:71
+msgid "Number of aliases"
+msgstr "별칭 수"
+
+#: ../templates/default/dashboard.html:60
+msgid "Number of domains"
+msgstr "도메인 수"
+
+#: ../templates/default/macros/policyd.html:20
+msgid "Number of max incoming emails"
+msgstr "최대 수신 메일 수"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:335
+#: ../templates/default/ldap/domain/profile.html:406
+#: ../templates/default/mysql/domain/profile.html:412
+#: ../templates/default/pgsql/domain/profile.html:394
+msgid "Number of max mail aliases"
+msgstr "최대 메일 별칭 수"
+
+#: ../templates/default/ldap/domain/profile.html:399
+msgid "Number of max mail lists"
+msgstr "최대 메일 리스트 수"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:327
+#: ../templates/default/ldap/domain/profile.html:391
+#: ../templates/default/mysql/domain/profile.html:404
+#: ../templates/default/pgsql/domain/profile.html:386
+msgid "Number of max mail users"
+msgstr "최대 메일 사용자 수"
+
+#: ../templates/default/macros/policyd.html:18
+msgid "Number of max outgoing emails"
+msgstr "최대 발송 메일 수"
+
+#: ../templates/default/dashboard.html:66
+msgid "Number of users"
+msgstr "사용자 수"
+
+#: ../templates/default/macros/general.html:485
+msgid "Old password"
+msgstr "이전 암호"
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:165
+#: ../templates/default/dbmail_mysql/user/profile.html:181
+#: ../templates/default/dbmail_mysql/user/profile.html:199
+#: ../templates/default/ldap/alias/profile.html:115
+#: ../templates/default/ldap/user/profile.html:297
+#: ../templates/default/ldap/user/profile.html:320
+#: ../templates/default/mysql/alias/profile.html:170
+#: ../templates/default/mysql/alias/profile.html:178
+#: ../templates/default/mysql/user/profile.html:194
+#: ../templates/default/pgsql/alias/profile.html:170
+#: ../templates/default/pgsql/alias/profile.html:178
+#: ../templates/default/pgsql/user/profile.html:194
+msgid "One mail address per line."
+msgstr "한줄 당 하나의 메일 주소"
+
+#: ../templates/default/macros/general.html:916
+#: ../templates/default/policyd/blacklist/create.html:40
+#: ../templates/default/policyd/blacklist/create.html:46
+#: ../templates/default/policyd/whitelist/create.html:40
+msgid "One record per line."
+msgstr "한줄 당 하나의 레코드"
+
+#: ../templates/default/macros/msgHandlers.html:341
+msgid "Operation completed."
+msgstr "작업이 완료되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:108
+msgid "Or create other mail accounts:"
+msgstr "다른 메일 주소를 생성하십시오."
+
+#: ../templates/default/login.html:60
+#: ../templates/default/dbmail_mysql/admin/profile.html:45
+#: ../templates/default/dbmail_mysql/user/profile.html:55
+#: ../templates/default/ldap/admin/profile.html:53
+#: ../templates/default/ldap/user/profile.html:122
+#: ../templates/default/mysql/admin/profile.html:45
+#: ../templates/default/mysql/user/profile.html:71
+#: ../templates/default/pgsql/admin/profile.html:45
+#: ../templates/default/pgsql/user/profile.html:71
+msgid "Password"
+msgstr "암호변경"
+
+#: ../templates/default/macros/msgHandlers.html:141
+#: ../templates/default/macros/msgHandlers.html:179
+msgid "Password is empty."
+msgstr "암호가 비어 있습니다."
+
+#: ../templates/default/macros/msgHandlers.html:143
+msgid "Password is too long."
+msgstr "암호가 너무 깁니다."
+
+#: ../templates/default/macros/msgHandlers.html:142
+msgid "Password is too short."
+msgstr "암호가 너무 짧습니다."
+
+#: ../templates/default/macros/msgHandlers.html:64
+msgid "Password of cn=vmailadmin is incorrect."
+msgstr "cn=vmailadmin의 암호가 일치하지 않습니다."
+
+#: ../templates/default/ldap/user/profile.html:471
+#: ../templates/default/mysql/user/profile.html:396
+#: ../templates/default/pgsql/user/profile.html:396
+msgid "Path to mailbox"
+msgstr "메일박스 경로"
+
+#: ../templates/default/ldap/domain/profile.html:277
+#: ../templates/default/ldap/user/profile.html:488
+#: ../templates/default/mysql/domain/profile.html:213
+#: ../templates/default/mysql/user/profile.html:233
+#: ../templates/default/pgsql/domain/profile.html:214
+#: ../templates/default/pgsql/user/profile.html:233
+msgid "Per-domain bcc settings will override per-user bcc settings."
+msgstr "사용자 숨은참조(bcc) 설정은 도메인 숨은참조(bcc) 설정으로 대체됩니다."
+
+#: ../templates/default/macros/ldap.html:121
+#: ../templates/default/mysql/domain/profile.html:392
+msgid "Per-user greylisting setting has higher priority"
+msgstr "사용자의 메일 의심 설정 우선 순위가 가장 높습니다."
+
+#: ../templates/default/macros/general.html:594
+msgid ""
+"Per-user relay setting will override per-domain relay setting you set in "
+"this page."
+msgstr "이 페이지에서 설정한 사용자 별 전달(relay) 설정이 도메인 별 전달(relay) 설정을 대체합니다."
+
+#: ../templates/default/ldap/domain/profile.html:370
+#: ../templates/default/mysql/domain/profile.html:132
+#: ../templates/default/pgsql/domain/profile.html:133
+msgid "Per-user sender throttling has higher priority."
+msgstr "사용자 별 발송자 제한 사항의 우선 순위가 가장 높습니다."
+
+#: ../templates/default/macros/msgHandlers.html:98
+#: ../templates/default/macros/msgHandlers.html:171
+#: ../templates/default/macros/msgHandlers.html:306
+#: ../templates/default/macros/msgHandlers.html:325
+msgid "Permission denied."
+msgstr "권한이 없습니다."
+
+#: ../templates/default/ldap/domain/profile.html:184
+msgid "Plain text only"
+msgstr "일반 문자만 가능합니다."
+
+#: ../templates/default/ldap/user/admin.html:133
+msgid ""
+"Please either mark mail user as domain admin or create a separate admin "
+"account."
+msgstr "메일 사용자를 도메인 관리자로 지정하거나 별도의 관리자 계정을 생성하십시오."
+
+#: ../templates/default/macros/msgHandlers.html:146
+msgid "Please select at least one account."
+msgstr "최소 하나 이상의 계정을 선택하십시오."
+
+#: ../templates/default/macros/msgHandlers.html:101
+msgid "Please select at least one domain to apply action."
+msgstr "최소 하나 이상의 도메인을 선택하십시오."
+
+#: ../templates/default/macros/general.html:610
+msgid "Postfix manual page"
+msgstr "Postfix 매뉴얼 페이지"
+
+#: ../templates/default/layout.html:42
+msgid "Preferences"
+msgstr "환경설정"
+
+#: ../templates/default/macros/general.html:367
+msgid "Preferred language"
+msgstr "언어 선택"
+
+#: ../templates/default/macros/general.html:805
+msgid "Previous Page"
+msgstr "이전 페이지"
+
+#: ../templates/default/panel/license.html:29
+msgid "Product name"
+msgstr "제품 이름"
+
+#: ../templates/default/dbmail_mysql/admin/profile.html:29
+#: ../templates/default/dbmail_mysql/admin/profile.html:60
+#: ../templates/default/ldap/admin/profile.html:36
+#: ../templates/default/ldap/admin/profile.html:56
+#: ../templates/default/mysql/admin/profile.html:60
+#: ../templates/default/pgsql/admin/profile.html:60
+msgid "Profile of admin:"
+msgstr "관리자 프로필"
+
+#: ../templates/default/dbmail_mysql/alias/profile.html:24
+#: ../templates/default/dbmail_mysql/alias/profile.html:43
+#: ../templates/default/ldap/alias/profile.html:33
+#: ../templates/default/ldap/alias/profile.html:54
+#: ../templates/default/mysql/alias/profile.html:24
+#: ../templates/default/mysql/alias/profile.html:43
+#: ../templates/default/pgsql/alias/profile.html:24
+#: ../templates/default/pgsql/alias/profile.html:43
+msgid "Profile of alias:"
+msgstr "별칭 프로필"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:32
+#: ../templates/default/dbmail_mysql/domain/profile.html:71
+#: ../templates/default/ldap/domain/profile.html:140
+#: ../templates/default/mysql/domain/profile.html:83
+#: ../templates/default/pgsql/domain/profile.html:84
+msgid "Profile of domain:"
+msgstr "도메인 프로필"
+
+#: ../templates/default/ldap/maillist/profile.html:34
+#: ../templates/default/ldap/maillist/profile.html:60
+msgid "Profile of mail list:"
+msgstr "메일 리스트 프로필"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:33
+#: ../templates/default/dbmail_mysql/user/profile.html:71
+#: ../templates/default/ldap/user/profile.html:101
+#: ../templates/default/ldap/user/profile.html:138
+#: ../templates/default/mysql/user/profile.html:50
+#: ../templates/default/mysql/user/profile.html:87
+#: ../templates/default/pgsql/user/profile.html:50
+#: ../templates/default/pgsql/user/profile.html:87
+msgid "Profile of user:"
+msgstr "사용자 프로필"
+
+#: ../templates/default/macros/msgHandlers.html:125
+#: ../templates/default/macros/msgHandlers.html:211
+#: ../templates/default/macros/msgHandlers.html:252
+msgid "Profile updated failed."
+msgstr "프로필 갱신 실패"
+
+#: ../templates/default/macros/msgHandlers.html:88
+#: ../templates/default/macros/msgHandlers.html:124
+#: ../templates/default/macros/msgHandlers.html:169
+#: ../templates/default/macros/msgHandlers.html:209
+#: ../templates/default/macros/msgHandlers.html:244
+msgid "Profile updated success."
+msgstr "프로필 갱신 성공"
+
+#: ../templates/default/panel/license.html:34
+msgid "Purchase date"
+msgstr "구매 일시"
+
+#: ../templates/default/dashboard.html:46
+#: ../templates/default/macros/amavisd.html:70
+msgid "Quarantined"
+msgstr "격리됨"
+
+#: ../templates/default/layout.html:93
+#: ../templates/default/amavisd/quarantined.html:18
+#: ../templates/default/amavisd/quarantined.html:44
+#: ../templates/default/macros/amavisd.html:93
+#: ../templates/default/macros/amavisd.html:95
+#: ../templates/default/panel/log.html:36
+msgid "Quarantined Mails"
+msgstr "격리된 메일"
+
+#: ../templates/default/amavisd/quarantined.html:38
+#, python-format
+msgid "Quarantined Mails of Domain: %s"
+msgstr "%s 도메인의 격리된 메일"
+
+#: ../templates/default/amavisd/quarantined.html:41
+#, python-format
+msgid "Quarantined Mails of User: %s"
+msgstr "%s 사용자의 격리된 메일"
+
+#: ../templates/default/amavisd/quarantined.html:61
+msgid ""
+"Quarantined mails are not delivered to users' mailboxes yet, you can "
+"either delete them or release them. Mails will be delivered to user "
+"mailboxes after released."
+msgstr "격리된 메일이 사용자에게 전달되지 않았습니다. 삭제하거나 차단을 해제하십시오. 차단 해제된 후 사용자에게 전달됩니다."
+
+#: ../templates/default/amavisd/quarantined.html:64
+#, python-format
+msgid ""
+"Quarantined mails older than %d days will be deleted from database "
+"permanantly."
+msgstr "%d 일 이상된 격리 메일은 데이터베이스에서 영구 삭제됩니다."
+
+#: ../templates/default/dbmail_mysql/search.html:146
+#: ../templates/default/dbmail_mysql/domain/list.html:54
+#: ../templates/default/dbmail_mysql/user/list.html:55
+#: ../templates/default/ldap/search.html:195
+#: ../templates/default/ldap/domain/list.html:53
+#: ../templates/default/ldap/maillist/profile.html:145
+#: ../templates/default/ldap/maillist/profile.html:272
+#: ../templates/default/ldap/user/admin.html:74
+#: ../templates/default/ldap/user/list.html:75
+#: ../templates/default/mysql/search.html:82
+#: ../templates/default/mysql/search.html:227
+#: ../templates/default/mysql/domain/list.html:54
+#: ../templates/default/mysql/user/list.html:73
+#: ../templates/default/pgsql/search.html:82
+#: ../templates/default/pgsql/search.html:227
+#: ../templates/default/pgsql/domain/list.html:54
+#: ../templates/default/pgsql/user/list.html:73
+msgid "Quota"
+msgstr "용량"
+
+#: ../templates/default/macros/policyd.html:32
+msgid "Quota size of all outgoing emails"
+msgstr "외부 발송 메일 전체 용량"
+
+#: ../templates/default/dashboard.html:28
+#: ../templates/default/macros/amavisd.html:71
+msgid "Received"
+msgstr "수신됨"
+
+#: ../templates/default/layout.html:89
+#: ../templates/default/amavisd/inout.html:21
+#: ../templates/default/amavisd/inout.html:62
+#: ../templates/default/macros/amavisd.html:83
+#: ../templates/default/macros/amavisd.html:87
+#: ../templates/default/panel/log.html:32
+msgid "Received Mails"
+msgstr "수신 메일"
+
+#: ../templates/default/amavisd/inout.html:56
+#, python-format
+msgid "Received Mails of Domain: %s"
+msgstr "%s 도메인의 수신 메일"
+
+#: ../templates/default/amavisd/inout.html:59
+#, python-format
+msgid "Received Mails of User: %s"
+msgstr "%s 사용자의 수신 메일"
+
+#: ../templates/default/macros/ldap.html:95
+#: ../templates/default/macros/mysql.html:61
+msgid "Receiving mails for this account on mail server"
+msgstr "메일 서버의 이 계정으로 수신된 메일"
+
+#: ../templates/default/amavisd/inout.html:108
+#: ../templates/default/macros/amavisd.html:10
+msgid "Recipient"
+msgstr "수신자"
+
+#: ../templates/default/policyd/blacklist/create.html:56
+#: ../templates/default/policyd/whitelist/create.html:50
+msgid "Record format"
+msgstr "레코드 형식"
+
+#: ../templates/default/macros/msgHandlers.html:275
+#, python-format
+msgid "Records are added. <a href=\"%s\" target=\"_blank\">View them now</a>"
+msgstr "레코드가 추가됩니다. <a href=\"%s\" target=\"_blank\">바로 보기</a>"
+
+#: ../templates/default/ldap/user/profile.html:351
+msgid "Reject mails from below senders"
+msgstr "다음 발송자 메일 거부"
+
+#: ../templates/default/ldap/user/profile.html:365
+msgid "Reject mails sent to below recipients"
+msgstr "다음 수신자 메일 거부"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:52
+#: ../templates/default/dbmail_mysql/user/profile.html:53
+#: ../templates/default/ldap/domain/profile.html:123
+#: ../templates/default/ldap/user/profile.html:118
+#: ../templates/default/mysql/domain/profile.html:63
+#: ../templates/default/mysql/user/profile.html:68
+#: ../templates/default/pgsql/domain/profile.html:64
+#: ../templates/default/pgsql/user/profile.html:68
+msgid "Relay"
+msgstr "전달"
+
+#: ../templates/default/macros/general.html:577
+msgid "Relay without verifying local recipients"
+msgstr "로컬 수신자에 대한 검증없이 전달"
+
+#: ../templates/default/macros/general.html:569
+msgid "Relay/Transport Setting"
+msgstr "전달/전송 설정"
+
+#: ../templates/default/panel/license.html:83
+msgid "Release Notes of latest version"
+msgstr "최신 버전 릴리즈 노트"
+
+#: ../templates/default/amavisd/quarantined.html:86
+msgid "Release selected"
+msgstr "해제가 선택되었습니다."
+
+#: ../templates/default/login.html:72
+msgid "Remember me"
+msgstr "기억하기"
+
+#: ../templates/default/ldap/maillist/profile.html:191
+#: ../templates/default/ldap/maillist/profile.html:237
+#: ../templates/default/ldap/maillist/profile.html:319
+#: ../templates/default/ldap/maillist/profile.html:364
+msgid "Remove from list"
+msgstr "리스트에서 제거"
+
+#: ../templates/default/panel/license.html:70
+msgid "Renew license"
+msgstr "라이선스 갱신"
+
+#: ../templates/default/ldap/domain/profile.html:512
+msgid "Sample"
+msgstr "예시"
+
+#: ../templates/default/macros/general.html:599
+msgid "Sample relay settings"
+msgstr "전달 설정 예시"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:171
+#: ../templates/default/ldap/user/profile.html:288
+#: ../templates/default/mysql/user/profile.html:184
+#: ../templates/default/pgsql/user/profile.html:184
+msgid "Save a copy in mailbox"
+msgstr "메일박스에 복사본 저장"
+
+#: ../templates/default/macros/general.html:230
+msgid "Save changes"
+msgstr "변경 사항 저장"
+
+#: ../templates/default/amavisd/inout.html:75
+#: ../templates/default/amavisd/quarantined.html:53
+#: ../templates/default/dbmail_mysql/search.html:20
+#: ../templates/default/dbmail_mysql/search.html:37
+#: ../templates/default/ldap/search.html:15
+#: ../templates/default/ldap/search.html:33
+#: ../templates/default/mysql/search.html:20
+#: ../templates/default/mysql/search.html:37
+#: ../templates/default/pgsql/search.html:20
+#: ../templates/default/pgsql/search.html:37
+msgid "Search"
+msgstr "검색"
+
+#: ../templates/default/macros/amavisd.html:58
+msgid "Search activities"
+msgstr "검색"
+
+#: ../templates/default/macros/msgHandlers.html:343
+msgid "Search keyword could not be empty."
+msgstr "검색 키워드가 공란입니다."
+
+#: ../templates/default/layout.html:37
+msgid "Search mail accounts"
+msgstr "메일 계정 검색"
+
+#: ../templates/default/dbmail_mysql/search.html:64
+#: ../templates/default/ldap/search.html:61
+#: ../templates/default/mysql/search.html:65
+#: ../templates/default/pgsql/search.html:65
+msgid "Search results."
+msgstr "검색 결과"
+
+#: ../templates/default/macros/policyd.html:60
+msgid "Seconds"
+msgstr "초"
+
+#: ../templates/default/error_csrf.html:7
+msgid ""
+"Security token did not match. Please refresh current page and re-perform "
+"form action."
+msgstr "보안 토큰이 일치하지 않습니다. 현재 페이지를 갱신하고 다시 입력하십시오."
+
+#: ../templates/default/macros/msgHandlers.html:132
+#: ../templates/default/macros/msgHandlers.html:172
+#: ../templates/default/macros/msgHandlers.html:216
+#: ../templates/default/macros/msgHandlers.html:247
+msgid "Selected accounts were deleted."
+msgstr "선택된 계정이 삭제되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:133
+#: ../templates/default/macros/msgHandlers.html:173
+#: ../templates/default/macros/msgHandlers.html:217
+#: ../templates/default/macros/msgHandlers.html:248
+msgid "Selected accounts were disabled."
+msgstr "선택된 계정이 비활성화 되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:134
+#: ../templates/default/macros/msgHandlers.html:174
+#: ../templates/default/macros/msgHandlers.html:218
+#: ../templates/default/macros/msgHandlers.html:249
+msgid "Selected accounts were enabled."
+msgstr "선택된 계정이 활성화 되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:135
+msgid "Selected accounts were marked as domain admin."
+msgstr "선택된 계정이 도메인 관리자로 지정되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:137
+msgid "Selected accounts were marked as global admin."
+msgstr "선택된 계정이 최상위 관리자로 지정되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:136
+msgid "Selected accounts were unmarked as domain admin."
+msgstr "선택된 계정의 도메인 관리자 지정이 해제 되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:138
+msgid "Selected accounts were unmarked as global admin."
+msgstr "선택된 계정의 최상위 관리자 지정이 해제 되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:90
+msgid "Selected domains were deleted."
+msgstr "선택된 도메인이 삭제 되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:91
+msgid "Selected domains were disabled."
+msgstr "선택된 도메인이 비활성화 되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:92
+msgid "Selected domains were enabled."
+msgstr "선택된 도메인이 활성화 되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:289
+#: ../templates/default/macros/msgHandlers.html:322
+msgid "Selected log records were deleted."
+msgstr "선택된 로그 기록이 삭제되었습니다."
+
+#: ../templates/default/macros/msgHandlers.html:277
+msgid "Selected records were deleted."
+msgstr "선택된 기록이 삭제 되었습니다."
+
+#: ../templates/default/panel/license.html:77
+msgid "Send me an email with download link"
+msgstr "다운로드 링크를 메일로 보내주십시오."
+
+#: ../templates/default/amavisd/inout.html:107
+#: ../templates/default/macros/amavisd.html:9
+#: ../templates/default/policyd/wblist.html:25
+msgid "Sender"
+msgstr "발송자"
+
+#: ../templates/default/policyd/blacklist/create.html:64
+#: ../templates/default/policyd/whitelist/create.html:58
+msgid "Sender address"
+msgstr "발송자 주소"
+
+#: ../templates/default/macros/ldap.html:89
+#: ../templates/default/macros/mysql.html:62
+msgid "Sending mails via SMTP"
+msgstr "SMTP로 메일 발송"
+
+#: ../templates/default/macros/ldap.html:90
+#: ../templates/default/macros/mysql.html:63
+msgid "Sending mails via SMTP over TLS/SSL"
+msgstr "TLS/SSL 보안 SMTP로 메일 발송"
+
+#: ../templates/default/dashboard.html:33
+#: ../templates/default/macros/amavisd.html:72
+msgid "Sent"
+msgstr "발송됨"
+
+#: ../templates/default/layout.html:88
+#: ../templates/default/amavisd/inout.html:19
+#: ../templates/default/amavisd/inout.html:51
+#: ../templates/default/macros/amavisd.html:82
+#: ../templates/default/macros/amavisd.html:86
+#: ../templates/default/panel/log.html:31
+msgid "Sent Mails"
+msgstr "발송 메일"
+
+#: ../templates/default/dashboard.html:111
+msgid "Server Load"
+msgstr "서버 부하"
+
+#: ../templates/default/macros/msgHandlers.html:96
+msgid ""
+"Server-side size limit exceeded. Please increase \"sizelimit\" in your "
+"LDAP server."
+msgstr "서버의 용량이 초과되었습니다. LDAP 서버의 \"sizelimit\"을 증가시키십시오."
+
+#: ../templates/default/macros/msgHandlers.html:67
+msgid "Session expired, please re-login."
+msgstr "세션이 만료되었습니다. 다시 로그인하십시오."
+
+#: ../templates/default/macros/general.html:544
+msgid "Set to 0 for unlimited."
+msgstr "0으로 지정하면 무제한으로 설정됩니다."
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:364
+#: ../templates/default/ldap/domain/profile.html:436
+#: ../templates/default/mysql/domain/profile.html:442
+#: ../templates/default/pgsql/domain/profile.html:424
+msgid "Set value to -1 means not allowed to create this kind of account."
+msgstr "-1로 지정하면 이러한 유형의 계정 생성이 제한됩니다."
+
+#: ../templates/default/ldap/domain/profile.html:435
+msgid "Set value to 0 for unlimited."
+msgstr "0으로 지정하면 무제한으로 설정됩니다."
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:125
+#: ../templates/default/dbmail_mysql/domain/profile.html:363
+#: ../templates/default/dbmail_mysql/user/profile.html:113
+#: ../templates/default/ldap/domain/profile.html:371
+#: ../templates/default/ldap/user/profile.html:438
+#: ../templates/default/mysql/domain/profile.html:133
+#: ../templates/default/mysql/domain/profile.html:364
+#: ../templates/default/mysql/domain/profile.html:440
+#: ../templates/default/mysql/user/profile.html:357
+#: ../templates/default/pgsql/domain/profile.html:134
+#: ../templates/default/pgsql/domain/profile.html:365
+#: ../templates/default/pgsql/domain/profile.html:422
+#: ../templates/default/pgsql/user/profile.html:357
+msgid "Set value to 0 or leave it empty for unlimited."
+msgstr "0이나 공란으로 두면 무제한으로 설정됩니다."
+
+#: ../templates/default/policyd/blacklist/create.html:60
+#: ../templates/default/policyd/whitelist/create.html:54
+msgid "Single IP Address"
+msgstr "단일 IP 주소"
+
+#: ../templates/default/policyd/blacklist/create.html:72
+#: ../templates/default/policyd/whitelist/create.html:66
+msgid "Single domain"
+msgstr "단일 도메인"
+
+#: ../templates/default/ldap/user/profile.html:385
+#: ../templates/default/policyd/blacklist/create.html:66
+#: ../templates/default/policyd/whitelist/create.html:60
+msgid "Single user"
+msgstr "단일 사용자"
+
+#: ../templates/default/amavisd/inout.html:109
+#: ../templates/default/macros/amavisd.html:12
+msgid "Size"
+msgstr "크기"
+
+#: ../templates/default/macros/amavisd.html:29
+msgid "Spam"
+msgstr "스팸"
+
+#: ../templates/default/dashboard.html:23
+msgid "Statistics of latest 24 hours"
+msgstr "최근 24시간 통계"
+
+#: ../templates/default/macros/general.html:505
+msgid "Store password in plain text"
+msgstr "일반 문자로 암호를 저장합니다."
+
+#: ../templates/default/dbmail_mysql/search.html:178
+#: ../templates/default/dbmail_mysql/user/list.html:91
+#: ../templates/default/mysql/user/list.html:111
+#: ../templates/default/pgsql/user/list.html:111
+msgid "Stored"
+msgstr "저장됨"
+
+#: ../templates/default/dashboard.html:79
+msgid "Stored emails"
+msgstr "저장된 이메일"
+
+#: ../templates/default/amavisd/inout.html:106
+#: ../templates/default/macros/amavisd.html:8
+msgid "Subject"
+msgstr "제목"
+
+#: ../templates/default/ldap/maillist/profile.html:387
+#: ../templates/default/ldap/maillist/profile.html:401
+#: ../templates/default/panel/log.html:68
+msgid "Submit"
+msgstr "제출"
+
+#: ../templates/default/macros/msgHandlers.html:99
+msgid "Submited domain name is incorrect."
+msgstr "제출된 도메인 이름이 일치하지 않습니다."
+
+#: ../templates/default/policyd/blacklist/create.html:61
+#: ../templates/default/policyd/whitelist/create.html:55
+msgid "Subnet"
+msgstr "서브넷"
+
+#: ../templates/default/layout.html:155
+msgid "Support"
+msgstr "지원"
+
+#: ../templates/default/layout.html:80
+msgid "System"
+msgstr "시스템"
+
+#: ../templates/default/dashboard.html:53
+msgid "System Information"
+msgstr "시스템 정보"
+
+#: ../templates/default/macros/general.html:335
+#: ../templates/default/macros/general.html:344
+msgid "Telephone Number"
+msgstr "전화번호"
+
+#: ../templates/default/policyd/blacklist/create.html:83
+#: ../templates/default/policyd/whitelist/create.html:72
+msgid "The forward and reverse DNS name must match otherwise it will not work."
+msgstr "정방향 및 역방향 DNS 이름이 일치하지 않으면 동작하지 않습니다."
+
+#: ../templates/default/ldap/user/profile.html:379
+msgid "This is per-user white/blacklist."
+msgstr "사용자 별 화이트리스트 및 블랙리스트"
+
+#: ../templates/default/ldap/domain/profile.html:126
+#: ../templates/default/ldap/user/profile.html:120
+#: ../templates/default/mysql/domain/profile.html:66
+#: ../templates/default/mysql/user/profile.html:69
+#: ../templates/default/pgsql/domain/profile.html:67
+#: ../templates/default/pgsql/user/profile.html:69
+msgid "Throttling"
+msgstr "제한"
+
+#: ../templates/default/panel/log.html:82
+msgid "Time"
+msgstr "시간"
+
+#: ../templates/default/macros/policyd.html:47
+msgid "Time Unit"
+msgstr "시간 단위"
+
+#: ../templates/default/dashboard.html:145
+msgid "Top 10 recipients"
+msgstr "상위 10 수신자"
+
+#: ../templates/default/dashboard.html:132
+msgid "Top 10 senders"
+msgstr "상위 10 발송자"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:88
+#: ../templates/default/dbmail_mysql/domain/list.html:90
+#: ../templates/default/dbmail_mysql/domain/list.html:98
+#: ../templates/default/mysql/domain/list.html:97
+#: ../templates/default/mysql/domain/list.html:99
+#: ../templates/default/mysql/domain/list.html:107
+#: ../templates/default/pgsql/domain/list.html:97
+#: ../templates/default/pgsql/domain/list.html:99
+#: ../templates/default/pgsql/domain/list.html:107
+msgid "Total"
+msgstr "전체"
+
+#: ../templates/default/dbmail_mysql/search.html:169
+#: ../templates/default/dbmail_mysql/search.html:171
+#: ../templates/default/dbmail_mysql/domain/list.html:96
+#: ../templates/default/dbmail_mysql/domain/list.html:98
+#: ../templates/default/dbmail_mysql/user/list.html:82
+#: ../templates/default/dbmail_mysql/user/list.html:84
+#: ../templates/default/ldap/search.html:217
+#: ../templates/default/ldap/domain/list.html:134
+#: ../templates/default/ldap/domain/list.html:136
+#: ../templates/default/ldap/maillist/profile.html:174
+#: ../templates/default/ldap/maillist/profile.html:301
+#: ../templates/default/ldap/user/admin.html:110
+#: ../templates/default/ldap/user/admin.html:112
+#: ../templates/default/ldap/user/list.html:118
+#: ../templates/default/ldap/user/list.html:120
+#: ../templates/default/macros/general.html:421
+#: ../templates/default/mysql/search.html:249
+#: ../templates/default/mysql/domain/list.html:105
+#: ../templates/default/mysql/domain/list.html:107
+#: ../templates/default/mysql/user/list.html:102
+#: ../templates/default/mysql/user/list.html:104
+#: ../templates/default/pgsql/search.html:249
+#: ../templates/default/pgsql/domain/list.html:105
+#: ../templates/default/pgsql/domain/list.html:107
+#: ../templates/default/pgsql/user/list.html:102
+#: ../templates/default/pgsql/user/list.html:104
+msgid "Unlimited"
+msgstr "무제한"
+
+#: ../templates/default/ldap/user/admin.html:145
+#: ../templates/default/ldap/user/list.html:158
+msgid "Unmark as domain admin"
+msgstr "도메인 관리자 해제"
+
+#: ../templates/default/ldap/user/list.html:162
+msgid "Unmark as global admin"
+msgstr "최상위 관리자 해제"
+
+#: ../templates/default/ldap/maillist/profile.html:83
+#: ../templates/default/macros/general.html:758
+#: ../templates/default/macros/general.html:770
+#: ../templates/default/mysql/alias/profile.html:72
+#: ../templates/default/pgsql/alias/profile.html:72
+msgid "Unrestricted"
+msgstr "제한하지 않음"
+
+#: ../templates/default/panel/license.html:84
+msgid "Upgrade tutorials"
+msgstr "업그레이드 튜토리얼"
+
+#: ../templates/default/dashboard.html:105
+msgid "Uptime"
+msgstr "가동시간"
+
+#: ../templates/default/dbmail_mysql/domain/list.html:88
+#: ../templates/default/dbmail_mysql/domain/list.html:90
+#: ../templates/default/dbmail_mysql/domain/list.html:96
+#: ../templates/default/dbmail_mysql/domain/list.html:98
+#: ../templates/default/macros/general.html:553
+#: ../templates/default/mysql/domain/list.html:97
+#: ../templates/default/mysql/domain/list.html:99
+#: ../templates/default/mysql/domain/list.html:105
+#: ../templates/default/mysql/domain/list.html:107
+msgid "Used"
+msgstr "사용됨"
+
+#: ../templates/default/layout.html:113
+#: ../templates/default/dbmail_mysql/search.html:42
+#: ../templates/default/dbmail_mysql/alias/create.html:50
+#: ../templates/default/dbmail_mysql/alias/list.html:27
+#: ../templates/default/dbmail_mysql/user/create.html:73
+#: ../templates/default/dbmail_mysql/user/list.html:30
+#: ../templates/default/ldap/search.html:38
+#: ../templates/default/ldap/alias/create.html:68
+#: ../templates/default/ldap/alias/list.html:45
+#: ../templates/default/ldap/maillist/create.html:68
+#: ../templates/default/ldap/maillist/list.html:47
+#: ../templates/default/ldap/user/admin.html:48
+#: ../templates/default/ldap/user/create.html:114
+#: ../templates/default/ldap/user/list.html:49
+#: ../templates/default/macros/msgHandlers.html:108
+#: ../templates/default/mysql/search.html:42
+#: ../templates/default/mysql/alias/create.html:64
+#: ../templates/default/mysql/alias/list.html:40
+#: ../templates/default/mysql/user/create.html:85
+#: ../templates/default/mysql/user/list.html:44
+#: ../templates/default/pgsql/search.html:42
+#: ../templates/default/pgsql/alias/create.html:64
+#: ../templates/default/pgsql/alias/list.html:40
+#: ../templates/default/pgsql/user/create.html:85
+#: ../templates/default/pgsql/user/list.html:44
+msgid "User"
+msgstr "사용자"
+
+#: ../templates/default/macros/msgHandlers.html:153
+msgid "User created."
+msgstr "사용자가 생성되었습니다."
+
+#: ../templates/default/dbmail_mysql/search.html:145
+#: ../templates/default/ldap/search.html:193
+#: ../templates/default/ldap/maillist/profile.html:144
+#: ../templates/default/ldap/maillist/profile.html:271
+#: ../templates/default/ldap/user/admin.html:72
+#: ../templates/default/ldap/user/list.html:73
+#: ../templates/default/macros/general.html:313
+#: ../templates/default/mysql/search.html:226
+#: ../templates/default/mysql/user/list.html:69
+#: ../templates/default/pgsql/search.html:226
+#: ../templates/default/pgsql/user/list.html:69
+msgid "User/Employee ID"
+msgstr "사용자/직원 ID"
+
+#: ../templates/default/login.html:55
+msgid "Username"
+msgstr "사용자 이름"
+
+#: ../templates/default/macros/msgHandlers.html:65
+msgid "Username must be an valid email address."
+msgstr "사용자 이름으로 유효한 이메일 주소를 입력하십시오."
+
+#: ../templates/default/macros/msgHandlers.html:63
+msgid "Username or password is incorrect."
+msgstr "사용자 이름이나 암호가 일치하지 않습니다."
+
+#: ../templates/default/dbmail_mysql/alias/create.html:48
+#: ../templates/default/dbmail_mysql/alias/list.html:25
+#: ../templates/default/dbmail_mysql/alias/profile.html:22
+#: ../templates/default/dbmail_mysql/domain/list.html:55
+#: ../templates/default/dbmail_mysql/domain/profile.html:33
+#: ../templates/default/dbmail_mysql/user/create.html:71
+#: ../templates/default/dbmail_mysql/user/list.html:28
+#: ../templates/default/dbmail_mysql/user/profile.html:32
+#: ../templates/default/ldap/search.html:79
+#: ../templates/default/ldap/alias/create.html:17
+#: ../templates/default/ldap/alias/list.html:21
+#: ../templates/default/ldap/alias/profile.html:30
+#: ../templates/default/ldap/domain/list.html:54
+#: ../templates/default/ldap/domain/profile.html:104
+#: ../templates/default/ldap/maillist/create.html:17
+#: ../templates/default/ldap/maillist/list.html:23
+#: ../templates/default/ldap/maillist/profile.html:32
+#: ../templates/default/ldap/user/admin.html:22
+#: ../templates/default/ldap/user/create.html:22
+#: ../templates/default/ldap/user/list.html:23
+#: ../templates/default/ldap/user/profile.html:100
+#: ../templates/default/mysql/search.html:83
+#: ../templates/default/mysql/alias/create.html:17
+#: ../templates/default/mysql/alias/list.html:20
+#: ../templates/default/mysql/alias/profile.html:22
+#: ../templates/default/mysql/domain/list.html:55
+#: ../templates/default/mysql/domain/profile.html:44
+#: ../templates/default/mysql/user/create.html:22
+#: ../templates/default/mysql/user/list.html:22
+#: ../templates/default/mysql/user/profile.html:49
+#: ../templates/default/pgsql/search.html:83
+#: ../templates/default/pgsql/alias/create.html:17
+#: ../templates/default/pgsql/alias/list.html:20
+#: ../templates/default/pgsql/alias/profile.html:22
+#: ../templates/default/pgsql/domain/list.html:55
+#: ../templates/default/pgsql/domain/profile.html:45
+#: ../templates/default/pgsql/user/create.html:22
+#: ../templates/default/pgsql/user/list.html:22
+#: ../templates/default/pgsql/user/profile.html:49
+msgid "Users"
+msgstr "사용자"
+
+#: ../templates/default/dbmail_mysql/user/list.html:35
+#: ../templates/default/ldap/user/list.html:55
+#: ../templates/default/mysql/user/list.html:49
+#: ../templates/default/pgsql/user/list.html:49
+#, python-format
+msgid "Users under domain: %s"
+msgstr "%s 도메인의 사용자"
+
+#: ../templates/default/ldap/search.html:266
+#: ../templates/default/ldap/maillist/list.html:88
+msgid "View members"
+msgstr "구성원 조회"
+
+#: ../templates/default/dashboard.html:40
+#: ../templates/default/macros/amavisd.html:31
+msgid "Virus"
+msgstr "바이러스"
+
+#: ../templates/default/dbmail_mysql/domain/profile.html:390
+#: ../templates/default/ldap/user/profile.html:218
+#: ../templates/default/macros/msgHandlers.html:36
+#: ../templates/default/macros/msgHandlers.html:38
+#: ../templates/default/mysql/domain/profile.html:472
+#: ../templates/default/pgsql/domain/profile.html:259
+#: ../templates/default/pgsql/domain/profile.html:454
+msgid "Warning"
+msgstr "경고"
+
+#: ../templates/default/dbmail_mysql/user/profile.html:54
+#: ../templates/default/ldap/user/profile.html:121
+#: ../templates/default/mysql/user/profile.html:70
+#: ../templates/default/pgsql/user/profile.html:70
+msgid "White/Blacklist"
+msgstr "화이트/블랙리스트"
+
+#: ../templates/default/policyd/wblist.html:10
+msgid "Whitelist"
+msgstr "화이트리스트"
+
+#: ../templates/default/ldap/user/profile.html:380
+msgid "Whitelist has higher priority than blacklist."
+msgstr "화이트리스트가 블랙리스트보다 우선합니다."
+
+#: ../templates/default/policyd/whitelist/create.html:39
+msgid "Whitelist records"
+msgstr "화이트리스트 기록"
+
+#: ../templates/default/layout.html:98 ../templates/default/layout.html:122
+#: ../templates/default/policyd/wblist.html:53
+msgid "Whitelists"
+msgstr "화이트리스트"
+
+#: ../templates/default/ldap/maillist/profile.html:97
+#: ../templates/default/mysql/alias/profile.html:86
+#: ../templates/default/pgsql/alias/profile.html:86
+msgid "Who can send email to this list"
+msgstr "리스트에 있는 수신자에게 메일을 보낼 수 있음"
+
+#: ../templates/default/panel/license.html:55
+#, python-format
+msgid "You are running version %s"
+msgstr "현재 버전은 %s 입니다."
+
+#: ../templates/default/ldap/user/create.html:86
+#, python-format
+msgid "You can NOT create more users under domain %s."
+msgstr "%s 도메인에 더 이상 사용자를 생성할 수 없습니다."
+
+#: ../templates/default/dbmail_mysql/alias/create.html:39
+#: ../templates/default/ldap/alias/create.html:52
+#: ../templates/default/mysql/alias/create.html:51
+#: ../templates/default/pgsql/alias/create.html:51
+#, python-format
+msgid "You can create <strong>%d</strong> more mail alias(es) under domain %s."
+msgstr "<strong>%d</strong> 개 이상의 메일 별칭을 %s 도메인에 생성할 수 있습니다."
+
+#: ../templates/default/ldap/maillist/create.html:53
+#, python-format
+msgid "You can create <strong>%d</strong> more mail list(s) under domain %s."
+msgstr "<strong>%d</strong> 개 이상의 메일 리스트를 %s 도메인에 생성할 수 있습니다."
+
+#: ../templates/default/dbmail_mysql/user/create.html:61
+#: ../templates/default/ldap/user/create.html:97
+#: ../templates/default/mysql/user/create.html:71
+#: ../templates/default/pgsql/user/create.html:71
+#, python-format
+msgid "You can create <strong>%d</strong> more mail user(s) under domain %s."
+msgstr "<strong>%d</strong> 개 이상의 메일 사용자를 %s 도메인에 생성할 수 있습니다."
+
+#: ../templates/default/dbmail_mysql/alias/create.html:32
+#: ../templates/default/mysql/alias/create.html:44
+#: ../templates/default/pgsql/alias/create.html:44
+#, python-format
+msgid "You can't create mail aliases under domain %s."
+msgstr "%s 도메인에 메일 별칭을 생성할 수 없습니다."
+
+#: ../templates/default/ldap/alias/create.html:47
+#, python-format
+msgid "You can't create more mail aliases under domain %s."
+msgstr "%s 도메인에 더 이상의 메일 별칭을 생성할 수 없습니다."
+
+#: ../templates/default/ldap/maillist/create.html:48
+#, python-format
+msgid "You can't create more mail lists under domain %s."
+msgstr "%s 도메인에 더 이상의 메일 리스트를 생성할 수 없습니다."
+
+#: ../templates/default/dbmail_mysql/search.html:255
+#: ../templates/default/ldap/search.html:341
+#: ../templates/default/mysql/search.html:325
+#: ../templates/default/pgsql/search.html:325
+msgid "Your search returned no hits."
+msgstr "검색 결과가 없습니다."
+
+#: ../templates/default/macros/general.html:602
+msgid "default transport"
+msgstr "기본 전송"
+
+#: ../templates/default/macros/general.html:606
+msgid ""
+"forward emails to host example.com through port 25. The [] form is "
+"required when you specify an IP address instead of a hostname, or disable"
+" MX DNS lookup."
+msgstr ""
+"675 25번 포트를 통해 example.com 호스트로 메일이 전송됩니다. 호스트 네임이나 DNS의 MX 레코드를 사용하지 않고 "
+"IP 주소를 사용할 때는 [] 형태로 지정합니다."
+
+#: ../templates/default/layout.html:66
+msgid "iRedMail Admin Panel"
+msgstr "iRedMail 관리 도구"
+
+#: ../templates/default/macros/general.html:605
+msgid "receive but discard email, useful for mailboxes like noreply@example.com"
+msgstr "메일 수신 후 무시 옵션으로 noreply@example.com과 같은 메일 주소에 유용합니다."
+
+#: ../templates/default/macros/general.html:192
+msgid "without verifying local recipients"
+msgstr "로컬 수신자를 검증하지 않음"
+
