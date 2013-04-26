@@ -22,17 +22,16 @@
    - FreeBSD:
      http://www.iredmail.org/install_iredmail_on_freebsd.html
 
+   - OpenBSD:
+     http://www.iredmail.org/install_iredmail_on_openbsd.html
+
 ========
 *) License: GPL v2
 
 *) Authors:
     - Zhang Huangbin (zhb _at_ iredmail.org)
 
-*) Contributors:
-    - Li Daobing (lidaobing (at) gmail.com)
-      Maintainer of Debian 5 & Ubuntu (hardy) binary packages.
-
-*) Community, bug report:
+*) Community, bug report, feature requests:
     - http://www.iredmail.org/forum/
 
 ========
