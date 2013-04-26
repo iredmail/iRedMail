@@ -3,6 +3,11 @@ iRedMail-0.8.5:
       preferred language for newly created mail users.
       - SQL: column domain.defaultlang
       - OpenLDAP: attribute 'preferredLanguage' for mailDomain object
+
+    * Fixed:
+        + Incorrect LDAP ACL for attribute "memberOfGroup".
+          Thanks Hoang Tuan Viet <vietht _at_ vccloud.vn> for the report.
+
     * Package update:
         + phpMyAdmin -> 3.5.8
         + Roundcube webmail -> 0.9.0
