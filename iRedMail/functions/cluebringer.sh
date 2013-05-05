@@ -347,6 +347,7 @@ cluebringer_webui_config()
     fi
 
     perl -pi -e 's#(.DB_USER=).*#${1}"$ENV{CLUEBRINGER_DB_USER}";#' ${CLUEBRINGER_WEBUI_CONF}
+    perl -pi -e 's/.*(.DB_PASS=).*/${1}"$ENV{CLUEBRINGER_DB_PASSWD}";/' ${CLUEBRINGER_WEBUI_CONF}
     perl -pi -e 's#(.DB_PASS=).*#${1}"$ENV{CLUEBRINGER_DB_PASSWD}";#' ${CLUEBRINGER_WEBUI_CONF}
 
     cat > ${CLUEBRINGER_HTTPD_CONF} <<EOF
