@@ -98,7 +98,7 @@ CREATE ROLE ${RCM_DB_USER} WITH LOGIN ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSU
 
 -- Grant privileges
 GRANT SELECT,INSERT,UPDATE,DELETE ON cache,cache_index,cache_messages,cache_thread,contactgroupmembers,contactgroups,contacts,dictionary,identities,searches,session,users TO ${RCM_DB_USER};
-GRANT SELECT,UPDATE,USAGE ON cache_ids,contact_ids,contactgroups_ids,identity_ids,search_ids,user_ids TO ${RCM_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON contact_ids,contactgroups_ids,identity_ids,search_ids,user_ids TO ${RCM_DB_USER};
 
 -- Grant privilege to update password through roundcube webmail
 \c ${VMAIL_DB};

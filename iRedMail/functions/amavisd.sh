@@ -94,7 +94,7 @@ EOF
     cat >> ${TIP_FILE} <<EOF
 DNS record for DKIM support:
 
-$(${AMAVISD_BIN} -c ${AMAVISD_CONF} showkeys)
+$(${AMAVISD_BIN} -c ${AMAVISD_CONF} showkeys 2>/dev/null)
 
 EOF
 
