@@ -44,7 +44,7 @@ rcm_config_httpd()
     cat > ${HTTPD_CONF_DIR}/roundcubemail.conf <<EOF
 ${CONF_MSG}
 # Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
-#Alias /mail "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
+Alias /mail "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
 <Directory "${RCM_HTTPD_ROOT_SYMBOL_LINK}/">
     Options -Indexes
 </Directory>

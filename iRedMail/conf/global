@@ -275,6 +275,7 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         # Ubuntu version number and code name:
         #   - 12.04: precise (Long Term support by Ubuntu)
         #   - 12.10: quantal
+        #   - 13.04: raring
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"

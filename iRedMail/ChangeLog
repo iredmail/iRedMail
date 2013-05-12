@@ -5,6 +5,8 @@ iRedMail-0.8.5:
       - OpenLDAP: attribute 'preferredLanguage' for mailDomain object
 
     * Fixed:
+        + Incorrect Amavisd column name:
+          policy.unchecked_lovers_maps (incorrect) -> policy.unchecked_lover.
         + Incorrect LDAP ACL for attribute "memberOfGroup".
           Thanks Hoang Tuan Viet <vietht _at_ vccloud.vn> for the report.
 

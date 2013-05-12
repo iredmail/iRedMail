@@ -35,7 +35,7 @@ CREATE TABLE policy (
 
   virus_lover           char(1) default NULL,     -- Y/N
   spam_lover            char(1) default NULL,     -- Y/N
-  unchecked_lovers_maps char(1) default NULL,     -- Y/N
+  unchecked_lover       char(1) default NULL,     -- Y/N
   banned_files_lover    char(1) default NULL,     -- Y/N
   bad_header_lover      char(1) default NULL,     -- Y/N
 

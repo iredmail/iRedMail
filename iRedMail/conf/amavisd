@@ -39,6 +39,8 @@ export AMAVISD_DB_USER='amavisd'
 export AMAVISD_DB_PASSWD="$(${RANDOM_STRING})"
 export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
 export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
+
+# Amavisd-new-2.7 and 2.8.0 use the same SQL structure, but different from 2.6.
 export AMAVISD_VERSION='2.6'
 
 # Altermime.
