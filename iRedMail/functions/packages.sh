@@ -144,9 +144,12 @@ install_all()
     #
     ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH} php-pgsql${PKG_ARCH}"
+        ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH}"
+
         if [ X"${DISTRO_VERSION}" == X"5" ]; then
-            ALL_PKGS="${ALL_PKGS} php-imap${PKG_ARCH} libmcrypt${PKG_ARCH} php-mcrypt${PKG_ARCH} php-mhash${PKG_ARCH} php-mbstring${PKG_ARCH}"
+            ALL_PKGS="${ALL_PKGS} php53${PKG_ARCH} php53-common${PKG_ARCH} php53-gd${PKG_ARCH} php53-xml${PKG_ARCH} php53-mysql${PKG_ARCH} php53-ldap${PKG_ARCH} php53-pgsql${PKG_ARCH} php53-imap${PKG_ARCH} php53-mbstring${PKG_ARCH}"
+        else
+            ALL_PKGS="${ALL_PKGS} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH} php-pgsql${PKG_ARCH} php-imap${PKG_ARCH} php-mbstring${PKG_ARCH}"
         fi
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
