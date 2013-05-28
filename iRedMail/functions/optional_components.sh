@@ -17,7 +17,6 @@ optional_components()
 
     # Fail2ban.
     [ X"${USE_FAIL2BAN}" == X'YES' \
-        -a X"${DISTRO}" != X'FREEBSD' \
         -a X"${DISTRO}" != X'OPENBSD' \
         ] && \
         check_status_before_run fail2ban_config

@@ -236,7 +236,7 @@ EOF
 
 dict {
     # NOTE: dict process currently runs as root, so this file will be owned as root.
-    expire = db:${DOVECOT_EXPIRE_DICT_BDB}
+    #expire = db:${DOVECOT_EXPIRE_DICT_BDB}
 }
 
 plugin {
@@ -252,8 +252,8 @@ plugin {
     # Trash: 7 days
     # Trash's children directories: 7 days
     # Junk: 30 days
-    expire = Trash 7 Trash/* 7 Junk 30
-    expire_dict = proxy::expire
+    #expire = Trash 7 Trash/* 7 Junk 30
+    #expire_dict = proxy::expire
 
     # If you have a non-default path to auth-master, set also:
     auth_socket_path = ${DOVECOT_AUTH_SOCKET_PATH}

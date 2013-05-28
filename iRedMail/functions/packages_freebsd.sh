@@ -825,11 +825,11 @@ EOF
     ALL_PORTS="${ALL_PORTS} www/mod_wsgi www/webpy devel/py-Jinja2 net/py-netifaces"
 
     # Fail2ban.
-    #if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
-    #    # python-ldap.
-    #    ALL_PORTS="${ALL_PORTS} security/py-fail2ban"
-    #    ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
-    #fi
+    if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
+        # python-ldap.
+        ALL_PORTS="${ALL_PORTS} security/py-fail2ban"
+        ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
+    fi
 
     # Misc
     ALL_PORTS="${ALL_PORTS} sysutils/logwatch"
@@ -853,7 +853,7 @@ EOF
                 if [ X"$?" == X"0" ]; then
                     # Log used time
                     used_time="$(($(date +%s)-port_start_time))"
-                    echo "export status_fetch_port_${portname}='DONE'  # ${used_time} seconds, ~$((used_time/60)) minutes" >> ${STATUS_FILE}
+                    echo "export status_fetch_port_${portname}='DONE'  # ${used_time} seconds, ~$((used_time/60)) minute(s)" >> ${STATUS_FILE}
                 else
                     ECHO_ERROR "Tarballs were not downloaded correctly, please fix it manually and then re-execute iRedMail.sh."
                     exit 255
@@ -889,7 +889,7 @@ EOF
                         # Log used time
                         used_time="$(($(date +%s)-port_start_time))"
 
-                        echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~$((used_time/60)) minutes" >> ${STATUS_FILE}
+                        echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~$((used_time/60)) minute(s)" >> ${STATUS_FILE}
                     else
                         ECHO_ERROR "Port was not success installed, please fix it manually and then re-execute this script."
                         exit 255
@@ -902,7 +902,7 @@ EOF
 
     # Log and print used time
     all_used_time="$(($(date +%s)-start_time))"
-    ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds (~ $((all_used_time/60)) minutes)"
+    ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds, ~$((all_used_time/60)) minute(s)"
 
     echo 'export status_install_all="DONE"' >> ${STATUS_FILE}
 }

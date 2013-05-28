@@ -168,10 +168,6 @@ install_all()
         # Authentication modules
         ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql libapache2-mod-auth-pgsql"
 
-        if [ X"${DISTRO_CODENAME}" == X'squeeze' ]; then
-            ALL_PKGS="${ALL_PKGS} php5-mhash"
-        fi
-
         if [ X"${DISTRO_CODENAME}" != X'squeeze' ]; then
             if [ X"${BACKEND}" == X"OPENLDAP" ]; then
                 ALL_PKGS="${ALL_PKGS} php-net-ldap2"
