@@ -279,8 +279,10 @@ CREATE TABLE used_quota (
     username VARCHAR(255) NOT NULL,
     bytes INT8 NOT NULL DEFAULT 0,
     messages INT8 NOT NULL DEFAULT 0,
+    domain VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (username)
 );
+CREATE INDEX idx_used_quota_domain ON used_quota (domain);
 
 -- Trigger required by quota dict
 CREATE OR REPLACE FUNCTION merge_quota() RETURNS TRIGGER AS $$
@@ -297,7 +299,7 @@ BEGIN
 
     LOOP
         UPDATE used_quota
-        SET bytes = bytes + NEW.bytes, messages = messages + NEW.messages
+        SET bytes = bytes + NEW.bytes, messages = messages + NEW.messages, domain=split_part(NEW.username, '@', 2)
         WHERE username = NEW.username;
         IF found THEN
             RETURN NULL;
@@ -305,11 +307,11 @@ BEGIN
 
         BEGIN
             IF NEW.messages = 0 THEN
-                INSERT INTO used_quota (bytes, messages, username)
-                VALUES (NEW.bytes, NULL, NEW.username);
+                INSERT INTO used_quota (bytes, messages, username, domain)
+                VALUES (NEW.bytes, NULL, NEW.username, split_part(NEW.username, '@', 2));
             ELSE
-                INSERT INTO used_quota (bytes, messages, username)
-                VALUES (NEW.bytes, -NEW.messages, NEW.username);
+                INSERT INTO used_quota (bytes, messages, username, domain)
+                VALUES (NEW.bytes, -NEW.messages, NEW.username, split_part(NEW.username, '@', 2));
             END IF;
             return NULL;
             EXCEPTION WHEN unique_violation THEN

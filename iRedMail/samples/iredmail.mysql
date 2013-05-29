@@ -304,5 +304,19 @@ CREATE TABLE IF NOT EXISTS `used_quota` (
     `username` VARCHAR(255) NOT NULL,
     `bytes` BIGINT NOT NULL DEFAULT 0,
     `messages` BIGINT NOT NULL DEFAULT 0,
-    PRIMARY KEY (`username`)
+    `domain` VARCHAR(255) NOT NULL DEFAULT '',
+    PRIMARY KEY (`username`),
+    INDEX (domain)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Trigger `after_insert_used_quota`, used to set `used_quota.domain`.
+-- NOTE: `used_quota.domain` is not used by Dovecot, but used in iRedAdmin to
+--       get better SQL query performance while calculating per-domain used
+--       quota.
+DELIMITER $$
+CREATE TRIGGER `after_insert_used_quota` BEFORE INSERT ON `used_quota` FOR EACH ROW
+    BEGIN
+        SET NEW.domain = SUBSTRING_INDEX(NEW.username, '@', -1);
+    END;
+$$
+DELIMITER ;
