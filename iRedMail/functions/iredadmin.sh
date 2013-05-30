@@ -125,7 +125,7 @@ EOF
         if [ X"${BACKEND}" == X"OPENLDAP" ]; then
             mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 USE ${IREDADMIN_DB_NAME};
-SOURCE ${SAMPLE_DIR}/dovecot/used_quota.sql;
+SOURCE ${SAMPLE_DIR}/dovecot/used_quota.mysql;
 SOURCE ${SAMPLE_DIR}/dovecot/imap_share_folder.sql;
 FLUSH PRIVILEGES;
 EOF
