@@ -8,6 +8,10 @@ iRedMail-0.8.5:
       - SQL: column domain.defaultlang
       - OpenLDAP: attribute 'preferredLanguage' for mailDomain object
 
+    * Drop support for below releases:
+        + OpenBSD 5.1, 5.2.
+        + openSUSE 12.1, 12.2.
+
     * Fixed:
         + Incorrect Amavisd column name:
           policy.unchecked_lovers_maps (incorrect) -> policy.unchecked_lover.

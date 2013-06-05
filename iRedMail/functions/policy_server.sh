@@ -54,11 +54,7 @@ policy_server_config()
         check_status_before_run cluebringer_config
 
         # openSUSE-12.3 doesn't have Apache module mod_auth_mysql & mod_auth_pgsql.
-        if [ X"${DISTRO}" == X'SUSE' ]; then
-            if [ X"${DISTRO_CODENAME}" == X'mantis' ]; then
-                check_status_before_run cluebringer_webui_config
-            fi
-        else
+        if [ X"${DISTRO}" != X'SUSE' ]; then
             check_status_before_run cluebringer_webui_config
         fi
     fi

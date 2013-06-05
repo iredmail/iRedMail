@@ -25,11 +25,8 @@
 # ----------------------------------------
 # Detect selectable menu items
 if [ X"${DISTRO}" == X'SUSE' ]; then
-    # Apache module mod_auth_pgsql is not available
-    [ X"${BACKEND}" == X'PGSQL' ] && export DIALOG_SELECTABLE_AWSTATS='NO'
-
     # openSUSE-12.3 doesn't have mod_auth_mysql and mod_auth_pgsql.
-    [ X"${DISTRO_CODENAME}" != X'mantis' ] && export DIALOG_SELECTABLE_AWSTATS='NO'
+    export DIALOG_SELECTABLE_AWSTATS='NO'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     # Binary/port Awstats is not available in 5.2 and earlier releases
     export DIALOG_SELECTABLE_AWSTATS='NO'

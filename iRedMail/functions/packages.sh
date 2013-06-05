@@ -336,9 +336,6 @@ install_all()
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         ALL_PKGS="${ALL_PKGS} perl-Mail-SPF amavisd-new clamav spamassassin altermime"
 
-        # openSUSE-12.2. package 'clamav-db' is not required in openSUSE-12.3.
-        [ X"${DISTRO_CODENAME}" == X'mantis' ] && ALL_PKGS="${ALL_PKGS} clamav-db"
-
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} perl-ldap perl-DBD-mysql"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} perl-DBD-mysql"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} perl-DBD-Pg"
