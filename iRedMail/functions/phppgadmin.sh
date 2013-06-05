@@ -54,7 +54,7 @@ EOF
 
     perl -pi -e 's#(.*Servers.*connect_type.*=).*#${1}"socket";#' ${PHPPGADMIN_CONFIG_FILE}
 
-    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Create a symbol link
         if [ -f /etc/phppgadmin/config.inc.php ]; then
             backup_file /etc/phppgadmin/config.inc.php
