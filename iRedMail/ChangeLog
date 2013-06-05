@@ -19,8 +19,9 @@ iRedMail-0.8.5:
           Thanks Hoang Tuan Viet <vietht _at_ vccloud.vn> for the report.
 
     * Package update:
-        + phpMyAdmin -> 3.5.8
-        + Roundcube webmail -> 0.9.0
+        + phpPgAdmin -> 5.1
+        + phpMyAdmin -> 4.0.2
+        + Roundcube webmail -> 0.9.1
 
 iRedMail-0.8.4:
     * Enable Dovecot Master User by default, but no pre-defined account.

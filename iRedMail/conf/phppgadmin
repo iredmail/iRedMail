@@ -20,7 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-export PHPPGADMIN_VERSION='5.0.4'
+export PHPPGADMIN_VERSION='5.1'
 export PHPPGADMIN_TARBALL="phpPgAdmin-${PHPPGADMIN_VERSION}.tar.bz2"
 
 # Install phpPgAdmin with source tarball.
