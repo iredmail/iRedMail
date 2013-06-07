@@ -84,9 +84,14 @@ CREATE TABLE IF NOT EXISTS domain (
     defaultlanguage VARCHAR(5) NOT NULL DEFAULT 'en_US',
     -- Default quota size for newly created mail account.
     defaultuserquota BIGINT(20) NOT NULL DEFAULT '1024',
-    -- List of mail alias addresses, Newly created user will be
-    -- assigned to them.
+    -- List of mail alias addresses assigned to newly created user.
     defaultuseraliases TEXT NOT NULL DEFAULT '',
+    -- Disabled domain profiles which can not be viewed and updated by normal
+    -- domain admin. Multiple values must be separated by comma.
+    disableddomainprofiles VARCHAR(255) NOT NULL DEFAULT '',
+    -- Disabled user profiles which can not be viewed and updated by normal
+    -- domain admin. Multiple values must be separated by comma.
+    disableduserprofiles VARCHAR(255) NOT NULL DEFAULT '',
     -- Default password scheme. e.g. md5, plain.
     defaultpasswordscheme VARCHAR(10) NOT NULL DEFAULT '',
     -- Minimal password length, per-domain setting.
