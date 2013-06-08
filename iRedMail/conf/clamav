@@ -36,6 +36,10 @@ export FRESHCLAM_PID_FILE='/var/run/clamav/freshclam.pid'
 
 # Clamav.
 if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO_VERSION}" != X'5' [; then
+        export CLAMAV_USER='clam'
+        export CLAMAV_GROUP='clam'
+    fi
     # Freshclam.
     export FRESHCLAM_INIT_FILE_SAMPLE="${SAMPLE_DIR}/freshclam.init"
 

@@ -173,6 +173,26 @@ gpgcheck=0
 EOF
     fi
 
+    ECHO_INFO "Clean metadata of yum repositories."
+    yum clean metadata
+
+    # RHEL/CentOS 6 only. EPEL for RHEL 5 is out of date.
+    # Create a temporary yum repo to install epel-release without GPG check.
+    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        cat > ${YUM_REPOS_DIR}/tmp_epel.repo <<EOF
+[tmp_epel]
+name=Extra Packages for Enterprise Linux ${DISTRO_VERSION} - \$basearch
+#baseurl=http://download.fedoraproject.org/pub/epel/${DISTRO_VERSION}/\$basearch
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-${DISTRO_VERSION}&arch=\$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=0
+EOF
+        ECHO_INFO "Install epel yum repo."
+        eval ${install_pkg} epel-release && rm ${YUM_REPOS_DIR}/tmp_epel.repo
+        yum clean metadata
+    fi
+
     echo 'export status_create_yum_repo="DONE"' >> ${STATUS_FILE}
 }
 
@@ -255,10 +275,6 @@ check_status_before_run check_new_iredmail
 prepare_dirs
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    # Clean metadata
-    ECHO_INFO "Clean metadata of yum repositories."
-    yum clean metadata
-
     # Create yum repository.
     create_repo_rhel
 
