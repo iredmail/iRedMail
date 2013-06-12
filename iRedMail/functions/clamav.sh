@@ -55,19 +55,17 @@ clamav_config()
     perl -pi -e 's/^#(OfficialDatabaseOnly ).*/${1} yes/' ${CLAMD_CONF}
 
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        if [ X"${DISTRO_VERSION}" != X'5' ]; then
-            ECHO_DEBUG "Add clamav user to amavid group."
-            usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
+        ECHO_DEBUG "Add clamav user to amavid group."
+        usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
 
-            ECHO_DEBUG "Set permission to 750: ${AMAVISD_TEMPDIR}, ${AMAVISD_QUARANTINEDIR},"
-            chmod -R 750 ${AMAVISD_TEMPDIR} ${AMAVISD_QUARANTINEDIR}
-        fi
+        ECHO_DEBUG "Set permission to 750: ${AMAVISD_TEMPDIR}, ${AMAVISD_QUARANTINEDIR},"
+        chmod -R 750 ${AMAVISD_TEMPDIR} ${AMAVISD_QUARANTINEDIR}
 
-        ECHO_DEBUG "Copy freshclam init startup script and enable it."
-        cp -f ${FRESHCLAM_INIT_FILE_SAMPLE} /etc/rc.d/init.d/freshclam
-        chmod +x /etc/rc.d/init.d/freshclam
-        eval ${enable_service} freshclam
-        export ENABLED_SERVICES="${ENABLED_SERVICES} freshclam"
+        #ECHO_DEBUG "Copy freshclam init startup script and enable it."
+        #cp -f ${FRESHCLAM_INIT_FILE_SAMPLE} /etc/rc.d/init.d/freshclam
+        #chmod +x /etc/rc.d/init.d/freshclam
+        #eval ${enable_service} freshclam
+        #export ENABLED_SERVICES="${ENABLED_SERVICES} freshclam"
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         pw usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}

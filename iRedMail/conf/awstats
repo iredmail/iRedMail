@@ -35,13 +35,8 @@ export AWSTATS_HTPASSWD_FILE="${HTTPD_CONF_ROOT}/awstats.users"
 # Config files.
 if [ X"${DISTRO}" == X"RHEL" ]; then
     export AWSTATS_CONF_SAMPLE="${AWSTATS_CONF_DIR}/awstats.localhost.localdomain.conf"
-    if [ X"${DISTRO_VERSION}" == X'5' ]; then
-        export AWSTATS_HTTPD_ROOT="${HTTPD_SERVERROOT}/awstats"
-        export AWSTATS_CGI_DIR="${AWSTATS_HTTPD_ROOT}"
-    else
-        export AWSTATS_HTTPD_ROOT="/usr/share/awstats/wwwroot"
-        export AWSTATS_CGI_DIR="${AWSTATS_HTTPD_ROOT}/cgi-bin"
-    fi
+    export AWSTATS_HTTPD_ROOT="/usr/share/awstats/wwwroot"
+    export AWSTATS_CGI_DIR="${AWSTATS_HTTPD_ROOT}/cgi-bin"
     export AWSTATS_ICON_DIR="${AWSTATS_HTTPD_ROOT}/icon"
     export AWSTATS_CSS_DIR="${AWSTATS_HTTPD_ROOT}/css"
     export AWSTATS_JS_DIR="${AWSTATS_HTTPD_ROOT}/js"

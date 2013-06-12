@@ -22,6 +22,9 @@
 
 # Variables for OpenLDAP and related. Refer to 'dialog/ldap_config.sh'.
 
+# OpenLDAP version number.
+export OPENLDAP_VERSION='2.4'
+
 # LDAP service info.
 # LDAP_SERVER_HOST is configured in conf/global
 export LDAP_SERVER_PORT='389'
@@ -55,13 +58,6 @@ export OPENLDAP_ARGS_FILE='/var/run/openldap/slapd.args'
 
 # Configure.
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    # OpenLDAP version.
-    if [ X"${DISTRO_VERSION}" == X"5" ]; then
-        export OPENLDAP_VERSION='2.3'
-        export OPENLDAP_RC_SCRIPT_NAME='ldap'
-    else
-        export OPENLDAP_VERSION='2.4'
-    fi
 
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
     export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/ldap"
@@ -73,9 +69,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     fi
 
 elif [ X"${DISTRO}" == X"SUSE" ]; then
-    # OpenLDAP version.
-    export OPENLDAP_VERSION='2.4'
-
     export OPENLDAP_DB_CONFIG_SAMPLE='/var/lib/ldap/DB_CONFIG.example'
 
     export OPENLDAP_PID_FILE='/var/run/slapd/slapd.pid'
@@ -87,9 +80,6 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export OPENLDAP_RC_SCRIPT_NAME='ldap'
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-    # OpenLDAP version.
-    export OPENLDAP_VERSION='2.4'
-
     # LDAP daemon user & group.
     export OPENLDAP_DAEMON_USER='openldap'
     export OPENLDAP_DAEMON_GROUP='openldap'
@@ -107,9 +97,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export OPENLDAP_MODULE_PATH='/usr/lib/ldap'
 
 elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    # OpenLDAP version.
-    export OPENLDAP_VERSION='2.4'
-
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
     export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/slapd"
 
@@ -120,9 +107,6 @@ elif [ X"${DISTRO}" == X"GENTOO" ]; then
     export OPENLDAP_DATA_DIR='/var/lib/openldap-data'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    # OpenLDAP version.
-    export OPENLDAP_VERSION='2.4'
-
     # Configuration files.
     export OPENLDAP_CONF_ROOT='/usr/local/etc/openldap'
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
@@ -134,9 +118,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export OPENLDAP_DATA_DIR='/var/db/openldap-data'    # Do *NOT* end with '/'.
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    # OpenLDAP version.
-    export OPENLDAP_VERSION='2.4'
-
     # LDAP daemon user & group.
     export OPENLDAP_DAEMON_USER='_openldap'
     export OPENLDAP_DAEMON_GROUP='_openldap'

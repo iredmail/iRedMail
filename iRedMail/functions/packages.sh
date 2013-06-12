@@ -144,13 +144,7 @@ install_all()
     #
     ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH}"
-
-        if [ X"${DISTRO_VERSION}" == X"5" ]; then
-            ALL_PKGS="${ALL_PKGS} php53${PKG_ARCH} php53-common${PKG_ARCH} php53-gd${PKG_ARCH} php53-xml${PKG_ARCH} php53-mysql${PKG_ARCH} php53-ldap${PKG_ARCH} php53-pgsql${PKG_ARCH} php53-imap${PKG_ARCH} php53-mbstring${PKG_ARCH}"
-        else
-            ALL_PKGS="${ALL_PKGS} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH} php-pgsql${PKG_ARCH} php-imap${PKG_ARCH} php-mbstring${PKG_ARCH}"
-        fi
+        ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH} php-pgsql${PKG_ARCH} php-imap${PKG_ARCH} php-mbstring${PKG_ARCH}"
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         # Apache
@@ -264,11 +258,7 @@ install_all()
     # Dovecot.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${DOVECOT_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        if [ X"${DISTRO_VERSION}" == X"5" ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot${PKG_ARCH} dovecot-sieve${PKG_ARCH} dovecot-managesieve${PKG_ARCH}"
-        elif [ X"${DISTRO_VERSION}" == X"6" ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot${PKG_ARCH} dovecot-managesieve${PKG_ARCH} dovecot-pigeonhole${PKG_ARCH}"
-        fi
+        ALL_PKGS="${ALL_PKGS} dovecot${PKG_ARCH} dovecot-managesieve${PKG_ARCH} dovecot-pigeonhole${PKG_ARCH}"
 
         # We use Dovecot SASL auth instead of saslauthd
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
@@ -319,13 +309,7 @@ install_all()
     # Amavisd-new & ClamAV & Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} clamd${PKG_ARCH} clamav${PKG_ARCH} clamav-db${PKG_ARCH} spamassassin${PKG_ARCH} altermime${PKG_ARCH} perl-LDAP.noarch perl-Mail-SPF.noarch"
-
-        if [ X"${DISTRO_VERSION}" == X"5" ]; then
-            ALL_PKGS="${ALL_PKGS} amavisd-new${PKG_ARCH} perl-IO-Compress.noarch"
-        else
-            ALL_PKGS="${ALL_PKGS} amavisd-new.noarch"
-        fi
+        ALL_PKGS="${ALL_PKGS} clamd${PKG_ARCH} clamav${PKG_ARCH} clamav-db${PKG_ARCH} spamassassin${PKG_ARCH} altermime${PKG_ARCH} perl-LDAP.noarch perl-Mail-SPF.noarch amavisd-new.noarch"
 
         if [ X"${BACKEND}" == X'PGSQL' ]; then
             ALL_PKGS="${ALL_PKGS} perl-DBD-Pg"
@@ -501,9 +485,6 @@ install_all()
     #
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} bzip2${PKG_ARCH} acl${PKG_ARCH} patch${PKG_ARCH} tmpwatch${PKG_ARCH} crontabs.noarch dos2unix${PKG_ARCH} logwatch"
-        if [ X"${DISTRO_VERSION}" == X"5" ]; then
-            ALL_PKGS="${ALL_PKGS} vixie-cron${PKG_ARCH}"
-        fi
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tmpwatch dos2unix logwatch"

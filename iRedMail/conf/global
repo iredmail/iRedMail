@@ -82,6 +82,7 @@ export PGSQL_SERVER_PORT='5432'
 # Dovecot: POP3, IMAP, managesieve
 export IMAP_SERVER="${LOCAL_ADDRESS}"
 export MANAGESIEVE_BIND_HOST="${LOCAL_ADDRESS}"
+export MANAGESIEVE_PORT='4190'
 # SMTP server (Postfix)
 export SMTP_SERVER="${LOCAL_ADDRESS}"
 # Amavisd
@@ -210,10 +211,7 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         export DISTRO='RHEL'
 
         # Get distribution version
-        if grep '\ 5' /etc/redhat-release &>/dev/null; then
-            # version 5.x
-            export DISTRO_VERSION='5'
-        elif grep '\ 6' /etc/redhat-release &>/dev/null; then
+        if grep '\ 6' /etc/redhat-release &>/dev/null; then
             # version 6.x
             export DISTRO_VERSION='6'
         else
@@ -274,7 +272,6 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
 
         # Ubuntu version number and code name:
         #   - 12.04: precise (Long Term support by Ubuntu)
-        #   - 12.10: quantal
         #   - 13.04: raring
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
@@ -292,6 +289,7 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         #   - 10.10: maverick
         #   - 11.04: natty
         #   - 11.10: oneiric
+        #   - 12.10: quantal
         if [ X"${DISTRO_CODENAME}" == X'hardy' \
             -o X"${DISTRO_CODENAME}" == X'intrepid' \
             -o X"${DISTRO_CODENAME}" == X'jaunty' \
@@ -300,6 +298,7 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
             -o X"${DISTRO_CODENAME}" == X'maverick' \
             -o X"${DISTRO_CODENAME}" == X'natty' \
             -o X"${DISTRO_CODENAME}" == X'oneiric' \
+            -o X"${DISTRO_CODENAME}" == X'quantal' \
             ]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
@@ -408,12 +407,8 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export enable_service='enable_service_rh'
     export disable_service='disable_service_rh'
 
-    # Syslog config file: syslog.
-    if [ X"${DISTRO_VERSION}" == X"5" ]; then
-        export SYSLOG_CONF='/etc/syslog.conf'
-    else
-        export SYSLOG_CONF='/etc/rsyslog.conf'
-    fi
+    # Syslog config file: rsyslog.
+    export SYSLOG_CONF='/etc/rsyslog.conf'
     export SYSLOG_POSTROTATE_CMD='/bin/kill -HUP $(cat /var/run/syslogd.pid 2> /dev/null) 2> /dev/null || true'
 
     # Crontab related.

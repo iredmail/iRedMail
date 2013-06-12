@@ -36,11 +36,8 @@ export PGSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.pgsql"
 export PGSQL_INIT_SQL_SAMPLE="${CONF_DIR}/pgsql_init.pgsql"
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
-    if [ X"${DISTRO_VERSION}" == X'5' ]; then
-        export PGSQL_VERSION='8.1'
-    elif [ X"${DISTRO_VERSION}" == X'6' ]; then
-        export PGSQL_VERSION='8.4'
-    fi
+    # RHEL/CENTOS 6
+    export PGSQL_VERSION='8.4'
     export PGSQL_SYS_USER_HOME='/var/lib/pgsql'
     export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
 

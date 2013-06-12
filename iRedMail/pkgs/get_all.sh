@@ -162,24 +162,12 @@ enabled=1
 gpgcheck=0
 EOF
 
-    # Dovecot-1.2 for RHEL 5.
-    if [ X"${DISTRO_VERSION}" == X"5" ]; then
-        cat >> ${LOCAL_REPO_FILE} <<EOF
-[iRedMail-Dovecot-12]
-name=iRedMail-Dovecot-12
-baseurl=${IREDMAIL_MIRROR}/yum/rpms/dovecot/rhel${DISTRO_VERSION}/
-enabled=1
-gpgcheck=0
-EOF
-    fi
-
     ECHO_INFO "Clean metadata of yum repositories."
     yum clean metadata
 
-    # RHEL/CentOS 6 only. EPEL for RHEL 5 is out of date.
+    # RHEL/CentOS 6.
     # Create a temporary yum repo to install epel-release without GPG check.
-    if [ X"${DISTRO_VERSION}" == X'6' ]; then
-        cat > ${YUM_REPOS_DIR}/tmp_epel.repo <<EOF
+    cat > ${YUM_REPOS_DIR}/tmp_epel.repo <<EOF
 [tmp_epel]
 name=Extra Packages for Enterprise Linux ${DISTRO_VERSION} - \$basearch
 #baseurl=http://download.fedoraproject.org/pub/epel/${DISTRO_VERSION}/\$basearch
@@ -188,10 +176,10 @@ failovermethod=priority
 enabled=1
 gpgcheck=0
 EOF
-        ECHO_INFO "Install epel yum repo."
-        eval ${install_pkg} epel-release && rm ${YUM_REPOS_DIR}/tmp_epel.repo
-        yum clean metadata
-    fi
+
+    ECHO_INFO "Install epel yum repo."
+    eval ${install_pkg} epel-release && rm ${YUM_REPOS_DIR}/tmp_epel.repo
+    yum clean metadata
 
     echo 'export status_create_yum_repo="DONE"' >> ${STATUS_FILE}
 }

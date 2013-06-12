@@ -59,12 +59,7 @@ export DOVECOT_CONF_DIR='/etc/dovecot'
 # Path to Dovecot deliver agant
 export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
 
-if [ X"${DISTRO}" == X"RHEL" ]; then
-    if [ X"${DISTRO_VERSION}" == X"5" ]; then
-        export DOVECOT_VERSION='1.2'
-        export DOVECOT_CONF_DIR='/etc'
-    fi
-elif [ X"${DISTRO}" == X"SUSE" ]; then
+if [ X"${DISTRO}" == X"SUSE" ]; then
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then

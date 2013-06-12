@@ -55,12 +55,9 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export AMAVISD_QUARANTINEDIR="${AMAVISD_MYHOME}/quarantine"
     export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
 
-    if [ X"${DISTRO_VERSION}" == X"5" ]; then
-        export AMAVISD_CONF='/etc/amavisd.conf'
-    elif [ X"${DISTRO_VERSION}" == X"6" ]; then
-        export AMAVISD_CONF='/etc/amavisd/amavisd.conf'
-        export AMAVISD_VIRUSMAILS_DIR="${AMAVISD_QUARANTINEDIR}"
-    fi
+    # RHEL/CENTOS 6
+    export AMAVISD_CONF='/etc/amavisd/amavisd.conf'
+    export AMAVISD_VIRUSMAILS_DIR="${AMAVISD_QUARANTINEDIR}"
 
     export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
 
@@ -81,7 +78,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
     export AMAVISD_VIRUSMAILS_DIR='/var/spool/amavis/virusmails'
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-    # Debian 7 (wheezy) and Ubuntu 12.10 (quantal) ships Amavisd-new-2.7
+    # Debian 7 (wheezy) and Ubuntu 13.04 (raring) ships Amavisd-new-2.7
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
         if [ X"${DISTRO_CODENAME}" != X'squeeze' ]; then
             export AMAVISD_VERSION='2.7'

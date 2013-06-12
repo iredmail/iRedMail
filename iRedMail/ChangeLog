@@ -10,6 +10,8 @@ iRedMail-0.8.5:
       - OpenLDAP: attribute 'preferredLanguage' for mailDomain object
 
     * Drop support for below releases:
+        + Ubuntu 12.10
+        + RHEL/CentOS 5.x
         + OpenBSD 5.1, 5.2.
         + openSUSE 12.1, 12.2.
 
