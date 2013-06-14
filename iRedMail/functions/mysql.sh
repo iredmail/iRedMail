@@ -81,6 +81,7 @@ EOF
 
     cat >> ${TIP_FILE} <<EOF
 MySQL:
+    * Root user: ${MYSQL_ROOT_USER}, Password: ${MYSQL_ROOT_PASSWD}
     * Bind account (read-only):
         - Username: ${VMAIL_DB_BIND_USER}, Password: ${VMAIL_DB_BIND_PASSWD}
     * Vmail admin account (read-write):

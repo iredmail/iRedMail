@@ -104,6 +104,7 @@ EOF
 
     cat >> ${TIP_FILE} <<EOF
 PostgreSQL:
+    * Admin user: ${PGSQL_ROOT_USER}, Password: ${PGSQL_ROOT_PASSWD}
     * Bind account (read-only):
         - Name: ${VMAIL_DB_BIND_USER}, Password: ${VMAIL_DB_BIND_PASSWD}
     * Vmail admin account (read-write):
