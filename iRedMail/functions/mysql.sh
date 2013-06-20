@@ -42,6 +42,9 @@ mysql_initialize()
     # Warning: We must have 'mysql_enable=YES' before start/stop mysql daemon.
     freebsd_enable_service_in_rc_conf 'mysql_enable' 'YES'
 
+    # Disable 'skip-networking' in my.cnf.
+    perl -pi -e 's#^(skip-networking.*)#${1}#' ${MYSQL_MY_CNF} &>/dev/null
+
     ${MYSQLD_RC_SCRIPT} restart &>/dev/null
 
     ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialize ..."
