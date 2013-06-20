@@ -221,6 +221,10 @@ iRedAdmin - official web-based admin panel:
         - https://${HOSTNAME}/iredadmin/
     * Login account:
         - Username: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}, password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
+    * SQL database account:
+        - Database name: ${IREDADMIN_DB_NAME}
+        - Username: ${IREDADMIN_DB_USER}
+        - Password: ${IREDADMIN_DB_PASSWD}
     * Settings:
         - ${IREDADMIN_HTTPD_ROOT}/settings.ini
         - Addition settings for Policyd & Amavisd integration support in iRedAdmin-Pro:
