@@ -256,6 +256,25 @@ CREATE INDEX idx_recipient_bcc_user_bcc_address ON recipient_bcc_user (bcc_addre
 CREATE INDEX idx_recipient_bcc_user_expired ON recipient_bcc_user (expired);
 CREATE INDEX idx_recipient_bcc_user_active ON recipient_bcc_user (active);
 
+-- Used to store basic info of deleted mailboxes.
+CREATE TABLE deleted_mailboxes (
+    id SERIAL PRIMARY KEY,
+    timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    -- Email address of deleted user
+    username VARCHAR(255) NOT NULL DEFAULT '',
+    -- Domain part of user email address
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    -- Absolute path of user's mailbox
+    maildir TEXT NOT NULL DEFAULT '',
+    -- Which domain admin deleted this user
+    admin VARCHAR(255) NOT NULL DEFAULT ''
+);
+
+CREATE INDEX idx_deleted_mailboxes_timestamp ON deleted_mailboxes (timestamp);
+CREATE INDEX idx_deleted_mailboxes_username ON deleted_mailboxes (username);
+CREATE INDEX idx_deleted_mailboxes_domain ON deleted_mailboxes (domain);
+CREATE INDEX idx_deleted_mailboxes_admin ON deleted_mailboxes (admin);
+
 --
 -- IMAP shared folders. User 'from_user' shares folders to user 'to_user'.
 -- WARNING: Works only with Dovecot 1.2+.
