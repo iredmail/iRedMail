@@ -120,7 +120,7 @@ postfix_config_basic()
     postconf -e biff='no'   # Do not notify local user.
     postconf -e inet_interfaces="all"
     postconf -e mynetworks="127.0.0.0/8"
-    postconf -e mynetworks_style="subnet"
+    postconf -e mynetworks_style="host"
     postconf -e smtpd_data_restrictions='reject_unauth_pipelining'
     postconf -e smtpd_reject_unlisted_recipient='yes'   # Default
     postconf -e smtpd_reject_unlisted_sender='yes'
