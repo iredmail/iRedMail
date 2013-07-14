@@ -1,9 +1,8 @@
 iRedMail-0.8.5:
-    * Use EPEL yum repo on RHEL/CentOS 6 by default, but not on RHEL/CentOS 5.
+    * Use EPEL yum repo on RHEL/CentOS 6 by default.
     * Update SQL triggers to insert value for column 'used_quota.domain'
       automatically.
-    * Install php53 from vender official yum repo on RHEL/CentOS 5.
-    * Allow to assign mail list/alias as member of mailing list.
+    * SQL backends: Allow to assign mail list/alias as member of mailing list.
     * New SQL column and LDAP attribute for mail domain, used to store
       preferred language for newly created mail users.
       - SQL: column domain.defaultlang
@@ -23,7 +22,7 @@ iRedMail-0.8.5:
 
     * Package update:
         + Roundcube webmail -> 0.9.2
-        + phpMyAdmin -> 4.0.4
+        + phpMyAdmin -> 4.0.4.1
         + iRedAdmin -> 0.2.2
         + iRedAPD -> 1.4.1
         + phpPgAdmin -> 5.1
