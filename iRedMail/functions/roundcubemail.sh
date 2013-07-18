@@ -206,7 +206,7 @@ rcm_config()
     perl -pi -e 's#(.*des_key.*= )(.*)#${1}"$ENV{RCM_DES_KEY}";#' main.inc.php
 
     # Set useragent, hide version number.
-    perl -pi -e 's#(.*useragent.*=).*#${1} "RoundCube WebMail";#' main.inc.php
+    perl -pi -e 's#(.*useragent.*=).*#${1} "RoundCube Webmail";#' main.inc.php
 
     # Set defeault domain.
     perl -pi -e 's#(.*username_domain.*=)(.*)#${1} "$ENV{FIRST_DOMAIN}";#' main.inc.php
