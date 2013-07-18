@@ -105,7 +105,7 @@ echo "* Backing up databases ..." >> ${LOGFILE}
 for db in ${DATABASES}; do
     output_sql="${db}-${TIMESTAMP}.sql"
 
-    # Verify db existence
+    # Check whether database exists or not
     su - "${PGSQL_SYS_USER}" -c "psql -d ${db} -c '\q' >/dev/null 2>&1"
 
     # Dump
