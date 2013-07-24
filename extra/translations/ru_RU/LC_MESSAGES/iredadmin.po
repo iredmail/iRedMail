@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  iRedAdmin-Pro-LDAP-1.6.2\n"
 "Report-Msgid-Bugs-To: suds77@gmail.com\n"
-"POT-Creation-Date: 2013-03-14 22:19+0800\n"
-"PO-Revision-Date: 2011-06-10 23:46+0800\n"
+"POT-Creation-Date: 2013-07-24 14:48+0800\n"
+"PO-Revision-Date: 2013-07-24 09:24+0400\n"
 "Last-Translator: Dmitry Sukharev <suds77@gmail.com>\n"
 "Language-Team: ru_RU <suds77@gmail.com>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
@@ -17,7 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 0.9.6\n"
 
-#: ../templates/default/dbmail_mysql/search.html:71
 #: ../templates/default/ldap/search.html:128
 #: ../templates/default/mysql/search.html:151
 #: ../templates/default/pgsql/search.html:151
@@ -36,10 +35,9 @@ msgstr "%d доменов найдено."
 msgid "%d domains(s) found."
 msgstr "%d доменов найдено."
 
-#: ../templates/default/dbmail_mysql/search.html:209
 #: ../templates/default/ldap/search.html:295
-#: ../templates/default/mysql/search.html:279
-#: ../templates/default/pgsql/search.html:279
+#: ../templates/default/mysql/search.html:275
+#: ../templates/default/pgsql/search.html:275
 #, python-format
 msgid "%d mail alias(es) found."
 msgstr "%d алиасов найден."
@@ -49,7 +47,6 @@ msgstr "%d алиасов найден."
 msgid "%d mail list(s) found."
 msgstr "%d почтовых списков найдено."
 
-#: ../templates/default/dbmail_mysql/search.html:135
 #: ../templates/default/ldap/search.html:182
 #: ../templates/default/mysql/search.html:216
 #: ../templates/default/pgsql/search.html:216
@@ -62,15 +59,13 @@ msgstr "%d пользователей найдено."
 msgid "%s (%s)"
 msgstr "%s (%s)"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:330
-#: ../templates/default/dbmail_mysql/domain/profile.html:338
-#: ../templates/default/ldap/domain/profile.html:392
-#: ../templates/default/ldap/domain/profile.html:399
-#: ../templates/default/ldap/domain/profile.html:407
-#: ../templates/default/mysql/domain/profile.html:406
-#: ../templates/default/mysql/domain/profile.html:414
-#: ../templates/default/pgsql/domain/profile.html:388
-#: ../templates/default/pgsql/domain/profile.html:396
+#: ../templates/default/ldap/domain/profile.html:415
+#: ../templates/default/ldap/domain/profile.html:422
+#: ../templates/default/ldap/domain/profile.html:430
+#: ../templates/default/mysql/domain/profile.html:417
+#: ../templates/default/mysql/domain/profile.html:425
+#: ../templates/default/pgsql/domain/profile.html:397
+#: ../templates/default/pgsql/domain/profile.html:405
 #, python-format
 msgid "%s account(s) exist."
 msgstr "%s аккаунтов существует."
@@ -92,44 +87,44 @@ msgstr "1 час"
 msgid "1 Minute"
 msgstr "1 минута"
 
-#: ../templates/default/macros/general.html:757
+#: ../templates/default/macros/general.html:760
 #, python-format
 msgid "<a href='%s'>Domain and sub-domain users</a>"
 msgstr "<a href=\"%s\">Пользователи домена и субдомена</a>"
 
-#: ../templates/default/macros/general.html:755
+#: ../templates/default/macros/general.html:758
 #, python-format
 msgid "<a href='%s'>Domain users</a>"
 msgstr "<a href=\"%s\">Пользователи домена</a>"
 
-#: ../templates/default/macros/general.html:759
+#: ../templates/default/macros/general.html:762
 #, python-format
 msgid "<a href='%s'>Members</a>"
 msgstr "<a href=\"%s\">Участники</a>"
 
 #: ../templates/default/ldap/maillist/profile.html:88
-#: ../templates/default/macros/general.html:763
-#: ../templates/default/mysql/alias/profile.html:77
-#: ../templates/default/pgsql/alias/profile.html:77
+#: ../templates/default/macros/general.html:766
+#: ../templates/default/mysql/alias/profile.html:78
+#: ../templates/default/pgsql/alias/profile.html:78
 #, python-format
 msgid "<a href='%s'>Members</a> and <a href='%s'>moderators</a>"
 msgstr "<a href='%s'>Участники</a> и <a href='%s'>модераторы</a>"
 
-#: ../templates/default/macros/general.html:761
+#: ../templates/default/macros/general.html:764
 #, python-format
 msgid "<a href='%s'>Moderators</a>"
 msgstr "<a href=\"%s\">Модераторы</a>"
 
 #: ../templates/default/ldap/maillist/profile.html:84
-#: ../templates/default/mysql/alias/profile.html:73
-#: ../templates/default/pgsql/alias/profile.html:73
+#: ../templates/default/mysql/alias/profile.html:74
+#: ../templates/default/pgsql/alias/profile.html:74
 #, python-format
 msgid "<a href='%s'>Users under domain <strong>%s</strong></a>"
 msgstr "<a href='%s'>Пользователей в домене <strong>%s</strong></a>"
 
 #: ../templates/default/ldap/maillist/profile.html:85
-#: ../templates/default/mysql/alias/profile.html:74
-#: ../templates/default/pgsql/alias/profile.html:74
+#: ../templates/default/mysql/alias/profile.html:75
+#: ../templates/default/pgsql/alias/profile.html:75
 #, python-format
 msgid ""
 "<a href='%s'>Users under domain <strong>%s</strong></a> and its sub-"
@@ -145,11 +140,11 @@ msgstr "О логах"
 msgid "About quarantined mails"
 msgstr "Почта на карантине."
 
-#: ../templates/default/ldap/user/profile.html:218
+#: ../templates/default/ldap/user/profile.html:235
 msgid "Account NOT exists."
 msgstr "Аккаунт не существует."
 
-#: ../templates/default/macros/general.html:243
+#: ../templates/default/macros/general.html:226
 msgid "Account activities"
 msgstr "Аккаунт включен."
 
@@ -160,101 +155,90 @@ msgstr "Аккаунт включен."
 msgid "Account already exists, please choose another username."
 msgstr "Аккаунт уже существует, выберите другой имя"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:390
-#: ../templates/default/mysql/domain/profile.html:468
-#: ../templates/default/pgsql/domain/profile.html:450
+#: ../templates/default/mysql/domain/profile.html:489
+#: ../templates/default/pgsql/domain/profile.html:469
 msgid "Account does not exist."
 msgstr "Аккаунт не существует."
 
-#: ../templates/default/macros/general.html:199
+#: ../templates/default/macros/general.html:183
 msgid "Account is active, but marked as backup MX."
 msgstr "Аккаунт существет, но помечен как архивный MX."
 
-#: ../templates/default/macros/general.html:192
-#: ../templates/default/macros/general.html:194
+#: ../templates/default/macros/general.html:176
+#: ../templates/default/macros/general.html:178
 msgid "Account is active, but relay to other host"
 msgstr "Аккаунт включен, но перенаправляет на другой хост"
 
-#: ../templates/default/macros/general.html:188
+#: ../templates/default/macros/general.html:172
 msgid "Account is active."
 msgstr "Аккаунт включен."
 
-#: ../templates/default/macros/general.html:201
-#: ../templates/default/macros/general.html:202
+#: ../templates/default/macros/general.html:185
 msgid "Account is disabled."
 msgstr "Аккаунт выключен."
 
-#: ../templates/default/macros/general.html:209
+#: ../templates/default/macros/general.html:192
 msgid "Account is domain admin"
 msgstr "Аккаунт админстратор домена"
 
-#: ../templates/default/macros/general.html:211
+#: ../templates/default/macros/general.html:194
 msgid "Account is global admin"
 msgstr "Аккаунт - глобальный администратор"
 
-#: ../templates/default/dbmail_mysql/search.html:50
 #: ../templates/default/ldap/search.html:48
 #: ../templates/default/mysql/search.html:51
 #: ../templates/default/pgsql/search.html:51
 msgid "Account status"
 msgstr "Состояние аккаунта"
 
-#: ../templates/default/dbmail_mysql/search.html:41
 #: ../templates/default/ldap/search.html:37
 #: ../templates/default/mysql/search.html:41
 #: ../templates/default/pgsql/search.html:41
 msgid "Account type"
 msgstr "Редактировать профиль"
 
-#: ../templates/default/macros/general.html:898
+#: ../templates/default/macros/general.html:959
 msgid "Activate account"
 msgstr "Активировать аккаунт"
 
-#: ../templates/default/dbmail_mysql/search.html:51
 #: ../templates/default/ldap/search.html:49
 #: ../templates/default/mysql/search.html:52
 #: ../templates/default/pgsql/search.html:52
 msgid "Active"
 msgstr "Активный"
 
-#: ../templates/default/layout.html:106
-#: ../templates/default/dbmail_mysql/alias/create.html:82
-#: ../templates/default/dbmail_mysql/user/create.html:132
+#: ../templates/default/layout.html:103
 #: ../templates/default/ldap/alias/create.html:102
 #: ../templates/default/ldap/maillist/create.html:100
 #: ../templates/default/ldap/maillist/profile.html:56
-#: ../templates/default/ldap/user/create.html:170
-#: ../templates/default/macros/general.html:704
-#: ../templates/default/macros/general.html:745
-#: ../templates/default/mysql/alias/create.html:96
-#: ../templates/default/mysql/user/create.html:143
-#: ../templates/default/pgsql/alias/create.html:96
-#: ../templates/default/pgsql/user/create.html:143
+#: ../templates/default/ldap/user/create.html:175
+#: ../templates/default/macros/general.html:694
+#: ../templates/default/macros/general.html:748
+#: ../templates/default/mysql/alias/create.html:97
+#: ../templates/default/mysql/user/create.html:146
+#: ../templates/default/pgsql/alias/create.html:97
+#: ../templates/default/pgsql/user/create.html:146
 #: ../templates/default/policyd/blacklist/create.html:50
 #: ../templates/default/policyd/whitelist/create.html:44
 msgid "Add"
 msgstr "Добавить"
 
-#: ../templates/default/macros/general.html:892
+#: ../templates/default/macros/general.html:953
 msgid "Add account"
 msgstr "Создать аккаунт"
 
-#: ../templates/default/dbmail_mysql/admin/create.html:13
-#: ../templates/default/dbmail_mysql/admin/create.html:25
-#: ../templates/default/dbmail_mysql/admin/create.html:28
-#: ../templates/default/dbmail_mysql/admin/list.html:31
 #: ../templates/default/ldap/admin/create.html:13
 #: ../templates/default/ldap/admin/create.html:25
 #: ../templates/default/ldap/admin/create.html:28
-#: ../templates/default/ldap/admin/list.html:31
+#: ../templates/default/ldap/admin/list.html:29
 #: ../templates/default/mysql/admin/create.html:13
 #: ../templates/default/mysql/admin/create.html:25
 #: ../templates/default/mysql/admin/create.html:28
-#: ../templates/default/mysql/admin/list.html:31
+#: ../templates/default/mysql/admin/list.html:29
 #: ../templates/default/pgsql/admin/create.html:13
 #: ../templates/default/pgsql/admin/create.html:25
 #: ../templates/default/pgsql/admin/create.html:28
-#: ../templates/default/pgsql/admin/list.html:31
+#: ../templates/default/pgsql/admin/list.html:29
 msgid "Add admin"
 msgstr "Добавить админа"
 
@@ -266,52 +250,41 @@ msgstr "Добавить админа"
 msgid "Add blacklist"
 msgstr "Добавить черный список"
 
-#: ../templates/default/dbmail_mysql/domain/create.html:7
-#: ../templates/default/dbmail_mysql/domain/create.html:20
-#: ../templates/default/dbmail_mysql/domain/create.html:24
-#: ../templates/default/dbmail_mysql/domain/list.html:31
 #: ../templates/default/ldap/domain/create.html:9
-#: ../templates/default/ldap/domain/create.html:23
-#: ../templates/default/ldap/domain/create.html:27
-#: ../templates/default/ldap/domain/list.html:31
+#: ../templates/default/ldap/domain/create.html:20
+#: ../templates/default/ldap/domain/list.html:30
 #: ../templates/default/macros/general.html:736
 #: ../templates/default/macros/ldap.html:32
 #: ../templates/default/macros/mysql.html:26
 #: ../templates/default/mysql/domain/create.html:7
-#: ../templates/default/mysql/domain/create.html:20
-#: ../templates/default/mysql/domain/create.html:24
-#: ../templates/default/mysql/domain/list.html:31
+#: ../templates/default/mysql/domain/create.html:17
+#: ../templates/default/mysql/domain/list.html:30
 #: ../templates/default/pgsql/domain/create.html:7
-#: ../templates/default/pgsql/domain/create.html:20
-#: ../templates/default/pgsql/domain/create.html:24
-#: ../templates/default/pgsql/domain/list.html:31
+#: ../templates/default/pgsql/domain/create.html:17
+#: ../templates/default/pgsql/domain/list.html:30
 msgid "Add domain"
 msgstr "Добавить домен"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:415
-#: ../templates/default/dbmail_mysql/user/profile.html:155
-#: ../templates/default/ldap/user/profile.html:272
-#: ../templates/default/mysql/domain/profile.html:493
-#: ../templates/default/mysql/user/profile.html:156
-#: ../templates/default/pgsql/domain/profile.html:475
-#: ../templates/default/pgsql/user/profile.html:156
+#: ../templates/default/ldap/user/profile.html:289
+#: ../templates/default/mysql/domain/profile.html:514
+#: ../templates/default/mysql/user/profile.html:168
+#: ../templates/default/pgsql/domain/profile.html:494
+#: ../templates/default/pgsql/user/profile.html:168
 msgid "Add mail alias"
 msgstr "Создать почтовый алиас"
 
-#: ../templates/default/dbmail_mysql/alias/create.html:9
-#: ../templates/default/dbmail_mysql/alias/create.html:55
 #: ../templates/default/ldap/alias/create.html:10
 #: ../templates/default/ldap/alias/create.html:74
 #: ../templates/default/mysql/alias/create.html:10
-#: ../templates/default/mysql/alias/create.html:69
+#: ../templates/default/mysql/alias/create.html:70
 #: ../templates/default/pgsql/alias/create.html:10
-#: ../templates/default/pgsql/alias/create.html:69
+#: ../templates/default/pgsql/alias/create.html:70
 #, python-format
 msgid "Add mail alias under domain: %s"
 msgstr "Добавить почтовый алиас в домен %s"
 
-#: ../templates/default/ldap/domain/profile.html:475
-#: ../templates/default/ldap/user/profile.html:230
+#: ../templates/default/ldap/domain/profile.html:504
+#: ../templates/default/ldap/user/profile.html:247
 msgid "Add mail list"
 msgstr "Добавить почтовый список"
 
@@ -321,39 +294,35 @@ msgstr "Добавить почтовый список"
 msgid "Add mail list under domain: %s."
 msgstr "Добавить список рассылки в домен %s."
 
-#: ../templates/default/ldap/maillist/profile.html:383
+#: ../templates/default/ldap/maillist/profile.html:411
 msgid "Add members"
 msgstr "Добавить участников"
 
-#: ../templates/default/ldap/maillist/profile.html:397
+#: ../templates/default/ldap/maillist/profile.html:425
 msgid "Add moderators"
 msgstr "Добавить модераторов"
 
-#: ../templates/default/dbmail_mysql/alias/profile.html:164
 #: ../templates/default/ldap/alias/profile.html:114
-#: ../templates/default/mysql/alias/profile.html:169
-#: ../templates/default/pgsql/alias/profile.html:169
+#: ../templates/default/mysql/alias/profile.html:170
+#: ../templates/default/pgsql/alias/profile.html:170
 msgid "Add new members"
 msgstr "Добавить участников"
 
-#: ../templates/default/mysql/alias/profile.html:177
-#: ../templates/default/pgsql/alias/profile.html:177
+#: ../templates/default/mysql/alias/profile.html:178
+#: ../templates/default/pgsql/alias/profile.html:178
 msgid "Add new moderators"
 msgstr "Добавить нового модератора"
 
-#: ../templates/default/dbmail_mysql/alias/list.html:73
-#: ../templates/default/dbmail_mysql/domain/list.html:137
-#: ../templates/default/dbmail_mysql/user/list.html:103
 #: ../templates/default/ldap/alias/list.html:100
-#: ../templates/default/ldap/domain/list.html:189
+#: ../templates/default/ldap/domain/list.html:202
 #: ../templates/default/ldap/maillist/list.html:100
-#: ../templates/default/ldap/user/list.html:141
-#: ../templates/default/mysql/alias/list.html:86
-#: ../templates/default/mysql/domain/list.html:146
-#: ../templates/default/mysql/user/list.html:121
-#: ../templates/default/pgsql/alias/list.html:86
-#: ../templates/default/pgsql/domain/list.html:146
-#: ../templates/default/pgsql/user/list.html:121
+#: ../templates/default/ldap/user/list.html:135
+#: ../templates/default/mysql/alias/list.html:87
+#: ../templates/default/mysql/domain/list.html:145
+#: ../templates/default/mysql/user/list.html:147
+#: ../templates/default/pgsql/alias/list.html:87
+#: ../templates/default/pgsql/domain/list.html:145
+#: ../templates/default/pgsql/user/list.html:148
 msgid "Add one"
 msgstr "Добавить"
 
@@ -365,14 +334,12 @@ msgstr "Добавить"
 msgid "Add one more?"
 msgstr "Добавить еще?"
 
-#: ../templates/default/dbmail_mysql/user/create.html:13
-#: ../templates/default/dbmail_mysql/user/create.html:78
-#: ../templates/default/ldap/user/create.html:14
-#: ../templates/default/ldap/user/create.html:116
-#: ../templates/default/mysql/user/create.html:14
-#: ../templates/default/mysql/user/create.html:89
-#: ../templates/default/pgsql/user/create.html:14
-#: ../templates/default/pgsql/user/create.html:89
+#: ../templates/default/ldap/user/create.html:15
+#: ../templates/default/ldap/user/create.html:120
+#: ../templates/default/mysql/user/create.html:15
+#: ../templates/default/mysql/user/create.html:91
+#: ../templates/default/pgsql/user/create.html:15
+#: ../templates/default/pgsql/user/create.html:91
 #, python-format
 msgid "Add user under domain: %s"
 msgstr "Добавить пользователя в домен: %s"
@@ -385,8 +352,7 @@ msgstr "Добавить пользователя в домен: %s"
 msgid "Add whitelist"
 msgstr "Добавить белый список"
 
-#: ../templates/default/layout.html:110
-#: ../templates/default/dbmail_mysql/search.html:45
+#: ../templates/default/layout.html:107
 #: ../templates/default/ldap/search.html:43
 #: ../templates/default/mysql/search.html:46
 #: ../templates/default/panel/log.html:83
@@ -394,7 +360,7 @@ msgstr "Добавить белый список"
 msgid "Admin"
 msgstr "Администратор"
 
-#: ../templates/default/layout.html:85
+#: ../templates/default/layout.html:82
 #: ../templates/default/amavisd/inout.html:36
 #: ../templates/default/amavisd/quarantined.html:30
 #: ../templates/default/panel/log.html:11
@@ -407,7 +373,7 @@ msgstr "Логи админа"
 msgid "Admin created."
 msgstr "Администратор создан."
 
-#: ../templates/default/macros/general.html:890
+#: ../templates/default/macros/general.html:951
 msgid "Admin login"
 msgstr "Вход администратора"
 
@@ -419,59 +385,76 @@ msgstr "Администратор не существует."
 #: ../templates/default/ldap/alias/create.html:20
 #: ../templates/default/ldap/alias/list.html:24
 #: ../templates/default/ldap/alias/profile.html:34
-#: ../templates/default/ldap/domain/profile.html:103
+#: ../templates/default/ldap/domain/profile.html:113
 #: ../templates/default/ldap/maillist/create.html:20
 #: ../templates/default/ldap/maillist/list.html:26
 #: ../templates/default/ldap/maillist/profile.html:36
 #: ../templates/default/ldap/user/admin.html:25
-#: ../templates/default/ldap/user/create.html:24
+#: ../templates/default/ldap/user/create.html:25
 #: ../templates/default/ldap/user/list.html:26
-#: ../templates/default/ldap/user/profile.html:104
+#: ../templates/default/ldap/user/profile.html:107
+#: ../templates/default/mysql/alias/create.html:19
+#: ../templates/default/mysql/alias/list.html:22
+#: ../templates/default/mysql/alias/profile.html:25
+#: ../templates/default/mysql/domain/profile.html:42
+#: ../templates/default/mysql/user/create.html:24
+#: ../templates/default/mysql/user/list.html:26
+#: ../templates/default/mysql/user/list.html:35
+#: ../templates/default/mysql/user/profile.html:51
 #: ../templates/default/panel/log.html:55
+#: ../templates/default/pgsql/alias/create.html:19
+#: ../templates/default/pgsql/alias/list.html:22
+#: ../templates/default/pgsql/alias/profile.html:25
+#: ../templates/default/pgsql/domain/profile.html:42
+#: ../templates/default/pgsql/user/create.html:24
+#: ../templates/default/pgsql/user/list.html:26
+#: ../templates/default/pgsql/user/list.html:35
+#: ../templates/default/pgsql/user/profile.html:51
 msgid "Admins"
 msgstr "Администраторы"
 
 #: ../templates/default/ldap/user/admin.html:15
-#: ../templates/default/ldap/user/admin.html:54
+#: ../templates/default/ldap/user/admin.html:48
+#: ../templates/default/mysql/user/list.html:59
+#: ../templates/default/pgsql/user/list.html:59
 #, python-format
 msgid "Admins under domain: %s"
 msgstr "Админстраторы в домене: %s"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:55
-#: ../templates/default/dbmail_mysql/user/profile.html:56
-#: ../templates/default/ldap/domain/profile.html:123
-#: ../templates/default/ldap/user/profile.html:123
-#: ../templates/default/mysql/domain/profile.html:66
+#: ../templates/default/ldap/domain/profile.html:135
+#: ../templates/default/ldap/domain/profile.html:146
+#: ../templates/default/ldap/user/profile.html:127
+#: ../templates/default/ldap/user/profile.html:139
+#: ../templates/default/mysql/domain/profile.html:68
+#: ../templates/default/mysql/domain/profile.html:79
 #: ../templates/default/mysql/user/profile.html:72
-#: ../templates/default/pgsql/domain/profile.html:67
+#: ../templates/default/mysql/user/profile.html:83
+#: ../templates/default/pgsql/domain/profile.html:68
+#: ../templates/default/pgsql/domain/profile.html:79
 #: ../templates/default/pgsql/user/profile.html:72
+#: ../templates/default/pgsql/user/profile.html:83
 msgid "Advanced"
 msgstr "Дополнительно"
 
-#: ../templates/default/layout.html:118
-#: ../templates/default/dbmail_mysql/search.html:43
-#: ../templates/default/dbmail_mysql/alias/create.html:51
-#: ../templates/default/dbmail_mysql/alias/list.html:28
-#: ../templates/default/dbmail_mysql/user/create.html:74
-#: ../templates/default/dbmail_mysql/user/list.html:31
+#: ../templates/default/layout.html:115
 #: ../templates/default/ldap/search.html:40
 #: ../templates/default/ldap/alias/create.html:70
 #: ../templates/default/ldap/alias/list.html:47
 #: ../templates/default/ldap/maillist/create.html:70
 #: ../templates/default/ldap/maillist/list.html:49
-#: ../templates/default/ldap/user/admin.html:50
-#: ../templates/default/ldap/user/create.html:112
-#: ../templates/default/ldap/user/list.html:51
+#: ../templates/default/ldap/user/admin.html:44
+#: ../templates/default/ldap/user/create.html:116
+#: ../templates/default/ldap/user/list.html:45
 #: ../templates/default/mysql/search.html:43
-#: ../templates/default/mysql/alias/create.html:65
-#: ../templates/default/mysql/alias/list.html:41
-#: ../templates/default/mysql/user/create.html:85
-#: ../templates/default/mysql/user/list.html:45
+#: ../templates/default/mysql/alias/create.html:66
+#: ../templates/default/mysql/alias/list.html:42
+#: ../templates/default/mysql/user/create.html:87
+#: ../templates/default/mysql/user/list.html:54
 #: ../templates/default/pgsql/search.html:43
-#: ../templates/default/pgsql/alias/create.html:65
-#: ../templates/default/pgsql/alias/list.html:41
-#: ../templates/default/pgsql/user/create.html:85
-#: ../templates/default/pgsql/user/list.html:45
+#: ../templates/default/pgsql/alias/create.html:66
+#: ../templates/default/pgsql/alias/list.html:42
+#: ../templates/default/pgsql/user/create.html:87
+#: ../templates/default/pgsql/user/list.html:54
 msgid "Alias"
 msgstr "Алиас"
 
@@ -479,65 +462,62 @@ msgstr "Алиас"
 msgid "Alias account"
 msgstr "Алиас аккаунта"
 
-#: ../templates/default/ldap/domain/profile.html:217
-#: ../templates/default/ldap/domain/profile.html:228
-#: ../templates/default/mysql/domain/profile.html:280
-#: ../templates/default/pgsql/domain/profile.html:281
+#: ../templates/default/ldap/domain/profile.html:242
+#: ../templates/default/ldap/domain/profile.html:253
+#: ../templates/default/mysql/domain/profile.html:288
+#: ../templates/default/pgsql/domain/profile.html:289
 msgid "Alias domains"
 msgstr "Алиас домена"
 
-#: ../templates/default/dbmail_mysql/alias/create.html:49
-#: ../templates/default/dbmail_mysql/alias/list.html:26
-#: ../templates/default/dbmail_mysql/alias/profile.html:23
-#: ../templates/default/dbmail_mysql/domain/list.html:56
-#: ../templates/default/dbmail_mysql/domain/profile.html:34
-#: ../templates/default/dbmail_mysql/domain/profile.html:54
-#: ../templates/default/dbmail_mysql/user/create.html:72
-#: ../templates/default/dbmail_mysql/user/list.html:29
-#: ../templates/default/dbmail_mysql/user/profile.html:34
-#: ../templates/default/dbmail_mysql/user/profile.html:51
 #: ../templates/default/ldap/search.html:81
 #: ../templates/default/ldap/alias/create.html:19
 #: ../templates/default/ldap/alias/list.html:23
 #: ../templates/default/ldap/alias/profile.html:32
-#: ../templates/default/ldap/domain/list.html:56
-#: ../templates/default/ldap/domain/profile.html:102
-#: ../templates/default/ldap/domain/profile.html:121
+#: ../templates/default/ldap/domain/list.html:55
+#: ../templates/default/ldap/domain/profile.html:112
+#: ../templates/default/ldap/domain/profile.html:133
+#: ../templates/default/ldap/domain/profile.html:144
 #: ../templates/default/ldap/maillist/create.html:19
 #: ../templates/default/ldap/maillist/list.html:25
 #: ../templates/default/ldap/maillist/profile.html:35
 #: ../templates/default/ldap/user/admin.html:24
-#: ../templates/default/ldap/user/create.html:23
+#: ../templates/default/ldap/user/create.html:24
 #: ../templates/default/ldap/user/list.html:25
-#: ../templates/default/ldap/user/profile.html:103
-#: ../templates/default/ldap/user/profile.html:119
+#: ../templates/default/ldap/user/profile.html:106
+#: ../templates/default/ldap/user/profile.html:123
+#: ../templates/default/ldap/user/profile.html:135
+#: ../templates/default/macros/general.html:789
+#: ../templates/default/macros/general.html:800
 #: ../templates/default/mysql/search.html:84
 #: ../templates/default/mysql/alias/create.html:18
 #: ../templates/default/mysql/alias/list.html:21
 #: ../templates/default/mysql/alias/profile.html:23
-#: ../templates/default/mysql/domain/list.html:56
-#: ../templates/default/mysql/domain/profile.html:44
-#: ../templates/default/mysql/domain/profile.html:64
-#: ../templates/default/mysql/user/create.html:22
-#: ../templates/default/mysql/user/list.html:23
-#: ../templates/default/mysql/user/profile.html:51
+#: ../templates/default/mysql/domain/list.html:55
+#: ../templates/default/mysql/domain/profile.html:41
+#: ../templates/default/mysql/domain/profile.html:66
+#: ../templates/default/mysql/domain/profile.html:77
+#: ../templates/default/mysql/user/create.html:23
+#: ../templates/default/mysql/user/list.html:25
+#: ../templates/default/mysql/user/list.html:34
+#: ../templates/default/mysql/user/profile.html:50
 #: ../templates/default/pgsql/search.html:84
 #: ../templates/default/pgsql/alias/create.html:18
 #: ../templates/default/pgsql/alias/list.html:21
 #: ../templates/default/pgsql/alias/profile.html:23
-#: ../templates/default/pgsql/domain/list.html:56
-#: ../templates/default/pgsql/domain/profile.html:45
-#: ../templates/default/pgsql/domain/profile.html:65
-#: ../templates/default/pgsql/user/create.html:22
-#: ../templates/default/pgsql/user/list.html:23
-#: ../templates/default/pgsql/user/profile.html:51
+#: ../templates/default/pgsql/domain/list.html:55
+#: ../templates/default/pgsql/domain/profile.html:41
+#: ../templates/default/pgsql/domain/profile.html:66
+#: ../templates/default/pgsql/domain/profile.html:77
+#: ../templates/default/pgsql/user/create.html:23
+#: ../templates/default/pgsql/user/list.html:25
+#: ../templates/default/pgsql/user/list.html:34
+#: ../templates/default/pgsql/user/profile.html:50
 msgid "Aliases"
 msgstr "Алиасы"
 
-#: ../templates/default/dbmail_mysql/alias/list.html:32
 #: ../templates/default/ldap/alias/list.html:51
-#: ../templates/default/mysql/alias/list.html:45
-#: ../templates/default/pgsql/alias/list.html:45
+#: ../templates/default/mysql/alias/list.html:46
+#: ../templates/default/pgsql/alias/list.html:46
 #, python-format
 msgid "Aliases under domain: %s."
 msgstr "Алиасы домена %s"
@@ -554,75 +534,58 @@ msgstr "Все черные списки"
 msgid "All Whitelists"
 msgstr "Все белые списки"
 
-#: ../templates/default/ldap/user/profile.html:388
+#: ../templates/default/ldap/user/profile.html:412
 msgid "All accounts"
 msgstr "Все аккаунты"
 
-#: ../templates/default/dbmail_mysql/admin/create.html:24
-#: ../templates/default/dbmail_mysql/admin/list.html:29
-#: ../templates/default/dbmail_mysql/admin/profile.html:28
 #: ../templates/default/ldap/admin/create.html:24
-#: ../templates/default/ldap/admin/list.html:29
 #: ../templates/default/ldap/admin/profile.html:35
 #: ../templates/default/mysql/admin/create.html:24
-#: ../templates/default/mysql/admin/list.html:29
 #: ../templates/default/mysql/admin/profile.html:28
 #: ../templates/default/pgsql/admin/create.html:24
-#: ../templates/default/pgsql/admin/list.html:29
 #: ../templates/default/pgsql/admin/profile.html:28
 msgid "All admins"
 msgstr "Все администраторы"
 
-#: ../templates/default/dbmail_mysql/alias/profile.html:20
-#: ../templates/default/dbmail_mysql/domain/create.html:18
-#: ../templates/default/dbmail_mysql/domain/list.html:29
-#: ../templates/default/dbmail_mysql/domain/profile.html:31
-#: ../templates/default/dbmail_mysql/user/profile.html:30
 #: ../templates/default/ldap/alias/create.html:15
 #: ../templates/default/ldap/alias/list.html:19
 #: ../templates/default/ldap/alias/profile.html:28
-#: ../templates/default/ldap/domain/create.html:21
-#: ../templates/default/ldap/domain/list.html:29
-#: ../templates/default/ldap/domain/profile.html:98
+#: ../templates/default/ldap/domain/profile.html:108
 #: ../templates/default/ldap/maillist/create.html:15
 #: ../templates/default/ldap/maillist/list.html:21
 #: ../templates/default/ldap/maillist/profile.html:30
 #: ../templates/default/ldap/user/admin.html:20
-#: ../templates/default/ldap/user/create.html:19
+#: ../templates/default/ldap/user/create.html:20
 #: ../templates/default/ldap/user/list.html:21
-#: ../templates/default/ldap/user/profile.html:98
+#: ../templates/default/ldap/user/profile.html:101
 #: ../templates/default/mysql/alias/create.html:15
 #: ../templates/default/mysql/alias/list.html:18
 #: ../templates/default/mysql/alias/profile.html:20
-#: ../templates/default/mysql/domain/create.html:18
-#: ../templates/default/mysql/domain/list.html:29
-#: ../templates/default/mysql/domain/profile.html:41
-#: ../templates/default/mysql/user/create.html:19
-#: ../templates/default/mysql/user/list.html:20
-#: ../templates/default/mysql/user/profile.html:47
+#: ../templates/default/mysql/domain/profile.html:38
+#: ../templates/default/mysql/user/create.html:20
+#: ../templates/default/mysql/user/list.html:22
+#: ../templates/default/mysql/user/list.html:31
+#: ../templates/default/mysql/user/profile.html:46
 #: ../templates/default/pgsql/alias/create.html:15
 #: ../templates/default/pgsql/alias/list.html:18
 #: ../templates/default/pgsql/alias/profile.html:20
-#: ../templates/default/pgsql/domain/create.html:18
-#: ../templates/default/pgsql/domain/list.html:29
-#: ../templates/default/pgsql/domain/profile.html:42
-#: ../templates/default/pgsql/user/create.html:19
-#: ../templates/default/pgsql/user/list.html:20
-#: ../templates/default/pgsql/user/profile.html:47
+#: ../templates/default/pgsql/domain/profile.html:38
+#: ../templates/default/pgsql/user/create.html:20
+#: ../templates/default/pgsql/user/list.html:22
+#: ../templates/default/pgsql/user/list.html:31
+#: ../templates/default/pgsql/user/profile.html:46
 msgid "All domains"
 msgstr "Все домены"
 
-#: ../templates/default/dbmail_mysql/domain/list.html:36
-#: ../templates/default/ldap/domain/list.html:36
-#: ../templates/default/mysql/domain/list.html:36
-#: ../templates/default/pgsql/domain/list.html:36
+#: ../templates/default/ldap/domain/list.html:35
+#: ../templates/default/mysql/domain/list.html:35
+#: ../templates/default/pgsql/domain/list.html:35
 msgid "All domains under your control."
 msgstr "Все домены, доступные для управления"
 
-#: ../templates/default/dbmail_mysql/admin/list.html:35
-#: ../templates/default/ldap/admin/list.html:35
-#: ../templates/default/mysql/admin/list.html:35
-#: ../templates/default/pgsql/admin/list.html:35
+#: ../templates/default/ldap/admin/list.html:33
+#: ../templates/default/mysql/admin/list.html:33
+#: ../templates/default/pgsql/admin/list.html:33
 msgid "All mail administrators."
 msgstr "Все администраторы"
 
@@ -631,90 +594,78 @@ msgstr "Все администраторы"
 msgid "All sub-domains"
 msgstr "Все почтовые под-домены"
 
-#: ../templates/default/dbmail_mysql/search.html:178
-#: ../templates/default/dbmail_mysql/domain/list.html:88
-#: ../templates/default/dbmail_mysql/domain/list.html:90
-#: ../templates/default/dbmail_mysql/domain/list.html:96
-#: ../templates/default/dbmail_mysql/domain/list.html:98
-#: ../templates/default/mysql/domain/list.html:97
-#: ../templates/default/mysql/domain/list.html:99
-#: ../templates/default/mysql/domain/list.html:105
-#: ../templates/default/mysql/domain/list.html:107
-#: ../templates/default/mysql/user/list.html:111
-#: ../templates/default/pgsql/domain/list.html:97
-#: ../templates/default/pgsql/domain/list.html:99
-#: ../templates/default/pgsql/domain/list.html:105
-#: ../templates/default/pgsql/domain/list.html:107
-#: ../templates/default/pgsql/user/list.html:111
+#: ../templates/default/ldap/domain/list.html:124
+#: ../templates/default/ldap/domain/list.html:136
+#: ../templates/default/mysql/domain/list.html:96
+#: ../templates/default/mysql/domain/list.html:98
+#: ../templates/default/mysql/domain/list.html:104
+#: ../templates/default/mysql/domain/list.html:106
+#: ../templates/default/mysql/user/list.html:137
+#: ../templates/default/pgsql/domain/list.html:96
+#: ../templates/default/pgsql/domain/list.html:98
+#: ../templates/default/pgsql/domain/list.html:104
+#: ../templates/default/pgsql/domain/list.html:106
+#: ../templates/default/pgsql/user/list.html:138
 msgid "Allocated"
 msgstr "Размещен"
 
-#: ../templates/default/dbmail_mysql/alias/create.html:26
-#: ../templates/default/dbmail_mysql/user/create.html:35
 #: ../templates/default/ldap/alias/create.html:47
 #: ../templates/default/ldap/maillist/create.html:48
-#: ../templates/default/ldap/user/create.html:78
-#: ../templates/default/mysql/alias/create.html:38
-#: ../templates/default/mysql/user/create.html:44
-#: ../templates/default/pgsql/alias/create.html:38
-#: ../templates/default/pgsql/user/create.html:44
+#: ../templates/default/ldap/user/create.html:82
+#: ../templates/default/mysql/alias/create.html:39
+#: ../templates/default/mysql/user/create.html:46
+#: ../templates/default/pgsql/alias/create.html:39
+#: ../templates/default/pgsql/user/create.html:46
 #, python-format
 msgid "Already exceed max number of account limit (%s)."
 msgstr "Вы исчерпали лимит аккаунтов (%s)."
 
 #: ../templates/default/amavisd/inout.html:173
 #: ../templates/default/amavisd/quarantined.html:94
-#: ../templates/default/dbmail_mysql/search.html:123
-#: ../templates/default/dbmail_mysql/search.html:196
-#: ../templates/default/dbmail_mysql/search.html:249
-#: ../templates/default/dbmail_mysql/admin/list.html:88
-#: ../templates/default/dbmail_mysql/alias/list.html:89
-#: ../templates/default/dbmail_mysql/domain/list.html:159
-#: ../templates/default/dbmail_mysql/user/list.html:121
 #: ../templates/default/ldap/search.html:119
 #: ../templates/default/ldap/search.html:171
 #: ../templates/default/ldap/search.html:231
 #: ../templates/default/ldap/search.html:285
 #: ../templates/default/ldap/search.html:335
-#: ../templates/default/ldap/admin/list.html:86
+#: ../templates/default/ldap/admin/list.html:84
 #: ../templates/default/ldap/alias/list.html:114
-#: ../templates/default/ldap/domain/list.html:208
+#: ../templates/default/ldap/domain/list.html:221
 #: ../templates/default/ldap/maillist/list.html:114
-#: ../templates/default/ldap/maillist/profile.html:193
-#: ../templates/default/ldap/maillist/profile.html:239
-#: ../templates/default/ldap/maillist/profile.html:321
-#: ../templates/default/ldap/maillist/profile.html:366
-#: ../templates/default/ldap/user/admin.html:147
-#: ../templates/default/ldap/user/list.html:165
+#: ../templates/default/ldap/maillist/profile.html:221
+#: ../templates/default/ldap/maillist/profile.html:267
+#: ../templates/default/ldap/maillist/profile.html:349
+#: ../templates/default/ldap/maillist/profile.html:394
+#: ../templates/default/ldap/user/admin.html:141
+#: ../templates/default/ldap/user/list.html:161
 #: ../templates/default/mysql/search.html:141
 #: ../templates/default/mysql/search.html:203
-#: ../templates/default/mysql/search.html:266
-#: ../templates/default/mysql/search.html:319
-#: ../templates/default/mysql/admin/list.html:98
-#: ../templates/default/mysql/alias/list.html:100
-#: ../templates/default/mysql/domain/list.html:166
-#: ../templates/default/mysql/user/list.html:137
+#: ../templates/default/mysql/search.html:262
+#: ../templates/default/mysql/search.html:315
+#: ../templates/default/mysql/admin/list.html:96
+#: ../templates/default/mysql/alias/list.html:101
+#: ../templates/default/mysql/domain/list.html:165
+#: ../templates/default/mysql/user/list.html:174
 #: ../templates/default/panel/log.html:123
 #: ../templates/default/pgsql/search.html:141
 #: ../templates/default/pgsql/search.html:203
-#: ../templates/default/pgsql/search.html:266
-#: ../templates/default/pgsql/search.html:319
-#: ../templates/default/pgsql/admin/list.html:98
-#: ../templates/default/pgsql/alias/list.html:100
-#: ../templates/default/pgsql/domain/list.html:166
-#: ../templates/default/pgsql/user/list.html:137
+#: ../templates/default/pgsql/search.html:262
+#: ../templates/default/pgsql/search.html:315
+#: ../templates/default/pgsql/admin/list.html:96
+#: ../templates/default/pgsql/alias/list.html:101
+#: ../templates/default/pgsql/domain/list.html:165
+#: ../templates/default/pgsql/user/list.html:175
 #: ../templates/default/policyd/wblist.html:108
 msgid "Apply"
 msgstr "Применить"
 
-#: ../templates/default/macros/general.html:470
+#: ../templates/default/macros/general.html:457
 #, python-format
 msgid "At least %s characters, but no more than %s."
 msgstr ""
 "По крайней мере <strong>%s</strong> символов, но не более чем "
 "<strong>%s</strong>."
 
-#: ../templates/default/macros/general.html:472
+#: ../templates/default/macros/general.html:459
 #, python-format
 msgid "At least %s characters."
 msgstr "Новый пароль должен содержать <strong>%s</strong> символов."
@@ -723,21 +674,27 @@ msgstr "Новый пароль должен содержать <strong>%s</stro
 msgid "Attachments"
 msgstr "Вложения"
 
-#: ../templates/default/macros/general.html:537
+#: ../templates/default/macros/general.html:524
 msgid "Available quota:"
 msgstr "Доступные квота:"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:51
-#: ../templates/default/dbmail_mysql/user/profile.html:52
-#: ../templates/default/ldap/domain/profile.html:118
-#: ../templates/default/mysql/domain/profile.html:61
-#: ../templates/default/mysql/user/profile.html:67
-#: ../templates/default/pgsql/domain/profile.html:62
-#: ../templates/default/pgsql/user/profile.html:67
+#: ../templates/default/ldap/domain/profile.html:130
+#: ../templates/default/ldap/domain/profile.html:141
+#: ../templates/default/macros/general.html:790
+#: ../templates/default/macros/general.html:801
+#: ../templates/default/macros/general.html:808
+#: ../templates/default/mysql/domain/profile.html:63
+#: ../templates/default/mysql/domain/profile.html:74
+#: ../templates/default/mysql/user/profile.html:68
+#: ../templates/default/mysql/user/profile.html:79
+#: ../templates/default/pgsql/domain/profile.html:63
+#: ../templates/default/pgsql/domain/profile.html:74
+#: ../templates/default/pgsql/user/profile.html:68
+#: ../templates/default/pgsql/user/profile.html:79
 msgid "BCC"
 msgstr "Скрытая копия"
 
-#: ../templates/default/macros/general.html:619
+#: ../templates/default/macros/general.html:609
 msgid "BCC incoming emails to single address"
 msgstr "BCC входящую направлять на другой адрес"
 
@@ -746,7 +703,7 @@ msgstr "BCC входящую направлять на другой адрес"
 msgid "BCC incoming mails to other address"
 msgstr "BCC входящую направлять на другой адрес"
 
-#: ../templates/default/macros/general.html:631
+#: ../templates/default/macros/general.html:621
 msgid "BCC outgoing emails to single address"
 msgstr "BCC исходящую направлять на другой адрес."
 
@@ -755,7 +712,7 @@ msgstr "BCC исходящую направлять на другой адрес
 msgid "BCC outgoing mails to other address"
 msgstr "BCC исходящую направлять на другой адрес."
 
-#: ../templates/default/macros/general.html:455
+#: ../templates/default/macros/general.html:442
 msgid "Backup MX does not work with custom relay"
 msgstr "Резервное копирование не работает в выбраном релее"
 
@@ -775,35 +732,38 @@ msgstr "Черный список HELO записей"
 msgid "Blacklist records"
 msgstr "Записи черного списка"
 
-#: ../templates/default/layout.html:99 ../templates/default/layout.html:123
+#: ../templates/default/layout.html:96 ../templates/default/layout.html:120
 #: ../templates/default/policyd/wblist.html:55
 msgid "Blacklists"
 msgstr "Черный список"
 
-#: ../templates/default/ldap/user/profile.html:344
+#: ../templates/default/ldap/user/profile.html:368
 msgid "Bypass mails from below senders"
 msgstr "Пропускать почту от следующих отправителей"
 
-#: ../templates/default/ldap/user/profile.html:358
+#: ../templates/default/ldap/user/profile.html:382
 msgid "Bypass mails sent to below recipients"
 msgstr "Пропускать почту отправляемую следующим получателям"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:53
-#: ../templates/default/ldap/domain/profile.html:120
-#: ../templates/default/mysql/domain/profile.html:63
-#: ../templates/default/pgsql/domain/profile.html:64
+#: ../templates/default/ldap/domain/profile.html:132
+#: ../templates/default/ldap/domain/profile.html:143
+#: ../templates/default/macros/general.html:791
+#: ../templates/default/mysql/domain/profile.html:65
+#: ../templates/default/mysql/domain/profile.html:76
+#: ../templates/default/pgsql/domain/profile.html:65
+#: ../templates/default/pgsql/domain/profile.html:76
 msgid "Catch-all"
 msgstr "Catch-all"
 
-#: ../templates/default/ldap/domain/profile.html:300
-#: ../templates/default/mysql/domain/profile.html:248
-#: ../templates/default/pgsql/domain/profile.html:249
+#: ../templates/default/ldap/domain/profile.html:325
+#: ../templates/default/mysql/domain/profile.html:255
+#: ../templates/default/pgsql/domain/profile.html:256
 msgid "Catch-all Addresses"
 msgstr "Catch-all почтовый адрес"
 
-#: ../templates/default/ldap/domain/profile.html:309
-#: ../templates/default/mysql/domain/profile.html:257
-#: ../templates/default/pgsql/domain/profile.html:258
+#: ../templates/default/ldap/domain/profile.html:334
+#: ../templates/default/mysql/domain/profile.html:264
+#: ../templates/default/pgsql/domain/profile.html:265
 msgid "Catch-all address may receive many spam emails."
 msgstr "Осторожно! Catch-all адресс может принимать много спам сообщений !"
 
@@ -813,45 +773,38 @@ msgstr "Отметьте тут для включения других почт�
 
 #: ../templates/default/amavisd/inout.html:169
 #: ../templates/default/amavisd/quarantined.html:85
-#: ../templates/default/dbmail_mysql/search.html:118
-#: ../templates/default/dbmail_mysql/search.html:191
-#: ../templates/default/dbmail_mysql/search.html:244
-#: ../templates/default/dbmail_mysql/admin/list.html:83
-#: ../templates/default/dbmail_mysql/alias/list.html:82
-#: ../templates/default/dbmail_mysql/domain/list.html:152
-#: ../templates/default/dbmail_mysql/user/list.html:114
 #: ../templates/default/ldap/search.html:114
 #: ../templates/default/ldap/search.html:166
 #: ../templates/default/ldap/search.html:226
 #: ../templates/default/ldap/search.html:280
 #: ../templates/default/ldap/search.html:330
-#: ../templates/default/ldap/admin/list.html:81
+#: ../templates/default/ldap/admin/list.html:79
 #: ../templates/default/ldap/alias/list.html:109
-#: ../templates/default/ldap/domain/list.html:203
+#: ../templates/default/ldap/domain/list.html:216
 #: ../templates/default/ldap/maillist/list.html:109
-#: ../templates/default/ldap/maillist/profile.html:190
-#: ../templates/default/ldap/maillist/profile.html:236
-#: ../templates/default/ldap/maillist/profile.html:318
-#: ../templates/default/ldap/maillist/profile.html:363
-#: ../templates/default/ldap/user/admin.html:144
-#: ../templates/default/ldap/user/list.html:152
+#: ../templates/default/ldap/maillist/profile.html:218
+#: ../templates/default/ldap/maillist/profile.html:264
+#: ../templates/default/ldap/maillist/profile.html:346
+#: ../templates/default/ldap/maillist/profile.html:391
+#: ../templates/default/ldap/user/admin.html:138
+#: ../templates/default/ldap/user/list.html:146
 #: ../templates/default/mysql/search.html:136
 #: ../templates/default/mysql/search.html:198
-#: ../templates/default/mysql/search.html:261
-#: ../templates/default/mysql/search.html:314
-#: ../templates/default/mysql/admin/list.html:93
-#: ../templates/default/mysql/alias/list.html:95
-#: ../templates/default/mysql/domain/list.html:161
-#: ../templates/default/mysql/user/list.html:132
+#: ../templates/default/mysql/search.html:257
+#: ../templates/default/mysql/search.html:310
+#: ../templates/default/mysql/admin/list.html:91
+#: ../templates/default/mysql/alias/list.html:96
+#: ../templates/default/mysql/domain/list.html:160
+#: ../templates/default/mysql/user/list.html:158
 #: ../templates/default/panel/log.html:119
 #: ../templates/default/pgsql/search.html:136
 #: ../templates/default/pgsql/search.html:198
-#: ../templates/default/pgsql/search.html:261
-#: ../templates/default/pgsql/search.html:314
-#: ../templates/default/pgsql/admin/list.html:93
-#: ../templates/default/pgsql/alias/list.html:95
-#: ../templates/default/pgsql/domain/list.html:161
-#: ../templates/default/pgsql/user/list.html:132
+#: ../templates/default/pgsql/search.html:257
+#: ../templates/default/pgsql/search.html:310
+#: ../templates/default/pgsql/admin/list.html:91
+#: ../templates/default/pgsql/alias/list.html:96
+#: ../templates/default/pgsql/domain/list.html:160
+#: ../templates/default/pgsql/user/list.html:159
 #: ../templates/default/policyd/wblist.html:105
 msgid "Choose Action"
 msgstr "Выбрать действие"
@@ -860,15 +813,15 @@ msgstr "Выбрать действие"
 msgid "Choose activity type"
 msgstr "Выберите тип"
 
-#: ../templates/default/macros/general.html:662
+#: ../templates/default/macros/general.html:652
 msgid "Company/Organization Name"
 msgstr "Компания"
 
-#: ../templates/default/macros/general.html:493
+#: ../templates/default/macros/general.html:480
 msgid "Confirm new password"
 msgstr "Подтвердить новый пароль"
 
-#: ../templates/default/layout.html:157
+#: ../templates/default/layout.html:154
 msgid "Contact webmaster"
 msgstr "Контакт вебмастера"
 
@@ -876,7 +829,7 @@ msgstr "Контакт вебмастера"
 msgid "Contacts"
 msgstr "Контакты"
 
-#: ../templates/default/ldap/domain/profile.html:188
+#: ../templates/default/ldap/domain/profile.html:213
 msgid "Content of disclaimer will be appended to outgoing emails."
 msgstr "Содержание отказа будет добавлено к исходящей почте"
 
@@ -899,34 +852,33 @@ msgstr "Текущий пароль неверен."
 msgid "Current value:"
 msgstr "Текущая значение:"
 
+#: ../templates/default/macros/general.html:711
 #: ../templates/default/macros/policyd.html:60
 #: ../templates/default/macros/policyd.html:85
 msgid "Custom:"
 msgstr "Пользовательский:"
 
 #: ../templates/default/macros/ldap.html:98
-#: ../templates/default/macros/mysql.html:68
+#: ../templates/default/macros/mysql.html:43
 msgid "Customize mail filter rule"
 msgstr "Настраиваемый почтовый фильтр"
 
 #: ../templates/default/macros/ldap.html:99
-#: ../templates/default/macros/mysql.html:69
+#: ../templates/default/macros/mysql.html:44
 msgid "Customize mail filter rule over TLS/SSL"
 msgstr "Настраиваемый почтовый фильтр через TLS/SSL."
 
-#: ../templates/default/dbmail_mysql/domain/list.html:111
-#: ../templates/default/dbmail_mysql/domain/list.html:125
-#: ../templates/default/ldap/domain/list.html:153
 #: ../templates/default/ldap/domain/list.html:166
 #: ../templates/default/ldap/domain/list.html:179
+#: ../templates/default/ldap/domain/list.html:192
 #: ../templates/default/mysql/search.html:116
 #: ../templates/default/mysql/search.html:125
-#: ../templates/default/mysql/domain/list.html:120
-#: ../templates/default/mysql/domain/list.html:134
+#: ../templates/default/mysql/domain/list.html:119
+#: ../templates/default/mysql/domain/list.html:133
 #: ../templates/default/pgsql/search.html:116
 #: ../templates/default/pgsql/search.html:125
-#: ../templates/default/pgsql/domain/list.html:120
-#: ../templates/default/pgsql/domain/list.html:134
+#: ../templates/default/pgsql/domain/list.html:119
+#: ../templates/default/pgsql/domain/list.html:133
 msgid "DISABLED"
 msgstr "Отключен"
 
@@ -948,55 +900,54 @@ msgstr "Панель управления"
 msgid "Date"
 msgstr "Дата"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:374
-#: ../templates/default/ldap/domain/profile.html:445
-#: ../templates/default/mysql/domain/profile.html:452
-#: ../templates/default/pgsql/domain/profile.html:434
+#: ../templates/default/ldap/domain/profile.html:469
+#: ../templates/default/macros/general.html:745
+#: ../templates/default/mysql/domain/profile.html:465
+#: ../templates/default/pgsql/domain/profile.html:445
+msgid "Default language for new user"
+msgstr "Язык по умолчанию для нового пользователя"
+
+#: ../templates/default/ldap/domain/profile.html:474
+#: ../templates/default/mysql/domain/profile.html:473
+#: ../templates/default/pgsql/domain/profile.html:453
 msgid "Default mail group(s) of new user"
 msgstr "Группа по умолчанию для нового пользователя"
 
-#: ../templates/default/macros/general.html:726
+#: ../templates/default/macros/general.html:724
 msgid "Default quota of new user"
 msgstr "Квота по умолчанию для нового пользователя"
 
-#: ../templates/default/dbmail_mysql/search.html:121
-#: ../templates/default/dbmail_mysql/search.html:194
-#: ../templates/default/dbmail_mysql/search.html:247
-#: ../templates/default/dbmail_mysql/admin/list.html:86
-#: ../templates/default/dbmail_mysql/alias/list.html:87
-#: ../templates/default/dbmail_mysql/domain/list.html:157
-#: ../templates/default/dbmail_mysql/user/list.html:119
 #: ../templates/default/ldap/search.html:117
 #: ../templates/default/ldap/search.html:169
 #: ../templates/default/ldap/search.html:229
 #: ../templates/default/ldap/search.html:283
 #: ../templates/default/ldap/search.html:333
-#: ../templates/default/ldap/admin/list.html:84
+#: ../templates/default/ldap/admin/list.html:82
 #: ../templates/default/ldap/alias/list.html:112
-#: ../templates/default/ldap/domain/list.html:206
+#: ../templates/default/ldap/domain/list.html:219
 #: ../templates/default/ldap/maillist/list.html:112
-#: ../templates/default/ldap/user/list.html:155
+#: ../templates/default/ldap/user/list.html:149
 #: ../templates/default/mysql/search.html:139
 #: ../templates/default/mysql/search.html:201
-#: ../templates/default/mysql/search.html:264
-#: ../templates/default/mysql/search.html:317
-#: ../templates/default/mysql/admin/list.html:96
-#: ../templates/default/mysql/alias/list.html:98
-#: ../templates/default/mysql/domain/list.html:164
-#: ../templates/default/mysql/user/list.html:135
+#: ../templates/default/mysql/search.html:260
+#: ../templates/default/mysql/search.html:313
+#: ../templates/default/mysql/admin/list.html:94
+#: ../templates/default/mysql/alias/list.html:99
+#: ../templates/default/mysql/domain/list.html:163
+#: ../templates/default/mysql/user/list.html:161
 #: ../templates/default/pgsql/search.html:139
 #: ../templates/default/pgsql/search.html:201
-#: ../templates/default/pgsql/search.html:264
-#: ../templates/default/pgsql/search.html:317
-#: ../templates/default/pgsql/admin/list.html:96
-#: ../templates/default/pgsql/alias/list.html:98
-#: ../templates/default/pgsql/domain/list.html:164
-#: ../templates/default/pgsql/user/list.html:135
+#: ../templates/default/pgsql/search.html:260
+#: ../templates/default/pgsql/search.html:313
+#: ../templates/default/pgsql/admin/list.html:94
+#: ../templates/default/pgsql/alias/list.html:99
+#: ../templates/default/pgsql/domain/list.html:163
+#: ../templates/default/pgsql/user/list.html:162
 #: ../templates/default/policyd/wblist.html:106
 msgid "Delete"
 msgstr "Удалить"
 
-#: ../templates/default/macros/general.html:894
+#: ../templates/default/macros/general.html:955
 msgid "Delete account"
 msgstr "Удалить аккаунт"
 
@@ -1016,88 +967,85 @@ msgstr "Удалить выбранных"
 msgid "Description"
 msgstr "Описание"
 
-#: ../templates/default/ldap/domain/profile.html:491
+#: ../templates/default/ldap/domain/profile.html:536
 msgid "Directory of mailbox storage"
 msgstr "Путь до хранилища почты"
 
-#: ../templates/default/dbmail_mysql/search.html:120
-#: ../templates/default/dbmail_mysql/search.html:193
-#: ../templates/default/dbmail_mysql/search.html:246
-#: ../templates/default/dbmail_mysql/admin/list.html:85
 #: ../templates/default/ldap/search.html:116
 #: ../templates/default/ldap/search.html:168
 #: ../templates/default/ldap/search.html:228
 #: ../templates/default/ldap/search.html:282
 #: ../templates/default/ldap/search.html:332
-#: ../templates/default/ldap/admin/list.html:83
+#: ../templates/default/ldap/admin/list.html:81
 #: ../templates/default/ldap/alias/list.html:111
-#: ../templates/default/ldap/domain/list.html:205
+#: ../templates/default/ldap/domain/list.html:218
 #: ../templates/default/ldap/maillist/list.html:111
-#: ../templates/default/ldap/user/list.html:154
+#: ../templates/default/ldap/user/list.html:148
 #: ../templates/default/mysql/search.html:138
 #: ../templates/default/mysql/search.html:200
-#: ../templates/default/mysql/search.html:263
-#: ../templates/default/mysql/search.html:316
-#: ../templates/default/mysql/admin/list.html:95
-#: ../templates/default/mysql/alias/list.html:97
-#: ../templates/default/mysql/domain/list.html:163
-#: ../templates/default/mysql/user/list.html:134
+#: ../templates/default/mysql/search.html:259
+#: ../templates/default/mysql/search.html:312
+#: ../templates/default/mysql/admin/list.html:93
+#: ../templates/default/mysql/alias/list.html:98
+#: ../templates/default/mysql/domain/list.html:162
+#: ../templates/default/mysql/user/list.html:160
 #: ../templates/default/pgsql/search.html:138
 #: ../templates/default/pgsql/search.html:200
-#: ../templates/default/pgsql/search.html:263
-#: ../templates/default/pgsql/search.html:316
-#: ../templates/default/pgsql/admin/list.html:95
-#: ../templates/default/pgsql/alias/list.html:97
-#: ../templates/default/pgsql/domain/list.html:163
-#: ../templates/default/pgsql/user/list.html:134
+#: ../templates/default/pgsql/search.html:259
+#: ../templates/default/pgsql/search.html:312
+#: ../templates/default/pgsql/admin/list.html:93
+#: ../templates/default/pgsql/alias/list.html:98
+#: ../templates/default/pgsql/domain/list.html:162
+#: ../templates/default/pgsql/user/list.html:161
 msgid "Disable"
 msgstr "Отключить"
 
-#: ../templates/default/macros/general.html:896
+#: ../templates/default/macros/general.html:957
 msgid "Disable account"
 msgstr "Отключить аккаунт"
 
-#: ../templates/default/dbmail_mysql/search.html:52
 #: ../templates/default/ldap/search.html:50
 #: ../templates/default/mysql/search.html:53
 #: ../templates/default/pgsql/search.html:53
 msgid "Disabled"
 msgstr "Отключен"
 
-#: ../templates/default/ldap/domain/profile.html:179
+#: ../templates/default/macros/general.html:787
+msgid "Disabled domain profiles"
+msgstr "Редактировать профиль домена"
+
+#: ../templates/default/macros/general.html:796
+msgid "Disabled user profiles"
+msgstr "Отключенные профили пользователей"
+
+#: ../templates/default/ldap/domain/profile.html:204
 msgid "Disclaimer"
 msgstr "Правовая оговорка"
 
-#: ../templates/default/dbmail_mysql/search.html:80
-#: ../templates/default/dbmail_mysql/search.html:143
-#: ../templates/default/dbmail_mysql/search.html:218
-#: ../templates/default/dbmail_mysql/admin/list.html:49
-#: ../templates/default/dbmail_mysql/alias/list.html:49
-#: ../templates/default/dbmail_mysql/user/list.html:53
 #: ../templates/default/ldap/search.html:137
 #: ../templates/default/ldap/search.html:191
 #: ../templates/default/ldap/search.html:251
 #: ../templates/default/ldap/search.html:304
-#: ../templates/default/ldap/admin/list.html:49
+#: ../templates/default/ldap/admin/list.html:47
 #: ../templates/default/ldap/alias/list.html:68
 #: ../templates/default/ldap/maillist/list.html:69
 #: ../templates/default/ldap/maillist/profile.html:142
-#: ../templates/default/ldap/maillist/profile.html:269
-#: ../templates/default/ldap/user/admin.html:70
-#: ../templates/default/ldap/user/list.html:71
-#: ../templates/default/macros/general.html:664
+#: ../templates/default/ldap/maillist/profile.html:297
+#: ../templates/default/ldap/user/admin.html:64
+#: ../templates/default/ldap/user/list.html:65
+#: ../templates/default/macros/general.html:654
 #: ../templates/default/mysql/search.html:160
 #: ../templates/default/mysql/search.html:224
-#: ../templates/default/mysql/search.html:288
-#: ../templates/default/mysql/admin/list.html:49
-#: ../templates/default/mysql/alias/list.html:62
-#: ../templates/default/mysql/user/list.html:67
+#: ../templates/default/mysql/search.html:284
+#: ../templates/default/mysql/admin/list.html:47
+#: ../templates/default/mysql/alias/list.html:63
+#: ../templates/default/mysql/user/list.html:87
 #: ../templates/default/pgsql/search.html:160
 #: ../templates/default/pgsql/search.html:224
-#: ../templates/default/pgsql/search.html:288
-#: ../templates/default/pgsql/admin/list.html:49
-#: ../templates/default/pgsql/alias/list.html:62
-#: ../templates/default/pgsql/user/list.html:67
+#: ../templates/default/pgsql/search.html:284
+#: ../templates/default/pgsql/admin/list.html:47
+#: ../templates/default/pgsql/alias/list.html:63
+#: ../templates/default/pgsql/user/list.html:87
 msgid "Display Name"
 msgstr "Отображаемое имя"
 
@@ -1106,42 +1054,39 @@ msgstr "Отображаемое имя"
 msgid "Display mail address in global LDAP address book"
 msgstr "Отображать все адреса в глобальной LDAP адресной книге"
 
-#: ../templates/default/macros/general.html:377
+#: ../templates/default/macros/general.html:364
 msgid "Displayed in Global LDAP Address Book"
 msgstr "Отображается в глобальной LDAP адресной книге"
 
-#: ../templates/default/layout.html:109
-#: ../templates/default/dbmail_mysql/domain/list.html:52
+#: ../templates/default/layout.html:106
 #: ../templates/default/ldap/search.html:41
 #: ../templates/default/ldap/search.html:77
-#: ../templates/default/ldap/domain/list.html:51
+#: ../templates/default/ldap/domain/list.html:50
 #: ../templates/default/mysql/search.html:45
 #: ../templates/default/mysql/search.html:80
-#: ../templates/default/mysql/domain/list.html:52
+#: ../templates/default/mysql/domain/list.html:51
 #: ../templates/default/pgsql/search.html:45
 #: ../templates/default/pgsql/search.html:80
-#: ../templates/default/pgsql/domain/list.html:52
+#: ../templates/default/pgsql/domain/list.html:51
 msgid "Domain"
 msgstr "Домен"
 
-#: ../templates/default/dbmail_mysql/admin/list.html:13
 #: ../templates/default/ldap/admin/list.html:13
 #: ../templates/default/macros/ldap.html:41
-#: ../templates/default/macros/mysql.html:35
 #: ../templates/default/mysql/admin/list.html:13
 #: ../templates/default/pgsql/admin/list.html:13
 msgid "Domain Admins"
 msgstr "Администраторы домена"
 
-#: ../templates/default/macros/general.html:647
+#: ../templates/default/macros/general.html:637
 msgid "Domain Name"
 msgstr "Имя домена"
 
-#: ../templates/default/macros/general.html:241
+#: ../templates/default/macros/general.html:224
 msgid "Domain activities"
 msgstr "Домен активен"
 
-#: ../templates/default/macros/general.html:404
+#: ../templates/default/macros/general.html:391
 msgid "Domain admin"
 msgstr "Администратор домена"
 
@@ -1153,7 +1098,7 @@ msgstr "Алиас домена"
 msgid "Domain already exists. Please check both primary or alias domains."
 msgstr "Домен уже существует, выберите другой имя или алиас домена."
 
-#: ../templates/default/ldap/user/profile.html:387
+#: ../templates/default/ldap/user/profile.html:411
 msgid "Domain and its sub-domains"
 msgstr "Домен и субдомены"
 
@@ -1173,7 +1118,7 @@ msgstr "Имя домена или почтовый адрес"
 msgid "Domain name or username is missed."
 msgstr "Имя домена или пользователя пропущены."
 
-#: ../templates/default/macros/general.html:712
+#: ../templates/default/macros/general.html:702
 msgid "Domain quota size"
 msgstr "Максимальная квота"
 
@@ -1190,161 +1135,144 @@ msgid "Domains"
 msgstr "Домены"
 
 #: ../templates/default/layout.html:75
-#: ../templates/default/dbmail_mysql/domain/list.html:17
 #: ../templates/default/ldap/domain/list.html:17
 #: ../templates/default/mysql/domain/list.html:17
 #: ../templates/default/pgsql/domain/list.html:17
 msgid "Domains and Accounts"
 msgstr "Домены  аккаунты"
 
-#: ../templates/default/ldap/domain/profile.html:194
+#: ../templates/default/ldap/domain/profile.html:219
 msgid "Dump disclaimer automatically"
 msgstr "Экспортировать disclaimer автоматически"
 
 #: ../templates/default/amavisd/inout.html:129
 #: ../templates/default/amavisd/inout.html:139
-#: ../templates/default/dbmail_mysql/search.html:94
-#: ../templates/default/dbmail_mysql/search.html:156
-#: ../templates/default/dbmail_mysql/search.html:231
-#: ../templates/default/dbmail_mysql/admin/list.html:63
-#: ../templates/default/dbmail_mysql/admin/list.html:67
-#: ../templates/default/dbmail_mysql/admin/profile.html:23
-#: ../templates/default/dbmail_mysql/alias/list.html:63
-#: ../templates/default/dbmail_mysql/alias/list.html:65
-#: ../templates/default/dbmail_mysql/alias/profile.html:15
-#: ../templates/default/dbmail_mysql/alias/profile.html:116
-#: ../templates/default/dbmail_mysql/domain/list.html:70
-#: ../templates/default/dbmail_mysql/domain/list.html:78
-#: ../templates/default/dbmail_mysql/domain/profile.html:26
-#: ../templates/default/dbmail_mysql/user/list.html:67
-#: ../templates/default/dbmail_mysql/user/list.html:70
-#: ../templates/default/dbmail_mysql/user/profile.html:25
 #: ../templates/default/ldap/search.html:96
+#: ../templates/default/ldap/search.html:99
 #: ../templates/default/ldap/search.html:152
+#: ../templates/default/ldap/search.html:154
 #: ../templates/default/ldap/search.html:207
+#: ../templates/default/ldap/search.html:210
 #: ../templates/default/ldap/search.html:267
+#: ../templates/default/ldap/search.html:269
 #: ../templates/default/ldap/search.html:317
+#: ../templates/default/ldap/search.html:319
+#: ../templates/default/ldap/admin/list.html:65
 #: ../templates/default/ldap/admin/list.html:67
-#: ../templates/default/ldap/admin/list.html:69
 #: ../templates/default/ldap/admin/profile.html:23
 #: ../templates/default/ldap/alias/list.html:90
 #: ../templates/default/ldap/alias/list.html:92
 #: ../templates/default/ldap/alias/profile.html:15
-#: ../templates/default/ldap/domain/list.html:100
-#: ../templates/default/ldap/domain/list.html:114
-#: ../templates/default/ldap/domain/profile.html:33
+#: ../templates/default/ldap/domain/list.html:99
+#: ../templates/default/ldap/domain/list.html:110
+#: ../templates/default/ldap/domain/profile.html:35
 #: ../templates/default/ldap/maillist/list.html:89
 #: ../templates/default/ldap/maillist/list.html:91
 #: ../templates/default/ldap/maillist/profile.html:16
-#: ../templates/default/ldap/maillist/profile.html:167
-#: ../templates/default/ldap/maillist/profile.html:294
-#: ../templates/default/ldap/user/admin.html:96
-#: ../templates/default/ldap/user/admin.html:99
-#: ../templates/default/ldap/user/list.html:97
-#: ../templates/default/ldap/user/list.html:107
+#: ../templates/default/ldap/maillist/profile.html:183
+#: ../templates/default/ldap/maillist/profile.html:322
+#: ../templates/default/ldap/user/admin.html:90
+#: ../templates/default/ldap/user/admin.html:93
+#: ../templates/default/ldap/user/list.html:91
+#: ../templates/default/ldap/user/list.html:101
 #: ../templates/default/ldap/user/profile.html:43
 #: ../templates/default/macros/amavisd.html:108
-#: ../templates/default/macros/general.html:900
+#: ../templates/default/macros/general.html:961
 #: ../templates/default/mysql/search.html:94
+#: ../templates/default/mysql/search.html:97
 #: ../templates/default/mysql/search.html:174
+#: ../templates/default/mysql/search.html:184
 #: ../templates/default/mysql/search.html:237
-#: ../templates/default/mysql/search.html:301
-#: ../templates/default/mysql/admin/list.html:63
-#: ../templates/default/mysql/admin/list.html:67
+#: ../templates/default/mysql/search.html:240
+#: ../templates/default/mysql/search.html:297
+#: ../templates/default/mysql/admin/list.html:61
+#: ../templates/default/mysql/admin/list.html:65
 #: ../templates/default/mysql/admin/profile.html:23
-#: ../templates/default/mysql/alias/list.html:76
-#: ../templates/default/mysql/alias/list.html:78
+#: ../templates/default/mysql/alias/list.html:77
+#: ../templates/default/mysql/alias/list.html:79
 #: ../templates/default/mysql/alias/profile.html:15
-#: ../templates/default/mysql/alias/profile.html:123
-#: ../templates/default/mysql/alias/profile.html:157
-#: ../templates/default/mysql/domain/list.html:71
-#: ../templates/default/mysql/domain/list.html:87
-#: ../templates/default/mysql/domain/profile.html:36
-#: ../templates/default/mysql/user/list.html:84
-#: ../templates/default/mysql/user/list.html:88
-#: ../templates/default/mysql/user/profile.html:42
+#: ../templates/default/mysql/alias/profile.html:124
+#: ../templates/default/mysql/alias/profile.html:158
+#: ../templates/default/mysql/domain/list.html:70
+#: ../templates/default/mysql/domain/list.html:86
+#: ../templates/default/mysql/domain/profile.html:33
+#: ../templates/default/mysql/user/list.html:104
+#: ../templates/default/mysql/user/list.html:114
+#: ../templates/default/mysql/user/profile.html:41
 #: ../templates/default/pgsql/search.html:94
+#: ../templates/default/pgsql/search.html:97
 #: ../templates/default/pgsql/search.html:174
+#: ../templates/default/pgsql/search.html:184
 #: ../templates/default/pgsql/search.html:237
-#: ../templates/default/pgsql/search.html:301
-#: ../templates/default/pgsql/admin/list.html:63
-#: ../templates/default/pgsql/admin/list.html:67
+#: ../templates/default/pgsql/search.html:240
+#: ../templates/default/pgsql/search.html:297
+#: ../templates/default/pgsql/admin/list.html:61
+#: ../templates/default/pgsql/admin/list.html:65
 #: ../templates/default/pgsql/admin/profile.html:23
-#: ../templates/default/pgsql/alias/list.html:76
-#: ../templates/default/pgsql/alias/list.html:78
+#: ../templates/default/pgsql/alias/list.html:77
+#: ../templates/default/pgsql/alias/list.html:79
 #: ../templates/default/pgsql/alias/profile.html:15
-#: ../templates/default/pgsql/alias/profile.html:123
-#: ../templates/default/pgsql/alias/profile.html:157
-#: ../templates/default/pgsql/domain/list.html:71
-#: ../templates/default/pgsql/domain/list.html:87
-#: ../templates/default/pgsql/domain/profile.html:37
-#: ../templates/default/pgsql/user/list.html:84
-#: ../templates/default/pgsql/user/list.html:88
-#: ../templates/default/pgsql/user/profile.html:42
+#: ../templates/default/pgsql/alias/profile.html:124
+#: ../templates/default/pgsql/alias/profile.html:158
+#: ../templates/default/pgsql/domain/list.html:70
+#: ../templates/default/pgsql/domain/list.html:86
+#: ../templates/default/pgsql/domain/profile.html:33
+#: ../templates/default/pgsql/user/list.html:104
+#: ../templates/default/pgsql/user/list.html:115
+#: ../templates/default/pgsql/user/profile.html:41
 msgid "Edit account profile"
 msgstr "Редактировать профиль аккаунта"
 
-#: ../templates/default/dbmail_mysql/alias/create.html:56
-#: ../templates/default/dbmail_mysql/alias/list.html:37
-#: ../templates/default/dbmail_mysql/user/create.html:79
-#: ../templates/default/dbmail_mysql/user/list.html:40
 #: ../templates/default/ldap/alias/create.html:75
 #: ../templates/default/ldap/alias/list.html:55
 #: ../templates/default/ldap/maillist/create.html:75
 #: ../templates/default/ldap/maillist/list.html:57
-#: ../templates/default/ldap/user/admin.html:58
-#: ../templates/default/ldap/user/create.html:117
-#: ../templates/default/ldap/user/list.html:59
+#: ../templates/default/ldap/user/admin.html:52
+#: ../templates/default/ldap/user/create.html:121
+#: ../templates/default/ldap/user/list.html:53
 #: ../templates/default/macros/amavisd.html:106
-#: ../templates/default/mysql/alias/create.html:70
-#: ../templates/default/mysql/alias/list.html:50
-#: ../templates/default/mysql/user/create.html:90
-#: ../templates/default/mysql/user/list.html:54
-#: ../templates/default/pgsql/alias/create.html:70
-#: ../templates/default/pgsql/alias/list.html:50
-#: ../templates/default/pgsql/user/create.html:90
-#: ../templates/default/pgsql/user/list.html:54
+#: ../templates/default/mysql/alias/create.html:71
+#: ../templates/default/mysql/alias/list.html:51
+#: ../templates/default/mysql/user/create.html:92
+#: ../templates/default/mysql/user/list.html:68
+#: ../templates/default/pgsql/alias/create.html:71
+#: ../templates/default/pgsql/alias/list.html:51
+#: ../templates/default/pgsql/user/create.html:92
+#: ../templates/default/pgsql/user/list.html:68
 msgid "Edit domain profile"
 msgstr "Редактировать профиль домена"
 
-#: ../templates/default/dbmail_mysql/search.html:177
-#: ../templates/default/dbmail_mysql/domain/list.html:88
-#: ../templates/default/dbmail_mysql/domain/list.html:96
-#: ../templates/default/dbmail_mysql/user/list.html:90
-#: ../templates/default/ldap/domain/list.html:125
-#: ../templates/default/ldap/domain/list.html:134
-#: ../templates/default/ldap/user/admin.html:120
-#: ../templates/default/ldap/user/list.html:128
-#: ../templates/default/mysql/domain/list.html:97
-#: ../templates/default/mysql/domain/list.html:105
-#: ../templates/default/mysql/user/list.html:110
-#: ../templates/default/pgsql/domain/list.html:97
-#: ../templates/default/pgsql/domain/list.html:105
-#: ../templates/default/pgsql/user/list.html:110
+#: ../templates/default/ldap/domain/list.html:127
+#: ../templates/default/ldap/domain/list.html:139
+#: ../templates/default/ldap/user/admin.html:114
+#: ../templates/default/ldap/user/list.html:122
+#: ../templates/default/mysql/domain/list.html:96
+#: ../templates/default/mysql/domain/list.html:104
+#: ../templates/default/mysql/user/list.html:136
+#: ../templates/default/pgsql/domain/list.html:96
+#: ../templates/default/pgsql/domain/list.html:104
+#: ../templates/default/pgsql/user/list.html:137
 msgid "Edit quota setting"
 msgstr "Настроить квоту"
 
-#: ../templates/default/dbmail_mysql/user/profile.html:213
-#: ../templates/default/ldap/user/profile.html:332
+#: ../templates/default/ldap/user/profile.html:354
 #, python-format
 msgid "Email address of alias account must end with domain name(s): %s."
 msgstr "Почтовый адрес алиаса должен заканчиваться доменным именем : %s."
 
-#: ../templates/default/dbmail_mysql/user/profile.html:198
-#: ../templates/default/ldap/user/profile.html:319
+#: ../templates/default/ldap/user/profile.html:341
 msgid "Email addresses of alias accounts"
 msgstr "Почтовые адреса алиасов аккаунтов"
 
 #: ../templates/default/dashboard.html:80
-#: ../templates/default/dbmail_mysql/search.html:178
-#: ../templates/default/mysql/user/list.html:111
-#: ../templates/default/pgsql/user/list.html:111
+#: ../templates/default/mysql/user/list.html:137
+#: ../templates/default/pgsql/user/list.html:138
 msgid "Emails"
 msgstr "Почтовые адреса"
 
-#: ../templates/default/ldap/domain/profile.html:314
-#: ../templates/default/mysql/domain/profile.html:262
-#: ../templates/default/pgsql/domain/profile.html:263
+#: ../templates/default/ldap/domain/profile.html:339
+#: ../templates/default/mysql/domain/profile.html:269
+#: ../templates/default/pgsql/domain/profile.html:270
 msgid ""
 "Emails delivered to non-exist mail accounts will be forwarded to catch-"
 "all address(es)."
@@ -1352,9 +1280,9 @@ msgstr ""
 "Почта отправляемая на несуществующий аккаунт будет перенаправлена на "
 "catch-all адрес."
 
-#: ../templates/default/ldap/domain/profile.html:239
-#: ../templates/default/mysql/domain/profile.html:309
-#: ../templates/default/pgsql/domain/profile.html:310
+#: ../templates/default/ldap/domain/profile.html:264
+#: ../templates/default/mysql/domain/profile.html:317
+#: ../templates/default/pgsql/domain/profile.html:318
 #, python-format
 msgid ""
 "Emails sent to <em><strong>user@[ALIAS_DOMAIN]</strong></em> will be "
@@ -1363,8 +1291,7 @@ msgstr ""
 "Почта отосланная на <em><strong>user@[ALIAS_DOMAIN]</strong></em> будет "
 "доставлена в <em><strong>user@%s</strong></em>."
 
-#: ../templates/default/dbmail_mysql/user/profile.html:212
-#: ../templates/default/ldap/user/profile.html:331
+#: ../templates/default/ldap/user/profile.html:353
 #, python-format
 msgid "Emails sent to alias accounts will be delivered to user %s."
 msgstr "Почта отправленная на алиас будет доставлена пользователю %s."
@@ -1377,60 +1304,56 @@ msgstr "Не может быть указан пустой адрес."
 msgid "Empty password is not allowed."
 msgstr "Не может быть указан пустой пароль."
 
-#: ../templates/default/dbmail_mysql/search.html:119
-#: ../templates/default/dbmail_mysql/search.html:192
-#: ../templates/default/dbmail_mysql/search.html:245
-#: ../templates/default/dbmail_mysql/admin/list.html:84
 #: ../templates/default/ldap/search.html:115
 #: ../templates/default/ldap/search.html:167
 #: ../templates/default/ldap/search.html:227
 #: ../templates/default/ldap/search.html:281
 #: ../templates/default/ldap/search.html:331
-#: ../templates/default/ldap/admin/list.html:82
+#: ../templates/default/ldap/admin/list.html:80
 #: ../templates/default/ldap/alias/list.html:110
-#: ../templates/default/ldap/domain/list.html:204
+#: ../templates/default/ldap/domain/list.html:217
 #: ../templates/default/ldap/maillist/list.html:110
-#: ../templates/default/ldap/user/list.html:153
+#: ../templates/default/ldap/user/list.html:147
 #: ../templates/default/mysql/search.html:137
 #: ../templates/default/mysql/search.html:199
-#: ../templates/default/mysql/search.html:262
-#: ../templates/default/mysql/search.html:315
-#: ../templates/default/mysql/admin/list.html:94
-#: ../templates/default/mysql/alias/list.html:96
-#: ../templates/default/mysql/domain/list.html:162
-#: ../templates/default/mysql/user/list.html:133
+#: ../templates/default/mysql/search.html:258
+#: ../templates/default/mysql/search.html:311
+#: ../templates/default/mysql/admin/list.html:92
+#: ../templates/default/mysql/alias/list.html:97
+#: ../templates/default/mysql/domain/list.html:161
+#: ../templates/default/mysql/user/list.html:159
 #: ../templates/default/pgsql/search.html:137
 #: ../templates/default/pgsql/search.html:199
-#: ../templates/default/pgsql/search.html:262
-#: ../templates/default/pgsql/search.html:315
-#: ../templates/default/pgsql/admin/list.html:94
-#: ../templates/default/pgsql/alias/list.html:96
-#: ../templates/default/pgsql/domain/list.html:162
-#: ../templates/default/pgsql/user/list.html:133
+#: ../templates/default/pgsql/search.html:258
+#: ../templates/default/pgsql/search.html:311
+#: ../templates/default/pgsql/admin/list.html:92
+#: ../templates/default/pgsql/alias/list.html:97
+#: ../templates/default/pgsql/domain/list.html:161
+#: ../templates/default/pgsql/user/list.html:160
 msgid "Enable"
 msgstr "Включить"
 
-#: ../templates/default/ldap/user/profile.html:314
+#: ../templates/default/ldap/user/profile.html:336
 msgid "Enable alias account"
 msgstr "Включить этот аккаунт"
 
-#: ../templates/default/ldap/domain/profile.html:293
-#: ../templates/default/mysql/domain/profile.html:241
-#: ../templates/default/pgsql/domain/profile.html:242
+#: ../templates/default/ldap/domain/profile.html:318
+#: ../templates/default/mysql/domain/profile.html:248
+#: ../templates/default/pgsql/domain/profile.html:249
 msgid "Enable catch-all"
 msgstr "Разрешить Catch-all адресс"
 
-#: ../templates/default/ldap/domain/profile.html:207
+#: ../templates/default/ldap/domain/profile.html:232
 msgid "Enable domain alias"
 msgstr "Включить алиас домена"
 
-#: ../templates/default/mysql/domain/profile.html:382
+#: ../templates/default/mysql/domain/profile.html:392
 msgid "Enable greylisting for this domain"
 msgstr "Включить серый список для этого домена"
 
-#: ../templates/default/ldap/user/profile.html:281
-#: ../templates/default/mysql/user/profile.html:171
-#: ../templates/default/pgsql/user/profile.html:171
+#: ../templates/default/ldap/user/profile.html:299
+#: ../templates/default/mysql/user/profile.html:184
+#: ../templates/default/pgsql/user/profile.html:184
 msgid "Enable mail forwarding"
 msgstr "Разрешить пересылку почты"
 
@@ -1442,21 +1365,21 @@ msgstr "Разрешить BCC получателя"
 msgid "Enable sender throttling"
 msgstr "Разрешить throttling для отправителя"
 
-#: ../templates/default/macros/general.html:435
+#: ../templates/default/macros/general.html:422
 msgid "Enable this account"
 msgstr "Включить этот аккаунт"
 
-#: ../templates/default/macros/general.html:433
+#: ../templates/default/macros/general.html:420
 msgid "Enable this domain"
 msgstr "Включить этот домен"
 
 #: ../templates/default/macros/ldap.html:110
-#: ../templates/default/macros/mysql.html:75
-#: ../templates/default/macros/mysql.html:81
+#: ../templates/default/macros/mysql.html:50
+#: ../templates/default/macros/mysql.html:56
 msgid "Enabled Services"
 msgstr "Включить сервис"
 
-#: ../templates/default/ldap/user/profile.html:386
+#: ../templates/default/ldap/user/profile.html:410
 #: ../templates/default/policyd/blacklist/create.html:67
 #: ../templates/default/policyd/whitelist/create.html:61
 msgid "Entire domain"
@@ -1470,30 +1393,28 @@ msgstr "Ошибка во время проверки новой версии:"
 msgid "Error while geting license info:"
 msgstr "Ошибка во время проверки лицензии:"
 
-#: ../templates/default/dbmail_mysql/alias/create.html:32
-#: ../templates/default/dbmail_mysql/user/create.html:48
 #: ../templates/default/ldap/alias/create.html:39
 #: ../templates/default/ldap/alias/create.html:47
 #: ../templates/default/ldap/maillist/create.html:40
 #: ../templates/default/ldap/maillist/create.html:48
-#: ../templates/default/ldap/user/create.html:72
-#: ../templates/default/ldap/user/create.html:82
+#: ../templates/default/ldap/user/create.html:76
+#: ../templates/default/ldap/user/create.html:99
 #: ../templates/default/macros/msgHandlers.html:22
 #: ../templates/default/macros/msgHandlers.html:24
-#: ../templates/default/mysql/alias/create.html:44
-#: ../templates/default/mysql/user/create.html:57
-#: ../templates/default/pgsql/alias/create.html:44
-#: ../templates/default/pgsql/user/create.html:57
+#: ../templates/default/mysql/alias/create.html:45
+#: ../templates/default/mysql/user/create.html:59
+#: ../templates/default/pgsql/alias/create.html:45
+#: ../templates/default/pgsql/user/create.html:59
 msgid "Error:"
 msgstr "Ошибка:"
 
-#: ../templates/default/macros/general.html:888
+#: ../templates/default/macros/general.html:949
 msgid "Events"
 msgstr "Все события"
 
 #: ../templates/default/ldap/maillist/profile.html:83
-#: ../templates/default/mysql/alias/profile.html:72
-#: ../templates/default/pgsql/alias/profile.html:72
+#: ../templates/default/mysql/alias/profile.html:73
+#: ../templates/default/pgsql/alias/profile.html:73
 msgid "Everyone can send mail to this address"
 msgstr "Любой может посылать сообщения на этот адрес(а)."
 
@@ -1519,37 +1440,37 @@ msgstr "Дата окончания"
 
 #: ../templates/default/ldap/admin/profile.html:83
 #: ../templates/default/ldap/alias/profile.html:79
-#: ../templates/default/ldap/domain/profile.html:164
+#: ../templates/default/ldap/domain/profile.html:189
 #: ../templates/default/ldap/maillist/profile.html:110
-#: ../templates/default/ldap/user/profile.html:179
+#: ../templates/default/ldap/user/profile.html:196
 msgid "Export account to"
 msgstr "Экспорт аккаунта в"
 
-#: ../templates/default/ldap/maillist/profile.html:203
+#: ../templates/default/ldap/maillist/profile.html:231
 msgid "External Members"
 msgstr "Внешние участники"
 
-#: ../templates/default/ldap/maillist/profile.html:329
+#: ../templates/default/ldap/maillist/profile.html:357
 msgid "External moderators"
 msgstr "Внешние модераторы"
 
 #: ../templates/default/macros/ldap.html:93
-#: ../templates/default/macros/mysql.html:66
+#: ../templates/default/macros/mysql.html:41
 msgid "Fetching mails via IMAP"
 msgstr "Разрешить почту через IMAP"
 
 #: ../templates/default/macros/ldap.html:94
-#: ../templates/default/macros/mysql.html:67
+#: ../templates/default/macros/mysql.html:42
 msgid "Fetching mails via IMAP over TLS/SSL"
 msgstr "Разрешить почту через IMAP поверх TLS/SSL"
 
 #: ../templates/default/macros/ldap.html:91
-#: ../templates/default/macros/mysql.html:64
+#: ../templates/default/macros/mysql.html:39
 msgid "Fetching mails via POP3"
 msgstr "Разрешить почту через POP3"
 
 #: ../templates/default/macros/ldap.html:92
-#: ../templates/default/macros/mysql.html:65
+#: ../templates/default/macros/mysql.html:40
 msgid "Fetching mails via POP3 over TLS/SSL"
 msgstr "Разрешить почту через POP3 поверх TLS/SSL"
 
@@ -1557,33 +1478,36 @@ msgstr "Разрешить почту через POP3 поверх TLS/SSL"
 msgid "Filter:"
 msgstr "Фильтр"
 
-#: ../templates/default/macros/general.html:796
+#: ../templates/default/macros/general.html:857
 msgid "First Page"
 msgstr "Первая страница"
 
-#: ../templates/default/macros/general.html:676
+#: ../templates/default/macros/general.html:666
 msgid "First name"
 msgstr "Имя"
 
-#: ../templates/default/macros/general.html:606
+#: ../templates/default/macros/general.html:596
 msgid "For advanced settings and further information please see"
 msgstr "Для расширенных настроек и дополнительной информации см."
 
-#: ../templates/default/ldap/user/profile.html:383
+#: ../templates/default/ldap/user/profile.html:407
 msgid "Format of sender and recipient"
 msgstr "Формат отправителя и получателя"
 
-#: ../templates/default/dbmail_mysql/user/profile.html:180
-#: ../templates/default/ldap/user/profile.html:296
-#: ../templates/default/mysql/user/profile.html:193
-#: ../templates/default/pgsql/user/profile.html:193
+#: ../templates/default/ldap/user/profile.html:314
+#: ../templates/default/mysql/user/profile.html:206
+#: ../templates/default/pgsql/user/profile.html:206
 msgid "Forward mails to address"
 msgstr "Адреса пересылки"
 
-#: ../templates/default/dbmail_mysql/user/profile.html:50
-#: ../templates/default/ldap/user/profile.html:117
-#: ../templates/default/mysql/user/profile.html:66
-#: ../templates/default/pgsql/user/profile.html:66
+#: ../templates/default/ldap/user/profile.html:121
+#: ../templates/default/ldap/user/profile.html:133
+#: ../templates/default/macros/general.html:802
+#: ../templates/default/macros/general.html:809
+#: ../templates/default/mysql/user/profile.html:67
+#: ../templates/default/mysql/user/profile.html:78
+#: ../templates/default/pgsql/user/profile.html:67
+#: ../templates/default/pgsql/user/profile.html:78
 msgid "Forwarding"
 msgstr "Пересылка"
 
@@ -1592,48 +1516,48 @@ msgid "Forwarding mails to other addresses"
 msgstr "Пересылать сообщение других адресатам"
 
 #: ../templates/default/ldap/admin/profile.html:73
-#: ../templates/default/ldap/user/profile.html:160
+#: ../templates/default/ldap/user/profile.html:177
 msgid "Full name"
 msgstr "Полное имя"
 
-#: ../templates/default/dbmail_mysql/admin/profile.html:44
-#: ../templates/default/dbmail_mysql/alias/profile.html:36
-#: ../templates/default/dbmail_mysql/domain/profile.html:50
-#: ../templates/default/dbmail_mysql/user/profile.html:49
 #: ../templates/default/ldap/admin/profile.html:52
 #: ../templates/default/ldap/alias/profile.html:47
-#: ../templates/default/ldap/domain/profile.html:117
+#: ../templates/default/ldap/domain/profile.html:129
+#: ../templates/default/ldap/domain/profile.html:140
 #: ../templates/default/ldap/maillist/profile.html:53
-#: ../templates/default/ldap/user/profile.html:116
+#: ../templates/default/ldap/user/profile.html:120
+#: ../templates/default/ldap/user/profile.html:132
 #: ../templates/default/mysql/admin/profile.html:44
-#: ../templates/default/mysql/alias/profile.html:36
-#: ../templates/default/mysql/domain/profile.html:60
-#: ../templates/default/mysql/user/profile.html:65
+#: ../templates/default/mysql/alias/profile.html:37
+#: ../templates/default/mysql/domain/profile.html:62
+#: ../templates/default/mysql/domain/profile.html:73
+#: ../templates/default/mysql/user/profile.html:66
+#: ../templates/default/mysql/user/profile.html:77
 #: ../templates/default/pgsql/admin/profile.html:44
-#: ../templates/default/pgsql/alias/profile.html:36
-#: ../templates/default/pgsql/domain/profile.html:61
-#: ../templates/default/pgsql/user/profile.html:65
+#: ../templates/default/pgsql/alias/profile.html:37
+#: ../templates/default/pgsql/domain/profile.html:62
+#: ../templates/default/pgsql/domain/profile.html:73
+#: ../templates/default/pgsql/user/profile.html:66
+#: ../templates/default/pgsql/user/profile.html:77
 msgid "General"
 msgstr "Общее"
 
-#: ../templates/default/dbmail_mysql/search.html:82
-#: ../templates/default/dbmail_mysql/admin/list.html:51
 #: ../templates/default/ldap/search.html:139
-#: ../templates/default/ldap/admin/list.html:51
+#: ../templates/default/ldap/admin/list.html:49
 #: ../templates/default/macros/ldap.html:49
 #: ../templates/default/mysql/search.html:162
-#: ../templates/default/mysql/admin/list.html:51
+#: ../templates/default/mysql/admin/list.html:49
 #: ../templates/default/pgsql/search.html:162
-#: ../templates/default/pgsql/admin/list.html:51
+#: ../templates/default/pgsql/admin/list.html:49
 msgid "Global Admin"
 msgstr "Глобальный администратор"
 
-#: ../templates/default/macros/general.html:406
+#: ../templates/default/macros/general.html:393
 msgid "Global admin"
 msgstr "Глобальный администратор"
 
 #: ../templates/default/macros/ldap.html:121
-#: ../templates/default/macros/mysql.html:78
+#: ../templates/default/macros/mysql.html:53
 msgid "Greylisting"
 msgstr "Серый список"
 
@@ -1659,13 +1583,12 @@ msgstr "IP адрес"
 msgid "IP Addresses"
 msgstr "IP адреса"
 
-#: ../templates/default/dbmail_mysql/user/create.html:53
-#: ../templates/default/mysql/user/create.html:62
-#: ../templates/default/pgsql/user/create.html:62
+#: ../templates/default/mysql/user/create.html:64
+#: ../templates/default/pgsql/user/create.html:64
 msgid "Increase it now?"
 msgstr "Увеличить это ?"
 
-#: ../templates/default/ldap/maillist/profile.html:384
+#: ../templates/default/ldap/maillist/profile.html:412
 msgid ""
 "Input mail addresses of either internal or external members below, "
 "multiple addresses must be seperated by comma, space or new line."
@@ -1673,7 +1596,7 @@ msgstr ""
 "Вводимые любые адреса для внутренних или внешних участников, должны быть "
 "разделены запятой, пробелом или новой строчкой."
 
-#: ../templates/default/ldap/maillist/profile.html:398
+#: ../templates/default/ldap/maillist/profile.html:426
 msgid ""
 "Input mail addresses of either internal or external moderators below, "
 "multiple addresses must be seperated by comma, space or new line."
@@ -1681,7 +1604,7 @@ msgstr ""
 "Вводимые любые адреса для внутренних или внешних модераторов, должны быть"
 " разделены запятой, пробелом или новой строчкой."
 
-#: ../templates/default/ldap/user/profile.html:373
+#: ../templates/default/ldap/user/profile.html:397
 msgid "Install iRedAPD"
 msgstr "Установлен iRedAPD"
 
@@ -1689,7 +1612,7 @@ msgstr "Установлен iRedAPD"
 msgid "Internal Members"
 msgstr "Внутренние участники"
 
-#: ../templates/default/ldap/maillist/profile.html:257
+#: ../templates/default/ldap/maillist/profile.html:285
 msgid "Internal Moderators"
 msgstr "Внутренние модераторы"
 
@@ -1733,7 +1656,7 @@ msgstr "Неверные запрошенные данные (data)."
 msgid "Invalid username."
 msgstr "Неверный пользователь."
 
-#: ../templates/default/macros/general.html:217
+#: ../templates/default/macros/general.html:200
 msgid "Is a global admin."
 msgstr "Это Глобальный админ"
 
@@ -1756,16 +1679,15 @@ msgstr ""
 "возможность ограничивать почтовый список."
 
 #: ../templates/default/ldap/search.html:194
-#: ../templates/default/ldap/user/admin.html:73
-#: ../templates/default/ldap/user/list.html:74
+#: ../templates/default/ldap/user/admin.html:67
+#: ../templates/default/ldap/user/list.html:68
 msgid "Job Title"
 msgstr "Занимаемая должность"
 
-#: ../templates/default/macros/general.html:320
+#: ../templates/default/macros/general.html:303
 msgid "Job Title/Responsibility"
 msgstr "Занимаемая должность"
 
-#: ../templates/default/dbmail_mysql/search.html:35
 #: ../templates/default/ldap/search.html:31
 #: ../templates/default/mysql/search.html:35
 #: ../templates/default/pgsql/search.html:35
@@ -1776,15 +1698,11 @@ msgstr "Ключевое слово"
 msgid "Kind"
 msgstr "Тип"
 
-#: ../templates/default/dbmail_mysql/user/list.html:56
-msgid "Last Login"
-msgstr "Последний вход"
-
-#: ../templates/default/macros/general.html:877
+#: ../templates/default/macros/general.html:938
 msgid "Last Page"
 msgstr "Последняя страница"
 
-#: ../templates/default/macros/general.html:677
+#: ../templates/default/macros/general.html:667
 msgid "Last name"
 msgstr "Хост"
 
@@ -1792,16 +1710,16 @@ msgstr "Хост"
 msgid "Latest version"
 msgstr "Последняя версия"
 
-#: ../templates/default/macros/general.html:604
+#: ../templates/default/macros/general.html:594
 #, python-format
 msgid "Leave it empty to use <a href='%s'>domain setting</a>."
 msgstr "Оставьте пустым для использования настроек <a href=\"%s\">домена</a>."
 
-#: ../templates/default/ldap/domain/profile.html:501
+#: ../templates/default/ldap/domain/profile.html:546
 msgid "Leave it empty to use server-wide default setting."
 msgstr "Оставьте пустым для транспорта по умолчанию"
 
-#: ../templates/default/layout.html:45 ../templates/default/layout.html:83
+#: ../templates/default/layout.html:45
 #: ../templates/default/panel/license.html:3
 msgid "License"
 msgstr "Лицензия"
@@ -1822,37 +1740,33 @@ msgstr "Статус лицензии"
 msgid "Lifetime license"
 msgstr "Бессрочная лицензия"
 
-#: ../templates/default/dbmail_mysql/domain/list.html:122
-#: ../templates/default/dbmail_mysql/domain/list.html:127
-#: ../templates/default/ldap/domain/list.html:173
+#: ../templates/default/ldap/domain/list.html:186
 #: ../templates/default/mysql/search.html:123
-#: ../templates/default/mysql/domain/list.html:131
-#: ../templates/default/mysql/domain/list.html:136
+#: ../templates/default/mysql/domain/list.html:130
+#: ../templates/default/mysql/domain/list.html:135
 #: ../templates/default/pgsql/search.html:123
-#: ../templates/default/pgsql/domain/list.html:131
-#: ../templates/default/pgsql/domain/list.html:136
+#: ../templates/default/pgsql/domain/list.html:130
+#: ../templates/default/pgsql/domain/list.html:135
 msgid "List all mail aliases."
 msgstr "Список всех почтовых алиасов"
 
-#: ../templates/default/ldap/domain/list.html:160
+#: ../templates/default/ldap/domain/list.html:173
 msgid "List all mail lists."
 msgstr "Список всех почтовых рассылок"
 
-#: ../templates/default/dbmail_mysql/domain/list.html:108
-#: ../templates/default/dbmail_mysql/domain/list.html:113
-#: ../templates/default/ldap/domain/list.html:147
-#: ../templates/default/ldap/domain/list.html:150
+#: ../templates/default/ldap/domain/list.html:160
+#: ../templates/default/ldap/domain/list.html:163
 #: ../templates/default/mysql/search.html:114
-#: ../templates/default/mysql/domain/list.html:117
-#: ../templates/default/mysql/domain/list.html:122
+#: ../templates/default/mysql/domain/list.html:116
+#: ../templates/default/mysql/domain/list.html:121
 #: ../templates/default/pgsql/search.html:114
-#: ../templates/default/pgsql/domain/list.html:117
-#: ../templates/default/pgsql/domain/list.html:122
+#: ../templates/default/pgsql/domain/list.html:116
+#: ../templates/default/pgsql/domain/list.html:121
 msgid "List all mail users."
 msgstr "Список всех пользователей почты"
 
 #: ../templates/default/ldap/search.html:80
-#: ../templates/default/ldap/domain/list.html:55
+#: ../templates/default/ldap/domain/list.html:54
 msgid "Lists"
 msgstr "Списки"
 
@@ -1877,47 +1791,39 @@ msgstr "Панель управления"
 msgid "Logout"
 msgstr "Выйти"
 
-#: ../templates/default/dbmail_mysql/search.html:81
-#: ../templates/default/dbmail_mysql/search.html:144
-#: ../templates/default/dbmail_mysql/search.html:219
-#: ../templates/default/dbmail_mysql/admin/list.html:50
-#: ../templates/default/dbmail_mysql/alias/create.html:65
-#: ../templates/default/dbmail_mysql/alias/list.html:50
-#: ../templates/default/dbmail_mysql/user/create.html:89
-#: ../templates/default/dbmail_mysql/user/list.html:54
 #: ../templates/default/ldap/search.html:138
 #: ../templates/default/ldap/search.html:192
 #: ../templates/default/ldap/search.html:252
 #: ../templates/default/ldap/search.html:305
-#: ../templates/default/ldap/admin/list.html:50
+#: ../templates/default/ldap/admin/list.html:48
 #: ../templates/default/ldap/alias/create.html:85
 #: ../templates/default/ldap/alias/list.html:69
 #: ../templates/default/ldap/maillist/create.html:83
 #: ../templates/default/ldap/maillist/list.html:70
 #: ../templates/default/ldap/maillist/profile.html:143
-#: ../templates/default/ldap/maillist/profile.html:211
-#: ../templates/default/ldap/maillist/profile.html:270
-#: ../templates/default/ldap/maillist/profile.html:338
-#: ../templates/default/ldap/user/admin.html:71
-#: ../templates/default/ldap/user/create.html:128
-#: ../templates/default/ldap/user/list.html:72
-#: ../templates/default/macros/general.html:640
+#: ../templates/default/ldap/maillist/profile.html:239
+#: ../templates/default/ldap/maillist/profile.html:298
+#: ../templates/default/ldap/maillist/profile.html:366
+#: ../templates/default/ldap/user/admin.html:65
+#: ../templates/default/ldap/user/create.html:132
+#: ../templates/default/ldap/user/list.html:66
+#: ../templates/default/macros/general.html:630
 #: ../templates/default/mysql/search.html:161
 #: ../templates/default/mysql/search.html:225
-#: ../templates/default/mysql/search.html:289
-#: ../templates/default/mysql/admin/list.html:50
-#: ../templates/default/mysql/alias/create.html:79
-#: ../templates/default/mysql/alias/list.html:63
-#: ../templates/default/mysql/user/create.html:100
-#: ../templates/default/mysql/user/list.html:68
+#: ../templates/default/mysql/search.html:285
+#: ../templates/default/mysql/admin/list.html:48
+#: ../templates/default/mysql/alias/create.html:80
+#: ../templates/default/mysql/alias/list.html:64
+#: ../templates/default/mysql/user/create.html:102
+#: ../templates/default/mysql/user/list.html:88
 #: ../templates/default/pgsql/search.html:161
 #: ../templates/default/pgsql/search.html:225
-#: ../templates/default/pgsql/search.html:289
-#: ../templates/default/pgsql/admin/list.html:50
-#: ../templates/default/pgsql/alias/create.html:79
-#: ../templates/default/pgsql/alias/list.html:63
-#: ../templates/default/pgsql/user/create.html:100
-#: ../templates/default/pgsql/user/list.html:68
+#: ../templates/default/pgsql/search.html:285
+#: ../templates/default/pgsql/admin/list.html:48
+#: ../templates/default/pgsql/alias/create.html:80
+#: ../templates/default/pgsql/alias/list.html:64
+#: ../templates/default/pgsql/user/create.html:102
+#: ../templates/default/pgsql/user/list.html:88
 msgid "Mail Address"
 msgstr "Почтовый адрес"
 
@@ -1925,7 +1831,6 @@ msgstr "Почтовый адрес"
 msgid "Mail Alias"
 msgstr "Почтовый алиас"
 
-#: ../templates/default/dbmail_mysql/alias/list.html:12
 #: ../templates/default/ldap/alias/list.html:14
 #: ../templates/default/mysql/alias/list.html:13
 #: ../templates/default/pgsql/alias/list.html:13
@@ -1945,15 +1850,15 @@ msgstr "Ограничения на доставку почты"
 msgid "Mail Headers"
 msgstr "Почтовые заголовки"
 
-#: ../templates/default/layout.html:115
+#: ../templates/default/layout.html:112
 #: ../templates/default/ldap/search.html:39
 #: ../templates/default/ldap/alias/create.html:69
 #: ../templates/default/ldap/alias/list.html:46
 #: ../templates/default/ldap/maillist/create.html:69
 #: ../templates/default/ldap/maillist/list.html:48
-#: ../templates/default/ldap/user/admin.html:49
-#: ../templates/default/ldap/user/create.html:111
-#: ../templates/default/ldap/user/list.html:50
+#: ../templates/default/ldap/user/admin.html:43
+#: ../templates/default/ldap/user/create.html:115
+#: ../templates/default/ldap/user/list.html:44
 #: ../templates/default/macros/msgHandlers.html:108
 msgid "Mail List"
 msgstr "Спискок"
@@ -1961,22 +1866,21 @@ msgstr "Спискок"
 #: ../templates/default/ldap/alias/create.html:18
 #: ../templates/default/ldap/alias/list.html:22
 #: ../templates/default/ldap/alias/profile.html:31
-#: ../templates/default/ldap/domain/profile.html:101
+#: ../templates/default/ldap/domain/profile.html:111
 #: ../templates/default/ldap/maillist/create.html:18
 #: ../templates/default/ldap/maillist/list.html:16
 #: ../templates/default/ldap/maillist/list.html:24
 #: ../templates/default/ldap/maillist/profile.html:33
 #: ../templates/default/ldap/user/admin.html:23
-#: ../templates/default/ldap/user/create.html:22
+#: ../templates/default/ldap/user/create.html:23
 #: ../templates/default/ldap/user/list.html:24
-#: ../templates/default/ldap/user/profile.html:102
+#: ../templates/default/ldap/user/profile.html:105
 msgid "Mail Lists"
 msgstr "Списки"
 
-#: ../templates/default/dbmail_mysql/user/list.html:14
 #: ../templates/default/ldap/user/list.html:16
-#: ../templates/default/mysql/user/list.html:15
-#: ../templates/default/pgsql/user/list.html:15
+#: ../templates/default/mysql/user/list.html:16
+#: ../templates/default/pgsql/user/list.html:16
 msgid "Mail Users"
 msgstr "Почтовые пользователи"
 
@@ -2006,10 +1910,9 @@ msgstr ""
 "Логи входящей и исходящей почты старше %d дней будут удалены из базы "
 "данных."
 
-#: ../templates/default/dbmail_mysql/alias/profile.html:105
 #: ../templates/default/ldap/alias/profile.html:92
-#: ../templates/default/mysql/alias/profile.html:102
-#: ../templates/default/pgsql/alias/profile.html:102
+#: ../templates/default/mysql/alias/profile.html:103
+#: ../templates/default/pgsql/alias/profile.html:103
 msgid "Mail sent to alias will be forwarded to members."
 msgstr "Почта отсылаемая на алиас будет доставлена участникам."
 
@@ -2017,8 +1920,7 @@ msgstr "Почта отсылаемая на алиас будет достав�
 msgid "Mail service"
 msgstr "Почтовый сервис"
 
-#: ../templates/default/dbmail_mysql/user/list.html:91
-#: ../templates/default/macros/general.html:527
+#: ../templates/default/macros/general.html:514
 msgid "Mailbox Quota"
 msgstr "Квота ящика"
 
@@ -2040,11 +1942,11 @@ msgstr "Почта была удалена."
 msgid "Mails were released."
 msgstr "Почта была освобождена."
 
-#: ../templates/default/ldap/domain/profile.html:192
+#: ../templates/default/ldap/domain/profile.html:217
 msgid "Make sure disclaimer work as expected:"
 msgstr "Удостоверьтесь, что disclaimer работает, как ожидалось:"
 
-#: ../templates/default/ldap/user/profile.html:373
+#: ../templates/default/ldap/user/profile.html:397
 msgid "Make sure you have iRedAPD work as expected:"
 msgstr "Убедитесь, что имеете работающий iRedAPD:"
 
@@ -2053,11 +1955,13 @@ msgstr "Убедитесь, что имеете работающий iRedAPD:"
 msgid "Managed Domains"
 msgstr "Управление доменами"
 
-#: ../templates/default/macros/general.html:446
+#: ../templates/default/macros/general.html:433
 msgid "Mark as backup MX"
 msgstr "Отметить как архивный MX"
 
-#: ../templates/default/ldap/user/list.html:157
+#: ../templates/default/ldap/user/list.html:152
+#: ../templates/default/mysql/user/list.html:164
+#: ../templates/default/pgsql/user/list.html:165
 msgid "Mark as domain admin"
 msgstr "Отметить как администратор домена"
 
@@ -2065,12 +1969,14 @@ msgstr "Отметить как администратор домена"
 msgid "Mark as domain administrator"
 msgstr "Отметить как администратор домена"
 
-#: ../templates/default/ldap/user/list.html:161
-#: ../templates/default/macros/general.html:387
+#: ../templates/default/ldap/user/list.html:157
+#: ../templates/default/macros/general.html:374
+#: ../templates/default/mysql/user/list.html:169
+#: ../templates/default/pgsql/user/list.html:170
 msgid "Mark as global admin"
 msgstr "Отметить как Глобальный админ"
 
-#: ../templates/default/macros/general.html:402
+#: ../templates/default/macros/general.html:389
 msgid "Mark this user as"
 msgstr "Отметить пользователя как"
 
@@ -2078,11 +1984,10 @@ msgstr "Отметить пользователя как"
 msgid "Max size of single outgoing email"
 msgstr "Макс. размер одного исходящего письма"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:353
-#: ../templates/default/ldap/domain/profile.html:422
-#: ../templates/default/mysql/domain/profile.html:429
-#: ../templates/default/pgsql/domain/profile.html:411
-msgid "Maximal password length"
+#: ../templates/default/ldap/domain/profile.html:445
+#: ../templates/default/mysql/domain/profile.html:440
+#: ../templates/default/pgsql/domain/profile.html:420
+msgid "Maximum password length"
 msgstr "Макс. длинна пароля"
 
 #: ../templates/default/macros/msgHandlers.html:212
@@ -2090,14 +1995,13 @@ msgstr "Макс. длинна пароля"
 msgid "Member assigned success."
 msgstr "Участник назначен удачно."
 
-#: ../templates/default/dbmail_mysql/user/profile.html:123
-#: ../templates/default/ldap/user/profile.html:240
-#: ../templates/default/mysql/user/profile.html:124
-#: ../templates/default/pgsql/user/profile.html:124
+#: ../templates/default/ldap/user/profile.html:257
+#: ../templates/default/mysql/user/profile.html:136
+#: ../templates/default/pgsql/user/profile.html:136
 msgid "Member of Mail Aliases"
 msgstr "Участник почтовых алиасов"
 
-#: ../templates/default/ldap/user/profile.html:193
+#: ../templates/default/ldap/user/profile.html:210
 msgid "Member of Mail Lists"
 msgstr "Участник списка"
 
@@ -2106,14 +2010,13 @@ msgstr "Участник списка"
 msgid "Member removed success."
 msgstr "Участник удачно удален."
 
-#: ../templates/default/dbmail_mysql/alias/profile.html:104
 #: ../templates/default/ldap/alias/profile.html:91
 #: ../templates/default/ldap/maillist/profile.html:54
 #: ../templates/default/ldap/maillist/profile.html:86
-#: ../templates/default/mysql/alias/profile.html:75
-#: ../templates/default/mysql/alias/profile.html:101
-#: ../templates/default/pgsql/alias/profile.html:75
-#: ../templates/default/pgsql/alias/profile.html:101
+#: ../templates/default/mysql/alias/profile.html:76
+#: ../templates/default/mysql/alias/profile.html:102
+#: ../templates/default/pgsql/alias/profile.html:76
+#: ../templates/default/pgsql/alias/profile.html:102
 msgid "Members"
 msgstr "Участники"
 
@@ -2125,23 +2028,22 @@ msgstr "Сообщение"
 msgid "Messages sent to mail list will be delivered to its members."
 msgstr "Сообщение отсылаемое на этот список будет разослано всем участникам"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:346
-#: ../templates/default/ldap/domain/profile.html:415
-#: ../templates/default/mysql/domain/profile.html:422
-#: ../templates/default/pgsql/domain/profile.html:404
-msgid "Minimal password length"
+#: ../templates/default/ldap/domain/profile.html:438
+#: ../templates/default/mysql/domain/profile.html:433
+#: ../templates/default/pgsql/domain/profile.html:413
+msgid "Minimum password length"
 msgstr "Мин. длинна пароля"
 
-#: ../templates/default/macros/general.html:327
+#: ../templates/default/macros/general.html:310
 msgid "Mobile"
 msgstr "Мобильный телефон"
 
 #: ../templates/default/ldap/maillist/profile.html:55
 #: ../templates/default/ldap/maillist/profile.html:87
-#: ../templates/default/mysql/alias/profile.html:76
-#: ../templates/default/mysql/alias/profile.html:138
-#: ../templates/default/pgsql/alias/profile.html:76
-#: ../templates/default/pgsql/alias/profile.html:138
+#: ../templates/default/mysql/alias/profile.html:77
+#: ../templates/default/mysql/alias/profile.html:139
+#: ../templates/default/pgsql/alias/profile.html:77
+#: ../templates/default/pgsql/alias/profile.html:139
 msgid "Moderators"
 msgstr "Модераторы"
 
@@ -2153,48 +2055,47 @@ msgstr "Модераторы успешно назначены."
 msgid "Moderators removed success."
 msgstr "Модераторы успешно перемещены."
 
-#: ../templates/default/ldap/domain/profile.html:251
-#: ../templates/default/mysql/domain/profile.html:190
-#: ../templates/default/mysql/user/profile.html:212
-#: ../templates/default/pgsql/domain/profile.html:191
-#: ../templates/default/pgsql/user/profile.html:212
+#: ../templates/default/ldap/domain/profile.html:276
+#: ../templates/default/mysql/domain/profile.html:195
+#: ../templates/default/mysql/user/profile.html:227
+#: ../templates/default/pgsql/domain/profile.html:196
+#: ../templates/default/pgsql/user/profile.html:227
 msgid "Monitor incoming emails via BCC"
 msgstr "Мониторить входящую почту через BCC"
 
-#: ../templates/default/ldap/domain/profile.html:258
-#: ../templates/default/mysql/domain/profile.html:197
-#: ../templates/default/mysql/user/profile.html:219
-#: ../templates/default/pgsql/domain/profile.html:198
-#: ../templates/default/pgsql/user/profile.html:219
+#: ../templates/default/ldap/domain/profile.html:283
+#: ../templates/default/mysql/domain/profile.html:202
+#: ../templates/default/mysql/user/profile.html:234
+#: ../templates/default/pgsql/domain/profile.html:203
+#: ../templates/default/pgsql/user/profile.html:234
 msgid "Monitor outgoing emails via BCC"
 msgstr "Мониторить исходящую почту через BCC"
 
-#: ../templates/default/ldap/domain/profile.html:315
-#: ../templates/default/mysql/domain/profile.html:263
-#: ../templates/default/pgsql/domain/profile.html:264
+#: ../templates/default/ldap/domain/profile.html:340
+#: ../templates/default/mysql/domain/profile.html:270
+#: ../templates/default/pgsql/domain/profile.html:271
 msgid "Multiple addresses MUST be seperated by comma (,)."
 msgstr "Несколько адресов должны быть разделены запятой"
 
-#: ../templates/default/ldap/domain/profile.html:272
-#: ../templates/default/ldap/user/profile.html:487
-#: ../templates/default/mysql/domain/profile.html:211
-#: ../templates/default/mysql/user/profile.html:232
-#: ../templates/default/pgsql/domain/profile.html:212
-#: ../templates/default/pgsql/user/profile.html:232
+#: ../templates/default/ldap/domain/profile.html:297
+#: ../templates/default/ldap/user/profile.html:512
+#: ../templates/default/mysql/domain/profile.html:216
+#: ../templates/default/mysql/user/profile.html:247
+#: ../templates/default/pgsql/domain/profile.html:217
+#: ../templates/default/pgsql/user/profile.html:247
 msgid "Multiple addresses are NOT supported."
 msgstr "Несколько адресов не поддерживаются"
 
-#: ../templates/default/dbmail_mysql/domain/list.html:53
 #: ../templates/default/ldap/search.html:78
-#: ../templates/default/ldap/domain/list.html:52
+#: ../templates/default/ldap/domain/list.html:51
 #: ../templates/default/mysql/search.html:81
-#: ../templates/default/mysql/domain/list.html:53
+#: ../templates/default/mysql/domain/list.html:52
 #: ../templates/default/pgsql/search.html:81
-#: ../templates/default/pgsql/domain/list.html:53
+#: ../templates/default/pgsql/domain/list.html:52
 msgid "Name"
 msgstr "Имя пользователя"
 
-#: ../templates/default/macros/general.html:776
+#: ../templates/default/macros/general.html:779
 msgid "Need a random password?"
 msgstr "Нужен случайный пароль?"
 
@@ -2202,7 +2103,7 @@ msgstr "Нужен случайный пароль?"
 msgid "Network"
 msgstr "Сеть"
 
-#: ../templates/default/macros/general.html:487
+#: ../templates/default/macros/general.html:474
 msgid "New password"
 msgstr "Новый пароль"
 
@@ -2234,11 +2135,11 @@ msgstr ""
 "Новая версия iRedAdmin-Pro, %s, доступна для обновления. <a "
 "href='%s/system/license' class='button green'>Детали</a>"
 
-#: ../templates/default/layout.html:154
+#: ../templates/default/layout.html:151
 msgid "News & Announments"
 msgstr "Новости и объявления"
 
-#: ../templates/default/macros/general.html:873
+#: ../templates/default/macros/general.html:934
 msgid "Next Page"
 msgstr "Следующая страница."
 
@@ -2257,18 +2158,17 @@ msgstr "Нет логов администратора."
 msgid "No domain under control."
 msgstr "Нет доменов, доступных для управления"
 
-#: ../templates/default/ldap/maillist/profile.html:226
+#: ../templates/default/ldap/maillist/profile.html:254
 msgid "No external members."
 msgstr "Нет внешних участников"
 
-#: ../templates/default/ldap/maillist/profile.html:353
+#: ../templates/default/ldap/maillist/profile.html:381
 msgid "No external moderators."
 msgstr "Нет внешних модераторов."
 
-#: ../templates/default/dbmail_mysql/user/create.html:40
-#: ../templates/default/ldap/user/create.html:64
-#: ../templates/default/mysql/user/create.html:49
-#: ../templates/default/pgsql/user/create.html:49
+#: ../templates/default/ldap/user/create.html:68
+#: ../templates/default/mysql/user/create.html:51
+#: ../templates/default/pgsql/user/create.html:51
 msgid "No free domain quota left."
 msgstr "Не осталось свободной квоты для этого домена."
 
@@ -2276,34 +2176,31 @@ msgstr "Не осталось свободной квоты для этого д
 msgid "No incoming mails."
 msgstr "Нет входящей почты"
 
-#: ../templates/default/ldap/maillist/profile.html:180
+#: ../templates/default/ldap/maillist/profile.html:208
 msgid "No internal members."
 msgstr "Нет внутренних участников"
 
-#: ../templates/default/ldap/maillist/profile.html:308
+#: ../templates/default/ldap/maillist/profile.html:336
 msgid "No internal moderators."
 msgstr "Нет внутренних модераторов."
 
-#: ../templates/default/ldap/user/admin.html:133
+#: ../templates/default/ldap/user/admin.html:127
 msgid "No mail admin available."
 msgstr "Нет доступных администраторов"
 
-#: ../templates/default/dbmail_mysql/alias/list.html:73
 #: ../templates/default/ldap/alias/list.html:100
-#: ../templates/default/mysql/alias/list.html:86
-#: ../templates/default/pgsql/alias/list.html:86
+#: ../templates/default/mysql/alias/list.html:87
+#: ../templates/default/pgsql/alias/list.html:87
 msgid "No mail alias available."
 msgstr "Нет доступных алиасов."
 
-#: ../templates/default/dbmail_mysql/domain/list.html:136
-#: ../templates/default/dbmail_mysql/domain/list.html:140
-#: ../templates/default/ldap/domain/list.html:188
-#: ../templates/default/ldap/domain/list.html:192
+#: ../templates/default/ldap/domain/list.html:201
+#: ../templates/default/ldap/domain/list.html:205
 #: ../templates/default/macros/msgHandlers.html:145
-#: ../templates/default/mysql/domain/list.html:145
-#: ../templates/default/mysql/domain/list.html:149
-#: ../templates/default/pgsql/domain/list.html:145
-#: ../templates/default/pgsql/domain/list.html:149
+#: ../templates/default/mysql/domain/list.html:144
+#: ../templates/default/mysql/domain/list.html:148
+#: ../templates/default/pgsql/domain/list.html:144
+#: ../templates/default/pgsql/domain/list.html:148
 msgid "No mail domain available."
 msgstr "Нет доступных доменов"
 
@@ -2311,10 +2208,9 @@ msgstr "Нет доступных доменов"
 msgid "No mail list available."
 msgstr "Нет доступных списков."
 
-#: ../templates/default/dbmail_mysql/user/list.html:103
-#: ../templates/default/ldap/user/list.html:141
-#: ../templates/default/mysql/user/list.html:121
-#: ../templates/default/pgsql/user/list.html:121
+#: ../templates/default/ldap/user/list.html:135
+#: ../templates/default/mysql/user/list.html:147
+#: ../templates/default/pgsql/user/list.html:148
 msgid "No mail user available."
 msgstr "Нет доступных пользователей."
 
@@ -2322,7 +2218,7 @@ msgstr "Нет доступных пользователей."
 msgid "No moderator selected."
 msgstr "Нет выбранных модераторов."
 
-#: ../templates/default/macros/general.html:474
+#: ../templates/default/macros/general.html:461
 #, python-format
 msgid "No more than %s characters."
 msgstr "Новый пароль должен содержать <strong>%s</strong> символов."
@@ -2343,18 +2239,24 @@ msgstr "Нет записей"
 msgid "No such domain."
 msgstr "Нет такого домена"
 
-#: ../templates/default/macros/general.html:220
+#: ../templates/default/macros/general.html:835
+msgid ""
+"Normal admin cannot view and update disabled profiles in account profile "
+"page."
+msgstr ""
+"Обычный администратор не может просматривать и редактировать \"\n"
+"\"отключенные профили на странице учетной записи."
+
+#: ../templates/default/macros/general.html:203
 msgid "Not a global admin."
 msgstr "Нет глобального админа"
 
-#: ../templates/default/dbmail_mysql/alias/create.html:23
-#: ../templates/default/dbmail_mysql/user/create.html:32
 #: ../templates/default/ldap/alias/create.html:39
 #: ../templates/default/macros/msgHandlers.html:254
-#: ../templates/default/mysql/alias/create.html:35
-#: ../templates/default/mysql/user/create.html:41
-#: ../templates/default/pgsql/alias/create.html:35
-#: ../templates/default/pgsql/user/create.html:41
+#: ../templates/default/mysql/alias/create.html:36
+#: ../templates/default/mysql/user/create.html:43
+#: ../templates/default/pgsql/alias/create.html:36
+#: ../templates/default/pgsql/user/create.html:43
 msgid "Not allowed to create mail alias under this domain."
 msgstr "Вы не можете создать больше алиасов в домене %s."
 
@@ -2363,13 +2265,13 @@ msgstr "Вы не можете создать больше алиасов в д�
 msgid "Not allowed to create mail list under this domain."
 msgstr "Вы не можете создать больше списков в домене %s"
 
-#: ../templates/default/ldap/user/create.html:69
-#: ../templates/default/ldap/user/create.html:72
+#: ../templates/default/ldap/user/create.html:73
+#: ../templates/default/ldap/user/create.html:76
 #: ../templates/default/macros/msgHandlers.html:147
 msgid "Not allowed to create mail user under this domain."
 msgstr "Вы не можете создавать больше ящиков в домене %s."
 
-#: ../templates/default/ldap/user/profile.html:373
+#: ../templates/default/ldap/user/profile.html:397
 #: ../templates/default/policyd/blacklist/create.html:83
 #: ../templates/default/policyd/whitelist/create.html:72
 msgid "Note"
@@ -2387,21 +2289,19 @@ msgstr "Количество доменов"
 msgid "Number of max incoming emails"
 msgstr "Максимальное кол-во пользователей"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:335
-#: ../templates/default/ldap/domain/profile.html:404
-#: ../templates/default/mysql/domain/profile.html:411
-#: ../templates/default/pgsql/domain/profile.html:393
+#: ../templates/default/ldap/domain/profile.html:427
+#: ../templates/default/mysql/domain/profile.html:422
+#: ../templates/default/pgsql/domain/profile.html:402
 msgid "Number of max mail aliases"
 msgstr "Максимальное кол-во алиасов"
 
-#: ../templates/default/ldap/domain/profile.html:397
+#: ../templates/default/ldap/domain/profile.html:420
 msgid "Number of max mail lists"
 msgstr "Максимальное кол-во почтовых списков"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:327
-#: ../templates/default/ldap/domain/profile.html:389
-#: ../templates/default/mysql/domain/profile.html:403
-#: ../templates/default/pgsql/domain/profile.html:385
+#: ../templates/default/ldap/domain/profile.html:412
+#: ../templates/default/mysql/domain/profile.html:414
+#: ../templates/default/pgsql/domain/profile.html:394
 msgid "Number of max mail users"
 msgstr "Максимальное кол-во пользователей"
 
@@ -2413,26 +2313,23 @@ msgstr "Максимальное кол-во исходящих emails"
 msgid "Number of users"
 msgstr "Количество пользователей"
 
-#: ../templates/default/macros/general.html:481
+#: ../templates/default/macros/general.html:468
 msgid "Old password"
 msgstr "Старый пароль"
 
-#: ../templates/default/dbmail_mysql/alias/profile.html:165
-#: ../templates/default/dbmail_mysql/user/profile.html:181
-#: ../templates/default/dbmail_mysql/user/profile.html:199
 #: ../templates/default/ldap/alias/profile.html:115
-#: ../templates/default/ldap/user/profile.html:297
-#: ../templates/default/ldap/user/profile.html:320
-#: ../templates/default/mysql/alias/profile.html:170
-#: ../templates/default/mysql/alias/profile.html:178
-#: ../templates/default/mysql/user/profile.html:194
-#: ../templates/default/pgsql/alias/profile.html:170
-#: ../templates/default/pgsql/alias/profile.html:178
-#: ../templates/default/pgsql/user/profile.html:194
+#: ../templates/default/ldap/user/profile.html:315
+#: ../templates/default/ldap/user/profile.html:342
+#: ../templates/default/mysql/alias/profile.html:171
+#: ../templates/default/mysql/alias/profile.html:179
+#: ../templates/default/mysql/user/profile.html:207
+#: ../templates/default/pgsql/alias/profile.html:171
+#: ../templates/default/pgsql/alias/profile.html:179
+#: ../templates/default/pgsql/user/profile.html:207
 msgid "One mail address per line."
 msgstr "Один адрес на строку"
 
-#: ../templates/default/macros/general.html:911
+#: ../templates/default/macros/general.html:972
 #: ../templates/default/policyd/blacklist/create.html:40
 #: ../templates/default/policyd/blacklist/create.html:46
 #: ../templates/default/policyd/whitelist/create.html:40
@@ -2448,14 +2345,15 @@ msgid "Or create other mail accounts:"
 msgstr "Или создать другой почтовый аккаунт:"
 
 #: ../templates/default/login.html:60
-#: ../templates/default/dbmail_mysql/admin/profile.html:45
-#: ../templates/default/dbmail_mysql/user/profile.html:55
 #: ../templates/default/ldap/admin/profile.html:53
-#: ../templates/default/ldap/user/profile.html:122
+#: ../templates/default/ldap/user/profile.html:126
+#: ../templates/default/ldap/user/profile.html:138
 #: ../templates/default/mysql/admin/profile.html:45
 #: ../templates/default/mysql/user/profile.html:71
+#: ../templates/default/mysql/user/profile.html:82
 #: ../templates/default/pgsql/admin/profile.html:45
 #: ../templates/default/pgsql/user/profile.html:71
+#: ../templates/default/pgsql/user/profile.html:82
 msgid "Password"
 msgstr "Пароль"
 
@@ -2476,35 +2374,35 @@ msgstr "Пароль слишком короткий"
 msgid "Password of cn=vmailadmin is incorrect."
 msgstr "Пароль cn=vmailadmin не верен."
 
-#: ../templates/default/ldap/user/profile.html:471
-#: ../templates/default/mysql/user/profile.html:396
-#: ../templates/default/pgsql/user/profile.html:396
+#: ../templates/default/ldap/user/profile.html:496
+#: ../templates/default/mysql/user/profile.html:358
+#: ../templates/default/pgsql/user/profile.html:358
 msgid "Path to mailbox"
 msgstr "Путь до почтового ящика"
 
-#: ../templates/default/ldap/domain/profile.html:273
-#: ../templates/default/ldap/user/profile.html:488
-#: ../templates/default/mysql/domain/profile.html:212
-#: ../templates/default/mysql/user/profile.html:233
-#: ../templates/default/pgsql/domain/profile.html:213
-#: ../templates/default/pgsql/user/profile.html:233
+#: ../templates/default/ldap/domain/profile.html:298
+#: ../templates/default/ldap/user/profile.html:513
+#: ../templates/default/mysql/domain/profile.html:217
+#: ../templates/default/mysql/user/profile.html:248
+#: ../templates/default/pgsql/domain/profile.html:218
+#: ../templates/default/pgsql/user/profile.html:248
 msgid "Per-domain bcc settings will override per-user bcc settings."
 msgstr "Пользовательские настройки будут перекрыты настройками для домена"
 
 #: ../templates/default/macros/ldap.html:121
-#: ../templates/default/mysql/domain/profile.html:391
+#: ../templates/default/mysql/domain/profile.html:401
 msgid "Per-user greylisting setting has higher priority"
 msgstr "Пользовательский серый список имеет высший приоритет"
 
-#: ../templates/default/macros/general.html:590
+#: ../templates/default/macros/general.html:580
 msgid ""
 "Per-user relay setting will override per-domain relay setting you set in "
 "this page."
 msgstr "Пользовательские настройки будут перекрыты настройками для домена"
 
-#: ../templates/default/ldap/domain/profile.html:366
-#: ../templates/default/mysql/domain/profile.html:131
-#: ../templates/default/pgsql/domain/profile.html:132
+#: ../templates/default/ldap/domain/profile.html:391
+#: ../templates/default/mysql/domain/profile.html:371
+#: ../templates/default/pgsql/domain/profile.html:372
 msgid "Per-user sender throttling has higher priority."
 msgstr "Пользовательский sender throttling имеет высший приоритет"
 
@@ -2515,11 +2413,11 @@ msgstr "Пользовательский sender throttling имеет высши
 msgid "Permission denied."
 msgstr "Доступ запрещен."
 
-#: ../templates/default/ldap/domain/profile.html:180
+#: ../templates/default/ldap/domain/profile.html:205
 msgid "Plain text only"
 msgstr "Только обычный текст"
 
-#: ../templates/default/ldap/user/admin.html:133
+#: ../templates/default/ldap/user/admin.html:127
 msgid ""
 "Please either mark mail user as domain admin or create a separate admin "
 "account."
@@ -2535,7 +2433,7 @@ msgstr "Выберите хотя бы один домен для этой оп�
 msgid "Please select at least one domain to apply action."
 msgstr "Выберите хотя бы один домен для этой операции"
 
-#: ../templates/default/macros/general.html:606
+#: ../templates/default/macros/general.html:596
 msgid "Postfix manual page"
 msgstr "Страница руководста Postfix"
 
@@ -2543,11 +2441,11 @@ msgstr "Страница руководста Postfix"
 msgid "Preferences"
 msgstr "Настройки"
 
-#: ../templates/default/macros/general.html:366
+#: ../templates/default/macros/general.html:350
 msgid "Preferred language"
 msgstr "Предпочитаемый язык"
 
-#: ../templates/default/macros/general.html:800
+#: ../templates/default/macros/general.html:861
 msgid "Previous Page"
 msgstr "Предыдущая страница"
 
@@ -2555,8 +2453,6 @@ msgstr "Предыдущая страница"
 msgid "Product name"
 msgstr "Название продукта"
 
-#: ../templates/default/dbmail_mysql/admin/profile.html:29
-#: ../templates/default/dbmail_mysql/admin/profile.html:60
 #: ../templates/default/ldap/admin/profile.html:36
 #: ../templates/default/ldap/admin/profile.html:56
 #: ../templates/default/mysql/admin/profile.html:60
@@ -2564,22 +2460,18 @@ msgstr "Название продукта"
 msgid "Profile of admin:"
 msgstr "Профиль администратора:"
 
-#: ../templates/default/dbmail_mysql/alias/profile.html:24
-#: ../templates/default/dbmail_mysql/alias/profile.html:43
 #: ../templates/default/ldap/alias/profile.html:33
 #: ../templates/default/ldap/alias/profile.html:54
 #: ../templates/default/mysql/alias/profile.html:24
-#: ../templates/default/mysql/alias/profile.html:43
+#: ../templates/default/mysql/alias/profile.html:44
 #: ../templates/default/pgsql/alias/profile.html:24
-#: ../templates/default/pgsql/alias/profile.html:43
+#: ../templates/default/pgsql/alias/profile.html:44
 msgid "Profile of alias:"
 msgstr "Профиль алиаса:"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:32
-#: ../templates/default/dbmail_mysql/domain/profile.html:71
-#: ../templates/default/ldap/domain/profile.html:136
-#: ../templates/default/mysql/domain/profile.html:82
-#: ../templates/default/pgsql/domain/profile.html:83
+#: ../templates/default/ldap/domain/profile.html:161
+#: ../templates/default/mysql/domain/profile.html:96
+#: ../templates/default/pgsql/domain/profile.html:97
 msgid "Profile of domain:"
 msgstr "Профиль домена:"
 
@@ -2588,14 +2480,12 @@ msgstr "Профиль домена:"
 msgid "Profile of mail list:"
 msgstr "Профиль почтовых рассылок"
 
-#: ../templates/default/dbmail_mysql/user/profile.html:33
-#: ../templates/default/dbmail_mysql/user/profile.html:71
-#: ../templates/default/ldap/user/profile.html:101
-#: ../templates/default/ldap/user/profile.html:138
-#: ../templates/default/mysql/user/profile.html:50
-#: ../templates/default/mysql/user/profile.html:87
-#: ../templates/default/pgsql/user/profile.html:50
-#: ../templates/default/pgsql/user/profile.html:87
+#: ../templates/default/ldap/user/profile.html:104
+#: ../templates/default/ldap/user/profile.html:155
+#: ../templates/default/mysql/user/profile.html:49
+#: ../templates/default/mysql/user/profile.html:99
+#: ../templates/default/pgsql/user/profile.html:49
+#: ../templates/default/pgsql/user/profile.html:99
 msgid "Profile of user:"
 msgstr "Профиль пользователя:"
 
@@ -2622,7 +2512,7 @@ msgstr "Дата приобретения"
 msgid "Quarantined"
 msgstr "На карантине"
 
-#: ../templates/default/layout.html:93
+#: ../templates/default/layout.html:90
 #: ../templates/default/amavisd/quarantined.html:18
 #: ../templates/default/amavisd/quarantined.html:44
 #: ../templates/default/macros/amavisd.html:93
@@ -2657,23 +2547,20 @@ msgid ""
 "permanantly."
 msgstr "Почта на карантине старше %d дней будет удаленна из базы данных."
 
-#: ../templates/default/dbmail_mysql/search.html:146
-#: ../templates/default/dbmail_mysql/domain/list.html:54
-#: ../templates/default/dbmail_mysql/user/list.html:55
 #: ../templates/default/ldap/search.html:195
-#: ../templates/default/ldap/domain/list.html:53
+#: ../templates/default/ldap/domain/list.html:52
 #: ../templates/default/ldap/maillist/profile.html:145
-#: ../templates/default/ldap/maillist/profile.html:272
-#: ../templates/default/ldap/user/admin.html:74
-#: ../templates/default/ldap/user/list.html:75
+#: ../templates/default/ldap/maillist/profile.html:300
+#: ../templates/default/ldap/user/admin.html:68
+#: ../templates/default/ldap/user/list.html:69
 #: ../templates/default/mysql/search.html:82
 #: ../templates/default/mysql/search.html:227
-#: ../templates/default/mysql/domain/list.html:54
-#: ../templates/default/mysql/user/list.html:73
+#: ../templates/default/mysql/domain/list.html:53
+#: ../templates/default/mysql/user/list.html:93
 #: ../templates/default/pgsql/search.html:82
 #: ../templates/default/pgsql/search.html:227
-#: ../templates/default/pgsql/domain/list.html:54
-#: ../templates/default/pgsql/user/list.html:73
+#: ../templates/default/pgsql/domain/list.html:53
+#: ../templates/default/pgsql/user/list.html:93
 msgid "Quota"
 msgstr "Квота"
 
@@ -2686,7 +2573,7 @@ msgstr "Размер квоты для всех исходящих писем"
 msgid "Received"
 msgstr "Принятые"
 
-#: ../templates/default/layout.html:89
+#: ../templates/default/layout.html:86
 #: ../templates/default/amavisd/inout.html:21
 #: ../templates/default/amavisd/inout.html:62
 #: ../templates/default/macros/amavisd.html:83
@@ -2705,8 +2592,12 @@ msgstr "Принятая почта домена: %s"
 msgid "Received Mails of User: %s"
 msgstr "Принятая почта пользователя: %s"
 
+#: ../templates/default/macros/general.html:576
+msgid "Received emails will be relay to specified server."
+msgstr "Полученные сообщения будут отправлены указанному серверу."
+
 #: ../templates/default/macros/ldap.html:95
-#: ../templates/default/macros/mysql.html:61
+#: ../templates/default/macros/mysql.html:36
 msgid "Receiving mails for this account on mail server"
 msgstr "Принимаемая почта для этого аккаунта на сервере."
 
@@ -2725,30 +2616,37 @@ msgstr "Формат"
 msgid "Records are added. <a href=\"%s\" target=\"_blank\">View them now</a>"
 msgstr "Записей было добавлено. <a href=\"%s\" target=\"_blank\">Посмотреть</a>"
 
-#: ../templates/default/ldap/user/profile.html:351
+#: ../templates/default/ldap/user/profile.html:375
 msgid "Reject mails from below senders"
 msgstr "Отклонять почту принимаемую от отправителей"
 
-#: ../templates/default/ldap/user/profile.html:365
+#: ../templates/default/ldap/user/profile.html:389
 msgid "Reject mails sent to below recipients"
 msgstr "Отклонять почту посылаемую на получателей"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:52
-#: ../templates/default/dbmail_mysql/user/profile.html:53
-#: ../templates/default/ldap/domain/profile.html:119
-#: ../templates/default/ldap/user/profile.html:118
-#: ../templates/default/mysql/domain/profile.html:62
-#: ../templates/default/mysql/user/profile.html:68
-#: ../templates/default/pgsql/domain/profile.html:63
-#: ../templates/default/pgsql/user/profile.html:68
+#: ../templates/default/ldap/domain/profile.html:131
+#: ../templates/default/ldap/domain/profile.html:142
+#: ../templates/default/ldap/user/profile.html:122
+#: ../templates/default/ldap/user/profile.html:134
+#: ../templates/default/macros/general.html:792
+#: ../templates/default/macros/general.html:803
+#: ../templates/default/macros/general.html:810
+#: ../templates/default/mysql/domain/profile.html:64
+#: ../templates/default/mysql/domain/profile.html:75
+#: ../templates/default/mysql/user/profile.html:69
+#: ../templates/default/mysql/user/profile.html:80
+#: ../templates/default/pgsql/domain/profile.html:64
+#: ../templates/default/pgsql/domain/profile.html:75
+#: ../templates/default/pgsql/user/profile.html:69
+#: ../templates/default/pgsql/user/profile.html:80
 msgid "Relay"
 msgstr "Релей"
 
-#: ../templates/default/macros/general.html:573
+#: ../templates/default/macros/general.html:560
 msgid "Relay without verifying local recipients"
 msgstr "Пересылать почту без проверки локального получателя"
 
-#: ../templates/default/macros/general.html:565
+#: ../templates/default/macros/general.html:552
 msgid "Relay/Transport Setting"
 msgstr "Настройки релея"
 
@@ -2764,10 +2662,10 @@ msgstr "Отменить отметку"
 msgid "Remember me"
 msgstr "Запомнить меня"
 
-#: ../templates/default/ldap/maillist/profile.html:191
-#: ../templates/default/ldap/maillist/profile.html:237
-#: ../templates/default/ldap/maillist/profile.html:319
-#: ../templates/default/ldap/maillist/profile.html:364
+#: ../templates/default/ldap/maillist/profile.html:219
+#: ../templates/default/ldap/maillist/profile.html:265
+#: ../templates/default/ldap/maillist/profile.html:347
+#: ../templates/default/ldap/maillist/profile.html:392
 msgid "Remove from list"
 msgstr "Удалить из списка"
 
@@ -2775,29 +2673,26 @@ msgstr "Удалить из списка"
 msgid "Renew license"
 msgstr "Обновить лицензию"
 
-#: ../templates/default/ldap/domain/profile.html:502
+#: ../templates/default/ldap/domain/profile.html:547
 msgid "Sample"
 msgstr "Примеры"
 
-#: ../templates/default/macros/general.html:595
+#: ../templates/default/macros/general.html:585
 msgid "Sample relay settings"
 msgstr "Пример настроей релея"
 
-#: ../templates/default/dbmail_mysql/user/profile.html:171
-#: ../templates/default/ldap/user/profile.html:288
-#: ../templates/default/mysql/user/profile.html:184
-#: ../templates/default/pgsql/user/profile.html:184
+#: ../templates/default/ldap/user/profile.html:306
+#: ../templates/default/mysql/user/profile.html:197
+#: ../templates/default/pgsql/user/profile.html:197
 msgid "Save a copy in mailbox"
 msgstr "Сохранять копию в ящик"
 
-#: ../templates/default/macros/general.html:230
+#: ../templates/default/macros/general.html:213
 msgid "Save changes"
 msgstr "Записать изменения"
 
 #: ../templates/default/amavisd/inout.html:75
 #: ../templates/default/amavisd/quarantined.html:53
-#: ../templates/default/dbmail_mysql/search.html:20
-#: ../templates/default/dbmail_mysql/search.html:37
 #: ../templates/default/ldap/search.html:15
 #: ../templates/default/ldap/search.html:33
 #: ../templates/default/mysql/search.html:20
@@ -2819,7 +2714,6 @@ msgstr "Поиск не должен быть пустым"
 msgid "Search mail accounts"
 msgstr "Поиск почтовых аккаунтов"
 
-#: ../templates/default/dbmail_mysql/search.html:64
 #: ../templates/default/ldap/search.html:61
 #: ../templates/default/mysql/search.html:65
 #: ../templates/default/pgsql/search.html:65
@@ -2912,12 +2806,12 @@ msgid "Sender address"
 msgstr "Адрес отправителя"
 
 #: ../templates/default/macros/ldap.html:89
-#: ../templates/default/macros/mysql.html:62
+#: ../templates/default/macros/mysql.html:37
 msgid "Sending mails via SMTP"
 msgstr "Отсылать почту через SMTP"
 
 #: ../templates/default/macros/ldap.html:90
-#: ../templates/default/macros/mysql.html:63
+#: ../templates/default/macros/mysql.html:38
 msgid "Sending mails via SMTP over TLS/SSL"
 msgstr "Отсылать почту через SMTP over TLS/SSL"
 
@@ -2926,7 +2820,7 @@ msgstr "Отсылать почту через SMTP over TLS/SSL"
 msgid "Sent"
 msgstr "Отослано"
 
-#: ../templates/default/layout.html:88
+#: ../templates/default/layout.html:85
 #: ../templates/default/amavisd/inout.html:19
 #: ../templates/default/amavisd/inout.html:51
 #: ../templates/default/macros/amavisd.html:82
@@ -2951,34 +2845,30 @@ msgstr ""
 msgid "Session expired, please re-login."
 msgstr "Сессия просрочена, пожалуйста перелогиньтесь."
 
-#: ../templates/default/macros/general.html:540
+#: ../templates/default/macros/general.html:527
 msgid "Set to 0 for unlimited."
 msgstr "0 означает Неограничено"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:364
-#: ../templates/default/ldap/domain/profile.html:434
-#: ../templates/default/mysql/domain/profile.html:441
-#: ../templates/default/pgsql/domain/profile.html:423
+#: ../templates/default/ldap/domain/profile.html:457
+#: ../templates/default/mysql/domain/profile.html:452
+#: ../templates/default/pgsql/domain/profile.html:432
 msgid "Set value to -1 means not allowed to create this kind of account."
 msgstr "Установив значение в -1 означает запрет создания аккаунтов"
 
-#: ../templates/default/ldap/domain/profile.html:433
+#: ../templates/default/ldap/domain/profile.html:456
 msgid "Set value to 0 for unlimited."
 msgstr "0 означает Неограничено"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:125
-#: ../templates/default/dbmail_mysql/domain/profile.html:363
-#: ../templates/default/dbmail_mysql/user/profile.html:113
-#: ../templates/default/ldap/domain/profile.html:367
-#: ../templates/default/ldap/user/profile.html:438
-#: ../templates/default/mysql/domain/profile.html:132
-#: ../templates/default/mysql/domain/profile.html:363
-#: ../templates/default/mysql/domain/profile.html:439
-#: ../templates/default/mysql/user/profile.html:357
-#: ../templates/default/pgsql/domain/profile.html:133
-#: ../templates/default/pgsql/domain/profile.html:364
-#: ../templates/default/pgsql/domain/profile.html:421
-#: ../templates/default/pgsql/user/profile.html:357
+#: ../templates/default/ldap/domain/profile.html:392
+#: ../templates/default/ldap/user/profile.html:463
+#: ../templates/default/mysql/domain/profile.html:145
+#: ../templates/default/mysql/domain/profile.html:372
+#: ../templates/default/mysql/domain/profile.html:450
+#: ../templates/default/mysql/user/profile.html:319
+#: ../templates/default/pgsql/domain/profile.html:146
+#: ../templates/default/pgsql/domain/profile.html:373
+#: ../templates/default/pgsql/domain/profile.html:430
+#: ../templates/default/pgsql/user/profile.html:319
 msgid "Set value to 0 or leave it empty for unlimited."
 msgstr "0 означает Неограничено"
 
@@ -2992,7 +2882,7 @@ msgstr "Один IP адрес"
 msgid "Single domain"
 msgstr "Один домен"
 
-#: ../templates/default/ldap/user/profile.html:385
+#: ../templates/default/ldap/user/profile.html:409
 #: ../templates/default/policyd/blacklist/create.html:66
 #: ../templates/default/policyd/whitelist/create.html:60
 msgid "Single user"
@@ -3011,14 +2901,12 @@ msgstr "Спам"
 msgid "Statistics of latest 24 hours"
 msgstr "Статистика за 24 часа"
 
-#: ../templates/default/macros/general.html:501
+#: ../templates/default/macros/general.html:488
 msgid "Store password in plain text"
 msgstr "Хранить пароль в открытом виде"
 
-#: ../templates/default/dbmail_mysql/search.html:178
-#: ../templates/default/dbmail_mysql/user/list.html:91
-#: ../templates/default/mysql/user/list.html:111
-#: ../templates/default/pgsql/user/list.html:111
+#: ../templates/default/mysql/user/list.html:137
+#: ../templates/default/pgsql/user/list.html:138
 msgid "Stored"
 msgstr "Хранимые"
 
@@ -3031,8 +2919,8 @@ msgstr "Хранимая почта"
 msgid "Subject"
 msgstr "Тема"
 
-#: ../templates/default/ldap/maillist/profile.html:387
-#: ../templates/default/ldap/maillist/profile.html:401
+#: ../templates/default/ldap/maillist/profile.html:415
+#: ../templates/default/ldap/maillist/profile.html:429
 #: ../templates/default/panel/log.html:68
 msgid "Submit"
 msgstr "Подтвердить"
@@ -3046,7 +2934,7 @@ msgstr "Запрошенное доменное имя неверно."
 msgid "Subnet"
 msgstr "Подсеть"
 
-#: ../templates/default/layout.html:155
+#: ../templates/default/layout.html:152
 msgid "Support"
 msgstr "Поддержка"
 
@@ -3058,8 +2946,8 @@ msgstr "Система"
 msgid "System Information"
 msgstr "Системная информация"
 
-#: ../templates/default/macros/general.html:335
-#: ../templates/default/macros/general.html:344
+#: ../templates/default/macros/general.html:318
+#: ../templates/default/macros/general.html:327
 msgid "Telephone Number"
 msgstr "Телефон"
 
@@ -3068,16 +2956,33 @@ msgstr "Телефон"
 msgid "The forward and reverse DNS name must match otherwise it will not work."
 msgstr "Прямой и обратный DNS должны соответствовать, иначе это не будет работать"
 
-#: ../templates/default/ldap/user/profile.html:379
+#: ../templates/default/ldap/maillist/profile.html:201
+msgid "This is a mail alias."
+msgstr "Список всех почтовых алиасов"
+
+#: ../templates/default/ldap/maillist/profile.html:199
+msgid "This is a mailing list."
+msgstr "Список всех почтовых рассылок"
+
+#: ../templates/default/ldap/user/profile.html:403
 msgid "This is per-user white/blacklist."
 msgstr "Это white/blacklist на пользователя."
 
-#: ../templates/default/ldap/domain/profile.html:122
-#: ../templates/default/ldap/user/profile.html:120
-#: ../templates/default/mysql/domain/profile.html:65
-#: ../templates/default/mysql/user/profile.html:69
-#: ../templates/default/pgsql/domain/profile.html:66
-#: ../templates/default/pgsql/user/profile.html:69
+#: ../templates/default/ldap/domain/profile.html:134
+#: ../templates/default/ldap/domain/profile.html:145
+#: ../templates/default/ldap/user/profile.html:124
+#: ../templates/default/ldap/user/profile.html:136
+#: ../templates/default/macros/general.html:793
+#: ../templates/default/macros/general.html:804
+#: ../templates/default/macros/general.html:811
+#: ../templates/default/mysql/domain/profile.html:67
+#: ../templates/default/mysql/domain/profile.html:78
+#: ../templates/default/mysql/user/profile.html:70
+#: ../templates/default/mysql/user/profile.html:81
+#: ../templates/default/pgsql/domain/profile.html:67
+#: ../templates/default/pgsql/domain/profile.html:78
+#: ../templates/default/pgsql/user/profile.html:70
+#: ../templates/default/pgsql/user/profile.html:81
 msgid "Throttling"
 msgstr "Throttling"
 
@@ -3097,61 +3002,57 @@ msgstr "Top 10 получателей"
 msgid "Top 10 senders"
 msgstr "Top 10 отправителей"
 
-#: ../templates/default/dbmail_mysql/domain/list.html:88
-#: ../templates/default/dbmail_mysql/domain/list.html:90
-#: ../templates/default/dbmail_mysql/domain/list.html:98
-#: ../templates/default/mysql/domain/list.html:97
-#: ../templates/default/mysql/domain/list.html:99
-#: ../templates/default/mysql/domain/list.html:107
-#: ../templates/default/pgsql/domain/list.html:97
-#: ../templates/default/pgsql/domain/list.html:99
-#: ../templates/default/pgsql/domain/list.html:107
+#: ../templates/default/mysql/domain/list.html:96
+#: ../templates/default/mysql/domain/list.html:98
+#: ../templates/default/mysql/domain/list.html:106
+#: ../templates/default/pgsql/domain/list.html:96
+#: ../templates/default/pgsql/domain/list.html:98
+#: ../templates/default/pgsql/domain/list.html:106
 msgid "Total"
 msgstr "Всего"
 
-#: ../templates/default/dbmail_mysql/search.html:169
-#: ../templates/default/dbmail_mysql/search.html:171
-#: ../templates/default/dbmail_mysql/domain/list.html:96
-#: ../templates/default/dbmail_mysql/domain/list.html:98
-#: ../templates/default/dbmail_mysql/user/list.html:82
-#: ../templates/default/dbmail_mysql/user/list.html:84
 #: ../templates/default/ldap/search.html:217
-#: ../templates/default/ldap/domain/list.html:134
-#: ../templates/default/ldap/domain/list.html:136
-#: ../templates/default/ldap/maillist/profile.html:174
-#: ../templates/default/ldap/maillist/profile.html:301
-#: ../templates/default/ldap/user/admin.html:110
-#: ../templates/default/ldap/user/admin.html:112
-#: ../templates/default/ldap/user/list.html:118
-#: ../templates/default/ldap/user/list.html:120
-#: ../templates/default/macros/general.html:417
-#: ../templates/default/mysql/search.html:249
-#: ../templates/default/mysql/domain/list.html:105
-#: ../templates/default/mysql/domain/list.html:107
-#: ../templates/default/mysql/user/list.html:102
-#: ../templates/default/mysql/user/list.html:104
-#: ../templates/default/pgsql/search.html:249
-#: ../templates/default/pgsql/domain/list.html:105
-#: ../templates/default/pgsql/domain/list.html:107
-#: ../templates/default/pgsql/user/list.html:102
-#: ../templates/default/pgsql/user/list.html:104
+#: ../templates/default/ldap/domain/list.html:139
+#: ../templates/default/ldap/domain/list.html:141
+#: ../templates/default/ldap/maillist/profile.html:193
+#: ../templates/default/ldap/maillist/profile.html:329
+#: ../templates/default/ldap/user/admin.html:104
+#: ../templates/default/ldap/user/admin.html:106
+#: ../templates/default/ldap/user/list.html:112
+#: ../templates/default/ldap/user/list.html:114
+#: ../templates/default/macros/general.html:404
+#: ../templates/default/macros/general.html:704
+#: ../templates/default/mysql/search.html:245
+#: ../templates/default/mysql/domain/list.html:104
+#: ../templates/default/mysql/domain/list.html:106
+#: ../templates/default/mysql/user/list.html:128
+#: ../templates/default/mysql/user/list.html:130
+#: ../templates/default/pgsql/search.html:245
+#: ../templates/default/pgsql/domain/list.html:104
+#: ../templates/default/pgsql/domain/list.html:106
+#: ../templates/default/pgsql/user/list.html:129
+#: ../templates/default/pgsql/user/list.html:131
 msgid "Unlimited"
 msgstr "Неограничено"
 
-#: ../templates/default/ldap/user/admin.html:145
-#: ../templates/default/ldap/user/list.html:158
+#: ../templates/default/ldap/user/admin.html:139
+#: ../templates/default/ldap/user/list.html:153
+#: ../templates/default/mysql/user/list.html:165
+#: ../templates/default/pgsql/user/list.html:166
 msgid "Unmark as domain admin"
 msgstr "Отменить как администратора домена"
 
-#: ../templates/default/ldap/user/list.html:162
+#: ../templates/default/ldap/user/list.html:158
+#: ../templates/default/mysql/user/list.html:170
+#: ../templates/default/pgsql/user/list.html:171
 msgid "Unmark as global admin"
 msgstr "Отменить как Глобальный админ"
 
 #: ../templates/default/ldap/maillist/profile.html:83
-#: ../templates/default/macros/general.html:753
-#: ../templates/default/macros/general.html:765
-#: ../templates/default/mysql/alias/profile.html:72
-#: ../templates/default/pgsql/alias/profile.html:72
+#: ../templates/default/macros/general.html:756
+#: ../templates/default/macros/general.html:768
+#: ../templates/default/mysql/alias/profile.html:73
+#: ../templates/default/pgsql/alias/profile.html:73
 msgid "Unrestricted"
 msgstr "Неограниченный"
 
@@ -3163,43 +3064,40 @@ msgstr "Руководство для обновлений"
 msgid "Uptime"
 msgstr "В работе"
 
-#: ../templates/default/dbmail_mysql/domain/list.html:88
-#: ../templates/default/dbmail_mysql/domain/list.html:90
-#: ../templates/default/dbmail_mysql/domain/list.html:96
-#: ../templates/default/dbmail_mysql/domain/list.html:98
-#: ../templates/default/macros/general.html:549
-#: ../templates/default/mysql/domain/list.html:97
-#: ../templates/default/mysql/domain/list.html:99
-#: ../templates/default/mysql/domain/list.html:105
-#: ../templates/default/mysql/domain/list.html:107
+#: ../templates/default/ldap/domain/list.html:124
+#: ../templates/default/ldap/domain/list.html:136
+#: ../templates/default/macros/general.html:536
+#: ../templates/default/mysql/domain/list.html:96
+#: ../templates/default/mysql/domain/list.html:98
+#: ../templates/default/mysql/domain/list.html:104
+#: ../templates/default/mysql/domain/list.html:106
+#: ../templates/default/pgsql/domain/list.html:96
+#: ../templates/default/pgsql/domain/list.html:98
+#: ../templates/default/pgsql/domain/list.html:104
+#: ../templates/default/pgsql/domain/list.html:106
 msgid "Used"
 msgstr "Использовано"
 
-#: ../templates/default/layout.html:113
-#: ../templates/default/dbmail_mysql/search.html:42
-#: ../templates/default/dbmail_mysql/alias/create.html:50
-#: ../templates/default/dbmail_mysql/alias/list.html:27
-#: ../templates/default/dbmail_mysql/user/create.html:73
-#: ../templates/default/dbmail_mysql/user/list.html:30
+#: ../templates/default/layout.html:110
 #: ../templates/default/ldap/search.html:38
 #: ../templates/default/ldap/alias/create.html:68
 #: ../templates/default/ldap/alias/list.html:45
 #: ../templates/default/ldap/maillist/create.html:68
 #: ../templates/default/ldap/maillist/list.html:47
-#: ../templates/default/ldap/user/admin.html:48
-#: ../templates/default/ldap/user/create.html:110
-#: ../templates/default/ldap/user/list.html:49
+#: ../templates/default/ldap/user/admin.html:42
+#: ../templates/default/ldap/user/create.html:114
+#: ../templates/default/ldap/user/list.html:43
 #: ../templates/default/macros/msgHandlers.html:108
 #: ../templates/default/mysql/search.html:42
-#: ../templates/default/mysql/alias/create.html:64
-#: ../templates/default/mysql/alias/list.html:40
-#: ../templates/default/mysql/user/create.html:84
-#: ../templates/default/mysql/user/list.html:44
+#: ../templates/default/mysql/alias/create.html:65
+#: ../templates/default/mysql/alias/list.html:41
+#: ../templates/default/mysql/user/create.html:86
+#: ../templates/default/mysql/user/list.html:53
 #: ../templates/default/pgsql/search.html:42
-#: ../templates/default/pgsql/alias/create.html:64
-#: ../templates/default/pgsql/alias/list.html:40
-#: ../templates/default/pgsql/user/create.html:84
-#: ../templates/default/pgsql/user/list.html:44
+#: ../templates/default/pgsql/alias/create.html:65
+#: ../templates/default/pgsql/alias/list.html:41
+#: ../templates/default/pgsql/user/create.html:86
+#: ../templates/default/pgsql/user/list.html:53
 msgid "User"
 msgstr "Пользователь"
 
@@ -3207,17 +3105,16 @@ msgstr "Пользователь"
 msgid "User created."
 msgstr "Пользователь создан"
 
-#: ../templates/default/dbmail_mysql/search.html:145
 #: ../templates/default/ldap/search.html:193
 #: ../templates/default/ldap/maillist/profile.html:144
-#: ../templates/default/ldap/maillist/profile.html:271
-#: ../templates/default/ldap/user/admin.html:72
-#: ../templates/default/ldap/user/list.html:73
-#: ../templates/default/macros/general.html:313
+#: ../templates/default/ldap/maillist/profile.html:299
+#: ../templates/default/ldap/user/admin.html:66
+#: ../templates/default/ldap/user/list.html:67
+#: ../templates/default/macros/general.html:296
 #: ../templates/default/mysql/search.html:226
-#: ../templates/default/mysql/user/list.html:69
+#: ../templates/default/mysql/user/list.html:89
 #: ../templates/default/pgsql/search.html:226
-#: ../templates/default/pgsql/user/list.html:69
+#: ../templates/default/pgsql/user/list.html:89
 msgid "User/Employee ID"
 msgstr "ID Пользователя"
 
@@ -3233,52 +3130,45 @@ msgstr "Пользователь должен иметь верный почто
 msgid "Username or password is incorrect."
 msgstr "Пользователь или пароль неверные"
 
-#: ../templates/default/dbmail_mysql/alias/create.html:48
-#: ../templates/default/dbmail_mysql/alias/list.html:25
-#: ../templates/default/dbmail_mysql/alias/profile.html:22
-#: ../templates/default/dbmail_mysql/domain/list.html:55
-#: ../templates/default/dbmail_mysql/domain/profile.html:33
-#: ../templates/default/dbmail_mysql/user/create.html:71
-#: ../templates/default/dbmail_mysql/user/list.html:28
-#: ../templates/default/dbmail_mysql/user/profile.html:32
 #: ../templates/default/ldap/search.html:79
 #: ../templates/default/ldap/alias/create.html:17
 #: ../templates/default/ldap/alias/list.html:21
 #: ../templates/default/ldap/alias/profile.html:30
-#: ../templates/default/ldap/domain/list.html:54
-#: ../templates/default/ldap/domain/profile.html:100
+#: ../templates/default/ldap/domain/list.html:53
+#: ../templates/default/ldap/domain/profile.html:110
 #: ../templates/default/ldap/maillist/create.html:17
 #: ../templates/default/ldap/maillist/list.html:23
 #: ../templates/default/ldap/maillist/profile.html:32
 #: ../templates/default/ldap/user/admin.html:22
-#: ../templates/default/ldap/user/create.html:21
+#: ../templates/default/ldap/user/create.html:22
 #: ../templates/default/ldap/user/list.html:23
-#: ../templates/default/ldap/user/profile.html:100
+#: ../templates/default/ldap/user/profile.html:103
 #: ../templates/default/mysql/search.html:83
 #: ../templates/default/mysql/alias/create.html:17
 #: ../templates/default/mysql/alias/list.html:20
 #: ../templates/default/mysql/alias/profile.html:22
-#: ../templates/default/mysql/domain/list.html:55
-#: ../templates/default/mysql/domain/profile.html:43
-#: ../templates/default/mysql/user/create.html:21
-#: ../templates/default/mysql/user/list.html:22
-#: ../templates/default/mysql/user/profile.html:49
+#: ../templates/default/mysql/domain/list.html:54
+#: ../templates/default/mysql/domain/profile.html:40
+#: ../templates/default/mysql/user/create.html:22
+#: ../templates/default/mysql/user/list.html:24
+#: ../templates/default/mysql/user/list.html:33
+#: ../templates/default/mysql/user/profile.html:48
 #: ../templates/default/pgsql/search.html:83
 #: ../templates/default/pgsql/alias/create.html:17
 #: ../templates/default/pgsql/alias/list.html:20
 #: ../templates/default/pgsql/alias/profile.html:22
-#: ../templates/default/pgsql/domain/list.html:55
-#: ../templates/default/pgsql/domain/profile.html:44
-#: ../templates/default/pgsql/user/create.html:21
-#: ../templates/default/pgsql/user/list.html:22
-#: ../templates/default/pgsql/user/profile.html:49
+#: ../templates/default/pgsql/domain/list.html:54
+#: ../templates/default/pgsql/domain/profile.html:40
+#: ../templates/default/pgsql/user/create.html:22
+#: ../templates/default/pgsql/user/list.html:24
+#: ../templates/default/pgsql/user/list.html:33
+#: ../templates/default/pgsql/user/profile.html:48
 msgid "Users"
 msgstr "Пользователи"
 
-#: ../templates/default/dbmail_mysql/user/list.html:35
-#: ../templates/default/ldap/user/list.html:55
-#: ../templates/default/mysql/user/list.html:49
-#: ../templates/default/pgsql/user/list.html:49
+#: ../templates/default/ldap/user/list.html:49
+#: ../templates/default/mysql/user/list.html:61
+#: ../templates/default/pgsql/user/list.html:61
 #, python-format
 msgid "Users under domain: %s"
 msgstr "Пользователи домена: %s"
@@ -3293,20 +3183,18 @@ msgstr "Добавить участников"
 msgid "Virus"
 msgstr "Вирусов"
 
-#: ../templates/default/dbmail_mysql/domain/profile.html:390
-#: ../templates/default/ldap/user/profile.html:218
+#: ../templates/default/ldap/user/profile.html:235
 #: ../templates/default/macros/msgHandlers.html:36
 #: ../templates/default/macros/msgHandlers.html:38
-#: ../templates/default/mysql/domain/profile.html:468
-#: ../templates/default/pgsql/domain/profile.html:258
-#: ../templates/default/pgsql/domain/profile.html:450
+#: ../templates/default/mysql/domain/profile.html:489
+#: ../templates/default/pgsql/domain/profile.html:265
+#: ../templates/default/pgsql/domain/profile.html:469
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: ../templates/default/dbmail_mysql/user/profile.html:54
-#: ../templates/default/ldap/user/profile.html:121
-#: ../templates/default/mysql/user/profile.html:70
-#: ../templates/default/pgsql/user/profile.html:70
+#: ../templates/default/ldap/user/profile.html:125
+#: ../templates/default/ldap/user/profile.html:137
+#: ../templates/default/macros/general.html:805
 msgid "White/Blacklist"
 msgstr "Белый/Черный список"
 
@@ -3314,7 +3202,7 @@ msgstr "Белый/Черный список"
 msgid "Whitelist"
 msgstr "Белый список"
 
-#: ../templates/default/ldap/user/profile.html:380
+#: ../templates/default/ldap/user/profile.html:404
 msgid "Whitelist has higher priority than blacklist."
 msgstr "Белый список имеет больший приоритет, чем черный"
 
@@ -3322,14 +3210,14 @@ msgstr "Белый список имеет больший приоритет, ч
 msgid "Whitelist records"
 msgstr "Записи в белом списке"
 
-#: ../templates/default/layout.html:98 ../templates/default/layout.html:122
+#: ../templates/default/layout.html:95 ../templates/default/layout.html:119
 #: ../templates/default/policyd/wblist.html:53
 msgid "Whitelists"
 msgstr "Белый список"
 
 #: ../templates/default/ldap/maillist/profile.html:97
-#: ../templates/default/mysql/alias/profile.html:86
-#: ../templates/default/pgsql/alias/profile.html:86
+#: ../templates/default/mysql/alias/profile.html:87
+#: ../templates/default/pgsql/alias/profile.html:87
 msgid "Who can send email to this list"
 msgstr "Кто может слать почту на этот список"
 
@@ -3338,15 +3226,16 @@ msgstr "Кто может слать почту на этот список"
 msgid "You are running version %s"
 msgstr "Вы используйте версию %s"
 
-#: ../templates/default/ldap/user/create.html:82
+#: ../templates/default/ldap/user/create.html:99
+#: ../templates/default/mysql/user/create.html:59
+#: ../templates/default/pgsql/user/create.html:59
 #, python-format
 msgid "You can NOT create more users under domain %s."
 msgstr "Вы не можете создавать больше пользователей в домене %s."
 
-#: ../templates/default/dbmail_mysql/alias/create.html:39
 #: ../templates/default/ldap/alias/create.html:52
-#: ../templates/default/mysql/alias/create.html:51
-#: ../templates/default/pgsql/alias/create.html:51
+#: ../templates/default/mysql/alias/create.html:52
+#: ../templates/default/pgsql/alias/create.html:52
 #, python-format
 msgid "You can create <strong>%d</strong> more mail alias(es) under domain %s."
 msgstr "Вы можете создать еще <strong>%d</strong> алиасов в домене %s."
@@ -3356,17 +3245,15 @@ msgstr "Вы можете создать еще <strong>%d</strong> алиасо
 msgid "You can create <strong>%d</strong> more mail list(s) under domain %s."
 msgstr "Вы можете создать еще <strong>%d</strong> списков в домене %s."
 
-#: ../templates/default/dbmail_mysql/user/create.html:61
-#: ../templates/default/ldap/user/create.html:93
-#: ../templates/default/mysql/user/create.html:70
-#: ../templates/default/pgsql/user/create.html:70
+#: ../templates/default/ldap/user/create.html:91
+#: ../templates/default/mysql/user/create.html:72
+#: ../templates/default/pgsql/user/create.html:72
 #, python-format
 msgid "You can create <strong>%d</strong> more mail user(s) under domain %s."
 msgstr "Вы можете создать еще <strong>%d</strong> ящиков в домене %s."
 
-#: ../templates/default/dbmail_mysql/alias/create.html:32
-#: ../templates/default/mysql/alias/create.html:44
-#: ../templates/default/pgsql/alias/create.html:44
+#: ../templates/default/mysql/alias/create.html:45
+#: ../templates/default/pgsql/alias/create.html:45
 #, python-format
 msgid "You can't create mail aliases under domain %s."
 msgstr "Вы не можете создать больше алиасов в домене %s."
@@ -3381,18 +3268,17 @@ msgstr "Вы не можете создать больше алиасов в д�
 msgid "You can't create more mail lists under domain %s."
 msgstr "Вы не можете создать больше списков в домене %s"
 
-#: ../templates/default/dbmail_mysql/search.html:255
 #: ../templates/default/ldap/search.html:341
-#: ../templates/default/mysql/search.html:325
-#: ../templates/default/pgsql/search.html:325
+#: ../templates/default/mysql/search.html:321
+#: ../templates/default/pgsql/search.html:321
 msgid "Your search returned no hits."
 msgstr "Поиск не вернул результатов"
 
-#: ../templates/default/macros/general.html:598
+#: ../templates/default/macros/general.html:588
 msgid "default transport"
 msgstr "транспорт по умолчанию"
 
-#: ../templates/default/macros/general.html:602
+#: ../templates/default/macros/general.html:592
 msgid ""
 "forward emails to host example.com through port 25. The [] form is "
 "required when you specify an IP address instead of a hostname, or disable"
@@ -3405,11 +3291,11 @@ msgstr ""
 msgid "iRedMail Admin Panel"
 msgstr "Панель управления администратора"
 
-#: ../templates/default/macros/general.html:601
+#: ../templates/default/macros/general.html:591
 msgid "receive but discard email, useful for mailboxes like noreply@example.com"
 msgstr "получать, но отвергать если назначено для noreply@example.com"
 
-#: ../templates/default/macros/general.html:192
+#: ../templates/default/macros/general.html:176
 msgid "without verifying local recipients"
 msgstr "без проверки локального получателя"
 
