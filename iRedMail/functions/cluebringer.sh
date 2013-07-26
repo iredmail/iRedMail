@@ -30,7 +30,6 @@ cluebringer_user()
     # User/group will be created during installing binary package on:
     #   - Ubuntu
     #   - openSUSE
-    #   - Gentoo
     if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'SUSE' ]; then
         groupadd ${CLUEBRINGER_GROUP}
         useradd -m -d ${CLUEBRINGER_USER_HOME} -s ${SHELL_NOLOGIN} -g ${CLUEBRINGER_GROUP} ${CLUEBRINGER_USER}

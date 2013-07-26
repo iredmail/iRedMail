@@ -183,15 +183,6 @@ postfix_config_basic()
     postconf -e virtual_gid_maps="static:${VMAIL_USER_GID}"
     postconf -e virtual_mailbox_base="${STORAGE_BASE_DIR}"
 
-    if [ X"${DISTRO}" == X'GENTOO' ]; then
-        cat >> ${SYSLOG_CONF} <<EOF
-# Maillog
-filter f_maillog {facility(mail); };
-destination maillog {file("${MAILLOG}"); };
-log {source(src); filter(f_maillog); destination(maillog); };
-EOF
-    fi
-
     cat >> ${TIP_FILE} <<EOF
 Postfix (basic):
     * Configuration files:

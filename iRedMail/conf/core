@@ -433,28 +433,6 @@ disable_service_debian()
     done
 }
 
-enable_service_gentoo()
-{
-    services="$@"
-    for i in $services; do
-        if [ -x /etc/init.d/$i ]; then
-            ECHO_DEBUG "Enable service: $i."
-            rc-update add $i default
-        fi
-    done
-}
-
-disable_service_gentoo()
-{
-    services="$@"
-    for i in $services; do
-        if [ -x /etc/init.d/$i ]; then
-            ECHO_DEBUG "Disable service: $i."
-            rc-update del $i default
-        fi
-    done
-}
-
 service_control()
 {
     service="$1"
@@ -497,7 +475,6 @@ generate_ssl_keys()
 
     # Create necessary directories.
     mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} 2>/dev/null
-    [ X"${DISTRO}" == X'GENTOO' ] && chmod o+rx ${SSL_KEY_DIR}
 
     openssl req \
         -x509 -nodes -days 3650 -newkey rsa:${SSL_KEY_SIZE} \
@@ -609,117 +586,6 @@ remove_pkg_debian()
     ECHO_INFO "Removing package(s): $@"
     ${APTGET} purge -y $@
     [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
-}
-
-# Install/Remove binary packages on Gentoo
-install_pkg_gentoo()
-{
-    ECHO_INFO "Installing package(s) with option(s) '${GENTOO_EMERGE_INSTALL_OPTIONS}': $@"
-    pkgs_total="$(echo $@ | wc -w)"
-    pkgs_counter=1
-    for pkg in $@; do
-        if [ X"${pkg}" != X'' ]; then
-            portname="$( echo ${pkg} | tr -d '-' | tr -d '/' | tr -d '\.' )"
-            status="\$status_install_port_$portname"
-            if [ X"$(eval echo ${status})" != X"DONE" ]; then
-                ECHO_INFO "Installing package (${pkgs_counter} of ${pkgs_total}): ${pkg}"
-                echo "export status_install_port_${portname}='processing'" >> ${STATUS_FILE}
-
-                # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
-                port_start_time="$(date +%s)"
-
-                emerge ${GENTOO_EMERGE_INSTALL_OPTIONS} ${pkg}
-
-                if [ X"$?" == X"0" ]; then
-                    # Log used time
-                    used_time="$(($(date +%s)-port_start_time))"
-
-                    echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~$((used_time/60)) minutes" >> ${STATUS_FILE}
-                else
-                    ECHO_ERROR "Installation failed, please check the terminal output."
-                    ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
-                    ECHO_ERROR "forum: http://www.iredmail.org/forum/"
-                    exit 255
-                fi
-            else
-                ECHO_INFO "Skip package: ${pkg}."
-            fi
-            pkgs_counter=$((pkgs_counter+1))
-        fi
-    done
-}
-
-remove_pkg_gentoo()
-{
-    ECHO_INFO "Removing package(s): $@"
-    emerge -C $@
-    [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
-}
-
-gentoo_mask_package()
-{
-    [ -f ${GENTOO_CONF_PACKAGE_MASK} ] || touch ${GENTOO_CONF_PACKAGE_MASK}
-    for pkg in $@; do
-        comment_mark="# ${PROG_NAME}-${pkg}"
-        if ! grep "^${comment_mark}$" ${GENTOO_CONF_PACKAGE_MASK} &>/dev/null; then
-            ECHO_DEBUG "Mask packages in ${GENTOO_CONF_PACKAGE_MASK}: $@"
-            echo "${comment_mark}" >> ${GENTOO_CONF_PACKAGE_MASK}
-            echo "${pkg}" >> ${GENTOO_CONF_PACKAGE_MASK}
-        else
-            ECHO_DEBUG "Skip masking packages in ${GENTOO_CONF_PACKAGE_MASK}: $@"
-        fi
-    done
-}
-
-gentoo_unmask_package()
-{
-    [ -f ${GENTOO_CONF_PACKAGE_UNMASK} ] || touch ${GENTOO_CONF_PACKAGE_UNMASK}
-    for pkg in $@; do
-        comment_mark="# ${PROG_NAME}-${pkg}"
-        if ! grep "^${comment_mark}$" ${GENTOO_CONF_PACKAGE_UNMASK} &>/dev/null; then
-            ECHO_DEBUG "Unmask packages in ${GENTOO_CONF_PACKAGE_UNMASK}: $@"
-            echo "${comment_mark}" >> ${GENTOO_CONF_PACKAGE_UNMASK}
-            echo "${pkg}" >> ${GENTOO_CONF_PACKAGE_UNMASK}
-        else
-            ECHO_DEBUG "Skip unmasking packages in ${GENTOO_CONF_PACKAGE_UNMASK}: $@"
-        fi
-    done
-}
-
-gentoo_add_use_flags()
-{
-    # USAGE: gentoo_add_use_flags pkg_name USE_flags
-    [ -f ${GENTOO_CONF_PACKAGE_USE} ] || touch ${GENTOO_CONF_PACKAGE_USE}
-    if [ X"$#" == X'2' ]; then
-        #echo "${1} ${2}" >> /etc/portage/package.use
-        pkg="${1}"
-        use_flags="${2}"
-        comment_mark="# ${PROG_NAME}-${pkg}"
-        if ! grep "^${comment_mark}$" ${GENTOO_CONF_PACKAGE_USE} &>/dev/null; then
-            ECHO_DEBUG "Add USE flags for package ${pkg} in ${GENTOO_CONF_PACKAGE_USE}."
-            echo "${comment_mark}" >> ${GENTOO_CONF_PACKAGE_USE}
-            echo "${pkg} ${use_flags}" >> ${GENTOO_CONF_PACKAGE_USE}
-        else
-            ECHO_DEBUG "Skip adding USE flags for package ${pkg} in ${GENTOO_CONF_PACKAGE_USE}."
-        fi
-    fi
-}
-
-gentoo_add_make_conf()
-{
-    # USAGE: gentoo_add_make_conf VARIABLE VALUE
-    if [ X"$#" == X'2' ]; then
-        export VAR="${1}"
-        export VALUE="${2}"
-
-        # Comment out old setting.
-        perl -pi -e 's/($ENV{VAR}.*)/#${1}/' ${GENTOO_CONF_MAKE_CONF}
-
-        # Add new setting.
-        echo "${VAR}='${VALUE}'" >> ${GENTOO_CONF_MAKE_CONF}
-
-        unset VAR VALUE
-    fi
 }
 
 enable_service_openbsd()

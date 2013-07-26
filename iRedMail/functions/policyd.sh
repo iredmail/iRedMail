@@ -79,17 +79,6 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}
 EOF
         fi
 
-    elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        cat >> ${tmp_sql} <<EOF
-CREATE DATABASE ${POLICYD_DB_NAME};
-USE ${POLICYD_DB_NAME}
--- Import SQL structure template.
-SOURCE ${SAMPLE_DIR}/policyd/DATABASE.mysql;
--- Grant privileges.
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${POLICYD_DB_NAME}.* TO "${POLICYD_DB_USER}"@"${SQL_HOSTNAME}" IDENTIFIED BY "${POLICYD_DB_PASSWD}";
-FLUSH PRIVILEGES;
-EOF
-
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         cat > ${tmp_sql} <<EOF
 CREATE DATABASE ${POLICYD_DB_NAME};

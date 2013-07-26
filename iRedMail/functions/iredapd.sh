@@ -42,8 +42,6 @@ iredapd_config()
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.opensuse ${DIR_RC_SCRIPTS}/iredapd
-    elif [ X"${DISTRO}" == X"GENTOO" ]; then
-        cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.gentoo ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then

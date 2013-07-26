@@ -321,11 +321,6 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
 
         # Override settings.
         export SHELL_NOLOGIN='/usr/sbin/nologin'
-
-    elif [ -f /etc/gentoo-release ]; then
-        # Gentoo
-        export DISTRO='GENTOO'
-
     else
         export UNSUPPORTED_RELEASE='YES'
     fi
@@ -518,51 +513,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
-
-elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    # Gentoo
-    # System user: root. Note: not all OSes have group 'root'.
-    export SYS_ROOT_USER='root'
-    export SYS_ROOT_GROUP='root'
-
-    export install_pkg='install_pkg_gentoo'
-    export remove_pkg="remove_pkg_gentoo"
-    export LIST_ALL_PKGS='qlist --installed'
-    export LIST_FILES_IN_PKG='equery files'
-
-    # Service control. Defined in file: conf/core.
-    export enable_service='enable_service_gentoo'
-    export disable_service='disable_service_gentoo'
-
-    # Syslog config file: syslog-ng.
-    export SYSLOG_CONF='/etc/syslog-ng/syslog-ng.conf'
-    export SYSLOG_POSTROTATE_CMD=''
-
-    # Crontab related.
-    export CRON_SPOOL_DIR='/var/spool/cron/crontabs'
-
-    # Directory /etc/sysconfig/ on RHEL/CentOS.
-    export ETC_SYSCONFIG_DIR='/etc/conf.d'
-
-    # iptables rule file.
-    export FIREWALL_RULE_CONF="/var/lib/iptables/rules-save"
-
-    # Directory used to store SSL/TLS key/cert file.
-    export SSL_FILE_DIR="/etc/ssl"
-
-    # Override default value.
-    export VMAIL_GROUP_NAME='mail'
-    export PKG_DIALOG="dialog"
-    export PKG_BZIP2="bzip2"
-
-    # make.conf
-    export GENTOO_CONF_MAKE_CONF='/etc/portage/make.conf'
-
-    # Options used for install package
-    export GENTOO_EMERGE_INSTALL_OPTIONS='--binpkg-respect-use --buildpkg'
-    export GENTOO_CONF_PACKAGE_USE='/etc/portage/package.use'
-    export GENTOO_CONF_PACKAGE_MASK='/etc/portage/package.mask'
-    export GENTOO_CONF_PACKAGE_UNMASK='/etc/portage/package.unmask'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export ENABLE_BACKEND_PGSQL='YES'

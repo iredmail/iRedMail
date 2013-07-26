@@ -83,7 +83,6 @@ EOF
         # Use mod_auth_mysql.
         if [ X"${DISTRO}" == X"RHEL" \
             -o X"${DISTRO}" == X"SUSE" \
-            -o X"${DISTRO}" == X"GENTOO" \
             -o X"${DISTRO}" == X"FREEBSD" \
             ]; then
             cat >> ${AWSTATS_HTTPD_CONF} <<EOF
@@ -109,7 +108,6 @@ EOF
 
             # openSUSE & FreeBSD special.
             if [ X"${DISTRO}" == X"SUSE" \
-                -o X"${DISTRO}" == X"GENTOO" \
                 -o X"${DISTRO}" == X"FREEBSD" \
                 ]; then
                 echo "    AuthBasicAuthoritative Off" >> ${AWSTATS_HTTPD_CONF}

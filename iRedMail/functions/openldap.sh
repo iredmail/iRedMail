@@ -62,14 +62,6 @@ openldap_config()
         # Set config backend.
         perl -pi -e 's#^(OPENLDAP_CONFIG_BACKEND=).*#${1}"files"#' ${OPENLDAP_SYSCONFIG_CONF}
 
-    elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        # Comment out default option which uses slapd.d.
-        perl -pi -e 's/^(OPTS=.*)/#${1}/' ${OPENLDAP_SYSCONFIG_CONF}
-
-        # Enable slapd.conf instead of slapd.d.
-        cat >> ${OPENLDAP_SYSCONFIG_CONF} <<EOF
-OPTS="-f ${OPENLDAP_SLAPD_CONF} -h 'ldaps:// ldap:// ldapi://%2fvar%2frun%2fopenldap%2fslapd.sock'"
-EOF
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable TLS/SSL support
         cat >> ${RC_CONF_LOCAL} <<EOF
@@ -362,13 +354,6 @@ EOF
     if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
         echo -e '!slapd' >> ${SYSLOG_CONF}
         echo -e "*.*\t\t\t\t\t\t${OPENLDAP_LOGFILE}" >> ${SYSLOG_CONF}
-    elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        cat >> ${SYSLOG_CONF} <<EOF
-# OpenLDAP
-filter f_local4         {facility(local4); };
-destination slapd {file("/var/log/openldap.log"); };
-log {source(src); filter(f_local4); destination(slapd); };
-EOF
     else
         echo -e "local4.*\t\t\t\t\t\t-${OPENLDAP_LOGFILE}" >> ${SYSLOG_CONF}
     fi

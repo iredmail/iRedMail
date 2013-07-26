@@ -31,10 +31,8 @@ mysql_initialize()
 
     ECHO_DEBUG "Starting MySQL."
 
-    # Gentoo, OpenBSD: Initial MySQL database first
-    if [ X"${DISTRO}" == X"GENTOO" ]; then
-        /usr/bin/mysql_install_db &>/dev/null
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    # Initial MySQL database first
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
         /usr/local/bin/mysql_install_db &>/dev/null
     fi
 

@@ -96,16 +96,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/lib/ldap'
 
-elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
-    export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/slapd"
-
-    # Module related.
-    export OPENLDAP_MODULE_PATH='/usr/lib/openldap/openldap'
-
-    # Override default path
-    export OPENLDAP_DATA_DIR='/var/lib/openldap-data'
-
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Configuration files.
     export OPENLDAP_CONF_ROOT='/usr/local/etc/openldap'

@@ -1,6 +1,7 @@
 iRedMail-0.8.6:
     * Drop support for below releases:
         + Debian 6 (squeeze)
+        + Gentoo
 
 iRedMail-0.8.5:
     * Use EPEL yum repo on RHEL/CentOS 6 by default.

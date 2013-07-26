@@ -280,11 +280,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Force update.
     ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."
     ${APTGET} update
-elif [ X"${DISTRO}" == X'GENTOO' ]; then
-    # qlist is used to list all installed portages (qlist --installed).
-    check_pkg 'qlist' 'portage-utils'
-    check_pkg 'equery' 'gentoolkit'
-    check_pkg 'crontab' 'vixie-cron'
 fi
 
 check_status_before_run fetch_misc && \

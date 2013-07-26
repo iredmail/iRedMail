@@ -39,10 +39,6 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
 elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
     export MYSQL_MY_CNF='/etc/mysql/my.cnf'
 
-elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    export MYSQL_MY_CNF='/etc/mysql/my.cnf'
-    export MYSQL_SOCKET='/var/run/mysqld/mysql.sock'
-
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export MYSQL_RC_SCRIPT_NAME='mysql-server'
     export MYSQL_SOCKET='/tmp/mysql.sock'

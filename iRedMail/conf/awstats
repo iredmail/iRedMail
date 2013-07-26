@@ -64,14 +64,6 @@ elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
     # This path will be changed in 'functions/awstats.sh'.
     export AWSTATS_CGI_DIR="/usr/lib/cgi-bin"
 
-elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    export AWSTATS_CONF_SAMPLE="${AWSTATS_CONF_DIR}/awstats.model.conf"
-    export AWSTATS_HTTPD_ROOT='/usr/share/awstats/wwwroot'
-    export AWSTATS_CGI_DIR="${AWSTATS_HTTPD_ROOT}/cgi-bin"
-    export AWSTATS_ICON_DIR="${AWSTATS_HTTPD_ROOT}/icon"
-    export AWSTATS_CSS_DIR="${AWSTATS_HTTPD_ROOT}/css"
-    export AWSTATS_JS_DIR="${AWSTATS_HTTPD_ROOT}/js"
-
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export AWSTATS_HTTPD_ROOT="${HTTPD_SERVERROOT}/awstats"
     export AWSTATS_ICON_DIR="${AWSTATS_HTTPD_ROOT}/icon"

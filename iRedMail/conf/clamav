@@ -64,8 +64,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 fi
 
 # Clamd local socket.
-if [ X"${DISTRO}" == X"GENTOO" \
-    -o X"${DISTRO}" == X"FREEBSD" \
-    ]; then
+if [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLAMD_LOCAL_SOCKET='/var/run/clamav/clamd.sock'
 fi

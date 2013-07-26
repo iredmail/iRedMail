@@ -106,9 +106,6 @@ amavisd_config_rhel()
     ECHO_INFO "Configure Amavisd-new (interface between MTA and content checkers)."
 
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        [ X"${DISTRO_VERSION}" == X"6" ] && \
-            usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER} >/dev/null
-    elif [ X"${DISTRO}" == X'GENTOO' ]; then
         usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER} >/dev/null
     fi
 
@@ -751,7 +748,6 @@ amavisd_config()
 {
     if [ X"${DISTRO}" == X"RHEL" \
         -o X"${DISTRO}" == X'SUSE' \
-        -o X"${DISTRO}" == X'GENTOO' \
         -o X"${DISTRO}" == X'FREEBSD' \
         -o X"${DISTRO}" == X'OPENBSD' \
         ]; then

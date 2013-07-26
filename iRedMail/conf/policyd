@@ -94,19 +94,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Path of policyd-clean
     export POLICYD_CLEANUP_BIN='/usr/lib/postfix-policyd/cleanup'
 
-elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    export PKG_POLICYD='policyd'
-    export POLICYD_CONF='/etc/policyd.conf'
-    export POLICYD_THROTTLE_CONF='/etc/policyd_sender_throttle.conf'
-    export POLICYD_THROTTLE_PIDFILE='/var/run/policyd_sender_throttle.pid'
-
-    # Database.
-    export POLICYD_DB_NAME='policyd'
-    export POLICYD_DB_USER='policyd'
-
-    # Path of policyd-clean
-    export POLICYD_CLEANUP_BIN='/usr/sbin/policyd_cleanup'
-
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export PKG_POLICYD='postfix-policyd-sf'
     export POLICYD_CONF='/usr/local/etc/postfix-policyd-sf.conf'

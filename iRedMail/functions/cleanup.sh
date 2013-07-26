@@ -203,7 +203,7 @@ cleanup_replace_mysql_config()
 
 cleanup_update_compile_spamassassin_rules()
 {
-    # Required on Gentoo and FreeBSD to start Amavisd-new.
+    # Required on FreeBSD to start Amavisd-new.
     ECHO_INFO "Updating SpamAssassin rules (sa-update), please wait ..."
     ${BIN_SA_UPDATE} &>/dev/null
 
@@ -388,10 +388,7 @@ EOF
     ${DOVECOT_DELIVER} -c ${DOVECOT_CONF} -f root@${HOSTNAME} -d ${tip_recipient} < /tmp/.links.eml
     rm -f /tmp/.links.eml &>/dev/null
 
-    if [ X"${DISTRO}" == X'GENTOO' \
-        -o X"${DISTRO}" == X'FREEBSD' \
-        -o X"${DISTRO}" == X'OPENBSD' \
-        ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
         check_status_before_run cleanup_update_compile_spamassassin_rules
     fi
 
@@ -425,7 +422,6 @@ EOF
 
     # Reboot system to enable mail related services.
     # - FreeBSD: sendmail is binding to port '25'
-    # - Gentoo: some services may require system reboot
     cat <<EOF
 
 ********************************************************************

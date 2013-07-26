@@ -154,7 +154,6 @@ EOF
 
     elif [ X"${DISTRO}" == X"DEBIAN" \
         -o X"${DISTRO}" == X"UBUNTU" \
-        -o X"${DISTRO}" == X'GENTOO' \
         ]; then
         perl -pi -e 's#^([ \t]+SSLCertificateFile)(.*)#${1} $ENV{SSL_CERT_FILE}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^([ \t]+SSLCertificateKeyFile)(.*)#${1} $ENV{SSL_KEY_FILE}#' ${HTTPD_SSL_CONF}
@@ -193,24 +192,6 @@ EOF
 
         [ X"${BACKEND}" == X"MYSQL" ] && a2enmod auth_mysql &>/dev/null
 
-    elif [ X"${DISTRO}" == X'GENTOO' ]; then
-        # Enable modules: php, wsgi
-        perl -pi -e 's#^(APACHE2_OPTS=.*)(")#${1} -D PHP5 -D WSGI${2}#' ${HTTPD_SYSCONFIG_CONF}
-
-        # Modules: ldap, authnz_ldap
-        [ X"${BACKEND}" == X"OPENLDAP" ] && \
-            perl -pi -e 's#^(APACHE2_OPTS=.*)(")#${1} -D LDAP -D AUTHNZ_LDAP${2}#' ${HTTPD_SYSCONFIG_CONF}
-
-        # Module: mod_auth_mysql
-        [ X"${BACKEND}" == X'MYSQL' ] && \
-            perl -pi -e 's#^(APACHE2_OPTS=.*)(")#${1} -D AUTH_MYSQL${2}#' ${HTTPD_SYSCONFIG_CONF}
-
-        # Module: mod_auth_pgsql
-        [ X"${BACKEND}" == X'PGSQL' ] && \
-            perl -pi -e 's#^(APACHE2_OPTS=.*)(")#${1} -D AUTH_PGSQL${2}#' ${HTTPD_SYSCONFIG_CONF}
-
-        # Disable modules: mod_proxy_scgi
-        perl -pi -e 's/^(LoadModule.*mod_proxy_scgi.*)/#${1}/' ${HTTPD_CONF_ROOT}/httpd.conf
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && \
             perl -pi -e 's/^#(LoadModule.*ldap_module.*)/${1}/' ${HTTPD_CONF}
@@ -222,12 +203,7 @@ EOF
             perl -pi -e 's/^#(LoadModule.*auth_pgsql_module.*)/${1}/' ${HTTPD_CONF}
     fi
 
-    if [ X"${DISTRO}" == X'GENTOO' ]; then
-        # Change 'Deny from all' to 'Allow from all'.
-        sed -i '/Order deny,allow/,/Deny from all/s#Deny\ from\ all#Allow\ from\ all#' ${HTTPD_CONF_DIR}/00_default_settings.conf
-        sed -i '/Order deny,allow/,/All from all/s#Order\ deny,allow#Order\ allow,deny#' ${HTTPD_CONF_DIR}/00_default_settings.conf
-
-    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Configure Apache."
         # With Apache2.2 it now wants to load an Accept Filter.
         echo 'accf_http_load="YES"' >> /boot/loader.conf &>/dev/null

@@ -100,30 +100,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export PHP_INI='/etc/php5/apache2/php.ini'
     export PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
 
-elif [ X"${DISTRO}" == X"GENTOO" ]; then
-    # Apache configuration files.
-    export HTTPD_CONF_ROOT="/etc/apache2"
-    export HTTPD_CONF="${HTTPD_CONF_ROOT}/modules.d/00_default_settings.conf"
-    export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/modules.d"
-    export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/vhosts.d/00_default_ssl_vhost.conf"
-    export HTTPD_WSGI_CONF="${HTTPD_CONF_DIR}/70_mod_wsgi.conf"
-    export HTTPD_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/apache2"
-
-    # Web data.
-    export HTTPD_SERVERROOT='/var/www'
-    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/localhost/htdocs"
-
-    # Daemon user.
-    export HTTPD_USER='apache'
-    export HTTPD_GROUP='apache'
-
-    # Log file location.
-    export HTTPD_LOG_ACCESSLOG='/var/log/apache2/access_log'
-    export HTTPD_LOG_ERRORLOG='/var/log/apache2/error_log'
-
-    # ---- PHP ----
-    export PHP_INI='/etc/php/apache2-php5.3/php.ini'
-
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export HTTPD_RC_SCRIPT_NAME='apache22'
 
