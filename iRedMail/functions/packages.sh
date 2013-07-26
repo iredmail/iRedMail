@@ -91,10 +91,7 @@ install_all()
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # MySQL server and client.
-            ALL_PKGS="${ALL_PKGS} mysql-server mysql-client postfix-mysql"
-
-            # For Awstats.
-            [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
+            ALL_PKGS="${ALL_PKGS} mysql-server mysql-client postfix-mysql libapache2-mod-auth-mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} mysql-client cyrus-sasl--mysql mysql-server"
@@ -117,7 +114,7 @@ install_all()
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
-            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
+            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql libapache2-mod-auth-pgsql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-client cyrus-sasl--pgsql postgresql-server postgresql-contrib"

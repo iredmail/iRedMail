@@ -29,19 +29,16 @@ export PGSQL_SYS_GROUP='postgres'
 
 export PGSQL_SYS_USER_HOME='/var/lib/postgresql'
 
-export PGSQL_VERSION='9.1'
 export PGSQL_RC_SCRIPT_NAME='postgresql'
 
 export PGSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.pgsql"
 export PGSQL_INIT_SQL_SAMPLE="${CONF_DIR}/pgsql_init.pgsql"
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
-    # RHEL/CENTOS 6
-    export PGSQL_VERSION='8.4'
+    # RHEL/CENTOS 6 ships PostgreSQL-8.4
     export PGSQL_SYS_USER_HOME='/var/lib/pgsql'
     export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
 
-    export PGSQL_CONF_DIR="${PGSQL_DATA_DIR}"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 
@@ -49,34 +46,33 @@ elif [ X"${DISTRO}" == X'SUSE' ]; then
     export PGSQL_SYS_USER_HOME='/var/lib/pgsql'
     export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
 
-    export PGSQL_CONF_DIR="${PGSQL_DATA_DIR}"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
+
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    export PGSQL_VERSION='9.1'
+    export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"
+    export PGSQL_CONF_DIR="/etc/postgresql/${PGSQL_VERSION}/main"
+    export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
+    export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PGSQL_SYS_USER='pgsql'
     export PGSQL_SYS_GROUP='pgsql'
     export PGSQL_SYS_USER_HOME='/usr/local/pgsql'
 
-    export PGSQL_CONF_DIR="${PGSQL_SYS_USER_HOME}/data"
-    export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
-    export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
-    export PGSQL_DATA_DIR="${PGSQL_CONF_DIR}"
+    export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
+    export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
+    export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export PGSQL_SYS_USER='_postgresql'
     export PGSQL_SYS_GROUP='_postgresql'
     export PGSQL_SYS_USER_HOME='/var/postgresql'
 
-    export PGSQL_CONF_DIR="${PGSQL_SYS_USER_HOME}/data"
-    export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
-    export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
-    export PGSQL_DATA_DIR="${PGSQL_CONF_DIR}"
-else
-    export PGSQL_CONF_DIR="/etc/postgresql/${PGSQL_VERSION}/main"
-    export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"
-    export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
-    export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"
+    export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
+    export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
+    export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 fi
 
 export PGSQL_ROOT_USER="${PGSQL_SYS_USER}"
