@@ -117,7 +117,6 @@ fi
 . ${FUNCTIONS_DIR}/policy_server.sh
 . ${FUNCTIONS_DIR}/iredapd.sh
 . ${FUNCTIONS_DIR}/dovecot.sh
-. ${FUNCTIONS_DIR}/managesieve.sh
 . ${FUNCTIONS_DIR}/clamav.sh
 . ${FUNCTIONS_DIR}/amavisd.sh
 . ${FUNCTIONS_DIR}/spamassassin.sh
@@ -170,9 +169,6 @@ check_status_before_run policy_server_config
 
 # Dovecot.
 check_status_before_run enable_dovecot
-
-# Managesieve.
-check_status_before_run managesieve_config
 
 # ClamAV.
 check_status_before_run clamav_config

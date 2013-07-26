@@ -29,8 +29,5 @@ enable_dovecot()
     if [ X"${DOVECOT_VERSION}" == X"2" ]; then
         . ${FUNCTIONS_DIR}/dovecot2.sh
         check_status_before_run enable_dovecot2
-    else
-        . ${FUNCTIONS_DIR}/dovecot1.sh
-        check_status_before_run enable_dovecot1
     fi
 }
