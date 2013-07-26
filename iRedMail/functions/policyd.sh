@@ -101,7 +101,7 @@ SOURCE ${SAMPLE_DIR}/policyd/whitelist.sql;
 SOURCE ${SAMPLE_DIR}/policyd/blacklist_helo.sql;
 EOF
 
-    mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+    mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 $(cat ${tmp_sql})
 USE ${POLICYD_DB_NAME};
 ALTER TABLE blacklist MODIFY COLUMN _description CHAR(60) CHARACTER SET utf8;
@@ -144,7 +144,7 @@ EOF
     # -------------------------------------------------------------
     # ---- DATABASE CONFIG ----
 
-    perl -pi -e 's#^(MYSQLHOST=)(.*)#${1}"$ENV{MYSQL_SERVER}"#' ${POLICYD_CONF} ${POLICYD_THROTTLE_CONF}
+    perl -pi -e 's#^(MYSQLHOST=)(.*)#${1}"$ENV{SQL_SERVER}"#' ${POLICYD_CONF} ${POLICYD_THROTTLE_CONF}
     perl -pi -e 's#^(MYSQLDBASE=)(.*)#${1}"$ENV{POLICYD_DB_NAME}"#' ${POLICYD_CONF} ${POLICYD_THROTTLE_CONF}
     perl -pi -e 's#^(MYSQLUSER=)(.*)#${1}"$ENV{POLICYD_DB_USER}"#' ${POLICYD_CONF} ${POLICYD_THROTTLE_CONF}
     perl -pi -e 's#^(MYSQLPASS=)(.*)#${1}"$ENV{POLICYD_DB_PASSWD}"#' ${POLICYD_CONF} ${POLICYD_THROTTLE_CONF}

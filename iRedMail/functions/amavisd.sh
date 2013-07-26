@@ -569,7 +569,7 @@ EOF
         cat >> ${AMAVISD_CONF} <<EOF
 # Uncomment below two lines to lookup virtual mail domains from MySQL database.
 #@lookup_sql_dsn =  (
-#    ['DBI:mysql:database=${VMAIL_DB};host=${MYSQL_SERVER};port=${MYSQL_SERVER_PORT}', '${VMAIL_DB_BIND_USER}', '${VMAIL_DB_BIND_PASSWD}'],
+#    ['DBI:mysql:database=${VMAIL_DB};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${VMAIL_DB_BIND_USER}', '${VMAIL_DB_BIND_PASSWD}'],
 #);
 # For Amavisd-new-2.7.0 and later versions. Placeholder '%d' is available in Amavisd-2.7.0+.
 #\$sql_select_policy = "SELECT domain FROM domain WHERE domain='%d'";
@@ -706,7 +706,7 @@ amavisd_import_sql()
     ECHO_DEBUG "Import Amavisd database and privileges."
 
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 -- Create database
 CREATE DATABASE ${AMAVISD_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 

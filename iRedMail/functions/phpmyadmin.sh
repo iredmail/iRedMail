@@ -37,7 +37,7 @@ phpmyadmin_install()
 
     perl -pi -e 's#(.*Servers.*host.*=.*)localhost(.*)#${1}$ENV{SQL_SERVER}${2}#' ${PHPMYADMIN_CONFIG_FILE}
 
-    if [ X"${MYSQL_SERVER}" == X"localhost" ]; then
+    if [ X"${SQL_SERVER}" == X"localhost" ]; then
         # Use unix socket.
         perl -pi -e 's#(.*Servers.*connect_type.*=).*#${1}"socket";#' ${PHPMYADMIN_CONFIG_FILE}
     else

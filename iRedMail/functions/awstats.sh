@@ -89,8 +89,8 @@ EOF
     AuthType Basic
 
     AuthMYSQLEnable On
-    AuthMySQLHost ${MYSQL_SERVER}
-    AuthMySQLPort ${MYSQL_SERVER_PORT}
+    AuthMySQLHost ${SQL_SERVER}
+    AuthMySQLPort ${SQL_SERVER_PORT}
     AuthMySQLUser ${VMAIL_DB_BIND_USER}
     AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
     AuthMySQLDB ${VMAIL_DB}
@@ -140,7 +140,7 @@ EOF
             cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server, username, password.
-Auth_MySQL_Info ${MYSQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
+Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
         fi
@@ -150,8 +150,8 @@ EOF
         cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     AuthType Basic
     Auth_PG_authoritative on
-    Auth_PG_host ${PGSQL_SERVER}
-    Auth_PG_port ${PGSQL_SERVER_PORT}
+    Auth_PG_host ${SQL_SERVER}
+    Auth_PG_port ${SQL_SERVER_PORT}
     Auth_PG_database ${VMAIL_DB}
     Auth_PG_user ${VMAIL_DB_BIND_USER}
     Auth_PG_pwd ${VMAIL_DB_BIND_PASSWD}

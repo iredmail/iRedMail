@@ -40,8 +40,8 @@ EOF
     ECHO_DEBUG "Config phpPgAdmin: ${PHPPGADMIN_CONFIG_FILE}."
     cd ${PHPPGADMIN_HTTPD_ROOT} && cp config.inc.php-dist ${PHPPGADMIN_CONFIG_FILE} &>/dev/null
 
-    perl -pi -e 's#(.*servers.*host.*=).*#${1} "$ENV{PGSQL_SERVER}";#' ${PHPPGADMIN_CONFIG_FILE}
-    perl -pi -e 's#(.*servers.*port.*=).*#${1} $ENV{PGSQL_SERVER_PORT};#' ${PHPPGADMIN_CONFIG_FILE}
+    perl -pi -e 's#(.*servers.*host.*=).*#${1} "$ENV{SQL_SERVER}";#' ${PHPPGADMIN_CONFIG_FILE}
+    perl -pi -e 's#(.*servers.*port.*=).*#${1} $ENV{SQL_SERVER_PORT};#' ${PHPPGADMIN_CONFIG_FILE}
     perl -pi -e 's#(.*servers.*sslmode.*=).*#${1} "require";#' ${PHPPGADMIN_CONFIG_FILE}
 
     perl -pi -e 's#(.*servers.*pg_dump_path.*=).*#${1} "$ENV{PGSQL_BIN_PG_DUMP}";#' ${PHPPGADMIN_CONFIG_FILE}

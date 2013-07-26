@@ -72,7 +72,7 @@ rcm_import_sql()
 
     # Initial roundcube db.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 -- Create database and grant privileges
 CREATE DATABASE ${RCM_DB} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${RCM_DB}.* TO "${RCM_DB_USER}"@"${SQL_HOSTNAME}" IDENTIFIED BY '${RCM_DB_PASSWD}';
@@ -110,7 +110,7 @@ EOF
 
     # Do not grant privileges while backend is not MySQL.
     if [ X"${BACKEND}" == X"MYSQL" ]; then
-        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 -- Grant privileges for Roundcubemail, so that user can change
 -- their own password and setting mail forwarding.
 GRANT UPDATE,SELECT ON ${VMAIL_DB}.mailbox TO "${RCM_DB_USER}"@"${SQL_HOSTNAME}";
@@ -131,7 +131,7 @@ rcm_config()
 
     cd ${RCM_HTTPD_ROOT}/config/
 
-    export RCM_DB_USER RCM_DB_PASSWD RCMD_DB MYSQL_SERVER PGSQL_SERVER SQL_SERVER FIRST_DOMAIN
+    export RCM_DB_USER RCM_DB_PASSWD RCMD_DB SQL_SERVER FIRST_DOMAIN
 
     perl -pi -e 's#(.*db_dsnw.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER}/$ENV{RCM_DB}";#' db.inc.php
 
@@ -419,7 +419,7 @@ rcm_plugin_password()
         sed '/password_query/,$d' config.inc.php.dist > config.inc.php.tmp
         # Update 'password_query' setting.
         cat >> config.inc.php.tmp <<EOF
-\$rcmail_config['password_query'] = "SELECT * from dblink_exec(E'host=\'${PGSQL_SERVER}\' user=\'${RCM_DB_USER}\' password=\'${RCM_DB_PASSWD}\' dbname=\'${VMAIL_DB}\'', E'UPDATE mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u')";
+\$rcmail_config['password_query'] = "SELECT * from dblink_exec(E'host=\'${SQL_SERVER}\' user=\'${RCM_DB_USER}\' password=\'${RCM_DB_PASSWD}\' dbname=\'${VMAIL_DB}\'', E'UPDATE mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u')";
 EOF
 
         #perl -pi -e 's#(.*password_query.*)##' config.inc.php.tmp

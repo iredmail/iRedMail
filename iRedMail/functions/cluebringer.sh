@@ -88,21 +88,27 @@ cluebringer_config()
 
     # DSN
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-        perl -pi -e 's/^(#*)(DSN=DBI:mysql:).*/${2}host=$ENV{MYSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
+        perl -pi -e 's/^(#*)(DSN=DBI:mysql:).*/${2}host=$ENV{SQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Type=).*/${1}mysql/' ${CLUEBRINGER_CONF}
-        perl -pi -e 's/^(DB_Host=).*/${1}$ENV{MYSQL_SERVER}/' ${CLUEBRINGER_CONF}
-        perl -pi -e 's/^(DB_Port=).*/${1}$ENV{MYSQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         # Comment out all default DSN settings
+        perl -pi -e 's/^(DB_Type=).*/${1}pgsql/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DSN=.*)/#${1}/g' ${CLUEBRINGER_CONF}
-        perl -pi -e 's/^(Username=.*)/#${1}/g' ${CLUEBRINGER_CONF}
-        perl -pi -e 's/^(Password=.*)/#${1}/g' ${CLUEBRINGER_CONF}
 
-        perl -pi -e 's#^(.database.)$#${1}\nDSN=DBI:Pg:host=$ENV{PGSQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}#' ${CLUEBRINGER_CONF}
+        perl -pi -e 's#^(.database.)$#${1}\nDSN=DBI:Pg:host=$ENV{SQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}#' ${CLUEBRINGER_CONF}
     fi
 
     # Database
+    # Uncomment variables first.
+    perl -pi -e 's/^#(DB_Host=.*)/${1}/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^#(DB_Port=.*)/${1}/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^#(DB_Name=.*)/${1}/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^#(Username=.*)/${1}/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^#(Password=.*)/${1}/' ${CLUEBRINGER_CONF}
+    # Set proper values
+    perl -pi -e 's/^(DB_Host=).*/${1}$ENV{SQL_SERVER}/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^(DB_Port=).*/${1}$ENV{SQL_SERVER_PORT}/' ${CLUEBRINGER_CONF}
     perl -pi -e 's/^(DB_Name=).*/${1}$ENV{CLUEBRINGER_DB_NAME}/' ${CLUEBRINGER_CONF}
     perl -pi -e 's/^(Username=).*/${1}$ENV{CLUEBRINGER_DB_USER}/' ${CLUEBRINGER_CONF}
     perl -pi -e 's/^(Password=).*/${1}$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
@@ -244,7 +250,7 @@ EOF
     # Initial cluebringer db.
     # Enable greylisting on all inbound emails by default.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-        mysql -h${MYSQL_SERVER} -P${MYSQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
 $(cat ${tmp_sql})
 EOF
 
@@ -395,8 +401,8 @@ EOF
     AuthType Basic
 
     AuthMYSQLEnable On
-    AuthMySQLHost ${MYSQL_SERVER}
-    AuthMySQLPort ${MYSQL_SERVER_PORT}
+    AuthMySQLHost ${SQL_SERVER}
+    AuthMySQLPort ${SQL_SERVER_PORT}
     AuthMySQLUser ${VMAIL_DB_BIND_USER}
     AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
     AuthMySQLDB ${VMAIL_DB}
@@ -441,7 +447,7 @@ EOF
             cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server, username, password.
-Auth_MySQL_Info ${MYSQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
+Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
         fi  # DISTRO
@@ -450,8 +456,8 @@ EOF
         # Use mod_auth_pgsql.
         cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     Auth_PG_authoritative on
-    Auth_PG_host ${PGSQL_SERVER}
-    Auth_PG_port ${PGSQL_SERVER_PORT}
+    Auth_PG_host ${SQL_SERVER}
+    Auth_PG_port ${SQL_SERVER_PORT}
     Auth_PG_database ${VMAIL_DB}
     Auth_PG_user ${VMAIL_DB_BIND_USER}
     Auth_PG_pwd ${VMAIL_DB_BIND_PASSWD}
