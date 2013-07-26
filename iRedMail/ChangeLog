@@ -1,3 +1,7 @@
+iRedMail-0.8.6:
+    * Drop support for below releases:
+        + Debian 6 (squeeze)
+
 iRedMail-0.8.5:
     * Use EPEL yum repo on RHEL/CentOS 6 by default.
     * Update SQL triggers to insert value for column 'used_quota.domain'

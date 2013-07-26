@@ -63,10 +63,6 @@ if [ X"${DISTRO}" == X"SUSE" ]; then
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'squeeze' ]; then
-        export DOVECOT_VERSION='1.2'
-    fi
-
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
@@ -119,8 +115,4 @@ elif [ X"${BACKEND}" == X"PGSQL" ]; then
     export DOVECOT_REALTIME_QUOTA_SQLTYPE='pgsql'
 fi
 
-if [ X"${DOVECOT_VERSION}" == X"1.2" ]; then
-    export DOVECOT_PROTOCOLS="pop3 pop3s imap imaps managesieve"
-else
-    export DOVECOT_PROTOCOLS="pop3 imap sieve"
-fi
+export DOVECOT_PROTOCOLS="pop3 imap sieve"

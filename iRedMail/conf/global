@@ -310,10 +310,7 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         export DISTRO_VERSION="$(cat /etc/debian_version)"
 
         # Set distro code name and unsupported releases.
-        if grep '^6' /etc/debian_version &>/dev/null; then
-            export DISTRO_VERSION='6'
-            export DISTRO_CODENAME='squeeze'
-        elif grep '^7' /etc/debian_version &>/dev/null || \
+        if grep '^7' /etc/debian_version &>/dev/null || \
             grep -i '^wheezy' /etc/debian_version &>/dev/null; then
             export DISTRO_VERSION='7'
             export DISTRO_CODENAME='wheezy'

@@ -80,9 +80,7 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Debian 7 (wheezy) and Ubuntu 13.04 (raring) ships Amavisd-new-2.7
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
-        if [ X"${DISTRO_CODENAME}" != X'squeeze' ]; then
-            export AMAVISD_VERSION='2.7'
-        fi
+        export AMAVISD_VERSION='2.7'
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         if [ X"${DISTRO_CODENAME}" != X'precise' ]; then
             export AMAVISD_VERSION='2.7'

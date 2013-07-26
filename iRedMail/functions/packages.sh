@@ -162,10 +162,8 @@ install_all()
         # Authentication modules
         ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql libapache2-mod-auth-pgsql"
 
-        if [ X"${DISTRO_CODENAME}" != X'squeeze' ]; then
-            if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-                ALL_PKGS="${ALL_PKGS} php-net-ldap2"
-            fi
+        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+            ALL_PKGS="${ALL_PKGS} php-net-ldap2"
         fi
 
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
@@ -273,18 +271,14 @@ install_all()
         fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d"
+        ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d dovecot-managesieved dovecot-sieve"
 
-        if [ X"${DISTRO_CODENAME}" != X'squeeze' ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot-managesieved dovecot-sieve"
-
-            if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-                ALL_PKGS="${ALL_PKGS} dovecot-ldap dovecot-mysql"
-            elif [ X"${BACKEND}" == X"MYSQL" ]; then
-                ALL_PKGS="${ALL_PKGS} dovecot-mysql"
-            elif [ X"${BACKEND}" == X"PGSQL" ]; then
-                ALL_PKGS="${ALL_PKGS} dovecot-pgsql"
-            fi
+        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot-ldap dovecot-mysql"
+        elif [ X"${BACKEND}" == X"MYSQL" ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot-mysql"
+        elif [ X"${BACKEND}" == X"PGSQL" ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot-pgsql"
         fi
     elif [ X"${DISTRO}" == X'GENTOO' ]; then
         ALL_PKGS="${ALL_PKGS} dovecot"

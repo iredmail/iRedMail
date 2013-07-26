@@ -74,8 +74,6 @@ export pkg_counter=1
 # Misc file (source tarball) list.
 if [ X"${DISTRO}" == X"FREEBSD" ]; then
     PKGMISC='SHASUM.freebsd.misc'
-elif [ X"${DISTRO}" == X"DEBIAN" -a X"${DISTRO_CODENAME}" == X"squeeze" ]; then
-    PKGMISC='MD5.debian.squeeze'
 elif [ X"${DISTRO}" == X"SUSE" ]; then
     PKGMISC='MD5.misc MD5.opensuse'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
