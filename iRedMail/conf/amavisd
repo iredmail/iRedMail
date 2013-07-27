@@ -41,7 +41,7 @@ export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
 export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
 
 # Amavisd-new-2.7 and 2.8.0 use the same SQL structure, but different from 2.6.
-export AMAVISD_VERSION='2.6'
+export AMAVISD_VERSION='2.7'
 
 # Altermime.
 export ALTERMIME_BIN='/usr/bin/altermime'
@@ -62,9 +62,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
 
 elif [ X"${DISTRO}" == X"SUSE" ]; then
-    # openSUSE-12.1/12.2 ships Amavisd-new-2.7.0
-    export AMAVISD_VERSION='2.7'
-
     # Override global setting: user/group.
     export AMAVISD_SYS_USER='vscan'
     export AMAVISD_SYS_GROUP='vscan'
@@ -79,12 +76,8 @@ elif [ X"${DISTRO}" == X"SUSE" ]; then
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Debian 7 (wheezy) and Ubuntu 13.04 (raring) ships Amavisd-new-2.7
-    if [ X"${DISTRO}" == X'DEBIAN' ]; then
-        export AMAVISD_VERSION='2.7'
-    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-        if [ X"${DISTRO_CODENAME}" != X'precise' ]; then
-            export AMAVISD_VERSION='2.7'
-        fi
+    if [ X"${DISTRO_CODENAME}" == X'precise' ]; then
+        export AMAVISD_VERSION='2.6'
     fi
     export AMAVISD_BIN='/usr/sbin/amavisd-new'
     export AMAVISD_CONF_DIR='/etc/amavis/conf.d'
@@ -95,8 +88,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export AMAVISD_VIRUSMAILS_DIR='/var/lib/amavis/virusmails'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    export AMAVISD_VERSION='2.7'
-
     # Override global setting: user/group.
     export AMAVISD_SYS_USER='vscan'
     export AMAVISD_SYS_GROUP='vscan'
@@ -110,7 +101,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export ALTERMIME_BIN='/usr/local/bin/altermime'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export AMAVISD_VERSION='2.7'
     export AMAVISD_SYS_USER='_vscan'
     export AMAVISD_SYS_GROUP='_vscan'
 
