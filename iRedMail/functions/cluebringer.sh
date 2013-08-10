@@ -115,21 +115,26 @@ cluebringer_config()
 
     # Get SQL structure template file.
     tmp_sql="/tmp/cluebringer_init_sql.${RANDOM}${RANDOM}"
-    if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" ]; then
-        DB_SAMPLE_FILE_NAME='policyd.mysql.sql'
+    if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'SUSE' ]; then
+        if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+            tmp_db_sample_file_name='policyd.mysql.sql'
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            tmp_db_sample_file_name='policyd.pgsql.sql'
+        fi
 
-        if [ X"${DISTRO}" == X'SUSE' ]; then
+        DB_SAMPLE_FILE="$(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep "/${tmp_db_sample_file_name}$")"
+
+        if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+            perl -pi -e 's#TYPE=#ENGINE=#g' ${DB_SAMPLE_FILE}
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            perl -pi -e 's=^(#.*)=/*${1}*/=' ${DB_SAMPLE_FILE}
+        fi
+
+        if [ X"${BACKEND}" == X'OPENLDAP' -o X'${BACKEND}' == X'MYSQL' ]; then
             cat > ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME};
 USE ${CLUEBRINGER_DB_NAME};
-EOF
-        fi
 
-        DB_SAMPLE_FILE="$(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep "/${DB_SAMPLE_FILE_NAME}$")"
-        perl -pi -e 's#TYPE=#ENGINE=#g' ${DB_SAMPLE_FILE}
-
-        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-            cat >> ${tmp_sql} <<EOF
 -- Import SQL structure template.
 SOURCE ${DB_SAMPLE_FILE};
 
@@ -138,18 +143,15 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_
 FLUSH PRIVILEGES;
 EOF
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            export shipped_pgsql_temp="$(eval ${LIST_FILES_IN_PKG} ${PKG_CLUEBRINGER} | grep '/policyd.pgsql.sql$')"
-            perl -pi -e 's=^(#.*)=/*${1}*/=' ${shipped_pgsql_temp}
             cat > ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 \c ${CLUEBRINGER_DB_NAME};
 
 -- Import SQL structure template.
-\i ${shipped_pgsql_temp};
+\i ${DB_SAMPLE_FILE};
 EOF
 
-            unset shipped_pgsql_temp
         fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -245,6 +247,18 @@ EOF
     # Add first mail domain to policy group: internal_domains
     cat >> ${tmp_sql} <<EOF
 INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled) VALUES (2, '@${FIRST_DOMAIN}', 0);
+EOF
+
+    # Delete testing policy and samples.
+    cat >> ${tmp_sql} <<EOF
+-- Delete default sample policy group members.
+DELETE FROM policy_group_members WHERE Member IN ('@example.org', '@example.com');
+
+-- Delete test policy.
+DELETE FROM quotas_limits;
+DELETE FROM quotas;
+DELETE FROM policy_members WHERE policyid=5;
+DELETE FROM policies WHERE id=5;
 EOF
 
     # Initial cluebringer db.

@@ -187,17 +187,16 @@ EOF
     fi
 
     # Section [policyd].
-    ECHO_DEBUG "Configure Policyd related settings."
-    if [ X"${USE_POLICYD}" == X'YES' ]; then
+    if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
+        ECHO_DEBUG "Configure Cluebringer related settings."
         perl -pi -e 's#^(enabled =).*#${1} True#' settings.ini
         perl -pi -e 's#(.*)host_of_policyd_sql_server#${1} $ENV{SQL_SERVER}#' settings.ini
         perl -pi -e 's#(.*)port_of_policyd_sql_server#${1} $ENV{SQL_SERVER_PORT}#' settings.ini
-        perl -pi -e 's#^(db =) policyd#${1} $ENV{POLICYD_DB_NAME}#' settings.ini
-        perl -pi -e 's#^(user =) policyd#${1} $ENV{POLICYD_DB_USER}#' settings.ini
-        perl -pi -e 's#(.*)password_of_policyd_db#${1} $ENV{POLICYD_DB_PASSWD}#' settings.ini
+        perl -pi -e 's#^(db =) policyd#${1} $ENV{CLUEBRINGER_DB_NAME}#' settings.ini
+        perl -pi -e 's#^(user =) policyd#${1} $ENV{CLUEBRINGER_DB_USER}#' settings.ini
+        perl -pi -e 's#(.*)password_of_policyd_db#${1} $ENV{CLUEBRINGER_DB_PASSWD}#' settings.ini
     else
-        # Policyd-2 (cluebringer) is not yet supported in iRedAdmin.
-        perl -pi -e 's#^(enabled =) True#${1} False#' settings.ini
+        perl -pi -e 's#^(enabled =).*#${1} False#' settings.ini
     fi
 
     # Section [amavisd].

@@ -173,37 +173,20 @@ install_all()
 
     # Policyd.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        if [ X"${USE_POLICYD}" == X'YES' ]; then
-            ALL_PKGS="${ALL_PKGS} policyd${PKG_ARCH}"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
-        else
-            ALL_PKGS="${ALL_PKGS} cluebringer"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
-        fi
+        ALL_PKGS="${ALL_PKGS} cluebringer"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
     elif [ X"${DISTRO}" == X"SUSE" ]; then
-        if [ X"${USE_POLICYD}" == X'YES' ]; then
-            ALL_PKGS="${ALL_PKGS} policyd"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
-        else
-            ALL_PKGS="${ALL_PKGS} cluebringer"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
-        fi
-
+        ALL_PKGS="${ALL_PKGS} cluebringer"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
+        ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
-            if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-                ALL_PKGS="${ALL_PKGS} postfix-cluebringer-mysql"
-            elif [ X"${BACKEND}" == X"PGSQL" ]; then
-                ALL_PKGS="${ALL_PKGS} postfix-cluebringer-pgsql"
-            fi
-        else
-            ALL_PKGS="${ALL_PKGS} postfix-policyd"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${POLICYD_RC_SCRIPT_NAME}"
+        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+            ALL_PKGS="${ALL_PKGS} postfix-cluebringer-mysql"
+        elif [ X"${BACKEND}" == X"PGSQL" ]; then
+            ALL_PKGS="${ALL_PKGS} postfix-cluebringer-pgsql"
         fi
-
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # No port available.
         :

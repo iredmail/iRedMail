@@ -21,41 +21,11 @@
 #---------------------------------------------------------------------
 
 # Use policyd-1.8 by default
-export USE_CLUEBRINGER='NO'
-export USE_POLICYD='YES'
+export USE_CLUEBRINGER='YES'
 
-# Use Policyd-2.x (cluebringer).
-if [ X"${DISTRO}" == X'RHEL' ]; then
-    if [ X"${BACKEND}" == X'PGSQL' ]; then
-        export USE_CLUEBRINGER='YES'
-        export USE_POLICYD='NO'
-    fi
-elif [ X"${DISTRO}" == X'SUSE' ]; then
-    # Use cluebringer in openSUSE-12.3 and later releases.
-    export USE_CLUEBRINGER='YES'
-    export USE_POLICYD='NO'
-elif [ X"${DISTRO}" == X'DEBIAN' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'wheezy' ]; then
-        export USE_CLUEBRINGER='YES'
-        export USE_POLICYD='NO'
-    fi
-
-elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-    export USE_CLUEBRINGER='YES'
-    export USE_POLICYD='NO'
-elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-    if [ X"${BACKEND}" == X'PGSQL' ]; then
-        export USE_CLUEBRINGER='YES'
-        export USE_POLICYD='NO'
-    fi
-elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
     export USE_CLUEBRINGER='NO'
-    export USE_POLICYD='NO'
     export USE_SPAMD='YES'
-fi
-
-if [ X"${USE_POLICYD}" == X'YES' ]; then
-    . ${CONF_DIR}/policyd
 fi
 
 if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then

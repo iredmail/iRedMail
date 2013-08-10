@@ -699,21 +699,15 @@ EOF
         fi
     fi
 
-    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-        # Policyd v1.8x
-        ALL_PORTS="${ALL_PORTS} mail/postfix-policyd-sf"
-        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
-    elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        # Policyd v2.x
-        cat > /var/db/ports/policyd2/options <<EOF
+    # Policyd v2.x
+    cat > /var/db/ports/policyd2/options <<EOF
 OPTIONS_FILE_UNSET+=MYSQL
 OPTIONS_FILE_SET+=PostgreSQL
 OPTIONS_FILE_UNSET+=SQLite
 EOF
 
-        ALL_PORTS="${ALL_PORTS} mail/policyd2"
-        ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
-    fi
+    ALL_PORTS="${ALL_PORTS} mail/policyd2"
+    ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
 
     # ClamAV. REQUIRED.
     cat > /var/db/ports/clamav/options <<EOF

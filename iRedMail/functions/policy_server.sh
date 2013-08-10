@@ -38,18 +38,10 @@ EOF
 
 policy_server_config()
 {
-    if [ X"${USE_POLICYD}" == X'YES' ]; then
-        . ${FUNCTIONS_DIR}/policyd.sh
-
-        ECHO_INFO "Configure Policyd (postfix policy server, version 1.8)."
-        check_status_before_run policyd_user
-        check_status_before_run policyd_config
-    fi
-
     if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
         . ${FUNCTIONS_DIR}/cluebringer.sh
 
-        ECHO_INFO "Configure Policyd (postfix policy server, code name cluebringer)."
+        ECHO_INFO "Configure Cluebringer (postfix policy server)."
         check_status_before_run cluebringer_user
         check_status_before_run cluebringer_config
 

@@ -1,4 +1,5 @@
 iRedMail-0.8.6:
+    * Switch from Policyd-1.8 to Cluebringer on all Linux/BSD distributions.
     * Drop support for below releases:
         + Debian 6 (squeeze)
         + Gentoo
