@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  iRedAdmin-Pro-1.6.2\n"
 "Report-Msgid-Bugs-To: zhb@iredmail.org\n"
-"POT-Creation-Date: 2013-08-13 12:22+0800\n"
+"POT-Creation-Date: 2013-08-14 09:35+0800\n"
 "PO-Revision-Date: 2011-06-10 23:46+0800\n"
 "Last-Translator: Zhang Huangbin <zhb@iredmail.org>\n"
 "Language-Team: zh_CN <zhb@iredmail.org>\n"
@@ -183,7 +183,7 @@ msgstr "帐号已禁用。"
 
 #: ../templates/default/macros/general.html:194
 msgid "Account is global admin"
-msgstr "不是全局管理员。"
+msgstr "该帐号是全局管理员。"
 
 #: ../templates/default/ldap/search.html:48
 #: ../templates/default/mysql/search.html:51
