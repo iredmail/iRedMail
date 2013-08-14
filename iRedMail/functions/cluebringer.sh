@@ -261,6 +261,9 @@ DELETE FROM policy_members WHERE policyid=5;
 DELETE FROM policies WHERE id=5;
 EOF
 
+    # Add necessary records for white/blacklists
+    cat ${SAMPLE_DIR}/cluebringer_extra.sql >> ${tmp_sql}
+
     # Initial cluebringer db.
     # Enable greylisting on all inbound emails by default.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
