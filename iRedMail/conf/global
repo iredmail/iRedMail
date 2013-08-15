@@ -250,8 +250,8 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         export DISTRO_VERSION="$(grep 'VERSION' /etc/SuSE-release | awk '{print $3}')"
 
         # code name
-        #   - 12.2: mantis
         #   - 12.3: dartmouth
+        #   - 13.1: bottle
         export DISTRO_CODENAME="$(grep 'CODENAME' /etc/SuSE-release | awk '{print $3}' |tr [A-Z] [a-z])"
 
         # Unsupported releases: 10.x, 11.x, 12.1 (asparagus), 12.2.

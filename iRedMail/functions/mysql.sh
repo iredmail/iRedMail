@@ -48,6 +48,15 @@ mysql_initialize()
     ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialize ..."
     sleep 5
 
+    # Generate temporary file for MySQL client option --defaults-file.
+    cat >> ${MYSQL_DEFAULTS_FILE} <<EOF
+[client]
+host=${SQL_SERVER}
+port=${SQL_SERVER_PORT}
+user=${MYSQL_ROOT_USER}
+password=${MYSQL_ROOT_PASSWD}
+EOF
+
     if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
         ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
         mysqladmin --user=root password "${MYSQL_ROOT_PASSWD}"
@@ -75,7 +84,7 @@ DELETE FROM db WHERE User='';
 EOF
 
     ECHO_DEBUG "Initialize MySQL database."
-    mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+    ${MYSQL_CLIENT_ROOT} <<EOF
 SOURCE ${MYSQL_INIT_SQL};
 FLUSH PRIVILEGES;
 EOF
@@ -134,7 +143,7 @@ INSERT INTO domain_admins (username,domain,created) VALUES ("${DOMAIN_ADMIN_NAME
 EOF
 
     ECHO_DEBUG "Import postfix virtual hosts/users: ${MYSQL_VMAIL_SQL}."
-    mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+    ${MYSQL_CLIENT_ROOT} <<EOF
 SOURCE ${MYSQL_VMAIL_SQL};
 FLUSH PRIVILEGES;
 EOF

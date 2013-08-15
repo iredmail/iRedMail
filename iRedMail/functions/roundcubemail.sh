@@ -72,7 +72,7 @@ rcm_import_sql()
 
     # Initial roundcube db.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        ${MYSQL_CLIENT_ROOT} <<EOF
 -- Create database and grant privileges
 CREATE DATABASE ${RCM_DB} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${RCM_DB}.* TO "${RCM_DB_USER}"@"${SQL_HOSTNAME}" IDENTIFIED BY '${RCM_DB_PASSWD}';
@@ -110,7 +110,7 @@ EOF
 
     # Do not grant privileges while backend is not MySQL.
     if [ X"${BACKEND}" == X"MYSQL" ]; then
-        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        ${MYSQL_CLIENT_ROOT} <<EOF
 -- Grant privileges for Roundcubemail, so that user can change
 -- their own password and setting mail forwarding.
 GRANT UPDATE,SELECT ON ${VMAIL_DB}.mailbox TO "${RCM_DB_USER}"@"${SQL_HOSTNAME}";

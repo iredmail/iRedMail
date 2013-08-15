@@ -46,11 +46,11 @@ INSERT INTO access_control (PolicyID, Name, Verdict, Data)
     FROM policies WHERE name='whitelisted_ips' LIMIT 1;
 
 -- Sample: Add whitelisted sender, domain, IP
---INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
 --    SELECT id, 'user@domain.com', 0 FROM policy_groups WHERE name='whitelisted_senders' LIMIT 1;
---INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
 --    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='whitelisted_domains' LIMIT 1;
---INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
 --    SELECT id, '123.123.123.123', 0 FROM policy_groups WHERE name='whitelisted_ips' LIMIT 1;
 
 -- ------------------------------
@@ -100,11 +100,11 @@ INSERT INTO access_control (PolicyID, Name, Verdict, Data)
     FROM policies WHERE name='blacklisted_ips' LIMIT 1;
 
 -- Sample: Add blacklisted sender, domain, IP
---INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
 --    SELECT id, 'user@domain.com', 0 FROM policy_groups WHERE name='blacklisted_senders' LIMIT 1;
---INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
 --    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='blacklisted_domains' LIMIT 1;
---INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
 --    SELECT id, '123.123.123.123', 0 FROM policy_groups WHERE name='blacklisted_ips' LIMIT 1;
 
 -- ------------------------------------
@@ -122,7 +122,7 @@ INSERT INTO greylisting (PolicyID, Name, UseGreylisting, UseAutoWhitelist, UseAu
     FROM policies WHERE name='no_greylisting' LIMIT 1;
 
 -- Disable greylisting for certain domain/users:
---INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
 --    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='no_greylisting' LIMIT 1;
 
 -- TODO Add necessary indexes with index name

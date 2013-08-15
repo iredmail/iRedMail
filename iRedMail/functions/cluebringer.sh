@@ -126,6 +126,9 @@ cluebringer_config()
 
         if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
             perl -pi -e 's#TYPE=#ENGINE=#g' ${DB_SAMPLE_FILE}
+
+            # Required by MySQL-5.6: 'NOT NULL' must has a default value.
+            perl -pi -e 's#(.*Track.*NOT.*NULL)(.*)#${1} DEFAULT ""${2}#g' ${DB_SAMPLE_FILE}
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
             perl -pi -e 's=^(#.*)=/*${1}*/=' ${DB_SAMPLE_FILE}
         fi
@@ -267,7 +270,7 @@ EOF
     # Initial cluebringer db.
     # Enable greylisting on all inbound emails by default.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        ${MYSQL_CLIENT_ROOT} <<EOF
 $(cat ${tmp_sql})
 EOF
 

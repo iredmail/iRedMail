@@ -110,7 +110,10 @@ EOF
 
     ECHO_DEBUG "Import iredadmin database template."
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        # Required by MySQL-5.6: TEXT/BLOB column cannot have a default value.
+        perl -pi -e 's#(.*maildir.*)TEXT(.*)#${1}VARCHAR\(255\)${2}#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql;
+
+        ${MYSQL_CLIENT_ROOT} <<EOF
 # Create databases.
 CREATE DATABASE ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -123,7 +126,7 @@ EOF
 
         # Import addition tables.
         if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-            mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+            ${MYSQL_CLIENT_ROOT} <<EOF
 USE ${IREDADMIN_DB_NAME};
 SOURCE ${SAMPLE_DIR}/dovecot/used_quota.mysql;
 SOURCE ${SAMPLE_DIR}/dovecot/imap_share_folder.sql;

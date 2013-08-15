@@ -221,7 +221,7 @@ dovecot2_config()
     # which used to store realtime quota.
     if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
         # If iRedAdmin is not used, create database and import table here.
-        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        ${MYSQL_CLIENT_ROOT} <<EOF
 # Create databases.
 CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -269,7 +269,7 @@ EOF
     # which used to store realtime quota.
     if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
         # If iRedAdmin is not used, create database and import table here.
-        mysql -h${SQL_SERVER} -P${SQL_SERVER_PORT} -u${MYSQL_ROOT_USER} -p"${MYSQL_ROOT_PASSWD}" <<EOF
+        ${MYSQL_CLIENT_ROOT} <<EOF
 # Create databases.
 CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 

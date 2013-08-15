@@ -326,6 +326,8 @@ cleanup()
 ${PROG_VERSION}
 EOF
 
+    rm -f ${MYSQL_DEFAULTS_FILE} &>/dev/null
+
     cat <<EOF
 
 *************************************************************************
