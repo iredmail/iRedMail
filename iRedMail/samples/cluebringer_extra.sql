@@ -1,8 +1,8 @@
 -- References: http://wiki.policyd.org/
 
 -- Priorities (Lower integer has higher priority):
---  4 No greylisting
 --  6 Whitelist 
+--  7 No greylisting
 --  8 Blacklist
 
 -- Cluebringer default priorities:
@@ -35,14 +35,14 @@ INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
     FROM policies WHERE name='whitelisted_ips' LIMIT 1;
 
 -- Add access_control record to bypass whitelisted senders
-INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'whitelisted_senders', 'OK', 'Whitelisted sender'
+INSERT INTO access_control (PolicyID, Name, Verdict)
+    SELECT id, 'bypass_whitelisted_senders', 'OK'
     FROM policies WHERE name='whitelisted_senders' LIMIT 1;
-INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'whitelisted_domains', 'OK', 'Whitelisted domain'
+INSERT INTO access_control (PolicyID, Name, Verdict)
+    SELECT id, 'bypass_whitelisted_domains', 'OK'
     FROM policies WHERE name='whitelisted_domains' LIMIT 1;
-INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'whitelisted_ips', 'OK', 'Whitelisted IP'
+INSERT INTO access_control (PolicyID, Name, Verdict)
+    SELECT id, 'bypass_whitelisted_ips', 'OK'
     FROM policies WHERE name='whitelisted_ips' LIMIT 1;
 
 -- Sample: Add whitelisted sender, domain, IP
@@ -77,26 +77,15 @@ INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
     SELECT id, '!%internal_ips,!%internal_domains', '%internal_domains', 0
     FROM policies WHERE name='blacklisted_ips' LIMIT 1;
 
--- Add access_control record to bypass whitelisted senders
-INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'blacklisted_senders', 'OK', 'Blacklisted'
-    FROM policies WHERE name='blacklisted_senders' LIMIT 1;
-INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'blacklisted_domains', 'OK', 'Blacklisted'
-    FROM policies WHERE name='blacklisted_domains' LIMIT 1;
-INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'blacklisted_ips', 'OK', 'Blacklisted'
-    FROM policies WHERE name='blacklisted_ips' LIMIT 1;
-
 -- Add access control to reject whitelisted senders.
 INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'reject_blacklisted_senders', 'REJECT', 'Blacklisted'
+    SELECT id, 'reject_blacklisted_senders', 'REJECT', 'Blacklisted sender'
     FROM policies WHERE name='blacklisted_senders' LIMIT 1;
 INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'reject_blacklisted_domains', 'REJECT', 'Blacklisted'
+    SELECT id, 'reject_blacklisted_domains', 'REJECT', 'Blacklisted domain'
     FROM policies WHERE name='blacklisted_domains' LIMIT 1;
 INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'reject_blacklisted_ips', 'REJECT', 'Blacklisted'
+    SELECT id, 'reject_blacklisted_ips', 'REJECT', 'Blacklisted IP'
     FROM policies WHERE name='blacklisted_ips' LIMIT 1;
 
 -- Sample: Add blacklisted sender, domain, IP
@@ -111,7 +100,7 @@ INSERT INTO access_control (PolicyID, Name, Verdict, Data)
 -- Per-domain and per-user greylisting
 -- ------------------------------------
 INSERT INTO policies (Name, Priority, Disabled, Description)
-    VALUES ('no_greylisting', 4, 0, 'Disable grelisting for certain domain or users');
+    VALUES ('no_greylisting', 7, 0, 'Disable grelisting for certain domain or users');
 INSERT INTO policy_groups (Name, Disabled) VALUES ('no_greylisting', 0);
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
     SELECT id, '!%internal_ips,!%internal_domains', '%no_greylisting', 0
@@ -125,10 +114,14 @@ INSERT INTO greylisting (PolicyID, Name, UseGreylisting, Track, UseAutoWhitelist
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
 --    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='no_greylisting' LIMIT 1;
 
--- TODO Add necessary indexes with index name
--- policies.name
--- policy_group_members.member
--- policy_members.source, policy_members.destination
+-- TODO add indexes for columns used in Cluebringer core
+-- Add necessary indexes with index name
+CREATE INDEX policies_disabled on policies (disabled);
+CREATE INDEX policies_name ON policies (name);
+CREATE INDEX policy_groups_name ON policy_groups (name);
+CREATE INDEX policy_group_members_member ON policy_group_members (member);
+-- CREATE INDEX policy_members_source ON policy_members (source);
+-- CREATE INDEX policy_members_destination ON policy_members (destination);
 
 -- -------------------------------
 -- TODO Per-domain white/blacklist

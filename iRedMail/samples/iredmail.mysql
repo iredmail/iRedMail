@@ -1,29 +1,29 @@
-#---------------------------------------------------------------------
-# This file is part of iRedMail, which is an open source mail server
-# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
-#
-# iRedMail is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# iRedMail is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
-#---------------------------------------------------------------------
+-- --------------------------------------------------------------------
+-- This file is part of iRedMail, which is an open source mail server
+-- solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+--
+-- iRedMail is free software: you can redistribute it and/or modify
+-- it under the terms of the GNU General Public License as published by
+-- the Free Software Foundation, either version 3 of the License, or
+-- (at your option) any later version.
+--
+-- iRedMail is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+-- --------------------------------------------------------------------
 
-#
-# Based on original postfixadmin template.
-# http://postfixadmin.sf.net
-#
+--
+-- Based on original postfixadmin template.
+-- http://postfixadmin.sf.net
+--
 
-#
-# Table structure for table admin
-#
+--
+-- Table structure for table admin
+--
 CREATE TABLE IF NOT EXISTS admin (
     username VARCHAR(255) NOT NULL DEFAULT '',
     password VARCHAR(255) NOT NULL DEFAULT '',
@@ -40,9 +40,9 @@ CREATE TABLE IF NOT EXISTS admin (
     INDEX (active)
 ) ENGINE=MyISAM;
 
-#
-# Table structure for table alias
-#
+--
+-- Table structure for table alias
+--
 CREATE TABLE IF NOT EXISTS alias (
     address VARCHAR(255) NOT NULL DEFAULT '',
     goto TEXT,
@@ -60,9 +60,9 @@ CREATE TABLE IF NOT EXISTS alias (
     INDEX (active)
 ) ENGINE=MyISAM;
 
-#
-# Table structure for table domain
-#
+--
+-- Table structure for table domain
+--
 CREATE TABLE IF NOT EXISTS domain (
     -- mail domain name. e.g. iredmail.org.
     domain VARCHAR(255) NOT NULL DEFAULT '',
@@ -119,9 +119,9 @@ CREATE TABLE IF NOT EXISTS `alias_domain` (
     INDEX (active)
 ) ENGINE=MyISAM;
 
-#
-# Table structure for table domain_admins
-#
+--
+-- Table structure for table domain_admins
+--
 CREATE TABLE IF NOT EXISTS domain_admins (
     username VARCHAR(255) CHARACTER SET ascii NOT NULL DEFAULT '',
     domain VARCHAR(255) CHARACTER SET ascii NOT NULL DEFAULT '',
@@ -135,9 +135,9 @@ CREATE TABLE IF NOT EXISTS domain_admins (
     INDEX (active)
 ) ENGINE=MyISAM;
 
-#
-# Table structure for table mailbox
-#
+--
+-- Table structure for table mailbox
+--
 CREATE TABLE IF NOT EXISTS mailbox (
     username VARCHAR(255) NOT NULL DEFAULT '',
     password VARCHAR(255) NOT NULL DEFAULT '',
@@ -214,9 +214,10 @@ CREATE TABLE IF NOT EXISTS mailbox (
     INDEX (active)
 ) ENGINE=MyISAM;
 
-#
-# Table structure for table sender_bcc_domain
-#
+--
+-- Table structure for table sender_bcc_domain
+-- TODO Merge into table 'domain' (domain.sender_bcc)
+--
 CREATE TABLE IF NOT EXISTS sender_bcc_domain (
     domain VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
@@ -230,9 +231,27 @@ CREATE TABLE IF NOT EXISTS sender_bcc_domain (
     INDEX (active)
 ) ENGINE=MyISAM;
 
-#
-# Table structure for table sender_bcc_user
-#
+--
+-- Table structure for table recipient_bcc_domain
+-- TODO Merge into table 'domain' (domain.recipient_bcc)
+--
+CREATE TABLE IF NOT EXISTS recipient_bcc_domain (
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    bcc_address VARCHAR(255) NOT NULL DEFAULT '',
+    created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+    modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+    expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
+    active TINYINT(1) NOT NULL DEFAULT 1,
+    PRIMARY KEY (domain),
+    INDEX (bcc_address),
+    INDEX (expired),
+    INDEX (active)
+) ENGINE=MyISAM;
+
+--
+-- Table structure for table sender_bcc_user
+-- TODO Merge into table 'mailbox' (mailbox.sender_bcc)
+--
 CREATE TABLE IF NOT EXISTS sender_bcc_user (
     username VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
@@ -248,25 +267,10 @@ CREATE TABLE IF NOT EXISTS sender_bcc_user (
     INDEX (active)
 ) ENGINE=MyISAM;
 
-#
-# Table structure for table recipient_bcc_domain
-#
-CREATE TABLE IF NOT EXISTS recipient_bcc_domain (
-    domain VARCHAR(255) NOT NULL DEFAULT '',
-    bcc_address VARCHAR(255) NOT NULL DEFAULT '',
-    created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-    modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-    expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
-    active TINYINT(1) NOT NULL DEFAULT 1,
-    PRIMARY KEY (domain),
-    INDEX (bcc_address),
-    INDEX (expired),
-    INDEX (active)
-) ENGINE=MyISAM;
-
-#
-# Table structure for table recipient_bcc_user
-#
+--
+-- Table structure for table recipient_bcc_user
+-- TODO Merge into table 'mailbox' (mailbox.recipient_bcc)
+--
 CREATE TABLE IF NOT EXISTS recipient_bcc_user (
     username VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
@@ -300,10 +304,10 @@ CREATE TABLE IF NOT EXISTS deleted_mailboxes (
     INDEX (admin)
 ) ENGINE=MyISAM;
 
-#
-# IMAP shared folders. User 'from_user' shares folders to user 'to_user'.
-# WARNING: Works only with Dovecot 1.2+.
-#
+--
+-- IMAP shared folders. User 'from_user' shares folders to user 'to_user'.
+-- WARNING: Works only with Dovecot 1.2+.
+--
 CREATE TABLE IF NOT EXISTS share_folder (
     from_user VARCHAR(255) CHARACTER SET ascii NOT NULL,
     to_user VARCHAR(255) CHARACTER SET ascii NOT NULL,
