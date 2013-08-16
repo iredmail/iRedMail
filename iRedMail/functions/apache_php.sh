@@ -302,14 +302,14 @@ EOF
     perl -pi -e 's#^(disable_functions.*=)(.*)#${1}$ENV{PHP_DISABLED_FUNCTIONS}; ${2}#' ${PHP_INI}
 
     ECHO_DEBUG "Hide PHP Version in Apache from remote users requests: ${PHP_INI}."
-    perl -pi -e 's#^(expose_php.*=)#${1} Off;#' ${PHP_INI}
+    perl -pi -e 's#^(expose_php.*=).*#${1} Off;#' ${PHP_INI}
 
     ECHO_DEBUG "Increase 'memory_limit' to 256M: ${PHP_INI}."
-    perl -pi -e 's#^(memory_limit = )#${1} 256M;#' ${PHP_INI}
+    perl -pi -e 's#^(memory_limit = ).*#${1} 256M;#' ${PHP_INI}
 
     ECHO_DEBUG "Increase 'upload_max_filesize', 'post_max_size' to 10/12M: ${PHP_INI}."
     perl -pi -e 's/^(upload_max_filesize.*=).*/${1} 10M;/' ${PHP_INI}
-    perl -pi -e 's/^(post_max_size.*=)/${1} 12M;/' ${PHP_INI}
+    perl -pi -e 's/^(post_max_size.*=).*/${1} 12M;/' ${PHP_INI}
 
     ECHO_DEBUG "Disable php extension: suhosin. ${PHP_INI}."
     perl -pi -e 's/^(suhosin.session.encrypt.*=)/${1} Off;/' ${PHP_INI}
