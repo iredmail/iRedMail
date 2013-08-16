@@ -35,14 +35,14 @@ INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
     FROM policies WHERE name='whitelisted_ips' LIMIT 1;
 
 -- Add access_control record to bypass whitelisted senders
-INSERT INTO access_control (PolicyID, Name, Verdict)
-    SELECT id, 'bypass_whitelisted_senders', 'OK'
+INSERT INTO access_control (PolicyID, Name, Verdict, Data)
+    SELECT id, 'bypass_whitelisted_senders', 'OK', 'Whitelisted sender'
     FROM policies WHERE name='whitelisted_senders' LIMIT 1;
-INSERT INTO access_control (PolicyID, Name, Verdict)
-    SELECT id, 'bypass_whitelisted_domains', 'OK'
+INSERT INTO access_control (PolicyID, Name, Verdict, Data)
+    SELECT id, 'bypass_whitelisted_domains', 'OK', 'Whitelisted domain'
     FROM policies WHERE name='whitelisted_domains' LIMIT 1;
-INSERT INTO access_control (PolicyID, Name, Verdict)
-    SELECT id, 'bypass_whitelisted_ips', 'OK'
+INSERT INTO access_control (PolicyID, Name, Verdict, Data)
+    SELECT id, 'bypass_whitelisted_ips', 'OK', 'Whitelisted IP'
     FROM policies WHERE name='whitelisted_ips' LIMIT 1;
 
 -- Sample: Add whitelisted sender, domain, IP
@@ -114,9 +114,31 @@ INSERT INTO greylisting (PolicyID, Name, UseGreylisting, Track, UseAutoWhitelist
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
 --    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='no_greylisting' LIMIT 1;
 
--- TODO add indexes for columns used in Cluebringer core
--- Add necessary indexes with index name
-CREATE INDEX policies_disabled on policies (disabled);
+-- ---------------
+-- INDEXES
+-- ---------------
+-- Add indexes for columns used in Cluebringer modules
+--
+CREATE INDEX policies_disabled ON policies (disabled);
+-- Used in module: access_control
+CREATE INDEX access_control_policyid_disabled ON access_control (policyid, disabled);
+-- Used in module: checkhelo
+CREATE INDEX checkhelo_policyid_disabled ON checkhelo (policyid, disabled);
+CREATE INDEX checkhelo_whitelist_disabled ON checkhelo_whitelist (disabled);
+-- Used in module: greylisting
+CREATE INDEX greylisting_policyid_disabled ON greylisting (policyid, disabled);
+CREATE INDEX greylisting_whitelist_disabled ON greylisting_whitelist (disabled);
+CREATE INDEX greylisting_tracking_trackkey_firstseen ON greylisting_tracking (trackkey, firstseen);
+CREATE INDEX greylisting_tracking_trackkey_firstseen_count ON greylisting_tracking (trackkey, firstseen, count);
+-- Used in module: quotas
+CREATE INDEX quotas_policyid_disabled ON quotas (policyid, disabled);
+-- Used in module: accounting_tracking. Available in cluebringer-2.1.x.
+-- CREATE INDEX accounting_policyid_disabled ON accounting (policyid, disabled);
+-- CREATE INDEX accounting_tracking_accountingid_trackkey_periodkey ON accounting_tracking (accountingid, trackkey, periodkey);
+
+--
+-- Add indexes for columns required by web interface
+--
 CREATE INDEX policies_name ON policies (name);
 CREATE INDEX policy_groups_name ON policy_groups (name);
 CREATE INDEX policy_group_members_member ON policy_group_members (member);
