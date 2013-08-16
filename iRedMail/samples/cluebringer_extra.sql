@@ -117,8 +117,8 @@ INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
     SELECT id, '!%internal_ips,!%internal_domains', '%no_greylisting', 0
     FROM policies WHERE name='no_greylisting' LIMIT 1;
 -- Disable greylisting for %no_greylisting
-INSERT INTO greylisting (PolicyID, Name, UseGreylisting, UseAutoWhitelist, UseAutoBlacklist, Disabled)
-    SELECT id, 'no_greylisting', 0, 0, 0, 0
+INSERT INTO greylisting (PolicyID, Name, UseGreylisting, Track, UseAutoWhitelist, UseAutoBlacklist, Disabled)
+    SELECT id, 'no_greylisting', 0, 'SenderIP:/32', 0, 0, 0
     FROM policies WHERE name='no_greylisting' LIMIT 1;
 
 -- Disable greylisting for certain domain/users:

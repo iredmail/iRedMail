@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS admin (
 #
 CREATE TABLE IF NOT EXISTS alias (
     address VARCHAR(255) NOT NULL DEFAULT '',
-    goto TEXT NOT NULL DEFAULT '',
+    goto TEXT,
     name VARCHAR(255) NOT NULL DEFAULT '',
-    moderators TEXT NOT NULL DEFAULT '',
+    moderators TEXT,
     accesspolicy VARCHAR(30) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -66,9 +66,9 @@ CREATE TABLE IF NOT EXISTS alias (
 CREATE TABLE IF NOT EXISTS domain (
     -- mail domain name. e.g. iredmail.org.
     domain VARCHAR(255) NOT NULL DEFAULT '',
-    description TEXT NOT NULL DEFAULT '',
+    description TEXT,
     -- Disclaimer text. Used by Amavisd + AlterMIME.
-    disclaimer TEXT NOT NULL DEFAULT '',
+    disclaimer TEXT,
     -- Max alias accounts in this domain. e.g. 10.
     aliases INT(10) NOT NULL DEFAULT 0,
     -- Max mail accounts in this domain. e.g. 100.
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS domain (
     -- Default quota size for newly created mail account.
     defaultuserquota BIGINT(20) NOT NULL DEFAULT '1024',
     -- List of mail alias addresses assigned to newly created user.
-    defaultuseraliases TEXT NOT NULL DEFAULT '',
+    defaultuseraliases TEXT,
     -- Disabled domain profiles which can not be viewed and updated by normal
     -- domain admin. Multiple values must be separated by comma.
     disableddomainprofiles VARCHAR(255) NOT NULL DEFAULT '',
@@ -139,7 +139,7 @@ CREATE TABLE IF NOT EXISTS domain_admins (
 # Table structure for table mailbox
 #
 CREATE TABLE IF NOT EXISTS mailbox (
-    username VARCHAR(255) NOT NULL,
+    username VARCHAR(255) NOT NULL DEFAULT '',
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
     language VARCHAR(5) NOT NULL DEFAULT 'en_US',
@@ -172,12 +172,12 @@ CREATE TABLE IF NOT EXISTS mailbox (
     lastlogindate DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     lastloginipv4 INT(4) UNSIGNED NOT NULL DEFAULT 0,
     lastloginprotocol CHAR(255) NOT NULL DEFAULT '',
-    disclaimer TEXT NOT NULL DEFAULT '',
+    disclaimer TEXT,
     passwordlastchange DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
-    allowedsenders TEXT NOT NULL DEFAULT '',
-    rejectedsenders TEXT NOT NULL DEFAULT '',
-    allowedrecipients TEXT NOT NULL DEFAULT '',
-    rejectedrecipients TEXT NOT NULL DEFAULT '',
+    allowedsenders TEXT,
+    rejectedsenders TEXT,
+    allowedrecipients TEXT,
+    rejectedrecipients TEXT,
     created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
@@ -282,17 +282,17 @@ CREATE TABLE IF NOT EXISTS recipient_bcc_user (
 ) ENGINE=MyISAM;
 
 -- Used to store basic info of deleted mailboxes.
-CREATE TABLE IF NOT EXISTS `deleted_mailboxes` (
-    `id` BIGINT(20) UNSIGNED AUTO_INCREMENT,
-    `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CREATE TABLE IF NOT EXISTS deleted_mailboxes (
+    id BIGINT(20) UNSIGNED AUTO_INCREMENT,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     -- Email address of deleted user
-    `username` VARCHAR(255) NOT NULL DEFAULT '',
-    -- Domain part of user email address
+    username VARCHAR(255) NOT NULL DEFAULT '',
+    -- Domain part of username
     domain VARCHAR(255) NOT NULL DEFAULT '',
     -- Absolute path of user's mailbox
-    `maildir` TEXT NOT NULL DEFAULT '',
-    -- Which domain admin deleted this user
-    `admin` VARCHAR(255) NOT NULL DEFAULT '',
+    maildir VARCHAR(255) NOT NULL DEFAULT '',
+    -- Deleted by which domain admin
+    admin VARCHAR(255) NOT NULL DEFAULT '',
     KEY id (id),
     INDEX (timestamp),
     INDEX (username),

@@ -87,11 +87,11 @@ cluebringer_config()
     perl -pi -e 's#^(bypass_mode=).*#${1}pass#' ${CLUEBRINGER_CONF}
 
     # DSN
-    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X'MYSQL' ]; then
         perl -pi -e 's/^(#*)(DSN=DBI:mysql:).*/${2}host=$ENV{SQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Type=).*/${1}mysql/' ${CLUEBRINGER_CONF}
 
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
         # Comment out all default DSN settings
         perl -pi -e 's/^(DB_Type=).*/${1}pgsql/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DSN=.*)/#${1}/g' ${CLUEBRINGER_CONF}
@@ -115,6 +115,8 @@ cluebringer_config()
 
     # Get SQL structure template file.
     tmp_sql="/tmp/cluebringer_init_sql.${RANDOM}${RANDOM}"
+    echo '' > ${tmp_sql}
+
     if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'SUSE' ]; then
         if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
             tmp_db_sample_file_name='policyd.mysql.sql'
@@ -126,15 +128,10 @@ cluebringer_config()
 
         if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
             perl -pi -e 's#TYPE=#ENGINE=#g' ${DB_SAMPLE_FILE}
-
             # Required by MySQL-5.6: 'NOT NULL' must has a default value.
             perl -pi -e 's#(.*Track.*NOT.*NULL)(.*)#${1} DEFAULT ""${2}#g' ${DB_SAMPLE_FILE}
-        elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            perl -pi -e 's=^(#.*)=/*${1}*/=' ${DB_SAMPLE_FILE}
-        fi
 
-        if [ X"${BACKEND}" == X'OPENLDAP' -o X'${BACKEND}' == X'MYSQL' ]; then
-            cat > ${tmp_sql} <<EOF
+            cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME};
 USE ${CLUEBRINGER_DB_NAME};
 
@@ -144,9 +141,12 @@ SOURCE ${DB_SAMPLE_FILE};
 -- Grant privileges.
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_DB_USER}"@"${SQL_HOSTNAME}" IDENTIFIED BY "${CLUEBRINGER_DB_PASSWD}";
 FLUSH PRIVILEGES;
+USE ${CLUEBRINGER_DB_NAME};
 EOF
-        elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            cat > ${tmp_sql} <<EOF
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            perl -pi -e 's=^(#.*)=/*${1}*/=' ${DB_SAMPLE_FILE}
+
+            cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 \c ${CLUEBRINGER_DB_NAME};
@@ -154,12 +154,11 @@ CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PAS
 -- Import SQL structure template.
 \i ${DB_SAMPLE_FILE};
 EOF
-
         fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-            cat > ${tmp_sql} <<EOF
+            cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME};
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_DB_USER}"@"${SQL_HOSTNAME}" IDENTIFIED BY "${CLUEBRINGER_DB_PASSWD}";
 USE ${CLUEBRINGER_DB_NAME};
@@ -169,8 +168,8 @@ EOF
             gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.mysql.gz >> ${tmp_sql}
             perl -pi -e 's#TYPE=#ENGINE=#g' ${tmp_sql}
 
-        elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            cat > ${tmp_sql} <<EOF
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 \c ${CLUEBRINGER_DB_NAME};
@@ -180,21 +179,21 @@ EOF
             gunzip -c /usr/share/doc/postfix-cluebringer/database/policyd-db.pgsql.gz >> ${tmp_sql}
         fi
 
-    elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Template file will create database: policyd.
         cd /usr/local/share/policyd2/database/
         chmod +x ./convert-tsql
 
         if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
             policyd_sql_type='mysql'
-            cat > ${tmp_sql} <<EOF
+            cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME};
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_DB_USER}"@"${SQL_HOSTNAME}" IDENTIFIED BY "${CLUEBRINGER_DB_PASSWD}";
 USE ${CLUEBRINGER_DB_NAME};
 EOF
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
             policyd_sql_type='pgsql'
-            cat > ${tmp_sql} <<EOF
+            cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 \c ${CLUEBRINGER_DB_NAME};
@@ -202,15 +201,15 @@ EOF
         fi
 
         for i in core.tsql \
-            access_control.tsql \
-            quotas.tsql \
-            amavis.tsql \
-            checkhelo.tsql \
-            checkspf.tsql \
-            greylisting.tsql \
-            accounting.tsql; do
+                 access_control.tsql \
+                 quotas.tsql \
+                 amavis.tsql \
+                 checkhelo.tsql \
+                 checkspf.tsql \
+                 greylisting.tsql \
+                 accounting.tsql; do
             [ -f $i ] && bash convert-tsql ${policyd_sql_type} $i >> ${tmp_sql}
-        done >> ${tmp_sql}
+        done
 
         unset policyd_sql_type
     fi
@@ -271,7 +270,7 @@ EOF
     # Enable greylisting on all inbound emails by default.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
         ${MYSQL_CLIENT_ROOT} <<EOF
-$(cat ${tmp_sql})
+SOURCE ${tmp_sql};
 EOF
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
@@ -413,6 +412,10 @@ EOF
 
         [ X"${LDAP_USE_TLS}" == X"YES" ] && \
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
+
+        # openSUSE-13.1 (bottle) ships Apache-2.4 which removes directive 'AuthzLDAPAuthoritative'.
+        [ X"${DISTRO}" == X'SUSE' -a X"${DISTRO_CODENAME}" == X'bottle' ] && \
+            perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${CLUEBRINGER_HTTPD_CONF}
 
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Use mod_auth_mysql.

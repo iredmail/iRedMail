@@ -49,7 +49,7 @@ mysql_initialize()
     sleep 5
 
     # Generate temporary file for MySQL client option --defaults-file.
-    cat >> ${MYSQL_DEFAULTS_FILE} <<EOF
+    cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 [client]
 host=${SQL_SERVER}
 port=${SQL_SERVER_PORT}

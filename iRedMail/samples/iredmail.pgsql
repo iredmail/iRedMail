@@ -262,11 +262,11 @@ CREATE TABLE deleted_mailboxes (
     timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     -- Email address of deleted user
     username VARCHAR(255) NOT NULL DEFAULT '',
-    -- Domain part of user email address
+    -- Domain part of username
     domain VARCHAR(255) NOT NULL DEFAULT '',
     -- Absolute path of user's mailbox
-    maildir TEXT NOT NULL DEFAULT '',
-    -- Which domain admin deleted this user
+    maildir VARCHAR(255) NOT NULL DEFAULT '',
+    -- Deleted by which domain admin
     admin VARCHAR(255) NOT NULL DEFAULT ''
 );
 

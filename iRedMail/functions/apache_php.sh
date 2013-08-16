@@ -180,6 +180,7 @@ EOF
         [ X"${BACKEND}" == X"PGSQL" ] && a2enmod 000_auth_pgsql > /dev/null
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
+        a2enmod authz_core &>/dev/null
         a2enmod deflate &>/dev/null
 
         # Enable SSL.

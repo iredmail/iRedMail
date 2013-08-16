@@ -79,6 +79,10 @@ EOF
         [ X"${LDAP_USE_TLS}" == X"YES" ] && \
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${AWSTATS_HTTPD_CONF}
 
+        # openSUSE-13.1 (bottle) ships Apache-2.4 which removes directive 'AuthzLDAPAuthoritative'.
+        [ X"${DISTRO}" == X'SUSE' -a X"${DISTRO_CODENAME}" == X'bottle' ] && \
+            perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${AWSTATS_HTTPD_CONF}
+
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Use mod_auth_mysql.
         if [ X"${DISTRO}" == X"RHEL" \

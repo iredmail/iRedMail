@@ -65,5 +65,5 @@ fi
 # A temporary file to store MySQL root password to avoid MySQL client warning:
 # "Warning: Using a password on the command line interface can be insecure."
 # File will be removed automatically after iRedMail installation.
-export MYSQL_DEFAULTS_FILE="${ROOTDIR}/.mysql-defaults-file"
-export MYSQL_CLIENT_ROOT="mysql --defaults-file=${MYSQL_DEFAULTS_FILE}"
+export MYSQL_DEFAULTS_FILE_ROOT="${ROOTDIR}/.mysql-root-defaults-file"
+export MYSQL_CLIENT_ROOT="mysql --defaults-file=${MYSQL_DEFAULTS_FILE_ROOT}"
