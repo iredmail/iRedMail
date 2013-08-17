@@ -25,13 +25,13 @@ INSERT INTO policy_groups (Name, Disabled) VALUES ('whitelisted_domains', 0);
 INSERT INTO policy_groups (Name, Disabled) VALUES ('whitelisted_ips', 0);
 
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '!%internal_ips,!%internal_domains', '%internal_domains', 0
+    SELECT id, '%whitelisted_senders', '%internal_domains', 0
     FROM policies WHERE name='whitelisted_senders' LIMIT 1;
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '!%internal_ips,!%internal_domains', '%internal_domains', 0
+    SELECT id, '%whitelisted_domains', '%internal_domains', 0
     FROM policies WHERE name='whitelisted_domains' LIMIT 1;
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '!%internal_ips,!%internal_domains', '%internal_domains', 0
+    SELECT id, '%whitelisted_ips', '%internal_domains', 0
     FROM policies WHERE name='whitelisted_ips' LIMIT 1;
 
 -- Add access_control record to bypass whitelisted senders
@@ -68,13 +68,13 @@ INSERT INTO policy_groups (Name, Disabled) VALUES ('blacklisted_domains', 0);
 INSERT INTO policy_groups (Name, Disabled) VALUES ('blacklisted_ips', 0);
 
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '!%internal_ips,!%internal_domains', '%internal_domains', 0
+    SELECT id, '%blacklisted_senders', '%internal_domains', 0
     FROM policies WHERE name='blacklisted_senders' LIMIT 1;
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '!%internal_ips,!%internal_domains', '%internal_domains', 0
+    SELECT id, '%blacklisted_domains', '%internal_domains', 0
     FROM policies WHERE name='blacklisted_domains' LIMIT 1;
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '!%internal_ips,!%internal_domains', '%internal_domains', 0
+    SELECT id, '%blacklisted_ips', '%internal_domains', 0
     FROM policies WHERE name='blacklisted_ips' LIMIT 1;
 
 -- Add access control to reject whitelisted senders.
