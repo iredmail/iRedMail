@@ -26,8 +26,7 @@
 export OPENLDAP_VERSION='2.4'
 
 # LDAP service info.
-# LDAP_SERVER_HOST is configured in conf/global
-export LDAP_SERVER_PORT='389'
+# LDAP_SERVER_HOST, LDAP_SERVER_PORT are defined in conf/global
 export LDAP_USE_TLS='NO'
 export LDAP_BIND='yes'
 export LDAP_BIND_VERSION='3'

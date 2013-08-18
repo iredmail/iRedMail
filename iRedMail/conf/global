@@ -72,6 +72,7 @@ fi
 
 # LDAP server
 export LDAP_SERVER_HOST="${LOCAL_ADDRESS}"
+export LDAP_SERVER_PORT='389'
 # MySQL server
 export MYSQL_SERVER="${LOCAL_ADDRESS}"
 export MYSQL_SERVER_PORT='3306'
@@ -188,6 +189,9 @@ arch="$(uname -m)"
 case $arch in
     i[3456]86) export ARCH='i386' ;;
     x86_64|amd64) export ARCH='x86_64' ;;
+    armv6l)
+        # Debian ARM platform and Raspberry Pi.
+        export ARCH='armhf' ;;
     *)
         echo "Your architecture is not supported yet: ${arch}."
         echo "Both i386 and x86_64 are supported by ${PROG_NAME}."

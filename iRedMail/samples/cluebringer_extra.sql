@@ -1,14 +1,14 @@
--- References: http://wiki.policyd.org/
+-- Reference: http://wiki.policyd.org/
 
 -- Priorities (Lower integer has higher priority):
---  6 Whitelist 
---  7 No greylisting
---  8 Blacklist
+--  priority=6  Whitelist
+--  priority=7  Blacklist
+--  priority=20 No greylisting
 
 -- Cluebringer default priorities:
---  0 Default
---  10 Default Inbound
---  10 Default Outbound
+--  priority=0  Default
+--  priority=10 Default Inbound
+--  priority=10 Default Outbound
 
 -- ------------------------------
 -- Whitelists (priority=6)
@@ -100,14 +100,14 @@ INSERT INTO access_control (PolicyID, Name, Verdict, Data)
 -- Per-domain and per-user greylisting
 -- ------------------------------------
 INSERT INTO policies (Name, Priority, Disabled, Description)
-    VALUES ('no_greylisting', 7, 0, 'Disable grelisting for certain domain or users');
+    VALUES ('no_greylisting', 20, 0, 'Disable grelisting for certain domain and users');
 INSERT INTO policy_groups (Name, Disabled) VALUES ('no_greylisting', 0);
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
     SELECT id, '!%internal_ips,!%internal_domains', '%no_greylisting', 0
     FROM policies WHERE name='no_greylisting' LIMIT 1;
 -- Disable greylisting for %no_greylisting
-INSERT INTO greylisting (PolicyID, Name, UseGreylisting, Track, UseAutoWhitelist, UseAutoBlacklist, Disabled)
-    SELECT id, 'no_greylisting', 0, 'SenderIP:/32', 0, 0, 0
+INSERT INTO greylisting (PolicyID, Name, UseGreylisting, Track, UseAutoWhitelist, AutoWhitelistCount, AutoWhitelistPercentage, UseAutoBlacklist, AutoBlacklistCount, AutoBlacklistPercentage, Disabled)
+    SELECT id, 'no_greylisting', 0, 'SenderIP:/32', 0, 0, 0, 0, 0, 0, 0
     FROM policies WHERE name='no_greylisting' LIMIT 1;
 
 -- Disable greylisting for certain domain/users:
