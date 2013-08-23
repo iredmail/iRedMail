@@ -173,11 +173,15 @@ CREATE TABLE IF NOT EXISTS mailbox (
     lastloginipv4 INT(4) UNSIGNED NOT NULL DEFAULT 0,
     lastloginprotocol CHAR(255) NOT NULL DEFAULT '',
     disclaimer TEXT,
-    passwordlastchange DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+    -- Allow emails sent from certain users
     allowedsenders TEXT,
+    -- Reject emails sent from certain users
     rejectedsenders TEXT,
+    -- Allow to sent email to certain users
     allowedrecipients TEXT,
+    -- Reject to sent email to certain users
     rejectedrecipients TEXT,
+    passwordlastchange DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
