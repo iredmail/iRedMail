@@ -256,7 +256,8 @@ else
 fi
 
 # Check latest version
-check_status_before_run check_new_iredmail
+[ X"${CHECK_NEW_IREDMAIL}" != X'NO' ] && \
+    check_status_before_run check_new_iredmail
 
 prepare_dirs
 
