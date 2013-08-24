@@ -110,7 +110,7 @@ INSERT INTO greylisting (PolicyID, Name, UseGreylisting, Track, UseAutoWhitelist
     SELECT id, 'no_greylisting', 0, 'SenderIP:/32', 0, 0, 0, 0, 0, 0, 0
     FROM policies WHERE name='no_greylisting' LIMIT 1;
 
--- Disable greylisting for certain domain/users:
+-- Sample: Disable greylisting for certain domain/users:
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
 --    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='no_greylisting' LIMIT 1;
 
@@ -139,9 +139,12 @@ CREATE INDEX quotas_policyid_disabled ON quotas (policyid, disabled);
 --
 -- Add indexes for columns required by web interface
 --
-CREATE INDEX policies_name ON policies (name);
-CREATE INDEX policy_groups_name ON policy_groups (name);
+CREATE UNIQUE INDEX policies_name ON policies (name);
+CREATE UNIQUE INDEX policy_groups_name ON policy_groups (name);
 CREATE INDEX policy_group_members_member ON policy_group_members (member);
+-- Unique index to avoid duplicate records
+CREATE UNIQUE INDEX policy_group_members_policygroupid_member ON policy_group_members (policygroupid, member);
+
 -- CREATE INDEX policy_members_source ON policy_members (source);
 -- CREATE INDEX policy_members_destination ON policy_members (destination);
 
