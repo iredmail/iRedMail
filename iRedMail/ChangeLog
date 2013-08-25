@@ -6,6 +6,9 @@ iRedMail-0.8.6:
         + Debian 6 (squeeze)
         + Gentoo
 
+    * Package update:
+        + Roundcube webmail -> 0.9.3
+
 iRedMail-0.8.5:
     * Use EPEL yum repo on RHEL/CentOS 6 by default.
     * Update SQL triggers to insert value for column 'used_quota.domain'
