@@ -10,91 +10,77 @@
 --  priority=10 Default Inbound
 --  priority=10 Default Outbound
 
+-- Add new column: policy_group_members.Type.
+-- It's used to identify record type/kind in iRedAdmin-Pro, for easier
+-- management.
+--
+-- Samples:
+--   - Type=ip: value of `Member` is an IP address or CIDR range
+--   - Type=email: a valid full email address
+--   - Type=domain: a valid domain name
+--
+-- We can add multiple records in `policies` table for different types, but
+-- It will bringer more SQL queries for each policy request, this is not a good
+-- idea since Cluebringer is used to process each SMTP session.
+ALTER TABLE policy_group_members ADD COLUMN Type VARCHAR(10) NOT NULL DEFAULT '';
+CREATE INDEX policy_group_members_type ON policy_group_members (Type);
+CREATE INDEX policy_group_members_policygroupid_type ON policy_group_members (PolicyGroupID, Type);
+
 -- ------------------------------
 -- Whitelists (priority=6)
 -- ------------------------------
 INSERT INTO policies (Name, Priority, Disabled, Description)
-    VALUES ('whitelisted_senders', 6, 0, 'Whitelisted senders');
-INSERT INTO policies (Name, Priority, Disabled, Description)
-    VALUES ('whitelisted_domains', 6, 0, 'Whitelisted domains');
-INSERT INTO policies (Name, Priority, Disabled, Description)
-    VALUES ('whitelisted_ips', 6, 0, 'Whitelisted IP addresses');
+    VALUES ('whitelists', 6, 0, 'Whitelisted sender, domain, IP');
 
-INSERT INTO policy_groups (Name, Disabled) VALUES ('whitelisted_senders', 0);
-INSERT INTO policy_groups (Name, Disabled) VALUES ('whitelisted_domains', 0);
-INSERT INTO policy_groups (Name, Disabled) VALUES ('whitelisted_ips', 0);
+INSERT INTO policy_groups (Name, Disabled) VALUES ('whitelists', 0);
 
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '%whitelisted_senders', '%internal_domains', 0
-    FROM policies WHERE name='whitelisted_senders' LIMIT 1;
-INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '%whitelisted_domains', '%internal_domains', 0
-    FROM policies WHERE name='whitelisted_domains' LIMIT 1;
-INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '%whitelisted_ips', '%internal_domains', 0
-    FROM policies WHERE name='whitelisted_ips' LIMIT 1;
+    SELECT id, '%whitelists', '%internal_domains', 0
+    FROM policies WHERE name='whitelists' LIMIT 1;
 
 -- Add access_control record to bypass whitelisted senders
 INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'bypass_whitelisted_senders', 'OK', 'Whitelisted sender'
-    FROM policies WHERE name='whitelisted_senders' LIMIT 1;
-INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'bypass_whitelisted_domains', 'OK', 'Whitelisted domain'
-    FROM policies WHERE name='whitelisted_domains' LIMIT 1;
-INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'bypass_whitelisted_ips', 'OK', 'Whitelisted IP'
-    FROM policies WHERE name='whitelisted_ips' LIMIT 1;
+    SELECT id, 'bypass_whitelisted', 'OK', 'Whitelisted'
+    FROM policies WHERE name='whitelists' LIMIT 1;
 
--- Sample: Add whitelisted sender, domain, IP
--- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
---    SELECT id, 'user@domain.com', 0 FROM policy_groups WHERE name='whitelisted_senders' LIMIT 1;
--- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
---    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='whitelisted_domains' LIMIT 1;
--- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
---    SELECT id, '123.123.123.123', 0 FROM policy_groups WHERE name='whitelisted_ips' LIMIT 1;
+-- Samples: Add whitelisted sender, domain, IP
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
+--    SELECT id, 'user@domain.com', 0, 'email' FROM policy_groups
+--    WHERE name='whitelisted_senders' LIMIT 1;
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
+--    SELECT id, '@domain.com', 0, 'domain' FROM policy_groups
+--    WHERE name='whitelisted_domains' LIMIT 1;
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
+--    SELECT id, '123.123.123.123', 0, 'ip' FROM policy_groups
+--    WHERE name='whitelisted_ips' LIMIT 1;
 
 -- ------------------------------
 -- Blacklist (priority=8)
 -- ------------------------------
 INSERT INTO policies (Name, Priority, Disabled, Description) 
-    VALUES ('blacklisted_senders', 8, 0, 'Blacklisted senders');
-INSERT INTO policies (Name, Priority, Disabled, Description)
-    VALUES ('blacklisted_domains', 8, 0, 'Blacklisted domains');
-INSERT INTO policies (Name, Priority, Disabled, Description)
-    VALUES ('blacklisted_ips', 8, 0, 'Blacklisted IP addresses');
+    VALUES ('blacklists', 8, 0, 'Blacklisted sender, domain, IP');
 
-INSERT INTO policy_groups (Name, Disabled) VALUES ('blacklisted_senders', 0);
-INSERT INTO policy_groups (Name, Disabled) VALUES ('blacklisted_domains', 0);
-INSERT INTO policy_groups (Name, Disabled) VALUES ('blacklisted_ips', 0);
+INSERT INTO policy_groups (Name, Disabled) VALUES ('blacklists', 0);
 
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '%blacklisted_senders', '%internal_domains', 0
-    FROM policies WHERE name='blacklisted_senders' LIMIT 1;
-INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '%blacklisted_domains', '%internal_domains', 0
-    FROM policies WHERE name='blacklisted_domains' LIMIT 1;
-INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '%blacklisted_ips', '%internal_domains', 0
-    FROM policies WHERE name='blacklisted_ips' LIMIT 1;
+    SELECT id, '%blacklists', '%internal_domains', 0
+    FROM policies WHERE name='blacklists' LIMIT 1;
 
 -- Add access control to reject whitelisted senders.
 INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'reject_blacklisted_senders', 'REJECT', 'Blacklisted sender'
-    FROM policies WHERE name='blacklisted_senders' LIMIT 1;
-INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'reject_blacklisted_domains', 'REJECT', 'Blacklisted domain'
-    FROM policies WHERE name='blacklisted_domains' LIMIT 1;
-INSERT INTO access_control (PolicyID, Name, Verdict, Data)
-    SELECT id, 'reject_blacklisted_ips', 'REJECT', 'Blacklisted IP'
-    FROM policies WHERE name='blacklisted_ips' LIMIT 1;
+    SELECT id, 'reject_blacklisted', 'REJECT', 'Blacklisted'
+    FROM policies WHERE name='blacklists' LIMIT 1;
 
--- Sample: Add blacklisted sender, domain, IP
--- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
---    SELECT id, 'user@domain.com', 0 FROM policy_groups WHERE name='blacklisted_senders' LIMIT 1;
--- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
---    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='blacklisted_domains' LIMIT 1;
--- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
---    SELECT id, '123.123.123.123', 0 FROM policy_groups WHERE name='blacklisted_ips' LIMIT 1;
+-- Samples: Add blacklisted sender, domain, IP
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
+--    SELECT id, 'user@domain.com', 0, 'email' FROM policy_groups
+--    WHERE name='blacklists' LIMIT 1;
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
+--    SELECT id, '@domain.com', 0, 'domain' FROM policy_groups
+--    WHERE name='blacklists' LIMIT 1;
+-- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
+--    SELECT id, '123.123.123.123', 0, 'ip' FROM policy_groups
+--    WHERE name='blacklists' LIMIT 1;
 
 -- ------------------------------------
 -- Per-domain and per-user greylisting

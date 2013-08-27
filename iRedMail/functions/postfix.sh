@@ -117,12 +117,13 @@ postfix_config_basic()
     fi
 
     postconf -e mydestination="\$myhostname, localhost, localhost.localdomain, localhost.\$myhostname"
-    postconf -e biff='no'   # Do not notify local user.
+    # Do not notify local user.
+    postconf -e biff='no'
     postconf -e inet_interfaces="all"
     postconf -e mynetworks="127.0.0.0/8"
     postconf -e mynetworks_style="host"
     postconf -e smtpd_data_restrictions='reject_unauth_pipelining'
-    postconf -e smtpd_reject_unlisted_recipient='yes'   # Default
+    postconf -e smtpd_reject_unlisted_recipient='yes'
     postconf -e smtpd_reject_unlisted_sender='yes'
 
     # Sender restrictions
