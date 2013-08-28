@@ -454,4 +454,7 @@ install_all()
 
     check_status_before_run install_all_pkgs
     check_status_before_run enable_all_services
+
+    # Fix incorrect file permission which required by py-ldap
+    chmod o+r /usr/local/lib/libsasl2.so* &>/dev/null
 }

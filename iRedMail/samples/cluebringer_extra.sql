@@ -19,9 +19,9 @@
 --   - Type=email: a valid full email address
 --   - Type=domain: a valid domain name
 --
--- We can add multiple records in `policies` table for different types, but
--- It will bringer more SQL queries for each policy request, this is not a good
--- idea since Cluebringer is used to process each SMTP session.
+-- We can use multiple policies for different types, but it bringer more SQL
+-- queries for each policy request, this is not a good idea since Cluebringer
+-- is used to process every in/out SMTP session.
 ALTER TABLE policy_group_members ADD COLUMN Type VARCHAR(10) NOT NULL DEFAULT '';
 CREATE INDEX policy_group_members_type ON policy_group_members (Type);
 CREATE INDEX policy_group_members_policygroupid_type ON policy_group_members (PolicyGroupID, Type);
