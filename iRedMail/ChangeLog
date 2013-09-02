@@ -1,4 +1,7 @@
 iRedMail-0.8.6:
+    * Enable Opportunistic TLS support in Postfix when sending mail to remote
+      SMTP server (smtp_tls_security_level=may).
+      Thanks kotso <admin _at_ co.ge> and vlastikcz for the report.
     * Works on openSUSE-13.1 milestone 4.
     * Switch from Policyd-1.8 to Cluebringer on all Linux/BSD distributions,
       with easier white/black/greylisting management.

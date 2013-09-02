@@ -126,6 +126,18 @@ postfix_config_basic()
     postconf -e smtpd_reject_unlisted_recipient='yes'
     postconf -e smtpd_reject_unlisted_sender='yes'
 
+    # Opportunistic TLS, used when Postfix sends email to remote SMTP server.
+    # Use TLS if this is supported by the remote SMTP server, otherwise use
+    # plaintext.
+    # References:
+    #   - http://www.postfix.org/TLS_README.html#client_tls_may
+    #   - http://www.postfix.org/postconf.5.html#smtp_tls_security_level
+    postconf -e smtp_tls_security_level='may'
+    postconf -e smtp_tls_loglevel='0'
+    # Use the same CA file as smtpd.
+    postconf -e smtp_tls_CAfile='$smtpd_tls_CAfile'
+    #postconf -e smtp_tls_note_starttls_offer='yes'
+
     # Sender restrictions
     postconf -e smtpd_sender_restrictions="permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"
 
@@ -160,9 +172,8 @@ postfix_config_basic()
     # We use 'maildir' format, not 'mbox'.
     if [ X"${MAILBOX_FORMAT}" == X"Maildir" ]; then
         postconf -e home_mailbox="Maildir/"
-    else
-        :
     fi
+
     postconf -e maximal_backoff_time="4000s"
 
     # Allow recipient address start with '-'.

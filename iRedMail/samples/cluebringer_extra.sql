@@ -12,7 +12,7 @@
 
 -- Add new column: policy_group_members.Type.
 -- It's used to identify record type/kind in iRedAdmin-Pro, for easier
--- management.
+-- management of white/blacklists.
 --
 -- Samples:
 --   - Type=ip: value of `Member` is an IP address or CIDR range
@@ -20,8 +20,8 @@
 --   - Type=domain: a valid domain name
 --
 -- We can use multiple policies for different types, but it bringer more SQL
--- queries for each policy request, this is not a good idea since Cluebringer
--- is used to process every in/out SMTP session.
+-- queries for each policy request, this is not a good idea for performance
+-- since Cluebringer is used to process every in/out SMTP session.
 ALTER TABLE policy_group_members ADD COLUMN Type VARCHAR(10) NOT NULL DEFAULT '';
 CREATE INDEX policy_group_members_type ON policy_group_members (Type);
 CREATE INDEX policy_group_members_policygroupid_type ON policy_group_members (PolicyGroupID, Type);
