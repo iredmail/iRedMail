@@ -264,13 +264,14 @@ DELETE FROM policies WHERE id=5;
 EOF
 
     # Add necessary records for white/blacklists
-    cat ${SAMPLE_DIR}/cluebringer_extra.sql >> ${tmp_sql}
+    cat ${SAMPLE_DIR}/cluebringer/extra.sql >> ${tmp_sql}
 
     # Initial cluebringer db.
     # Enable greylisting on all inbound emails by default.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
         ${MYSQL_CLIENT_ROOT} <<EOF
 SOURCE ${tmp_sql};
+SOURCE ${SAMPLE_DIR}/cluebringer/column_character_set.mysql;
 EOF
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
