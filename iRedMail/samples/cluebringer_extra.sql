@@ -1,14 +1,32 @@
 -- Reference: http://wiki.policyd.org/
 
 -- Priorities (Lower integer has higher priority):
---  priority=6  Whitelist
---  priority=7  Blacklist
---  priority=20 No greylisting
+--  priority=6  server-wide Whitelist
+--  priority=7  server-wide Blacklist
+--  priority=20 No greylisting. Works for both per-domain and per-user account.
 
 -- Cluebringer default priorities:
 --  priority=0  Default
 --  priority=10 Default Inbound
 --  priority=10 Default Outbound
+
+-- Alter tables to store UTF-8 characters as comment
+ALTER TABLE access_control MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE amavis_rules MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE checkhelo MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE checkhelo_blacklist MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE checkhelo_whitelist MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE checkspf MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE greylisting MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE greylisting_autoblacklist MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE greylisting_autowhitelist MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE greylisting_whitelist MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE policies MODIFY COLUMN Description VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE policy_group_members MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE policy_groups MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE policy_members MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE quotas MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
+ALTER TABLE quotas_limits MODIFY COLUMN Comment VARCHAR(1024) CHARACTER SET utf8;
 
 -- Add new column: policy_group_members.Type.
 -- It's used to identify record type/kind in iRedAdmin-Pro, for easier
