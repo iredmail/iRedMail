@@ -28,6 +28,10 @@
 export CLUEBRINGER_BIND_PORT='10031'
 export CLUEBRINGER_RC_SCRIPT_NAME='cluebringer'
 
+# Path to cbpadmin.
+# cbpadmin is responsible for deleting old entries from the database.
+export CLUEBRINGER_BIN_CBPADMIN='/usr/sbin/cbpadmin'
+
 # Database.
 export CLUEBRINGER_DB_NAME='cluebringer'
 export CLUEBRINGER_DB_USER='cluebringer'
@@ -70,6 +74,8 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLUEBRINGER_USER='policyd'
     export CLUEBRINGER_GROUP='policyd'
+
+    export CLUEBRINGER_BIN_CBPADMIN='/usr/local/bin/cbpadmin'
 
     export PKG_CLUEBRINGER='policyd2'
     export CLUEBRINGER_CONF='/usr/local/etc/cluebringer.conf'

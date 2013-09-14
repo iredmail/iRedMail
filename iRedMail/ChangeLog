@@ -5,6 +5,9 @@ iRedMail-0.8.6:
     * Works on openSUSE-13.1 milestone 4.
     * Switch from Policyd-1.8 to Cluebringer on all Linux/BSD distributions,
       with easier white/black/greylisting management.
+    * Fixed:
+        + Add cron job to cleanup expired entries in Cluebringer database.
+
     * Drop support for below releases:
         + Debian 6 (squeeze)
         + Gentoo

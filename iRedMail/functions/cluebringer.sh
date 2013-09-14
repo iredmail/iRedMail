@@ -319,6 +319,11 @@ EOF
     # Add postfix alias.
     add_postfix_alias ${CLUEBRINGER_USER} ${SYS_ROOT_USER}
 
+    # Add cron job
+    cat >> ${CRON_SPOOL_DIR}/root <<EOF
+# ${PROG_NAME}: Cleanup Cluebringer database
+1   3   *   *   *   ${CLUEBRINGER_BIN_CBPADMIN} --config=${CLUEBRINGER_CONF} --cleanup >/dev/null
+EOF
     # Tips.
     cat >> ${TIP_FILE} <<EOF
 Policyd (cluebringer):
