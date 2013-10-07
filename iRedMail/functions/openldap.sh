@@ -169,15 +169,6 @@ loglevel    0
 #   Admin Name: ${LDAP_ATTR_USER_RDN}=${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}, ${LDAP_ATTR_DOMAIN_RDN}=${FIRST_DOMAIN}, ${LDAP_BASEDN}
 #
 
-# Personal LDAP address book.
-access to dn.regex="cn=[^,]+,${LDAP_ATTR_USER_RDN}=([^,]+)@([^,]+),${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=([^,]+),${LDAP_BASEDN}\$"
-    by anonymous                    none
-    by self                         none
-    by dn.exact="${LDAP_BINDDN}"   read
-    by dn.exact="${LDAP_ADMIN_DN}"  write
-    by dn.regex="${LDAP_ATTR_USER_RDN}=\$1@\$2,${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=\$3,${LDAP_BASEDN}\$" write
-    by users                        none
-
 # Allow users to change their own passwords and mail forwarding addresses.
 access to attrs="${LDAP_ATTR_USER_PASSWD},${LDAP_ATTR_USER_FORWARD},${LDAP_ATTR_USER_STORAGE_BASE_DIRECTORY},homeDirectory,mailMessageStore"
     by anonymous    auth
