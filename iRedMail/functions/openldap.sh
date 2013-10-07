@@ -147,7 +147,7 @@ EOF
 # Disallow bind as anonymous.
 disallow    bind_anon
 
-# Uncomment below line to allow binding as anonymouse.
+# Uncomment below line to allow binding as anonymous.
 #allow bind_anon_cred
 
 # Specify LDAP protocol version.
@@ -179,7 +179,7 @@ access to dn.regex="cn=[^,]+,${LDAP_ATTR_USER_RDN}=([^,]+)@([^,]+),${LDAP_ATTR_G
     by users                        none
 
 # Allow users to change their own passwords and mail forwarding addresses.
-access to attrs="${LDAP_ATTR_USER_PASSWD},${LDAP_ATTR_USER_FORWARD}"
+access to attrs="${LDAP_ATTR_USER_PASSWD},${LDAP_ATTR_USER_FORWARD},${LDAP_ATTR_USER_STORAGE_BASE_DIRECTORY},homeDirectory,mailMessageStore"
     by anonymous    auth
     by self         write
     by dn.exact="${LDAP_BINDDN}"   read
@@ -210,7 +210,7 @@ access to attrs="${LDAP_ATTR_DOMAIN_ADMIN},${LDAP_ATTR_DOMAIN_GLOBALADMIN},${LDA
     by users        none
 
 # User attrs.
-access to attrs="employeeNumber,homeDirectory,mailMessageStore,${LDAP_ATTR_USER_RDN},${LDAP_ATTR_ACCOUNT_STATUS},${LDAP_ATTR_USER_SENDER_BCC_ADDRESS},${LDAP_ATTR_USER_RECIPIENT_BCC_ADDRESS},${LDAP_ATTR_USER_QUOTA},${LDAP_ATTR_USER_BACKUP_MAIL_ADDRESS},${LDAP_ATTR_USER_SHADOW_ADDRESS},${LDAP_ATTR_USER_MEMBER_OF_GROUP}"
+access to attrs="employeeNumber,${LDAP_ATTR_USER_RDN},${LDAP_ATTR_ACCOUNT_STATUS},${LDAP_ATTR_USER_SENDER_BCC_ADDRESS},${LDAP_ATTR_USER_RECIPIENT_BCC_ADDRESS},${LDAP_ATTR_USER_QUOTA},${LDAP_ATTR_USER_BACKUP_MAIL_ADDRESS},${LDAP_ATTR_USER_SHADOW_ADDRESS},${LDAP_ATTR_USER_MEMBER_OF_GROUP}"
     by anonymous    auth
     by self         read
     by dn.exact="${LDAP_BINDDN}"   read
