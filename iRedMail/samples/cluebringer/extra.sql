@@ -19,7 +19,7 @@
 --   - Type=email: a valid full email address
 --   - Type=domain: a valid domain name
 --
--- We can use multiple policies for different types, but it bringer more SQL
+-- We can use multiple policies for different types, but it brings more SQL
 -- queries for each policy request, this is not a good idea for performance
 -- since Cluebringer is used to process every in/out SMTP session.
 ALTER TABLE policy_group_members ADD COLUMN Type VARCHAR(10) NOT NULL DEFAULT '';
@@ -87,18 +87,27 @@ INSERT INTO access_control (PolicyID, Name, Verdict, Data)
 -- ------------------------------------
 INSERT INTO policies (Name, Priority, Disabled, Description)
     VALUES ('no_greylisting', 20, 0, 'Disable grelisting for certain domain and users');
-INSERT INTO policy_groups (Name, Disabled) VALUES ('no_greylisting', 0);
+
+-- No greylisting for certain local domains/users
+INSERT INTO policy_groups (Name, Disabled) VALUES ('no_greylisting_to_internal', 0);
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '!%internal_ips,!%internal_domains', '%no_greylisting', 0
+    SELECT id, '!%internal_ips,!%internal_domains', '%no_greylisting_to_internal', 0
     FROM policies WHERE name='no_greylisting' LIMIT 1;
+
+-- No greylisting for certain external domains/users
+INSERT INTO policy_groups (Name, Disabled) VALUES ('no_greylisting_from_external', 0);
+INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
+    SELECT id, '%no_greylisting_from_external', '%internal_domains', 0
+    FROM policies WHERE name='no_greylisting' LIMIT 1;
+
 -- Disable greylisting for %no_greylisting
 INSERT INTO greylisting (PolicyID, Name, UseGreylisting, Track, UseAutoWhitelist, AutoWhitelistCount, AutoWhitelistPercentage, UseAutoBlacklist, AutoBlacklistCount, AutoBlacklistPercentage, Disabled)
     SELECT id, 'no_greylisting', 0, 'SenderIP:/32', 0, 0, 0, 0, 0, 0, 0
     FROM policies WHERE name='no_greylisting' LIMIT 1;
 
--- Sample: Disable greylisting for certain domain/users:
+-- Sample: Disable greylisting for certain local domain/users:
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
---    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='no_greylisting' LIMIT 1;
+--    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='no_greylisting_to_internal' LIMIT 1;
 
 -- ---------------
 -- INDEXES
@@ -130,16 +139,3 @@ CREATE UNIQUE INDEX policy_groups_name ON policy_groups (name);
 CREATE INDEX policy_group_members_member ON policy_group_members (member);
 -- Unique index to avoid duplicate records
 CREATE UNIQUE INDEX policy_group_members_policygroupid_member ON policy_group_members (policygroupid, member);
-
--- CREATE INDEX policy_members_source ON policy_members (source);
--- CREATE INDEX policy_members_destination ON policy_members (destination);
-
--- -------------------------------
--- TODO Per-domain white/blacklist
--- -------------------------------
--- Add policy: domain_blacklist_domain.com (prefix 'domain_blacklist_')
--- Add policy_group: domain_domain.com (prefix 'domain_' + domain name)
--- Add policy_members: !internal_ips,!internal_domains -> domain_domain.com
--- Add policy_members: !internal_ips,!internal_domains -> domain_[alias_domain]
--- Add policy_group_members: domain_domain.com -> primary domain and all alias domains
-

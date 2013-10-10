@@ -43,7 +43,7 @@ install_all()
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${WANT_OPENLDAP_VER}"
     freebsd_add_make_conf 'WANT_MYSQL_VER' "${WANT_MYSQL_VER}"
     freebsd_add_make_conf 'WANT_PGSQL_VER' "${WANT_PGSQL_VER}"
-    freebsd_add_make_conf 'PYTHON_DEFAULT_VERSION' 'python2.7'
+    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7'
     freebsd_add_make_conf 'APACHE_PORT' 'www/apache22'
     freebsd_add_make_conf 'WITH_SASL' 'yes'
     freebsd_add_make_conf 'WANT_BDB_VER' "${WANT_BDB_VER}"
