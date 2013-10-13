@@ -35,11 +35,15 @@ Please specify password for PostgreSQL administrator: ${PGSQL_ROOT_USER}
 
 WARNING:
 
+    * Do *NOT* use $ in password.
     * EMPTY password is *NOT* permitted.
 " 20 76 2>/tmp/pgsql_rootpw
 
     PGSQL_ROOT_PASSWD="$(cat /tmp/pgsql_rootpw)"
-    [ X"${PGSQL_ROOT_PASSWD}" != X"" ] && break
+
+    # Check '$' in password
+    echo ${PGSQL_ROOT_PASSWD} | grep '\$' &>/dev/null
+    [ X"$?" != X'0' -a X"${PGSQL_ROOT_PASSWD}" != X'' ] && break
 done
 
 echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}

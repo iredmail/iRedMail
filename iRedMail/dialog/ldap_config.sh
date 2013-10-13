@@ -82,13 +82,15 @@ Please specify password for LDAP rootdn:
 
 WARNING:
 
+    * Do *NOT* use $ in password.
     * EMPTY password is *NOT* permitted.
 " 20 76 2>/tmp/ldap_rootpw
 
     LDAP_ROOTPW="$(cat /tmp/ldap_rootpw)"
-    if [ ! -z "${LDAP_ROOTPW}" ]; then
-        break
-    fi
+
+    # Check '$' in password
+    echo ${LDAP_ROOTPW} | grep '\$' &>/dev/null
+    [ X"$?" != X'0' -a X"${LDAP_ROOTPW}" != X'' ] && break
 done
 
 echo "export LDAP_ROOTPW='${LDAP_ROOTPW}'" >>${IREDMAIL_CONFIG_FILE}

@@ -35,11 +35,15 @@ Please specify password for MySQL administrator: ${MYSQL_ROOT_USER}
 
 WARNING:
 
+    * Do *NOT* use $ in password.
     * EMPTY password is *NOT* permitted.
 " 20 76 2>/tmp/mysql_rootpw
 
     MYSQL_ROOT_PASSWD="$(cat /tmp/mysql_rootpw)"
-    [ X"${MYSQL_ROOT_PASSWD}" != X"" ] && break
+
+    # Check '$' in password
+    echo ${MYSQL_ROOT_PASSWD} | grep '\$' &>/dev/null
+    [ X"$?" != X'0' -a X"${MYSQL_ROOT_PASSWD}" != X'' ] && break
 done
 
 echo "export MYSQL_ROOT_PASSWD='${MYSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
