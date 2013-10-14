@@ -26,7 +26,7 @@
 
 dovecot2_config()
 {
-    ECHO_INFO "Configure Dovecot (pop3/imap/managesieve server, version ${DOVECOT_VERSION})."
+    ECHO_INFO "Configure Dovecot-${DOVECOT_VERSION} (pop3/imap/managesieve server)."
 
     backup_file ${DOVECOT_CONF}
 
