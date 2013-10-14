@@ -53,20 +53,20 @@ iredadmin_config()
     cd ${IREDADMIN_HTTPD_ROOT}/
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        cp settings.ini.ldap.sample settings.ini
+        cp settings.py.ldap.sample settings.py
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        cp settings.ini.mysql.sample settings.ini
+        cp settings.py.mysql.sample settings.py
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp settings.ini.pgsql.sample settings.ini
+        cp settings.py.pgsql.sample settings.py
     fi
 
-    chown -R ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} settings.ini
-    chmod 0400 settings.ini
+    chown -R ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} settings.py
+    chmod 0400 settings.py
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Change file owner
         # iRedAdmin is not running as user 'iredadmin' on OpenBSD
-        chown -R ${HTTPD_USER}:${HTTPD_GROUP} settings.ini
+        chown -R ${HTTPD_USER}:${HTTPD_GROUP} settings.py
     fi
 
     backup_file ${IREDADMIN_HTTPD_CONF}
@@ -156,70 +156,66 @@ EOF
     # Modify iRedAdmin settings.
     # [general] section.
     ECHO_DEBUG "Configure general settings."
-    perl -pi -e 's#^(webmaster =).*#${1} $ENV{FIRST_USER}\@$ENV{FIRST_DOMAIN}#' settings.ini
-    perl -pi -e 's#^(storage_base_directory =).*#${1} $ENV{STORAGE_MAILBOX_DIR}#' settings.ini
+    perl -pi -e 's#^(webmaster =).*#${1} "$ENV{FIRST_USER}\@$ENV{FIRST_DOMAIN}"#' settings.py
+    perl -pi -e 's#^(storage_base_directory =).*#${1} "$ENV{STORAGE_MAILBOX_DIR}"#' settings.py
 
     # [iredadmin] section.
     ECHO_DEBUG "Configure iredadmin database related settings."
-    perl -pi -e 's#(.*)host_of_iredadmin_sql_server#${1} $ENV{SQL_SERVER}#' settings.ini
-    perl -pi -e 's#(.*)port_of_iredadmin_sql_server#${1} $ENV{SQL_SERVER_PORT}#' settings.ini
-    perl -pi -e 's#^(db =) iredadmin#${1} $ENV{IREDADMIN_DB_NAME}#' settings.ini
-    perl -pi -e 's#^(user =) iredadmin#${1} $ENV{IREDADMIN_DB_USER}#' settings.ini
-    perl -pi -e 's#(.*)password_of_iredadmin_db#${1} $ENV{IREDADMIN_DB_PASSWD}#' settings.ini
+    perl -pi -e 's#^(iredadmin_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_name =).*#${1} "$ENV{IREDADMIN_DB_NAME}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_user =).*#${1} "$ENV{IREDADMIN_DB_USER}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_password =).*#${1} "$ENV{IREDADMIN_DB_PASSWD}"#' settings.py
 
     # Backend related settings.
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        # Change backend.
-        perl -pi -e 's#^(backend.*=).*#${1} ldap#' settings.ini
-
-        # Section [ldap].
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ECHO_DEBUG "Configure OpenLDAP backend related settings."
-        perl -pi -e 's#^(uri =).*#${1} ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}#' settings.ini
-        perl -pi -e 's#^(basedn =).*#${1} $ENV{LDAP_BASEDN}#' settings.ini
-        perl -pi -e 's#^(domainadmin_dn =).*#${1} $ENV{LDAP_ADMIN_BASEDN}#' settings.ini
-        perl -pi -e 's#^(bind_dn =).*#${1} $ENV{LDAP_ADMIN_DN}#' settings.ini
-        perl -pi -e 's#^(bind_pw =).*#${1} $ENV{LDAP_ADMIN_PW}#' settings.ini
+        perl -pi -e 's#^(ldap_uri =).*#${1} "ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}"#' settings.py
+        perl -pi -e 's#^(ldap_basedn =).*#${1} "$ENV{LDAP_BASEDN}"#' settings.py
+        perl -pi -e 's#^(ldap_domainadmin_dn =).*#${1} "$ENV{LDAP_ADMIN_BASEDN}"#' settings.py
+        perl -pi -e 's#^(ldap_bind_dn =).*#${1} "$ENV{LDAP_ADMIN_DN}"#' settings.py
+        perl -pi -e 's#^(ldap_bind_password =).*#${1} "$ENV{LDAP_ADMIN_PW}"#' settings.py
 
-    elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
+    elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         ECHO_DEBUG "Configure MySQL related settings."
-        perl -pi -e 's#(.*)host_of_vmaildb_sql_server#${1} $ENV{SQL_SERVER}#' settings.ini
-        perl -pi -e 's#(.*)port_of_vmaildb_sql_server#${1} $ENV{SQL_SERVER_PORT}#' settings.ini
-        perl -pi -e 's#^(db =) vmail#${1} $ENV{VMAIL_DB}#' settings.ini
-        perl -pi -e 's#^(user =) vmailadmin#${1} $ENV{VMAIL_DB_ADMIN_USER}#' settings.ini
-        perl -pi -e 's#(.*)password_of_vmail_db#${1} $ENV{VMAIL_DB_ADMIN_PASSWD}#' settings.ini
+        perl -pi -e 's#^(vmail_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
+        perl -pi -e 's#^(vmail_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
+        perl -pi -e 's#^(vmail_db_name =).*#${1} "$ENV{VMAIL_DB}"#' settings.py
+        perl -pi -e 's#^(vmail_db_user =).*#${1} "$ENV{VMAIL_DB_ADMIN_USER}"#' settings.py
+        perl -pi -e 's#^(vmail_db_password =).*#${1} "$ENV{VMAIL_DB_ADMIN_PASSWD}"#' settings.py
     fi
 
-    # Section [policyd].
+    # Policyd or Cluebringer
     if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
         ECHO_DEBUG "Configure Cluebringer related settings."
-        perl -pi -e 's#^(enabled =).*#${1} True#' settings.ini
-        perl -pi -e 's#(.*)host_of_policyd_sql_server#${1} $ENV{SQL_SERVER}#' settings.ini
-        perl -pi -e 's#(.*)port_of_policyd_sql_server#${1} $ENV{SQL_SERVER_PORT}#' settings.ini
-        perl -pi -e 's#^(db =) policyd#${1} $ENV{CLUEBRINGER_DB_NAME}#' settings.ini
-        perl -pi -e 's#^(user =) policyd#${1} $ENV{CLUEBRINGER_DB_USER}#' settings.ini
-        perl -pi -e 's#(.*)password_of_policyd_db#${1} $ENV{CLUEBRINGER_DB_PASSWD}#' settings.ini
+        perl -pi -e 's#^(policyd_enabled =).*#${1} True#' settings.py
+        perl -pi -e 's#^(policyd_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
+        perl -pi -e 's#^(policyd_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
+        perl -pi -e 's#^(policyd_db_name =).*#${1} "$ENV{CLUEBRINGER_DB_NAME}"#' settings.py
+        perl -pi -e 's#^(policyd_db_user =).*#${1} "$ENV{CLUEBRINGER_DB_USER}"#' settings.py
+        perl -pi -e 's#^(policyd_db_password =).*#${1} "$ENV{CLUEBRINGER_DB_PASSWD}"#' settings.py
     else
-        perl -pi -e 's#^(enabled =).*#${1} False#' settings.ini
+        perl -pi -e 's#^(policyd_enabled =).*#${1} False#' settings.py
     fi
 
-    # Section [amavisd].
+    # Amavisd.
     ECHO_DEBUG "Configure Amavisd related settings."
-    perl -pi -e 's#(.*)host_of_amavisd_sql_server#${1} $ENV{SQL_SERVER}#' settings.ini
-    perl -pi -e 's#(.*)port_of_amavisd_sql_server#${1} $ENV{SQL_SERVER_PORT}#' settings.ini
-    perl -pi -e 's#^(db =) amavisd#${1} $ENV{AMAVISD_DB_NAME}#' settings.ini
-    perl -pi -e 's#^(user =) amavisd#${1} $ENV{AMAVISD_DB_USER}#' settings.ini
-    perl -pi -e 's#(.*)password_of_amavisd_db#${1} $ENV{AMAVISD_DB_PASSWD}#' settings.ini
+    perl -pi -e 's#^(amavisd_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
+    perl -pi -e 's#^(amavisd_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
+    perl -pi -e 's#^(amavisd_db_name =).*#${1} "$ENV{AMAVISD_DB_NAME}"#' settings.py
+    perl -pi -e 's#^(amavisd_db_user =).*#${1} "$ENV{AMAVISD_DB_USER}"#' settings.py
+    perl -pi -e 's#^(amavisd_db_password =).*#${1} "$ENV{AMAVISD_DB_PASSWD}"#' settings.py
 
-    perl -pi -e 's#^(logging_into_sql =).*#${1} True#' settings.ini
-    perl -pi -e 's#^(quarantine =).*#${1} True#' settings.ini
-    perl -pi -e 's#^(quarantine_port =).*#${1} $ENV{AMAVISD_QUARANTINE_PORT}#' settings.ini
+    perl -pi -e 's#^(amavisd_enable_logging =).*#${1} True#' settings.py
+    perl -pi -e 's#^(amavisd_enable_quarantine =).*#${1} True#' settings.py
+    perl -pi -e 's#^(amavisd_quarantine_port =).*#${1} "$ENV{AMAVISD_QUARANTINE_PORT}"#' settings.py
 
     cat >> ${TIP_FILE} <<EOF
 iRedAdmin - official web-based admin panel:
     * Version: ${IREDADMIN_VERSION}
     * Configuration files:
         - ${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}/
-        - ${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}/settings.ini*
+        - ${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}/settings.py*
     * URL:
         - https://${HOSTNAME}/iredadmin/
     * Login account:
@@ -229,28 +225,7 @@ iRedAdmin - official web-based admin panel:
         - Username: ${IREDADMIN_DB_USER}
         - Password: ${IREDADMIN_DB_PASSWD}
     * Settings:
-        - ${IREDADMIN_HTTPD_ROOT}/settings.ini
-        - Addition settings for Policyd & Amavisd integration support in iRedAdmin-Pro:
-
-        [policyd]
-        enabled = True
-        host = ${SQL_SERVER}
-        port = ${SQL_SERVER_PORT}
-        db = ${POLICYD_DB_NAME}
-        user = ${POLICYD_DB_USER}
-        passwd = ${POLICYD_DB_PASSWD}
-
-        [amavisd]
-        quarantine = True
-        quarantine_port = ${AMAVISD_QUARANTINE_PORT}
-
-        logging_into_sql = True
-        host = ${SQL_SERVER}
-        port = ${SQL_SERVER_PORT}
-        db = ${AMAVISD_DB_NAME}
-        user = ${AMAVISD_DB_USER}
-        passwd = ${AMAVISD_DB_PASSWD}
-
+        - ${IREDADMIN_HTTPD_ROOT}/settings.py
     * See also:
         - ${IREDADMIN_HTTPD_CONF}
 
