@@ -83,7 +83,7 @@ iredapd_config()
         perl -pi -e 's#^(ldap_bindpw).*#${1} = "$ENV{LDAP_BINDPW}"#' settings.py
         perl -pi -e 's#^(ldap_basedn).*#${1} = "$ENV{LDAP_BASEDN}"#' settings.py
 
-        perl -pi -e 's#^(plugins).*#${1} = ["ldap_maillist_access_policy", "ldap_amavisd_block_blacklisted_senders"]#' settings.py
+        perl -pi -e 's#^(plugins).*#${1} = ["ldap_maillist_access_policy", "ldap_amavisd_block_blacklisted_senders", "ldap_recipient_restrictions"]#' settings.py
 
     elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#^(sql_server).*#${1} = "$ENV{SQL_SERVER}"#' settings.py

@@ -425,6 +425,12 @@ install_all()
         fi
         eval ${install_pkg} ${ALL_PKGS}
 
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            # Fix incorrect file permission required by py-ldap
+            # NOTE: This issue was fixed in OpenBSD 5.4.
+            chmod o+r /usr/local/lib/libsasl2.so* &>/dev/null
+        fi
+
         echo 'export status_install_all_pkgs="DONE"' >> ${STATUS_FILE}
     }
 
@@ -454,7 +460,4 @@ install_all()
 
     check_status_before_run install_all_pkgs
     check_status_before_run enable_all_services
-
-    # Fix incorrect file permission which required by py-ldap
-    chmod o+r /usr/local/lib/libsasl2.so* &>/dev/null
 }
