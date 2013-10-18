@@ -43,6 +43,12 @@ mysql_initialize()
     # Disable 'skip-networking' in my.cnf.
     perl -pi -e 's#^(skip-networking.*)#${1}#' ${MYSQL_MY_CNF} &>/dev/null
 
+    # Enable innodb_file_per_table by default.
+    grep '^innodb_file_per_table' ${MYSQL_MY_CNF} &>/dev/null
+    if [ X"$?" != X'0' ]; then
+        perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF}
+    fi
+
     ${MYSQLD_RC_SCRIPT} restart &>/dev/null
 
     ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialize ..."
