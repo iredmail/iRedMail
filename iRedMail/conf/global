@@ -61,25 +61,29 @@ export DIALOG_SELECTABLE_AWSTATS='YES'
 # Usually it's 127.0.0.1, but not in FreeBSD Jail.
 export LOCAL_ADDRESS="${LOCAL_ADDRESS:=127.0.0.1}"
 
-# Hostname used in MySQL GRANT command.
+# Hostname or IP address used in MySQL GRANT command (allow remote access from
+# this hostname/IP).
 # Usually it's 'localhost', but not in FreeBSD Jail (use ${LOCAL_ADDRESS} or
 # hostname of Jail instead).
 if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
-    export SQL_HOSTNAME='localhost'
+    # Pre-define MYSQL_GRANT_HOST while running iRedMail to use a remote MySQL
+    # server. For example:
+    # MYSQL_GRANT_HOST='192.168.1.2' bash iRedMail.sh
+    export MYSQL_GRANT_HOST="${MYSQL_GRANT_HOST:=localhost}"
 else
-    export SQL_HOSTNAME="${LOCAL_ADDRESS}"
+    export MYSQL_GRANT_HOST="${LOCAL_ADDRESS}"
 fi
 
 # LDAP server
-export LDAP_SERVER_HOST="${LOCAL_ADDRESS}"
-export LDAP_SERVER_PORT='389'
+export LDAP_SERVER_HOST="${LDAP_SERVER_HOST:=${LOCAL_ADDRESS}}"
+export LDAP_SERVER_PORT="${LDAP_SERVER_PORT:=389}"
 # MySQL server
-export MYSQL_SERVER="${LOCAL_ADDRESS}"
-export MYSQL_SERVER_PORT='3306'
-export MYSQL_ROOT_USER='root'
+export MYSQL_SERVER="${MYSQL_SERVER:=${LOCAL_ADDRESS}}"
+export MYSQL_SERVER_PORT="${MYSQL_SERVER_PORT:=3306}"
+export MYSQL_ROOT_USER="${MYSQL_ROOT_USER:=root}"
 # PGSQL server
-export PGSQL_SERVER="${LOCAL_ADDRESS}"
-export PGSQL_SERVER_PORT='5432'
+export PGSQL_SERVER="${PGSQL_SERVER:=${LOCAL_ADDRESS}}"
+export PGSQL_SERVER_PORT="${PGSQL_SERVER_PORT:=5432}"
 # Dovecot: POP3, IMAP, managesieve
 export IMAP_SERVER="${LOCAL_ADDRESS}"
 export MANAGESIEVE_BIND_HOST="${LOCAL_ADDRESS}"

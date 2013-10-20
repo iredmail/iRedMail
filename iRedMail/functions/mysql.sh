@@ -57,25 +57,29 @@ mysql_initialize()
     # Generate temporary file for MySQL client option --defaults-file.
     cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 [client]
-host=${SQL_SERVER}
-port=${SQL_SERVER_PORT}
+host=${MYSQL_SERVER}
+port=${MYSQL_SERVER_PORT}
 user=${MYSQL_ROOT_USER}
 password=${MYSQL_ROOT_PASSWD}
 EOF
 
     if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
-        ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
-        mysqladmin --user=root password "${MYSQL_ROOT_PASSWD}"
+        # Try to access without password, set a password if it's empty.
+        mysql -u${MYSQL_ROOT_USER} -e "show databases" &>/dev/null
+        if [ X"$?" == X'0' ]; then
+            ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
+            mysqladmin --user=root password "${MYSQL_ROOT_PASSWD}"
+        fi
     else
         ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${LOCAL_ADDRESS} ..."
         mysql -u${MYSQL_ROOT_USER} <<EOF
 -- Set root password
 USE mysql;
 UPDATE user SET Password = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User = 'root';
--- Allow access from SQL_HOSTNAME with password
-GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${SQL_HOSTNAME}' IDENTIFIED BY '${MYSQL_ROOT_PASSWD}';
+-- Allow access from MYSQL_GRANT_HOST with password
+GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${MYSQL_GRANT_HOST}' IDENTIFIED BY '${MYSQL_ROOT_PASSWD}';
 -- Allow GRANT privilege
-UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='${SQL_HOSTNAME}';
+UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='${MYSQL_GRANT_HOST}';
 EOF
     fi
 
@@ -129,8 +133,8 @@ mysql_import_vmail_users()
 CREATE DATABASE IF NOT EXISTS ${VMAIL_DB} CHARACTER SET utf8;
 
 /* Permissions. */
-GRANT SELECT ON ${VMAIL_DB}.* TO "${VMAIL_DB_BIND_USER}"@"${SQL_HOSTNAME}" IDENTIFIED BY "${VMAIL_DB_BIND_PASSWD}";
-GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB}.* TO "${VMAIL_DB_ADMIN_USER}"@"${SQL_HOSTNAME}" IDENTIFIED BY "${VMAIL_DB_ADMIN_PASSWD}";
+GRANT SELECT ON ${VMAIL_DB}.* TO "${VMAIL_DB_BIND_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${VMAIL_DB_BIND_PASSWD}";
+GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB}.* TO "${VMAIL_DB_ADMIN_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${VMAIL_DB_ADMIN_PASSWD}";
 
 /* Initialize the database. */
 USE ${VMAIL_DB};

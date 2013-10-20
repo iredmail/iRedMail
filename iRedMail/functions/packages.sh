@@ -79,24 +79,35 @@ install_all()
         # MySQL server & client.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} mysql-server${PKG_ARCH} mysql${PKG_ARCH}"
+            if [ X"${MYSQL_SERVER}" == X"${LOCAL_ADDRESS}" ]; then
+                ALL_PKGS="${ALL_PKGS} mysql-server${PKG_ARCH}"
+            fi
+            ALL_PKGS="${ALL_PKGS} mysql${PKG_ARCH}"
 
             # For Awstats.
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} mod_auth_mysql${PKG_ARCH}"
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
-            ALL_PKGS="${ALL_PKGS} mysql-community-server mysql-community-server-client"
+            if [ X"${MYSQL_SERVER}" == X"${LOCAL_ADDRESS}" ]; then
+                ALL_PKGS="${ALL_PKGS} mysql-community-server-client"
+            fi
+            ALL_PKGS="${ALL_PKGS} mysql-community-server-client"
 
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} postfix-mysql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # MySQL server and client.
-            ALL_PKGS="${ALL_PKGS} mysql-server mysql-client postfix-mysql libapache2-mod-auth-mysql"
+            if [ X"${MYSQL_SERVER}" == X"${LOCAL_ADDRESS}" ]; then
+                ALL_PKGS="${ALL_PKGS} mysql-server"
+            fi
+            ALL_PKGS="${ALL_PKGS} mysql-client postfix-mysql libapache2-mod-auth-mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} mysql-client cyrus-sasl--mysql mysql-server"
-            PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
-
+            if [ X"${MYSQL_SERVER}" == X"${LOCAL_ADDRESS}" ]; then
+                ALL_PKGS="${ALL_PKGS} mysql-server"
+                PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
+            fi
+            ALL_PKGS="${ALL_PKGS} mysql-client cyrus-sasl--mysql"
         fi
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
