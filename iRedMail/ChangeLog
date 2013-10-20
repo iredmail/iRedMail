@@ -1,5 +1,7 @@
 iRedMail-0.8.6:
     * Better support for installing iRedMail with remote MySQL server.
+      Reference:
+      http://www.iredmail.org/wiki/index.php?title=IRedMail/FAQ/MySQL/install.iredmail.with.remote.mysql.server
     * Enable 'innodb_file_per_table' in MySQL by default.
     * Enable Opportunistic TLS support in Postfix when sending mail to remote
       SMTP server (smtp_tls_security_level=may).
