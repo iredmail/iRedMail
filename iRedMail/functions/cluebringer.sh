@@ -65,7 +65,7 @@ cluebringer_config()
     # 2 - Notices, warnings, errors
     # 3 - Info, notices, warnings, errors
     # 4 - Debugging 
-    perl -pi -e 's/^#(log_level=).*/${1}2/' ${CLUEBRINGER_CONF}
+    perl -pi -e 's/^#(log_level=).*/${1}0/' ${CLUEBRINGER_CONF}
     perl -pi -e 's/^(log_mail=).*/${1}mail\@syslog:native/' ${CLUEBRINGER_CONF}
 
     # File to log to instead of stdout

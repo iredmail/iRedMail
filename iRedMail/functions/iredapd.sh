@@ -146,6 +146,7 @@ iRedAPD - Postfix Policy Daemon:
         - ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}/
         - ${IREDAPD_ROOT_DIR}/iredapd/
         - ${IREDAPD_ROOT_DIR}/iredapd/etc/settings.py
+
 EOF
 
     echo 'export status_iredapd_config="DONE"' >> ${STATUS_FILE}
