@@ -79,7 +79,7 @@ install_all()
         # MySQL server & client.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            if [ X"${MYSQL_SERVER}" == X"${LOCAL_ADDRESS}" ]; then
+            if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} mysql-server${PKG_ARCH}"
             fi
             ALL_PKGS="${ALL_PKGS} mysql${PKG_ARCH}"
@@ -88,7 +88,7 @@ install_all()
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} mod_auth_mysql${PKG_ARCH}"
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
-            if [ X"${MYSQL_SERVER}" == X"${LOCAL_ADDRESS}" ]; then
+            if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} mysql-community-server-client"
             fi
             ALL_PKGS="${ALL_PKGS} mysql-community-server-client"
@@ -97,13 +97,13 @@ install_all()
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # MySQL server and client.
-            if [ X"${MYSQL_SERVER}" == X"${LOCAL_ADDRESS}" ]; then
+            if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} mysql-server"
             fi
             ALL_PKGS="${ALL_PKGS} mysql-client postfix-mysql libapache2-mod-auth-mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            if [ X"${MYSQL_SERVER}" == X"${LOCAL_ADDRESS}" ]; then
+            if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} mysql-server"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
             fi

@@ -25,10 +25,20 @@
 # -------------------------------------------------------
 # -------------------- MySQL ----------------------------
 # -------------------------------------------------------
+mysql_generate_defauts_file_root()
+{
+    ECHO_DEBUG "Generate temporary defauts file for MySQL client option --defaults-file: ${MYSQL_DEFAULTS_FILE_ROOT}."
+    cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
+[client]
+host=${MYSQL_SERVER}
+port=${MYSQL_SERVER_PORT}
+user=${MYSQL_ROOT_USER}
+password=${MYSQL_ROOT_PASSWD}
+EOF
+}
+
 mysql_initialize()
 {
-    ECHO_INFO "Configure MySQL database server." 
-
     ECHO_DEBUG "Starting MySQL."
 
     # Initial MySQL database first
@@ -53,15 +63,6 @@ mysql_initialize()
 
     ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialize ..."
     sleep 5
-
-    # Generate temporary file for MySQL client option --defaults-file.
-    cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
-[client]
-host=${MYSQL_SERVER}
-port=${MYSQL_SERVER_PORT}
-user=${MYSQL_ROOT_USER}
-password=${MYSQL_ROOT_PASSWD}
-EOF
 
     if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
         # Try to access without password, set a password if it's empty.

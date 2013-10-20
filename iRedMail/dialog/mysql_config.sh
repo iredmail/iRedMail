@@ -31,7 +31,8 @@ while : ; do
     ${DIALOG} \
     --title "Password for MySQL administrator: ${MYSQL_ROOT_USER}" \
     ${PASSWORDBOX} "\
-Please specify password for MySQL administrator: ${MYSQL_ROOT_USER}
+Please specify password for MySQL administrator ${MYSQL_ROOT_USER} on server
+${MYSQL_SERVER}.
 
 WARNING:
 
