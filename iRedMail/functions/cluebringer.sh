@@ -435,7 +435,7 @@ EOF
     AuthMySQLUser ${VMAIL_DB_BIND_USER}
     AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
     AuthMySQLDB ${VMAIL_DB}
-    AuthMySQLUserTable admin
+    AuthMySQLUserTable mailbox
     AuthMySQLNameField username
     AuthMySQLPasswordField password
 EOF

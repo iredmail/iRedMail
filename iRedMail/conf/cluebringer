@@ -58,7 +58,7 @@ if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X'SUSE' ]; then
     export CLUEBRINGER_CONF='/etc/policyd/cluebringer.conf'
     export CLUEBRINGER_WEBUI_CONF="/etc/policyd/webui.conf"
     export CLUEBRINGER_PID_FILE='/var/run/cbpolicyd.pid'
-    export CLUEBRINGER_HTTPD_ROOT='/usr/share/cluebringer/webui/'
+    export CLUEBRINGER_HTTPD_ROOT='/usr/share/cluebringer/webui'
 
     # Override default setting.
     export CLUEBRINGER_USER_HOME='/home/cbpolicyd'
