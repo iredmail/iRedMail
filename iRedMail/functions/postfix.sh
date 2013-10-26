@@ -321,7 +321,7 @@ postfix_config_vhost_mysql()
 {
     ECHO_DEBUG "Configure Postfix for MySQL lookup."
 
-    postconf -e transport_maps="proxy:mysql:${mysql_transport_maps_user_cf}, proxy:mysql:${mysql_transport_maps_domain_cf}"
+    postconf -e transport_maps="proxy:mysql:${mysql_transport_maps_cf}"
     postconf -e virtual_mailbox_domains="proxy:mysql:${mysql_virtual_mailbox_domains_cf}"
     postconf -e virtual_mailbox_maps="proxy:mysql:${mysql_virtual_mailbox_maps_cf}"
     postconf -e virtual_alias_maps="proxy:mysql:${mysql_virtual_alias_maps_cf}, proxy:mysql:${mysql_domain_alias_maps_cf}, proxy:mysql:${mysql_catchall_maps_cf}, proxy:mysql:${mysql_domain_alias_catchall_maps_cf}"
@@ -330,9 +330,7 @@ postfix_config_vhost_mysql()
     postconf -e relay_domains="\$mydestination, proxy:mysql:${mysql_relay_domains_cf}"
     postconf -e smtpd_sender_login_maps="proxy:mysql:${mysql_sender_login_maps_cf}"
 
-    # Per-domain and per-user transport maps.
-    cp ${SAMPLE_DIR}/postfix/mysql/transport_maps_domain.cf ${mysql_transport_maps_domain_cf}
-    cp ${SAMPLE_DIR}/postfix/mysql/transport_maps_user.cf ${mysql_transport_maps_user_cf}
+    cp ${SAMPLE_DIR}/postfix/mysql/transport_maps.cf ${mysql_transport_maps_cf}
     # Virtual domains
     cp ${SAMPLE_DIR}/postfix/mysql/virtual_mailbox_domains.cf ${mysql_virtual_mailbox_domains_cf}
     # Relay domains
@@ -363,8 +361,7 @@ Postfix (MySQL):
 EOF
 
     for i in \
-        ${mysql_transport_maps_domain_cf} \
-        ${mysql_transport_maps_user_cf} \
+        ${mysql_transport_maps_cf} \
         ${mysql_virtual_mailbox_domains_cf} \
         ${mysql_relay_domains_cf} \
         ${mysql_virtual_mailbox_maps_cf} \

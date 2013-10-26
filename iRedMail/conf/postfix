@@ -101,8 +101,7 @@ export ldap_catch_all_maps_cf="${POSTFIX_LOOKUP_DIR}/catchall_maps.cf"
 
 # MySQL lookup.
 export mysql_virtual_mailbox_domains_cf="${POSTFIX_LOOKUP_DIR}/virtual_mailbox_domains.cf"
-export mysql_transport_maps_user_cf="${POSTFIX_LOOKUP_DIR}/transport_maps_user.cf"
-export mysql_transport_maps_domain_cf="${POSTFIX_LOOKUP_DIR}/transport_maps_domain.cf"
+export mysql_transport_maps_cf="${POSTFIX_LOOKUP_DIR}/transport_maps.cf"
 export mysql_virtual_mailbox_maps_cf="${POSTFIX_LOOKUP_DIR}/virtual_mailbox_maps.cf"
 export mysql_virtual_alias_maps_cf="${POSTFIX_LOOKUP_DIR}/virtual_alias_maps.cf"
 export mysql_catchall_maps_cf="${POSTFIX_LOOKUP_DIR}/catchall_maps.cf"
