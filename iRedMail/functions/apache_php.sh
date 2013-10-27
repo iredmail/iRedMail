@@ -137,7 +137,7 @@ EOF
         perl -pi -e 's#^(LogLevel).*#${1} warn#' ${HTTPD_CONF}
 
         if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_CONF_DIR}/security
+            perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_MOD_CONF_SECURITY}
         fi
     fi
 
