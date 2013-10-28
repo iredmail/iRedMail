@@ -35,13 +35,14 @@
 #*******************************************
 
 # No one will use these in helo command.
-/^localhost$/               REJECT Go away, bad guy (localhost).
-/^localhost.localdomain$/   REJECT Go away, bad guy (localhost.localdomain).
+/^(localhost)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/^(localhost.localdomain)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(\.local)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 
 # Reject who use IP address as helo.
 # Correct:      [xxx.xxx.xxx.xxx]
 # Incorrect:    xxx.xxx.xxx.xxx
-/^[0-9.]+$/     REJECT Go away, bad guy (not RFC compliant).
+/^([0-9.]+)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server sent non RFC compliant HELO identity (${1})
 
 #
 # This is the real HELO identify of these ISPs:
@@ -50,132 +51,126 @@
 #   163.com     m31-189.vip.163.com m13-49.163.com
 #   sina.com    mail2-209.sinamail.sina.com.cn
 #   gmail.com   xx-out-NNNN.google.com
-#
-/^126\.com$/        REJECT Go away, bad guy (126.com).
-/^163\.com$/        REJECT Go away, bad guy (163.com).
-/^163\.net$/        REJECT Go away, bad guy (163.net).
-/^sohu\.com$/       REJECT Go away, bad guy (sohu.com).
-/gmail\.com$/       REJECT Go away, bad guy (gmail.com).
-/^google\.com$/     REJECT Go away, bad guy (google.com).
-/^yahoo\.com\.cn$/  REJECT Go away, bad guy (yahoo.com.cn).
-/^yahoo\.co\.jp$/   REJECT Go away, bad guy (yahoo.co.jp).
+/^(126\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
+/^(163\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
+/^(163\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
+/^(sohu\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
+/(gmail\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
+/^(google\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
+/^(yahoo\.com\.cn)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
+/^(yahoo\.co\.jp)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
 
 #
 # Spammers.
 #
-/^728154EA470B4AA\.com$/        REJECT Go away, bad guy (728154EA470B4AA.com).
-/^dsldevice\.lan$/              REJECT Go away, bad guy (dsldevice.lan).
-/^taj-co\.com$/                 REJECT Go away, bad guy (taj-co.com).
-/^CF8D3DB045C1455\.net$/        REJECT Go away, bad guy (CF8D3DB045C1455.net).
-/^dsgsfdg\.com$/                REJECT Go away, bad guy (dsgsfdg.com).
-/^se\.nit7-ngbo\.com$/          REJECT Go away, bad guy (se.nit7-ngbo.com).
-/^mail\.goo\.ne\.jp$/           REJECT Go away, bad guy (mail.goo.ne.jp).
-/^n-ong_an\.com$/               REJECT Go away, bad guy (n-ong_an.com).
-/^e5\.il\.n5tt\.zj\.cn$/        REJECT Go away, bad guy (e5.il.n5tt.zj.cn).
-/^meqail\.teamefs-ine5tl\.com$/ REJECT Go away, bad guy (meqail.teamefs-ine5tl.com).
-/^zzg\.jhf-sp\.com$/            REJECT Go away, bad guy (zzg.jhf-sp.com).
-/^din_glo-ng\.net$/             REJECT Go away, bad guy (din_glo-ng.net).
-/^fda-cnc\.ie\.com$/            REJECT Go away, bad guy (fda-cnc.ie.com).
-/^yrtaj-yrco\.com$/             REJECT Go away, bad guy (yrtaj-yrco.com).
-/^m\.am\.biz\.cn$/              REJECT Go away, bad guy (m.am.biz.cn).
-/^xr_haig\.roup\.com$/          REJECT Go away, bad guy (xr_haig.roup.com).
-/^hjn\.cn$/                     REJECT Go away, bad guy (hjn.cn).
-/^we_blf\.com\.cn$/             REJECT Go away, bad guy (we_blf.com.cn).
-/^netvigator\.com$/             REJECT Go away, bad guy (netvigator.com).
-/^mysam\.biz$/                  REJECT Go away, bad guy (mysam.biz).
-/^mail\.teams-intl\.com$/       REJECT Go away, bad guy (mail.teams-intl.com).
-/^seningbo\.com$/               REJECT Go away, bad guy (seningbo.com).
-/^nblf\.com\.cn$/               REJECT Go away, bad guy (nblf.com.cn).
-/^kdn\.ktguide\.com$/           REJECT Go away, bad guy (kdn.ktguide.com).
-/^zzsp\.com$/                   REJECT Go away, bad guy (zzsp.com).
-/^nblongan\.com$/               REJECT Go away, bad guy (nblongan.com).
-/^dpu\.cn$/                     REJECT Go away, bad guy (dpu.cn).
-/^mail\.nbptt\.zj\.cn$/         REJECT Go away, bad guy (mail.nbptt.zj.cn).
-/^nbalton\.com$/                REJECT Go away, bad guy (nbalton.com).
-/^cncie\.com$/                  REJECT Go away, bad guy (cncie.com).
-/^xinhaigroup\.com$/            REJECT Go away, bad guy (xinhaigroup.com).
-/^system.mail$/             REJECT Go away, bad guy (system.mail).
-/^wz\.com$/                 REJECT Go away, bad guy (wz.com).
-/^speedtouch\.lan$/         REJECT Go away, bad guy (speedtouch.lan).
-/^dsldevice\.lan$/          REJECT Go away, bad guy (dsldevice.lan).
-/\.zj.cn$/                  REJECT Go away, bad guy (.zj.cn).
-/\.kornet$/                 REJECT Go away, bad guy (.kornet).
-/\.zj.cn$/                  REJECT Go away, bad guy (.zj.cn).
-/\.local$/                  REJECT Go away, bad guy (.local).
+/^(728154EA470B4AA\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(taj-co\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(CF8D3DB045C1455\.net)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(dsgsfdg\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(se\.nit7-ngbo\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(mail\.goo\.ne\.jp)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(n-ong_an\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(meqail\.teamefs-ine5tl\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(zzg\.jhf-sp\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(din_glo-ng\.net)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(fda-cnc\.ie\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(yrtaj-yrco\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(m\.am\.biz\.cn)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(xr_haig\.roup\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(hjn\.cn)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(we_blf\.com\.cn)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(netvigator\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(mysam\.biz)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(mail\.teams-intl\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(seningbo\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(nblf\.com\.cn)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(kdn\.ktguide\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(zzsp\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(nblongan\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(dpu\.cn)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(nbalton\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(cncie\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(xinhaigroup\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/^(wz\.com)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/(\.zj\.cn)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+/(\.kornet)$/ REJECT ACCESS DENIED. Your email was rejected because it appears to come from a known spamming mail server (${1})
+
+/^(dsldevice\.lan)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/^(system\.mail)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/^(speedtouch\.lan)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/^(dsldevice\.lan)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 
 #
 # Reject adsl spammers.
 #
-/adsl/                      REJECT Go away, bad guy (adsl).
-/dynamic/                   REJECT Go away, bad guy (dynamic)
-/\d{1,3}-\d{1,3}-\d{1,3}-\d{1,3}/   REJECT Go away (dynamic).
-/pppoe/                     REJECT Go away, bad guy (pppoe).
-/dsl\.brasiltelecom\.net\.br/   REJECT Go away, bad guy (dsl.optinet.hr)
-/dsl\.optinet\.hr/          REJECT Go away, bad guy (dsl.telesp.net.br)
-/dsl\.telesp\.net\.br/      REJECT Go away, bad guy (dialog)
-/dialup/                    REJECT Go away, bad guy (dialup)
-/dhcp/                      REJECT Go away, bad guy (dhcp)
-/dhcp\.stls\.mo\.charter\.com/  REJECT Go away, bad guy (dhcp.stls.mo.charter.com)
-/pool-/                     REJECT Go away, bad guy (pool-)
-/^cpe-/                     REJECT Go away, bad guy (cpe-)
-/\.cpe\./                   REJECT Go away, bad guy (.cpe.)
+/(adsl)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(dynamic)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(\d{1,3}-\d{1,3}-\d{1,3}-\d{1,3})/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(pppoe)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(dsl\.brasiltelecom\.net\.br)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(dsl\.optinet\.hr)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(dsl\.telesp\.net\.br)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(dialup)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(dhcp)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(pool-)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/^(cpe-)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(\.cpe\.)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
 
-/speedy\.com\.ar$/          REJECT Go away, bad guy (speedy.com.ar)
-/speedyterra\.com\.br$/     REJECT Go away, bad guy (speedyterra.com.br)
-/static\.sbb\.rs$/          REJECT Go away, bad guy (static.sbb.rs)
-/static\.vsnl\.net\.in$/    REJECT Go away, bad guy (static.vsnl.net.in)
+/(speedy\.com\.ar)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(speedyterra\.com\.br)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(static\.sbb\.rs)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
+/(static\.vsnl\.net\.in)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
 
-/advance\.com\.ar/          REJECT Go away, bad guy
-/airtelbroadband\.in/       REJECT Go away, bad guy
-/bb\.netvision\.net\.il/    REJECT Go away, bad guy
-/bezeqint\.net/             REJECT Go away, bad guy
-/broadband3\.iol\.cz/       REJECT Go away, bad guy
-/cable\.net\.co/            REJECT Go away, bad guy
-/catv\.broadband\.hu/       REJECT Go away, bad guy
-/chello\.nl/                REJECT Go away, bad guy
-/chello\.sk/                REJECT Go away, bad guy
-/client\.mchsi\.com/        REJECT Go away, bad guy
-/comunitel\.net/            REJECT Go away, bad guy
-/coprosys\.cz/              REJECT Go away, bad guy
-/dclient\.hispeed\.ch/      REJECT Go away, bad guy
-/dip0\.t-ipconnect\.de/     REJECT Go away, bad guy
-/domain\.invalid/           REJECT Go away, bad guy
-/dyn\.centurytel\.net/      REJECT Go away, bad guy
-/embarqhsd\.net/            REJECT Go away, bad guy
-/emcali\.net\.co/           REJECT Go away, bad guy
-/epm\.net\.co/              REJECT Go away, bad guy
-/eutelia\.it/               REJECT Go away, bad guy
-/fastwebnet\.it/            REJECT Go away, bad guy
-/fibertel\.com\.ar/         REJECT Go away, bad guy
-/freedom2surf\.net$/        REJECT Go away, bad guy
-/hgcbroadband\.com$/        REJECT Go away, bad guy
-/HINET-IP\.hinet\.net$/     REJECT Go away, bad guy
-/infonet\.by$/              REJECT Go away, bad guy
-/is74\.ru$/                 REJECT Go away, bad guy
-/kievnet\.com\.ua$/         REJECT Go away, bad guy
-/metrotel\.net\.co$/        REJECT Go away, bad guy
-/nw\.nuvox\.net$/           REJECT Go away, bad guy
-/pldt\.net$/                REJECT Go away, bad guy
-/pool\.invitel\.hu$/        REJECT Go away, bad guy
-/pool\.ukrtel\.net$/        REJECT Go away, bad guy
-/pools\.arcor-ip\.net$/     REJECT Go away, bad guy
-/pppoe\.avangarddsl\.ru$/   REJECT Go away, bad guy
-/retail\.telecomitalia\.it$/    REJECT Go away, bad guy
-/revip2\.asianet\.co\.th$/  REJECT Go away, bad guy
-/tim\.ro$/                  REJECT Go away, bad guy
-/tsi\.tychy\.pl/            REJECT Go away, bad guy
-/ttnet\.net\.tr/            REJECT Go away, bad guy
-/tttmaxnet\.com/            REJECT Go away, bad guy
-/user\.veloxzone\.com\.br/  REJECT Go away, bad guy
-/utk\.ru$/                  REJECT Go away, bad guy
-/veloxzone\.com\.br$/       REJECT Go away, bad guy
-/virtua\.com\.br$/          REJECT Go away, bad guy
-/wanamaroc\.com$/           REJECT Go away, bad guy
-/wbt\.ru$/                  REJECT Go away, bad guy
-/wireless\.iaw\.on\.ca$/    REJECT Go away, bad guy
-/zj\.cn$/                   REJECT Go away, bad guy
-/business\.telecomitalia\.it$/  REJECT Go away, bad guy
-/cotas\.com\.bo$/           REJECT Go away, bad guy
-/marunouchi\.tokyo\.ocn\.ne\.jp$/   REJECT Go away, bad guy
-/amedex\.com$/              REJECT Go away, bad guy.
-/aageneva\.com$/            REJECT Go away, bad guy.
+/(advance\.com\.ar)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(airtelbroadband\.in)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(bb\.netvision\.net\.il)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(bezeqint\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(broadband3\.iol\.cz)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(cable\.net\.co)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(catv\.broadband\.hu)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(chello\.nl)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(chello\.sk)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(client\.mchsi\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(comunitel\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(coprosys\.cz)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(dclient\.hispeed\.ch)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(dip0\.t-ipconnect\.de)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(domain\.invalid)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(dyn\.centurytel\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(embarqhsd\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(emcali\.net\.co)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(epm\.net\.co)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(eutelia\.it)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(fastwebnet\.it)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(fibertel\.com\.ar)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(freedom2surf\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(hgcbroadband\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(HINET-IP\.hinet\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(infonet\.by)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(is74\.ru)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(kievnet\.com\.ua)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(metrotel\.net\.co)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(nw\.nuvox\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(pldt\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(pool\.invitel\.hu)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(pool\.ukrtel\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(pools\.arcor-ip\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(pppoe\.avangarddsl\.ru)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(retail\.telecomitalia\.it)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(revip2\.asianet\.co\.th)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(tim\.ro)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(tsi\.tychy\.pl)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(ttnet\.net\.tr)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(tttmaxnet\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(user\.veloxzone\.com\.br)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(utk\.ru)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(veloxzone\.com\.br)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(virtua\.com\.br)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(wanamaroc\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(wbt\.ru)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(wireless\.iaw\.on\.ca)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(business\.telecomitalia\.it)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(cotas\.com\.bo)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(marunouchi\.tokyo\.ocn\.ne\.jp)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(amedex\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
+/(aageneva\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
