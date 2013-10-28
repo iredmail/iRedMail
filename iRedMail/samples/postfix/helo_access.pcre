@@ -135,11 +135,9 @@
 /chello\.nl/                REJECT Go away, bad guy
 /chello\.sk/                REJECT Go away, bad guy
 /client\.mchsi\.com/        REJECT Go away, bad guy
-/cncdnh\.east\.verizon\.net/    REJECT Go away, bad guy
 /comunitel\.net/            REJECT Go away, bad guy
 /coprosys\.cz/              REJECT Go away, bad guy
 /dclient\.hispeed\.ch/      REJECT Go away, bad guy
-/dfw\.dsl-w\.verizon\.net/  REJECT Go away, bad guy
 /dip0\.t-ipconnect\.de/     REJECT Go away, bad guy
 /domain\.invalid/           REJECT Go away, bad guy
 /dyn\.centurytel\.net/      REJECT Go away, bad guy
@@ -157,7 +155,6 @@
 /kievnet\.com\.ua$/         REJECT Go away, bad guy
 /metrotel\.net\.co$/        REJECT Go away, bad guy
 /nw\.nuvox\.net$/           REJECT Go away, bad guy
-/pitbpa\.fios\.verizon\.net$/   REJECT Go away, bad guy
 /pldt\.net$/                REJECT Go away, bad guy
 /pool\.invitel\.hu$/        REJECT Go away, bad guy
 /pool\.ukrtel\.net$/        REJECT Go away, bad guy
@@ -172,7 +169,6 @@
 /user\.veloxzone\.com\.br/  REJECT Go away, bad guy
 /utk\.ru$/                  REJECT Go away, bad guy
 /veloxzone\.com\.br$/       REJECT Go away, bad guy
-/verizon\.net$/             REJECT Go away, bad guy
 /virtua\.com\.br$/          REJECT Go away, bad guy
 /wanamaroc\.com$/           REJECT Go away, bad guy
 /wbt\.ru$/                  REJECT Go away, bad guy
