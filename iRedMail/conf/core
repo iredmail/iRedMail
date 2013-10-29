@@ -606,18 +606,6 @@ enable_service_openbsd()
         fi
     fi
 }
-disable_service_openbsd()
-{
-    :
-}
-enable_service_freebsd()
-{
-    :
-}
-disable_service_freebsd()
-{
-    :
-}
 
 freebsd_add_make_conf()
 {

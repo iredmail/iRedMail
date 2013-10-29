@@ -188,10 +188,6 @@ EOF
 EOF
 
     if [ X"${DISTRO}" == X"SUSE" ]; then
-        perl -pi -e 's#(</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-        perl -pi -e 's#(</VirtualHost>)#Alias /awstats/js "$ENV{AWSTATS_JS_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-        perl -pi -e 's#(</VirtualHost>)#Alias /awstats/css "$ENV{AWSTATS_CSS_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-
         if [ X"${BACKEND}" == X'PGSQL' ]; then
             # Don't enable Awstats since we don't have Apache module mod_auth_pgsql
             backup_file ${AWSTATS_HTTPD_CONF}
@@ -200,9 +196,9 @@ EOF
     fi
 
     # Make Awstats can be accessed via HTTPS.
-    perl -pi -e 's#(</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#(</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#(</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#( *</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#( *</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#( *</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     cat >> ${TIP_FILE} <<EOF
 Awstats:

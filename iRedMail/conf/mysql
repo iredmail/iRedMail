@@ -25,7 +25,6 @@
 # SQL_SERVER and SQL_SERVER_PORT are defined in dialog/config_via_dialog.sh.
 
 export MYSQL_MY_CNF='/etc/my.cnf'
-export MYSQL_SOCKET='/var/lib/mysql/mysql.sock'
 
 export MYSQL_RC_SCRIPT_NAME='mysql'
 
@@ -33,20 +32,15 @@ export MYSQL_RC_SCRIPT_NAME='mysql'
 if [ X"${DISTRO}" == X"RHEL" ]; then
     export MYSQL_RC_SCRIPT_NAME='mysqld'
 
-elif [ X"${DISTRO}" == X"SUSE" ]; then
-    export MYSQL_SOCKET='/var/run/mysql/mysql.sock'
-
 elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
     export MYSQL_MY_CNF='/etc/mysql/my.cnf'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export MYSQL_RC_SCRIPT_NAME='mysql-server'
-    export MYSQL_SOCKET='/tmp/mysql.sock'
     export MYSQL_MY_CNF="/var/db/mysql/my.cnf"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export MYSQL_RC_SCRIPT_NAME='mysqld'
-    export MYSQL_SOCKET='/var/run/mysql/mysql.sock'
 fi
 
 export MYSQLD_RC_SCRIPT="${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME}"

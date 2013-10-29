@@ -176,8 +176,21 @@ EOF
         a2enmod deflate >/dev/null 2>&1
 
         [ X"${BACKEND}" == X"OPENLDAP" ] && a2enmod authnz_ldap > /dev/null
-        [ X"${BACKEND}" == X"MYSQL" ] && a2enmod auth_mysql > /dev/null
-        [ X"${BACKEND}" == X"PGSQL" ] && a2enmod 000_auth_pgsql > /dev/null
+        if [ X"${BACKEND}" == X"MYSQL" ]; then
+            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
+                -o X"${DISTRO_CODENAME}" == X'precise' \
+                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
+                a2enmod auth_mysql > /dev/null
+            fi
+        fi
+
+        if [ X"${BACKEND}" == X"PGSQL" ]; then
+            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
+                -o X"${DISTRO_CODENAME}" == X'precise' \
+                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
+                a2enmod 000_auth_pgsql > /dev/null
+            fi
+        fi
 
     elif [ X"${DISTRO}" == X"SUSE" ]; then
         a2enmod authz_core &>/dev/null

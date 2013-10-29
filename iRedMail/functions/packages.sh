@@ -100,7 +100,13 @@ install_all()
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} mysql-server"
             fi
-            ALL_PKGS="${ALL_PKGS} mysql-client postfix-mysql libapache2-mod-auth-mysql"
+            ALL_PKGS="${ALL_PKGS} mysql-client postfix-mysql"
+
+            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
+                -o X"${DISTRO_CODENAME}" == X'precise' \
+                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
+                ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
+            fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
@@ -125,7 +131,13 @@ install_all()
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
-            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql libapache2-mod-auth-pgsql"
+            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
+
+            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
+                -o X"${DISTRO_CODENAME}" == X'precise' \
+                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
+                ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-pgsql"
+            fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-client cyrus-sasl--pgsql postgresql-server postgresql-contrib"
@@ -191,7 +203,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} cluebringer"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
+        ALL_PKGS="${ALL_PKGS} postfix-cluebringer"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
         if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then

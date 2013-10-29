@@ -39,7 +39,13 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export PHPPGADMIN_USE_SOURCE='NO'
     export PHPPGADMIN_HTTPD_ROOT="/usr/share/phppgadmin"
     export PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK="${PHPPGADMIN_HTTPD_ROOT}"
-    export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin"
+    if [ X"${DISTRO_CODENAME}" == X'wheezy' \
+        -o X"${DISTRO_CODENAME}" == X'precise' \
+        -o X"${DISTRO_CODENAME}" == X'raring' ]; then
+        export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin"
+    else
+        export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin.conf"
+    fi
 elif [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'OPENBSD' ]; then
     export PHPPGADMIN_USE_SOURCE='NO'
     export PHPPGADMIN_HTTPD_ROOT="${HTTPD_SERVERROOT}/phpPgAdmin"

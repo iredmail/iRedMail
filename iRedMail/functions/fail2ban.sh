@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Author: Zhang Huangbin <zhb _at_ iredmail.org>
+# Author: Zhang Huangbin (zhb _at_ iredmail.org)
 
 #---------------------------------------------------------------------
 # This file is part of iRedMail, which is an open source mail server
@@ -39,7 +39,12 @@ fail2ban_config()
     cat > ${FAIL2BAN_JAIL_LOCAL_CONF} <<EOF
 ${CONF_MSG}
 
-# Please refer to ${FAIL2BAN_JAIL_CONF} for more examples.
+# Refer to ${FAIL2BAN_JAIL_CONF} for more examples.
+[DEFAULT]
+maxretry    = 5
+# attention: time is in seconds - the value of 3600 means ONE hour
+bantime     = 3600
+ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 
 [ssh-iredmail]
 enabled     = true
@@ -47,8 +52,6 @@ filter      = sshd
 action      = iptables[name=ssh, port="ssh", protocol=tcp]
 #               sendmail-whois[name=ssh, dest=root, sender=fail2ban@mail.com]
 logpath     = ${FAIL2BAN_SSHD_LOGFILE}
-maxretry    = 5
-ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 
 [roundcube-iredmail]
 enabled     = true
@@ -56,19 +59,13 @@ filter      = ${FAIL2BAN_FILTER_ROUNDCUBE}
 action      = iptables-multiport[name=roundcube, port="${FAIL2BAN_DISABLED_SERVICES}", protocol=tcp]
 logpath     = ${RCM_LOGFILE}
 findtime    = 3600
-maxretry    = 5
-bantime     = 3600
-ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 
 [dovecot-iredmail]
 enabled     = true
 filter      = ${FAIL2BAN_FILTER_DOVECOT}
 action      = iptables-multiport[name=dovecot, port="${FAIL2BAN_DISABLED_SERVICES}", protocol=tcp]
 logpath     = ${DOVECOT_LOG_FILE}
-maxretry    = 5
 findtime    = 300
-bantime     = 3600
-ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 
 [postfix-iredmail]
 enabled     = true
@@ -76,9 +73,6 @@ filter      = ${FAIL2BAN_FILTER_POSTFIX}
 action      = iptables-multiport[name=postfix, port="${FAIL2BAN_DISABLED_SERVICES}", protocol=tcp]
 #           sendmail[name=Postfix, dest=you@mail.com]
 logpath     = ${MAILLOG}
-bantime     = 3600
-maxretry    = 5
-ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 EOF
 
     ECHO_DEBUG "Create filter: ${FAIL2BAN_FILTER_DIR}/${FAIL2BAN_FILTER_ROUNDCUBE}.conf."

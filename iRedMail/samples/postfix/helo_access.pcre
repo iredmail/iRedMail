@@ -30,10 +30,6 @@
 # Prepend HELO hostname of sender server
 #/(.*)/ PREPEND X-Original-Helo: $1 (iRedMail: http://www.iredmail.org/)
 
-#*******************************************
-# IP address: (([0-9]){3}-){2}
-#*******************************************
-
 # No one will use these in helo command.
 /^(localhost)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 /^(localhost.localdomain)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})

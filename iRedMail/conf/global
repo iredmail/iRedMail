@@ -295,6 +295,11 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         # Support PGSQL backend on Ubuntu 11.10 and later releases
         export ENABLE_BACKEND_PGSQL='YES'
 
+        # Disable Awstats on Ubuntu 13.10 due to package missing: libapache2-mod-auth-mysql/pgsql
+        if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
+            export DIALOG_SELECTABLE_AWSTATS='NO'
+        fi
+
         # Unsupported releases.
         #   - 8.04: hardy
         #   - 8.10: intrepid
