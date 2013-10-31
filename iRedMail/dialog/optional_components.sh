@@ -38,7 +38,9 @@ fi
 export LIST_OF_OPTIONAL_COMPONENTS=''
 
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpLDAPadmin Web-based_LDAP_management_tool on"
+    if [ X"${DIALOG_SELECTABLE_PHPLDAPADMIN}" == X'YES' ]; then
+        LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpLDAPadmin Web-based_LDAP_management_tool on"
+    fi
     LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpMyAdmin Web-based_MySQL_management_tool on"
 elif [ X"${BACKEND}" == X'MYSQL' ]; then
     LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpMyAdmin Web-based_MySQL_management_tool on"
@@ -51,7 +53,9 @@ if [ X"${DIALOG_SELECTABLE_AWSTATS}" == X'YES' ]; then
 fi
 
 # Fail2ban
-LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Fail2ban Ban_IP_with_too_many_password_failures on"
+if [ X"${DIALOG_SELECTABLE_FAIL2BAN}" == X'YES' ]; then
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Fail2ban Ban_IP_with_too_many_password_failures on"
+fi
 
 export tmp_config_optional_components="${ROOTDIR}/.optional_components"
 

@@ -54,6 +54,8 @@ export ENABLE_BACKEND_LDAPD='NO'
 
 # Enabled components.
 export DIALOG_SELECTABLE_AWSTATS='YES'
+export DIALOG_SELECTABLE_FAIL2BAN='YES'
+export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
 
 # For better distributed deployment
 #
@@ -298,6 +300,7 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         # Disable Awstats on Ubuntu 13.10 due to package missing: libapache2-mod-auth-mysql/pgsql
         if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
             export DIALOG_SELECTABLE_AWSTATS='NO'
+            export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
         fi
 
         # Unsupported releases.
@@ -357,6 +360,8 @@ elif [ X"${KERNEL_NAME}" == X"FREEBSD" ]; then
     fi
 
     export SHELL_BASH='/usr/local/bin/bash'
+
+    export DIALOG_SELECTABLE_FAIL2BAN='NO'
 elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DISTRO='OPENBSD'
     export DISTRO_VERSION="$(uname -r)"
