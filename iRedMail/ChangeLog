@@ -20,6 +20,7 @@ iRedMail-0.8.6:
         + Gentoo
 
     * Package update:
+        + iRedAPD -> 1.4.2
         + Roundcube webmail -> 0.9.5
         + phpMyAdmin -> 4.0.8
 
