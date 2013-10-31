@@ -89,15 +89,15 @@ INSERT INTO policies (Name, Priority, Disabled, Description)
     VALUES ('no_greylisting', 20, 0, 'Disable grelisting for certain domain and users');
 
 -- No greylisting for certain local domains/users
-INSERT INTO policy_groups (Name, Disabled) VALUES ('no_greylisting_to_internal', 0);
+INSERT INTO policy_groups (Name, Disabled) VALUES ('no_greylisting_for_internal', 0);
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '!%internal_ips,!%internal_domains', '%no_greylisting_to_internal', 0
+    SELECT id, '!%internal_ips,!%internal_domains', '%no_greylisting_for_internal', 0
     FROM policies WHERE name='no_greylisting' LIMIT 1;
 
 -- No greylisting for certain external domains/users
-INSERT INTO policy_groups (Name, Disabled) VALUES ('no_greylisting_from_external', 0);
+INSERT INTO policy_groups (Name, Disabled) VALUES ('no_greylisting_for_external', 0);
 INSERT INTO policy_members (PolicyID, Source, Destination, Disabled)
-    SELECT id, '%no_greylisting_from_external', '%internal_domains', 0
+    SELECT id, '%no_greylisting_for_external', '%internal_domains', 0
     FROM policies WHERE name='no_greylisting' LIMIT 1;
 
 -- Disable greylisting for %no_greylisting
@@ -107,7 +107,7 @@ INSERT INTO greylisting (PolicyID, Name, UseGreylisting, Track, UseAutoWhitelist
 
 -- Sample: Disable greylisting for certain local domain/users:
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled)
---    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='no_greylisting_to_internal' LIMIT 1;
+--    SELECT id, '@domain.com', 0 FROM policy_groups WHERE name='no_greylisting_for_internal' LIMIT 1;
 
 -- ---------------
 -- INDEXES
