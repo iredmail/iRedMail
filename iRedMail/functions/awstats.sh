@@ -55,10 +55,19 @@ EOF
     ECHO_DEBUG "Setup user auth for awstats: ${AWSTATS_HTTPD_CONF}."
     if [ X"${BACKEND}" == X'OPENLDAP'  -o X"${BACKEND}" == X'LDAPD' ]; then
         # Use LDAP auth.
-        cat >> ${AWSTATS_HTTPD_CONF} <<EOF
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
+    AuthLDAPEnabled on
+    AuthLDAPAuthoritative Off
+EOF
+        else
+            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     AuthBasicProvider ldap
     AuthzLDAPAuthoritative   Off
+EOF
+        fi
 
+        cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     AuthLDAPUrl   ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}/${LDAP_BASEDN}?${LDAP_ATTR_USER_RDN}?sub?(&(objectclass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ATTR_DOMAIN_GLOBALADMIN}=${LDAP_VALUE_DOMAIN_GLOBALADMIN}))
 
     AuthLDAPBindDN "${LDAP_BINDDN}"
@@ -222,6 +231,10 @@ awstats_config_weblog()
 
     perl -pi -e 's#^(DirIcons=)(.*)#${1}"/awstats/icon#' ${AWSTATS_CONF_WEB}
 
+    # LogFormat
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        perl -pi -e 's#^(LogFormat).*#${1}="%host %other %logname %time1 %methodurl %code %bytesd"#' ${AWSTATS_CONF_WEB}
+    fi
     # On RHEL/CentOS/Debian, ${AWSTATS_CONF_SAMPLE} is default config file. Overrided here.
     backup_file ${AWSTATS_CONF_SAMPLE}
     [ X"${DISTRO}" != X"SUSE" ] && cp -f ${AWSTATS_CONF_WEB} ${AWSTATS_CONF_SAMPLE}

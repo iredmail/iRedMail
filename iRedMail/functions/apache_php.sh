@@ -290,8 +290,10 @@ EOF
         # Create /var/www/dev/*random.
         cd /var/www/dev/ && /dev/MAKEDEV random
 
-        # Enable mod_auth_mysql
+        # Enable mod_auth_ldap/mysql/pgsql
+        [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'LDAPD' ] && /usr/local/sbin/mod_auth_ldap-enable &>/dev/null
         [ X"${BACKEND}" == X'MYSQL' ] && /usr/local/sbin/mod_auth_mysql-enable &>/dev/null
+        [ X"${BACKEND}" == X'PGSQL' ] && /usr/local/sbin/mod_auth_pgsql-enable &>/dev/null
     fi
 
     # --------------------------
