@@ -348,18 +348,8 @@ EOF
         enable_service_rh sshd
     fi
 
-    [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_disable_selinux
-    [ X"${DISTRO}" != X'OPENBSD' ] && check_status_before_run cleanup_remove_sendmail
-    check_status_before_run cleanup_remove_mod_python
-    [ X"${KERNEL_NAME}" == X'LINUX' \
-        -o X"${KERNEL_NAME}" == X'OPENBSD' \
-        ] && check_status_before_run cleanup_replace_firewall_rules
-    [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
-    check_status_before_run cleanup_backup_scripts
-    [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
-
     # Start Dovecot to deliver emails.
-    ECHO_INFO "Deliver administration emails to ${FIRST_USER}@${FIRST_DOMAIN}."
+    ECHO_INFO "Mail sensitive administration info to ${FIRST_USER}@${FIRST_DOMAIN}."
     [ X"${BACKEND}" == X'OPENLDAP' ] && ${DIR_RC_SCRIPTS}/${OPENLDAP_RC_SCRIPT_NAME} restart &>/dev/null
     [ X"${BACKEND}" == X'MYSQL' ] && ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} restart &>/dev/null
     [ X"${BACKEND}" == X'PGSQL' ] && ${DIR_RC_SCRIPTS}/${PGSQL_RC_SCRIPT_NAME} restart &>/dev/null
@@ -389,6 +379,16 @@ EOF
     cat ${DOC_FILE} >> /tmp/.links.eml
     ${DOVECOT_DELIVER} -c ${DOVECOT_CONF} -f root@${HOSTNAME} -d ${tip_recipient} < /tmp/.links.eml
     rm -f /tmp/.links.eml &>/dev/null
+
+    [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_disable_selinux
+    [ X"${DISTRO}" != X'OPENBSD' ] && check_status_before_run cleanup_remove_sendmail
+    check_status_before_run cleanup_remove_mod_python
+    [ X"${KERNEL_NAME}" == X'LINUX' \
+        -o X"${KERNEL_NAME}" == X'OPENBSD' \
+        ] && check_status_before_run cleanup_replace_firewall_rules
+    [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
+    check_status_before_run cleanup_backup_scripts
+    [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
 
     if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
         check_status_before_run cleanup_update_compile_spamassassin_rules
