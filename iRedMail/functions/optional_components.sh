@@ -22,7 +22,7 @@ optional_components()
         check_status_before_run fail2ban_config
 
     # Awstats.
-    [ X"${USE_AWSTATS}" == X"YES" -a X"${DISTRO}" != X'OPENBSD' ] && \
+    [ X"${USE_AWSTATS}" == X"YES" ] && \
         check_status_before_run awstats_config_basic && \
         check_status_before_run awstats_config_weblog && \
         check_status_before_run awstats_config_maillog && \

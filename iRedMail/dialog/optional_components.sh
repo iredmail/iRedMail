@@ -23,13 +23,28 @@
 # ----------------------------------------
 # Optional components for special backend.
 # ----------------------------------------
+# Enabled components.
+export DIALOG_SELECTABLE_AWSTATS='YES'
+export DIALOG_SELECTABLE_FAIL2BAN='YES'
+export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
+
 # Detect selectable menu items
 if [ X"${DISTRO}" == X'SUSE' ]; then
     # openSUSE-12.3 doesn't have mod_auth_mysql and mod_auth_pgsql.
     export DIALOG_SELECTABLE_AWSTATS='NO'
+elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+    # Disable Awstats on Ubuntu 13.10 due to package missing: libapache2-mod-auth-mysql/pgsql
+    if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
+        export DIALOG_SELECTABLE_AWSTATS='NO'
+        export DIALOG_SELECTABLE_PHPLDAPADMIN='NO'
+    fi
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export DIALOG_SELECTABLE_FAIL2BAN='NO'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    # Binary/port Awstats is not available in 5.2 and earlier releases
-    export DIALOG_SELECTABLE_AWSTATS='NO'
+    # Awstats is available on OpenBSD 5.4.
+    if [ X"${DISTRO_VERSION}" == X'5.3' ]; then
+        export DIALOG_SELECTABLE_AWSTATS='NO'
+    fi
 fi
 
 # Construct dialog menu list
@@ -124,6 +139,3 @@ if echo ${OPTIONAL_COMPONENTS} | grep -i 'fail2ban' &>/dev/null; then
     export USE_FAIL2BAN='YES'
     echo "export USE_FAIL2BAN='YES'" >>${IREDMAIL_CONFIG_FILE}
 fi
-
-# Used when you use awstats.
-[ X"${USE_AWSTATS}" == X"YES" ] && . ${DIALOG_DIR}/awstats_config.sh

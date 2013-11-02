@@ -28,18 +28,8 @@ awstats_config_basic()
     ECHO_DEBUG "Generate apache config file for awstats: ${AWSTATS_HTTPD_CONF}."
     backup_file ${AWSTATS_HTTPD_CONF}
 
-    # Move awstats.pl to ${AWSTATS_CGI_DIR} on Debian/Ubuntu, so that it won't
-    # conflict with other cgi programs, e.g. mailman.
-    #if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"SUSE" ]; then
-    #    mkdir -p ${AWSTATS_CGI_DIR}/awstats/ 2>/dev/null
-    #    mv ${AWSTATS_CGI_DIR}/awstats.pl ${AWSTATS_CGI_DIR}/awstats/ 2>/dev/null
-    #    export AWSTATS_CGI_DIR="${AWSTATS_CGI_DIR}/awstats"
-    #fi
-
     # Assign Apache daemon user to group 'adm', so that Awstats cron job can read log files.
-    if [ X"${DISTRO}" == X"DEBIAN" \
-        -o X"${DISTRO}" == X"UBUNTU" \
-        ]; then
+    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         usermod -G adm ${HTTPD_USER} >/dev/null
     fi
 
@@ -59,14 +49,13 @@ ${CONF_MSG}
     #allow from ${LOCAL_ADDRESS}
 
     AuthName "Authorization Required"
+    AuthType Basic
 EOF
 
     ECHO_DEBUG "Setup user auth for awstats: ${AWSTATS_HTTPD_CONF}."
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP'  -o X"${BACKEND}" == X'LDAPD' ]; then
         # Use LDAP auth.
         cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthType Basic
-
     AuthBasicProvider ldap
     AuthzLDAPAuthoritative   Off
 
@@ -83,15 +72,12 @@ EOF
         [ X"${DISTRO}" == X'SUSE' -a X"${DISTRO_CODENAME}" == X'bottle' ] && \
             perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${AWSTATS_HTTPD_CONF}
 
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
         # Use mod_auth_mysql.
-        if [ X"${DISTRO}" == X"RHEL" \
-            -o X"${DISTRO}" == X"SUSE" \
-            -o X"${DISTRO}" == X"FREEBSD" \
-            ]; then
+        if [ X"${DISTRO}" == X'RHEL' \
+            -o X"${DISTRO}" == X'SUSE' \
+            -o X"${DISTRO}" == X'FREEBSD' ]; then
             cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthType Basic
-
     AuthMYSQLEnable On
     AuthMySQLHost ${SQL_SERVER}
     AuthMySQLPort ${SQL_SERVER_PORT}
@@ -101,7 +87,7 @@ EOF
     AuthMySQLUserTable mailbox
     AuthMySQLNameField username
     AuthMySQLPasswordField password
-    AuthMySQLUserCondition "isadmin=1 AND isglobaladmin=1"
+    AuthMySQLUserCondition "isglobaladmin=1"
 EOF
 
             # FreeBSD special.
@@ -118,10 +104,8 @@ EOF
             fi
 
 
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthType Basic
-
     AuthMYSQL on
     AuthBasicAuthoritative Off
     AuthUserFile /dev/null
@@ -135,7 +119,7 @@ EOF
     AuthMySQL_Empty_Passwords off
     AuthMySQL_Encryption_Types Crypt_MD5
     Auth_MySQL_Authoritative On
-    #AuthMySQLUserCondition "isadmin=1 AND isglobaladmin=1"
+    #AuthMySQLUserCondition "isglobaladmin=1"
 EOF
 
             # Set file permission.
@@ -143,16 +127,32 @@ EOF
 
             cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
-# Global config of MySQL server, username, password.
+# Global config of MySQL server address, username, password.
 Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
+EOF
+
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
+    Auth_MYSQL on
+    Auth_MySQL_DB ${VMAIL_DB}
+    Auth_MySQL_Password_Table mailbox
+    Auth_MySQL_Username_Field username
+    Auth_MySQL_Password_Field password
+    Auth_MySQL_Empty_Passwords off
+    Auth_MySQL_Where "isglobaladmin=1"
+EOF
+
+            cat >> ${HTTPD_CONF} <<EOF
+# MySQL auth (mod_auth_mysql)
+# Global config of MySQL server address, port number, username, password.
+Auth_MySQL_Info "${SQL_SERVER}:${SQL_SERVER_PORT}" ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 EOF
         fi
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         # Use PGSQL auth.
         cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthType Basic
     Auth_PG_authoritative on
     Auth_PG_host ${SQL_SERVER}
     Auth_PG_port ${SQL_SERVER_PORT}
@@ -160,7 +160,7 @@ EOF
     Auth_PG_user ${VMAIL_DB_BIND_USER}
     Auth_PG_pwd ${VMAIL_DB_BIND_PASSWD}
     Auth_PG_pwd_table mailbox
-    Auth_PG_pwd_whereclause 'AND isadmin=1 AND isglobaladmin=1'
+    Auth_PG_pwd_whereclause 'AND isglobaladmin=1'
     Auth_PG_uid_field username
     Auth_PG_pwd_field password
     Auth_PG_lowercase_uid on
@@ -168,16 +168,11 @@ EOF
     Auth_PG_hash_type CRYPT
 EOF
 
-    else
-        # Use basic auth mech.
-        cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AllowOverride AuthConfig
-    AuthType Basic
-    AuthUserFile ${AWSTATS_HTPASSWD_FILE}
-EOF
-
-        # Set username, password for web access.
-        htpasswd -bcm ${AWSTATS_HTPASSWD_FILE} "${AWSTATS_USERNAME}" "${AWSTATS_PASSWD}" >/dev/null 2>&1
+        if [ X"${DISTRO}" == X"SUSE" ]; then
+            # Don't enable Awstats since we don't have Apache module mod_auth_pgsql
+            backup_file ${AWSTATS_HTTPD_CONF}
+            rm ${AWSTATS_HTTPD_CONF} &>/dev/null
+        fi
     fi
 
     # Close <Directory> container.
@@ -187,18 +182,10 @@ EOF
 </Directory>
 EOF
 
-    if [ X"${DISTRO}" == X"SUSE" ]; then
-        if [ X"${BACKEND}" == X'PGSQL' ]; then
-            # Don't enable Awstats since we don't have Apache module mod_auth_pgsql
-            backup_file ${AWSTATS_HTTPD_CONF}
-            rm ${AWSTATS_HTTPD_CONF} &>/dev/null
-        fi
-    fi
-
-    # Make Awstats can be accessed via HTTPS.
-    perl -pi -e 's#( *</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#( *</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#( *</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
+    # Make Awstats accessible via HTTPS.
+    perl -pi -e 's#^( *</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^( *</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^( *</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     cat >> ${TIP_FILE} <<EOF
 Awstats:

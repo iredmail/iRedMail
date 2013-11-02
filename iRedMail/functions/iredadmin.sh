@@ -74,8 +74,8 @@ iredadmin_config()
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Create directory alias.
-        perl -pi -e 's#( *</VirtualHost>)#Alias /iredadmin/static "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static"\n${1}#' ${HTTPD_SSL_CONF}
-        perl -pi -e 's#( *</VirtualHost>)#ScriptAlias /iredadmin "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py"\n${1}#' ${HTTPD_SSL_CONF}
+        perl -pi -e 's#^( *</VirtualHost>)#Alias /iredadmin/static "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static"\n${1}#' ${HTTPD_SSL_CONF}
+        perl -pi -e 's#^( *</VirtualHost>)#ScriptAlias /iredadmin "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py"\n${1}#' ${HTTPD_SSL_CONF}
 
         # There's no wsgi module for Apache available on OpenBSD, so
         # iRedAdmin runs as CGI program.
@@ -90,8 +90,8 @@ AddHandler cgi-script .py
 </Directory>
 EOF
     else
-        perl -pi -e 's#( *</VirtualHost>)#Alias /iredadmin/static "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static/"\n${1}#' ${HTTPD_SSL_CONF}
-        perl -pi -e 's#( *</VirtualHost>)#WSGIScriptAlias /iredadmin "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py/"\n${1}#' ${HTTPD_SSL_CONF}
+        perl -pi -e 's#^( *</VirtualHost>)#Alias /iredadmin/static "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static/"\n${1}#' ${HTTPD_SSL_CONF}
+        perl -pi -e 's#^( *</VirtualHost>)#WSGIScriptAlias /iredadmin "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py/"\n${1}#' ${HTTPD_SSL_CONF}
 
         # iRedAdmin runs as WSGI application with Apache + mod_wsgi
         cat > ${IREDADMIN_HTTPD_CONF} <<EOF

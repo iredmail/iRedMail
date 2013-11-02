@@ -35,7 +35,7 @@ ${CONF_MSG}
 EOF
 
     # Make phpPgAdmin can be accessed via HTTPS only.
-    perl -pi -e 's#( *</VirtualHost>)#Alias /phppgadmin "$ENV{PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^( *</VirtualHost>)#Alias /phppgadmin "$ENV{PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     ECHO_DEBUG "Config phpPgAdmin: ${PHPPGADMIN_CONFIG_FILE}."
     cd ${PHPPGADMIN_HTTPD_ROOT} && cp config.inc.php-dist ${PHPPGADMIN_CONFIG_FILE} &>/dev/null

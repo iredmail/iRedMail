@@ -367,7 +367,7 @@ cluebringer_webui_config()
         cp /usr/local/share/policyd2/contrib/httpd/cluebringer-httpd.conf ${CLUEBRINGER_WEBUI_CONF}
 
     # Make Cluebringer accessible via HTTPS.
-    perl -pi -e 's#( *</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^( *</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     # Configure webui.
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then

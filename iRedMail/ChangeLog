@@ -1,4 +1,10 @@
 iRedMail-0.8.6:
+    * Works on openSUSE-13.1 milestone 4.
+    * Works on OpenBSD 5.4, plus Awstats support.
+    * Works on Ubuntu 13.10 (saucy). NOTES:
+      - Awstats, Cluebringer webui are not available due to package missing
+        (libapache2-mod-auth-mysql, libapache2-mod-auth-pgsql).
+      - phpLDAPadmin is not available because it cannot be installed at all.
     * Merge per-domain and per-user transport_maps MySQL lookup into one file:
       - Removed: mysql/transport_maps_domain.cf, mysql/transport_maps_user.cf
       - New: mysql/transport_maps.cf
@@ -9,14 +15,16 @@ iRedMail-0.8.6:
     * Enable Opportunistic TLS support in Postfix when sending mail to remote
       SMTP server (smtp_tls_security_level=may).
       Thanks kotso <admin _at_ co.ge> and vlastikcz for the report.
-    * Works on openSUSE-13.1 milestone 4.
     * Switch from Policyd-1.8 to Cluebringer on all Linux/BSD distributions,
       with easier white/black/greylisting management.
     * Fixed:
         + Add cron job to cleanup expired entries in Cluebringer database.
 
     * Drop support for below releases:
-        + Debian 6 (squeeze)
+        + OpenBSD 5.3. Please use OpenBSD 5.4 (released on 2013-11-01) instead.
+        + Debian 6 (squeeze). Please use Debian 7 (wheezy) instead.
+
+    * Drop support for below Linux distribution:
         + Gentoo
 
     * Package update:

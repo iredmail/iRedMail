@@ -52,11 +52,6 @@ export ENABLE_BACKEND_PGSQL='NO'
 # OpenBSD built-in LDAP daemon
 export ENABLE_BACKEND_LDAPD='NO'
 
-# Enabled components.
-export DIALOG_SELECTABLE_AWSTATS='YES'
-export DIALOG_SELECTABLE_FAIL2BAN='YES'
-export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
-
 # For better distributed deployment
 #
 # IP address of localhost.
@@ -297,12 +292,6 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         # Support PGSQL backend on Ubuntu 11.10 and later releases
         export ENABLE_BACKEND_PGSQL='YES'
 
-        # Disable Awstats on Ubuntu 13.10 due to package missing: libapache2-mod-auth-mysql/pgsql
-        if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
-            export DIALOG_SELECTABLE_AWSTATS='NO'
-            export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
-        fi
-
         # Unsupported releases.
         #   - 8.04: hardy
         #   - 8.10: intrepid
@@ -360,8 +349,6 @@ elif [ X"${KERNEL_NAME}" == X"FREEBSD" ]; then
     fi
 
     export SHELL_BASH='/usr/local/bin/bash'
-
-    export DIALOG_SELECTABLE_FAIL2BAN='NO'
 elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DISTRO='OPENBSD'
     export DISTRO_VERSION="$(uname -r)"
@@ -371,8 +358,8 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export RC_CONF_LOCAL='/etc/rc.conf.local'
     export SHELL_BASH='/usr/local/bin/bash'
 
-    # Unsupported release: 5.1, 5.2.
-    if echo "${DISTRO_VERSION}" | grep '^5.[12]' &>/dev/null ; then
+    # Unsupported release: 5.1, 5.2, 5.3.
+    if echo "${DISTRO_VERSION}" | grep '^5.[123]' &>/dev/null ; then
         export UNSUPPORTED_RELEASE='YES'
     fi
 else

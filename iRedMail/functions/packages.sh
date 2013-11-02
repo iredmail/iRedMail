@@ -311,6 +311,11 @@ install_all()
     if [ X"${USE_RCM}" == X"YES" ]; then
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} roundcubemail"
+
+            # MySQL driver for PHP, required by Roundcube.
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_pgsql"
         fi
     fi
 
@@ -388,8 +393,11 @@ install_all()
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # No port available.
-            :
+            ALL_PKGS="${ALL_PKGS} awstats"
+
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} mod_auth_ldap"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mod_auth_mysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} mod_auth_pgsql"
         fi
     fi
 

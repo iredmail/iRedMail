@@ -95,7 +95,7 @@ OPTIONS_FILE_SET+=PLAIN
 OPTIONS_FILE_UNSET+=SCRAM
 EOF
 
-    # Perl 5.8. REQUIRED.
+    # Perl. REQUIRED.
     cat > /var/db/ports/perl/options <<EOF
 WITHOUT_DEBUGGING=true
 WITH_GDBM=true

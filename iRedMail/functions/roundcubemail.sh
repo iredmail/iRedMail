@@ -63,7 +63,7 @@ EOF
     fi
 
     # Make Roundcube can be accessed via HTTPS.
-    perl -pi -e 's#( *</VirtualHost>)#Alias /mail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^( *</VirtualHost>)#Alias /mail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     # Redirect home page to webmail by default
     backup_file ${HTTPD_DOCUMENTROOT}/index.html

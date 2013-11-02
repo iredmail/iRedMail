@@ -289,6 +289,9 @@ EOF
 
         # Create /var/www/dev/*random.
         cd /var/www/dev/ && /dev/MAKEDEV random
+
+        # Enable mod_auth_mysql
+        [ X"${BACKEND}" == X'MYSQL' ] && /usr/local/sbin/mod_auth_mysql-enable &>/dev/null
     fi
 
     # --------------------------
@@ -303,8 +306,8 @@ EOF
         ln -s /var/www/conf/modules.sample/php-${PHP_VERSION}.conf /var/www/conf/modules/php.conf
 
         # Enable Apache modules
-        for module in fileinfo bz2 imap ldap mcrypt mysql mysqli pgsql pspell gd; do
-            ln -s /etc/php-${PHP_VERSION}.sample/${module}.ini /etc/php-${PHP_VERSION}/${module}.ini
+        for i in $(ls -d /etc/php-${PHP_VERSION}.sample/*); do
+            ln -sf ${i} /etc/php-${PHP_VERSION}/$(basename $i)
         done
     fi
 
