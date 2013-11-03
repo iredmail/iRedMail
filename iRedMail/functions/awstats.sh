@@ -114,7 +114,10 @@ EOF
 
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
+            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
+                -o X"${DISTRO_CODENAME}" == X'precise' \
+                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
+                cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     AuthMYSQL on
     AuthBasicAuthoritative Off
     AuthUserFile /dev/null
@@ -130,16 +133,28 @@ EOF
     Auth_MySQL_Authoritative On
     #AuthMySQLUserCondition "isglobaladmin=1"
 EOF
-
-            # Set file permission.
-            chmod 0600 ${AWSTATS_HTTPD_CONF}
-
-            cat >> ${HTTPD_CONF} <<EOF
+                cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server address, username, password.
 Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
+
+            else
+                perl -pi -e 's#(<Directory .*)#DBDriver mysql\n${1}#' ${AWSTATS_HTTPD_CONF}
+                perl -pi -e 's#(<Directory .*)#DBDParams "host=$ENV{SQL_SERVER} port=$ENV{SQL_SERVER_PORT} dbname=$ENV{VMAIL_DB} user=$ENV{VMAIL_DB_BIND_USER} pass=$ENV{VMAIL_DB_BIND_PASSWD}"\n${1}#' ${AWSTATS_HTTPD_CONF}
+
+                cat >> ${AWSTATS_HTTPD_CONF} <<EOF
+    AuthBasicProvider dbd
+    AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s AND isglobaladmin=1"
+EOF
+
+                a2enconf awstats &>/dev/null
+                a2enmod authn_dbd &>/dev/null
+            fi
+
+            # Set file permission.
+            chmod 0600 ${AWSTATS_HTTPD_CONF}
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             cat >> ${AWSTATS_HTTPD_CONF} <<EOF
@@ -160,8 +175,20 @@ EOF
         fi
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        # Use PGSQL auth.
-        cat >> ${AWSTATS_HTTPD_CONF} <<EOF
+        if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
+            perl -pi -e 's#(<Directory .*)#DBDriver pgsql\n${1}#' ${AWSTATS_HTTPD_CONF}
+            perl -pi -e 's#(<Directory .*)#DBDParams "host=$ENV{SQL_SERVER} port=$ENV{SQL_SERVER_PORT} dbname=$ENV{VMAIL_DB} user=$ENV{VMAIL_DB_BIND_USER} password=$ENV{VMAIL_DB_BIND_PASSWD}"\n${1}#' ${AWSTATS_HTTPD_CONF}
+
+            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
+    AuthBasicProvider dbd
+    AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s AND isglobaladmin=1"
+EOF
+
+            a2enconf awstats &>/dev/null
+            a2enmod authn_dbd &>/dev/null
+        else
+            # Use PGSQL auth.
+            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     Auth_PG_authoritative on
     Auth_PG_host ${SQL_SERVER}
     Auth_PG_port ${SQL_SERVER_PORT}
@@ -176,6 +203,7 @@ EOF
     Auth_PG_encrypted on
     Auth_PG_hash_type CRYPT
 EOF
+        fi
 
         if [ X"${DISTRO}" == X"SUSE" ]; then
             # Don't enable Awstats since we don't have Apache module mod_auth_pgsql
@@ -192,9 +220,9 @@ EOF
 EOF
 
     # Make Awstats accessible via HTTPS.
-    perl -pi -e 's#^( *</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#^( *</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-    perl -pi -e 's#^( *</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^(\s*</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     cat >> ${TIP_FILE} <<EOF
 Awstats:

@@ -478,7 +478,7 @@ EOF
 
                 cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthBasicProvider dbd
-    AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s"
+    AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s AND isglobaladmin=1"
 EOF
 
                 a2enconf cluebringer &>/dev/null
@@ -491,8 +491,20 @@ EOF
         fi  # DISTRO
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        # Use mod_auth_pgsql.
-        cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+        if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
+            perl -pi -e 's#(<Directory .*)#DBDriver pgsql\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
+            perl -pi -e 's#(<Directory .*)#DBDParams "host=$ENV{SQL_SERVER} port=$ENV{SQL_SERVER_PORT} dbname=$ENV{VMAIL_DB} user=$ENV{VMAIL_DB_BIND_USER} password=$ENV{VMAIL_DB_BIND_PASSWD}"\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
+
+            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+    AuthBasicProvider dbd
+    AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s AND isglobaladmin=1"
+EOF
+
+            a2enconf cluebringer &>/dev/null
+            a2enmod authn_dbd &>/dev/null
+        else
+            # Use mod_auth_pgsql.
+            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     Auth_PG_authoritative on
     Auth_PG_host ${SQL_SERVER}
     Auth_PG_port ${SQL_SERVER_PORT}
@@ -507,6 +519,7 @@ EOF
     Auth_PG_encrypted on
     Auth_PG_hash_type CRYPT
 EOF
+        fi
 
         # Set file permission.
         chmod 0600 ${CLUEBRINGER_HTTPD_CONF}

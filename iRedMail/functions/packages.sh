@@ -89,7 +89,7 @@ install_all()
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} mysql-community-server-client"
+                ALL_PKGS="${ALL_PKGS} mysql-community-server"
             fi
             ALL_PKGS="${ALL_PKGS} mysql-community-server-client"
 
