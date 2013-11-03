@@ -106,6 +106,8 @@ install_all()
                 -o X"${DISTRO_CODENAME}" == X'precise' \
                 -o X"${DISTRO_CODENAME}" == X'raring' ]; then
                 ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
+            else
+                ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
             fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -137,6 +139,8 @@ install_all()
                 -o X"${DISTRO_CODENAME}" == X'precise' \
                 -o X"${DISTRO_CODENAME}" == X'raring' ]; then
                 ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-pgsql"
+            else
+                ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
             fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then

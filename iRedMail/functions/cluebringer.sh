@@ -367,7 +367,7 @@ cluebringer_webui_config()
         cp /usr/local/share/policyd2/contrib/httpd/cluebringer-httpd.conf ${CLUEBRINGER_WEBUI_CONF}
 
     # Make Cluebringer accessible via HTTPS.
-    perl -pi -e 's#^( *</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}
+    perl -pi -e 's#^(\s*</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}
 
     # Configure webui.
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
@@ -405,8 +405,6 @@ EOF
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # Use LDAP auth.
         cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
-    AuthType Basic
-
     AuthBasicProvider ldap
     AuthzLDAPAuthoritative   Off
 
@@ -427,8 +425,6 @@ EOF
         # Use mod_auth_mysql.
         if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
             cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
-    AuthType Basic
-
     AuthMYSQLEnable On
     AuthMySQLHost ${SQL_SERVER}
     AuthMySQLPort ${SQL_SERVER_PORT}
@@ -452,9 +448,10 @@ EOF
             fi
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
-    AuthType Basic
-
+            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
+                -o X"${DISTRO_CODENAME}" == X'precise' \
+                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
+                cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthMYSQL on
     AuthBasicAuthoritative Off
     AuthUserFile /dev/null
@@ -469,16 +466,28 @@ EOF
     AuthMySQL_Encryption_Types Crypt_MD5
     Auth_MySQL_Authoritative On
 EOF
-
-            # Set file permission.
-            chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
-
-            cat >> ${HTTPD_CONF} <<EOF
+                cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server, username, password.
 Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
+            else
+                perl -pi -e 's#(<Directory .*)#DBDriver mysql\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
+                perl -pi -e 's#(<Directory .*)#DBDParams "host=$ENV{SQL_SERVER} port=$ENV{SQL_SERVER_PORT} dbname=$ENV{VMAIL_DB} user=$ENV{VMAIL_DB_BIND_USER} pass=$ENV{VMAIL_DB_BIND_PASSWD}"\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
+
+                cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+    AuthBasicProvider dbd
+    AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s"
+EOF
+
+                a2enconf cluebringer &>/dev/null
+                a2enmod authn_dbd &>/dev/null
+            fi
+
+            # Set file permission.
+            chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
+
         fi  # DISTRO
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then

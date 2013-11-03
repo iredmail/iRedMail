@@ -45,19 +45,8 @@ policy_server_config()
         check_status_before_run cluebringer_user
         check_status_before_run cluebringer_config
 
-        if [ X"${DISTRO}" == X'SUSE' ]; then
+        if [ X"${DISTRO}" != X'SUSE' ]; then
             # openSUSE-12.3 doesn't have Apache module mod_auth_mysql & mod_auth_pgsql.
-            :
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            # Ubuntu 13.10 doesn't ship libapache2-mod-auth-mysql/pgsql
-            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-                -o X"${DISTRO_CODENAME}" == X'precise' \
-                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
-                check_status_before_run cluebringer_webui_config
-            else
-                :
-            fi
-        else
             check_status_before_run cluebringer_webui_config
         fi
     fi
