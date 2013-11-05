@@ -484,7 +484,7 @@ EOF
     AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s AND isglobaladmin=1"
 EOF
 
-                a2enconf cluebringer &>/dev/null
+                a2enconf zcluebringer &>/dev/null
                 a2enmod authn_dbd &>/dev/null
             fi
 

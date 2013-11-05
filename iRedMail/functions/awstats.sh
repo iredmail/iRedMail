@@ -217,7 +217,7 @@ EOF
 
     if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
         a2enmod cgi &>/dev/null
-        a2enconf awstats &>/dev/null
+        a2enconf zawstats &>/dev/null
     fi
 
     # Close <Directory> container.
