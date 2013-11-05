@@ -81,6 +81,9 @@ EOF
         [ X"${DISTRO}" == X'SUSE' -a X"${DISTRO_CODENAME}" == X'bottle' ] && \
             perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${AWSTATS_HTTPD_CONF}
 
+        [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'saucy' ] && \
+            perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${AWSTATS_HTTPD_CONF}
+
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         # Use mod_auth_mysql.
         if [ X"${DISTRO}" == X'RHEL' \
@@ -210,6 +213,11 @@ EOF
             backup_file ${AWSTATS_HTTPD_CONF}
             rm ${AWSTATS_HTTPD_CONF} &>/dev/null
         fi
+    fi
+
+    if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
+        a2enmod cgi &>/dev/null
+        a2enconf awstats &>/dev/null
     fi
 
     # Close <Directory> container.

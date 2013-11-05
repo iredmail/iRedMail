@@ -136,11 +136,7 @@ modulepath  ${OPENLDAP_MODULE_PATH}
 moduleload  back_hdb
 
 EOF
-        else
-            :
         fi
-    else
-        :
     fi
 
     cat >> ${OPENLDAP_SLAPD_CONF} <<EOF
