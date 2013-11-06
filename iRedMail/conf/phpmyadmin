@@ -20,7 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-export PHPMYADMIN_VERSION='4.0.8-all-languages'
+export PHPMYADMIN_VERSION='4.0.9-all-languages'
 export PHPMYADMIN_TARBALL="phpMyAdmin-${PHPMYADMIN_VERSION}.tar.bz2"
 
 # Install phpMyAdmin with source tarball.

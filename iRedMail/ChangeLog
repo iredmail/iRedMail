@@ -30,7 +30,7 @@ iRedMail-0.8.6:
         + iRedAPD -> 1.4.2
         + iRedAPD -> 0.3
         + Roundcube webmail -> 0.9.5
-        + phpMyAdmin -> 4.0.8
+        + phpMyAdmin -> 4.0.9
 
 iRedMail-0.8.5:
     * Use EPEL yum repo on RHEL/CentOS 6 by default.
