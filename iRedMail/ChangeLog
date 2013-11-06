@@ -1,9 +1,19 @@
 iRedMail-0.8.6:
-    * Works on openSUSE-13.1 milestone 4.
-    * Works on OpenBSD 5.4, plus Awstats support.
-    * Works on Ubuntu 13.10 (saucy). NOTE:
-      - phpLDAPadmin is not available for OpenLDAP bacend because it cannot be
-        installed at all.
+    * Works on new Linux/BSD distribution releases:
+        - Works on Ubuntu 13.10 (saucy). NOTE: phpLDAPadmin is not available
+          for OpenLDAP bacend because it cannot be installed at all.
+        - openSUSE-13.1. Testd with openSUSE 13.1 RC2.
+        - OpenBSD 5.4, plus Awstats support.
+
+    * Drop support for below releases:
+        + Debian 6 (squeeze). Please use Debian 7 (wheezy) instead.
+        + OpenBSD 5.3. Please use OpenBSD 5.4 (released on 2013-11-01) instead.
+
+    * Drop support for below Linux distribution:
+        + Gentoo. Just few users chose Gentoo, so we decided to drop it to
+          reduce our workload and bring you better support for supported
+          Linux/BSD distributions.
+
     * Merge per-domain and per-user transport_maps MySQL lookup into one file:
       - Removed: mysql/transport_maps_domain.cf, mysql/transport_maps_user.cf
       - New: mysql/transport_maps.cf
@@ -14,21 +24,18 @@ iRedMail-0.8.6:
     * Enable Opportunistic TLS support in Postfix when sending mail to remote
       SMTP server (smtp_tls_security_level=may).
       Thanks kotso <admin _at_ co.ge> and vlastikcz for the report.
-    * Switch from Policyd-1.8 to Cluebringer on all Linux/BSD distributions,
-      with easier white/black/greylisting management.
-    * Fixed:
+    * Switch from Policyd-1.8 to Cluebringer on all Linux/BSD distributions.
+      NOTE: The latest iRedAdmin-Pro supports Cluebringer management, includes
+      white/black/greylisting, throttling.
+
+    * Fixed issues:
         + Add cron job to cleanup expired entries in Cluebringer database.
+        + Add 'inet6 => 0' in Amavisd ldap settings to avoid ldap connection
+          error.
 
-    * Drop support for below releases:
-        + OpenBSD 5.3. Please use OpenBSD 5.4 (released on 2013-11-01) instead.
-        + Debian 6 (squeeze). Please use Debian 7 (wheezy) instead.
-
-    * Drop support for below Linux distribution:
-        + Gentoo
-
-    * Package update:
-        + iRedAPD -> 1.4.2
-        + iRedAPD -> 0.3
+    * Updated packages:
+        + iRedAPD -> 1.4.2. Fixed a bug in plugin sql_user_restrictions.py.
+        + iRedAdmin -> 0.3. Use python source file as config file.
         + Roundcube webmail -> 0.9.5
         + phpMyAdmin -> 4.0.9
 

@@ -531,6 +531,7 @@ EOF
     port            => ${LDAP_SERVER_PORT},
     version         => ${LDAP_BIND_VERSION},
     tls             => 0,
+    inet6           => 0,
     timeout         => 120,
     base            => "${LDAP_BASEDN}",
     scope           => "sub",
