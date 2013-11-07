@@ -106,8 +106,13 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export HTTPD_LOG_ERRORLOG='/var/log/apache2/error.log'
 
     # ---- PHP ----
-    export PHP_INI='/etc/php5/apache2/php.ini'
-    export PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
+    if [ X"${DISTRO}" == X'DEBIAN' ]; then
+        export PHP_INI='/etc/php5/apache2filter/php.ini'
+        export PHP_INI_CONF_DIR='/etc/php5/apache2filter/conf.d/'
+    else
+        export PHP_INI='/etc/php5/apache2/php.ini'
+        export PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
+    fi
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export HTTPD_RC_SCRIPT_NAME='apache22'

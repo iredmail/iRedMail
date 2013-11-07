@@ -417,7 +417,8 @@ EOF
         [ X"${LDAP_USE_TLS}" == X"YES" ] && \
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
 
-        # openSUSE-13.1 (bottle) ships Apache-2.4 which removes directive 'AuthzLDAPAuthoritative'.
+        # openSUSE-13.1 (bottle) and Ubuntu 13.10 ships Apache-2.4 which
+        # removes directive 'AuthzLDAPAuthoritative'.
         [ X"${DISTRO}" == X'SUSE' -a X"${DISTRO_CODENAME}" == X'bottle' ] && \
             perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${CLUEBRINGER_HTTPD_CONF}
 
@@ -426,7 +427,7 @@ EOF
 
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
         # Use mod_auth_mysql.
-        if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
+        if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" ]; then
             cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthMYSQLEnable On
     AuthMySQLHost ${SQL_SERVER}
@@ -443,14 +444,10 @@ EOF
             if [ X"${DISTRO}" == X"FREEBSD" ]; then
                 # Enable mod_auth_mysql module in httpd.conf.
                 perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
-            fi
-
-            # openSUSE & FreeBSD special.
-            if [ X"${DISTRO}" == X"SUSE" -o X"${DISTRO}" == X"FREEBSD" ]; then
                 echo "AuthBasicAuthoritative Off" >> ${CLUEBRINGER_HTTPD_CONF}
             fi
 
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X'SUSE' ]; then
             if [ X"${DISTRO_CODENAME}" == X'wheezy' \
                 -o X"${DISTRO_CODENAME}" == X'precise' \
                 -o X"${DISTRO_CODENAME}" == X'raring' ]; then
@@ -476,6 +473,7 @@ Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
             else
+                # Apache 2.4 with apr-util1-dbd-mysql
                 perl -pi -e 's#(<Directory .*)#DBDriver mysql\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
                 perl -pi -e 's#(<Directory .*)#DBDParams "host=$ENV{SQL_SERVER} port=$ENV{SQL_SERVER_PORT} dbname=$ENV{VMAIL_DB} user=$ENV{VMAIL_DB_BIND_USER} pass=$ENV{VMAIL_DB_BIND_PASSWD}"\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
 
@@ -484,8 +482,10 @@ EOF
     AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s AND isglobaladmin=1"
 EOF
 
-                a2enconf zcluebringer &>/dev/null
-                a2enmod authn_dbd &>/dev/null
+                if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+                    a2enconf zcluebringer &>/dev/null
+                    a2enmod authn_dbd &>/dev/null
+                fi
             fi
 
             # Set file permission.
@@ -494,7 +494,8 @@ EOF
         fi  # DISTRO
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
+        # openSUSE-13.1 and Ubuntu 13.10
+        if [ X"${DISTRO_CODENAME}" == X'saucy' -o X"${DISTRO_CODENAME}" == X'bottle' ]; then
             perl -pi -e 's#(<Directory .*)#DBDriver pgsql\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
             perl -pi -e 's#(<Directory .*)#DBDParams "host=$ENV{SQL_SERVER} port=$ENV{SQL_SERVER_PORT} dbname=$ENV{VMAIL_DB} user=$ENV{VMAIL_DB_BIND_USER} password=$ENV{VMAIL_DB_BIND_PASSWD}"\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
 
@@ -503,8 +504,10 @@ EOF
     AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s AND isglobaladmin=1"
 EOF
 
-            a2enconf cluebringer &>/dev/null
-            a2enmod authn_dbd &>/dev/null
+            if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
+                a2enconf zcluebringer &>/dev/null
+                a2enmod authn_dbd &>/dev/null
+            fi
         else
             # Use mod_auth_pgsql.
             cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF

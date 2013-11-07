@@ -44,11 +44,7 @@ policy_server_config()
         ECHO_INFO "Configure Cluebringer (postfix policy server)."
         check_status_before_run cluebringer_user
         check_status_before_run cluebringer_config
-
-        if [ X"${DISTRO}" != X'SUSE' ]; then
-            # openSUSE-12.3 doesn't have Apache module mod_auth_mysql & mod_auth_pgsql.
-            check_status_before_run cluebringer_webui_config
-        fi
+        check_status_before_run cluebringer_webui_config
     fi
 
     # OpenBSD special

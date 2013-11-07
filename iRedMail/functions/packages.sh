@@ -91,7 +91,7 @@ install_all()
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} mysql-community-server"
             fi
-            ALL_PKGS="${ALL_PKGS} mysql-community-server-client"
+            ALL_PKGS="${ALL_PKGS} mysql-community-server-client libapr-util1-dbd-mysql"
 
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} postfix-mysql"
 
@@ -129,7 +129,7 @@ install_all()
                 ALL_PKGS="${ALL_PKGS} mod_auth_pgsql${PKG_ARCH}"
 
         elif [ X"${DISTRO}" == X"SUSE" ]; then
-            ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib postfix-postgresql"
+            ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib postfix-postgresql libapr-util1-dbd-pgsql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
