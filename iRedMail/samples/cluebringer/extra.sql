@@ -139,3 +139,4 @@ CREATE UNIQUE INDEX policy_groups_name ON policy_groups (name);
 CREATE INDEX policy_group_members_member ON policy_group_members (member);
 -- Unique index to avoid duplicate records
 CREATE UNIQUE INDEX policy_group_members_policygroupid_member ON policy_group_members (policygroupid, member);
+CREATE UNIQUE INDEX quotas_limits_quotasid_type ON quotas_limits (QuotasID, Type);
