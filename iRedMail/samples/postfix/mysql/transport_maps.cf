@@ -1,6 +1,0 @@
-user        = vmail
-password    = NSep2RRC7vzN9k6dW5bnc07fTLDEW7
-hosts       = 127.0.0.1
-port        = 3306
-dbname      = vmail
-query       = SELECT IF(mailbox.transport<>'', mailbox.transport, domain.transport) AS transport FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.domain='%d' AND mailbox.domain=domain.domain AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.backupmx=0 AND domain.active=1

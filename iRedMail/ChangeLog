@@ -14,9 +14,6 @@ iRedMail-0.8.6:
           reduce our workload and bring you better support for supported
           Linux/BSD distributions.
 
-    * Merge per-domain and per-user transport_maps MySQL lookup into one file:
-      - Removed: mysql/transport_maps_domain.cf, mysql/transport_maps_user.cf
-      - New: mysql/transport_maps.cf
     * Better support for installing iRedMail with remote MySQL server.
       Reference:
       http://www.iredmail.org/wiki/index.php?title=IRedMail/FAQ/MySQL/install.iredmail.with.remote.mysql.server
@@ -29,6 +26,7 @@ iRedMail-0.8.6:
       white/black/greylisting, throttling.
 
     * Fixed issues:
+        + Not detect backupmx status in domain transport map.
         + Add cron job to cleanup expired entries in Cluebringer database.
         + Add 'inet6 => 0' in Amavisd ldap settings to avoid ldap connection
           error.

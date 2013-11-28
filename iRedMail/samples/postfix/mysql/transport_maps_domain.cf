@@ -1,6 +1,6 @@
 user        = vmail
-password    = yCrSkh8YsoGn6GNKSVCVomi6ecb4Pi
+password    = NSep2RRC7vzN9k6dW5bnc07fTLDEW7
 hosts       = 127.0.0.1
-port        = 5432
+port        = 3306
 dbname      = vmail
 query       = SELECT transport FROM domain WHERE domain='%s' AND active=1 AND backupmx=0
