@@ -379,14 +379,13 @@ amavisd_config_general()
 \$bad_header_quarantine_method = undef;
 
 # Quarantine SPAM.
-#\$spam_quarantine_to = 'spam-quarantine';
-
-# Quarantine method. How to store mail body.
+# Where to store quarantined mail message:
 #   - 'local:spam-%i-%m', quarantine mail on local file system.
 #   - 'sql:', quarantine mail in SQL server specified in @storage_sql_dsn. 
 #   - undef, do not quarantine mail.
-#\$spam_quarantine_method = 'sql:';
 \$spam_quarantine_method = undef;
+#\$spam_quarantine_method = 'sql:';
+#\$spam_quarantine_to = 'spam-quarantine';
 
 #########################
 # Quarantine VIRUS mails.

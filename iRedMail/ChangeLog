@@ -1,8 +1,8 @@
 iRedMail-0.8.6:
     * Works on new Linux/BSD distribution releases:
         - Works on Ubuntu 13.10 (saucy). NOTE: phpLDAPadmin is not available
-          for OpenLDAP bacend because it cannot be installed at all.
-        - openSUSE-13.1. Testd with openSUSE 13.1 RC2.
+          for OpenLDAP backend because it cannot be installed at all.
+        - openSUSE-13.1.
         - OpenBSD 5.4, plus Awstats support.
 
     * Drop support for below releases:
@@ -11,7 +11,7 @@ iRedMail-0.8.6:
 
     * Drop support for below Linux distribution:
         + Gentoo. Just few users chose Gentoo, so we decided to drop it to
-          reduce our workload and bring you better support for supported
+          reduce our workload and bring you better support for other supported
           Linux/BSD distributions.
 
     * Better support for installing iRedMail with remote MySQL server.
@@ -26,7 +26,7 @@ iRedMail-0.8.6:
       white/black/greylisting, throttling.
 
     * Fixed issues:
-        + Not detect backupmx status in domain transport map.
+        + Not detect backupmx status in SQL/LDAP query for domain transport.
         + Add cron job to cleanup expired entries in Cluebringer database.
         + Add 'inet6 => 0' in Amavisd ldap settings to avoid ldap connection
           error.

@@ -7,6 +7,6 @@ bind_dn         = cn=vmail,dc=example,dc=com
 bind_pw         = RBUuFDo31MJbLkJgrwkaKkmRg7Cldw
 search_base     = PH_LDAP_BASEDN
 scope           = one
-query_filter    = (&(objectClass=mailDomain)(|(domainName=%s)(domainAliasName=%s))(accountStatus=active)(enabledService=mail))
+query_filter    = (&(objectClass=mailDomain)(accountStatus=active)(enabledService=mail)(!(domainBackupMX=yes))(|(domainName=%s)(domainAliasName=%s)))
 result_attribute= mtaTransport
 debuglevel      = 0
