@@ -350,9 +350,20 @@ EOF
 
     # Start Dovecot to deliver emails.
     ECHO_INFO "Mail sensitive administration info to ${FIRST_USER}@${FIRST_DOMAIN}."
-    [ X"${BACKEND}" == X'OPENLDAP' ] && ${DIR_RC_SCRIPTS}/${OPENLDAP_RC_SCRIPT_NAME} restart &>/dev/null
-    [ X"${BACKEND}" == X'MYSQL' ] && ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} restart &>/dev/null
-    [ X"${BACKEND}" == X'PGSQL' ] && ${DIR_RC_SCRIPTS}/${PGSQL_RC_SCRIPT_NAME} restart &>/dev/null
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ${DIR_RC_SCRIPTS}/${OPENLDAP_RC_SCRIPT_NAME} restart &>/dev/null
+        ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} restart &>/dev/null
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} restart &>/dev/null
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ${DIR_RC_SCRIPTS}/${PGSQL_RC_SCRIPT_NAME} restart &>/dev/null
+    elif [ X"${BACKEND}" == X'LDAPD' ]; then
+        ${DIR_RC_SCRIPTS}/${LDAPD_RC_SCRIPT_NAME} stop &>/dev/null
+        ${DIR_RC_SCRIPTS}/${LDAPD_RC_SCRIPT_NAME} start &>/dev/null
+        ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} stop &>/dev/null
+        ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} start &>/dev/null
+    fi
+
     ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME} restart &>/dev/null
     sleep 3
 
