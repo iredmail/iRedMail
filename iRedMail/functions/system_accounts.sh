@@ -46,11 +46,21 @@ add_user_vmail()
     fi
     rm -f ${VMAIL_USER_HOME_DIR}/.* 2>/dev/null
 
-    # Set permission for exist home directory.
-    if [ -d ${VMAIL_USER_HOME_DIR} ]; then
-        chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${VMAIL_USER_HOME_DIR}
-        chmod -R 0700 ${VMAIL_USER_HOME_DIR}
-    fi
+    export FIRST_USER_MAILDIR_HASH_PART="$(hash_domain ${FIRST_DOMAIN})/$(hash_maildir ${FIRST_USER})"
+    export FIRST_USER_MAILDIR_FULL_PATH="${STORAGE_MAILBOX_DIR}/${FIRST_USER_MAILDIR_HASH_PART}"
+    # Create maildir.
+    # We will deliver emails with sensitive info of iRedMail installation
+    # to postmaster immediately after installation completed, but delivering
+    # emails with dovecot-lda after installation completed doesn't work all the
+    # time, so we choose to deliver emails by copying mail messages to mailbox
+    # directly.
+    # NOTE: 'Maildir/' is appended by Dovecot.
+    export FIRST_USER_MAILDIR_INBOX="${FIRST_USER_MAILDIR_FULL_PATH}/Maildir/new"
+    mkdir -p ${FIRST_USER_MAILDIR_INBOX} &>/dev/null
+
+    # Reset permission for home directory. Required by FIRST_USER_MAILDIR_FULL_PATH.
+    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${VMAIL_USER_HOME_DIR}
+    chmod -R 0700 ${VMAIL_USER_HOME_DIR}
 
     ECHO_DEBUG "Create directory to store user sieve rule files: ${SIEVE_DIR}."
     mkdir -p ${SIEVE_DIR} && \

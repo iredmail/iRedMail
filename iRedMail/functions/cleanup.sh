@@ -348,48 +348,29 @@ EOF
         enable_service_rh sshd
     fi
 
-    # Start Dovecot to deliver emails.
     ECHO_INFO "Mail sensitive administration info to ${FIRST_USER}@${FIRST_DOMAIN}."
-    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ${DIR_RC_SCRIPTS}/${OPENLDAP_RC_SCRIPT_NAME} restart &>/dev/null
-        ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} restart &>/dev/null
-    elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} restart &>/dev/null
-    elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ${DIR_RC_SCRIPTS}/${PGSQL_RC_SCRIPT_NAME} restart &>/dev/null
-    elif [ X"${BACKEND}" == X'LDAPD' ]; then
-        ${DIR_RC_SCRIPTS}/${LDAPD_RC_SCRIPT_NAME} stop &>/dev/null
-        ${DIR_RC_SCRIPTS}/${LDAPD_RC_SCRIPT_NAME} start &>/dev/null
-        ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} stop &>/dev/null
-        ${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME} start &>/dev/null
-    fi
+    FILE_IREDMAIL_INSTALLATION_DETAILS="${FIRST_USER_MAILDIR_INBOX}/details.eml"
+    FILE_IREDMAIL_LINKS="${FIRST_USER_MAILDIR_INBOX}/links.eml"
 
-    ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME} restart &>/dev/null
-    sleep 3
-
-    # Send tip file to the mail server admin and/or first mail user.
-    tip_recipient="${FIRST_USER}@${FIRST_DOMAIN}"
-
-    cat > /tmp/.tips.eml <<EOF
+    cat > ${FILE_IREDMAIL_INSTALLATION_DETAILS} <<EOF
 From: root@${HOSTNAME}
 To: ${tip_recipient}
 Subject: Details of this iRedMail installation
 
 EOF
 
-    cat ${TIP_FILE} >> /tmp/.tips.eml
-    ${DOVECOT_DELIVER} -c ${DOVECOT_CONF} -f root@${HOSTNAME} -d ${tip_recipient} < /tmp/.tips.eml
-    rm -f /tmp/.tips.eml &>/dev/null
+    cat ${TIP_FILE} >> ${FILE_IREDMAIL_INSTALLATION_DETAILS}
 
-    cat > /tmp/.links.eml <<EOF
+    cat > ${FILE_IREDMAIL_LINKS} <<EOF
 From: root@${HOSTNAME}
 To: ${tip_recipient}
 Subject: Useful resources for iRedMail administrator
 
 EOF
-    cat ${DOC_FILE} >> /tmp/.links.eml
-    ${DOVECOT_DELIVER} -c ${DOVECOT_CONF} -f root@${HOSTNAME} -d ${tip_recipient} < /tmp/.links.eml
-    rm -f /tmp/.links.eml &>/dev/null
+    cat ${DOC_FILE} >> ${FILE_IREDMAIL_LINKS}
+
+    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${FILE_IREDMAIL_INSTALLATION_DETAILS} ${FILE_IREDMAIL_LINKS}
+    chmod -R 0700 ${FILE_IREDMAIL_INSTALLATION_DETAILS} ${FILE_IREDMAIL_LINKS}
 
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_disable_selinux
     [ X"${DISTRO}" != X'OPENBSD' ] && check_status_before_run cleanup_remove_sendmail
