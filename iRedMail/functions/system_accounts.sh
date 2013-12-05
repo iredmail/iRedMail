@@ -50,11 +50,8 @@ add_user_vmail()
     export FIRST_USER_MAILDIR_FULL_PATH="${STORAGE_MAILBOX_DIR}/${FIRST_USER_MAILDIR_HASH_PART}"
     # Create maildir.
     # We will deliver emails with sensitive info of iRedMail installation
-    # to postmaster immediately after installation completed, but delivering
-    # emails with dovecot-lda after installation completed doesn't work all the
-    # time, so we choose to deliver emails by copying mail messages to mailbox
-    # directly.
-    # NOTE: 'Maildir/' is appended by Dovecot.
+    # to postmaster immediately after installation completed.
+    # NOTE: 'Maildir/' is appended by Dovecot (defined in dovecot.conf).
     export FIRST_USER_MAILDIR_INBOX="${FIRST_USER_MAILDIR_FULL_PATH}/Maildir/new"
     mkdir -p ${FIRST_USER_MAILDIR_INBOX} &>/dev/null
 
