@@ -131,6 +131,11 @@ EOF
 
         #perl -pi -e 's#(.*Options).*#${1} FollowSymLinks#' ${HTTPD_CONF_ROOT}/httpd.conf
         #sed -i -e '/AllowOverride/,/AccessFileName/s#Deny from all#Allow from all#' ${HTTPD_CONF_ROOT}/httpd.conf
+
+        # Allow access by default.
+        if [ -f ${HTTPD_CONF_ROOT}/httpd.conf ]; then
+            perl -pi -e 's/^(\s*)(Require all denied).*/${1}#${2}/' ${HTTPD_CONF_ROOT}/httpd.conf
+        fi
     else
         perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_CONF}
         perl -pi -e 's#^(ServerSignature).*#${1} EMail#' ${HTTPD_CONF}
