@@ -29,10 +29,7 @@ export DIALOG_SELECTABLE_FAIL2BAN='YES'
 export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
 
 # Detect selectable menu items
-if [ X"${DISTRO}" == X'SUSE' ]; then
-    # openSUSE-12.3 doesn't have mod_auth_mysql and mod_auth_pgsql.
-    export DIALOG_SELECTABLE_AWSTATS='NO'
-elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+if [ X"${DISTRO}" == X'UBUNTU' ]; then
     # Disable Awstats on Ubuntu 13.10 due to package missing: libapache2-mod-auth-mysql/pgsql
     if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
         export DIALOG_SELECTABLE_AWSTATS='NO'

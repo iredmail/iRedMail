@@ -297,8 +297,6 @@ EOF
 
     ECHO_DEBUG "Enable dovecot SASL support in postfix: ${POSTFIX_FILE_MAIN_CF}."
     postconf -e mailbox_command="${DOVECOT_DELIVER}"
-    [ X"${DISTRO}" == X"SUSE" ] && \
-        perl -pi -e 's#^(POSTFIX_MDA=).*#${1}"dovecot"#' ${POSTFIX_SYSCONFIG_CONF}
     postconf -e virtual_transport="${TRANSPORT}"
     postconf -e dovecot_destination_recipient_limit='1'
 

@@ -14,11 +14,11 @@
 #
 #       - certs/iRedMail_CA.pem: Used to replace file on iRedMail server:
 #           + on RHEL/CentOS/Scientific Linux: /etc/pki/tls/certs/iRedMail_CA.pem
-#           + on Debian/Ubuntu/openSUSE: /etc/ssl/certs/iRedMail_CA.pem
+#           + on Debian/Ubuntu: /etc/ssl/certs/iRedMail_CA.pem
 #           + on FreeBSD: /etc/ssl/certs/iRedMail_CA.pem
 #       - private/iRedMail.key: Used to replace file on iRedMail server:
 #           + on RHEL/CentOS/Scientific Linux: /etc/pki/tls/private/iRedMail.key
-#           + on Debian/Ubuntu/openSUSE: /etc/ssl/private/iRedMail.key
+#           + on Debian/Ubuntu: /etc/ssl/private/iRedMail.key
 #           + on FreeBSD: /etc/ssl/private/iRedMail.key
 #
 # 3) Grant read access to all users. e.g. on RHEL/CentOS/Scientific Linux:

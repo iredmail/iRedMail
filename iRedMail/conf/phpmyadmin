@@ -29,11 +29,7 @@ export PHPMYADMIN_HTTPD_ROOT="${HTTPD_SERVERROOT}/phpMyAdmin-${PHPMYADMIN_VERSIO
 export PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/phpmyadmin"
 
 # Install phpMyAdmin with binary packages.
-if [ X"${DISTRO}" == X'SUSE' ]; then
-    export PHPMYADMIN_USE_SOURCE='NO'
-    export PHPMYADMIN_HTTPD_ROOT="${HTTPD_DOCUMENTROOT}/phpMyAdmin"
-    export PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK="${PHPMYADMIN_HTTPD_ROOT}"
-elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export PHPMYADMIN_USE_SOURCE='NO'
     export PHPMYADMIN_HTTPD_ROOT="/usr/share/phpmyadmin"
     export PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK="${PHPMYADMIN_HTTPD_ROOT}"

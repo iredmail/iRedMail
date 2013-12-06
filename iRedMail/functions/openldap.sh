@@ -52,16 +52,6 @@ openldap_config()
             perl -pi -e 's/#(SLAPD_LDAPS=).*/${1}yes/' ${OPENLDAP_SYSCONFIG_CONF}
         fi
 
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        # Fix strict permission.
-        chmod 0755 ${SSL_KEY_DIR}
-
-        # Start ldaps.
-        perl -pi -e 's#^(OPENLDAP_START_LDAPS=).*#${1}"yes"#' ${OPENLDAP_SYSCONFIG_CONF}
-
-        # Set config backend.
-        perl -pi -e 's#^(OPENLDAP_CONFIG_BACKEND=).*#${1}"files"#' ${OPENLDAP_SYSCONFIG_CONF}
-
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable TLS/SSL support
         cat >> ${RC_CONF_LOCAL} <<EOF
@@ -116,10 +106,7 @@ TLSCertificateKeyFile ${SSL_KEY_FILE}
 EOF
 
     # Load backend module. Required on Debian/Ubuntu.
-    if [ X"${OPENLDAP_VERSION}" == X"2.4" \
-        -a X"${DISTRO}" != X'SUSE' \
-        -a X"${DISTRO}" != X'OPENBSD' \
-        ]; then
+    if [ X"${OPENLDAP_VERSION}" == X"2.4" -a X"${DISTRO}" != X'OPENBSD' ]; then
         if [ X"${OPENLDAP_DEFAULT_DBTYPE}" == X"bdb" ]; then
             # bdb, Berkeley DB.
             cat >> ${OPENLDAP_SLAPD_CONF} <<EOF

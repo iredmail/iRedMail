@@ -29,8 +29,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export FAIL2BAN_SSHD_LOGFILE='/var/log/secure'
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export FAIL2BAN_SSHD_LOGFILE='/var/log/auth.log'
-elif [ X"${DISTRO}" == X"SUSE" ]; then
-    export FAIL2BAN_SSHD_LOGFILE='/var/log/messages'
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export FAIL2BAN_CONF_ROOT='/usr/local/etc/fail2ban'
     export FAIL2BAN_SSHD_LOGFILE='/var/log/auth.log'

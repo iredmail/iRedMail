@@ -61,19 +61,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
 
     export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
 
-elif [ X"${DISTRO}" == X"SUSE" ]; then
-    # Override global setting: user/group.
-    export AMAVISD_SYS_USER='vscan'
-    export AMAVISD_SYS_GROUP='vscan'
-    export AMAVISD_DKIM_DIR='/var/spool/amavis/dkim'
-
-    export AMAVISD_BIN='/usr/sbin/amavisd'
-    export AMAVISD_CONF='/etc/amavisd.conf'
-    export AMAVISD_DKIM_CONF='/etc/amavisd.conf'
-    export AMAVISD_RC_SCRIPT_NAME='amavis'
-    export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
-    export AMAVISD_VIRUSMAILS_DIR='/var/spool/amavis/virusmails'
-
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Debian 7 (wheezy) and Ubuntu 13.04 (raring) ships Amavisd-new-2.7
     if [ X"${DISTRO_CODENAME}" == X'precise' ]; then

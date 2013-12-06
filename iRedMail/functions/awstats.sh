@@ -77,18 +77,12 @@ EOF
         [ X"${LDAP_USE_TLS}" == X"YES" ] && \
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${AWSTATS_HTTPD_CONF}
 
-        # openSUSE-13.1 (bottle) ships Apache-2.4 which removes directive 'AuthzLDAPAuthoritative'.
-        [ X"${DISTRO}" == X'SUSE' -a X"${DISTRO_CODENAME}" == X'bottle' ] && \
-            perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${AWSTATS_HTTPD_CONF}
-
         [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'saucy' ] && \
             perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${AWSTATS_HTTPD_CONF}
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         # Use mod_auth_mysql.
-        if [ X"${DISTRO}" == X'RHEL' \
-            -o X"${DISTRO}" == X'SUSE' \
-            -o X"${DISTRO}" == X'FREEBSD' ]; then
+        if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'FREEBSD' ]; then
             cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     AuthMYSQLEnable On
     AuthMySQLHost ${SQL_SERVER}
@@ -106,12 +100,7 @@ EOF
             if [ X"${DISTRO}" == X"FREEBSD" ]; then
                 # Enable mod_auth_mysql module in httpd.conf.
                 perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
-            fi
 
-            # openSUSE & FreeBSD special.
-            if [ X"${DISTRO}" == X"SUSE" \
-                -o X"${DISTRO}" == X"FREEBSD" \
-                ]; then
                 echo "    AuthBasicAuthoritative Off" >> ${AWSTATS_HTTPD_CONF}
             fi
 
@@ -207,12 +196,6 @@ EOF
     Auth_PG_hash_type CRYPT
 EOF
         fi
-
-        if [ X"${DISTRO}" == X"SUSE" ]; then
-            # Don't enable Awstats since we don't have Apache module mod_auth_pgsql
-            backup_file ${AWSTATS_HTTPD_CONF}
-            rm ${AWSTATS_HTTPD_CONF} &>/dev/null
-        fi
     fi
 
     if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
@@ -256,10 +239,8 @@ EOF
 awstats_config_weblog()
 {
     ECHO_DEBUG "Config awstats to analyze apache web access log: ${AWSTATS_CONF_WEB}."
-    if [ X"${DISTRO}" != X"SUSE" ]; then
-        cd ${AWSTATS_CONF_DIR}
-        cp -f ${AWSTATS_CONF_SAMPLE} ${AWSTATS_CONF_WEB}
-    fi
+    cd ${AWSTATS_CONF_DIR}
+    cp -f ${AWSTATS_CONF_SAMPLE} ${AWSTATS_CONF_WEB}
 
     perl -pi -e 's#^(SiteDomain=)(.*)#${1}"$ENV{HOSTNAME}"#' ${AWSTATS_CONF_WEB}
     perl -pi -e 's#^(LogFile=)(.*)#${1}"$ENV{HTTPD_LOG_ACCESSLOG}"#' ${AWSTATS_CONF_WEB}
@@ -273,7 +254,7 @@ awstats_config_weblog()
     fi
     # On RHEL/CentOS/Debian, ${AWSTATS_CONF_SAMPLE} is default config file. Overrided here.
     backup_file ${AWSTATS_CONF_SAMPLE}
-    [ X"${DISTRO}" != X"SUSE" ] && cp -f ${AWSTATS_CONF_WEB} ${AWSTATS_CONF_SAMPLE}
+    cp -f ${AWSTATS_CONF_WEB} ${AWSTATS_CONF_SAMPLE}
 
     echo 'export status_awstats_config_weblog="DONE"' >> ${STATUS_FILE}
 }
@@ -285,9 +266,8 @@ awstats_config_maillog()
     cd ${AWSTATS_CONF_DIR}
 
     # Create a default config file.
-    [ X"${DISTRO}" != X"SUSE" ] && \
-        cp -f ${AWSTATS_CONF_SAMPLE} ${AWSTATS_CONF_MAIL} && \
-        cp -f ${AWSTATS_CONF_MAIL} ${AWSTATS_CONF_DIR}/awstats.conf
+    cp -f ${AWSTATS_CONF_SAMPLE} ${AWSTATS_CONF_MAIL}
+    cp -f ${AWSTATS_CONF_MAIL} ${AWSTATS_CONF_DIR}/awstats.conf
 
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
         export maillogconvert_pl="$( eval ${LIST_FILES_IN_PKG} "/var/db/pkg/awstats-*" | grep 'maillogconvert.pl')"

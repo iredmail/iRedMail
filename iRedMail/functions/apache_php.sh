@@ -30,120 +30,16 @@ apache_php_config()
 
     backup_file ${HTTPD_CONF} ${HTTPD_SSL_CONF}
 
-    #########################################
-    # Create ${HTTPD_CONF} or ${HTTPD_SSL_CONF} for special distributions.
-    #
-    if [ X"${DISTRO}" == X"SUSE" ]; then
-        cat > ${HTTPD_CONF} <<EOF
-<VirtualHost *:80>
-    ServerAdmin ${FIRST_USER}@${FIRST_DOMAIN}
-    DocumentRoot ${HTTPD_DOCUMENTROOT}
-    ErrorLog ${HTTPD_LOG_ERRORLOG}
-    CustomLog ${HTTPD_LOG_ACCESSLOG} combined
-    HostnameLookups Off
-    UseCanonicalName Off
-    ServerSignature Off
-
-    <Directory />
-        Options FollowSymLinks
-        AllowOverride None
-        Order allow,deny
-        Allow from all
-    </Directory>
-
-    <Directory "/srv/www/htdocs">
-        Options Indexes FollowSymLinks
-        AllowOverride None
-        Order allow,deny
-        Allow from all
-    </Directory>
-
-    ScriptAlias /cgi-bin "${HTTPD_CGIBIN_DIR}"
-    <Directory "${HTTPD_CGIBIN_DIR}">
-        AllowOverride None
-        Options +ExecCGI -Includes
-        Order allow,deny
-        Allow from all
-    </Directory>
-
-    <IfModule mod_userdir.c>
-        UserDir public_html
-        Include ${HTTPD_CONF_ROOT}/mod_userdir.conf
-    </IfModule>
-
-</VirtualHost>
-EOF
-
-        cat > ${HTTPD_SSL_CONF} <<EOF
-NameVirtualHost *:443
-<VirtualHost *:443>
-    ServerAdmin ${FIRST_USER}@${FIRST_DOMAIN}
-    DocumentRoot ${HTTPD_DOCUMENTROOT}
-
-    # Enable SSL.
-    SSLEngine On
-    SSLCertificateFile ${SSL_CERT_FILE}
-    SSLCertificateKeyFile ${SSL_KEY_FILE}
-
-    <Directory />
-        Options FollowSymLinks
-        AllowOverride None
-        Order allow,deny
-        Allow from all
-    </Directory>
-
-    <Directory "/srv/www/htdocs">
-        Options Indexes FollowSymLinks
-        AllowOverride None
-        Order allow,deny
-        Allow from all
-    </Directory>
-
-    ScriptAlias /cgi-bin "${HTTPD_CGIBIN_DIR}"
-    <Directory "${HTTPD_CGIBIN_DIR}">
-        AllowOverride None
-        Options +ExecCGI -Includes
-        Order allow,deny
-        Allow from all
-    </Directory>
-
-    <IfModule mod_userdir.c>
-        UserDir public_html
-        Include ${HTTPD_CONF_ROOT}/mod_userdir.conf
-    </IfModule>
-
-</VirtualHost>
-EOF
-    else
-        :
-    fi
-
     # --------------------------
     # Apache Setting.
     # --------------------------
     ECHO_DEBUG "Basic configurations."
-    if [ X"${DISTRO}" == X"SUSE" ]; then
-        # openSUSE:
-        #   - Define some settings in /etc/sysconfig/apache2
-        perl -pi -e 's#^(APACHE_SERVERTOKENS=).*#${1}"ProductOnly"#' ${HTTPD_SYSCONFIG_CONF}
-        perl -pi -e 's#^(APACHE_SERVERSIGNATURE=).*#${1}"email"#' ${HTTPD_SYSCONFIG_CONF}
-        perl -pi -e 's#^(APACHE_LOGLEVEL=).*#${1}"warn"#' ${HTTPD_SYSCONFIG_CONF}
+    perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_CONF}
+    perl -pi -e 's#^(ServerSignature).*#${1} EMail#' ${HTTPD_CONF}
+    perl -pi -e 's#^(LogLevel).*#${1} warn#' ${HTTPD_CONF}
 
-        #perl -pi -e 's#(.*Options).*#${1} FollowSymLinks#' ${HTTPD_CONF_ROOT}/httpd.conf
-        #sed -i -e '/AllowOverride/,/AccessFileName/s#Deny from all#Allow from all#' ${HTTPD_CONF_ROOT}/httpd.conf
-
-        # Allow access by default.
-        if [ -f ${HTTPD_CONF_ROOT}/httpd.conf ]; then
-            perl -pi -e 's/^(\s*)(Require all denied).*/${1}#${2}/' ${HTTPD_CONF_ROOT}/httpd.conf
-        fi
-    else
-        perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_CONF}
-        perl -pi -e 's#^(ServerSignature).*#${1} EMail#' ${HTTPD_CONF}
-        perl -pi -e 's#^(LogLevel).*#${1} warn#' ${HTTPD_CONF}
-
-        if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_MOD_CONF_SECURITY}
-        fi
+    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_MOD_CONF_SECURITY}
     fi
 
     ############
@@ -197,20 +93,6 @@ EOF
             fi
         fi
 
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        a2enmod authz_core &>/dev/null
-        a2enmod deflate &>/dev/null
-
-        # Enable SSL.
-        a2enmod ssl &>/dev/null
-        perl -pi -e 's/#(Listen 443)/${1}/' ${HTTPD_CONF_ROOT}/listen.conf
-
-        [ X"${BACKEND}" == X"OPENLDAP" ] && \
-            a2enmod authnz_ldap &>/dev/null && \
-            a2enmod ldap &>/dev/null
-
-        [ X"${BACKEND}" == X"MYSQL" ] && a2enmod auth_mysql &>/dev/null
-
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && \
             perl -pi -e 's/^#(LoadModule.*ldap_module.*)/${1}/' ${HTTPD_CONF}
@@ -248,7 +130,6 @@ EOF
 
         # Add index.php in DirectoryIndex.
         perl -pi -e 's#(.*DirectoryIndex.*)(index.html)#${1} index.php ${2}#' ${HTTPD_CONF}
-        [ X"${DISTRO}" == X"SUSE" ] && perl -pi -e 's#^(DirectoryIndex)(.*)#${1} index.php ${2}#' ${HTTPD_CONF}
 
         # Add php file type.
         echo 'AddType application/x-httpd-php .php' >> ${HTTPD_CONF}

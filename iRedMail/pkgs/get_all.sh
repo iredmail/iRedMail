@@ -74,8 +74,6 @@ export pkg_counter=1
 # Misc file (source tarball) list.
 if [ X"${DISTRO}" == X"FREEBSD" ]; then
     PKGMISC='SHASUM.freebsd.misc'
-elif [ X"${DISTRO}" == X"SUSE" ]; then
-    PKGMISC='MD5.misc MD5.opensuse'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     PKGMISC='MD5.openbsd'
 else
@@ -182,28 +180,6 @@ EOF
     echo 'export status_create_yum_repo="DONE"' >> ${STATUS_FILE}
 }
 
-create_repo_suse()
-{
-    ECHO_INFO "Create zypper repo file: ${ZYPPER_REPOS_DIR}/${PROG_NAME}.repo."
-    cat > ${ZYPPER_REPOS_DIR}/${PROG_NAME}.repo <<EOF
-# Repository for packages:
-#   - apache-mod_auth_mysql, apache-mod_wsgi
-#   - Altermime, awstats
-# Reference: http://iredmail.org/yum/opensuse/${DISTRO_VERSION}/README
-
-[iRedMail]
-name=iRedMail
-baseurl=${IREDMAIL_MIRROR}/yum/opensuse/${DISTRO_VERSION}/
-enabled=1
-autorefresh=1
-path=/
-type=rpm-md
-keeppackages=1
-gpgcheck=0
-EOF
-
-}
-
 check_new_iredmail()
 {
     # Check new version and track basic information,
@@ -269,14 +245,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     check_pkg ${BIN_WHICH} ${PKG_WHICH}
     check_pkg ${BIN_WGET} ${PKG_WGET}
 
-elif [ X"${DISTRO}" == X"SUSE" ]; then
-    ECHO_INFO "Clean metadata of zypper repositories."
-    zypper clean --metadata --raw-metadata
-
-    create_repo_suse
-
-    ECHO_INFO "Refresh zypper repositories."
-    zypper refresh
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Force update.
     ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."

@@ -29,8 +29,7 @@ cluebringer_user()
 
     # User/group will be created during installing binary package on:
     #   - Ubuntu
-    #   - openSUSE
-    if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'SUSE' ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         groupadd ${CLUEBRINGER_GROUP}
         useradd -m -d ${CLUEBRINGER_USER_HOME} -s ${SHELL_NOLOGIN} -g ${CLUEBRINGER_GROUP} ${CLUEBRINGER_USER}
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -117,7 +116,7 @@ cluebringer_config()
     tmp_sql="/tmp/cluebringer_init_sql.${RANDOM}${RANDOM}"
     echo '' > ${tmp_sql}
 
-    if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'SUSE' ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
             tmp_db_sample_file_name='policyd.mysql.sql'
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
@@ -417,9 +416,8 @@ EOF
         [ X"${LDAP_USE_TLS}" == X"YES" ] && \
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
 
-        # openSUSE-13.1 (bottle) and Ubuntu 13.10 ships Apache-2.4 which
-        # removes directive 'AuthzLDAPAuthoritative'.
-        [ X"${DISTRO}" == X'SUSE' -a X"${DISTRO_CODENAME}" == X'bottle' ] && \
+        # Ubuntu 13.10 ships Apache-2.4 which removes directive 'AuthzLDAPAuthoritative'.
+        [ X"${DISTRO_CODENAME}" == X'bottle' ] && \
             perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${CLUEBRINGER_HTTPD_CONF}
 
         [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'saucy' ] && \
@@ -447,7 +445,7 @@ EOF
                 echo "AuthBasicAuthoritative Off" >> ${CLUEBRINGER_HTTPD_CONF}
             fi
 
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X'SUSE' ]; then
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" == X'wheezy' \
                 -o X"${DISTRO_CODENAME}" == X'precise' \
                 -o X"${DISTRO_CODENAME}" == X'raring' ]; then
@@ -494,8 +492,8 @@ EOF
         fi  # DISTRO
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        # openSUSE-13.1 and Ubuntu 13.10
-        if [ X"${DISTRO_CODENAME}" == X'saucy' -o X"${DISTRO_CODENAME}" == X'bottle' ]; then
+        # Ubuntu 13.10
+        if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
             perl -pi -e 's#(<Directory .*)#DBDriver pgsql\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
             perl -pi -e 's#(<Directory .*)#DBDParams "host=$ENV{SQL_SERVER} port=$ENV{SQL_SERVER_PORT} dbname=$ENV{VMAIL_DB} user=$ENV{VMAIL_DB_BIND_USER} password=$ENV{VMAIL_DB_BIND_PASSWD}"\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
 
@@ -540,11 +538,5 @@ EOF
 </Directory>
 EOF
 
-    if [ X"${DISTRO}" == X'SUSE' -a X"${BACKEND}" == X'PGSQL' ]; then
-        # Don't enable Cluebringer webui since we don't have Apache module mod_auth_pgsql
-        backup_file ${CLUEBRINGER_HTTPD_CONF}
-        rm ${CLUEBRINGER_HTTPD_CONF} &>/dev/null
-        backup_file ${CLUEBRINGER_HTTPD_CONF}
-    fi
     echo 'export status_cluebringer_webui_config="DONE"' >> ${STATUS_FILE}
 }

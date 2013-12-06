@@ -30,12 +30,7 @@ export PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/phppgadmin"
 export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin.conf"
 
 # Install phpPgAdmin with binary packages.
-if [ X"${DISTRO}" == X'SUSE' ]; then
-    export PHPPGADMIN_USE_SOURCE='NO'
-    export PHPPGADMIN_HTTPD_ROOT="${HTTPD_DOCUMENTROOT}/phpPgAdmin"
-    export PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK="${PHPMYADMIN_HTTPD_ROOT}"
-    export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin"
-elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export PHPPGADMIN_USE_SOURCE='NO'
     export PHPPGADMIN_HTTPD_ROOT="/usr/share/phppgadmin"
     export PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK="${PHPPGADMIN_HTTPD_ROOT}"
@@ -53,8 +48,4 @@ elif [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'OPENBSD' ]; then
     export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin.conf"
 fi
 
-if [ X"${DISTRO}" == X'SUSE' ]; then
-    export PHPPGADMIN_CONFIG_FILE="/etc/phpPgAdmin/config.inc.php"
-else
-    export PHPPGADMIN_CONFIG_FILE="${PHPPGADMIN_HTTPD_ROOT}/conf/config.inc.php"
-fi
+export PHPPGADMIN_CONFIG_FILE="${PHPPGADMIN_HTTPD_ROOT}/conf/config.inc.php"

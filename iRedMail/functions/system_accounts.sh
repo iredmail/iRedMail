@@ -35,7 +35,6 @@ add_user_vmail()
             -d ${VMAIL_USER_HOME_DIR} \
             ${VMAIL_USER_NAME} 2>/dev/null
     else
-        # Note: on openSUSE, package 'postfix-mysql' will create vmail:vmail with uid/gid=303.
         groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME} 2>/dev/null
         useradd -m \
             -u ${VMAIL_USER_UID} \

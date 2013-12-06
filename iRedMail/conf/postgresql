@@ -42,13 +42,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 
-elif [ X"${DISTRO}" == X'SUSE' ]; then
-    export PGSQL_SYS_USER_HOME='/var/lib/pgsql'
-    export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
-
-    export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
-    export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
-
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export PGSQL_VERSION='9.1'
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"

@@ -113,21 +113,14 @@ cleanup_replace_firewall_rules()
         Y|y|* ) 
             backup_file ${FIREWALL_RULE_CONF}
             if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-                if [ X"${DISTRO}" != X"SUSE" ]; then
-                    ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
-                    cp -f ${SAMPLE_DIR}/iptables.rules ${FIREWALL_RULE_CONF}
+                ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
+                cp -f ${SAMPLE_DIR}/iptables.rules ${FIREWALL_RULE_CONF}
 
-                    # Replace HTTP port.
-                    [ X"${HTTPD_PORT}" != X"80" ]&& \
-                        perl -pi -e 's#(.*)80(,.*)#${1}$ENV{HTTPD_PORT}${2}#' ${FIREWALL_RULE_CONF}
-                fi
+                # Replace HTTP port.
+                [ X"${HTTPD_PORT}" != X"80" ]&& \
+                    perl -pi -e 's#(.*)80(,.*)#${1}$ENV{HTTPD_PORT}${2}#' ${FIREWALL_RULE_CONF}
 
-                if [ X"${DISTRO}" == X"SUSE" ]; then
-                    # Below services are not accessable from external network:
-                    #   - ldaps (636)
-                    perl -pi -e 's/^(FW_SERVICES_EXT_TCP=)(.*)/${1}"$ENV{HTTPD_PORT} 443 25 110 995 143 993 587 465 $ENV{sshd_port}"\n#${2}/' ${FIREWALL_RULE_CONF}
-
-                elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+                if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
                     # Copy sample rc script for Debian.
                     cp -f ${SAMPLE_DIR}/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
                     chmod +x ${DIR_RC_SCRIPTS}/iptables
@@ -152,10 +145,7 @@ cleanup_replace_firewall_rules()
                     if [ X"${DISTRO}" == X'OPENBSD' ]; then
                         /sbin/pfctl -ef ${FIREWALL_RULE_CONF}
                     else
-                        # openSUSE will use /etc/init.d/SuSEfirewall2_{init,setup} instead.
-                        if [ X"${DISTRO}" != X"SUSE" ]; then
-                            ${DIR_RC_SCRIPTS}/iptables restart &>/dev/null
-                        fi
+                        ${DIR_RC_SCRIPTS}/iptables restart &>/dev/null
                     fi
                     ;;
                 N|n|* )
@@ -165,10 +155,8 @@ cleanup_replace_firewall_rules()
             ;;
     esac
 
-    if [ X"${DISTRO}" != X"SUSE" ]; then
-        # Restarting iptables before restarting fail2ban.
-        ENABLED_SERVICES="iptables ${ENABLED_SERVICES}"
-    fi
+    # Restarting iptables before restarting fail2ban.
+    ENABLED_SERVICES="iptables ${ENABLED_SERVICES}"
 
     echo 'export status_cleanup_replace_firewall_rules="DONE"' >> ${STATUS_FILE}
 }
@@ -375,9 +363,10 @@ EOF
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_disable_selinux
     [ X"${DISTRO}" != X'OPENBSD' ] && check_status_before_run cleanup_remove_sendmail
     check_status_before_run cleanup_remove_mod_python
-    [ X"${KERNEL_NAME}" == X'LINUX' \
-        -o X"${KERNEL_NAME}" == X'OPENBSD' \
-        ] && check_status_before_run cleanup_replace_firewall_rules
+
+    [ X"${KERNEL_NAME}" == X'LINUX' -o X"${KERNEL_NAME}" == X'OPENBSD' ] && \
+        check_status_before_run cleanup_replace_firewall_rules
+
     [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
     check_status_before_run cleanup_backup_scripts
     [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password

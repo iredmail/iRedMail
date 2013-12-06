@@ -461,7 +461,7 @@ EOF
 
     # Enable/Disable DKIM feature.
     if [ X"${ENABLE_DKIM}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" ]; then
+        if [ X"${DISTRO}" == X"RHEL" ]; then
             perl -pi -e 's/^(\$enable_dkim_verification = )\d(;.*)/${1}1${2}/' ${AMAVISD_CONF}
             perl -pi -e 's/^(\$enable_dkim_signing = )\d(;.*)/${1}1${2}/' ${AMAVISD_CONF}
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -474,7 +474,7 @@ EOF
         fi
 
     else
-        if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"SUSE" ]; then
+        if [ X"${DISTRO}" == X"RHEL" ]; then
             perl -pi -e 's/^(\$enable_dkim_verification = )\d(;.*)/${1}0${2}/' ${AMAVISD_CONF}
             perl -pi -e 's/^(\$enable_dkim_signing = )\d(;.*)/${1}0${2}/' ${AMAVISD_CONF}
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -747,7 +747,6 @@ EOF
 amavisd_config()
 {
     if [ X"${DISTRO}" == X"RHEL" \
-        -o X"${DISTRO}" == X'SUSE' \
         -o X"${DISTRO}" == X'FREEBSD' \
         -o X"${DISTRO}" == X'OPENBSD' \
         ]; then

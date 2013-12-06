@@ -21,7 +21,7 @@
 #   http://www.iredmail.org/
 #
 # It should be localed at:
-#   - RHEL/CentOS/OpenSuSE: /etc/openldap/schema/iredmail.schema
+#   - RHEL/CentOS: /etc/openldap/schema/iredmail.schema
 #   - Debian: /etc/ldap/schema/iredmail.schema
 #   - FreeBSD: /usr/local/etc/openldap/schema/
 #

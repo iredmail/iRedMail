@@ -51,32 +51,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     # ---- PHP ----
     export PHP_INI='/etc/php.ini'
 
-elif [ X"${DISTRO}" == X"SUSE" ]; then
-    # Apache configuration files.
-    export HTTPD_CONF_ROOT="/etc/apache2"
-    export HTTPD_CONF="${HTTPD_CONF_ROOT}/vhosts.d/vhost.conf"
-    export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
-    export HTTPD_SSL_CONF_SAMPLE="${HTTPD_CONF_ROOT}/vhosts.d/vhost-ssl.template"
-    # Copy ${HTTPD_SSL_CONF_SAMPLE} as ${HTTPD_SSL_CONF}.
-    export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/vhosts.d/vhost-ssl.conf"
-    # /etc/sysconfig/apache2
-    export HTTPD_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/apache2"
-
-    # Web data.
-    export HTTPD_SERVERROOT='/srv/www'
-    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/htdocs"
-
-    # Daemon user.
-    export HTTPD_USER='wwwrun'
-    export HTTPD_GROUP='www'
-
-    # Log file location.
-    export HTTPD_LOG_ACCESSLOG='/var/log/apache2/access_log'
-    export HTTPD_LOG_ERRORLOG='/var/log/apache2/error_log'
-
-    # ---- PHP ----
-    export PHP_INI='/etc/php5/apache2/php.ini'
-
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/etc/apache2"

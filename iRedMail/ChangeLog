@@ -9,10 +9,9 @@ iRedMail-0.8.6:
         + Debian 6 (squeeze). Please use Debian 7 (wheezy) instead.
         + OpenBSD 5.3. Please use OpenBSD 5.4 (released on 2013-11-01) instead.
 
-    * Drop support for below Linux distribution:
-        + Gentoo. Just few users chose Gentoo, so we decided to drop it to
-          reduce our workload and bring you better support for other supported
-          Linux/BSD distributions.
+    * Drop support for Gentoo Linux and openSUSE linux.
+      Just few users chose them, so we decided to drop it to reduce our
+      workload and bring you better support for supported Linux/BSD distributions.
 
     * Better support for installing iRedMail with remote MySQL server.
       Reference:

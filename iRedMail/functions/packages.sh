@@ -38,9 +38,6 @@ install_all()
             ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
         fi
         DISABLED_SERVICES="${DISABLED_SERVICES} exim"
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        # Debian.
-        ENABLED_SERVICES="network syslog ${ENABLED_SERVICES}"
     elif [ X"${DISTRO}" == X"DEBIAN" ]; then
         # Debian.
         ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
@@ -58,9 +55,6 @@ install_all()
 
         if [ X"${DISTRO}" == X"RHEL" ]; then
             ALL_PKGS="${ALL_PKGS} openldap${PKG_ARCH} openldap-clients${PKG_ARCH} openldap-servers${PKG_ARCH} mysql-server${PKG_ARCH} mysql${PKG_ARCH}"
-
-        elif [ X"${DISTRO}" == X"SUSE" ]; then
-            ALL_PKGS="${ALL_PKGS} openldap2 openldap2-client mysql-community-server mysql-community-server-client"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl mysql-server mysql-client"
@@ -86,14 +80,6 @@ install_all()
 
             # For Awstats.
             [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} mod_auth_mysql${PKG_ARCH}"
-
-        elif [ X"${DISTRO}" == X"SUSE" ]; then
-            if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} mysql-community-server"
-            fi
-            ALL_PKGS="${ALL_PKGS} mysql-community-server-client libapr-util1-dbd-mysql"
-
-            [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} postfix-mysql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # MySQL server and client.
@@ -128,9 +114,6 @@ install_all()
             [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ] && \
                 ALL_PKGS="${ALL_PKGS} mod_auth_pgsql${PKG_ARCH}"
 
-        elif [ X"${DISTRO}" == X"SUSE" ]; then
-            ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib postfix-postgresql libapr-util1-dbd-pgsql"
-
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
@@ -156,16 +139,6 @@ install_all()
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH} php-pgsql${PKG_ARCH} php-imap${PKG_ARCH} php-mbstring${PKG_ARCH}"
 
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        # Apache
-        ALL_PKGS="${ALL_PKGS} apache2-prefork apache2-mod_php5"
-
-        # PHP
-        ALL_PKGS="${ALL_PKGS} php5-dom php5-fileinfo php5-gettext php5-iconv php5-intl php5-json php5-ldap php5-mbstring php5-mcrypt"
-
-        [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php5-pgsql"
-
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} libapache2-mod-php5"
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php5-ldap php5-mysql"
@@ -185,9 +158,6 @@ install_all()
     ENABLED_SERVICES="${ENABLED_SERVICES} ${POSTFIX_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} postfix${PKG_ARCH}"
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        # On openSUSE, postfix already has ldap_table support.
-        ALL_PKGS="${ALL_PKGS} postfix"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -208,9 +178,6 @@ install_all()
         ALL_PKGS="${ALL_PKGS} cluebringer perl-DBD-MySQL.${PKG_ARCH} perl-DBD-Pg.${PKG_ARCH}"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} cluebringer"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} postfix-cluebringer"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
@@ -232,15 +199,6 @@ install_all()
 
         # We use Dovecot SASL auth instead of saslauthd
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
-
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} dovecot21"
-
-        if [ X"${BACKEND}" == X"MYSQL" ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot21-backend-mysql"
-        elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot21-backend-pgsql"
-        fi
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d dovecot-managesieved dovecot-sieve"
@@ -279,16 +237,6 @@ install_all()
 
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} perl-Mail-SPF amavisd-new clamav spamassassin altermime"
-
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} perl-ldap perl-DBD-mysql"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} perl-DBD-mysql"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} perl-DBD-Pg"
-
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
-        DISABLED_SERVICES="${DISABLED_SERVICES} clamav-milter spamd spampd"
-
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj zoo nomarch cpio lzop cabextract p7zip rpm unrar-free ripole libmail-spf-perl"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
@@ -307,8 +255,6 @@ install_all()
     if [ X"${USE_PHPPGADMIN}" == X"YES" ]; then
         if [ X"${DISTRO}" == X"RHEL" ]; then
             :
-        elif [ X"${DISTRO}" == X"SUSE" ]; then
-            ALL_PKGS="${ALL_PKGS} phpPgAdmin"
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} phppgadmin"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -330,9 +276,7 @@ install_all()
 
     # phpMyAdmin
     if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X'SUSE' ]; then
-            ALL_PKGS="${ALL_PKGS} phpMyAdmin"
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} phpmyadmin"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} phpMyAdmin"
@@ -359,11 +303,6 @@ install_all()
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} MySQL-python${PKG_ARCH}"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2${PKG_ARCH}"
 
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysql"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysql"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
-
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
@@ -381,9 +320,6 @@ install_all()
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2${PKG_ARCH} python-webpy.noarch mod_wsgi${PKG_ARCH}"
 
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} apache2-mod_wsgi python-jinja2 python-xml python-web.py"
-
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-jinja2 python-netifaces python-webpy"
 
@@ -397,8 +333,6 @@ install_all()
     if [ X"${USE_AWSTATS}" == X"YES" ]; then
         if [ X"${DISTRO}" == X"RHEL" ]; then
             ALL_PKGS="${ALL_PKGS} awstats.noarch"
-        elif [ X"${DISTRO}" == X"SUSE" ]; then
-            ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -432,9 +366,6 @@ install_all()
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} bzip2${PKG_ARCH} acl${PKG_ARCH} patch${PKG_ARCH} tmpwatch${PKG_ARCH} crontabs.noarch dos2unix${PKG_ARCH} logwatch"
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
-    elif [ X"${DISTRO}" == X"SUSE" ]; then
-        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tmpwatch dos2unix logwatch"
-        ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
@@ -454,11 +385,6 @@ install_all()
     # Install all packages.
     install_all_pkgs()
     {
-        if [ X"${DISTRO}" == X'SUSE' ]; then
-            rpm -e patterns-openSUSE-minimal_base-conflicts &>/dev/null
-            rpm -e exim &>/dev/null
-        fi
-
         # Install all packages.
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
             ECHO_INFO "PKG_PATH: ${PKG_PATH}"
@@ -490,10 +416,6 @@ install_all()
             ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
         else
             eval ${disable_service} ${DISABLED_SERVICES} >/dev/null
-        fi
-
-        if [ X"${DISTRO}" == X"SUSE" ]; then
-            eval ${disable_service} SuSEfirewall2_setup SuSEfirewall2_init >/dev/null
         fi
 
         echo 'export status_enable_all_services="DONE"' >> ${STATUS_FILE}

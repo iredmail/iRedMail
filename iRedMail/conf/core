@@ -389,28 +389,6 @@ disable_service_rh()
     done
 }
 
-enable_service_suse()
-{
-    services="$@"
-    for i in $services; do
-        if [ -x /etc/init.d/$i ]; then
-            ECHO_DEBUG "Enable service: $i."
-            systemctl enable ${i}.service
-        fi
-    done
-}
-
-disable_service_suse()
-{
-    services="$@"
-    for i in $services; do
-        if [ -x /etc/init.d/$i ]; then
-            ECHO_DEBUG "Disable service: $i."
-            systemctl disable ${i}.service >/dev/null
-        fi
-    done
-}
-
 enable_service_debian()
 {
     services="$@"
@@ -545,26 +523,6 @@ remove_pkg_rhel()
 {
     ECHO_INFO "Removing package(s): $@"
     ${YUM} remove -y $@
-    [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
-}
-
-# Install/Remove binary packages on openSUSE 
-install_pkg_suse()
-{
-    ECHO_INFO "Installing package(s): $@"
-    zypper --non-interactive install -y $@
-    if [ X"$?" != X"0" ]; then
-        ECHO_ERROR "Installation failed, please check the terminal output."
-        exit 255
-    else
-        :
-    fi
-}
-
-remove_pkg_suse()
-{
-    ECHO_INFO "Removing package(s): $@"
-    zypper --non-interactive remove -y $@
     [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
 }
 

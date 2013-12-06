@@ -41,9 +41,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     # Freshclam.
     export FRESHCLAM_INIT_FILE_SAMPLE="${SAMPLE_DIR}/freshclam.init"
 
-elif [ X"${DISTRO}" == X"SUSE" ]; then
-    export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclam'
-
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLAMAV_CLAMD_RC_SCRIPT_NAME='clamav-daemon'
     export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='clamav-freshclam'
