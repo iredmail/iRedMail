@@ -417,9 +417,6 @@ EOF
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
 
         # Ubuntu 13.10 ships Apache-2.4 which removes directive 'AuthzLDAPAuthoritative'.
-        [ X"${DISTRO_CODENAME}" == X'bottle' ] && \
-            perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${CLUEBRINGER_HTTPD_CONF}
-
         [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'saucy' ] && \
             perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${CLUEBRINGER_HTTPD_CONF}
 
