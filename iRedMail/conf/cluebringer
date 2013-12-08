@@ -52,7 +52,18 @@ export CLUEBRINGER_SYSLOG_FACILITY='LOG_MAIL|LOG_INFO'
 export CLUEBRINGER_LOGROTATE_FILE='/etc/logrotate.d/policyd'
 export CLUEBRINGER_LOG_FILE='/var/log/cbpolicyd.log'
 
-if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+if [ X"${DISTRO}" == X"RHEL" ]; then
+    export PKG_CLUEBRINGER='cluebringer'
+    export CLUEBRINGER_RC_SCRIPT_NAME='cbpolicyd'
+    export CLUEBRINGER_CONF='/etc/policyd/cluebringer.conf'
+    export CLUEBRINGER_WEBUI_CONF="/etc/policyd/webui.conf"
+    export CLUEBRINGER_PID_FILE='/var/run/cbpolicyd.pid'
+    export CLUEBRINGER_HTTPD_ROOT='/usr/share/cluebringer/webui'
+
+    # Override default setting.
+    export CLUEBRINGER_USER_HOME='/home/cbpolicyd'
+
+elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export PKG_CLUEBRINGER='postfix-cluebringer'
     export CLUEBRINGER_CONF='/etc/cluebringer/cluebringer.conf'
     export CLUEBRINGER_WEBUI_CONF="/etc/cluebringer/cluebringer-webui.conf"

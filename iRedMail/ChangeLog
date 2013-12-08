@@ -2,7 +2,6 @@ iRedMail-0.8.6:
     * Works on new Linux/BSD distribution releases:
         - Works on Ubuntu 13.10 (saucy). NOTE: phpLDAPadmin is not available
           for OpenLDAP backend because it cannot be installed at all.
-        - openSUSE-13.1.
         - OpenBSD 5.4, plus Awstats support.
 
     * Drop support for below releases:
@@ -17,18 +16,22 @@ iRedMail-0.8.6:
       Reference:
       http://www.iredmail.org/wiki/index.php?title=IRedMail/FAQ/MySQL/install.iredmail.with.remote.mysql.server
     * Enable 'innodb_file_per_table' in MySQL by default.
+    * Enable 'innodb_file_per_table' (per-table tablespaces) in MySQL by
+      default, this parameter avoids large ibdata files (.idb).
+      Reference:
+      http://dev.mysql.com/doc/refman/5.5/en/innodb-multiple-tablespaces.html
     * Enable Opportunistic TLS support in Postfix when sending mail to remote
       SMTP server (smtp_tls_security_level=may).
       Thanks kotso <admin _at_ co.ge> and vlastikcz for the report.
     * Switch from Policyd-1.8 to Cluebringer on all Linux/BSD distributions.
       NOTE: The latest iRedAdmin-Pro supports Cluebringer management, includes
       white/black/greylisting, throttling.
+    * Add parameter 'inet6 => 0' in Amavisd ldap settings to avoid ldap
+      connection error.
 
     * Fixed issues:
         + Not detect backupmx status in SQL/LDAP query for domain transport.
-        + Add cron job to cleanup expired entries in Cluebringer database.
-        + Add 'inet6 => 0' in Amavisd ldap settings to avoid ldap connection
-          error.
+        + Not setup cron job to cleanup expired entries in Cluebringer database.
 
     * Updated packages:
         + iRedAPD -> 1.4.2. Fixed a bug in plugin sql_user_restrictions.py.
