@@ -15,7 +15,6 @@ iRedMail-0.8.6:
     * Better support for installing iRedMail with remote MySQL server.
       Reference:
       http://www.iredmail.org/wiki/index.php?title=IRedMail/FAQ/MySQL/install.iredmail.with.remote.mysql.server
-    * Enable 'innodb_file_per_table' in MySQL by default.
     * Enable 'innodb_file_per_table' (per-table tablespaces) in MySQL by
       default, this parameter avoids large ibdata files (.idb).
       Reference:

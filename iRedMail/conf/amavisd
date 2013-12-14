@@ -62,7 +62,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-    # Debian 7 (wheezy) and Ubuntu 13.04 (raring) ships Amavisd-new-2.7
+    # Ubuntu 12.04 ships Amavisd-new-2.6.x
     if [ X"${DISTRO_CODENAME}" == X'precise' ]; then
         export AMAVISD_VERSION='2.6'
     fi
