@@ -25,8 +25,6 @@ iredadmin_config()
 {
     ECHO_INFO "Configure iRedAdmin (official web-based admin panel)."
 
-    echo "export IREDADMIN_DB_PASSWD='${IREDADMIN_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
-
     if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ECHO_DEBUG "Enable apache module: wsgi."
         a2enmod wsgi >/dev/null 2>&1

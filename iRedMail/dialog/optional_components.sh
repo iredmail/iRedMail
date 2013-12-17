@@ -136,3 +136,6 @@ if echo ${OPTIONAL_COMPONENTS} | grep -i 'fail2ban' &>/dev/null; then
     export USE_FAIL2BAN='YES'
     echo "export USE_FAIL2BAN='YES'" >>${IREDMAIL_CONFIG_FILE}
 fi
+
+echo "export IREDADMIN_DB_PASSWD='${IREDADMIN_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
+echo "export RCM_DB_PASSWD='${RCM_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
