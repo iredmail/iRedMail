@@ -106,6 +106,11 @@ AddType text/html .py
 EOF
     fi
 
+    # Enable Apache module config file on Ubuntu 13.10.
+    if [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'saucy' ]; then
+        a2enconf iredadmin &>/dev/null
+    fi
+
     ECHO_DEBUG "Import iredadmin database template."
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         # Required by MySQL-5.6: TEXT/BLOB column cannot have a default value.

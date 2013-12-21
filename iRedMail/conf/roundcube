@@ -56,7 +56,6 @@ export RCM_LOGFILE="${MAILLOG}"
 # Database setting.
 export RCM_DB="roundcubemail"
 export RCM_DB_USER="roundcube"
-export RCM_DB_PASSWD="$(${RANDOM_STRING})"
 export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${RCM_DB}"
 export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${RCM_DB}"
 
