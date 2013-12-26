@@ -50,10 +50,10 @@ mysql_initialize()
     # Warning: We must have 'mysql_enable=YES' before start/stop mysql daemon.
     freebsd_enable_service_in_rc_conf 'mysql_enable' 'YES'
 
-    #ECHO_DEBUG "Copy sample/my.cnf to ${MYSQL_MY_CNF}."
-    #if [ ! -f ${MYSQL_MY_CNF} ]; then
-    #    cp ${SAMPLE_DIR}/my.cnf ${MYSQL_MY_CNF} &>/dev/null
-    #fi
+    ECHO_DEBUG "Copy sample/my.cnf to ${MYSQL_MY_CNF}."
+    if [ ! -f ${MYSQL_MY_CNF} ]; then
+        cp ${SAMPLE_DIR}/my.cnf ${MYSQL_MY_CNF} &>/dev/null
+    fi
 
     # Disable 'skip-networking' in my.cnf.
     perl -pi -e 's#^(skip-networking.*)#${1}#' ${MYSQL_MY_CNF} &>/dev/null

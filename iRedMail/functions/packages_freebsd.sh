@@ -847,7 +847,7 @@ EOF
 
     # iRedAdmin
     # mod_wsgi
-    ALL_PORTS="${ALL_PORTS} www/mod_wsgi www/webpy devel/py-Jinja2 net/py-netifaces"
+    ALL_PORTS="${ALL_PORTS} www/mod_wsgi3 www/webpy devel/py-Jinja2 net/py-netifaces"
 
     # Fail2ban.
     if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
