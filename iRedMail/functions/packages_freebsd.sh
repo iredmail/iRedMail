@@ -100,9 +100,9 @@ EOF
 
     # Cyrus-SASL2. DEPENDENCE.
     cat > /var/db/ports/security_cyrus-sasl2/options <<EOF
-OPTIONS_FILE_UNSET+=ALWAYSTRUE
+OPTIONS_FILE_SET+=ALWAYSTRUE
 OPTIONS_FILE_UNSET+=AUTHDAEMOND
-OPTIONS_FILE_UNSET+=KEEP_DB_OPEN
+OPTIONS_FILE_SET+=KEEP_DB_OPEN
 OPTIONS_FILE_UNSET+=OBSOLETE_CRAM_ATTR
 OPTIONS_FILE_SET+=BDB
 OPTIONS_FILE_UNSET+=MYSQL
@@ -112,7 +112,7 @@ OPTIONS_FILE_UNSET+=SQLITE3
 OPTIONS_FILE_SET+=CRAM
 OPTIONS_FILE_SET+=DIGEST
 OPTIONS_FILE_SET+=LOGIN
-OPTIONS_FILE_SET+=NTLM
+OPTIONS_FILE_UNSET+=NTLM
 OPTIONS_FILE_UNSET+=OTP
 OPTIONS_FILE_SET+=PLAIN
 OPTIONS_FILE_SET+=SCRAM
@@ -910,9 +910,9 @@ EOF
                     # Clean up and compile
                     make clean
                     if [ X"${i}" == X'archivers/p7zip' ]; then
-                        make WITHOUT_MODULES=yes install clean
+                        make WITHOUT_MODULES=yes DISABLE_MAKE_JOBS=yes install clean
                     else
-                        make install clean
+                        make DISABLE_MAKE_JOBS=yes install clean
                     fi
 
                     if [ X"$?" == X"0" ]; then
