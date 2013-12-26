@@ -268,6 +268,8 @@ EOF
     # Initial cluebringer db.
     # Enable greylisting on all inbound emails by default.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+        perl -pi -e 's#TYPE=#ENGINE=#g' ${tmp_sql}
+
         ${MYSQL_CLIENT_ROOT} <<EOF
 SOURCE ${tmp_sql};
 SOURCE ${SAMPLE_DIR}/cluebringer/column_character_set.mysql;
