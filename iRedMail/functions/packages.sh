@@ -175,7 +175,7 @@ install_all()
 
     # Policyd.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} cluebringer perl-DBD-MySQL.${PKG_ARCH} perl-DBD-Pg.${PKG_ARCH}"
+        ALL_PKGS="${ALL_PKGS} cluebringer perl-DBD-MySQL${PKG_ARCH} perl-DBD-Pg${PKG_ARCH}"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
