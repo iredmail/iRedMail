@@ -34,7 +34,7 @@ install_all()
     export PACKAGE_BUILDING='yes'
     export BATCH='yes'
     export WANT_OPENLDAP_VER='24'
-    export WANT_MYSQL_VER='56'
+    export WANT_MYSQL_VER='55'
     export WANT_PGSQL_VER='93'
     export WANT_BDB_VER='48'
     export WANT_APACHE_VER='22'
@@ -929,6 +929,13 @@ EOF
             fi
         fi
     done
+
+    # Create symbol link for Python.
+    ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
+    ln -sf /usr/local/bin/python2.7 /usr/local/bin/python2
+    ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
+    ln -sf /usr/local/bin/2to3-2.7 /usr/local/bin/2to3
+    ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
 
     # Log and print used time
     all_used_time="$(($(date +%s)-start_time))"
