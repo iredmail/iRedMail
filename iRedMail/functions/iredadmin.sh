@@ -180,7 +180,7 @@ EOF
         perl -pi -e 's#^(ldap_bind_password =).*#${1} "$ENV{LDAP_ADMIN_PW}"#' settings.py
 
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
-        ECHO_DEBUG "Configure MySQL related settings."
+        ECHO_DEBUG "Configure SQL mail accounts related settings."
         perl -pi -e 's#^(vmail_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
         perl -pi -e 's#^(vmail_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
         perl -pi -e 's#^(vmail_db_name =).*#${1} "$ENV{VMAIL_DB}"#' settings.py

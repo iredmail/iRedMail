@@ -77,7 +77,7 @@ EOF
 
 rcm_import_sql()
 {
-    ECHO_DEBUG "Import MySQL database and privileges for Roundcubemail."
+    ECHO_DEBUG "Import SQL database and privileges for Roundcubemail."
 
     # Initial roundcube db.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
