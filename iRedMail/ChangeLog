@@ -1,3 +1,7 @@
+iRedMail-0.8.7:
+    * Fixed:
+        - Not rotate Cluebringer log file.
+
 iRedMail-0.8.6:
     * Works on new Linux/BSD distribution releases:
         - Works on Ubuntu 13.10 (saucy). NOTE: phpLDAPadmin is not available

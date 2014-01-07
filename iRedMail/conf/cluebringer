@@ -45,7 +45,7 @@ export CLUEBRINGER_HTTPD_CONF="${HTTPD_CONF_DIR}/cluebringer.conf"
 #
 # Syslog setting.
 #
-export CLUEBRINGER_SEPERATE_LOG='NO'    # 'YES' or 'NO'
+export CLUEBRINGER_SEPERATE_LOG='YES'    # 'YES' or 'NO'
 
 # Default syslog facility is 'LOG_MAIL|LOG_INFO'
 export CLUEBRINGER_SYSLOG_FACILITY='LOG_MAIL|LOG_INFO'
