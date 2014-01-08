@@ -1,7 +1,3 @@
-iRedMail-0.8.7:
-    * Fixed:
-        - Not rotate Cluebringer log file.
-
 iRedMail-0.8.6:
     * Works on new Linux/BSD distribution releases:
         - Works on Ubuntu 13.10 (saucy). NOTE: phpLDAPadmin is not available
@@ -33,7 +29,7 @@ iRedMail-0.8.6:
       connection error.
 
     * Fixed issues:
-        + Not detect backupmx status in SQL/LDAP query for domain transport.
+        + Not rotate Cluebringer log file.
         + Not setup cron job to cleanup expired entries in Cluebringer database.
 
     * Updated packages:
