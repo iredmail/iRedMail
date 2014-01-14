@@ -145,6 +145,7 @@ backup_db()
         ${CMD_MYSQLDUMP} \
             -u"${MYSQL_USER}" \
             -p"${MYSQL_PASSWD}" \
+            --events --ignore-table=mysql.event \
             --default-character-set=${DB_CHARACTER_SET} \
             ${db} > ${output_sql}
 
