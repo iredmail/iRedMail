@@ -46,13 +46,13 @@ INSERT INTO access_control (PolicyID, Name, Verdict, Data)
 -- Samples: Add whitelisted sender, domain, IP
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
 --    SELECT id, 'user@domain.com', 0, 'email' FROM policy_groups
---    WHERE name='whitelisted_senders' LIMIT 1;
+--    WHERE name='whitelists' LIMIT 1;
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
 --    SELECT id, '@domain.com', 0, 'domain' FROM policy_groups
---    WHERE name='whitelisted_domains' LIMIT 1;
+--    WHERE name='whitelists' LIMIT 1;
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
 --    SELECT id, '123.123.123.123', 0, 'ip' FROM policy_groups
---    WHERE name='whitelisted_ips' LIMIT 1;
+--    WHERE name='whitelists' LIMIT 1;
 
 -- ------------------------------
 -- Blacklist (priority=8)
