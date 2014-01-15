@@ -16,7 +16,7 @@
 --
 -- Samples:
 --   - Type=ip: value of `Member` is an IP address or CIDR range
---   - Type=email: a valid full email address
+--   - Type=sender: a valid full email address
 --   - Type=domain: a valid domain name
 --
 -- We can use multiple policies for different types, but it brings more SQL
@@ -45,7 +45,7 @@ INSERT INTO access_control (PolicyID, Name, Verdict, Data)
 
 -- Samples: Add whitelisted sender, domain, IP
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
---    SELECT id, 'user@domain.com', 0, 'email' FROM policy_groups
+--    SELECT id, 'user@domain.com', 0, 'sender' FROM policy_groups
 --    WHERE name='whitelists' LIMIT 1;
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
 --    SELECT id, '@domain.com', 0, 'domain' FROM policy_groups
@@ -73,7 +73,7 @@ INSERT INTO access_control (PolicyID, Name, Verdict, Data)
 
 -- Samples: Add blacklisted sender, domain, IP
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
---    SELECT id, 'user@domain.com', 0, 'email' FROM policy_groups
+--    SELECT id, 'user@domain.com', 0, 'sender' FROM policy_groups
 --    WHERE name='blacklists' LIMIT 1;
 -- INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled, Type)
 --    SELECT id, '@domain.com', 0, 'domain' FROM policy_groups
