@@ -22,7 +22,8 @@
 
 install_all()
 {
-    ALL_PORTS=''            # Port name under /usr/ports/. e.g. mail/dovecot2.
+    # Port name under /usr/ports/. e.g. mail/dovecot2.
+    ALL_PORTS=''
     ENABLED_SERVICES=''     # Scripts under /usr/local/etc/rc.d/
     DISABLED_SERVICES=''    # Scripts under /usr/local/etc/rc.d/
 
@@ -367,8 +368,7 @@ EOF
     ALL_PORTS="${ALL_PORTS} security/p5-Authen-SASL mail/altermime"
 
     cat > /var/db/ports/archivers_p7zip/options <<EOF
-OPTIONS_FILE_SET+=MINIMAL
-OPTIONS_FILE_UNSET+=MODULES
+OPTIONS_FILE_UNSET+=DOCS
 EOF
     ALL_PORTS="${ALL_PORTS} archivers/p7zip"
 
@@ -857,7 +857,7 @@ EOF
     fi
 
     # Misc
-    ALL_PORTS="${ALL_PORTS} sysutils/logwatch"
+    ALL_PORTS="${ALL_PORTS} sysutils/logwatch sysutils/logrotate"
 
     # Fetch all source tarballs.
     ECHO_INFO "Ports tree: ${PORT_WRKDIRPREFIX}"

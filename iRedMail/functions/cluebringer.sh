@@ -293,7 +293,7 @@ EOF
     # FreeBSD: Enable policyd2
     freebsd_enable_service_in_rc_conf 'policyd2_enable' 'YES'
 
-    if [ X"${CLUEBRINGER_SEPERATE_LOG}" == X"YES" ]; then
+    if [ X"${CLUEBRINGER_SEPARATE_LOG}" == X"YES" ]; then
         echo -e "local1.*\t\t\t\t\t\t-${CLUEBRINGER_LOGFILE}" >> ${SYSLOG_CONF}
         cat > ${CLUEBRINGER_LOGROTATE_FILE} <<EOF
 ${CONF_MSG}
@@ -344,7 +344,7 @@ Policyd (cluebringer):
 
 EOF
 
-    if [ X"${CLUEBRINGER_SEPERATE_LOG}" == X"YES" ]; then
+    if [ X"${CLUEBRINGER_SEPARATE_LOG}" == X"YES" ]; then
         cat >> ${TIP_FILE} <<EOF
     * Log file:
         - ${SYSLOG_CONF}
