@@ -18,7 +18,6 @@ export DEBIAN_FRONTEND='noninteractive'
 
 # Source functions.
 . ${CONF_DIR}/global
-. ${CONF_DIR}/functions
 . ${CONF_DIR}/core
 
 # Source configurations.
@@ -378,6 +377,27 @@ get_all_accounts()
     ALL_USERS="${ALL_USERS} ${IREDADMIN_HTTPD_USER}"
     ALL_GROUPS="${ALL_GROUPS} ${IREDADMIN_HTTPD_GROUP}"
 }
+
+cat <<EOF
+This script is deprecated. To reinstall iRedMail,  please consider reinstalling
+server OS then reinstall iRedMail instead, this is the best way.
+
+================== WARNING =================
+This script will remove below data without addition confirm, please make sure
+you want to do this:
+
+- System accounts created by iRedMail. e.g. vmail, iredapd, iredadmin.
+- Binary packages installed by iRedMail. e.g. Apache, MySQL, Dovecot.
+- SQL database. e.g. MySQL database.
+- Config files and other directories/files created by installed software.
+================== WARNING =================
+EOF
+
+read -p "Do you really want to do this? Please type YES to continue. " confirm
+if [ X"${confirm}" != X'YES' ]; then
+    echo "Exit."
+    exit 255
+fi
 
 get_all_pkgs
 get_all_misc
