@@ -67,6 +67,7 @@ Note:
 
 WARNING:
 
+    * Do *NOT* use special characters in password. e.g. $, #.
     * EMPTY password is *NOT* permitted.
 
 " 20 76 2>/tmp/first_domain_admin_passwd

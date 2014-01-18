@@ -239,7 +239,7 @@ prepare_dirs
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     # Create yum repository.
-    create_repo_rhel
+    check_status_before_run create_repo_rhel
 
     # Check required commands, install related package if command doesn't exist.
     check_pkg ${BIN_WHICH} ${PKG_WHICH}

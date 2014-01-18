@@ -82,7 +82,7 @@ Please specify password for LDAP rootdn:
 
 WARNING:
 
-    * Do *NOT* use $ in password.
+    * Do *NOT* use special characters in password. e.g. $, #.
     * EMPTY password is *NOT* permitted.
 " 20 76 2>/tmp/ldap_rootpw
 
