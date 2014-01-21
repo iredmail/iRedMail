@@ -51,7 +51,6 @@ install_all()
 
     for p in \
         archivers_p5-Archive-Tar \
-        archivers_p7zip \
         converters_libiconv \
         databases_phpmyadmin \
         databases_postgresql${WANT_PGSQL_VER}-client \
@@ -364,17 +363,9 @@ EOF
 OPTIONS_FILE_SET+=KERBEROS
 EOF
 
-    # AlterMIME. REQUIRED.
-    ALL_PORTS="${ALL_PORTS} security/p5-Authen-SASL mail/altermime"
-
-    cat > /var/db/ports/archivers_p7zip/options <<EOF
-OPTIONS_FILE_UNSET+=DOCS
-EOF
-    ALL_PORTS="${ALL_PORTS} archivers/p7zip"
-
     # Amavisd-new. REQUIRED.
     cat > /var/db/ports/security_amavisd-new/options <<EOF
-OPTIONS_FILE_SET+=ALTERMIME
+OPTIONS_FILE_UNSET+=ALTERMIME
 OPTIONS_FILE_SET+=ARC
 OPTIONS_FILE_SET+=ARJ
 OPTIONS_FILE_SET+=BDB
@@ -390,7 +381,7 @@ OPTIONS_FILE_SET+=MSWORD
 OPTIONS_FILE_UNSET+=MYSQL
 OPTIONS_FILE_SET+=NOMARCH
 OPTIONS_FILE_SET+=P0F
-OPTIONS_FILE_SET+=P7ZIP
+OPTIONS_FILE_UNSET+=P7ZIP
 OPTIONS_FILE_UNSET+=PGSQL
 OPTIONS_FILE_UNSET+=RAR
 OPTIONS_FILE_SET+=RPM
@@ -908,12 +899,7 @@ EOF
                     port_start_time="$(date +%s)"
 
                     # Clean up and compile
-                    make clean
-                    if [ X"${i}" == X'archivers/p7zip' ]; then
-                        make WITHOUT_MODULES=yes DISABLE_MAKE_JOBS=yes install clean
-                    else
-                        make DISABLE_MAKE_JOBS=yes install clean
-                    fi
+                    make clean && make DISABLE_MAKE_JOBS=yes install clean
 
                     if [ X"$?" == X"0" ]; then
                         # Log used time
