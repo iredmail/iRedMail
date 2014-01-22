@@ -923,6 +923,9 @@ EOF
     ln -sf /usr/local/bin/2to3-2.7 /usr/local/bin/2to3
     ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
 
+    # Create logrotate.d
+    mkdir -p ${LOGROTATE_DIR} 2>/dev/null
+
     # Log and print used time
     all_used_time="$(($(date +%s)-start_time))"
     ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds, ~$((all_used_time/60)) minute(s)"

@@ -475,8 +475,14 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Package management.
     export install_pkg='install_pkg_freebsd'
     export remove_pkg='remove_pkg_freebsd'
-    export LIST_ALL_PKGS="pkg_info | awk '{print $1}'"
-    export LIST_FILES_IN_PKG='pkg_info -L'
+    if [ X"${DISTRO_VERSION}" == X'9' ]; then
+        export LIST_ALL_PKGS="pkg_info | awk '{print $1}'"
+        export LIST_FILES_IN_PKG='pkg_info -L'
+    else
+        # use pkgng on FreeBSD 10 and later releases.
+        export LIST_ALL_PKGS="pkg info | awk '{print $1}'"
+        export LIST_FILES_IN_PKG='pkg query "%Fp"'
+    fi
 
     # Port directory
     export PORT_WRKDIRPREFIX='/usr/ports'
@@ -500,6 +506,9 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
+
+    # Logrotate directory.
+    export LOGROTATE_DIR="/usr/local/etc/logrotate.d"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export ENABLE_BACKEND_PGSQL='YES'
