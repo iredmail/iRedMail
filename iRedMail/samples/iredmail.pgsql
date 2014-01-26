@@ -154,6 +154,7 @@ CREATE TABLE mailbox (
     enableinternal INT2 NOT NULL DEFAULT 1,
     enabledoveadm INT2 NOT NULL DEFAULT 1,
     "enablelib-storage" INT2 NOT NULL DEFAULT 1,
+    enablelmtp INT2 NOT NULL DEFAULT 1,
     lastlogindate TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     lastloginipv4 INET NOT NULL DEFAULT '0.0.0.0',
     lastloginprotocol CHAR(255) NOT NULL DEFAULT '',

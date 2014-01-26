@@ -245,6 +245,7 @@ enabledService: smtp
 enabledService: smtpsecured
 enabledService: deliver
 enabledService: lda
+enabledService: lmtp
 enabledService: forward
 enabledService: senderbcc
 enabledService: recipientbcc

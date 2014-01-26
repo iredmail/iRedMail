@@ -176,7 +176,8 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
                                  'pop3', 'pop3secured', 'imap', 'imapsecured',
                                 'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',
                                  'managesieve', 'managesievesecured',
-                                 'sieve', 'sievesecured', 'shadowaddress',
+                                 'sieve', 'sievesecured', 'lmtp',
+                                 'shadowaddress',
                                 'displayedInGlobalAddressBook', ]),
         ('memberOfGroup',       groups),
         # shadowAccount integration.

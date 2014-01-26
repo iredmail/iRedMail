@@ -1,3 +1,9 @@
+iRedMail-0.9.0:
+    * Disable 'smtp_tls_security_level=may', doesn't work very well with
+      self-signed SSL certificate, especially sending email from Gmail.
+    * New column for SQL backends (mailbox.enablelmtp) and new attribute/value
+      pair for LDAP mail user: enabledService=lmtp. Used for LMTP service.
+
 iRedMail-0.8.6:
     * Works on new Linux/BSD distribution releases:
         - Works on Ubuntu 13.10 (saucy). NOTE: phpLDAPadmin is not available

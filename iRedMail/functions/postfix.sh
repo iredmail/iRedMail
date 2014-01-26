@@ -89,9 +89,9 @@ postfix_config_basic()
     # References:
     #   - http://www.postfix.org/TLS_README.html#client_tls_may
     #   - http://www.postfix.org/postconf.5.html#smtp_tls_security_level
-    postconf -e smtp_tls_security_level='may'
+    #postconf -e smtp_tls_security_level='may'
     # Use the same CA file as smtpd.
-    postconf -e smtp_tls_CAfile='$smtpd_tls_CAfile'
+    #postconf -e smtp_tls_CAfile='$smtpd_tls_CAfile'
     #postconf -e smtp_tls_loglevel='0'
     #postconf -e smtp_tls_note_starttls_offer='yes'
 
