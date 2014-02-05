@@ -38,7 +38,7 @@
 # Reject who use IP address as helo.
 # Correct:      [xxx.xxx.xxx.xxx]
 # Incorrect:    xxx.xxx.xxx.xxx
-/^([0-9.]+)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server sent non RFC compliant HELO identity (${1})
+/^([0-9\.]+)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server sent non RFC compliant HELO identity (${1})
 
 #
 # This is the real HELO identify of these ISPs:

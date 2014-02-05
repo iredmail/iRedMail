@@ -392,12 +392,6 @@ install_all()
         fi
         eval ${install_pkg} ${ALL_PKGS}
 
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # Fix incorrect file permission required by py-ldap
-            # NOTE: This issue was fixed in OpenBSD 5.4.
-            chmod o+r /usr/local/lib/libsasl2.so* &>/dev/null
-        fi
-
         echo 'export status_install_all_pkgs="DONE"' >> ${STATUS_FILE}
     }
 
@@ -408,19 +402,42 @@ install_all()
         eval ${enable_service} ${ENABLED_SERVICES} >/dev/null
 
         # Disable services.
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            echo "pkg_scripts='${PKG_SCRIPTS}'" >> ${RC_CONF_LOCAL}
-            ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
-            ln -sf /usr/local/bin/python2.7-2to3 /usr/local/bin/2to3
-            ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
-            ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
-        else
+        if [ X"${DISTRO}" != X'OPENBSD' ]; then
             eval ${disable_service} ${DISABLED_SERVICES} >/dev/null
         fi
 
         echo 'export status_enable_all_services="DONE"' >> ${STATUS_FILE}
     }
 
+    after_package_installation()
+    {
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            # Copy DNS related libs to chrooted Postfix directory, so that Postfix
+            # can correctly resolve IP address under chroot.
+            for i in '/lib' '/lib64'; do
+                ls $i/*nss* &>/dev/null
+                ret1=$?
+                ls $i/*reso* &>/dev/null
+                ret2=$?
+
+                if [ X"${ret1}" == X'0' -o X"${ret2}" == X'0' ]; then
+                    mkdir -p ${POSTFIX_CHROOT_DIR}${i}
+                    cp ${i}/*nss* ${i}/*reso* ${POSTFIX_CHROOT_DIR}${i}/
+                fi
+            done
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            # Create symbol links for Python.
+            echo "pkg_scripts='${PKG_SCRIPTS}'" >> ${RC_CONF_LOCAL}
+            ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
+            ln -sf /usr/local/bin/python2.7-2to3 /usr/local/bin/2to3
+            ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
+            ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
+        fi
+
+        echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}
+    }
+
     check_status_before_run install_all_pkgs
     check_status_before_run enable_all_services
+    check_status_before_run after_package_installation
 }
