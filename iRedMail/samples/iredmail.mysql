@@ -189,10 +189,6 @@ CREATE TABLE IF NOT EXISTS mailbox (
     active TINYINT(1) NOT NULL DEFAULT 1,
     -- Required by PostfixAdmin
     local_part VARCHAR(255) NOT NULL DEFAULT '',
-    -- `bytes` and `messages` is obsolete since iRedMail-0.7.4.
-    -- Use table `used_quota` instead.
-    bytes BIGINT(20) NOT NULL DEFAULT 0,
-    messages BIGINT(20) NOT NULL DEFAULT 0,
     PRIMARY KEY (username),
     INDEX (domain),
     INDEX (department),
