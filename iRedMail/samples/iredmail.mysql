@@ -182,6 +182,8 @@ CREATE TABLE IF NOT EXISTS mailbox (
     allowedrecipients TEXT,
     -- Reject to sent email to certain users
     rejectedrecipients TEXT,
+    -- Store per-user settings. Used in iRedAdmin-Pro.
+    settings VARCHAR(255) NOT NULL DEFAULT '',
     passwordlastchange DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
