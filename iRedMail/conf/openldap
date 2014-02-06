@@ -169,6 +169,7 @@ export LDAP_SERVICE_DOMAIN_ADMIN='domainadmin'
 
 # Shared attributes.
 export LDAP_ATTR_ACCOUNT_STATUS='accountStatus'
+export LDAP_ATTR_ACCOUNT_SETTING='accountSetting'
 export LDAP_ATTR_MTA_TRANSPORT='mtaTransport'
 
 # Domain admin related.
