@@ -168,7 +168,7 @@ CREATE TABLE mailbox (
     -- Reject to sent email to certain users
     rejectedrecipients TEXT NOT NULL DEFAULT '',
     -- Store per-user settings. Used in iRedAdmin-Pro.
-    settings VARCHAR(255) NOT NULL DEFAULT '',
+    settings TEXT NOT NULL DEFAULT '',
     passwordlastchange TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
