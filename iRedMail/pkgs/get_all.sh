@@ -177,7 +177,7 @@ EOF
     eval ${install_pkg} epel-release && rm ${YUM_REPOS_DIR}/tmp_epel.repo
     yum clean metadata
 
-    echo 'export status_create_yum_repo="DONE"' >> ${STATUS_FILE}
+    echo 'export status_create_repo_rhel="DONE"' >> ${STATUS_FILE}
 }
 
 check_new_iredmail()

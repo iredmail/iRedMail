@@ -78,9 +78,6 @@ install_all()
             fi
             ALL_PKGS="${ALL_PKGS} mysql${PKG_ARCH}"
 
-            # For Awstats.
-            [ X"${USE_AWSTATS}" == X"YES" ] && ALL_PKGS="${ALL_PKGS} mod_auth_mysql${PKG_ARCH}"
-
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # MySQL server and client.
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
@@ -336,7 +333,7 @@ install_all()
     #
     if [ X"${USE_AWSTATS}" == X"YES" ]; then
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} awstats.noarch"
+            ALL_PKGS="${ALL_PKGS} awstats.noarch mod_auth_mysql${PKG_ARCH}"
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then

@@ -48,7 +48,7 @@ export STORAGE_NODE='vmail1'
 # Enabled backends.
 export ENABLE_BACKEND_OPENLDAP='YES'
 export ENABLE_BACKEND_MYSQL='YES'
-export ENABLE_BACKEND_PGSQL='NO'
+export ENABLE_BACKEND_PGSQL='YES'
 # OpenBSD built-in LDAP daemon
 export ENABLE_BACKEND_LDAPD='NO'
 
@@ -242,13 +242,8 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         fi
 
         export PKG_ARCH=".${ARCH}"
-        if [ X"${DISTRO_VERSION}" == X"6" -a X"${ARCH}" == X"i386" ]; then
+        if [ X"${ARCH}" == X"i386" ]; then
             export PKG_ARCH=''
-        fi
-
-        # Enable PostgreSQL backend on RHEL/CentOS 6.
-        if [ X"${DISTRO_VERSION}" == X'6' ]; then
-            export ENABLE_BACKEND_PGSQL='YES'
         fi
 
     elif [ -f /etc/lsb-release ]; then
@@ -262,9 +257,6 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
-
-        # Support PGSQL backend on Ubuntu 11.10 and later releases
-        export ENABLE_BACKEND_PGSQL='YES'
 
         # Unsupported releases.
         #   - 8.04: hardy
@@ -300,7 +292,6 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
             grep -i '^wheezy' /etc/debian_version &>/dev/null; then
             export DISTRO_VERSION='7'
             export DISTRO_CODENAME='wheezy'
-            export ENABLE_BACKEND_PGSQL='YES'
         else
             export UNSUPPORTED_RELEASE='YES'
         fi
@@ -459,8 +450,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export SSL_FILE_DIR="/etc/ssl"
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    export ENABLE_BACKEND_PGSQL='YES'
-
     # System user: root.
     export SYS_ROOT_USER='root'
     export SYS_ROOT_GROUP='wheel'
@@ -511,7 +500,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export LOGROTATE_DIR="/usr/local/etc/logrotate.d"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export ENABLE_BACKEND_PGSQL='YES'
     export ENABLE_BACKEND_LDAPD='YES'
 
     # System user: root.
