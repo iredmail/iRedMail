@@ -265,7 +265,11 @@ install_all()
     # Roundcube
     if [ X"${USE_RCM}" == X"YES" ]; then
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} roundcubemail"
+            if [ X"${RCM_USE_SOURCE}" != X'YES' ]; then
+                ALL_PKGS="${ALL_PKGS} roundcubemail"
+            fi
+
+            ALL_PKGS="${ALL_PKGS} php-pspell pecl-fileinfo"
 
             # MySQL driver for PHP, required by Roundcube.
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql"
