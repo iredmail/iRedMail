@@ -38,8 +38,6 @@ export FRESHCLAM_PID_FILE='/var/run/clamav/freshclam.pid'
 if [ X"${DISTRO}" == X"RHEL" ]; then
     export CLAMAV_USER='clam'
     export CLAMAV_GROUP='clam'
-    # Freshclam.
-    export FRESHCLAM_INIT_FILE_SAMPLE="${SAMPLE_DIR}/freshclam.init"
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLAMAV_CLAMD_RC_SCRIPT_NAME='clamav-daemon'

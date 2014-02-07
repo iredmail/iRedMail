@@ -60,12 +60,6 @@ clamav_config()
 
         ECHO_DEBUG "Set permission to 750: ${AMAVISD_TEMPDIR}, ${AMAVISD_QUARANTINEDIR},"
         chmod -R 750 ${AMAVISD_TEMPDIR} ${AMAVISD_QUARANTINEDIR}
-
-        #ECHO_DEBUG "Copy freshclam init startup script and enable it."
-        #cp -f ${FRESHCLAM_INIT_FILE_SAMPLE} /etc/rc.d/init.d/freshclam
-        #chmod +x /etc/rc.d/init.d/freshclam
-        #eval ${enable_service} freshclam
-        #export ENABLED_SERVICES="${ENABLED_SERVICES} freshclam"
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         pw usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
