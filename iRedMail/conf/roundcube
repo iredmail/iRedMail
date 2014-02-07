@@ -26,24 +26,22 @@
 export RCM_VERSION='0.9.5'
 export RCM_TARBALL="roundcubemail-${RCM_VERSION}.tar.gz"
 export RCM_USE_SOURCE='YES'
-
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
-    # Install Roundcube via ports tree
+if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
+    # Install via ports tree or binary package
     export RCM_USE_SOURCE='NO'
+fi
 
-    export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcube"
-    export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
-
-elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    # Install Roundcube with binary package
-    export RCM_USE_SOURCE='NO'
-
-    export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcubemail"
-    export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
-
-else
+if [ X"${RCM_USE_SOURCE}" == X'YES' ]; then
     export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcubemail-${RCM_VERSION}"
     export RCM_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/roundcubemail"
+else
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcube"
+        export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcubemail"
+        export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
+    fi
 fi
 
 # Sample sieve filter template
