@@ -39,7 +39,7 @@ WARNING:
     FIRST_DOMAIN="$(cat /tmp/first_domain)"
 
     echo "${FIRST_DOMAIN}" | grep '\.' &>/dev/null
-    [ X"$?" == X"0" ] && break
+    [ X"$?" == X"0" -a X"${FIRST_DOMAIN}" != X"${HOSTNAME}" ] && break
 done
 
 echo "export FIRST_DOMAIN='${FIRST_DOMAIN}'" >> ${IREDMAIL_CONFIG_FILE}
