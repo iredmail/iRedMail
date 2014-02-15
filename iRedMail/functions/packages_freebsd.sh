@@ -356,7 +356,7 @@ EOF
     fi
     rm -f /var/db/ports/japanese_p5-Mail-SpamAssassin/options${SED_EXTENSION} &>/dev/null
 
-    ALL_PORTS="${ALL_PORTS} devel/pth security/gnupg dns/p5-Net-DNS mail/p5-Mail-SpamAssassin"
+    ALL_PORTS="${ALL_PORTS} mail/p5-Mail-SpamAssassin"
     DISABLED_SERVICES="${DISABLED_SERVICES} spamd"
 
     cat > /var/db/ports/security_p5-Authen-SASL/options <<EOF
@@ -449,7 +449,7 @@ EOF
     fi
     rm -f /var/db/ports/mail_postfix/options${SED_EXTENSION} &>/dev/null
 
-    ALL_PORTS="${ALL_PORTS} devel/pcre mail/postfix"
+    ALL_PORTS="${ALL_PORTS} mail/postfix"
     ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
     DISABLED_SERVICES="${DISABLED_SERVICES} sendmail sendmail_submit sendmail_outbound sendmail_msq_queue"
 
