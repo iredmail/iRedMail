@@ -334,7 +334,12 @@ amavisd_config_general()
     # notify administrator of locally originating malware
     virus_admin_maps => ["root\@\$mydomain"],
     spam_admin_maps  => ["root\@\$mydomain"],
-    warnbadhsender   => 0,
+
+    # Notify spam/virus/banned/bad header sender
+    warnspamsender      => 0,
+    warnvirussender     => 0,
+    warnbannedsender    => 0,
+    warnbadhsender      => 0,
 
     # forward to a smtpd service providing DKIM signing service
     #forward_method => 'smtp:[${AMAVISD_SERVER}]:10027',
