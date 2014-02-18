@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS admin (
     name VARCHAR(255) NOT NULL DEFAULT '',
     language VARCHAR(5) NOT NULL DEFAULT 'en_US',
     passwordlastchange DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+    -- Store per-admin settings. Used in iRedAdmin-Pro.
+    settings TEXT,
     created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
@@ -50,12 +52,15 @@ CREATE TABLE IF NOT EXISTS alias (
     moderators TEXT,
     accesspolicy VARCHAR(30) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
+    -- Mark this record is a mail list account
+    islist TINYINT(1) NOT NULL DEFAULT 0,
     created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
     active TINYINT(1) NOT NULL DEFAULT 1,
     PRIMARY KEY (address),
     INDEX (domain),
+    INDEX (islist),
     INDEX (expired),
     INDEX (active)
 ) ENGINE=MyISAM;

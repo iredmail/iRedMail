@@ -23,6 +23,8 @@ CREATE TABLE admin (
     name VARCHAR(255) NOT NULL DEFAULT '',
     language VARCHAR(5) NOT NULL DEFAULT 'en_US',
     passwordlastchange TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
+    -- Store per-admin settings. Used in iRedAdmin-Pro.
+    settings TEXT NOT NULL DEFAULT '',
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 00:00:00',
@@ -41,6 +43,8 @@ CREATE TABLE alias (
     moderators TEXT NOT NULL DEFAULT '',
     accesspolicy VARCHAR(30) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
+    -- Mark this record is a mail list account
+    islist INT2 NOT NULL DEFAULT 0,
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 00:00:00',
@@ -48,6 +52,7 @@ CREATE TABLE alias (
     PRIMARY KEY (address)
 );
 CREATE INDEX idx_alias_domain ON alias (domain);
+CREATE INDEX idx_alias_islist ON alias (islist);
 CREATE INDEX idx_alias_expired ON alias (expired);
 CREATE INDEX idx_alias_active ON alias (active);
 

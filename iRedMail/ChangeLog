@@ -1,6 +1,10 @@
 iRedMail-0.9.0:
-    * New column for SQL backends: mailbox.settings. Used to store per-user
-      settings, used in iRedAdmin-Pro.
+    * New columns for MySQL and PostgreSQL backends:
+        + mailbox.settings: used to store per-user settings, used in
+          iRedAdmin-Pro.
+        + admin.settings: used to store per-user settings, used in
+          iRedAdmin-Pro.
+        + alias.islist: used to mark a sql record is a mail list account.
     * Disable 'smtp_tls_security_level=may', doesn't work very well with
       self-signed SSL certificate, especially sending email from Gmail.
     * New column for SQL backends (mailbox.enablelmtp) and new attribute/value
