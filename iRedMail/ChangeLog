@@ -1,5 +1,11 @@
 iRedMail-0.9.0:
+    * Enable LMTP service in Dovecot by default.
+      To use LMTP instead of Dovecot LDA as per-domain or per-user local
+      deliver agent in Postfix, you need to use one of below:
+        - LMTP socket: lmtp:unix:private/dovecot-lmtp
+        - LMTP inet listener: lmtp:inet:127.0.0.1:24
     * New columns for MySQL and PostgreSQL backends:
+        + mailbox.enablelmtp: used by Dovecot LMTP server.
         + mailbox.settings: used to store per-user settings, used in
           iRedAdmin-Pro.
         + admin.settings: used to store per-user settings, used in

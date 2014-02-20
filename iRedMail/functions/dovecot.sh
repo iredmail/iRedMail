@@ -113,13 +113,18 @@ dovecot2_config()
 
     # Sieve.
     perl -pi -e 's#PH_SIEVE_DIR#$ENV{SIEVE_DIR}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_SIEVE_LOG_FILE#$ENV{DOVECOT_SIEVE_LOG_FILE}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_SIEVE_RULE_FILENAME#$ENV{SIEVE_RULE_FILENAME}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_GLOBAL_SIEVE_FILE#$ENV{DOVECOT_GLOBAL_SIEVE_FILE}#' ${DOVECOT_CONF}
+
+    # LMTP
+    perl -pi -e 's#PH_DOVECOT_LMTP_LOG_FILE#$ENV{DOVECOT_LMTP_LOG_FILE}#' ${DOVECOT_CONF}
 
     # SSL.
     perl -pi -e 's#PH_SSL_CERT#$ENV{SSL_CERT_FILE}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_SSL_KEY#$ENV{SSL_KEY_FILE}#' ${DOVECOT_CONF}
 
+    perl -pi -e 's#PH_POSTFIX_CHROOT_DIR#$ENV{POSTFIX_CHROOT_DIR}#' ${DOVECOT_CONF}
 
     # Generate dovecot quota warning script.
     mkdir -p $(dirname ${DOVECOT_QUOTA_WARNING_SCRIPT}) 2>/dev/null
@@ -292,13 +297,12 @@ EOF
     chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOVECOT_GLOBAL_SIEVE_FILE}.sample
     chmod 0500 ${DOVECOT_GLOBAL_SIEVE_FILE}.sample
 
-    ECHO_DEBUG "Create dovecot log file: ${DOVECOT_LOG_FILE}, ${SIEVE_LOG_FILE}."
-    touch ${DOVECOT_LOG_FILE} ${SIEVE_LOG_FILE}
-    chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOVECOT_LOG_FILE} ${SIEVE_LOG_FILE}
-    chmod 0600 ${DOVECOT_LOG_FILE}
-
-    # Sieve log file must be world-writable.
-    chmod 0666 ${SIEVE_LOG_FILE}
+    for f in ${DOVECOT_LOG_FILE} ${DOVECOT_SIEVE_LOG_FILE} ${DOVECOT_LMTP_LOG_FILE}; do
+        ECHO_DEBUG "Create dovecot log file: ${f}."
+        touch ${f}
+        chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${f}
+        chmod 0600 ${f}
+    done
 
     ECHO_DEBUG "Enable dovecot SASL support in postfix: ${POSTFIX_FILE_MAIN_CF}."
     postconf -e mailbox_command="${DOVECOT_DELIVER}"
@@ -327,7 +331,9 @@ EOF
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         cat > ${DOVECOT_LOGROTATE_FILE} <<EOF
 ${CONF_MSG}
-${DOVECOT_LOG_FILE} {
+${DOVECOT_LOG_FILE}
+${DOVECOT_SIEVE_LOG_FILE}
+${DOVECOT_LMTP_LOG_FILE} {
     compress
     weekly
     rotate 10
@@ -345,20 +351,6 @@ ${DOVECOT_LOG_FILE} {
     endscript
 }
 EOF
-
-    cat > ${SIEVE_LOGROTATE_FILE} <<EOF
-${CONF_MSG}
-${SIEVE_LOG_FILE} {
-    compress
-    weekly
-    rotate 10
-    create 0666 ${VMAIL_USER_NAME} ${VMAIL_GROUP_NAME}
-    missingok
-    postrotate
-        doveadm log reopen
-    endscript
-}
-EOF
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
         if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
@@ -367,13 +359,19 @@ ${DOVECOT_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    
 EOF
         fi
 
-        if ! grep "${SIEVE_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
+        if ! grep "${DOVECOT_SIEVE_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
             cat >> /etc/newsyslog.conf <<EOF
-${SIEVE_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z    ${DOVECOT_MASTER_PID}
+${DOVECOT_SIEVE_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z    ${DOVECOT_MASTER_PID}
 EOF
         fi
 
+        if ! grep "${DOVECOT_LMTP_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
+            # Define command used to reopen log service after rotated
+            cat >> /etc/newsyslog.conf <<EOF
+${DOVECOT_LMTP_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z    ${DOVECOT_MASTER_PID}
+EOF
+        fi
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
@@ -382,10 +380,17 @@ ${DOVECOT_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    
 EOF
         fi
 
-        if ! grep "${SIEVE_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
+        if ! grep "${DOVECOT_SIEVE_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
             cat >> /etc/newsyslog.conf <<EOF
-${SIEVE_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
+${DOVECOT_SIEVE_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
+EOF
+        fi
+
+        if ! grep "${DOVECOT_LMTP_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
+            # Define command used to reopen log service after rotated
+            cat >> /etc/newsyslog.conf <<EOF
+${DOVECOT_LMTP_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
 EOF
         fi
     fi
@@ -402,7 +407,8 @@ Dovecot:
     * RC script: ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME}
     * Log files:
         - ${DOVECOT_LOG_FILE}
-        - ${SIEVE_LOG_FILE}
+        - ${DOVECOT_SIEVE_LOG_FILE}
+        - ${DOVECOT_LMTP_LOG_FILE}
     * See also:
         - ${DOVECOT_GLOBAL_SIEVE_FILE}
         - Logrotate config file: ${DOVECOT_LOGROTATE_FILE}

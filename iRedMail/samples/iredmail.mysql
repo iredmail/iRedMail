@@ -214,6 +214,7 @@ CREATE TABLE IF NOT EXISTS mailbox (
     INDEX (enablemanagesievesecured),
     INDEX (enablesieve),
     INDEX (enablesievesecured),
+    INDEX (enablelmtp),
     INDEX (enableinternal),
     INDEX (enabledoveadm),
     INDEX (`enablelib-storage`),

@@ -88,7 +88,8 @@ export DOVECOT_MASTER_USER_PASSWORD_FILE="${DOVECOT_CONF_DIR}/dovecot-master-use
 
 # Log & logrotate files.
 export DOVECOT_LOG_FILE='/var/log/dovecot.log'
-export SIEVE_LOG_FILE='/var/log/sieve.log'
+export DOVECOT_SIEVE_LOG_FILE='/var/log/dovecot-sieve.log'
+export DOVECOT_LMTP_LOG_FILE='/var/log/dovecot-lmtp.log'
 export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
 export SIEVE_LOGROTATE_FILE="${LOGROTATE_DIR}/sieve"
 
@@ -115,4 +116,4 @@ elif [ X"${BACKEND}" == X"PGSQL" ]; then
     export DOVECOT_REALTIME_QUOTA_SQLTYPE='pgsql'
 fi
 
-export DOVECOT_PROTOCOLS="pop3 imap sieve"
+export DOVECOT_PROTOCOLS="pop3 imap sieve lmtp"

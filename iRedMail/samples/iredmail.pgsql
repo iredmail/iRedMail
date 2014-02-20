@@ -200,6 +200,7 @@ CREATE INDEX idx_mailbox_enablemanagesieve ON mailbox (enablemanagesieve);
 CREATE INDEX idx_mailbox_enablemanagesievesecured ON mailbox (enablemanagesievesecured);
 CREATE INDEX idx_mailbox_enablesieve ON mailbox (enablesieve);
 CREATE INDEX idx_mailbox_enablesievesecured ON mailbox (enablesievesecured);
+CREATE INDEX idx_mailbox_enablelmtp ON mailbox (enablelmtp);
 CREATE INDEX idx_mailbox_enableinternal ON mailbox (enableinternal);
 CREATE INDEX idx_mailbox_enabledoveadm ON mailbox (enabledoveadm);
 CREATE INDEX idx_mailbox_enablelib_storage ON mailbox ("enablelib-storage");
