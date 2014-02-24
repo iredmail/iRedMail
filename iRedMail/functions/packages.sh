@@ -198,7 +198,7 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d dovecot-managesieved dovecot-sieve"
+        ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d dovecot-lmtpd dovecot-managesieved dovecot-sieve"
 
         if [ X"${BACKEND}" == X"OPENLDAP" ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-ldap dovecot-mysql"
