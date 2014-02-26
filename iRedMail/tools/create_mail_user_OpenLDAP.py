@@ -173,8 +173,10 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         ('mtaTransport',        ['dovecot']),
         ('enabledService',      ['internal', 'doveadm', 'lib-storage',
                                  'mail', 'smtp', 'smtpsecured',
-                                 'pop3', 'pop3secured', 'imap', 'imapsecured',
-                                'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',
+                                 'pop3', 'pop3secured',
+                                 'imap', 'imapsecured',
+                                 'webmail-127.0.0.1-imapsecured',   # Webmail on localhost
+                                 'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',
                                  'managesieve', 'managesievesecured',
                                  'sieve', 'sievesecured', 'lmtp',
                                  'shadowaddress',

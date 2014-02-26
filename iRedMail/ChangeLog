@@ -4,17 +4,27 @@ iRedMail-0.9.0:
       deliver agent in Postfix, you need to use one of below:
         - LMTP socket: lmtp:unix:private/dovecot-lmtp
         - LMTP inet listener: lmtp:inet:127.0.0.1:24
+
     * New columns for MySQL and PostgreSQL backends:
+        + mailbox.enablewebmail: used in Dovecot, so that we can disable
+          IMAP service for certain users, but still allow them to use webmail.
         + mailbox.enablelmtp: used by Dovecot LMTP server.
         + mailbox.settings: used to store per-user settings, used in
           iRedAdmin-Pro.
         + admin.settings: used to store per-user settings, used in
           iRedAdmin-Pro.
         + alias.islist: used to mark a sql record is a mail list account.
+
+    * New LDAP attribute/value pairs for mail users:
+        + enabledService=lmtp: used by Dovecot LMTP server.
+        + enabledService=webmail-127.0.0.1-imapsecured: used in Dovecot, so
+          that we can disable IMAP service for certain users, but still allow
+          them to use webmail hosted on localhost (127.0.0.1). If you have
+          multiple servers which runs webmail application, add more values
+          like 'enabledService=webmail-xx.xx.xx.xx-imapsecured'.
+
     * Disable 'smtp_tls_security_level=may', doesn't work very well with
       self-signed SSL certificate, especially sending email from Gmail.
-    * New column for SQL backends (mailbox.enablelmtp) and new attribute/value
-      pair for LDAP mail user: enabledService=lmtp. Used for LMTP service.
 
     * Fixed issues:
         + Postfix cannot resolve IP address under chroot on RHEL/CentOS.

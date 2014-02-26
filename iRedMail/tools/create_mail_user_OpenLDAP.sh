@@ -237,6 +237,7 @@ enabledService: pop3
 enabledService: pop3secured
 enabledService: imap
 enabledService: imapsecured
+enabledService: webmail-127.0.0.1-imapsecured
 enabledService: managesieve
 enabledService: managesievesecured
 enabledService: sieve
