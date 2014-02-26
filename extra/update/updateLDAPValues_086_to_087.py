@@ -32,7 +32,7 @@ total = len(allUsers)
 print >> sys.stderr, "* Total %d user(s)." % (total)
 
 # Values of 'enabledService' which need to be added.
-services = ['lmtp']
+services = ['lmtp', 'webmail-127.0.0.1-imapsecured']
 
 # Counter.
 count = 1
