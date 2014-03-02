@@ -150,7 +150,6 @@ CREATE TABLE mailbox (
     enablepop3secured INT2 NOT NULL DEFAULT 1,
     enableimap INT2 NOT NULL DEFAULT 1,
     enableimapsecured INT2 NOT NULL DEFAULT 1,
-    enablewebmail INT2 NOT NULL DEFAULT 1,
     enabledeliver INT2 NOT NULL DEFAULT 1,
     enablelda INT2 NOT NULL DEFAULT 1,
     enablemanagesieve INT2 NOT NULL DEFAULT 1,
@@ -195,7 +194,6 @@ CREATE INDEX idx_mailbox_enablepop3 ON mailbox (enablepop3);
 CREATE INDEX idx_mailbox_enablepop3secured ON mailbox (enablepop3secured);
 CREATE INDEX idx_mailbox_enableimap ON mailbox (enableimap);
 CREATE INDEX idx_mailbox_enableimapsecured ON mailbox (enableimapsecured);
-CREATE INDEX idx_mailbox_webmail ON mailbox (enablewebmail);
 CREATE INDEX idx_mailbox_enabledeliver ON mailbox (enabledeliver);
 CREATE INDEX idx_mailbox_enablelda ON mailbox (enablelda);
 CREATE INDEX idx_mailbox_enablemanagesieve ON mailbox (enablemanagesieve);
