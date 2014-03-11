@@ -254,30 +254,14 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         #   - 12.04: precise (Long Term support by Ubuntu)
         #   - 13.04: raring
         #   - 13.10: saucy
+        #   - 14.04: trusty
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
 
         # Unsupported releases.
-        #   - 8.04: hardy
-        #   - 8.10: intrepid
-        #   - 9.04: jaunty
-        #   - 9.10: karmic
-        #   - 10.04: lucid
-        #   - 10.10: maverick
-        #   - 11.04: natty
-        #   - 11.10: oneiric
-        #   - 12.10: quantal
-        if [ X"${DISTRO_CODENAME}" == X'hardy' \
-            -o X"${DISTRO_CODENAME}" == X'intrepid' \
-            -o X"${DISTRO_CODENAME}" == X'jaunty' \
-            -o X"${DISTRO_CODENAME}" == X'karmic' \
-            -o X"${DISTRO_CODENAME}" == X'lucid' \
-            -o X"${DISTRO_CODENAME}" == X'maverick' \
-            -o X"${DISTRO_CODENAME}" == X'natty' \
-            -o X"${DISTRO_CODENAME}" == X'oneiric' \
-            -o X"${DISTRO_CODENAME}" == X'quantal' \
-            ]; then
+        #   8, 9, 10, 11, 12.10
+        if echo "${DISTRO_VERSION}" | grep -E '^(7|8|9|10|11|12\.10)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then
