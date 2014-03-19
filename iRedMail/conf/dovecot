@@ -27,11 +27,6 @@
 export ENABLE_DOVECOT="YES"
 export ENABLE_DOVECOT_SSL="YES"
 
-# Dovecot major version number:
-#   - 2 -> 2.0, 2.1
-#   - 2.2 -> 2.2
-export DOVECOT_VERSION='2'
-
 # Dovecot user & group.
 export DOVECOT_USER='dovecot'
 export DOVECOT_GROUP='dovecot'
@@ -65,7 +60,6 @@ if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    export DOVECOT_VERSION='2.2'
     export DOVECOT_CONF_DIR='/usr/local/etc/dovecot'
     export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
 

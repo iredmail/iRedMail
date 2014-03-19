@@ -26,17 +26,17 @@
 
 dovecot2_config()
 {
-    ECHO_INFO "Configure Dovecot-${DOVECOT_VERSION} (pop3/imap/managesieve server)."
+    ECHO_INFO "Configure Dovecot (pop3/imap/managesieve server)."
 
     backup_file ${DOVECOT_CONF}
 
     ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
 
-    # FreeBSD ships Dovecot-2.2
-    if [ X"${DOVECOT_VERSION}" == X'2.2' ]; then
-        cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
-    else
+    # Ubuntu 12.04 ships Dovecot-2.0.
+    if [ X"${DISTRO_CODENAME}" == X'precise' ]; then
         cp ${SAMPLE_DIR}/dovecot/dovecot2.conf ${DOVECOT_CONF}
+    else
+        cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
     fi
     chmod 0664 ${DOVECOT_CONF}
 
