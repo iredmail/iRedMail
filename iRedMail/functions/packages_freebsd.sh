@@ -356,7 +356,7 @@ EOF
     fi
     rm -f /var/db/ports/japanese_p5-Mail-SpamAssassin/options${SED_EXTENSION} &>/dev/null
 
-    ALL_PORTS="${ALL_PORTS} mail/p5-Mail-SpamAssassin"
+    ALL_PORTS="${ALL_PORTS} mail/spamassassin"
     DISABLED_SERVICES="${DISABLED_SERVICES} spamd"
 
     cat > /var/db/ports/security_p5-Authen-SASL/options <<EOF
