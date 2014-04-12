@@ -27,7 +27,7 @@ export RCM_VERSION='1.0.0'
 export RCM_TARBALL="roundcubemail-${RCM_VERSION}.tar.gz"
 export RCM_USE_SOURCE='YES'
 
-if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Install via ports tree or binary package
     export RCM_USE_SOURCE='NO'
 fi
@@ -39,9 +39,9 @@ else
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcube"
         export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcubemail"
-        export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
+    #elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    #    export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcubemail"
+    #    export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
     fi
 fi
 

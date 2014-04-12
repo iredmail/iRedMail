@@ -1,5 +1,5 @@
 iRedMail-0.9.0:
-    * Allows plaintext mechanisms only over a TLS-encrypted smtp connection.
+    * Allows sasl authentication only over a TLS-encrypted smtp connection.
     * Create Dovecot auth socket as /var/spool/postfix/private/dovecot-auth
       instead of /var/spool/postfix/dovecot-auth.
     * Enable LMTP service in Dovecot by default.

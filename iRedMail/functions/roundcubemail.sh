@@ -163,7 +163,7 @@ rcm_config()
 
         cat >> config.inc.php <<EOF
 // Global LDAP address book.
-\$rcmail_config['ldap_public']["global_ldap_abook"] = array(
+\$config['ldap_public']["global_ldap_abook"] = array(
     'name'          => 'Global LDAP Address Book',
     'hosts'         => array('${LDAP_SERVER_HOST}'),
     'port'          => ${LDAP_SERVER_PORT},
@@ -231,16 +231,8 @@ rcm_config()
         ),
     ),
 );
+\$config['autocomplete_addressbooks'] = array('sql', 'global_ldap_abook');
 EOF
-
-        # Store contacts in personal ldap address book.
-        #perl -pi -e 's#(.*address_book_type.*=)(.*)#${1} "ldap";#' main.inc.php
-
-        # Enable autocomplete for all address books.
-        perl -pi -e 's#(.*autocomplete_addressbooks.*=)(.*)#${1} array("sql", "ldap_global");#' config.inc.php
-        # Address template.
-        # LDAP object class 'inetOrgPerson' doesn't contains country and region.
-        perl -pi -e 's#(.*address_template.*=)(.*)#${1} "{street}<br/>{locality} {zipcode}";#' config.inc.php
     fi
 
     # Attachment size.
@@ -307,7 +299,6 @@ rcm_plugin_password()
 \$rcmail_config['password_query'] = "SELECT * from dblink_exec(E'host=\'${SQL_SERVER}\' user=\'${RCM_DB_USER}\' password=\'${RCM_DB_PASSWD}\' dbname=\'${VMAIL_DB}\'', E'UPDATE mailbox SET password=%c,passwordlastchange=NOW() WHERE username=%u')";
 EOF
 
-        #perl -pi -e 's#(.*password_query.*)##' config.inc.php.tmp
         sed '1,/password_query/d' config.inc.php.dist >> config.inc.php.tmp
         rm -f config.inc.php &>/dev/null && \
             mv config.inc.php.tmp config.inc.php

@@ -8,14 +8,14 @@ $config['log_driver'] = 'syslog';
 $config['syslog_facility'] = LOG_MAIL;
 
 // IMAP
-//$config['default_host'] = 'localhost';
-//$config['default_port'] = 143;
+$config['default_host'] = '127.0.0.1';
+$config['default_port'] = 143;
 $config['imap_auth_type'] = 'LOGIN';
 $config['imap_delimiter'] = '/';
 
 // SMTP
-$config['smtp_server'] = 'PH_SMTP_SERVER';
-//$config['smtp_port'] = 25;
+$config['smtp_server'] = 'tls://PH_SMTP_SERVER';
+$config['smtp_port'] = 587;
 $config['smtp_user'] = '%u';
 $config['smtp_pass'] = '%p';
 $config['smtp_auth_type'] = 'LOGIN';

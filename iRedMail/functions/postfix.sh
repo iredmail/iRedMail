@@ -460,10 +460,7 @@ postfix_config_sasl()
     postconf -e smtpd_sasl_auth_enable="yes"
     postconf -e smtpd_sasl_local_domain=''
     postconf -e broken_sasl_auth_clients="yes"
-    #postconf -e smtpd_sasl_security_options="noanonymous"
-
-    # allows plaintext mechanisms, but only over a TLS-encrypted connection:
-    postconf -e smtpd_sasl_security_options='noanonymous, noplaintext'
+    postconf -e smtpd_sasl_security_options="noanonymous"
 
     # offer SASL authentication only after a TLS-encrypted session has been
     # established
