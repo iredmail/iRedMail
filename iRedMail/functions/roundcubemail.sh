@@ -19,18 +19,23 @@ rcm_install()
         # conf.d/roundcubemail.conf file after upgrade this component.
         ln -s ${RCM_HTTPD_ROOT} ${RCM_HTTPD_ROOT_SYMBOL_LINK} 2>/dev/null
 
+        # Patch for Roundcube 1.0.0:
+        # apply user-spefici replacements to group's base_dn property
+        cd ${RCM_HTTPD_ROOT}
+        patch -p1 < ${PATCH_DIR}/roundcubemail/ldap_group_base_dn_replacement.patch >/dev/null
+
         ECHO_DEBUG "Set correct permission for Roundcubemail: ${RCM_HTTPD_ROOT}."
         chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${RCM_HTTPD_ROOT}
         chown -R ${HTTPD_USER}:${HTTPD_GROUP} ${RCM_HTTPD_ROOT}/{temp,logs}
         chmod 0000 ${RCM_HTTPD_ROOT}/{CHANGELOG,INSTALL,LICENSE,README*,UPGRADING,installer,SQL}
     fi
 
+    # Copy sample config files.
     cd ${RCM_HTTPD_ROOT}/config/
-    cp -f db.inc.php.dist db.inc.php
-    cp -f main.inc.php.dist main.inc.php
+    cp ${SAMPLE_DIR}/roundcubemail/config.inc.php .
     cp -f ${SAMPLE_DIR}/dovecot/dovecot.sieve.roundcube ${RCM_SIEVE_SAMPLE_FILE}
-    chown ${HTTPD_USER}:${HTTPD_GROUP} db.inc.php main.inc.php ${RCM_SIEVE_SAMPLE_FILE}
-    chmod 0640 db.inc.php main.inc.php ${RCM_SIEVE_SAMPLE_FILE}
+    chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
+    chmod 0640 config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
 
     echo 'export status_rcm_install="DONE"' >> ${STATUS_FILE}
 }
@@ -117,8 +122,8 @@ EOF
     fi
 
 
-    # Do not grant privileges while backend is not MySQL.
-    if [ X"${BACKEND}" == X"MYSQL" ]; then
+    # Grant privileges
+    if [ X"${BACKEND}" == X'MYSQL' ]; then
         ${MYSQL_CLIENT_ROOT} <<EOF
 -- Grant privileges for Roundcubemail, so that user can change
 -- their own password and setting mail forwarding.
@@ -127,8 +132,6 @@ GRANT UPDATE,SELECT ON ${VMAIL_DB}.mailbox TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HO
 
 FLUSH PRIVILEGES;
 EOF
-    else
-        :
     fi
 
     echo 'export status_rcm_import_sql="DONE"' >> ${STATUS_FILE}
@@ -140,189 +143,47 @@ rcm_config()
 
     cd ${RCM_HTTPD_ROOT}/config/
 
-    export RCM_DB_USER RCM_DB_PASSWD RCMD_DB SQL_SERVER FIRST_DOMAIN
+    #export RCM_DB_USER RCM_DB_PASSWD RCMD_DB SQL_SERVER FIRST_DOMAIN
+    #export RCM_DES_KEY
 
-    perl -pi -e 's#(.*db_dsnw.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER}/$ENV{RCM_DB}";#' db.inc.php
+    perl -pi -e 's#PH_PHP_CONN_TYPE#$ENV{PHP_CONN_TYPE}#g' config.inc.php
+    perl -pi -e 's#PH_RCM_DB_USER#$ENV{RCM_DB_USER}#g' config.inc.php
+    perl -pi -e 's#PH_RCM_DB_PASSWD#$ENV{RCM_DB_PASSWD}#g' config.inc.php
+    perl -pi -e 's#PH_RCM_DB#$ENV{RCM_DB}#g' config.inc.php
+    perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#g' config.inc.php
 
-    # ----------------------------------
-    # LOGGING/DEBUGGING
-    # ----------------------------------
-    # Logging
-    perl -pi -e 's#(.*log_driver.*=).*#${1} "syslog";#' main.inc.php
-    perl -pi -e 's#(.*syslog_id.*=).*#${1} "roundcube";#' main.inc.php
-    # syslog_facility should be a constant, not string. (Do *NOT* use quote.)
-    perl -pi -e 's#(.*syslog_facility.*=).*#${1} LOG_MAIL;#' main.inc.php
-
-    # Debugging
-    perl -pi -e 's#(.*sql_debug.*=).*#${1} false;#' main.inc.php
-    perl -pi -e 's#(.*imap_debug.*=).*#${1} false;#' main.inc.php
-    perl -pi -e 's#(.*ldap_debug.*=).*#${1} false;#' main.inc.php
-    perl -pi -e 's#(.*smtp_debug.*=).*#${1} false;#' main.inc.php
-
-    # ----------------------------------
-    # IMAP
-    # ----------------------------------
-    export IMAP_SERVER
-    perl -pi -e 's#(.*default_host.*=).*#${1} "$ENV{IMAP_SERVER}";#' main.inc.php
-    #perl -pi -e 's#(.*default_port.*=).*#${1} 143;#' main.inc.php
-    perl -pi -e 's#(.*imap_auth_type.*=).*#${1} "LOGIN";#' main.inc.php
-
-    # IMAP share folder.
-    perl -pi -e 's#(.*imap_delimiter.*=).*#${1} "/";#' main.inc.php
-    perl -pi -e 's#(.*imap_ns_personal.*=).*#${1} null;#' main.inc.php
-    perl -pi -e 's#(.*imap_ns_other.*=).*#${1} null;#' main.inc.php
-    perl -pi -e 's#(.*imap_ns_shared.*=).*#${1} null;#' main.inc.php
-
-    # ----------------------------------
-    # SMTP
-    # ----------------------------------
-    export SMTP_SERVER
-    perl -pi -e 's#(.*smtp_server.*= )(.*)#${1}"$ENV{SMTP_SERVER}";#' main.inc.php
-    #perl -pi -e 's#(.*smtp_port.*= )(.*)#${1} 25;#' main.inc.php
-    perl -pi -e 's#(.*smtp_user.*= )(.*)#${1}"%u";#' main.inc.php
-    perl -pi -e 's#(.*smtp_pass.*= )(.*)#${1}"%p";#' main.inc.php
-
-    # smtp_auth_type: empty to use best server supported one)
-    perl -pi -e 's#(.*smtp_auth_type.*= )(.*)#${1}"LOGIN";#' main.inc.php
-
-    # ----------------------------------
-    # SYSTEM
-    # ----------------------------------
-    # Disable installer.
-    perl -pi -e 's#(.*enable_installer.*=).*#${1} false;#' main.inc.php
-
-    # enable caching of messages and mailbox data in the local database.
-    # recommended if the IMAP server does not run on the same machine
-    #perl -pi -e 's#(.*enable_caching.*= )(.*)#${1}false;#' main.inc.php
-
-    # enforce connections over https
-    # with this option enabled, all non-secure connections will be redirected.
-    perl -pi -e 's#(.*force_https.*= )(.*)#${1}true;#' main.inc.php
-
-    # Allow browser-autocompletion on login form.
-    # 0 - disabled, 1 - username and host only, 2 - username, host, password
-    perl -pi -e 's#(.*login_autocomplete.*=)(.*)#${1} 2;#' main.inc.php
-
-    perl -pi -e 's#(.*ip_check.*=)(.*)#${1} true;#' main.inc.php
-
-    # If users authentication is not case sensitive this must be enabled
-    perl -pi -e 's#(.*login_lc.*=)(.*)#${1} true;#' main.inc.php
-
-    # Automatically create a new ROUNDCUBE USER when log-in the first time.
-    perl -pi -e 's#(.*auto_create_user.*=)(.*)#${1} true;#' main.inc.php
-
-    export RCM_DES_KEY
-    perl -pi -e 's#(.*des_key.*= )(.*)#${1}"$ENV{RCM_DES_KEY}";#' main.inc.php
-
-    # Set useragent, hide version number.
-    perl -pi -e 's#(.*useragent.*=).*#${1} "RoundCube Webmail";#' main.inc.php
-
-    # Set defeault domain.
-    perl -pi -e 's#(.*username_domain.*=)(.*)#${1} "$ENV{FIRST_DOMAIN}";#' main.inc.php
-
-    # Disable multiple identities.
-    # 0 - many identities with possibility to edit all params
-    # 1 - many identities with possibility to edit all params but not email address
-    # 2 - one identity with possibility to edit all params
-    # 3 - one identity with possibility to edit all params but not email address
-    perl -pi -e 's#(.*identities_level.*=).*#${1} 3;#' main.inc.php
-
-    # Spellcheck.
-    perl -pi -e 's#(.*enable_spellcheck.*=).*#${1} false;#' main.inc.php
-
-    # ----------------------------------
-    # PLUGINS
-    # ----------------------------------
-
-    # ----------------------------------
-    # USER INTERFACE
-    # ----------------------------------
-    # Automatic create and protect default IMAP folders.
-    perl -pi -e 's#(.*create_default_folders.*=)(.*)#${1} true;#' main.inc.php
-    perl -pi -e 's#(.*protect_default_folders.*=)(.*)#${1} true;#' main.inc.php
-
-    # Quota zero as unlimited.
-    perl -pi -e 's#(.*quota_zero_as_unlimited.*=).*#${1} true;#' main.inc.php
-
-    # ----------------------------------
-    # USER PREFERENCES
-    # ----------------------------------
-    perl -pi -e 's#(.*default_charset.*=).*#${1} "UTF-8";#' main.inc.php
-    perl -pi -e 's#(.*addressbook_sort_col.*=).*#${1} "name";#' main.inc.php
-
-    # display remote inline images
-    # 0 - Never, always ask
-    # 1 - Ask if sender is not in address book
-    # 2 - Always show inline images
-    perl -pi -e 's#(.*show_images.*=).*#${1} 1;#' main.inc.php
-
-    # save compose message every 60 seconds (1 minute)
-    perl -pi -e 's#(.*draft_autosave.*=).*#${1} 60;#' main.inc.php
-
-    # Enable preview pane by default.
-    perl -pi -e 's#(.*preview_pane.*=).*#${1} true;#' main.inc.php
-
-    # Mark as read when viewed in preview pane (delay in seconds)
-    # Set to -1 if messages in preview pane should not be marked as read
-    perl -pi -e 's#(.*preview_pane_mark_read.*=).*#${1} 0;#' main.inc.php
-
-    # Encoding of long/non-ascii attachment names:
-    # 0 - Full RFC 2231 compatible
-    # 1 - RFC 2047 for 'name' and RFC 2231 for 'filename' parameter (Thunderbird's default)
-    # 2 - Full 2047 compatible
-    perl -pi -e 's#(.*mime_param_folding.*=).*#${1} 1;#' main.inc.php
-
-    # Auto expand threads.
-    # 0 - Do not expand threads
-    # 1 - Expand all threads automatically
-    # 2 - Expand only threads with unread messages
-    perl -pi -e 's#(.*autoexpand_threads.*=).*#${1} 2;#' main.inc.php
-
-    # Set true if deleted messages should not be displayed
-    # This will make the application run slower
-    #perl -pi -e 's#(.*skip_deleted.*=).*#${1} true;#' main.inc.php
-
-    # Check all folders for recent messages.
-    perl -pi -e 's#(.*check_all_folders.*=)(.*)#${1} true;#' main.inc.php
-
-    # after message delete/move, the next message will be displayed
-    perl -pi -e 's#(.*display_next.*=).*#${1} true;#' main.inc.php
+    perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' config.inc.php
+    perl -pi -e 's#PH_RCM_DES_KEY#$ENV{RCM_DES_KEY}#g' config.inc.php
+    perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' config.inc.php
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         export LDAP_SERVER_HOST LDAP_SERVER_PORT LDAP_BIND_VERSION LDAP_BASEDN LDAP_ATTR_DOMAIN_RDN LDAP_ATTR_USER_RDN
         cd ${RCM_HTTPD_ROOT}/config/
         ECHO_DEBUG "Setting global LDAP address book in Roundcube."
 
-        # Remove PHP end of file mark first.
-        cd ${RCM_HTTPD_ROOT}/config/ && perl -pi -e 's#\?\>##' main.inc.php
-
-        cat >> main.inc.php <<EOF
-// ----------------------------------
-// ADDRESSBOOK SETTINGS
-// ----------------------------------
+        cat >> config.inc.php <<EOF
 // Global LDAP address book.
-\$rcmail_config['ldap_public']["ldap_global"] = array(
+\$rcmail_config['ldap_public']["global_ldap_abook"] = array(
     'name'          => 'Global LDAP Address Book',
     'hosts'         => array('${LDAP_SERVER_HOST}'),
     'port'          => ${LDAP_SERVER_PORT},
     'use_tls'       => false,
     'ldap_version'  => '${LDAP_BIND_VERSION}',
-    'user_specific' => true, // If true the base_dn, bind_dn and bind_pass default to the user's IMAP login.
+    'network_timeout' => 10,
+    'user_specific' => true,
 
-    // Search accounts in the same domain.
+    // Search mail users under same domain.
     'base_dn'       => '${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
     'bind_dn'       => '${LDAP_ATTR_USER_RDN}=%u@%d,${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
 
     'hidden'        => false,
     'searchonly'    => false,
     'writable'      => false,
+
     'search_fields' => array('mail', 'cn', 'sn', 'givenName', 'street', 'telephoneNumber', 'mobile', 'stree', 'postalCode'),
 
     // mapping of contact fields to directory attributes
-    //   for every attribute one can specify the number of values (limit) allowed.
-    //   default is 1, a wildcard * means unlimited
     'fieldmap' => array(
-        // Roundcube  => LDAP:limit
         'name'        => 'cn',
         'surname'     => 'sn',
         'firstname'   => 'givenName',
@@ -332,16 +193,23 @@ rcm_config()
         'phone:mobile' => 'mobile',
         'street'      => 'street',
         'zipcode'     => 'postalCode',
-        //'region'      => 'st',
         'locality'    => 'l',
         'department'  => 'departmentNumber',
         'notes'       => 'description',
-        // these currently don't work:
-        //'phone:workfax' => 'facsimileTelephoneNumber',
-        //'photo'        => 'jpegPhoto',
-        //'organization' => 'o',
-        //'manager'      => 'manager',
-        //'assistant'    => 'secretary',
+        'name'        => 'cn',
+        'surname'     => 'sn',
+        'firstname'   => 'givenName',
+        'title'       => 'title',
+        'email'       => 'mail:*',
+        'phone:work'  => 'telephoneNumber',
+        'phone:mobile' => 'mobile',
+        'phone:workfax' => 'facsimileTelephoneNumber',
+        'street'      => 'street',
+        'zipcode'     => 'postalCode',
+        'locality'    => 'l',
+        'department'  => 'departmentNumber',
+        'notes'       => 'description',
+        'photo'       => 'jpegPhoto',
     ),
     'sort'          => 'cn',
     'scope'         => 'sub',
@@ -351,20 +219,28 @@ rcm_config()
     'sizelimit'     => '0',     // Enables you to limit the count of entries fetched. Setting this to 0 means no limit.
     'timelimit'     => '0',     // Sets the number of seconds how long is spend on the search. Setting this to 0 means no limit.
     'referrals'     => false,  // Sets the LDAP_OPT_REFERRALS option. Mostly used in multi-domain Active Directory setups
-);
 
-// end of config file
-?>
+    'group_filters' => array(
+        'departments' => array(
+            'name'    => 'Mailing Lists',
+            'scope'   => 'sub',
+            'base_dn' => '${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
+            'filter'  => '(&(objectclass=mailList)(accountStatus=active)(enabledService=${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK}))',
+            'name_attr' => 'cn',
+            'email'     => 'mail',
+        ),
+    ),
+);
 EOF
 
         # Store contacts in personal ldap address book.
         #perl -pi -e 's#(.*address_book_type.*=)(.*)#${1} "ldap";#' main.inc.php
 
         # Enable autocomplete for all address books.
-        perl -pi -e 's#(.*autocomplete_addressbooks.*=)(.*)#${1} array("sql", "ldap_global");#' main.inc.php
+        perl -pi -e 's#(.*autocomplete_addressbooks.*=)(.*)#${1} array("sql", "ldap_global");#' config.inc.php
         # Address template.
         # LDAP object class 'inetOrgPerson' doesn't contains country and region.
-        perl -pi -e 's#(.*address_template.*=)(.*)#${1} "{street}<br/>{locality} {zipcode}";#' main.inc.php
+        perl -pi -e 's#(.*address_template.*=)(.*)#${1} "{street}<br/>{locality} {zipcode}";#' config.inc.php
     fi
 
     # Attachment size.
@@ -395,9 +271,8 @@ EOF
 
 rcm_plugin_managesieve()
 {
-    ECHO_DEBUG "Enable and config plugin: managesieve."
-    cd ${RCM_HTTPD_ROOT}/config/ && \
-    perl -pi -e 's#(.*rcmail_config.*plugins.*=.*array\()(.*)#${1}"managesieve",${2}#' main.inc.php
+    ECHO_DEBUG "Config plugin: managesieve."
+    cd ${RCM_HTTPD_ROOT}/config/
 
     export MANAGESIEVE_BIND_HOST MANAGESIEVE_PORT RCM_SIEVE_SAMPLE_FILE
     cd ${RCM_HTTPD_ROOT}/plugins/managesieve/ && \
@@ -413,8 +288,7 @@ rcm_plugin_managesieve()
 rcm_plugin_password()
 {
     ECHO_DEBUG "Enable and config plugin: password."
-    cd ${RCM_HTTPD_ROOT}/config/ && \
-    perl -pi -e 's#(.*rcmail_config.*plugins.*=.*array\()(.*\).*)#${1}"password",${2}#' main.inc.php
+    cd ${RCM_HTTPD_ROOT}/config/
 
     cd ${RCM_HTTPD_ROOT}/plugins/password/ && \
         cp config.inc.php.dist config.inc.php

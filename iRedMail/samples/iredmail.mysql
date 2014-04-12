@@ -89,6 +89,8 @@ CREATE TABLE IF NOT EXISTS domain (
     defaultlanguage VARCHAR(5) NOT NULL DEFAULT 'en_US',
     -- Default quota size for newly created mail account.
     defaultuserquota BIGINT(20) NOT NULL DEFAULT '1024',
+    -- Store per-domain settings. Used in iRedAdmin-Pro.
+    settings TEXT,
     -- List of mail alias addresses assigned to newly created user.
     defaultuseraliases TEXT,
     -- Disabled domain profiles which can not be viewed and updated by normal

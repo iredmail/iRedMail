@@ -310,9 +310,7 @@ EOF
     postconf -e dovecot_destination_recipient_limit='1'
 
     postconf -e smtpd_sasl_type='dovecot'
-    # It's '/var/spool/postfix/dovecot-auth'.
-    # Prepend './' to make postfix recognize it as socket path.
-    postconf -e smtpd_sasl_path='./dovecot-auth'
+    postconf -e smtpd_sasl_path='private/dovecot-auth'
 
     ECHO_DEBUG "Create directory for Dovecot plugin: Expire."
     dovecot_expire_dict_dir="$(dirname ${DOVECOT_EXPIRE_DICT_BDB})"

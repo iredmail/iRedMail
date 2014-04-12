@@ -23,9 +23,10 @@
 # ---------------------------------------
 # RoundcubeMail. http://roundcube.net
 # ---------------------------------------
-export RCM_VERSION='0.9.5'
+export RCM_VERSION='1.0.0'
 export RCM_TARBALL="roundcubemail-${RCM_VERSION}.tar.gz"
 export RCM_USE_SOURCE='YES'
+
 if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
     # Install via ports tree or binary package
     export RCM_USE_SOURCE='NO'

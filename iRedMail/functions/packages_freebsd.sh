@@ -66,6 +66,7 @@ install_all()
         lang_perl5.18 \
         lang_php5-extensions \
         lang_php5 \
+        www_mod_php5 \
         lang_python27 \
         mail_dovecot2 \
         mail_policyd2 \
@@ -75,6 +76,7 @@ install_all()
         net_openldap${WANT_OPENLDAP_VER}-sasl-client \
         net_openldap${WANT_OPENLDAP_VER}-server \
         net_openslp \
+        net_py-ldap2 \
         security_amavisd-new \
         security_ca_root_nss \
         security_clamav \
@@ -601,7 +603,7 @@ EOF
     fi
     rm -f /var/db/ports/www_apache${WANT_APACHE_VER}/options${SED_EXTENSION} &>/dev/null
 
-    ALL_PORTS="${ALL_PORTS} www/apache${WANT_APACHE_VER}"
+    ALL_PORTS="${ALL_PORTS} www/apache${WANT_APACHE_VER} www/mod_php5"
     ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
 
     # PHP5. REQUIRED.
@@ -714,6 +716,16 @@ EOF
             ALL_PORTS="${ALL_PORTS} databases/php5-pgsql"
         fi
     fi
+
+    cat > /var/db/ports/www_mod_php5/options <<EOF
+OPTIONS_FILE_UNSET+=AP2FILTER
+OPTIONS_FILE_UNSET+=DEBUG
+OPTIONS_FILE_UNSET+=DTRACE
+OPTIONS_FILE_SET+=IPV6
+OPTIONS_FILE_SET+=MAILHEAD
+OPTIONS_FILE_SET+=LINKTHR
+OPTIONS_FILE_UNSET+=ZTS
+EOF
 
     # Policyd v2.x
     cat > /var/db/ports/mail_policyd2/options <<EOF
@@ -846,6 +858,10 @@ EOF
         ALL_PORTS="${ALL_PORTS} security/py-fail2ban"
         ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
     fi
+
+    cat > /var/db/ports/net_py-ldap2/options <<EOF
+OPTIONS_FILE_SET+=SASL
+EOF
 
     # Misc
     ALL_PORTS="${ALL_PORTS} sysutils/logwatch sysutils/logrotate"

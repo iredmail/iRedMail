@@ -1,4 +1,7 @@
 iRedMail-0.9.0:
+    * Allows plaintext mechanisms only over a TLS-encrypted smtp connection.
+    * Create Dovecot auth socket as /var/spool/postfix/private/dovecot-auth
+      instead of /var/spool/postfix/dovecot-auth.
     * Enable LMTP service in Dovecot by default.
       To use LMTP instead of Dovecot LDA as per-domain or per-user local
       deliver agent in Postfix, you need to use one of below:
@@ -6,9 +9,9 @@ iRedMail-0.9.0:
         - LMTP inet listener: lmtp:inet:127.0.0.1:24
 
     * New columns for MySQL and PostgreSQL backends:
-        + mailbox.enablewebmail: used in Dovecot, so that we can disable
-          IMAP service for certain users, but still allow them to use webmail.
         + mailbox.enablelmtp: used by Dovecot LMTP server.
+        + domain.settings: used to store per-domain settings, userd in
+          iRedAdmin-Pro.
         + mailbox.settings: used to store per-user settings, used in
           iRedAdmin-Pro.
         + admin.settings: used to store per-user settings, used in
@@ -17,17 +20,15 @@ iRedMail-0.9.0:
 
     * New LDAP attribute/value pairs for mail users:
         + enabledService=lmtp: used by Dovecot LMTP server.
-        + enabledService=webmail-127.0.0.1-imapsecured: used in Dovecot, so
-          that we can disable IMAP service for certain users, but still allow
-          them to use webmail hosted on localhost (127.0.0.1). If you have
-          multiple servers which runs webmail application, add more values
-          like 'enabledService=webmail-xx.xx.xx.xx-imapsecured'.
-
-    * Disable 'smtp_tls_security_level=may', doesn't work very well with
-      self-signed SSL certificate, especially sending email from Gmail.
 
     * Fixed issues:
         + Postfix cannot resolve IP address under chroot on RHEL/CentOS.
+        + FreeBSD ports tree:
+            - Spamassassin is now mail/spamassassin.
+            - Add missing port: www/mod_php5.
+
+    * Updated packages:
+        + Roundcube webmail -> 1.0.0
 
 iRedMail-0.8.6:
     * Works on new Linux/BSD distribution releases:

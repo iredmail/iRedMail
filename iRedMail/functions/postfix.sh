@@ -89,11 +89,11 @@ postfix_config_basic()
     # References:
     #   - http://www.postfix.org/TLS_README.html#client_tls_may
     #   - http://www.postfix.org/postconf.5.html#smtp_tls_security_level
-    #postconf -e smtp_tls_security_level='may'
+    postconf -e smtp_tls_security_level='may'
     # Use the same CA file as smtpd.
-    #postconf -e smtp_tls_CAfile='$smtpd_tls_CAfile'
-    #postconf -e smtp_tls_loglevel='0'
-    #postconf -e smtp_tls_note_starttls_offer='yes'
+    postconf -e smtp_tls_CAfile='$smtpd_tls_CAfile'
+    postconf -e smtp_tls_loglevel='0'
+    postconf -e smtp_tls_note_starttls_offer='yes'
 
     # Sender restrictions
     postconf -e smtpd_sender_restrictions="permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"
@@ -460,11 +460,14 @@ postfix_config_sasl()
     postconf -e smtpd_sasl_auth_enable="yes"
     postconf -e smtpd_sasl_local_domain=''
     postconf -e broken_sasl_auth_clients="yes"
-    postconf -e smtpd_sasl_security_options="noanonymous"
+    #postconf -e smtpd_sasl_security_options="noanonymous"
 
-    # Report the SASL authenticated user name in Received message header.
-    # Default is 'no'.
-    postconf -e smtpd_sasl_authenticated_header='no'
+    # allows plaintext mechanisms, but only over a TLS-encrypted connection:
+    postconf -e smtpd_sasl_security_options='noanonymous, noplaintext'
+
+    # offer SASL authentication only after a TLS-encrypted session has been
+    # established
+    postconf -e smtpd_tls_auth_only='yes'
 
     POSTCONF_IREDAPD=''
     if [ X"${USE_IREDAPD}" == X"YES" ]; then
