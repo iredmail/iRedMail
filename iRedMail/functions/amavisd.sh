@@ -618,19 +618,20 @@ smtp-amavis unix -  -   -   -   2  smtp
 
 ${AMAVISD_SERVER}:10025 inet n  -   -   -   -  smtpd
     -o content_filter=
+    -o mynetworks_style=host
+    -o mynetworks=${AMAVISD_MYNETWORKS}
     -o local_recipient_maps=
     -o relay_recipient_maps=
+    -o strict_rfc821_envelopes=yes
+    -o smtp_tls_security_level=none
+    -o smtpd_tls_security_level=none
     -o smtpd_restriction_classes=
     -o smtpd_delay_reject=no
-    -o smtpd_tls_security_level=none
     -o smtpd_client_restrictions=permit_mynetworks,reject
     -o smtpd_helo_restrictions=
     -o smtpd_sender_restrictions=
     -o smtpd_recipient_restrictions=permit_mynetworks,reject
     -o smtpd_end_of_data_restrictions=
-    -o mynetworks_style=host
-    -o mynetworks=${AMAVISD_MYNETWORKS}
-    -o strict_rfc821_envelopes=yes
     -o smtpd_error_sleep_time=0
     -o smtpd_soft_error_limit=1001
     -o smtpd_hard_error_limit=1000

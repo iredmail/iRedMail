@@ -19,11 +19,6 @@ rcm_install()
         # conf.d/roundcubemail.conf file after upgrade this component.
         ln -s ${RCM_HTTPD_ROOT} ${RCM_HTTPD_ROOT_SYMBOL_LINK} 2>/dev/null
 
-        # Patch for Roundcube 1.0.0:
-        # apply user-spefici replacements to group's base_dn property
-        cd ${RCM_HTTPD_ROOT}
-        patch -p1 < ${PATCH_DIR}/roundcubemail/ldap_group_base_dn_replacement.patch >/dev/null
-
         ECHO_DEBUG "Set correct permission for Roundcubemail: ${RCM_HTTPD_ROOT}."
         chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${RCM_HTTPD_ROOT}
         chown -R ${HTTPD_USER}:${HTTPD_GROUP} ${RCM_HTTPD_ROOT}/{temp,logs}
