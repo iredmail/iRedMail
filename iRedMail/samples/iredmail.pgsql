@@ -73,26 +73,9 @@ CREATE TABLE domain (
     quota INT8 NOT NULL DEFAULT 0,
     -- Per-domain transport. e.g. dovecot, smtp:[192.168.1.1]:25
     transport VARCHAR(255) NOT NULL DEFAULT 'dovecot',
-    backupmx INT2 NOT NULL DEFAULT 0,
-    -- Default preferred language for newly created mail user.
-    defaultlanguage VARCHAR(5) NOT NULL DEFAULT 'en_US',
-    -- Default quota size for newly created mail account.
-    defaultuserquota INT8 NOT NULL DEFAULT '1024',
     -- Store per-domain settings. Used in iRedAdmin-Pro.
     settings TEXT NOT NULL DEFAULT '',
-    -- List of mail alias addresses assigned to newly created user.
-    defaultuseraliases TEXT NOT NULL DEFAULT '',
-    -- Disabled domain profiles which can not be viewed and updated by normal
-    -- domain admin. Multiple values must be separated by comma.
-    disableddomainprofiles VARCHAR(255) NOT NULL DEFAULT '',
-    -- Disabled user profiles which can not be viewed and updated by normal
-    -- domain admin. Multiple values must be separated by comma.
-    disableduserprofiles VARCHAR(255) NOT NULL DEFAULT '',
-    -- Default password scheme. e.g. md5, plain.
-    defaultpasswordscheme VARCHAR(10) NOT NULL DEFAULT '',
-    -- Password length
-    minpasswordlength INT8 NOT NULL DEFAULT 0,
-    maxpasswordlength INT8 NOT NULL DEFAULT 0,
+    backupmx INT2 NOT NULL DEFAULT 0,
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 00:00:00',

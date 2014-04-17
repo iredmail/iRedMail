@@ -8,6 +8,18 @@ iRedMail-0.9.0:
         - LMTP socket: lmtp:unix:private/dovecot-lmtp
         - LMTP inet listener: lmtp:inet:127.0.0.1:24
 
+    * Removed columns for MySQL and PostgreSQL backends:
+        - domain.defaultlanguage
+        - domain.defaultuserquota
+        - domain.defaultuseraliases
+        - domain.disableddomainprofiles
+        - domain.disableduserprofiles
+        - domain.defaultpasswordscheme
+        - domain.minpasswordlength
+        - domain.maxpasswordlength
+      They all are merged into column 'domain.settings'. For example:
+      domain.settings='default_language:en_US;default_user_quota:1024;'
+
     * New columns for MySQL and PostgreSQL backends:
         + mailbox.enablelmtp: used by Dovecot LMTP server.
         + domain.settings: used to store per-domain settings, userd in
