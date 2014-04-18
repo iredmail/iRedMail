@@ -603,7 +603,7 @@ EOF
     fi
     rm -f /var/db/ports/www_apache${WANT_APACHE_VER}/options${SED_EXTENSION} &>/dev/null
 
-    ALL_PORTS="${ALL_PORTS} www/apache${WANT_APACHE_VER} www/mod_php5"
+    ALL_PORTS="${ALL_PORTS} www/apache${WANT_APACHE_VER}"
     ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
 
     # PHP5. REQUIRED.
@@ -620,7 +620,7 @@ OPTIONS_FILE_SET+=LINKTHR
 OPTIONS_FILE_UNSET+=ZTS
 EOF
 
-    ALL_PORTS="${ALL_PORTS} lang/php5"
+    ALL_PORTS="${ALL_PORTS} lang/php5 www/mod_php5"
 
     cat > /var/db/ports/lang_php5-extensions/options <<EOF
 OPTIONS_FILE_SET+=BCMATH
