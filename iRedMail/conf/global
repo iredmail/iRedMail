@@ -252,15 +252,13 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
 
         # Ubuntu version number and code name:
         #   - 12.04: precise (Long Term support by Ubuntu)
-        #   - 13.10: saucy
         #   - 14.04: trusty
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
 
-        # Unsupported releases.
-        #   8, 9, 10, 11, 12.10
-        if echo "${DISTRO_VERSION}" | grep -E '^(7|8|9|10|11|12\.10|13\.04)' &>/dev/null ; then
+        # Unsupported releases: 12.10, 13.04, 13.10
+        if echo "${DISTRO_VERSION}" | grep -E '^(12\.10|13\.04|13\.10)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then
