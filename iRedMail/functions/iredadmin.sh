@@ -107,7 +107,7 @@ EOF
     fi
 
     # Enable Apache module config file on Ubuntu 13.10.
-    if [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'saucy' ]; then
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
         a2enconf iredadmin &>/dev/null
     fi
 

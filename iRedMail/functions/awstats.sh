@@ -77,7 +77,8 @@ EOF
         [ X"${LDAP_USE_TLS}" == X"YES" ] && \
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${AWSTATS_HTTPD_CONF}
 
-        [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'saucy' ] && \
+        # Apache-2.4 doesn't support AuthzLDAPAuthoritative directive
+        [ X"${DISTRO}" == X'UBUNTU' ] && \
             perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${AWSTATS_HTTPD_CONF}
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
@@ -107,8 +108,7 @@ EOF
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-                -o X"${DISTRO_CODENAME}" == X'precise' \
-                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
+                -o X"${DISTRO_CODENAME}" == X'precise' ]; then
                 cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     AuthMYSQL on
     AuthBasicAuthoritative Off
@@ -167,20 +167,7 @@ EOF
         fi
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
-            perl -pi -e 's#(<Directory .*)#DBDriver pgsql\n${1}#' ${AWSTATS_HTTPD_CONF}
-            perl -pi -e 's#(<Directory .*)#DBDParams "host=$ENV{SQL_SERVER} port=$ENV{SQL_SERVER_PORT} dbname=$ENV{VMAIL_DB} user=$ENV{VMAIL_DB_BIND_USER} password=$ENV{VMAIL_DB_BIND_PASSWD}"\n${1}#' ${AWSTATS_HTTPD_CONF}
-
-            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthBasicProvider dbd
-    AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s AND isglobaladmin=1"
-EOF
-
-            a2enconf awstats &>/dev/null
-            a2enmod authn_dbd &>/dev/null
-        else
-            # Use PGSQL auth.
-            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
+        cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     Auth_PG_authoritative on
     Auth_PG_host ${SQL_SERVER}
     Auth_PG_port ${SQL_SERVER_PORT}
@@ -195,12 +182,11 @@ EOF
     Auth_PG_encrypted on
     Auth_PG_hash_type CRYPT
 EOF
-        fi
     fi
 
-    if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
         a2enmod cgi &>/dev/null
-        a2enconf zawstats &>/dev/null
+        a2enconf awstats &>/dev/null
     fi
 
     # Close <Directory> container.

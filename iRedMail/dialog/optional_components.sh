@@ -28,20 +28,8 @@ export DIALOG_SELECTABLE_AWSTATS='YES'
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
 export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
 
-# Detect selectable menu items
-if [ X"${DISTRO}" == X'UBUNTU' ]; then
-    # Disable Awstats on Ubuntu 13.10 due to package missing: libapache2-mod-auth-mysql/pgsql
-    if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
-        export DIALOG_SELECTABLE_AWSTATS='NO'
-        export DIALOG_SELECTABLE_PHPLDAPADMIN='NO'
-    fi
-elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
-elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    # Awstats is available on OpenBSD 5.4.
-    if [ X"${DISTRO_VERSION}" == X'5.3' ]; then
-        export DIALOG_SELECTABLE_AWSTATS='NO'
-    fi
 fi
 
 # Construct dialog menu list

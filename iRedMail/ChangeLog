@@ -1,7 +1,11 @@
 iRedMail-0.9.0:
-    * Allows sasl authentication only over a TLS-encrypted smtp connection.
-    * Create Dovecot auth socket as /var/spool/postfix/private/dovecot-auth
-      instead of /var/spool/postfix/dovecot-auth.
+    * Works on new Linux/BSD distribution releases:
+        - Ubuntu 14.04 LTS
+
+    * Drop support for below releases:
+        - Ubuntu 13.04, 13.10
+
+    * Allows sasl authentication ONLY over a TLS-encrypted smtp connection.
     * Enable LMTP service in Dovecot by default.
       To use LMTP instead of Dovecot LDA as per-domain or per-user local
       deliver agent in Postfix, you need to use one of below:
@@ -17,8 +21,12 @@ iRedMail-0.9.0:
         - domain.defaultpasswordscheme
         - domain.minpasswordlength
         - domain.maxpasswordlength
+
       They all are merged into column 'domain.settings'. For example:
       domain.settings='default_language:en_US;default_user_quota:1024;'
+
+      Please check iRedMail upgrade tutorial to migrate these columns:
+      http://www.iredmail.org/wiki/index.php?title=Upgrade/iRedMail/0.8.6-0.8.7
 
     * New columns for MySQL and PostgreSQL backends:
         + mailbox.enablelmtp: used by Dovecot LMTP server.
@@ -35,9 +43,6 @@ iRedMail-0.9.0:
 
     * Fixed issues:
         + Postfix cannot resolve IP address under chroot on RHEL/CentOS.
-        + FreeBSD ports tree:
-            - Spamassassin is now mail/spamassassin.
-            - Add missing port: www/mod_php5.
 
     * Updated packages:
         + Roundcube webmail -> 1.0.0

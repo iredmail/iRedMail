@@ -419,7 +419,7 @@ EOF
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
 
         # Ubuntu 13.10 ships Apache-2.4 which removes directive 'AuthzLDAPAuthoritative'.
-        [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'saucy' ] && \
+        [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" != X'precise' ] && \
             perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${CLUEBRINGER_HTTPD_CONF}
 
     elif [ X"${BACKEND}" == X"MYSQL" ]; then
@@ -491,23 +491,8 @@ EOF
         fi  # DISTRO
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        # Ubuntu 13.10
-        if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
-            perl -pi -e 's#(<Directory .*)#DBDriver pgsql\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
-            perl -pi -e 's#(<Directory .*)#DBDParams "host=$ENV{SQL_SERVER} port=$ENV{SQL_SERVER_PORT} dbname=$ENV{VMAIL_DB} user=$ENV{VMAIL_DB_BIND_USER} password=$ENV{VMAIL_DB_BIND_PASSWD}"\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
-
-            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
-    AuthBasicProvider dbd
-    AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s AND isglobaladmin=1"
-EOF
-
-            if [ X"${DISTRO_CODENAME}" == X'saucy' ]; then
-                a2enconf zcluebringer &>/dev/null
-                a2enmod authn_dbd &>/dev/null
-            fi
-        else
-            # Use mod_auth_pgsql.
-            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+        # mod_auth_pgsql
+        cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     Auth_PG_authoritative on
     Auth_PG_host ${SQL_SERVER}
     Auth_PG_port ${SQL_SERVER_PORT}
@@ -522,7 +507,6 @@ EOF
     Auth_PG_encrypted on
     Auth_PG_hash_type CRYPT
 EOF
-        fi
 
         # Set file permission.
         chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
