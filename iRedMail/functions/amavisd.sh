@@ -94,9 +94,16 @@ EOF
     cat >> ${TIP_FILE} <<EOF
 DNS record for DKIM support:
 
-$(${AMAVISD_BIN} -c ${AMAVISD_CONF} showkeys 2>/dev/null)
-
 EOF
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        cat >> ${TIP_FILE} <<EOF
+$(${AMAVISD_BIN} -c ${AMAVISD_CONF} showkeys 2>/dev/null)
+EOF
+    else
+        cat >> ${TIP_FILE} <<EOF
+$(${AMAVISD_BIN} showkeys 2>/dev/null)
+EOF
+    fi
 
     echo 'export status_amavisd_dkim="DONE"' >> ${STATUS_FILE}
 }
@@ -604,13 +611,18 @@ EOF
 
     cat >> ${AMAVISD_CONF} <<EOF
 
+# Num of pre-forked children.
+# WARNING: it must match (equal to or larger than) the number set in
+# /etc/postfix/master.cf "maxproc" column for the 'smtp-amavis' service.
+\$max_servers = ${AMAVISD_MAX_SERVERS};
+
 1;  # insure a defined return
 EOF
     # ------------- END configure /etc/amavisd.conf ------------
 
     # Configure postfix: master.cf.
     cat >> ${POSTFIX_FILE_MASTER_CF} <<EOF
-smtp-amavis unix -  -   -   -   2  smtp
+smtp-amavis unix -  -   -   -   ${AMAVISD_MAX_SERVERS}  smtp
     -o smtp_data_done_timeout=1200
     -o smtp_send_xforward_command=yes
     -o disable_dns_lookups=yes

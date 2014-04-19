@@ -5,6 +5,7 @@ iRedMail-0.9.0:
     * Drop support for below releases:
         - Ubuntu 13.04, 13.10
 
+    * Increase default Amavisd prefork children to 10 (default is 2).
     * Allows sasl authentication ONLY over a TLS-encrypted smtp connection.
     * Enable LMTP service in Dovecot by default.
       To use LMTP instead of Dovecot LDA as per-domain or per-user local
