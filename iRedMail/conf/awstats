@@ -51,6 +51,9 @@ elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
     # This path will be changed in 'functions/awstats.sh'.
     export AWSTATS_CGI_DIR="/usr/lib/cgi-bin"
 
+    # Load awstats as last Apache config file
+    export AWSTATS_HTTPD_CONF="${HTTPD_CONF_DIR}/zawstats.conf"
+
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export AWSTATS_HTTPD_ROOT="${HTTPD_SERVERROOT}/awstats"
     export AWSTATS_ICON_DIR="${AWSTATS_HTTPD_ROOT}/icon"

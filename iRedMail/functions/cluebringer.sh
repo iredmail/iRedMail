@@ -294,7 +294,7 @@ EOF
     freebsd_enable_service_in_rc_conf 'policyd2_enable' 'YES'
 
     if [ X"${CLUEBRINGER_SEPARATE_LOG}" == X"YES" ]; then
-        echo -e "local1.*\t\t\t\t\t\t-${CLUEBRINGER_LOGFILE}" >> ${SYSLOG_CONF}
+        echo -e "local1.*\t\t\t\t\t\t-${CLUEBRINGER_LOG_FILE}" >> ${SYSLOG_CONF}
         cat > ${CLUEBRINGER_LOGROTATE_FILE} <<EOF
 ${CONF_MSG}
 ${AMAVISD_LOGFILE} {

@@ -130,7 +130,6 @@ EOF
 Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
-            a2enconf awstats &>/dev/null
 
             # Set file permission.
             chmod 0600 ${AWSTATS_HTTPD_CONF}
@@ -171,11 +170,6 @@ EOF
 EOF
     fi
 
-    if [ X"${DISTRO}" == X'UBUNTU' ]; then
-        a2enmod cgi &>/dev/null
-        a2enconf awstats &>/dev/null
-    fi
-
     # Close <Directory> container.
     cat >> ${AWSTATS_HTTPD_CONF} <<EOF
 
@@ -187,6 +181,11 @@ EOF
     perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
     perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
     perl -pi -e 's#^(\s*</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
+
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+        a2enmod cgi &>/dev/null
+        a2enconf awstats &>/dev/null
+    fi
 
     cat >> ${TIP_FILE} <<EOF
 Awstats:
