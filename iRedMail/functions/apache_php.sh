@@ -78,19 +78,11 @@ apache_php_config()
 
         [ X"${BACKEND}" == X"OPENLDAP" ] && a2enmod authnz_ldap > /dev/null
         if [ X"${BACKEND}" == X"MYSQL" ]; then
-            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-                -o X"${DISTRO_CODENAME}" == X'precise' \
-                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
-                a2enmod auth_mysql > /dev/null
-            fi
+            a2enmod auth_mysql > /dev/null
         fi
 
         if [ X"${BACKEND}" == X"PGSQL" ]; then
-            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-                -o X"${DISTRO_CODENAME}" == X'precise' \
-                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
-                a2enmod 000_auth_pgsql > /dev/null
-            fi
+            a2enmod 000_auth_pgsql > /dev/null
         fi
 
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then

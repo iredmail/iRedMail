@@ -49,6 +49,8 @@ export STORAGE_NODE='vmail1'
 export ENABLE_BACKEND_OPENLDAP='YES'
 export ENABLE_BACKEND_MYSQL='YES'
 export ENABLE_BACKEND_PGSQL='YES'
+# MariaDB
+export ENABLE_BACKEND_MARIADB='NO'
 # OpenBSD built-in LDAP daemon
 export ENABLE_BACKEND_LDAPD='NO'
 
@@ -406,11 +408,16 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export enable_service="enable_service_debian"
     export disable_service="disable_service_debian"
 
-    # Syslog config: rsyslog.
     if [ X"${DISTRO}" == X"UBUNTU" ]; then
+        # Syslog config: rsyslog.
         # Ubuntu >= 9.10
         export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
         export SYSLOG_POSTROTATE_CMD='reload rsyslog >/dev/null 2>&1 || true'
+
+        # MariaDB support requires Ubuntu >= 14.04
+        if [ X"${DISTRO_CODENAME}" != X'precise' ]; then
+            export ENABLE_BACKEND_MARIADB='YES'
+        fi
     fi
 
     if [ X"${DISTRO}" == X"DEBIAN" ]; then

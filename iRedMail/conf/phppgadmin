@@ -35,8 +35,7 @@ if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export PHPPGADMIN_HTTPD_ROOT="/usr/share/phppgadmin"
     export PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK="${PHPPGADMIN_HTTPD_ROOT}"
     if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-        -o X"${DISTRO_CODENAME}" == X'precise' \
-        -o X"${DISTRO_CODENAME}" == X'raring' ]; then
+        -o X"${DISTRO_CODENAME}" == X'precise' ]; then
         export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin"
     else
         export PHPPGADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/phppgadmin.conf"

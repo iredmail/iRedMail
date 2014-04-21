@@ -445,10 +445,7 @@ EOF
             fi
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-                -o X"${DISTRO_CODENAME}" == X'precise' \
-                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
-                cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthMYSQL on
     AuthBasicAuthoritative Off
     AuthUserFile /dev/null
@@ -463,27 +460,14 @@ EOF
     AuthMySQL_Encryption_Types Crypt_MD5
     Auth_MySQL_Authoritative On
 EOF
-                cat >> ${HTTPD_CONF} <<EOF
+            cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server, username, password.
 Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
-            else
-                # Apache 2.4 with apr-util1-dbd-mysql
-                perl -pi -e 's#(<Directory .*)#DBDriver mysql\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
-                perl -pi -e 's#(<Directory .*)#DBDParams "host=$ENV{SQL_SERVER} port=$ENV{SQL_SERVER_PORT} dbname=$ENV{VMAIL_DB} user=$ENV{VMAIL_DB_BIND_USER} pass=$ENV{VMAIL_DB_BIND_PASSWD}"\n${1}#' ${CLUEBRINGER_HTTPD_CONF}
 
-                cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
-    AuthBasicProvider dbd
-    AuthDBDUserPWQuery "SELECT password FROM mailbox WHERE username=%s AND isglobaladmin=1"
-EOF
-
-                if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-                    a2enconf zcluebringer &>/dev/null
-                    a2enmod authn_dbd &>/dev/null
-                fi
-            fi
+            a2enconf cluebringer &>/dev/null
 
             # Set file permission.
             chmod 0600 ${CLUEBRINGER_HTTPD_CONF}

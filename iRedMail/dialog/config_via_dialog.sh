@@ -104,18 +104,22 @@ echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${IREDMAIL_CONFIG_F
 # --------------------- Backends --------------------
 # --------------------------------------------------
 export DIALOG_AVAILABLE_BACKENDS=''
-if [ X"${ENABLE_BACKEND_LDAPD}" == X"YES" ]; then
+if [ X"${ENABLE_BACKEND_LDAPD}" == X'YES' ]; then
     export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} ldapd The_OpenBSD_built-in_LDAP_server off"
 fi
-if [ X"${ENABLE_BACKEND_OPENLDAP}" == X"YES" ]; then
+if [ X"${ENABLE_BACKEND_OPENLDAP}" == X'YES' ]; then
     export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} OpenLDAP An_open_source_implementation_of_LDAP_protocol off"
 fi
 
-if [ X"${ENABLE_BACKEND_MYSQL}" == X"YES" ]; then
+if [ X"${ENABLE_BACKEND_MYSQL}" == X'YES' ]; then
     export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} MySQL Most_popular_open_source_database off"
 fi
 
-if [ X"${ENABLE_BACKEND_PGSQL}" == X"YES" ]; then
+if [ X"${ENABLE_BACKEND_MARIADB}" == X'YES' ]; then
+    export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} MariaDB An_enhanced,_drop-in_replacement_for_MySQL off"
+fi
+
+if [ X"${ENABLE_BACKEND_PGSQL}" == X'YES' ]; then
     export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} PostgreSQL Powerful,_open_source_database_system off"
 fi
 
@@ -145,6 +149,9 @@ elif [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
     export BACKEND='OPENLDAP'
 elif [ X"${BACKEND_ORIG}" == X'MYSQL' ]; then
     export BACKEND='MYSQL'
+elif [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+    export BACKEND='MYSQL'
+    export BACKEND_ORIG='MARIADB'
 elif [ X"${BACKEND_ORIG}" == X'POSTGRESQL' ]; then
     export BACKEND='PGSQL'
     export BACKEND_ORIG='PGSQL'

@@ -69,7 +69,7 @@ install_all()
             PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
 
         fi
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
         # MySQL server & client.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
         if [ X"${DISTRO}" == X"RHEL" ]; then
@@ -81,17 +81,14 @@ install_all()
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # MySQL server and client.
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} mysql-server"
+                if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+                    ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client"
+                else
+                    ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
+                fi
             fi
-            ALL_PKGS="${ALL_PKGS} mysql-client postfix-mysql"
 
-            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-                -o X"${DISTRO_CODENAME}" == X'precise' \
-                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
-                ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
-            else
-                ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
-            fi
+            ALL_PKGS="${ALL_PKGS} postfix-mysql libapache2-mod-auth-mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
@@ -113,15 +110,7 @@ install_all()
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
-            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
-
-            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-                -o X"${DISTRO_CODENAME}" == X'precise' \
-                -o X"${DISTRO_CODENAME}" == X'raring' ]; then
-                ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-pgsql"
-            else
-                ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
-            fi
+            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql libapache2-mod-auth-pgsql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-client postgresql-server postgresql-contrib"
@@ -180,7 +169,9 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
         if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-cluebringer-mysql"
+            if [ X"${BACKEND_ORIG}" != X'MARIADB' ]; then
+                ALL_PKGS="${ALL_PKGS} postfix-cluebringer-mysql"
+            fi
         elif [ X"${BACKEND}" == X"PGSQL" ]; then
             ALL_PKGS="${ALL_PKGS} postfix-cluebringer-pgsql"
         fi
