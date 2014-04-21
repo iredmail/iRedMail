@@ -70,8 +70,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLUEBRINGER_PID_FILE='/var/run/cluebringer/cbpolicyd.pid'
     export CLUEBRINGER_HTTPD_ROOT='/usr/share/postfix-cluebringer-webui/webui'
 
-    export CLUEBRINGER_HTTPD_CONF="${HTTPD_CONF_DIR}/zcluebringer.conf"
-
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLUEBRINGER_USER='policyd'
     export CLUEBRINGER_GROUP='policyd'

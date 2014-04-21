@@ -484,7 +484,7 @@ EOF
     Auth_PG_user ${VMAIL_DB_BIND_USER}
     Auth_PG_pwd ${VMAIL_DB_BIND_PASSWD}
     Auth_PG_pwd_table mailbox
-    Auth_PG_pwd_whereclause 'AND isadmin=1 AND isglobaladmin=1'
+    Auth_PG_pwd_whereclause 'AND isglobaladmin=1'
     Auth_PG_uid_field username
     Auth_PG_pwd_field password
     Auth_PG_lowercase_uid on
@@ -500,8 +500,7 @@ EOF
 
         # Close <Directory> container.
         cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
-
-    Require valid-user
+    ${HTTPD_DIRECTIVE_REQUIRE}
 </Directory>
 EOF
 

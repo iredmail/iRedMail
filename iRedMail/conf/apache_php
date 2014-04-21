@@ -26,6 +26,7 @@
 
 export HTTPD_PORT='80'
 export HTTPD_RC_SCRIPT_NAME='apache2'
+export APACHE_VERSION='2.2'
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     export HTTPD_RC_SCRIPT_NAME='httpd'
@@ -61,6 +62,9 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/sites-available/default-ssl"
         export HTTPD_MOD_CONF_SECURITY="${HTTPD_CONF_DIR}/security"
     else
+        # For Ubuntu 14.04 and later
+        export APACHE_VERSION='2.4'
+
         export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf-available"
         export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/sites-available/default-ssl.conf"
         export HTTPD_MOD_CONF_SECURITY="${HTTPD_CONF_DIR}/security.conf"
@@ -137,9 +141,15 @@ fi
 
 export HTTPD_CGIBIN_DIR="${HTTPD_SERVERROOT}/cgi-bin"
 
-# PHP connection type: mysql, mysqli (recommended).
-export PHP_CONN_TYPE='mysqli'
+if [ X"${APACHE_VERSION}" == X'2.4' ]; then
+    HTTPD_DIRECTIVE_REQUIRE='Require all granted'
+else
+    HTTPD_DIRECTIVE_REQUIRE='Require valid-user'
+fi
 
+# PHP
 export PHP_DISABLED_FUNCTIONS='show_source,system,shell_exec,passthru,exec,phpinfo,proc_open'
 
+# PHP connection type: mysql, mysqli (recommended).
+export PHP_CONN_TYPE='mysqli'
 [ X"${BACKEND}" == X"PGSQL" ] && export PHP_CONN_TYPE='pgsql'

@@ -172,8 +172,7 @@ EOF
 
     # Close <Directory> container.
     cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-
-    Require valid-user
+    ${HTTPD_DIRECTIVE_REQUIRE}
 </Directory>
 EOF
 
@@ -184,7 +183,7 @@ EOF
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         a2enmod cgi &>/dev/null
-        a2enconf zawstats &>/dev/null
+        a2enconf awstats &>/dev/null
     fi
 
     cat >> ${TIP_FILE} <<EOF
