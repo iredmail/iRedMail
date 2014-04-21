@@ -182,9 +182,9 @@ EOF
     perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
     perl -pi -e 's#^(\s*</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
 
-    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         a2enmod cgi &>/dev/null
-        a2enconf awstats &>/dev/null
+        a2enconf zawstats &>/dev/null
     fi
 
     cat >> ${TIP_FILE} <<EOF

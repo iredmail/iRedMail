@@ -219,10 +219,14 @@ EOF
         perl -pi -e 's#^;(date.timezone).*#${1} = GMT#' ${PHP_INI}
     fi
 
-    # Disable suhosin.session.encrypt on Debian 6. Required by Roundcube webmail.
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        # Disable suhosin.session.encrypt on Debian 6. Required by Roundcube webmail.
         [ -f ${PHP_INI_CONF_DIR}/suhosin.ini ] && \
             perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${PHP_INI_CONF_DIR}/suhosin.ini
+
+        # Enable mcrypt
+        #cd ${PHP_INI_CONF_DIR} && \
+        #    ln -s ../../mods-available/mcrypt.ini 20-mcrpt.ini &>/dev/null
     fi
 
     cat >> ${TIP_FILE} <<EOF
