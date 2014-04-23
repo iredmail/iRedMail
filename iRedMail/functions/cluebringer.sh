@@ -393,10 +393,9 @@ ${CONF_MSG}
 
 <Directory ${CLUEBRINGER_HTTPD_ROOT}/>
     DirectoryIndex index.php
-    Options ExecCGI
-    Order allow,deny
-    #allow from ${CLUEBRINGER_BIND_HOST}
-    allow from all
+    #Order allow,deny
+    #Allow from all
+    #Allow from ${CLUEBRINGER_BIND_HOST}
 
     AuthType basic
     AuthName "Authorization Required"

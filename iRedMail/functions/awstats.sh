@@ -44,9 +44,9 @@ ${CONF_MSG}
 <Directory ${AWSTATS_CGI_DIR}/>
     DirectoryIndex awstats.pl
     Options ExecCGI
-    Order allow,deny
-    allow from all
-    #allow from ${LOCAL_ADDRESS}
+    #Order allow,deny
+    #Allow from all
+    #Allow from ${LOCAL_ADDRESS}
 
     AuthName "Authorization Required"
     AuthType Basic
