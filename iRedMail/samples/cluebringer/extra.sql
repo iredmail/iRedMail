@@ -10,6 +10,12 @@
 --  priority=10 Default Inbound
 --  priority=10 Default Outbound
 
+-- Disable unused policy: 'Default'.
+UPDATE policies SET Disabled=1 WHERE ID=1;
+
+-- Don't use '%internal_ips' in 'Default Outbound'.
+UPDATE policy_members SET Source='%internal_domains' WHERE PolicyID=2;
+
 -- Add new column: policy_group_members.Type.
 -- It's used to identify record type/kind in iRedAdmin-Pro, for easier
 -- management of white/blacklists.

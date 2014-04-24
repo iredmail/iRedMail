@@ -393,8 +393,8 @@ ${CONF_MSG}
 
 <Directory ${CLUEBRINGER_HTTPD_ROOT}/>
     DirectoryIndex index.php
-    #Order allow,deny
-    #Allow from all
+    Order allow,deny
+    Allow from all
     #Allow from ${CLUEBRINGER_BIND_HOST}
 
     AuthType basic

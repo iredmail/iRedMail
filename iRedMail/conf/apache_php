@@ -53,9 +53,18 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export PHP_INI='/etc/php.ini'
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    # Daemon user.
+    export HTTPD_USER='www-data'
+    export HTTPD_GROUP='www-data'
+
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/etc/apache2"
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/apache2.conf"
+
+    # Web data.
+    export HTTPD_SERVERROOT='/usr/share/apache2'
+    export HTTPD_DOCUMENTROOT="/var/www"
+
     if [ X"${DISTRO_CODENAME}" == X'wheezy' \
         -o X"${DISTRO_CODENAME}" == X'precise' ]; then
         export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
@@ -68,15 +77,8 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf-available"
         export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/sites-available/default-ssl.conf"
         export HTTPD_MOD_CONF_SECURITY="${HTTPD_CONF_DIR}/security.conf"
+        export HTTPD_DOCUMENTROOT="/var/www/html"
     fi
-
-    # Web data.
-    export HTTPD_SERVERROOT='/usr/share/apache2'
-    export HTTPD_DOCUMENTROOT="/var/www"
-
-    # Daemon user.
-    export HTTPD_USER='www-data'
-    export HTTPD_GROUP='www-data'
 
     # Log file location.
     export HTTPD_LOG_ACCESSLOG='/var/log/apache2/access.log'
