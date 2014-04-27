@@ -44,9 +44,6 @@ ${CONF_MSG}
 <Directory ${AWSTATS_CGI_DIR}/>
     DirectoryIndex awstats.pl
     Options ExecCGI
-    Order allow,deny
-    Allow from all
-    #Allow from ${LOCAL_ADDRESS}
 
     AuthName "Authorization Required"
     AuthType Basic
@@ -172,7 +169,9 @@ EOF
 
     # Close <Directory> container.
     cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    ${HTTPD_DIRECTIVE_REQUIRE}
+    Order allow,deny
+    Allow from all
+    Require valid-user
 </Directory>
 EOF
 
@@ -183,6 +182,9 @@ EOF
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         a2enmod cgi &>/dev/null
+
+        # serve-cgi-bin.conf contains duplicate and conflict setting for cgi-bin
+        a2disconf serve-cgi-bin &>/dev/null
         a2enconf awstats &>/dev/null
     fi
 

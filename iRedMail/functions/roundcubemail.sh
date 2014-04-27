@@ -241,8 +241,6 @@ Roundcube webmail:
     * URL:
         - http://${HOSTNAME}/mail/
         - https://${HOSTNAME}/mail/ (Over SSL/TLS)
-        - http://${HOSTNAME}/webmail/
-        - https://${HOSTNAME}/webmail/ (Over SSL/TLS)
     * Login account:
         - Username: ${FIRST_USER}@${FIRST_DOMAIN}, password: ${FIRST_USER_PASSWD_PLAIN}
     * See also:

@@ -393,10 +393,6 @@ ${CONF_MSG}
 
 <Directory ${CLUEBRINGER_HTTPD_ROOT}/>
     DirectoryIndex index.php
-    Order allow,deny
-    Allow from all
-    #Allow from ${CLUEBRINGER_BIND_HOST}
-
     AuthType basic
     AuthName "Authorization Required"
 EOF
@@ -466,8 +462,6 @@ Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
 
-            a2enconf cluebringer &>/dev/null
-
             # Set file permission.
             chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
 
@@ -499,9 +493,15 @@ EOF
 
         # Close <Directory> container.
         cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
-    ${HTTPD_DIRECTIVE_REQUIRE}
+    Order allow,deny
+    Allow from all
+    Require valid-user
 </Directory>
 EOF
+
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+        a2enconf cluebringer &>/dev/null
+    fi
 
     echo 'export status_cluebringer_webui_config="DONE"' >> ${STATUS_FILE}
 }

@@ -213,7 +213,8 @@ check_new_iredmail()
 
 echo_end_msg()
 {
-    cat <<EOF
+    if [ X"$(basename $0)" != X'get_all.sh' ]; then
+        cat <<EOF
 ********************************************************
 * All tasks had been finished successfully. Next step:
 *
@@ -223,6 +224,7 @@ echo_end_msg()
 ********************************************************
 
 EOF
+    fi
 }
 
 if [ -e ${STATUS_FILE} ]; then

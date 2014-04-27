@@ -28,12 +28,19 @@ export PLA_TARBALL="phpldapadmin-${PLA_VERSION}.tgz"
 export PHPLDAPADMIN_USE_SOURCE='YES'
 
 if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    # Install phpLDAPadmin via apt repo
-    export PHPLDAPADMIN_USE_SOURCE='NO'
+    if [ X"${DISTRO_CODENAME}" == X'wheezy' \
+        -o X"${DISTRO_CODENAME}" == X'precise' ]; then
+        # Install phpLDAPadmin via apt repo
+        export PHPLDAPADMIN_USE_SOURCE='NO'
 
-    export PLA_HTTPD_ROOT="/usr/share/phpldapadmin"
-    export PLA_HTTPD_ROOT_SYMBOL_LINK="${PLA_HTTPD_ROOT}"
-    export PLA_CONF_DIR="${PLA_HTTPD_ROOT}/config"
+        export PLA_HTTPD_ROOT="/usr/share/phpldapadmin"
+        export PLA_HTTPD_ROOT_SYMBOL_LINK="${PLA_HTTPD_ROOT}"
+        export PLA_CONF_DIR="${PLA_HTTPD_ROOT}/config"
+    else
+        export PLA_HTTPD_ROOT="${HTTPD_SERVERROOT}/phpldapadmin-${PLA_VERSION}"
+        export PLA_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/phpldapadmin"
+        export PLA_CONF_DIR="${PLA_HTTPD_ROOT}/config"
+    fi
 
 elif [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'OPENBSD' ]; then
     # Install phpLDAPadmin via ports tree

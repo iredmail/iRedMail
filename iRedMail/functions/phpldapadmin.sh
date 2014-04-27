@@ -17,6 +17,10 @@ pla_install()
         # Create symbol link, so that we don't need to modify apache
         # conf.d/phpldapadmin.conf file after upgrade this component.
         ln -s ${PLA_HTTPD_ROOT} ${PLA_HTTPD_ROOT_SYMBOL_LINK} 2>/dev/null
+
+        # Patch phpldapadmin-1.2.3 to work under PHP 5.5.x
+        cd ${PLA_HTTPD_ROOT} && \
+            patch -p1 < ${PATCH_DIR}/phpldapadmin/php55.patch >/dev/null
     fi
 
     ECHO_DEBUG "Copy example config file."
@@ -32,15 +36,6 @@ pla_install()
     ECHO_DEBUG "Set file permission."
     chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${PLA_HTTPD_ROOT}
     chmod -R 0755 ${PLA_HTTPD_ROOT}
-
-    ECHO_DEBUG "Create directory alias for phpLDAPadmin."
-    cat > ${HTTPD_CONF_DIR}/phpldapadmin.conf <<EOF
-${CONF_MSG}
-# Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
-<Directory "${PLA_HTTPD_ROOT_SYMBOL_LINK}/">
-    Options -Indexes
-</Directory>
-EOF
 
     # Make phpldapadmin can be accessed via HTTPS only.
     perl -pi -e 's#^(\s*</VirtualHost>)#Alias /phpldapadmin "$ENV{PLA_HTTPD_ROOT_SYMBOL_LINK}/"\nAlias /ldap "$ENV{PLA_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
