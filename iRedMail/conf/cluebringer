@@ -80,7 +80,7 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export CLUEBRINGER_CONF='/usr/local/etc/cluebringer.conf'
     export CLUEBRINGER_WEBUI_CONF="${HTTPD_CONF_DIR}/cluebringer.conf"
     export CLUEBRINGER_PID_FILE='/var/run/cbpolicyd.pid'
-    export CLUEBRINGER_HTTPD_ROOT='/usr/share/cluebringer/webui'
+    export CLUEBRINGER_HTTPD_ROOT="${HTTPD_SERVERROOT}/policyd"
 
 fi
 

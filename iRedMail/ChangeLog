@@ -1,4 +1,4 @@
-iRedMail-0.9.0:
+iRedMail-0.8.7:
     * Works on new Linux/BSD distribution releases:
         - Ubuntu 14.04 LTS. With MariaDB support.
 

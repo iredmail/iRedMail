@@ -123,15 +123,15 @@ install_all()
     #
     ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH} php-pgsql${PKG_ARCH} php-imap${PKG_ARCH} php-mbstring${PKG_ARCH}"
+        ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH} php-pgsql${PKG_ARCH} php-imap${PKG_ARCH} php-mbstring${PKG_ARCH} php-pecl-apc${PKG_ARCH}"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} libapache2-mod-php5 php5-imap php5-json php5-gd php5-mcrypt php5-curl mcrypt"
+        ALL_PKGS="${ALL_PKGS} libapache2-mod-php5 php5-imap php5-json php5-gd php5-mcrypt php5-curl mcrypt php-apc"
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php5-ldap php5-mysql"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php5-pgsql"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-mcrypt php-gd"
+        ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-mcrypt php-gd pecl-APC"
 
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-mysql php-mysqli"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql php-mysqli"
@@ -276,9 +276,9 @@ install_all()
     fi
 
     # phpLDAPadmin
-    if [ X"${USE_PHPLDAPADMIN}" == X"YES" ]; then
+    if [ X"${USE_PHPLDAPADMIN}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            if [ X"${DISTRO_CODENAME}" == X'wheezy'
+            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
                 -o X"${DISTRO_CODENAME}" == X'precise' ]; then
                 ALL_PKGS="${ALL_PKGS} phpldapadmin"
             fi

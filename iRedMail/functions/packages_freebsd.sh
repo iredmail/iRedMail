@@ -67,6 +67,7 @@ install_all()
         lang_php5-extensions \
         lang_php5 \
         www_mod_php5 \
+        www_pecl-APC \
         lang_python27 \
         mail_dovecot2 \
         mail_policyd2 \
@@ -620,7 +621,7 @@ OPTIONS_FILE_SET+=LINKTHR
 OPTIONS_FILE_UNSET+=ZTS
 EOF
 
-    ALL_PORTS="${ALL_PORTS} lang/php5 www/mod_php5"
+    ALL_PORTS="${ALL_PORTS} lang/php5 www/mod_php5 www/pecl-APC"
 
     cat > /var/db/ports/lang_php5-extensions/options <<EOF
 OPTIONS_FILE_SET+=BCMATH
@@ -724,6 +725,14 @@ OPTIONS_FILE_SET+=IPV6
 OPTIONS_FILE_SET+=MAILHEAD
 OPTIONS_FILE_SET+=LINKTHR
 OPTIONS_FILE_UNSET+=ZTS
+EOF
+
+    cat > /var/db/ports/www_pecl-APC/options <<EOF
+OPTIONS_FILE_SET+=DOCS
+OPTIONS_FILE_UNSET+=FILEHITS
+OPTIONS_FILE_UNSET+=IPC
+OPTIONS_FILE_UNSET+=SEMAPHORES
+OPTIONS_FILE_UNSET+=SPINLOCKS
 EOF
 
     # Policyd v2.x
