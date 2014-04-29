@@ -48,6 +48,8 @@ iRedMail-0.8.7:
     * Updated packages:
         + Roundcube webmail -> 1.0.0
         + phpMyAdmin -> 4.1.14
+        + iRedAdmin -> 0.3.1
+        + iRedAPD -> 1.4.3
 
 iRedMail-0.8.6:
     * Works on new Linux/BSD distribution releases:
