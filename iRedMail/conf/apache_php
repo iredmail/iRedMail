@@ -133,7 +133,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export HTTPD_LOG_ERRORLOG="${HTTPD_SERVERROOT}/logs/error_log"
 
     # ---- PHP ----
-    export PHP_VERSION='5.3'
+    export PHP_VERSION='5.4'
     export PHP_INI="/etc/php-${PHP_VERSION}.ini"
 fi
 

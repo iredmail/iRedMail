@@ -133,9 +133,9 @@ install_all()
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-mcrypt php-gd pecl-APC"
 
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-mysql php-mysqli"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql php-mysqli"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-mysql php-mysqli php-pdo_mysql"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql php-mysqli php-pdo_mysql"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql php-pdo_pgsql"
     fi
 
     ###############
@@ -257,7 +257,7 @@ install_all()
                 ALL_PKGS="${ALL_PKGS} roundcubemail"
             fi
 
-            ALL_PKGS="${ALL_PKGS} php-pspell pecl-fileinfo"
+            ALL_PKGS="${ALL_PKGS} php-pspell"
 
             # MySQL driver for PHP, required by Roundcube.
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql"

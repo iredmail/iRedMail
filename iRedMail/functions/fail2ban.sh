@@ -35,6 +35,11 @@ fail2ban_config()
     ECHO_DEBUG "Disable all default filters in ${FAIL2BAN_JAIL_CONF}."
     perl -pi -e 's#^(enabled).*=.*#${1} = false#' ${FAIL2BAN_JAIL_CONF}
 
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        ECHO_DEBUG "Set proper socket path: ${FAIL2BAN_SOCKET}"
+        perl -pi -e 's#^(socket).*#${1} = $ENV{FAIL2BAN_SOCKET}#' ${FAIL2BAN_MAIN_CONF}
+    fi
+
     ECHO_DEBUG "Enable mail server related components."
     cat > ${FAIL2BAN_JAIL_LOCAL_CONF} <<EOF
 ${CONF_MSG}

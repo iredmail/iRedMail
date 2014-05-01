@@ -1,9 +1,11 @@
 iRedMail-0.8.7:
     * Works on new Linux/BSD distribution releases:
-        - Ubuntu 14.04 LTS. With MariaDB support.
+        + Ubuntu 14.04 LTS. With MariaDB support.
+        + OpenBSD 5.5
 
     * Drop support for below releases:
         - Ubuntu 13.04, 13.10
+        - OpenBSD 5.4
 
     * Increase default Amavisd prefork children to 10 (default is 2).
     * Allows sasl authentication ONLY over a TLS-encrypted smtp connection.
