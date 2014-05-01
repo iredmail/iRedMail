@@ -194,11 +194,11 @@ export SHELL_BASH='/bin/bash'
 # Check hardware architecture.
 arch="$(uname -m)"
 case $arch in
-    i[3456]86) export ARCH='i386' ;;
-    x86_64|amd64) export ARCH='x86_64' ;;
+    i[3456]86) export OS_ARCH='i386' ;;
+    x86_64|amd64) export OS_ARCH='x86_64' ;;
     armv6l)
         # Debian ARM platform and Raspberry Pi.
-        export ARCH='armhf' ;;
+        export OS_ARCH='armhf' ;;
     *)
         echo "Your architecture is not supported yet: ${arch}."
         echo "Both i386 and x86_64 are supported by ${PROG_NAME}."
@@ -243,8 +243,8 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
 
-        export PKG_ARCH=".${ARCH}"
-        if [ X"${ARCH}" == X"i386" ]; then
+        export PKG_ARCH=".${OS_ARCH}"
+        if [ X"${OS_ARCH}" == X"i386" ]; then
             export PKG_ARCH=''
         fi
 

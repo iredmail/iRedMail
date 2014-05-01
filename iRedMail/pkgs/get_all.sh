@@ -49,10 +49,10 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export PKG_WGET="wget${PKG_ARCH}"
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-    if [ X"${ARCH}" == X"x86_64" ]; then
+    if [ X"${OS_ARCH}" == X"x86_64" ]; then
         export pkg_arch='amd64'
     else
-        export pkg_arch="${ARCH}"
+        export pkg_arch="${OS_ARCH}"
     fi
 
     # Special package.
@@ -187,7 +187,7 @@ check_new_iredmail()
     # we should take more care of.
     # iRedMail version number, OS distribution, release version, code name, backend.
     ECHO_INFO "Checking new version of iRedMail ..."
-    ${FETCH_CMD} "${IREDMAIL_MIRROR}/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
+    ${FETCH_CMD} "${IREDMAIL_MIRROR}/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${OS_ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
 
     UPDATE_AVAILABLE='NO'
     if ls iredmail_os* &>/dev/null; then

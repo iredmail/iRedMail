@@ -34,19 +34,20 @@ install_all()
     # Make it don't popup dialog while building ports.
     export PACKAGE_BUILDING='yes'
     export BATCH='yes'
+
     export WANT_OPENLDAP_VER='24'
     export WANT_MYSQL_VER='55'
     export WANT_PGSQL_VER='93'
     export WANT_BDB_VER='48'
     export WANT_APACHE_VER='22'
 
-    freebsd_add_make_conf 'WITHOUT_X11' 'yes'
+    freebsd_add_make_conf 'OPTIONS_SET' 'SASL'
+    freebsd_add_make_conf 'OPTIONS_UNSET' 'X11'
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${WANT_OPENLDAP_VER}"
     freebsd_add_make_conf 'WANT_MYSQL_VER' "${WANT_MYSQL_VER}"
     freebsd_add_make_conf 'WANT_PGSQL_VER' "${WANT_PGSQL_VER}"
     freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7'
     freebsd_add_make_conf 'APACHE_PORT' "www/apache${WANT_APACHE_VER}"
-    freebsd_add_make_conf 'WITH_SASL' 'yes'
     freebsd_add_make_conf 'WANT_BDB_VER' "${WANT_BDB_VER}"
 
     for p in \
@@ -92,13 +93,14 @@ install_all()
 
     # m4. DEPENDENCE.
     cat > /var/db/ports/devel_m4/options <<EOF
-WITHOUT_LIBSIGSEGV=true
+OPTIONS_FILE_SET+=LIBSIGSEGV
 EOF
 
     # libiconv. DEPENDENCE.
     cat > /var/db/ports/converters_libiconv/options <<EOF
-WITH_EXTRA_ENCODINGS=true
-WITH_EXTRA_PATCHES=true
+OPTIONS_FILE_SET+=DOCS
+OPTIONS_FILE_SET+=ENCODINGS
+OPTIONS_FILE_SET+=PATCHES
 EOF
 
     # Cyrus-SASL2. DEPENDENCE.
@@ -353,9 +355,9 @@ OPTIONS_FILE_SET+=SSL
 EOF
 
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-        ${CMD_SED} -e 's#WITHOUT_MYSQL=true#WITH_MYSQL=true#' /var/db/ports/japanese_p5-Mail-SpamAssassin/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/japanese_p5-Mail-SpamAssassin/options
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ${CMD_SED} -e 's#WITHOUT_PGSQL=true#WITH_PGSQL=true#' /var/db/ports/japanese_p5-Mail-SpamAssassin/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/japanese_p5-Mail-SpamAssassin/options
     fi
     rm -f /var/db/ports/japanese_p5-Mail-SpamAssassin/options${SED_EXTENSION} &>/dev/null
 
@@ -410,7 +412,7 @@ EOF
 
     # Enable RAR support on i386 only since it requires 32-bit libraries
     # installed under /usr/lib32.
-    if [ X"${ARCH}" == X'i386' ]; then
+    if [ X"${OS_ARCH}" == X'i386' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=RAR#OPTIONS_FILE_SET+=RAR#' /var/db/ports/security_amavisd-new/options
     fi
     rm -f /var/db/ports/security_amavisd-new/options${SED_EXTENSION} &>/dev/null
@@ -889,7 +891,7 @@ EOF
                 # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
                 port_start_time="$(date +%s)"
 
-                make WITH_COMPAT=yes DISABLE_LICENSES=yes fetch-recursive
+                make DISABLE_LICENSES=yes fetch-recursive
                 if [ X"$?" == X"0" ]; then
                     # Log used time
                     used_time="$(($(date +%s)-port_start_time))"

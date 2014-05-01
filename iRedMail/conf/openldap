@@ -63,7 +63,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
 
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/lib/openldap'
-    if [ X"${ARCH}" == X'x86_64' ]; then
+    if [ X"${OS_ARCH}" == X'x86_64' ]; then
         export OPENLDAP_MODULE_PATH='/usr/lib64/openldap'
     fi
 
