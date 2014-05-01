@@ -27,6 +27,11 @@ install_all()
     DISABLED_SERVICES=''
     PKG_SCRIPTS=''  # OpenBSD only
 
+    # OpenBSD: Hard-code package versions
+    export OB_PHP_VER='5.4.24'
+    export OB_POSTFIX_VER='2.11.0'
+    export OB_OPENLDAP_VER='2.4.38'
+
     ###########################
     # Enable syslog or rsyslog.
     #
@@ -61,7 +66,7 @@ install_all()
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
-                ALL_PKGS="${ALL_PKGS} openldap-server"
+                ALL_PKGS="${ALL_PKGS} openldap-server-${OB_OPENLDAP_VER}"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
             fi
 
@@ -131,11 +136,11 @@ install_all()
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php5-pgsql"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-mcrypt php-gd pecl-APC"
+        ALL_PKGS="${ALL_PKGS} php-${OB_PHP_VER} php-bz2-${OB_PHP_VER} php-imap-${OB_PHP_VER} php-mcrypt-${OB_PHP_VER} php-gd-${OB_PHP_VER} pecl-APC"
 
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-mysql php-mysqli php-pdo_mysql"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql php-mysqli php-pdo_mysql"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql php-pdo_pgsql"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap-${OB_PHP_VER} php-mysql-${OB_PHP_VER} php-mysqli-${OB_PHP_VER} php-pdo_mysql-${OB_PHP_VER}"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql-${OB_PHP_VER} php-mysqli-${OB_PHP_VER} php-pdo_mysql-${OB_PHP_VER}"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql-${OB_PHP_VER} php-pdo_pgsql-${OB_PHP_VER}"
     fi
 
     ###############
@@ -151,11 +156,11 @@ install_all()
         #             start amavisd before postfix since Amavisd is content
         #             filter.
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix--ldap"
+            ALL_PKGS="${ALL_PKGS} postfix-${OB_POSTFIX_VER}-ldap"
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix--mysql"
+            ALL_PKGS="${ALL_PKGS} postfix-${OB_POSTFIX_VER}-mysql"
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix--pgsql"
+            ALL_PKGS="${ALL_PKGS} postfix-${OB_POSTFIX_VER}-pgsql"
         fi
     fi
 
@@ -370,10 +375,6 @@ install_all()
 
     # Disable Ubuntu firewall rules, we have iptables init script and rule file.
     [ X"${DISTRO}" == X"UBUNTU" ] && export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
-
-    #
-    # ---- End Ubuntu 10.04 special. ----
-    #
 
     export ALL_PKGS ENABLED_SERVICES
 
