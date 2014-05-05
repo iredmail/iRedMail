@@ -240,11 +240,6 @@ EOF
 INSERT INTO greylisting (PolicyID, Name, UseGreylisting, GreylistPeriod, Track, GreylistAuthValidity, GreylistUnAuthValidity, UseAutoWhitelist, AutoWhitelistPeriod, AutoWhitelistCount, AutoWhitelistPercentage, UseAutoBlacklist, AutoBlacklistPeriod, AutoBlacklistCount, AutoBlacklistPercentage, Comment, Disabled) VALUES (3, 'Greylisting Inbound Emails', 1, 240, 'SenderIP:/24', 604800, 86400, 1, 604800, 100, 90, 1, 604800, 100, 20, '', 0);
 EOF
 
-    # Enable HELO/EHLO check on Default Inbound.
-    cat >> ${tmp_sql} <<EOF
-INSERT INTO checkhelo (id, policyid, name, useblacklist, blacklistperiod, usehrp, hrpperiod, hrplimit, rejectinvalid, rejectip, rejectunresolvable, comment, disabled) VALUES (1, 3, 'Enable HELO/EHLO check', 1, 2419200, 1, 2419200, 5, 1, 1, 0, 'Enable HELO/EHLO check on inbound by default', 0);
-EOF
-
     # Add first mail domain to policy group: internal_domains
     cat >> ${tmp_sql} <<EOF
 INSERT INTO policy_group_members (PolicyGroupID, Member, Disabled) VALUES (2, '@${FIRST_DOMAIN}', 0);
