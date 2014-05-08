@@ -98,8 +98,12 @@ spf_timeout         5
 # Local host (127.0.0.1) will automatically be trusted implicitly.
 #trusted_networks 192.168/16
 
+# Whitelist from SPF.
+#whitelist_from_spf joe@example.com fred@example.com
+#whitelist_from_spf *@example.com
+
 # Whitelist from DKIM.
-whitelist_from_dkim       *@paypal.com
+whitelist_from_dkim *@paypal.com
 
 # Whitelist domains.
 # Reference: http://wiki.apache.org/spamassassin/ManualWhitelist
