@@ -359,6 +359,10 @@ amavisd_config_general()
 
     # allow sending any file names and types
     #bypass_banned_checks_maps => [1],
+
+    # Quarantine clean messages
+    #clean_quarantine_method => 'sql:',
+    #final_destiny_by_ccat => {CC_CLEAN, D_DISCARD},
 };
 
 # regular incoming mail, originating from anywhere (usually from outside)
@@ -408,6 +412,12 @@ amavisd_config_general()
 #\$banned_files_quarantine_method = 'sql:';
 #\$banned_quarantine_to = 'banned-quarantine';
 
+#########################
+# Quarantine CLEAN mails.
+# Don't forget to enable clean quarantine in policy bank 'MYUSERS'.
+#
+#$clean_quarantine_method = 'sql:';
+#$clean_quarantine_to = 'clean-quarantine';
 
 # Modify email subject, add '\$sa_spam_subject_tag'.
 #   0:  disable
@@ -692,7 +702,7 @@ EOF
     cat > ${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER} <<EOF
 ${CONF_MSG}
 # Delete virus mails which created 15 days ago.
-1   5   *   *   *   touch ${AMAVISD_VIRUSMAILS_DIR}; find ${AMAVISD_VIRUSMAILS_DIR}/ -ctime +15 | xargs rm -rf {}
+1   5   *   *   *   touch ${AMAVISD_VIRUSMAILS_DIR}; find ${AMAVISD_VIRUSMAILS_DIR}/ -mtime +15 | xargs rm -rf {}
 EOF
 
     cat >> ${TIP_FILE} <<EOF
