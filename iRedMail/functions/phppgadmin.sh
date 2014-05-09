@@ -47,7 +47,7 @@ EOF
     perl -pi -e 's#(.*servers.*pg_dump_path.*=).*#${1} "$ENV{PGSQL_BIN_PG_DUMP}";#' ${PHPPGADMIN_CONFIG_FILE}
     perl -pi -e 's#(.*servers.*pg_dumpall_path.*=).*#${1} "$ENV{PGSQL_BIN_PG_DUMPALL}";#' ${PHPPGADMIN_CONFIG_FILE}
 
-    perl -pi -e 's#(.*owned_only.*=).*#${1} true;#' ${PHPPGADMIN_CONFIG_FILE}
+    perl -pi -e 's#(.*owned_only.*=).*#${1} false;#' ${PHPPGADMIN_CONFIG_FILE}
     perl -pi -e 's#(.*show_reports.*=).*#${1} false;#' ${PHPPGADMIN_CONFIG_FILE}
     perl -pi -e 's#(.*owned_reports_only.*=).*#${1} true;#' ${PHPPGADMIN_CONFIG_FILE}
     perl -pi -e 's#(.*min_password_length.*=).*#${1} 8;#' ${PHPPGADMIN_CONFIG_FILE}
