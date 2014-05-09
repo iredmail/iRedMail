@@ -49,7 +49,7 @@ iRedMail-0.8.7:
 
     * Updated packages:
         + Roundcube webmail -> 1.0.0
-        + phpMyAdmin -> 4.1.14
+        + phpMyAdmin -> 4.2.0
         + iRedAdmin -> 0.3.1
         + iRedAPD -> 1.4.3
 
