@@ -48,7 +48,7 @@ iRedMail-0.8.7:
         + Postfix cannot resolve IP address under chroot on RHEL/CentOS.
 
     * Updated packages:
-        + Roundcube webmail -> 1.0.0
+        + Roundcube webmail -> 1.0.1
         + phpMyAdmin -> 4.2.0
         + iRedAdmin -> 0.3.1
         + iRedAPD -> 1.4.3
