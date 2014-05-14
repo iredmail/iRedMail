@@ -50,7 +50,7 @@ iRedMail-0.8.7:
     * Updated packages:
         + Roundcube webmail -> 1.0.1
         + phpMyAdmin -> 4.2.0
-        + iRedAdmin -> 0.3.1
+        + iRedAdmin -> 0.3.2
         + iRedAPD -> 1.4.3
 
 iRedMail-0.8.6:
