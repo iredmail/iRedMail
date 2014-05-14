@@ -508,7 +508,7 @@ add_postfix_alias()
 install_pkg_rhel()
 {
     ECHO_INFO "Installing package(s): $@"
-    ${YUM} -y --disablerepo=rpmforge,ius install $@
+    ${YUM} -y --disablerepo=rpmforge,ius,remi install $@
     if [ X"$?" != X"0" ]; then
         ECHO_ERROR "Installation failed, please check the terminal output."
         ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
