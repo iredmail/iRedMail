@@ -148,6 +148,11 @@ rcm_config()
     perl -pi -e 's#PH_RCM_DES_KEY#$ENV{RCM_DES_KEY}#g' config.inc.php
     perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' config.inc.php
 
+    # Enable mime.types on Linux
+    if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
+        perl -pi -e 's#//(.*mime_types.*)#${1}#' config.inc.php
+    fi
+
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         export LDAP_SERVER_HOST LDAP_SERVER_PORT LDAP_BIND_VERSION LDAP_BASEDN LDAP_ATTR_DOMAIN_RDN LDAP_ATTR_USER_RDN
         cd ${RCM_HTTPD_ROOT}/config/
