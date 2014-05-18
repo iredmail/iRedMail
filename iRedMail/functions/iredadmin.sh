@@ -215,7 +215,7 @@ EOF
 
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
 # ${PROG_NAME}: Cleanup Amavisd database
-1  2   *   *   *   python ${IREDADMIN_HTTPD_ROOT}/tools/cleanup_amavisd_db.py &>/dev/null
+1  2   *   *   *   python ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py &>/dev/null
 EOF
 
     cat >> ${TIP_FILE} <<EOF
