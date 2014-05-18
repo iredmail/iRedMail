@@ -81,7 +81,7 @@ rcm_import_sql()
         ${MYSQL_CLIENT_ROOT} <<EOF
 -- Create database and grant privileges
 CREATE DATABASE ${RCM_DB} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${RCM_DB}.* TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY '${RCM_DB_PASSWD}';
+GRANT CREATE,SELECT,INSERT,UPDATE,DELETE ON ${RCM_DB}.* TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY '${RCM_DB_PASSWD}';
 
 -- Import Roundcubemail SQL template
 USE ${RCM_DB};
@@ -103,8 +103,8 @@ CREATE ROLE ${RCM_DB_USER} WITH LOGIN ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSU
 \i ${PGSQL_SYS_USER_HOME}/rcm.sql;
 
 -- Grant privileges
-GRANT SELECT,INSERT,UPDATE,DELETE ON cache,cache_index,cache_messages,cache_thread,contactgroupmembers,contactgroups,contacts,dictionary,identities,searches,session,users TO ${RCM_DB_USER};
-GRANT SELECT,UPDATE,USAGE ON contacts_seq,contactgroups_seq,identities_seq,searches_seq,users_seq TO ${RCM_DB_USER};
+GRANT CREATE,SELECT,INSERT,UPDATE,DELETE ON cache,cache_index,cache_messages,cache_thread,contactgroupmembers,contactgroups,contacts,dictionary,identities,searches,session,users TO ${RCM_DB_USER};
+GRANT CREATE,SELECT,UPDATE,USAGE ON contacts_seq,contactgroups_seq,identities_seq,searches_seq,users_seq TO ${RCM_DB_USER};
 
 -- Grant privilege to update password through roundcube webmail
 \c ${VMAIL_DB};
