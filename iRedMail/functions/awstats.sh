@@ -118,7 +118,6 @@ EOF
     AuthMySQL_Empty_Passwords off
     AuthMySQL_Encryption_Types Crypt_MD5
     Auth_MySQL_Authoritative On
-    #AuthMySQLUserCondition "isglobaladmin=1"
 EOF
 
             cat >> ${HTTPD_CONF} <<EOF
