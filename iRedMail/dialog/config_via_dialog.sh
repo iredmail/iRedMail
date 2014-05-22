@@ -101,6 +101,29 @@ echo "export BACKUP_SCRIPT_MYSQL='${BACKUP_SCRIPT_MYSQL}'" >>${IREDMAIL_CONFIG_F
 echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${IREDMAIL_CONFIG_FILE}
 
 # --------------------------------------------------
+# -------------------- Web server ------------------
+# --------------------------------------------------
+while : ; do
+    ${DIALOG} \
+    --title "Choose preferred web server" \
+    --checklist "TIP: Use SPACE key to select item." \
+20 76 2 \
+"Apache" "The most popular web server" "on" \
+"Nginx" "A web server and multi-protocol reverse proxy" "on" \
+2>/tmp/web_servers
+
+    web_servers="$(cat /tmp/web_servers | tr '[a-z]' '[A-Z]')"
+    rm -f /tmp/web_servers
+    [ X"${web_servers}" != X"" ] && break
+done
+
+echo ${web_servers} | grep -i 'apache' >/dev/null 2>&1
+[ X"$?" == X"0" ] && export USE_APACHE='YES' && echo "export USE_APACHE='YES'" >>${IREDMAIL_CONFIG_FILE}
+
+echo ${web_servers} | grep -i 'nginx' >/dev/null 2>&1
+[ X"$?" == X"0" ] && export USE_NGINX='YES' && echo "export USE_NGINX='YES'" >>${IREDMAIL_CONFIG_FILE}
+
+# --------------------------------------------------
 # --------------------- Backends --------------------
 # --------------------------------------------------
 export DIALOG_AVAILABLE_BACKENDS=''
