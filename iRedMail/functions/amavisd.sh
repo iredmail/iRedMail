@@ -416,8 +416,8 @@ amavisd_config_general()
 # Quarantine CLEAN mails.
 # Don't forget to enable clean quarantine in policy bank 'MYUSERS'.
 #
-#$clean_quarantine_method = 'sql:';
-#$clean_quarantine_to = 'clean-quarantine';
+#\$clean_quarantine_method = 'sql:';
+#\$clean_quarantine_to = 'clean-quarantine';
 
 # Modify email subject, add '\$sa_spam_subject_tag'.
 #   0:  disable
