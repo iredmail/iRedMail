@@ -607,7 +607,7 @@ EOF
     rm -f /var/db/ports/www_apache${WANT_APACHE_VER}/options${SED_EXTENSION} &>/dev/null
 
     ALL_PORTS="${ALL_PORTS} www/apache${WANT_APACHE_VER}"
-    ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${APACHE_RC_SCRIPT_NAME}"
 
     # PHP5. REQUIRED.
     cat > /var/db/ports/lang_php5/options <<EOF

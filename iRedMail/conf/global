@@ -243,11 +243,6 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
 
-        export PKG_ARCH=".${OS_ARCH}"
-        if [ X"${OS_ARCH}" == X"i386" ]; then
-            export PKG_ARCH=''
-        fi
-
     elif [ -f /etc/lsb-release ]; then
         # Ubuntu
         export DISTRO='UBUNTU'
@@ -381,8 +376,8 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export LOCAL_REPO_FILE="${YUM_REPOS_DIR}/${LOCAL_REPO_NAME}.repo"
 
     # Override default value.
-    export PKG_DIALOG="dialog${PKG_ARCH}"
-    export PKG_BZIP2="bzip2${PKG_ARCH}"
+    export PKG_DIALOG="dialog"
+    export PKG_BZIP2="bzip2"
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Ubuntu & Debian.

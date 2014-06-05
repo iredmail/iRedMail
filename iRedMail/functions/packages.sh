@@ -59,7 +59,7 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} openldap${PKG_ARCH} openldap-clients${PKG_ARCH} openldap-servers${PKG_ARCH} mysql-server${PKG_ARCH} mysql${PKG_ARCH}"
+            ALL_PKGS="${ALL_PKGS} openldap openldap-clients openldap-servers mysql-server mysql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl mysql-server mysql-client"
@@ -79,9 +79,9 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
         if [ X"${DISTRO}" == X"RHEL" ]; then
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} mysql-server${PKG_ARCH}"
+                ALL_PKGS="${ALL_PKGS} mysql-server"
             fi
-            ALL_PKGS="${ALL_PKGS} mysql${PKG_ARCH}"
+            ALL_PKGS="${ALL_PKGS} mysql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # MySQL server and client.
@@ -107,11 +107,11 @@ install_all()
 
         # PGSQL server & client.
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} postgresql-server${PKG_ARCH} postgresql-contrib${PKG_ARCH}"
+            ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib"
 
             # For Awstats.
             [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ] && \
-                ALL_PKGS="${ALL_PKGS} mod_auth_pgsql${PKG_ARCH}"
+                ALL_PKGS="${ALL_PKGS} mod_auth_pgsql"
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
@@ -123,12 +123,9 @@ install_all()
         fi
     fi
 
-    #################
-    # Apache and PHP.
-    #
-    ENABLED_SERVICES="${ENABLED_SERVICES} ${HTTPD_RC_SCRIPT_NAME}"
+    # PHP
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} httpd${PKG_ARCH} mod_ssl${PKG_ARCH} php${PKG_ARCH} php-common${PKG_ARCH} php-gd${PKG_ARCH} php-xml${PKG_ARCH} php-mysql${PKG_ARCH} php-ldap${PKG_ARCH} php-pgsql${PKG_ARCH} php-imap${PKG_ARCH} php-mbstring${PKG_ARCH} php-pecl-apc${PKG_ARCH}"
+        ALL_PKGS="${ALL_PKGS} php php-common php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} libapache2-mod-php5 php5-imap php5-json php5-gd php5-mcrypt php5-curl mcrypt php-apc"
@@ -143,12 +140,43 @@ install_all()
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql-${OB_PHP_VER} php-pdo_pgsql-${OB_PHP_VER}"
     fi
 
+    # Web server
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${ENABLED_HTTPD_SERVICES}"
+    DISABLED_SERVICES="${DISABLED_SERVICES} ${DISABLED_HTTPD_SERVICES}"
+
+    # Apache
+    if [ X"${USE_APACHE}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X"RHEL" ]; then
+            ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
+
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            # Will be installed as dependency of 'libapache2-mod-php5'
+            :
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            # Available in base system
+            :
+        fi
+    fi
+
+    # Nginx
+    if [ X"${USE_NGINX}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X"RHEL" ]; then
+            ALL_PKGS="${ALL_PKGS} nginx php-fpm"
+
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            ALL_PKGS="${ALL_PKGS} nginx php5-fpm uwsgi"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            # Available in base system
+            ALL_PKGS="${ALL_PKGS} php-fpm uwsgi"
+        fi
+    fi
+
     ###############
     # Postfix.
     #
     ENABLED_SERVICES="${ENABLED_SERVICES} ${POSTFIX_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} postfix${PKG_ARCH}"
+        ALL_PKGS="${ALL_PKGS} postfix"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -166,7 +194,7 @@ install_all()
 
     # Policyd.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} cluebringer perl-DBD-MySQL${PKG_ARCH} perl-DBD-Pg${PKG_ARCH}"
+        ALL_PKGS="${ALL_PKGS} cluebringer perl-DBD-MySQL perl-DBD-Pg"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -188,7 +216,7 @@ install_all()
     # Dovecot.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${DOVECOT_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} dovecot${PKG_ARCH} dovecot-managesieve${PKG_ARCH} dovecot-pigeonhole${PKG_ARCH}"
+        ALL_PKGS="${ALL_PKGS} dovecot dovecot-managesieve dovecot-pigeonhole"
 
         # We use Dovecot SASL auth instead of saslauthd
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
@@ -222,7 +250,7 @@ install_all()
     # Amavisd-new & ClamAV & Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} clamd${PKG_ARCH} clamav${PKG_ARCH} clamav-db${PKG_ARCH} spamassassin${PKG_ARCH} altermime${PKG_ARCH} perl-LDAP.noarch perl-Mail-SPF.noarch amavisd-new.noarch"
+        ALL_PKGS="${ALL_PKGS} clamd clamav clamav-db spamassassin altermime perl-LDAP perl-Mail-SPF amavisd-new"
 
         if [ X"${BACKEND}" == X'PGSQL' ]; then
             ALL_PKGS="${ALL_PKGS} perl-DBD-Pg"
@@ -299,9 +327,9 @@ install_all()
     # RC script ready in early stage.
 
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap${PKG_ARCH} MySQL-python${PKG_ARCH}"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} MySQL-python${PKG_ARCH}"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2${PKG_ARCH}"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap MySQL-python"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} MySQL-python"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb"
@@ -318,7 +346,7 @@ install_all()
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2${PKG_ARCH} python-webpy.noarch mod_wsgi${PKG_ARCH}"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy mod_wsgi"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-jinja2 python-netifaces python-webpy"
@@ -332,7 +360,7 @@ install_all()
     #
     if [ X"${USE_AWSTATS}" == X"YES" ]; then
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} awstats.noarch mod_auth_mysql${PKG_ARCH}"
+            ALL_PKGS="${ALL_PKGS} awstats mod_auth_mysql"
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -364,7 +392,7 @@ install_all()
     # Misc packages & services.
     #
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} bzip2${PKG_ARCH} acl${PKG_ARCH} patch${PKG_ARCH} tmpwatch${PKG_ARCH} crontabs.noarch dos2unix${PKG_ARCH} logwatch"
+        ALL_PKGS="${ALL_PKGS} bzip2 acl patch tmpwatch crontabs dos2unix logwatch"
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch"

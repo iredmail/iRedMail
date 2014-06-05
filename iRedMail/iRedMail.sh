@@ -71,7 +71,9 @@ check_env
 # ------------------------------
 # Source 'conf/apache_php' first, other components need some variables
 # defined in it.
+. ${CONF_DIR}/web_server
 . ${CONF_DIR}/apache_php
+. ${CONF_DIR}/nginx
 . ${CONF_DIR}/openldap
 . ${CONF_DIR}/ldapd
 . ${CONF_DIR}/phpldapadmin
@@ -105,7 +107,7 @@ fi
 # User/Group: vmail. We will export vmail uid/gid here.
 . ${FUNCTIONS_DIR}/system_accounts.sh
 
-. ${FUNCTIONS_DIR}/apache_php.sh
+. ${FUNCTIONS_DIR}/web_server.sh
 . ${FUNCTIONS_DIR}/ldap_server.sh
 . ${FUNCTIONS_DIR}/mysql.sh
 . ${FUNCTIONS_DIR}/postgresql.sh
@@ -153,7 +155,7 @@ check_status_before_run generate_ssl_keys
 check_status_before_run add_required_users
 
 # Apache & PHP.
-check_status_before_run apache_php_config
+check_status_before_run web_server_config
 
 # Install & Config Backend: OpenLDAP or MySQL.
 check_status_before_run backend_install

@@ -20,15 +20,10 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-# Variables for Apache & PHP and related.
-
-# ---- Apache ----
-
-export HTTPD_PORT='80'
-export HTTPD_RC_SCRIPT_NAME='apache2'
+export APACHE_RC_SCRIPT_NAME='apache2'
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    export HTTPD_RC_SCRIPT_NAME='httpd'
+    export APACHE_RC_SCRIPT_NAME='httpd'
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/etc/httpd"
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/conf/httpd.conf"
@@ -48,8 +43,8 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export HTTPD_LOG_ACCESSLOG='/var/log/httpd/access_log'
     export HTTPD_LOG_ERRORLOG='/var/log/httpd/error_log'
 
-    # ---- PHP ----
-    export PHP_INI='/etc/php.ini'
+    # PHP
+    export APACHE_PHP_INI='/etc/php.ini'
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Daemon user.
@@ -81,11 +76,11 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export HTTPD_LOG_ERRORLOG='/var/log/apache2/error.log'
 
     # ---- PHP ----
-    export PHP_INI='/etc/php5/apache2/php.ini'
-    export PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
+    export APACHE_PHP_INI='/etc/php5/apache2/php.ini'
+    export APACHE_PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    export HTTPD_RC_SCRIPT_NAME='apache22'
+    export APACHE_RC_SCRIPT_NAME='apache22'
 
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/usr/local/etc/apache22"
@@ -109,10 +104,10 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
 
     # ---- PHP ----
     # Copy from example: /usr/local/etc/php.ini-production
-    export PHP_INI='/usr/local/etc/php.ini'
+    export APACHE_PHP_INI='/usr/local/etc/php.ini'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export HTTPD_RC_SCRIPT_NAME='httpd'
+    export APACHE_RC_SCRIPT_NAME='httpd'
 
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/var/www/conf"
@@ -132,9 +127,9 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export HTTPD_LOG_ACCESSLOG="${HTTPD_SERVERROOT}/logs/access_log"
     export HTTPD_LOG_ERRORLOG="${HTTPD_SERVERROOT}/logs/error_log"
 
-    # ---- PHP ----
+    # PHP
     export PHP_VERSION='5.4'
-    export PHP_INI="/etc/php-${PHP_VERSION}.ini"
+    export APACHE_PHP_INI="/etc/php-${PHP_VERSION}.ini"
 fi
 
 export HTTPD_CGIBIN_DIR="${HTTPD_SERVERROOT}/cgi-bin"

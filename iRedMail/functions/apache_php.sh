@@ -138,28 +138,6 @@ apache_php_config()
         freebsd_enable_service_in_rc_conf 'htcacheclean_enable' 'NO'
     fi
 
-    ##############
-    # HTTP Port
-    #
-    #if [ X"${HTTPD_PORT}" != X"80" ]; then
-    #    ECHO_DEBUG "Change Apache listen port to: ${HTTPD_PORT}."
-    #    perl -pi -e 's#^(Listen )(80)$#${1}$ENV{HTTPD_PORT}#' ${HTTPD_CONF}
-    #else
-    #    :
-    #fi
-
-    ##################
-    # /robots.txt.
-    #
-    backup_file ${HTTPD_DOCUMENTROOT}/robots.txt
-    cat >> ${HTTPD_DOCUMENTROOT}/robots.txt <<EOF
-User-agent: *
-Disallow: /
-EOF
-
-    # Add alias for Apache daemon user
-    add_postfix_alias ${HTTPD_USER} ${SYS_ROOT_USER}
-
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable httpd.
         # Note: iRedAdmin doesn't work with chroot.
@@ -177,11 +155,11 @@ EOF
     # --------------------------
     # PHP Setting.
     # --------------------------
-    backup_file ${PHP_INI}
+    backup_file ${APACHE_PHP_INI}
 
     # FreeBSD: Copy sample file.
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        cp -f /usr/local/etc/php.ini-production ${PHP_INI}
+        cp -f /usr/local/etc/php.ini-production ${APACHE_PHP_INI}
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ln -s /var/www/conf/modules.sample/php-${PHP_VERSION}.conf /var/www/conf/modules/php.conf
 
@@ -191,41 +169,41 @@ EOF
         done
     fi
 
-    #ECHO_DEBUG "Setting error_reporting to 'E_ERROR': ${PHP_INI}."
-    #perl -pi -e 's#^(error_reporting.*=)#${1} E_ERROR;#' ${PHP_INI}
+    #ECHO_DEBUG "Setting error_reporting to 'E_ERROR': ${APACHE_PHP_INI}."
+    #perl -pi -e 's#^(error_reporting.*=)#${1} E_ERROR;#' ${APACHE_PHP_INI}
 
-    ECHO_DEBUG "Disable several functions: ${PHP_INI}."
-    perl -pi -e 's#^(disable_functions.*=)(.*)#${1}$ENV{PHP_DISABLED_FUNCTIONS}; ${2}#' ${PHP_INI}
+    ECHO_DEBUG "Disable several functions: ${APACHE_PHP_INI}."
+    perl -pi -e 's#^(disable_functions.*=)(.*)#${1}$ENV{PHP_DISABLED_FUNCTIONS}; ${2}#' ${APACHE_PHP_INI}
 
-    ECHO_DEBUG "Hide PHP Version in Apache from remote users requests: ${PHP_INI}."
-    perl -pi -e 's#^(expose_php.*=).*#${1} Off;#' ${PHP_INI}
+    ECHO_DEBUG "Hide PHP Version in Apache from remote users requests: ${APACHE_PHP_INI}."
+    perl -pi -e 's#^(expose_php.*=).*#${1} Off;#' ${APACHE_PHP_INI}
 
-    ECHO_DEBUG "Increase 'memory_limit' to 256M: ${PHP_INI}."
-    perl -pi -e 's#^(memory_limit = ).*#${1} 256M;#' ${PHP_INI}
+    ECHO_DEBUG "Increase 'memory_limit' to 256M: ${APACHE_PHP_INI}."
+    perl -pi -e 's#^(memory_limit = ).*#${1} 256M;#' ${APACHE_PHP_INI}
 
-    ECHO_DEBUG "Increase 'upload_max_filesize', 'post_max_size' to 10/12M: ${PHP_INI}."
-    perl -pi -e 's/^(upload_max_filesize.*=).*/${1} 10M;/' ${PHP_INI}
-    perl -pi -e 's/^(post_max_size.*=).*/${1} 12M;/' ${PHP_INI}
+    ECHO_DEBUG "Increase 'upload_max_filesize', 'post_max_size' to 10/12M: ${APACHE_PHP_INI}."
+    perl -pi -e 's/^(upload_max_filesize.*=).*/${1} 10M;/' ${APACHE_PHP_INI}
+    perl -pi -e 's/^(post_max_size.*=).*/${1} 12M;/' ${APACHE_PHP_INI}
 
-    ECHO_DEBUG "Disable php extension: suhosin. ${PHP_INI}."
-    perl -pi -e 's/^(suhosin.session.encrypt.*=)/${1} Off;/' ${PHP_INI}
-    perl -pi -e 's/^;(suhosin.session.encrypt.*=)/${1} Off;/' ${PHP_INI}
+    ECHO_DEBUG "Disable php extension: suhosin. ${APACHE_PHP_INI}."
+    perl -pi -e 's/^(suhosin.session.encrypt.*=)/${1} Off;/' ${APACHE_PHP_INI}
+    perl -pi -e 's/^;(suhosin.session.encrypt.*=)/${1} Off;/' ${APACHE_PHP_INI}
 
     # Set date.timezone. Required by PHP-5.3.
-    grep '^date.timezone' ${PHP_INI} >/dev/null
+    grep '^date.timezone' ${APACHE_PHP_INI} >/dev/null
     if [ X"$?" == X"0" ]; then
-        perl -pi -e 's#^(date.timezone).*#${1} = GMT#' ${PHP_INI}
+        perl -pi -e 's#^(date.timezone).*#${1} = GMT#' ${APACHE_PHP_INI}
     else
-        perl -pi -e 's#^;(date.timezone).*#${1} = GMT#' ${PHP_INI}
+        perl -pi -e 's#^;(date.timezone).*#${1} = GMT#' ${APACHE_PHP_INI}
     fi
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Disable suhosin.session.encrypt on Debian 6. Required by Roundcube webmail.
-        [ -f ${PHP_INI_CONF_DIR}/suhosin.ini ] && \
-            perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${PHP_INI_CONF_DIR}/suhosin.ini
+        [ -f ${APACHE_PHP_INI_CONF_DIR}/suhosin.ini ] && \
+            perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${APACHE_PHP_INI_CONF_DIR}/suhosin.ini
 
         # Enable mcrypt
-        #cd ${PHP_INI_CONF_DIR} && \
+        #cd ${APACHE_PHP_INI_CONF_DIR} && \
         #    ln -s ../../mods-available/mcrypt.ini 20-mcrpt.ini &>/dev/null
     fi
 
@@ -242,7 +220,7 @@ Apache:
         - ${HTTPD_DOCUMENTROOT}/index.html
 
 PHP:
-    * Configuration file: ${PHP_INI}
+    * Configuration file: ${APACHE_PHP_INI}
     * Disabled functions: ${PHP_DISABLED_FUNCTIONS}
 
 EOF
