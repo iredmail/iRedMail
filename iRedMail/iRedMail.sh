@@ -72,8 +72,6 @@ check_env
 # Source 'conf/apache_php' first, other components need some variables
 # defined in it.
 . ${CONF_DIR}/web_server
-. ${CONF_DIR}/apache_php
-. ${CONF_DIR}/nginx
 . ${CONF_DIR}/openldap
 . ${CONF_DIR}/ldapd
 . ${CONF_DIR}/phpldapadmin

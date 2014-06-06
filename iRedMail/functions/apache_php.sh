@@ -203,8 +203,7 @@ apache_php_config()
             perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${APACHE_PHP_INI_CONF_DIR}/suhosin.ini
 
         # Enable mcrypt
-        #cd ${APACHE_PHP_INI_CONF_DIR} && \
-        #    ln -s ../../mods-available/mcrypt.ini 20-mcrpt.ini &>/dev/null
+        php5enmod mcrypt 2>/dev/null
     fi
 
     cat >> ${TIP_FILE} <<EOF

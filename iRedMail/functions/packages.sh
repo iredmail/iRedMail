@@ -32,9 +32,7 @@ install_all()
     export OB_POSTFIX_VER='2.11.0'
     export OB_OPENLDAP_VER='2.4.38'
 
-    ###########################
     # Enable syslog or rsyslog.
-    #
     if [ X"${DISTRO}" == X'RHEL' ]; then
         # RHEL/CENTOS/Scientific
         if [ -x ${DIR_RC_SCRIPTS}/syslog ]; then
@@ -51,9 +49,26 @@ install_all()
         ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
     fi
 
-    #################################################
+    # Postfix.
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${POSTFIX_RC_SCRIPT_NAME}"
+    if [ X"${DISTRO}" == X"RHEL" ]; then
+        ALL_PKGS="${ALL_PKGS} postfix"
+    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        #PKG_SCRIPTS: Postfix will flush the queue when startup, so we should
+        #             start amavisd before postfix since Amavisd is content
+        #             filter.
+        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+            ALL_PKGS="${ALL_PKGS} postfix-${OB_POSTFIX_VER}-ldap"
+        elif [ X"${BACKEND}" == X'MYSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} postfix-${OB_POSTFIX_VER}-mysql"
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} postfix-${OB_POSTFIX_VER}-pgsql"
+        fi
+    fi
+
     # Backend: OpenLDAP, MySQL, PGSQL and extra packages.
-    #
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         # OpenLDAP server & client.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
@@ -93,7 +108,10 @@ install_all()
                 fi
             fi
 
-            ALL_PKGS="${ALL_PKGS} postfix-mysql libapache2-mod-auth-mysql"
+            ALL_PKGS="${ALL_PKGS} postfix-mysql"
+            if [ X"${USE_APACHE}" == X'YES' ]; then
+                ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
+            fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
@@ -115,7 +133,11 @@ install_all()
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
-            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql libapache2-mod-auth-pgsql"
+            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
+
+            if [ X"${USE_APACHE}" == X'YES' ]; then
+                ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-pgsql"
+            fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-client postgresql-server postgresql-contrib"
@@ -128,7 +150,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} php php-common php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} libapache2-mod-php5 php5-imap php5-json php5-gd php5-mcrypt php5-curl mcrypt php-apc"
+        ALL_PKGS="${ALL_PKGS} php5-imap php5-json php5-gd php5-mcrypt php5-curl mcrypt php-apc"
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php5-ldap php5-mysql"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php5-pgsql"
@@ -140,7 +162,7 @@ install_all()
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql-${OB_PHP_VER} php-pdo_pgsql-${OB_PHP_VER}"
     fi
 
-    # Web server
+    # Web servers
     ENABLED_SERVICES="${ENABLED_SERVICES} ${ENABLED_HTTPD_SERVICES}"
     DISABLED_SERVICES="${DISABLED_SERVICES} ${DISABLED_HTTPD_SERVICES}"
 
@@ -148,12 +170,11 @@ install_all()
     if [ X"${USE_APACHE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X"RHEL" ]; then
             ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
-
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # Will be installed as dependency of 'libapache2-mod-php5'
-            :
+            ALL_PKGS="${ALL_PKGS} libapache2-mod-php5"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # Available in base system
+            # Apache is available in base system
             :
         fi
     fi
@@ -162,33 +183,11 @@ install_all()
     if [ X"${USE_NGINX}" == X'YES' ]; then
         if [ X"${DISTRO}" == X"RHEL" ]; then
             ALL_PKGS="${ALL_PKGS} nginx php-fpm"
-
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} nginx php5-fpm uwsgi"
+            ALL_PKGS="${ALL_PKGS} nginx php5-fpm"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # Available in base system
-            ALL_PKGS="${ALL_PKGS} php-fpm uwsgi"
-        fi
-    fi
-
-    ###############
-    # Postfix.
-    #
-    ENABLED_SERVICES="${ENABLED_SERVICES} ${POSTFIX_RC_SCRIPT_NAME}"
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} postfix"
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        #PKG_SCRIPTS: Postfix will flush the queue when startup, so we should
-        #             start amavisd before postfix since Amavisd is content
-        #             filter.
-        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-${OB_POSTFIX_VER}-ldap"
-        elif [ X"${BACKEND}" == X'MYSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-${OB_POSTFIX_VER}-mysql"
-        elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-${OB_POSTFIX_VER}-pgsql"
+            # Nginx is available in base system
+            ALL_PKGS="${ALL_PKGS} php-fpm"
         fi
     fi
 
@@ -349,7 +348,9 @@ install_all()
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy mod_wsgi"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi python-jinja2 python-netifaces python-webpy"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy"
+        [ X"${USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
+        [ X"${USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup"

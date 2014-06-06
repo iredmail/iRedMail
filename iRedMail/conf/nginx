@@ -22,13 +22,13 @@
 
 export NGINX_RC_SCRIPT_NAME='nginx'
 export PHP_FPM_RC_SCRIPT_NAME='php-fpm'
+export UWSGI_RC_SCRIPT_NAME='uwsgi'
 
 # Configuration files
 export NGINX_CONF_ROOT='/etc/nginx'
 export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"
 export NGINX_CONF_DIR="${NGINX_CONF_ROOT}/conf.d"
 export NGINX_CONF_DEFAULT="${NGINX_CONF_DIR}/default.conf"
-export NGINX_CONF_SSL="${NGINX_CONF_DIR}/default-ssl.conf"
 
 # Log files
 export NGINX_LOG_ACCESSLOG='/var/log/nginx/access.log'
@@ -50,9 +50,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export NGINX_CONF_ROOT="/usr/local/etc/nginx"
     export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"
     export NGINX_CONF_DIR="${NGINX_CONF_ROOT}/Includes"
-
-    # Copy from example: /usr/local/share/examples/apache22/extra/httpd-ssl.conf
-    export NGINX_CONF_SSL="${NGINX_CONF_ROOT}/extra/httpd-ssl.conf"
 
     # Log file location.
     export NGINX_LOG_ACCESSLOG='/var/log/nginx-access.log'
