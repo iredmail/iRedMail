@@ -249,7 +249,7 @@ install_all()
     # Amavisd-new & ClamAV & Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} clamd clamav clamav-db spamassassin altermime perl-LDAP perl-Mail-SPF amavisd-new"
+        ALL_PKGS="${ALL_PKGS} clamd clamav-db spamassassin altermime perl-LDAP perl-Mail-SPF amavisd-new"
 
         if [ X"${BACKEND}" == X'PGSQL' ]; then
             ALL_PKGS="${ALL_PKGS} perl-DBD-Pg"

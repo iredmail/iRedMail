@@ -362,9 +362,6 @@ cluebringer_webui_config()
     [ X"${DISTRO}" == X'FREEBSD' ] && \
         cp /usr/local/share/policyd2/contrib/httpd/cluebringer-httpd.conf ${CLUEBRINGER_WEBUI_CONF}
 
-    # Make Cluebringer accessible via HTTPS.
-    perl -pi -e 's#^(\s*</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}
-
     # Configure webui.
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         perl -pi -e 's#(.DB_DSN=).*#${1}"mysql:host=$ENV{SQL_SERVER};dbname=$ENV{CLUEBRINGER_DB_NAME}";#' ${CLUEBRINGER_WEBUI_CONF}
@@ -376,7 +373,11 @@ cluebringer_webui_config()
     perl -pi -e 's/.*(.DB_PASS=).*/${1}"$ENV{CLUEBRINGER_DB_PASSWD}";/' ${CLUEBRINGER_WEBUI_CONF}
     perl -pi -e 's#(.DB_PASS=).*#${1}"$ENV{CLUEBRINGER_DB_PASSWD}";#' ${CLUEBRINGER_WEBUI_CONF}
 
-    cat > ${CLUEBRINGER_HTTPD_CONF} <<EOF
+    # Make Cluebringer accessible via HTTPS.
+    if [ X"${USE_APACHE}" == X'YES' ]; then
+        perl -pi -e 's#^(\s*</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}
+
+        cat > ${CLUEBRINGER_HTTPD_CONF} <<EOF
 ${CONF_MSG}
 #
 # SECURITY WARNING:
@@ -392,10 +393,10 @@ ${CONF_MSG}
     AuthName "Authorization Required"
 EOF
 
-    ECHO_DEBUG "Setup user auth for cluebringer webui: ${CLUEBRINGER_HTTPD_CONF}."
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        # Use LDAP auth.
-        cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+        ECHO_DEBUG "Setup user auth for cluebringer webui: ${CLUEBRINGER_HTTPD_CONF}."
+        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+            # Use LDAP auth.
+            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthBasicProvider ldap
     AuthzLDAPAuthoritative   Off
 
@@ -405,17 +406,17 @@ EOF
     AuthLDAPBindPassword "${LDAP_BINDPW}"
 EOF
 
-        [ X"${LDAP_USE_TLS}" == X"YES" ] && \
-            perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
+            [ X"${LDAP_USE_TLS}" == X"YES" ] && \
+                perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
 
-        # Ubuntu 13.10 ships Apache-2.4 which removes directive 'AuthzLDAPAuthoritative'.
-        [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" != X'precise' ] && \
-            perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${CLUEBRINGER_HTTPD_CONF}
+            # Ubuntu 14.04 ships Apache-2.4 which removes directive 'AuthzLDAPAuthoritative'.
+            [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" != X'precise' ] && \
+                perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${CLUEBRINGER_HTTPD_CONF}
 
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
-        # Use mod_auth_mysql.
-        if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" ]; then
-            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+        elif [ X"${BACKEND}" == X"MYSQL" ]; then
+            # Use mod_auth_mysql.
+            if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" ]; then
+                cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthMYSQLEnable On
     AuthMySQLHost ${SQL_SERVER}
     AuthMySQLPort ${SQL_SERVER_PORT}
@@ -427,15 +428,15 @@ EOF
     AuthMySQLPasswordField password
 EOF
 
-            # FreeBSD special.
-            if [ X"${DISTRO}" == X"FREEBSD" ]; then
-                # Enable mod_auth_mysql module in httpd.conf.
-                perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
-                echo "AuthBasicAuthoritative Off" >> ${CLUEBRINGER_HTTPD_CONF}
-            fi
+                # FreeBSD special.
+                if [ X"${DISTRO}" == X"FREEBSD" ]; then
+                    # Enable mod_auth_mysql module in httpd.conf.
+                    perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
+                    echo "AuthBasicAuthoritative Off" >> ${CLUEBRINGER_HTTPD_CONF}
+                fi
 
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+            elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+                cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthMYSQL on
     AuthBasicAuthoritative Off
     AuthUserFile /dev/null
@@ -450,21 +451,21 @@ EOF
     AuthMySQL_Encryption_Types Crypt_MD5
     Auth_MySQL_Authoritative On
 EOF
-            cat >> ${HTTPD_CONF} <<EOF
+
+                cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server, username, password.
 Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
 
-            # Set file permission.
-            chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
+                # Set file permission.
+                chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
+            fi  # DISTRO
 
-        fi  # DISTRO
-
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        # mod_auth_pgsql
-        cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
+        elif [ X"${BACKEND}" == X"PGSQL" ]; then
+            # mod_auth_pgsql
+            cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     Auth_PG_authoritative on
     Auth_PG_host ${SQL_SERVER}
     Auth_PG_port ${SQL_SERVER_PORT}
@@ -480,9 +481,8 @@ EOF
     Auth_PG_hash_type CRYPT
 EOF
 
-        # Set file permission.
-        chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
-
+            # Set file permission.
+            chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
     fi
     # END BACKEND
 
@@ -494,8 +494,9 @@ EOF
 </Directory>
 EOF
 
-    if [ X"${DISTRO}" == X'UBUNTU' ]; then
-        a2enconf cluebringer &>/dev/null
+        if [ X"${DISTRO}" == X'UBUNTU' ]; then
+            a2enconf cluebringer &>/dev/null
+        fi
     fi
 
     echo 'export status_cluebringer_webui_config="DONE"' >> ${STATUS_FILE}
