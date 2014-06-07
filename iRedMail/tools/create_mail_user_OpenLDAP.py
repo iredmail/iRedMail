@@ -171,7 +171,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         ('homeDirectory',       [homeDirectory]),
         ('accountStatus',       ['active']),
         ('mtaTransport',        ['dovecot']),
-        ('enabledService',      ['internal', 'doveadm', 'lib-storage',
+        ('enabledService',      ['internal', 'doveadm', 'lib-storage', 'indexer-worker',
                                  'mail', 'smtp', 'smtpsecured',
                                  'pop3', 'pop3secured', 'imap', 'imapsecured',
                                 'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',

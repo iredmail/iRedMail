@@ -165,6 +165,7 @@ export LDAP_SERVICE_AWSTATS='awstats'
 export LDAP_SERVICE_SHADOW_ADDRESS='shadowaddress'
 export LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK='displayedInGlobalAddressBook'
 export LDAP_SERVICE_LIB_STORAGE='lib-storage'
+export LDAP_SERVICE_INDEXER_WORKER='indexer-worker'
 export LDAP_SERVICE_DOMAIN_ADMIN='domainadmin'
 
 # Shared attributes.

@@ -232,6 +232,7 @@ amavisLocal: TRUE
 enabledService: internal
 enabledService: doveadm
 enabledService: lib-storage
+enabledService: indexer-worker
 enabledService: mail
 enabledService: pop3
 enabledService: pop3secured

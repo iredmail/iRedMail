@@ -1,3 +1,10 @@
+iRedMail-0.9.0:
+    * Fixed:
+        - Add missing SQL column (mailbox.enableindexer-worker) and LDAP
+          attribute/value pair: enabledService=indexer-worker. Required by
+          Dovecot.
+          Thanks dwbotsch <botsch _at_ cnf.cornell.edu> for the report.
+
 iRedMail-0.8.7:
     * Works on new Linux/BSD distribution releases:
         + Ubuntu 14.04 LTS. With MariaDB support.
