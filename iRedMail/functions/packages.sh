@@ -166,17 +166,15 @@ install_all()
     ENABLED_SERVICES="${ENABLED_SERVICES} ${ENABLED_HTTPD_SERVICES}"
     DISABLED_SERVICES="${DISABLED_SERVICES} ${DISABLED_HTTPD_SERVICES}"
 
-    # Apache
-    if [ X"${USE_APACHE}" == X'YES' ]; then
-        if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            # Will be installed as dependency of 'libapache2-mod-php5'
-            ALL_PKGS="${ALL_PKGS} libapache2-mod-php5"
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # Apache is available in base system
-            :
-        fi
+    # Apache. Always install Apache.
+    if [ X"${DISTRO}" == X"RHEL" ]; then
+        ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        # Will be installed as dependency of 'libapache2-mod-php5'
+        ALL_PKGS="${ALL_PKGS} libapache2-mod-php5"
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Apache is available in base system
+        :
     fi
 
     # Nginx

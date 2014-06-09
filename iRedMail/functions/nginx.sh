@@ -49,7 +49,7 @@ nginx_config()
     perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${NGINX_CONF_DEFAULT}
     perl -pi -e 's#PH_HTTPD_SERVERROOT#$ENV{HTTPD_SERVERROOT}#g' ${NGINX_CONF_DEFAULT}
     perl -pi -e 's#PH_HTTPD_DOCUMENTROOT#$ENV{HTTPD_DOCUMENTROOT}#g' ${NGINX_CONF_DEFAULT}
-    perl -pi -e 's#PH_FASTCGI_PASS#$ENV{FASTCGI_PASS}#g' ${NGINX_CONF_DEFAULT}
+    perl -pi -e 's#PH_PHP_FASTCGI_SOCKET_FULL#$ENV{PHP_FASTCGI_SOCKET_FULL}#g' ${NGINX_CONF_DEFAULT}
 
     # ssl
     perl -pi -e 's#PH_HTTPS_PORT#$ENV{HTTPS_PORT}#g' ${NGINX_CONF_DEFAULT}
@@ -62,6 +62,19 @@ nginx_config()
     perl -pi -e 's#PH_PLA_HTTPD_ROOT_SYMBOL_LINK#$ENV{PLA_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
     # phpMyAdmin
     perl -pi -e 's#PH_PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK#$ENV{PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
+    # iRedAdmin
+    perl -pi -e 's#PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK#$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
+
+    # php-fpm listen socket
+    perl -pi -e 's#^(listen *=).*#${1} $ENV{PHP_FASTCGI_SOCKET}#g' ${PHP_FPM_POOL_WWW_CONF}
+
+    # Copy uwsgi config file for iRedAdmin
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini /etc/uwsgi/apps-available/iredadmin.ini
+        ln -s /etc/uwsgi/apps-available/iredadmin.ini /etc/uwsgi/apps-enabled/iredadmin.ini
+        perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' /etc/uwsgi/apps-enabled/iredadmin.ini
+        perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' /etc/uwsgi/apps-enabled/iredadmin.ini
+    fi
 
     cat >> ${TIP_FILE} <<EOF
 Nginx:

@@ -20,6 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
+# RC scripts
 export NGINX_RC_SCRIPT_NAME='nginx'
 export PHP_FPM_RC_SCRIPT_NAME='php-fpm'
 export UWSGI_RC_SCRIPT_NAME='uwsgi'
@@ -40,11 +41,17 @@ export NGINX_PID='/var/run/nginx.pid'
 export NGINX_MIME_TYPES="${NGINX_CONF_ROOT}/mime.types"
 
 # php-fpm
-export FASTCGI_PASS='unix:/var/run/php5-fpm.sock'
+export PHP_FASTCGI_SOCKET='/var/run/php5-fpm.socket'
+export PHP_FASTCGI_SOCKET_FULL="unix:${PHP_FASTCGI_SOCKET}"
 export NGINX_PHP_INI="${APACHE_PHP_INI}"
+export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
+
+# uWSGI
+export UWSGI_SOCKET_IREDADMIN='unix:/var/run/uwsgi_iredadmin.socket'
 
 if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export NGINX_PHP_INI='/etc/php5/fpm/php.ini'
+    export PHP_FPM_POOL_WWW_CONF='/etc/php5/fpm/pool.d/www.conf'
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export NGINX_CONF_ROOT="/usr/local/etc/nginx"
