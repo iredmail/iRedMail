@@ -141,7 +141,9 @@ apache_php_config()
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable httpd.
         # Note: iRedAdmin doesn't work with chroot.
-        echo 'httpd_flags="-DSSL -u"  # -u is required by iRedAdmin' >> ${RC_CONF_LOCAL}
+        if [ X"${USE_NGINX}" != X'YES' ]; then
+            echo 'httpd_flags="-DSSL -u"  # -u is required by iRedAdmin' >> ${RC_CONF_LOCAL}
+        fi
 
         # Create /var/www/dev/*random.
         cd /var/www/dev/ && /dev/MAKEDEV random

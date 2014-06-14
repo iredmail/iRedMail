@@ -185,7 +185,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} nginx php5-fpm"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # Nginx is available in base system
-            ALL_PKGS="${ALL_PKGS} php-fpm"
+            ALL_PKGS="${ALL_PKGS} php-fpm-${OB_PHP_VER}"
         fi
     fi
 
@@ -343,7 +343,9 @@ install_all()
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy mod_wsgi"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy"
+        [ X"${USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
+        [ X"${USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy"

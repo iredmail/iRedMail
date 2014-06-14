@@ -53,7 +53,7 @@ if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export NGINX_PHP_INI='/etc/php5/fpm/php.ini'
     export PHP_FPM_POOL_WWW_CONF='/etc/php5/fpm/pool.d/www.conf'
 
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export NGINX_CONF_ROOT="/usr/local/etc/nginx"
     export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"
     export NGINX_CONF_DIR="${NGINX_CONF_ROOT}/Includes"
@@ -61,4 +61,11 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Log file location.
     export NGINX_LOG_ACCESSLOG='/var/log/nginx-access.log'
     export NGINX_LOG_ERRORLOG='/var/log/nginx-error.log'
+
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export PHP_FPM_RC_SCRIPT_NAME='php_fpm'
+    export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.conf'
+
+    export NGINX_LOG_ACCESSLOG='logs/access.log'
+    export NGINX_LOG_ERRORLOG='logs/error.log;'
 fi

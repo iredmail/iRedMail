@@ -62,6 +62,8 @@ nginx_config()
     perl -pi -e 's#PH_PLA_HTTPD_ROOT_SYMBOL_LINK#$ENV{PLA_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
     # phpMyAdmin
     perl -pi -e 's#PH_PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK#$ENV{PHPMYADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
+    # phpPgAdmin
+    perl -pi -e 's#PH_PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK#$ENV{PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
     # iRedAdmin
     perl -pi -e 's#PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK#$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
 
@@ -74,6 +76,11 @@ nginx_config()
         ln -s /etc/uwsgi/apps-available/iredadmin.ini /etc/uwsgi/apps-enabled/iredadmin.ini
         perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' /etc/uwsgi/apps-enabled/iredadmin.ini
         perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' /etc/uwsgi/apps-enabled/iredadmin.ini
+    fi
+
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Enable Nginx service.
+        echo 'nginx_flags=""' >> ${RC_CONF_LOCAL}
     fi
 
     cat >> ${TIP_FILE} <<EOF
