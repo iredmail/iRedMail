@@ -186,6 +186,7 @@ install_all()
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # Nginx is available in base system
             ALL_PKGS="${ALL_PKGS} php-fpm-${OB_PHP_VER}"
+            PKG_SCRIPTS="${PKG_SCRIPTS} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
     fi
 

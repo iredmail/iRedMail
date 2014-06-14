@@ -41,8 +41,7 @@ export NGINX_PID='/var/run/nginx.pid'
 export NGINX_MIME_TYPES="${NGINX_CONF_ROOT}/mime.types"
 
 # php-fpm
-export PHP_FASTCGI_SOCKET='/var/run/php5-fpm.socket'
-export PHP_FASTCGI_SOCKET_FULL="unix:${PHP_FASTCGI_SOCKET}"
+export PHP_FASTCGI_SOCKET='/var/run/php-fpm.socket'
 export NGINX_PHP_INI="${APACHE_PHP_INI}"
 export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
 
@@ -65,7 +64,10 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export PHP_FPM_RC_SCRIPT_NAME='php_fpm'
     export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.conf'
+    export PHP_FASTCGI_SOCKET='/var/www/run/php-fpm.socket'
 
     export NGINX_LOG_ACCESSLOG='logs/access.log'
-    export NGINX_LOG_ERRORLOG='logs/error.log;'
+    export NGINX_LOG_ERRORLOG='logs/error.log'
 fi
+
+export PHP_FASTCGI_SOCKET_FULL="unix:${PHP_FASTCGI_SOCKET}"

@@ -79,8 +79,12 @@ nginx_config()
     fi
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # Enable Nginx service.
-        echo 'nginx_flags=""' >> ${RC_CONF_LOCAL}
+        # Enable Nginx service, but unchrooted.
+        echo 'nginx_flags="-u"' >> ${RC_CONF_LOCAL}
+
+        # Disable chroot in php-fpm
+        perl -pi -e 's#^(chroot *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#^(chdir *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
     fi
 
     cat >> ${TIP_FILE} <<EOF
