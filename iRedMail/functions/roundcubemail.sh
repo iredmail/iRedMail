@@ -57,7 +57,7 @@ EOF
     fi
 
     # Make Roundcube can be accessed via HTTPS.
-    if [ X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /mail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
     fi
 

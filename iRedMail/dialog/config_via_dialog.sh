@@ -118,10 +118,10 @@ while : ; do
 done
 
 echo ${web_servers} | grep -i 'apache' >/dev/null 2>&1
-[ X"$?" == X"0" ] && export USE_APACHE='YES' && echo "export USE_APACHE='YES'" >>${IREDMAIL_CONFIG_FILE}
+[ X"$?" == X"0" ] && export WEB_SERVER_USE_APACHE='YES' && echo "export WEB_SERVER_USE_APACHE='YES'" >>${IREDMAIL_CONFIG_FILE}
 
 echo ${web_servers} | grep -i 'nginx' >/dev/null 2>&1
-[ X"$?" == X"0" ] && export USE_NGINX='YES' && echo "export USE_NGINX='YES'" >>${IREDMAIL_CONFIG_FILE}
+[ X"$?" == X"0" ] && export WEB_SERVER_USE_NGINX='YES' && echo "export WEB_SERVER_USE_NGINX='YES'" >>${IREDMAIL_CONFIG_FILE}
 
 # --------------------------------------------------
 # --------------------- Backends --------------------

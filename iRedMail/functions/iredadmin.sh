@@ -67,7 +67,7 @@ iredadmin_config()
         chown -R ${HTTPD_USER}:${HTTPD_GROUP} settings.py
     fi
 
-    if [ X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
         backup_file ${IREDADMIN_HTTPD_CONF}
         ECHO_DEBUG "Create directory alias for iRedAdmin."
 

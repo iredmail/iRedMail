@@ -134,14 +134,16 @@ apache_php_config()
         mkdir -p /usr/local/www/proxy/ 2>/dev/null
 
         # Start apache when system start up.
-        freebsd_enable_service_in_rc_conf 'apache22_enable' 'YES'
-        freebsd_enable_service_in_rc_conf 'htcacheclean_enable' 'NO'
+        if [ X"${WEB_SERVER_USE_NGINX}" != X'YES' ]; then
+            freebsd_enable_service_in_rc_conf 'apache22_enable' 'YES'
+            freebsd_enable_service_in_rc_conf 'htcacheclean_enable' 'NO'
+        fi
     fi
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable httpd.
         # Note: iRedAdmin doesn't work with chroot.
-        if [ X"${USE_NGINX}" != X'YES' ]; then
+        if [ X"${WEB_SERVER_USE_NGINX}" != X'YES' ]; then
             echo 'httpd_flags="-DSSL -u"  # -u is required by iRedAdmin' >> ${RC_CONF_LOCAL}
         fi
 

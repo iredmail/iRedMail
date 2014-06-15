@@ -109,7 +109,7 @@ install_all()
             fi
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql"
-            if [ X"${USE_APACHE}" == X'YES' ]; then
+            if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
             fi
 
@@ -135,7 +135,7 @@ install_all()
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
 
-            if [ X"${USE_APACHE}" == X'YES' ]; then
+            if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-pgsql"
             fi
 
@@ -178,7 +178,7 @@ install_all()
     fi
 
     # Nginx
-    if [ X"${USE_NGINX}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ]; then
         if [ X"${DISTRO}" == X"RHEL" ]; then
             ALL_PKGS="${ALL_PKGS} nginx php-fpm"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -345,13 +345,13 @@ install_all()
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy"
-        [ X"${USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
-        [ X"${USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
+        [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
+        [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy"
-        [ X"${USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
-        [ X"${USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
+        [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
+        [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup"

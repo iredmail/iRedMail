@@ -38,7 +38,7 @@ pla_install()
     chmod -R 0755 ${PLA_HTTPD_ROOT}
 
     # Make phpldapadmin can be accessed via HTTPS only.
-    if [ X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /phpldapadmin "$ENV{PLA_HTTPD_ROOT_SYMBOL_LINK}/"\nAlias /ldap "$ENV{PLA_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
     fi
 

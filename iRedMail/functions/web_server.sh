@@ -35,12 +35,12 @@ EOF
 
 web_server_config()
 {
-    if [ X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
         . ${FUNCTIONS_DIR}/apache_php.sh
         check_status_before_run apache_php_config
     fi
 
-    if [ X"${USE_NGINX}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ]; then
         . ${FUNCTIONS_DIR}/nginx.sh
         check_status_before_run nginx_config
     fi

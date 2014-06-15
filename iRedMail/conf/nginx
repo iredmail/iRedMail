@@ -27,9 +27,6 @@ export UWSGI_RC_SCRIPT_NAME='uwsgi'
 
 # Configuration files
 export NGINX_CONF_ROOT='/etc/nginx'
-export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"
-export NGINX_CONF_DIR="${NGINX_CONF_ROOT}/conf.d"
-export NGINX_CONF_DEFAULT="${NGINX_CONF_DIR}/default.conf"
 
 # Log files
 export NGINX_LOG_ACCESSLOG='/var/log/nginx/access.log'
@@ -37,8 +34,6 @@ export NGINX_LOG_ERRORLOG='/var/log/nginx/error.log'
 
 # PID file
 export NGINX_PID='/var/run/nginx.pid'
-
-export NGINX_MIME_TYPES="${NGINX_CONF_ROOT}/mime.types"
 
 # php-fpm
 export PHP_FASTCGI_SOCKET='/var/run/php-fpm.socket'
@@ -54,12 +49,7 @@ if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export NGINX_CONF_ROOT="/usr/local/etc/nginx"
-    export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"
-    export NGINX_CONF_DIR="${NGINX_CONF_ROOT}/Includes"
-
-    # Log file location.
-    export NGINX_LOG_ACCESSLOG='/var/log/nginx-access.log'
-    export NGINX_LOG_ERRORLOG='/var/log/nginx-error.log'
+    export PHP_FPM_POOL_WWW_CONF='/usr/local/etc/php-fpm.conf'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export PHP_FPM_RC_SCRIPT_NAME='php_fpm'
@@ -69,5 +59,11 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export NGINX_LOG_ACCESSLOG='logs/access.log'
     export NGINX_LOG_ERRORLOG='logs/error.log'
 fi
+
+export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"
+export NGINX_CONF_DIR="${NGINX_CONF_ROOT}/conf.d"
+export NGINX_CONF_DEFAULT="${NGINX_CONF_DIR}/default.conf"
+
+export NGINX_MIME_TYPES="${NGINX_CONF_ROOT}/mime.types"
 
 export PHP_FASTCGI_SOCKET_FULL="unix:${PHP_FASTCGI_SOCKET}"

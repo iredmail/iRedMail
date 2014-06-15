@@ -78,8 +78,12 @@ nginx_config()
         perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' /etc/uwsgi/apps-enabled/iredadmin.ini
     fi
 
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # Enable Nginx service, but unchrooted.
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        mkdir -p /var/log/nginx &>/dev/null
+        freebsd_enable_service_in_rc_conf 'nginx_enable' 'YES'
+        freebsd_enable_service_in_rc_conf 'uwsgi_enable' 'YES'
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Enable unchrooted Nginx
         echo 'nginx_flags="-u"' >> ${RC_CONF_LOCAL}
 
         # Disable chroot in php-fpm
