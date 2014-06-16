@@ -83,11 +83,16 @@ nginx_config()
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         mkdir -p /var/log/nginx &>/dev/null
-        rm -f /var/log/nginx-error.log &>/dev/null
+
+        mkdir -p /usr/local/etc/uwsgi/ &>/dev/null
+        cp -f ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini /usr/local/etc/uwsgi/iredadmin.ini
+        perl -pi -e 's/^(plugins.*)/#${1}/' /usr/local/etc/uwsgi/iredadmin.ini
 
         freebsd_enable_service_in_rc_conf 'nginx_enable' 'YES'
-        freebsd_enable_service_in_rc_conf 'uwsgi_enable' 'YES'
         freebsd_enable_service_in_rc_conf 'php_fpm_enable' 'YES'
+        freebsd_enable_service_in_rc_conf 'uwsgi_enable' 'YES'
+        freebsd_enable_service_in_rc_conf 'uwsgi_profiles' 'iredadmin'
+        freebsd_enable_service_in_rc_conf 'uwsgi_iredadmin_flags' '--ini /usr/local/etc/uwsgi/iredadmin.ini'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable unchrooted Nginx
         echo 'nginx_flags="-u"' >> ${RC_CONF_LOCAL}
