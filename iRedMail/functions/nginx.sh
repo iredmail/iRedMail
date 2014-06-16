@@ -79,14 +79,14 @@ nginx_config()
         ln -s /etc/uwsgi/apps-available/iredadmin.ini /etc/uwsgi/apps-enabled/iredadmin.ini
         perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' /etc/uwsgi/apps-enabled/iredadmin.ini
         perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' /etc/uwsgi/apps-enabled/iredadmin.ini
-    fi
-
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         mkdir -p /var/log/nginx &>/dev/null
 
         mkdir -p /usr/local/etc/uwsgi/ &>/dev/null
         cp -f ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini /usr/local/etc/uwsgi/iredadmin.ini
         perl -pi -e 's/^(plugins.*)/#${1}/' /usr/local/etc/uwsgi/iredadmin.ini
+        perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' /usr/local/etc/uwsgi/iredadmin.ini
+        perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' /usr/local/etc/uwsgi/iredadmin.ini
 
         freebsd_enable_service_in_rc_conf 'nginx_enable' 'YES'
         freebsd_enable_service_in_rc_conf 'php_fpm_enable' 'YES'
