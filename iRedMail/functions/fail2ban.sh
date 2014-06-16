@@ -105,7 +105,7 @@ ignoreregex =
 EOF
 
     # FreeBSD: Start fail2ban when system start up.
-    freebsd_enable_service_in_rc_conf 'fail2ban_enable' 'YES'
+    #freebsd_enable_service_in_rc_conf 'fail2ban_enable' 'YES'
 
     echo 'export status_fail2ban_config="DONE"' >> ${STATUS_FILE}
 }

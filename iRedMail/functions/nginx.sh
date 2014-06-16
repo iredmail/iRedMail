@@ -67,8 +67,11 @@ nginx_config()
     # iRedAdmin
     perl -pi -e 's#PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK#$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
 
-    # php-fpm listen socket
+    # php-fpm
     perl -pi -e 's#^(listen *=).*#${1} $ENV{PHP_FASTCGI_SOCKET}#g' ${PHP_FPM_POOL_WWW_CONF}
+    perl -pi -e 's#^;(listen.owner *=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
+    perl -pi -e 's#^;(listen.group *=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
+    perl -pi -e 's#^;(listen.mode *=).*#${1} 0660#g' ${PHP_FPM_POOL_WWW_CONF}
 
     # Copy uwsgi config file for iRedAdmin
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -80,8 +83,11 @@ nginx_config()
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         mkdir -p /var/log/nginx &>/dev/null
+        rm -f /var/log/nginx-error.log &>/dev/null
+
         freebsd_enable_service_in_rc_conf 'nginx_enable' 'YES'
         freebsd_enable_service_in_rc_conf 'uwsgi_enable' 'YES'
+        freebsd_enable_service_in_rc_conf 'php_fpm_enable' 'YES'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable unchrooted Nginx
         echo 'nginx_flags="-u"' >> ${RC_CONF_LOCAL}

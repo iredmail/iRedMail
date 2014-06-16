@@ -217,17 +217,6 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/etc/init.d'
 
-    # Amazon EC2 (CentOS) support.
-    if [ -f /etc/system-release -a -f /etc/yum.repos.d/amzn-main.repo ]; then
-        if [ ! -f /etc/redhat-release ]; then
-            # Identified as CentOS 6.
-            # Note: Amazon AMI it uses 'latest' as release version number, we
-            # have to use the latest CentOS version for it.
-            echo 'CentOS Linux 6' > /etc/redhat-release
-        fi
-        export YUM='yum -d 2 --disableplugin=priorities'
-    fi
-
     if [ -f /etc/redhat-release ]; then
         # RHEL/CentOS
         export DISTRO='RHEL'

@@ -66,16 +66,14 @@ fi
 . ${CONF_DIR}/apache_php
 . ${CONF_DIR}/nginx
 
-if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
-    export ENABLED_HTTPD_SERVICES="${APACHE_RC_SCRIPT_NAME}"
-    export DISABLED_HTTPD_SERVICES="${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
-fi
-
 if [ X"${WEB_SERVER_WEB_SERVER_USE_NGINX}" == X'YES' ]; then
     # Use Nginx as web server if it's selected.
     # php-fpm will be listed in variable 'pkg_scripts' in /etc/rc.conf.local.
     export ENABLED_HTTPD_SERVICES="${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
     export DISABLED_HTTPD_SERVICES="${APACHE_RC_SCRIPT_NAME}"
+else
+    export ENABLED_HTTPD_SERVICES="${APACHE_RC_SCRIPT_NAME}"
+    export DISABLED_HTTPD_SERVICES="${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
 fi
 
 # PHP
