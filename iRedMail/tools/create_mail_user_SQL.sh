@@ -15,7 +15,7 @@
 #   * Run this script to generate SQL files used to import to MySQL
 #     database later.
 #
-#       # sh create_mail_user_MySQL.sh domain.ltd user [user1 user2 user3 ...]
+#       # bash create_mail_user_MySQL.sh domain.ltd user [user1 user2 user3 ...]
 #
 #     It will generate file 'output.sql' in current directory, open
 #     it and confirm all records are correct.
