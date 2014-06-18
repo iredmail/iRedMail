@@ -1,3 +1,6 @@
+-- MySQL template for Amavisd-new-2.7.0 and later releases.
+-- Read-only part of the dataset (@lookup_sql_dsn)
+
 -- local users
 CREATE TABLE users (
   id         serial  PRIMARY KEY,  -- unique id
@@ -84,7 +87,7 @@ CREATE TABLE policy (
 );
 
 
--- R/W part of the dataset (optional)
+-- Read-write part of the dataset (optional) - @storage_sql_dsn.
 --   May reside in the same or in a separate database as lookups database;
 --   REQUIRES SUPPORT FOR TRANSACTIONS; specified in @storage_sql_dsn
 --
