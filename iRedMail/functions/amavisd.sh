@@ -239,7 +239,7 @@ chomp(\$mydomain = "${HOSTNAME}");
   allow_disclaimers => 1,  # enables disclaimer insertion if available
   # notify administrator of locally originating malware
   virus_admin_maps => ["root\@\$mydomain"],
-  spam_admin_maps  => ["root\@\$mydomain"],
+  #spam_admin_maps  => ["root\@\$mydomain"],
   warnbadhsender   => 0,
   warnbannedsender   => 0,
   warnvirussender  => 1,
@@ -341,7 +341,7 @@ amavisd_config_general()
 
     # notify administrator of locally originating malware
     virus_admin_maps => ["root\@\$mydomain"],
-    spam_admin_maps  => ["root\@\$mydomain"],
+    #spam_admin_maps  => ["root\@\$mydomain"],
 
     # forward to a smtpd service providing DKIM signing service
     #forward_method => 'smtp:[${AMAVISD_SERVER}]:10027',
