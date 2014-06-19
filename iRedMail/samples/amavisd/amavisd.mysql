@@ -80,7 +80,8 @@ CREATE TABLE policy (
         -- names mapped through %banned_rules to actual banned_filename tables
 );
 
-
+-- Required by iRedMail
+CREATE UNIQUE INDEX policy_idx_policy_name ON policy (policy_name);
 
 -- R/W part of the dataset (optional)
 --   May reside in the same or in a separate database as lookups database;

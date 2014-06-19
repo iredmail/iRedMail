@@ -1,4 +1,8 @@
 iRedMail-0.9.0:
+    * Improvement:
+        - New index in `amavisd` database for SQL column `policy.policy_name`.
+          Required by iRedAdmin-Pro self-service.
+
     * Fixed:
         - Add missing SQL column (mailbox.enableindexer-worker) and LDAP
           attribute/value pair: enabledService=indexer-worker. Required by
