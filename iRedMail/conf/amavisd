@@ -31,7 +31,7 @@ export AMAVISD_DKIM_SELECTOR='dkim'
 export AMAVISD_RC_SCRIPT_NAME='amavisd'
 
 # Num of pre-forked children.
-export AMAVISD_MAX_SERVERS='10'
+export AMAVISD_MAX_SERVERS='4'
 
 export AMAVISD_DKIM_DIR='/var/lib/dkim'
 export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
