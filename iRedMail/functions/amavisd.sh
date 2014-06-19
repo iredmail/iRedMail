@@ -154,7 +154,7 @@ amavisd_config_rhel()
     perl -pi -e 's#(.*defang_banned = )1(;.*)#${1}0${2}#' ${AMAVISD_CONF}
 
     # Reset $sa_spam_subject_tag, default is '***SPAM***'.
-    #perl -pi -e 's#(.*sa_spam_subject_tag.*=)(.*SPAM.*)#${1} "[SPAM] ";#' ${AMAVISD_CONF}
+    perl -pi -e 's#(.*sa_spam_subject_tag.*=)(.*SPAM.*)#${1} "[SPAM] ";#' ${AMAVISD_CONF}
 
     # TODO fixed on RHEL & Debian/Ubuntu.
     # Allow clients on my internal network to bypass scanning.
