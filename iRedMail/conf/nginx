@@ -41,13 +41,16 @@ export NGINX_PHP_INI="${APACHE_PHP_INI}"
 export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
 
 # uWSGI
+export UWSGI_CONF_DIR='/etc/uwsgi'
 export UWSGI_SOCKET_IREDADMIN='unix:/var/run/uwsgi_iredadmin.socket'
 
 if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    export UWSGI_CONF_DIR='/etc/uwsgi/apps-available'
     export NGINX_PHP_INI='/etc/php5/fpm/php.ini'
     export PHP_FPM_POOL_WWW_CONF='/etc/php5/fpm/pool.d/www.conf'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export UWSGI_CONF_DIR='/usr/local/etc/uwsgi'
     export NGINX_CONF_ROOT="/usr/local/etc/nginx"
     export PHP_FPM_POOL_WWW_CONF='/usr/local/etc/php-fpm.conf'
 

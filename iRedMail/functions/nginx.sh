@@ -74,19 +74,18 @@ nginx_config()
     perl -pi -e 's#^;(listen.mode *=).*#${1} 0660#g' ${PHP_FPM_POOL_WWW_CONF}
 
     # Copy uwsgi config file for iRedAdmin
-    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini /etc/uwsgi/apps-available/iredadmin.ini
-        ln -s /etc/uwsgi/apps-available/iredadmin.ini /etc/uwsgi/apps-enabled/iredadmin.ini
-        perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' /etc/uwsgi/apps-enabled/iredadmin.ini
-        perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' /etc/uwsgi/apps-enabled/iredadmin.ini
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${UWSGI_CONF_DIR}/iredadmin.ini
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${UWSGI_CONF_DIR}/iredadmin.ini
+        ln -s ${UWSGI_CONF_DIR}/iredadmin.ini /etc/uwsgi/apps-enabled/iredadmin.ini
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         mkdir -p /var/log/nginx &>/dev/null
 
-        mkdir -p /usr/local/etc/uwsgi/ &>/dev/null
-        cp -f ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini /usr/local/etc/uwsgi/iredadmin.ini
-        perl -pi -e 's/^(plugins.*)/#${1}/' /usr/local/etc/uwsgi/iredadmin.ini
-        perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' /usr/local/etc/uwsgi/iredadmin.ini
-        perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' /usr/local/etc/uwsgi/iredadmin.ini
+        mkdir -p ${UWSGI_CONF_DIR} &>/dev/null
+        cp -f ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${UWSGI_CONF_DIR}/iredadmin.ini
+
+        perl -pi -e 's/^(plugins.*)/#${1}/' ${UWSGI_CONF_DIR}/iredadmin.ini
 
         freebsd_enable_service_in_rc_conf 'nginx_enable' 'YES'
         freebsd_enable_service_in_rc_conf 'php_fpm_enable' 'YES'
@@ -100,6 +99,11 @@ nginx_config()
         # Disable chroot in php-fpm
         perl -pi -e 's#^(chroot *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
         perl -pi -e 's#^(chdir *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
+    fi
+
+    if [ -f ${UWSGI_CONF_DIR}/iredadmin.ini ]; then
+        perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
+        perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
     fi
 
     cat >> ${TIP_FILE} <<EOF
