@@ -4,6 +4,7 @@ iRedMail-0.9.0:
           Required by iRedAdmin-Pro self-service.
 
     * Fixed:
+        - Incorrect quota dict name in Dovecot quota warning script.
         - Decrease number of pre-forked Amavisd processes to 4 to reduce
           memory usage.
         - Add missing SQL column (mailbox.enableindexer-worker) and LDAP
