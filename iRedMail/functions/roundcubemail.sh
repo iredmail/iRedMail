@@ -270,6 +270,7 @@ rcm_plugin_managesieve()
     perl -pi -e 's#(.*managesieve_host.*=).*#${1} "$ENV{MANAGESIEVE_BIND_HOST}";#' config.inc.php
     perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} false;#' config.inc.php
     perl -pi -e 's#(.*managesieve_default.*=).*#${1} "$ENV{RCM_SIEVE_SAMPLE_FILE}";#' config.inc.php
+    perl -pi -e 's#(.*managesieve_vacation.*=).*#${1} 2;#' config.inc.php
 
     echo 'export status_rcm_plugin_managesieve="DONE"' >> ${STATUS_FILE}
 }
