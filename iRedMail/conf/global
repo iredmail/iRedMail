@@ -225,6 +225,9 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         if grep '\ 6' /etc/redhat-release &>/dev/null; then
             # version 6.x
             export DISTRO_VERSION='6'
+        elif grep '\ 7' /etc/redhat-release &>/dev/null; then
+            # version 7.x
+            export DISTRO_VERSION='7'
         else
             export UNSUPPORTED_RELEASE='YES'
         fi

@@ -29,6 +29,7 @@ $config['useragent'] = 'Roundcube Webmail'; // Hide version number
 //$config['username_domain'] = 'PH_FIRST_DOMAIN';
 $config['identities_level'] = 3;
 //$config['mime_types'] = '/etc/mime.types';
+$config['username_domain'] = 'PH_FIRST_DOMAIN';
 
 // USER INTERFACE
 $config['create_default_folders'] = true;
