@@ -535,35 +535,13 @@ EOF
     # Create a empty disclaimer.
     echo -e '\n----' > ${DISCLAIMER_DIR}/default.txt
 
-    # Integrate LDAP.
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        cat >> ${AMAVISD_CONF} <<EOF
-# Integrate Amavisd-new with OpenLDAP.
-\$enable_ldap    = 1;    # 1 -> enable, 0 -> disable.
-\$default_ldap   = {
-    hostname        => "${LDAP_SERVER_HOST}",
-    port            => ${LDAP_SERVER_PORT},
-    version         => ${LDAP_BIND_VERSION},
-    tls             => 0,
-    inet6           => 0,
-    timeout         => 120,
-    base            => "${LDAP_BASEDN}",
-    scope           => "sub",
-    query_filter    => "(&(objectClass=mailUser)(objectClass=amavisAccount)(accountStatus=active)(|(mail=%m)(shadowAddress=%m)))",
-    bind_dn         => "${LDAP_BINDDN}",
-    bind_password   => "${LDAP_BINDPW}",
-};
-EOF
-    else
-        :
-    fi
-
     # Integrate SQL. Used to store incoming & outgoing related mail information.
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
         cat >> ${AMAVISD_CONF} <<EOF
 @storage_sql_dsn = (
     ['DBI:mysql:database=${AMAVISD_DB_NAME};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
 );
+#@lookup_sql_dsn = @storage_sql_dsn;
 EOF
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         cat >> ${AMAVISD_CONF} <<EOF
@@ -571,27 +549,6 @@ EOF
     ['DBI:Pg:database=${AMAVISD_DB_NAME};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
 );
 #@lookup_sql_dsn = @storage_sql_dsn;
-EOF
-    fi
-
-    # SQL lookup.
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        cat >> ${AMAVISD_CONF} <<EOF
-#@lookup_sql_dsn = @storage_sql_dsn;
-EOF
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
-        # MySQL backend
-        cat >> ${AMAVISD_CONF} <<EOF
-# Uncomment below two lines to lookup virtual mail domains from MySQL database.
-#@lookup_sql_dsn =  (
-#    ['DBI:mysql:database=${VMAIL_DB};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${VMAIL_DB_BIND_USER}', '${VMAIL_DB_BIND_PASSWD}'],
-#);
-# For Amavisd-new-2.7.0 and later versions. Placeholder '%d' is available in Amavisd-2.7.0+.
-#\$sql_select_policy = "SELECT domain FROM domain WHERE domain='%d'";
-
-# For Amavisd-new-2.6.x.
-# WARNING: IN() may cause MySQL lookup performance issue.
-#\$sql_select_policy = "SELECT domain FROM domain WHERE CONCAT('@', domain) IN (%k)";
 EOF
     fi
 
