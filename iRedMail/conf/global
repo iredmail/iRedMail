@@ -459,6 +459,9 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         export LIST_FILES_IN_PKG='pkg query "%Fp"'
     fi
 
+    # Enable MariaDB support.
+    export ENABLE_BACKEND_MARIADB='YES'
+
     # Port directory
     export PORT_WRKDIRPREFIX='/usr/ports'
 

@@ -36,15 +36,22 @@ install_all()
     export BATCH='yes'
 
     export WANT_OPENLDAP_VER='24'
-    export WANT_MYSQL_VER='55'
+    export WANT_MARIADB_VER='55'
     export WANT_PGSQL_VER='93'
     export WANT_BDB_VER='48'
     export WANT_APACHE_VER='22'
+
+    if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+        export WANT_MYSQL_VER='55m'
+    else
+        export WANT_MYSQL_VER='55'
+    fi
 
     freebsd_add_make_conf 'OPTIONS_SET' 'SASL'
     freebsd_add_make_conf 'OPTIONS_UNSET' 'X11'
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${WANT_OPENLDAP_VER}"
     freebsd_add_make_conf 'WANT_MYSQL_VER' "${WANT_MYSQL_VER}"
+    freebsd_add_make_conf 'WANT_MARIADB_VER' "${WANT_MARIADB_VER}"
     freebsd_add_make_conf 'WANT_PGSQL_VER' "${WANT_PGSQL_VER}"
     freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7'
     freebsd_add_make_conf 'APACHE_PORT' "www/apache${WANT_APACHE_VER}"
@@ -241,7 +248,11 @@ EOF
         ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-sasl-client net/openldap${WANT_OPENLDAP_VER}-server databases/mysql${WANT_MYSQL_VER}-server"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        ALL_PORTS="${ALL_PORTS} databases/mysql${WANT_MYSQL_VER}-server"
+        if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+            ALL_PORTS="${ALL_PORTS} databases/mariadb${WANT_MARIADB_VER}-server"
+        else
+            ALL_PORTS="${ALL_PORTS} databases/mysql${WANT_MYSQL_VER}-server"
+        fi
         ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ALL_PORTS="${ALL_PORTS} databases/postgresql${WANT_PGSQL_VER}-server databases/postgresql${WANT_PGSQL_VER}-contrib"
