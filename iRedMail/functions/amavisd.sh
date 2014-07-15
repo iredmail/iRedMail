@@ -617,7 +617,7 @@ ${AMAVISD_SERVER}:10025 inet n  -   -   -   -  smtpd
     -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks
 EOF
 
-    postconf -e content_filter="smtp-amavis:[${AMAVISD_SERVER}]:10024\n# Don't"
+    postconf -e content_filter="smtp-amavis:[${AMAVISD_SERVER}]:10024"
     # Concurrency per recipient limit.
     postconf -e smtp-amavis_destination_recipient_limit='1'
 
