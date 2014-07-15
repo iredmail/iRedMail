@@ -614,12 +614,18 @@ ${AMAVISD_SERVER}:10025 inet n  -   -   -   -  smtpd
     -o smtpd_hard_error_limit=1000
     -o smtpd_client_connection_count_limit=0
     -o smtpd_client_connection_rate_limit=0
-    -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_address_mappings
+    -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks
 EOF
 
-    postconf -e content_filter="smtp-amavis:[${AMAVISD_SERVER}]:10024"
+    postconf -e content_filter="smtp-amavis:[${AMAVISD_SERVER}]:10024\n# Don't"
     # Concurrency per recipient limit.
     postconf -e smtp-amavis_destination_recipient_limit='1'
+
+    cat >> ${POSTFIX_FILE_MAIN_CF} <<EOF
+# Don't perform address mappings before injecting email to content-filter.
+# Comment out below line if you don't use a content filter.
+receive_override_options = no_address_mappings
+EOF
 
     # ---- Make amavisd log to standalone file: ${AMAVISD_LOGROTATE_FILE} ----
     if [ X"${AMAVISD_SEPERATE_LOG}" == X"YES" ]; then
