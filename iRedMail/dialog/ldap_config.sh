@@ -33,13 +33,8 @@ Please specify your LDAP suffix (root dn).
 
 EXAMPLE:
 
-    +---------------------+-----------------------+
-    | Your domain name    | Recommend LDAP suffix |
-    +---------------------+-----------------------+
-    | example.com         | dc=example,dc=com     |
-    +---------------------+-----------------------+
-    | abc.com.cn          | dc=abc,dc=com,dc=cn   |
-    +---------------------+-----------------------+
+* Domain 'example.com': dc=example,dc=com
+* Domain 'test.com.cn': dc=test,dc=com,dc=cn
 
 " 20 76 "dc=example,dc=com" 2>/tmp/ldap_suffix
 

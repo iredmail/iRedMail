@@ -105,11 +105,13 @@ echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${IREDMAIL_CONFIG_F
 # --------------------------------------------------
 while : ; do
     ${DIALOG} \
-    --title "Choose preferred web server" \
-    --checklist "TIP: Use SPACE key to select item." \
+    --title "Choose default web server" \
+    --radiolist "Both Apache and Nginx will be installed on your server, please choose the default web server you want to run. You're free to switch between them after installation completed.
+
+TIP: Use SPACE key to select item." \
 20 76 2 \
-"Apache" "The most popular web server" "on" \
-"Nginx" "A web server and multi-protocol reverse proxy" "on" \
+"Apache" "The most popular web server" "off" \
+"Nginx" "The fastest web server" "on" \
 2>/tmp/web_servers
 
     web_servers="$(cat /tmp/web_servers | tr '[a-z]' '[A-Z]')"
@@ -148,17 +150,9 @@ fi
 
 while : ; do
     ${DIALOG} \
-    --title "Choose your preferred backend used to store mail accounts" \
-    --radiolist "\
-+-----------------+---------------+---------------------------+
-| Backend         | Web Mail      | Web-based management tool |
-+-----------------+---------------+---------------------------+
-| OpenLDAP, ldapd |               | iRedAdmin, phpLDAPadmin   |
-+-----------------+               +---------------------------+
-| MySQL           | Roundcube     | iRedAdmin, phpMyAdmin     |
-+-----------------+               +---------------------------+
-| PostgreSQL      |               | iRedAdmin, phpPgAdmin     |
-+-----------------+---------------+---------------------------+
+    --title "Choose preferred backend used to store mail accounts" \
+    --radiolist "It's strongly recommended to choose the one you're farmliar with for easy maintenance. They all use the same webmail (Roundcube) and admin panel (iRedAdmin), and no big feature differences between them.
+
 TIP: Use SPACE key to select item.
 " 20 76 4 ${DIALOG_AVAILABLE_BACKENDS} 2>/tmp/backend
 
