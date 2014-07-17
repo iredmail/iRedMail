@@ -162,10 +162,6 @@ install_all()
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql${OB_PHP_VER} php-pdo_pgsql${OB_PHP_VER}"
     fi
 
-    # Web servers
-    ENABLED_SERVICES="${ENABLED_SERVICES} ${ENABLED_HTTPD_SERVICES}"
-    DISABLED_SERVICES="${DISABLED_SERVICES} ${DISABLED_HTTPD_SERVICES}"
-
     # Apache. Always install Apache.
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
@@ -188,6 +184,16 @@ install_all()
             ALL_PKGS="${ALL_PKGS} php-fpm${OB_PHP_VER}"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
+    fi
+
+    if [ X"${DEFAULT_WEB_SERVER}" == X'NGINX' ]; then
+        # Use Nginx as web server if it's selected.
+        # php-fpm will be listed in variable 'pkg_scripts' in /etc/rc.conf.local.
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
+        DISABLED_SERVICES="${DISABLED_SERVICES} ${APACHE_RC_SCRIPT_NAME}"
+    else
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${APACHE_RC_SCRIPT_NAME}"
+        DISABLED_SERVICES="${DISABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
     fi
 
     # Policyd.
@@ -458,6 +464,12 @@ install_all()
             ln -sf /usr/local/bin/python2.7-2to3 /usr/local/bin/2to3
             ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
             ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
+
+            ECHO_INFO "Installing uWSGI with source tarball, depends on your hardware, it may take 1 to 5 minutes, please be patient."
+            cd ${PKG_MISC_DIR} && \
+                tar zxf uwsgi-*.tar.gz && \
+                cd uwsgi-*/ && \
+                python setup.py install &>/dev/null
         fi
 
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}

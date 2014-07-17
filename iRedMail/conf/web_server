@@ -22,6 +22,9 @@
 
 # web servers and PHP
 
+export WEB_SERVER_USE_APACHE='YES'
+export WEB_SERVER_USE_NGINX='YES'
+
 export HTTPD_PORT='80'
 export HTTPS_PORT='443'
 
@@ -65,16 +68,6 @@ fi
 
 . ${CONF_DIR}/apache_php
 . ${CONF_DIR}/nginx
-
-if [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ]; then
-    # Use Nginx as web server if it's selected.
-    # php-fpm will be listed in variable 'pkg_scripts' in /etc/rc.conf.local.
-    export ENABLED_HTTPD_SERVICES="${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
-    export DISABLED_HTTPD_SERVICES="${APACHE_RC_SCRIPT_NAME}"
-else
-    export ENABLED_HTTPD_SERVICES="${APACHE_RC_SCRIPT_NAME}"
-    export DISABLED_HTTPD_SERVICES="${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
-fi
 
 # PHP
 export PHP_DISABLED_FUNCTIONS='show_source,system,shell_exec,passthru,exec,phpinfo,proc_open'

@@ -10,7 +10,7 @@ pla_install()
     ECHO_INFO "Configure phpLDAPadmin (web-based LDAP management tool)."
 
     if [ X"${PHPLDAPADMIN_USE_SOURCE}" == X"YES" ]; then
-        cd ${MISC_DIR}
+        cd ${PKG_MISC_DIR}
 
         extract_pkg ${PLA_TARBALL} ${HTTPD_SERVERROOT}
 

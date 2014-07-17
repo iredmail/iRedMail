@@ -57,10 +57,12 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export PHP_FPM_RC_SCRIPT_NAME='php_fpm'
     export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.conf'
-    export PHP_FASTCGI_SOCKET='/var/www/run/php-fpm.socket'
+    export PHP_FASTCGI_SOCKET="${HTTPD_SERVERROOT}/run/php-fpm.socket"
 
     export NGINX_LOG_ACCESSLOG='logs/access.log'
     export NGINX_LOG_ERRORLOG='logs/error.log'
+
+    export UWSGI_SOCKET_IREDADMIN="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.socket"
 fi
 
 export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"

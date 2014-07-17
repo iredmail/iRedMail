@@ -37,7 +37,7 @@ check_hostname
 # Where to fetch/store binary packages and source tarball.
 export IREDMAIL_MIRROR="${IREDMAIL_MIRROR:=http://iredmail.org}"
 export PKG_DIR="${ROOTDIR}/pkgs"
-export MISC_DIR="${ROOTDIR}/misc"
+export PKG_MISC_DIR="${ROOTDIR}/misc"
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     # Special package.
@@ -84,7 +84,7 @@ MISCLIST="$(cat ${ROOTDIR}/${PKGMISC} | awk -F'misc/' '{print $2}')"
 prepare_dirs()
 {
     ECHO_DEBUG "Creating necessary directories ..."
-    for i in ${PKG_DIR} ${MISC_DIR}
+    for i in ${PKG_DIR} ${PKG_MISC_DIR}
     do
         [ -d "${i}" ] || mkdir -p "${i}"
     done
@@ -93,7 +93,7 @@ prepare_dirs()
 fetch_misc()
 {
     # Fetch all misc packages.
-    cd ${MISC_DIR}
+    cd ${PKG_MISC_DIR}
 
     misc_total=$(( $(echo ${MISCLIST} | wc -w | awk '{print $1}') ))
     misc_count=1

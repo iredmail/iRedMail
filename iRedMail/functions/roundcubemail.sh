@@ -10,7 +10,7 @@ rcm_install()
     ECHO_INFO "Configure Roundcube webmail."
 
     if [ X"${RCM_USE_SOURCE}" == X'YES' ]; then
-        cd ${MISC_DIR}
+        cd ${PKG_MISC_DIR}
 
         # Extract source tarball.
         extract_pkg ${RCM_TARBALL} ${HTTPD_SERVERROOT}

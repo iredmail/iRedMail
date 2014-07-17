@@ -26,7 +26,7 @@
 
 nginx_config()
 {
-    ECHO_INFO "Configure Nginx web server."
+    ECHO_INFO "Configure Nginx web server and uWSGI."
 
     backup_file ${NGINX_CONF} ${NGINX_CONF_DEFAULT}
 
@@ -66,6 +66,7 @@ nginx_config()
     perl -pi -e 's#PH_PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK#$ENV{PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
     # iRedAdmin
     perl -pi -e 's#PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK#$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
+    perl -pi -e 's#PH_UWSGI_SOCKET_IREDADMIN#$ENV{UWSGI_SOCKET_IREDADMIN}#g' ${NGINX_CONF_DEFAULT}
 
     # php-fpm
     perl -pi -e 's#^(listen *=).*#${1} $ENV{PHP_FASTCGI_SOCKET}#g' ${PHP_FPM_POOL_WWW_CONF}
@@ -99,11 +100,22 @@ nginx_config()
         # Disable chroot in php-fpm
         perl -pi -e 's#^(chroot *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
         perl -pi -e 's#^(chdir *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
+
+        mkdir -p ${UWSGI_CONF_DIR} &>/dev/null
+        cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${UWSGI_CONF_DIR}/iredadmin.ini
+        perl -pi -e 's#^(uid).*#${1} = $ENV{HTTPD_USER}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
+        perl -pi -e 's#^(gid).*#${1} = $ENV{HTTPD_GROUP}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
+        perl -pi -e 's/^(plugins.*)/#${1}/g' ${UWSGI_CONF_DIR}/iredadmin.ini
+
+        # Start uWSGI
+        echo '# Run iRedAdmin with uWSGI' >> /etc/rc.local
+        echo "/usr/local/bin/uwsgi --ini ${UWSGI_CONF_DIR}/iredadmin.ini --logto /dev/null &>/dev/null &" >> /etc/rc.local
     fi
 
     if [ -f ${UWSGI_CONF_DIR}/iredadmin.ini ]; then
         perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
         perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
+        perl -pi -e 's#PH_UWSGI_SOCKET_IREDADMIN#$ENV{UWSGI_SOCKET_IREDADMIN}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
     fi
 
     cat >> ${TIP_FILE} <<EOF

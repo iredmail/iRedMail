@@ -34,7 +34,7 @@ iredadmin_config()
             perl -pi -e 's/#(LoadModule.*wsgi_module.*modules.*mod_wsgi.so)/${1}/' ${HTTPD_WSGI_CONF}
     fi
 
-    cd ${MISC_DIR}
+    cd ${PKG_MISC_DIR}
 
     # Extract source tarball.
     extract_pkg ${IREDADMIN_TARBALL} ${HTTPD_SERVERROOT}

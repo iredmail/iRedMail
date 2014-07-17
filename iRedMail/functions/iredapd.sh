@@ -27,7 +27,7 @@ iredapd_config()
     ECHO_INFO "Configure iRedAPD (postfix policy daemon)."
 
     # Extract source tarball.
-    cd ${MISC_DIR}
+    cd ${PKG_MISC_DIR}
     [ -d ${IREDAPD_ROOT_DIR} ] || mkdir -p ${IREDAPD_ROOT_DIR}
     extract_pkg ${IREDAPD_TARBALL} ${IREDAPD_ROOT_DIR}
 

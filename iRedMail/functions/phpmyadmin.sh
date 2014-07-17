@@ -10,7 +10,7 @@ phpmyadmin_install()
     ECHO_INFO "Configure phpMyAdmin (web-based MySQL management tool)." 
 
     if [ X"${PHPMYADMIN_USE_SOURCE}" == X"YES" ]; then
-        cd ${MISC_DIR}
+        cd ${PKG_MISC_DIR}
 
         extract_pkg ${PHPMYADMIN_TARBALL} ${HTTPD_SERVERROOT}
 

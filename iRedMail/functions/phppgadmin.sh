@@ -10,7 +10,7 @@ phppgadmin_install()
     ECHO_INFO "Configure phpPgAdmin (web-based PostgreSQL management tool)." 
 
     if [ X"${PHPPGADMIN_USE_SOURCE}" == X"YES" ]; then
-        cd ${MISC_DIR}
+        cd ${PKG_MISC_DIR}
 
         extract_pkg ${PHPPGADMIN_TARBALL} ${HTTPD_SERVERROOT}
 
