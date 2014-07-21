@@ -495,6 +495,29 @@ EOF
 EOF
 
         if [ X"${DISTRO}" == X'UBUNTU' ]; then
+            # Enable authn_dbd under Apache 2.4
+            if [ X"${DISTRO_CODENAME}" != X'precise' ]; then
+                if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
+                    a2enmod authn_dbd &>/dev/null
+                    cp ${SAMPLE_DIR}/apache/cluebringer.conf ${CLUEBRINGER_HTTPD_CONF}
+
+                    [ X"${BACKEND}" == X'MYSQL' ] && \
+                        perl -pi -e 's#PH_DB_DRIVER#mysql#' ${CLUEBRINGER_HTTPD_CONF}
+
+                    [ X"${BACKEND}" == X'PGSQL' ] && \
+                        perl -pi -e 's#PH_DB_DRIVER#pgsql#' ${CLUEBRINGER_HTTPD_CONF}
+
+                    perl -pi -e 's#PH_DIRECTORY#$ENV{CLUEBRINGER_HTTPD_ROOT}#' ${CLUEBRINGER_HTTPD_CONF}
+                    perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#' ${CLUEBRINGER_HTTPD_CONF}
+                    perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#' ${CLUEBRINGER_HTTPD_CONF}
+                    perl -pi -e 's#PH_SQL_DB_NAME#$ENV{VMAIL_DB}#' ${CLUEBRINGER_HTTPD_CONF}
+                    perl -pi -e 's#PH_SQL_DB_USER#$ENV{VMAIL_DB_BIND_USER}#' ${CLUEBRINGER_HTTPD_CONF}
+                    perl -pi -e 's#PH_SQL_DB_PASSWORD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${CLUEBRINGER_HTTPD_CONF}
+
+                    perl -pi -e 's/^(Auth_MySQL_.*)/#${1}/g' ${HTTPD_CONF}
+                fi
+            fi
+
             a2enconf cluebringer &>/dev/null
         fi
     fi

@@ -110,7 +110,14 @@ install_all()
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql"
             if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
+                if [ X"${DISTRO}" == X'UBUNTU' ]; then
+                    # Use Apache module authn_dbd for SQL authentication
+                    if [ X"${DISTRO_CODENAME}" != X'precise' ]; then
+                        ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
+                    fi
+                else
+                    ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
+                fi
             fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -136,7 +143,14 @@ install_all()
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
 
             if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-pgsql"
+                if [ X"${DISTRO}" == X'UBUNTU' ]; then
+                    # Use Apache module authn_dbd for SQL authentication
+                    if [ X"${DISTRO_CODENAME}" != X'precise' ]; then
+                        ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
+                    fi
+                else
+                    ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-pgsql"
+                fi
             fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then

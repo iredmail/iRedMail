@@ -76,13 +76,13 @@ apache_php_config()
         a2enmod ssl >/dev/null
         a2enmod deflate >/dev/null 2>&1
 
-        [ X"${BACKEND}" == X"OPENLDAP" ] && a2enmod authnz_ldap > /dev/null
-        if [ X"${BACKEND}" == X"MYSQL" ]; then
-            a2enmod auth_mysql > /dev/null
+        [ X"${BACKEND}" == X'OPENLDAP' ] && a2enmod authnz_ldap > /dev/null
+        if [ X"${BACKEND}" == X'MYSQL' ]; then
+            a2enmod auth_mysql >/dev/null
         fi
 
-        if [ X"${BACKEND}" == X"PGSQL" ]; then
-            a2enmod 000_auth_pgsql > /dev/null
+        if [ X"${BACKEND}" == X'PGSQL' ]; then
+            a2enmod 000_auth_pgsql >/dev/null
         fi
 
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
