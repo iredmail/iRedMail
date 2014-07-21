@@ -44,7 +44,9 @@ export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
 export UWSGI_CONF_DIR='/etc/uwsgi'
 export UWSGI_SOCKET_IREDADMIN='unix:/var/run/uwsgi_iredadmin.socket'
 
-if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    export PHP_FASTCGI_SOCKET='/var/run/php-fpm/php-fpm.socket'
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export UWSGI_CONF_DIR='/etc/uwsgi/apps-available'
     export NGINX_PHP_INI='/etc/php5/fpm/php.ini'
     export PHP_FPM_POOL_WWW_CONF='/etc/php5/fpm/pool.d/www.conf'

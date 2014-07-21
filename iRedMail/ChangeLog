@@ -22,6 +22,9 @@ iRedMail-0.9.0:
           Dovecot.
           Thanks dwbotsch <botsch _at_ cnf.cornell.edu> for the report.
 
+    * Updated packages:
+        + Roundcube webmail -> 1.0.2
+
 iRedMail-0.8.7:
     * Works on new Linux/BSD distribution releases:
         + Ubuntu 14.04 LTS. With MariaDB support.

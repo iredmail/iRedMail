@@ -21,12 +21,12 @@
 #---------------------------------------------------------------------
 
 # Available variables for automate installation (value should be 'y' or 'n'):
+#
 #   AUTO_CLEANUP_REMOVE_SENDMAIL
 #   AUTO_CLEANUP_REMOVE_MOD_PYTHON
 #   AUTO_CLEANUP_REPLACE_FIREWALL_RULES
 #   AUTO_CLEANUP_RESTART_IPTABLES
 #   AUTO_CLEANUP_REPLACE_MYSQL_CONFIG
-#   AUTO_CLEANUP_RESTART_POSTFIX
 #
 # Usage:
 #   # AUTO_CLEANUP_REMOVE_SENDMAIL=y [...] bash iRedMail.sh
