@@ -129,6 +129,15 @@ Nginx:
     * See also:
         - ${HTTPD_DOCUMENTROOT}/index.html
 
+php-fpm:
+    * Configuration files:
+        - ${PHP_FPM_POOL_WWW_CONF}
+    * Socket: ${PHP_FASTCGI_SOCKET}
+
+uWSGI:
+    * Configuration files:
+        - ${UWSGI_CONF_DIR}
+    * Socket for iRedAdmin: ${UWSGI_SOCKET_IREDADMIN}
 EOF
 
     echo 'export status_nginx_config="DONE"' >> ${STATUS_FILE}

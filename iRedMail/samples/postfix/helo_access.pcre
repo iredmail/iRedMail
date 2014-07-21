@@ -51,7 +51,7 @@
 /^(163\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
 /^(163\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
 /^(sohu\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
-/(gmail\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
+/^(gmail\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
 /^(google\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
 /^(yahoo\.com\.cn)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
 /^(yahoo\.co\.jp)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})

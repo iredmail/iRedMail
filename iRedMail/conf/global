@@ -83,6 +83,9 @@ export MYSQL_ROOT_USER="${MYSQL_ROOT_USER:=root}"
 # PGSQL server
 export PGSQL_SERVER="${PGSQL_SERVER:=${LOCAL_ADDRESS}}"
 export PGSQL_SERVER_PORT="${PGSQL_SERVER_PORT:=5432}"
+# SQL databases we should backup
+export MYSQL_BACKUP_DATABASES=''
+export PGSQL_BACKUP_DATABASES=''
 
 export USE_LOCAL_MYSQL_SERVER='YES'
 if [ X"${MYSQL_SERVER}" != X"${LOCAL_ADDRESS}" ]; then
@@ -213,6 +216,7 @@ esac
 #
 # UNSUPPORTED_RELEASE will be set to 'YES' if current Linux/BSD release is
 # an old release and unsupported anymore.
+export PYTHON_BIN='python'
 if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/etc/init.d'
@@ -282,12 +286,13 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
     else
         export UNSUPPORTED_RELEASE='YES'
     fi
-elif [ X"${KERNEL_NAME}" == X"FREEBSD" ]; then
+elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
     export DISTRO='FREEBSD'
     export DISTRO_VERSION="$(uname -r |awk -F'[.-]' '{print $1}')"
 
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/usr/local/etc/rc.d'
+    export PYTHON_BIN='/usr/local/bin/python'
 
     # Unsupported releases: 7, 8.
     if echo "${DISTRO_VERSION}" | grep '^[78]' &>/dev/null ; then
@@ -303,6 +308,7 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DIR_RC_SCRIPTS='/etc/rc.d'
     export RC_CONF_LOCAL='/etc/rc.conf.local'
     export SHELL_BASH='/usr/local/bin/bash'
+    export PYTHON_BIN='/usr/local/bin/python'
 
     # Unsupported release: 5.1, 5.2, 5.3.
     if echo "${DISTRO_VERSION}" | grep '^5.[123]' &>/dev/null ; then
@@ -561,10 +567,6 @@ fi
 
 # Location of sshd_config
 export SSHD_CONFIG='/etc/ssh/sshd_config'
-
-# SQL databases which need to be backed up.
-export MYSQL_BACKUP_DATABASES=''
-export PGSQL_BACKUP_DATABASES=''
 
 # Command use to fetch source tarballs.
 if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
