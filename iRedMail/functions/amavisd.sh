@@ -235,21 +235,23 @@ chomp(\$mydomain = "${HOSTNAME}");
 };
 
 \$policy_bank{'ORIGINATING'} = {  # mail supposedly originating from our users
-  originating => 1,  # declare that mail was submitted by our smtp client
-  allow_disclaimers => 1,  # enables disclaimer insertion if available
-  # notify administrator of locally originating malware
-  virus_admin_maps => ["root\@\$mydomain"],
-  #spam_admin_maps  => ["root\@\$mydomain"],
-  warnbadhsender   => 0,
-  warnbannedsender   => 0,
-  warnvirussender  => 1,
-  warnspamsender   => 1,
-  # forward to a smtpd service providing DKIM signing service
-  #forward_method => 'smtp:[${AMAVISD_SYS_USER}]:10027',
-  # force MTA conversion to 7-bit (e.g. before DKIM signing)
-  smtpd_discard_ehlo_keywords => ['8BITMIME'],
-  #bypass_banned_checks_maps => [1],  # allow sending any file names and types
-  terminate_dsn_on_notify_success => 0,  # don't remove NOTIFY=SUCCESS option
+    originating => 1,  # declare that mail was submitted by our smtp client
+    allow_disclaimers => 1,  # enables disclaimer insertion if available
+    # notify administrator of locally originating malware
+    virus_admin_maps => ["root\@\$mydomain"],
+    spam_admin_maps  => [],
+    bad_header_admin_maps => [],
+    banned_admin_maps => [],
+    warnbadhsender   => 0,
+    warnbannedsender   => 0,
+    warnvirussender  => 1,
+    warnspamsender   => 1,
+    # forward to a smtpd service providing DKIM signing service
+    #forward_method => 'smtp:[${AMAVISD_SYS_USER}]:10027',
+    # force MTA conversion to 7-bit (e.g. before DKIM signing)
+    smtpd_discard_ehlo_keywords => ['8BITMIME'],
+    #bypass_banned_checks_maps => [1],  # allow sending any file names and types
+    terminate_dsn_on_notify_success => 0,  # don't remove NOTIFY=SUCCESS option
 };
 
 # SpamAssassin debugging. Default if off(0).
@@ -341,7 +343,9 @@ amavisd_config_general()
 
     # notify administrator of locally originating malware
     virus_admin_maps => ["root\@\$mydomain"],
-    #spam_admin_maps  => ["root\@\$mydomain"],
+    spam_admin_maps  => [],
+    bad_header_admin_maps => [],
+    banned_admin_maps => [],
 
     # forward to a smtpd service providing DKIM signing service
     #forward_method => 'smtp:[${AMAVISD_SERVER}]:10027',
