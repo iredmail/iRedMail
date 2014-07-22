@@ -103,7 +103,11 @@ spf_timeout         5
 #whitelist_from_spf *@example.com
 
 # Whitelist from DKIM.
+loadplugin Mail::SpamAssassin::Plugin::DKIM
 whitelist_from_dkim *@paypal.com
+whitelist_from_dkim *@linkedin.com
+whitelist_from_dkim *@twitter.com
+whitelist_from_dkim *@bounce.twitter.com
 
 # Whitelist domains.
 # Reference: http://wiki.apache.org/spamassassin/ManualWhitelist
@@ -130,3 +134,14 @@ ok_locales          all
 #body LOCAL_DEMONSTRATION_RULE /test/
 #score LOCAL_DEMONSTRATION_RULE 0.1
 #describe LOCAL_DEMONSTRATION_RULE This is a simple test rule
+
+# Decrease score for authenticated senders.
+# IMPORTANT NOTES:
+#
+#   1) Please replace 'your\.server\.com' by the value of Postfix parameter
+#      "myhostname".
+#   2) Please set 'smtpd_sasl_authenticated_header = yes' in Postfix main.cf.
+#
+#header AUTHENTICATED_SENDER Received =~ /Authenticated\ sender\:.*by\ your\.server\.com/
+#describe AUTHENTICATED_SENDER Header 'Received:' contains 'Authenticated sender:'
+#score AUTHENTICATED_SENDER -3
