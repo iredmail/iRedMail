@@ -585,6 +585,8 @@ EOF
 # /etc/postfix/master.cf "maxproc" column for the 'smtp-amavis' service.
 \$max_servers = ${AMAVISD_MAX_SERVERS};
 
+\$sa_spam_subject_tag = '[SPAM] ';
+
 1;  # insure a defined return
 EOF
     # ------------- END configure /etc/amavisd.conf ------------
