@@ -112,12 +112,9 @@ amavisd_config_rhel()
 {
     ECHO_INFO "Configure Amavisd-new (interface between MTA and content checkers)."
 
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER} >/dev/null
     fi
-
-    # Don't check amavisd-milter status.
-    perl -pi -e 's/(.*)(status.*prog2.*)/${1}#${2}/' ${DIR_RC_SCRIPTS}/${AMAVISD_RC_SCRIPT_NAME}
 
     backup_file ${AMAVISD_CONF} ${AMAVISD_DKIM_CONF}
     chmod 0640 ${AMAVISD_CONF} ${AMAVISD_DKIM_CONF}

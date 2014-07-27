@@ -64,7 +64,7 @@ mysql_initialize()
         perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF}
     fi
 
-    ${MYSQLD_RC_SCRIPT} restart &>/dev/null
+    service_control mariadb restart &>/dev/null
 
     ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialize ..."
     sleep 5

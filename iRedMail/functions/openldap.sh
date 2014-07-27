@@ -41,10 +41,10 @@ openldap_config()
         usermod -G ssl-cert ${OPENLDAP_DAEMON_USER}
 
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        if [ X"${DISTRO_VERSION}" == X"6" ]; then
-            # Run slapd with slapd.conf, not slapd.d.
-            perl -pi -e 's/#(SLAPD_OPTIONS=).*/${1}"-f $ENV{OPENLDAP_SLAPD_CONF}"/' ${OPENLDAP_SYSCONFIG_CONF}
+        # Run slapd with slapd.conf, not slapd.d.
+        perl -pi -e 's/#(SLAPD_OPTIONS=).*/${1}"-f $ENV{OPENLDAP_SLAPD_CONF}"/' ${OPENLDAP_SYSCONFIG_CONF}
 
+        if [ X"${DISTRO_VERSION}" == X'6' ]; then
             # Run slapd with -h "... ldap:/// ..."
             perl -pi -e 's/#(SLAPD_LDAP=).*/${1}yes/' ${OPENLDAP_SYSCONFIG_CONF}
 
@@ -367,12 +367,9 @@ EOF
 
     ECHO_DEBUG "Restarting syslog."
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        service_control syslog restart >/dev/null
+        service_control rsyslog restart >/dev/null
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        # Debian 4, Ubuntu 9.04 -> ${DIR_RC_SCRIPTS}/sysklogd
-        # Debian 5  -> ${DIR_RC_SCRIPTS}/rsyslog
-        [ -x ${DIR_RC_SCRIPTS}/sysklogd ] && service_control sysklogd restart >/dev/null
-        [ -x ${DIR_RC_SCRIPTS}/rsyslog ] && service_control rsyslog restart >/dev/null
+        service_control rsyslog restart >/dev/null
     fi
 
     # FreeBSD: Start openldap when system start up.
@@ -387,7 +384,7 @@ EOF
 openldap_data_initialize()
 {
     # Get DB_CONFIG.example.
-    if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X"6" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         export OPENLDAP_DB_CONFIG_SAMPLE="$( eval ${LIST_FILES_IN_PKG} openldap-servers | grep '/DB_CONFIG.example$')"
     fi
 
@@ -398,7 +395,7 @@ openldap_data_initialize()
     chmod -R 0700 ${OPENLDAP_DATA_DIR}
 
     ECHO_DEBUG "Starting OpenLDAP."
-    ${OPENLDAP_RC_SCRIPT} restart &>/dev/null
+    service_control slapd restart &>/dev/null
 
     ECHO_DEBUG "Sleep 5 seconds for LDAP daemon initialize ..."
     sleep 5

@@ -28,10 +28,6 @@ iredadmin_config()
     if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ECHO_DEBUG "Enable apache module: wsgi."
         a2enmod wsgi >/dev/null 2>&1
-    elif [ X"${DISTRO}" == X"RHEL" ]; then
-        # Make sure wsgi module is loaded.
-        [ -f ${HTTPD_WSGI_CONF} ] && \
-            perl -pi -e 's/#(LoadModule.*wsgi_module.*modules.*mod_wsgi.so)/${1}/' ${HTTPD_WSGI_CONF}
     fi
 
     cd ${PKG_MISC_DIR}

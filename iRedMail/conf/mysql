@@ -30,7 +30,11 @@ export MYSQL_RC_SCRIPT_NAME='mysql'
 
 # MySQL config file.
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    export MYSQL_RC_SCRIPT_NAME='mysqld'
+    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        export MYSQL_RC_SCRIPT_NAME='mysqld'
+    else
+        export MYSQL_RC_SCRIPT_NAME='mariadb'
+    fi
 
 elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
     export MYSQL_MY_CNF='/etc/mysql/my.cnf'

@@ -367,6 +367,24 @@ hash_maildir()
 # -----------------------------------------------------------------
 # - OS/OS_Version/Arch dependent.
 # -----------------------------------------------------------------
+enable_service_systemd()
+{
+    services="$@"
+    for i in $services; do
+        ECHO_DEBUG "Enable service: $i."
+        systemctl enable $i
+    done
+}
+
+disable_service_systemd()
+{
+    services="$@"
+    for i in $services; do
+        ECHO_DEBUG "Disable service: $i."
+        systemctl enable $i
+    done
+}
+
 enable_service_rh()
 {
     services="$@"
@@ -411,6 +429,13 @@ disable_service_debian()
     done
 }
 
+service_control_systemd()
+{
+    action="$1"
+    service="$2"
+    systemctl $action $service
+}
+
 service_control()
 {
     service="$1"
@@ -418,6 +443,8 @@ service_control()
     tmp_rc_script="${DIR_RC_SCRIPTS}/${service}"
     if [ -x ${tmp_rc_script} ]; then
         ${tmp_rc_script} ${action}
+    elif which systemctl &>/dev/null; then
+        service_control_systemd $action $service
     else
         ECHO_ERROR "File not exist or not executable: ${tmp_rc_script}."
     fi

@@ -66,11 +66,7 @@ apache_php_config()
     # LoadModule
     #
     ECHO_DEBUG "Enable modules."
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        # Enable wsgi.
-        perl -pi -e 's/#(LoadModule.*wsgi_module.*modules.*mod_wsgi.so)/${1}/' ${HTTPD_CONF_DIR}/wsgi.conf
-
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         a2ensite default-ssl >/dev/null
 
         a2enmod ssl >/dev/null

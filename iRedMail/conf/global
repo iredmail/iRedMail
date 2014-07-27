@@ -49,7 +49,6 @@ export STORAGE_NODE='vmail1'
 export ENABLE_BACKEND_OPENLDAP='YES'
 export ENABLE_BACKEND_MYSQL='YES'
 export ENABLE_BACKEND_PGSQL='YES'
-# MariaDB
 export ENABLE_BACKEND_MARIADB='NO'
 # OpenBSD built-in LDAP daemon
 export ENABLE_BACKEND_LDAPD='NO'
@@ -342,7 +341,7 @@ fi
 # LIST_FILES_IN_PKG: command used to list files installed by special package.
 # enable_service: function (defined in conf/core) used to enable services.
 # disable_service: function (defined in conf/core) used to disable services.
-if [ X"${DISTRO}" == X"RHEL" ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
     # RHEL/CentOS.
     # System user: root. Note: not all OSes have group 'root'.
     export SYS_ROOT_USER='root'
@@ -359,9 +358,21 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export LIST_ALL_PKGS='rpm -qa'
     export LIST_FILES_IN_PKG='rpm -ql'
 
-    # Service control. Defined in file: conf/core.
-    export enable_service='enable_service_rh'
-    export disable_service='disable_service_rh'
+    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        # Service control. Defined in file: conf/core.
+        export enable_service='enable_service_rh'
+        export disable_service='disable_service_rh'
+
+        ENABLE_BACKEND_MYSQL='YES'
+        ENABLE_BACKEND_MARIADB='NO'
+    else
+        export enable_service='enable_service_systemd'
+        export disable_service='disable_service_systemd'
+
+        # No MySQL available since RHEL/CentOS 7.
+        ENABLE_BACKEND_MYSQL='NO'
+        ENABLE_BACKEND_MARIADB='MYSQL'
+    fi
 
     # Syslog config file: rsyslog.
     export SYSLOG_CONF='/etc/rsyslog.conf'

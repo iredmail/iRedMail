@@ -56,10 +56,13 @@ export OPENLDAP_PID_FILE='/var/run/openldap/slapd.pid'
 export OPENLDAP_ARGS_FILE='/var/run/openldap/slapd.args'
 
 # Configure.
-if [ X"${DISTRO}" == X"RHEL" ]; then
-
+if [ X"${DISTRO}" == X'RHEL' ]; then
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
-    export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/ldap"
+    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/ldap"
+    else
+        export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/slapd"
+    fi
 
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/lib/openldap'

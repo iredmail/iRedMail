@@ -36,8 +36,15 @@ export FRESHCLAM_PID_FILE='/var/run/clamav/freshclam.pid'
 
 # Clamav.
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    export CLAMAV_USER='clam'
-    export CLAMAV_GROUP='clam'
+    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        export CLAMAV_USER='clam'
+        export CLAMAV_GROUP='clam'
+    else
+        export CLAMAV_USER='amavis'
+        export CLAMAV_GROUP='amavis'
+
+        export CLAMD_CONF='/etc/clamd.d/amavisd.conf'
+    fi
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export CLAMAV_CLAMD_RC_SCRIPT_NAME='clamav-daemon'

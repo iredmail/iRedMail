@@ -29,7 +29,12 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/conf/httpd.conf"
     export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
     export HTTPD_SSL_CONF="${HTTPD_CONF_DIR}/ssl.conf"
-    export HTTPD_WSGI_CONF="${HTTPD_CONF_DIR}/wsgi.conf"
+    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        export HTTPD_WSGI_CONF="${HTTPD_CONF_DIR}/wsgi.conf"
+    else
+        export HTTPD_MODULES_DIR="${HTTPD_CONF_ROOT}/conf.modules.d"
+        export HTTPD_WSGI_CONF="${HTTPD_MODULES_DIR}/10-wsgi.conf"
+    fi
 
     # Web data.
     export HTTPD_SERVERROOT='/var/www'

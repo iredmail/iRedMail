@@ -158,10 +158,7 @@ enabled=1
 gpgcheck=0
 EOF
 
-    ECHO_INFO "Clean metadata of yum repositories."
-    yum clean metadata
-
-    # RHEL/CentOS 6.
+    ECHO_INFO "Install epel yum repo."
     # Create a temporary yum repo to install epel-release without GPG check.
     cat > ${YUM_REPOS_DIR}/tmp_epel.repo <<EOF
 [tmp_epel]
@@ -173,8 +170,21 @@ enabled=1
 gpgcheck=0
 EOF
 
-    ECHO_INFO "Install epel yum repo."
     eval ${install_pkg} epel-release && rm ${YUM_REPOS_DIR}/tmp_epel.repo
+
+    tmp_os_name="${DISTRO_CODENAME}"
+    if [ X"${DISTRO_CODENAME}" != X'rhel' -o X"${DISTRO_CODENAME}" != X'centos' ]; then
+        tmp_os_name="centos"
+    fi
+    cat >> ${YUM_REPOS_DIR}/nginx.repo <<EOF
+[nginx]
+name=Official nginx repo
+baseurl=http://nginx.org/packages/${tmp_os_name}/\$releasever/\$basearch/
+enabled=1
+gpgcheck=0
+EOF
+
+    ECHO_INFO "Clean metadata of yum repositories."
     yum clean metadata
 
     echo 'export status_create_repo_rhel="DONE"' >> ${STATUS_FILE}

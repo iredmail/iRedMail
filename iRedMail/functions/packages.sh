@@ -34,12 +34,7 @@ install_all()
 
     # Enable syslog or rsyslog.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        # RHEL/CENTOS/Scientific
-        if [ -x ${DIR_RC_SCRIPTS}/syslog ]; then
-            ENABLED_SERVICES="syslog ${ENABLED_SERVICES}"
-        elif [ -x ${DIR_RC_SCRIPTS}/rsyslog ]; then
-            ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
-        fi
+        ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
         DISABLED_SERVICES="${DISABLED_SERVICES} exim"
     elif [ X"${DISTRO}" == X"DEBIAN" ]; then
         # Debian.
@@ -74,7 +69,12 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
         if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} openldap openldap-clients openldap-servers mysql-server mysql"
+            ALL_PKGS="${ALL_PKGS} openldap openldap-clients openldap-servers"
+            if [ X"${DISTRO_VERSION}" == X'6' ]; then
+                ALL_PKGS="${ALL_PKGS} mysql-server"
+            else
+                ALL_PKGS="${ALL_PKGS} mariadb-server"
+            fi
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl mysql-server mysql-client"
@@ -94,9 +94,21 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
         if [ X"${DISTRO}" == X"RHEL" ]; then
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} mysql-server"
+                [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-server"
+                [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-server"
             fi
-            ALL_PKGS="${ALL_PKGS} mysql"
+
+            # Client
+            [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql"
+            [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb"
+
+            if [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ]; then
+                if [ X"${DISTRO_VERSION}" == X'6' ]; then
+                    ALL_PKGS="${ALL_PKGS} mod_auth_mysql"
+                else
+                    ALL_PKGS="${ALL_PKGS} apr-util-mysql"
+                fi
+            fi
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # MySQL server and client.
@@ -131,12 +143,16 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
 
         # PGSQL server & client.
-        if [ X"${DISTRO}" == X"RHEL" ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib"
 
-            # For Awstats.
-            [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ] && \
-                ALL_PKGS="${ALL_PKGS} mod_auth_pgsql"
+            if [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ]; then
+                if [ X"${DISTRO_VERSION}" == X'6' ]; then
+                    ALL_PKGS="${ALL_PKGS} mod_auth_pgsql"
+                else
+                    ALL_PKGS="${ALL_PKGS} apr-util-pgsql"
+                fi
+            fi
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
@@ -234,7 +250,9 @@ install_all()
     # Dovecot.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${DOVECOT_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} dovecot dovecot-managesieve dovecot-pigeonhole"
+        ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
+
+        [ X"${DISTRO_VERSION}" == X'6' ] && ALL_PKGS="${ALL_PKGS} dovecot-managesieve"
 
         # We use Dovecot SASL auth instead of saslauthd
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
@@ -268,7 +286,12 @@ install_all()
     # Amavisd-new & ClamAV & Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X"RHEL" ]; then
-        ALL_PKGS="${ALL_PKGS} clamd clamav-db spamassassin altermime perl-LDAP perl-Mail-SPF amavisd-new"
+        if [ X"${DISTRO_VERSION}" == X'6' ]; then
+            ALL_PKGS="${ALL_PKGS} amavisd-new clamd clamav-db spamassassin altermime perl-LDAP perl-Mail-SPF"
+        else
+            # ClamAV will be installed automatically as dependency.
+            ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF"
+        fi
 
         if [ X"${BACKEND}" == X'PGSQL' ]; then
             ALL_PKGS="${ALL_PKGS} perl-DBD-Pg"
@@ -380,9 +403,9 @@ install_all()
     #############
     # Awstats.
     #
-    if [ X"${USE_AWSTATS}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X"RHEL" ]; then
-            ALL_PKGS="${ALL_PKGS} awstats mod_auth_mysql"
+    if [ X"${USE_AWSTATS}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -457,7 +480,7 @@ install_all()
 
     after_package_installation()
     {
-        if [ X"${DISTRO}" == X'RHEL' ]; then
+        if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO_VERSION}" == X'6' ]; then
             # Copy DNS related libs to chrooted Postfix directory, so that Postfix
             # can correctly resolve IP address under chroot.
             for i in '/lib' '/lib64'; do
