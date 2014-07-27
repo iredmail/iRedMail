@@ -42,7 +42,7 @@ export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
 
 # uWSGI
 export UWSGI_CONF_DIR='/etc/uwsgi'
-export UWSGI_SOCKET_IREDADMIN='unix:/var/run/uwsgi_iredadmin.socket'
+export UWSGI_SOCKET_IREDADMIN='/var/run/uwsgi_iredadmin.socket'
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
     export PHP_FASTCGI_SOCKET='/var/run/php-fpm/php-fpm.socket'
