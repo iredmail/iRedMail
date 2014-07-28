@@ -73,7 +73,7 @@ install_all()
             if [ X"${DISTRO_VERSION}" == X'6' ]; then
                 ALL_PKGS="${ALL_PKGS} mysql-server"
             else
-                ALL_PKGS="${ALL_PKGS} mariadb-server"
+                ALL_PKGS="${ALL_PKGS} mariadb-server mod_ldap"
             fi
 
         elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -249,10 +249,14 @@ install_all()
 
     # Dovecot.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${DOVECOT_RC_SCRIPT_NAME}"
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
 
-        [ X"${DISTRO_VERSION}" == X'6' ] && ALL_PKGS="${ALL_PKGS} dovecot-managesieve"
+        if [ X"${DISTRO_VERSION}" == X'6' ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot-managesieve"
+        else
+            ALL_PKGS="${ALL_PKGS} dovecot-mysql dovecot-pgsql"
+        fi
 
         # We use Dovecot SASL auth instead of saslauthd
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
