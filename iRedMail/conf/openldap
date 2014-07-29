@@ -41,13 +41,7 @@ export OPENLDAP_RC_SCRIPT_NAME='slapd'
 export OPENLDAP_CONF_ROOT='/etc/openldap'
 
 # Database backend type.
-# Note:
-#   * We use the same database type on all distributions to reduce our
-#     workflow, and users migrate their mail server between supported
-#     OS will be more comfortable.
-#   * Performance of bdb backend is good enough. but Debian/Ubuntu can
-#     also use 'hdb' for OpenLDAP-2.4.x.
-export OPENLDAP_DEFAULT_DBTYPE='bdb'
+export OPENLDAP_DEFAULT_DBTYPE='hdb'
 
 # Default LDAP data directory.
 export OPENLDAP_DATA_DIR='/var/lib/ldap'    # Do *NOT* end with '/'.

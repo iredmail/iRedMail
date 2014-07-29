@@ -66,7 +66,7 @@ nginx_config()
     perl -pi -e 's#PH_PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK#$ENV{PHPPGADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
     # iRedAdmin
     perl -pi -e 's#PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK#$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_DEFAULT}
-    perl -pi -e 's#PH_UWSGI_SOCKET_IREDADMIN#$ENV{UWSGI_SOCKET_IREDADMIN}#g' ${NGINX_CONF_DEFAULT}
+    perl -pi -e 's#PH_UWSGI_SOCKET_IREDADMIN_FULL#$ENV{UWSGI_SOCKET_IREDADMIN_FULL}#g' ${NGINX_CONF_DEFAULT}
 
     # php-fpm
     perl -pi -e 's#^(listen *=).*#${1} $ENV{PHP_FASTCGI_SOCKET}#g' ${PHP_FPM_POOL_WWW_CONF}
@@ -115,7 +115,7 @@ nginx_config()
     if [ -f ${UWSGI_CONF_DIR}/iredadmin.ini ]; then
         perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
         perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
-        perl -pi -e 's#PH_UWSGI_SOCKET_IREDADMIN_FULL#$ENV{UWSGI_SOCKET_IREDADMIN_FULL}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
+        perl -pi -e 's#PH_UWSGI_SOCKET_IREDADMIN#$ENV{UWSGI_SOCKET_IREDADMIN}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
     fi
 
     cat >> ${TIP_FILE} <<EOF

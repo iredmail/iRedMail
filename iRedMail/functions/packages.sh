@@ -495,7 +495,7 @@ install_all()
 
                 if [ X"${ret1}" == X'0' -o X"${ret2}" == X'0' ]; then
                     mkdir -p ${POSTFIX_CHROOT_DIR}${i}
-                    cp ${i}/*nss* ${i}/*reso* ${POSTFIX_CHROOT_DIR}${i}/
+                    cp ${i}/*nss* ${i}/*reso* ${POSTFIX_CHROOT_DIR}${i}/ &>/dev/null
                 fi
             done
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then

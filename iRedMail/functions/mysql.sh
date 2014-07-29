@@ -64,9 +64,9 @@ mysql_initialize()
         perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF}
     fi
 
-    service_control mariadb restart &>/dev/null
+    service_control restart ${MYSQL_RC_SCRIPT_NAME} &>/dev/null
 
-    ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialize ..."
+    ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialization ..."
     sleep 5
 
     if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
