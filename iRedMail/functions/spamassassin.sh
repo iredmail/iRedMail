@@ -11,8 +11,8 @@ sa_config()
 
     backup_file ${SA_LOCAL_CF}
 
-    ECHO_DEBUG "Generate new configuration file: ${SA_LOCAL_CF}."
-    cp -f ${SAMPLE_DIR}/sa.local.cf ${SA_LOCAL_CF}
+    ECHO_DEBUG "Copy sample SpamAssassin config file: ${SAMPLE_DIR}/spamassassin/local.cf -> ${SA_LOCAL_CF}."
+    cp -f ${SAMPLE_DIR}/spamassassin/local.cf ${SA_LOCAL_CF}
 
     #ECHO_DEBUG "Disable plugin: URIDNSBL."
     #perl -pi -e 's/(^loadplugin.*Mail.*SpamAssassin.*Plugin.*URIDNSBL.*)/#${1}/' ${SA_INIT_PRE}
