@@ -366,10 +366,10 @@ EOF
     fi
 
     ECHO_DEBUG "Restarting syslog."
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        service_control rsyslog restart >/dev/null
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        service_control rsyslog restart >/dev/null
+    if [ X"${DISTRO}" == X'RHEL' \
+        -o X"${DISTRO}" == X'DEBIAN' \
+        -o X"${DISTRO}" == X"UBUNTU" ]; then
+        service_control restart rsyslog >/dev/null
     fi
 
     # FreeBSD: Start openldap when system start up.

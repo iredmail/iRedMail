@@ -438,8 +438,8 @@ service_control_systemd()
 
 service_control()
 {
-    service="$1"
-    action="$2"
+    action="$1"
+    service="$2"
     tmp_rc_script="${DIR_RC_SCRIPTS}/${service}"
     if [ -x ${tmp_rc_script} ]; then
         ${tmp_rc_script} ${action}
