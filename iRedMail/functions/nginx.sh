@@ -115,7 +115,7 @@ nginx_config()
     if [ -f ${UWSGI_CONF_DIR}/iredadmin.ini ]; then
         perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
         perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
-        perl -pi -e 's#PH_UWSGI_SOCKET_IREDADMIN#$ENV{UWSGI_SOCKET_IREDADMIN}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
+        perl -pi -e 's#PH_UWSGI_SOCKET_IREDADMIN_FULL#$ENV{UWSGI_SOCKET_IREDADMIN_FULL}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
     fi
 
     cat >> ${TIP_FILE} <<EOF
