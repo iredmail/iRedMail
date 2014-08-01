@@ -130,11 +130,6 @@ amavisd_config_rhel()
         perl -pi -e 's#^(.QUARANTINEDIR =).*#${1} "$ENV{AMAVISD_QUARANTINEDIR}";#' ${AMAVISD_CONF}
     fi
 
-    # Set default score.
-    #perl -pi -e 's/(.*)(sa_tag_level_deflt)(.*)/${1}${2} = 4.0; #${3}/' ${AMAVISD_CONF}
-    #perl -pi -e 's/(.*)(sa_tag2_level_deflt)(.*)/${1}${2} = 6; #${3}/' ${AMAVISD_CONF}
-    #perl -pi -e 's/(.*)(sa_kill_level_deflt)(.*)/${1}${2} = 10; #${3}/' ${AMAVISD_CONF}
-
     # Make Amavisd listen on multiple TCP ports.
     perl -pi -e 's/(\$inet_socket_port.*=.*10024.*)/\$inet_socket_port = [10024, $ENV{'AMAVISD_QUARANTINE_PORT'}];/' ${AMAVISD_CONF}
 

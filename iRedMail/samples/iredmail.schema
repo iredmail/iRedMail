@@ -26,7 +26,7 @@
 #   - FreeBSD: /usr/local/etc/openldap/schema/
 #
 #--------------------------------------------------------------------
-# The offical iredmail OID assigned by IANA is 32349, you can find it in url:
+# The offical iRedMail OID assigned by IANA is 32349, you can find it in url:
 # http://www.iana.org/assignments/enterprise-numbers
 #
 # 1.3.6.1.4.1.32349         OID of iRedMail.org
