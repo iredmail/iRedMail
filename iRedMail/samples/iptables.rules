@@ -21,7 +21,7 @@
 #   /etc/sysconfig/iptables
 #
 # Shipped within iRedMail project:
-#   * http://iRedMail.googlecode.com/
+#   * http://www.iRedMail.org/
 #
 
 *filter

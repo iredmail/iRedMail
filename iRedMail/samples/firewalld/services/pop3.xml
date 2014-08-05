@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>POP-3</short>
+  <description>The Post Office Protocol version 3 (POP3) is a protocol to retrieve email from a remote server over a TCP/IP connection. Enable this option, if you plan to provide a POP3 service (e.g. with dovecot).</description>
+  <port protocol="tcp" port="110"/>
+</service>

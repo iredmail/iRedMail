@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>IMAP</short>
+  <description>The Internet Message Access Protocol (IMAP) allows a local client to access email on a remote server in a secure way. If you plan to provide a IMAP over SSL service (e.g. with dovecot), enable this option.</description>
+  <port protocol="tcp" port="143"/>
+</service>

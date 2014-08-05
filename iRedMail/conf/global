@@ -365,6 +365,9 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 
         ENABLE_BACKEND_MYSQL='YES'
         ENABLE_BACKEND_MARIADB='NO'
+
+        # iptables rule file.
+        export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/iptables"
     else
         export enable_service='enable_service_systemd'
         export disable_service='disable_service_systemd'
@@ -372,6 +375,12 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
         # No MySQL available since RHEL/CentOS 7.
         ENABLE_BACKEND_MYSQL='NO'
         ENABLE_BACKEND_MARIADB='MYSQL'
+
+        # iptables rule file.
+        export USE_FIREWALLD='YES'
+        export FIREWALLD_CONF_DIR='/etc/firewalld'
+        export FIREWALLD_CONF='/etc/firewalld/firewalld.conf'
+        export FIREWALL_RULE_CONF="${FIREWALLD_CONF_DIR}/zones/iredmail.xml"
     fi
 
     # Syslog config file: rsyslog.
@@ -383,9 +392,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 
     # Directory /etc/sysconfig/ on RHEL/CentOS.
     export ETC_SYSCONFIG_DIR='/etc/sysconfig'
-
-    # iptables rule file.
-    export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/iptables"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/pki/tls"

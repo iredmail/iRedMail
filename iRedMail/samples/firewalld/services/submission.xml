@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<service>
+  <short>SMTP over TLS</short>
+  <description>This option allows incoming SMTP mail delivery over TLS.</description>
+  <port protocol="tcp" port="587"/>
+</service>

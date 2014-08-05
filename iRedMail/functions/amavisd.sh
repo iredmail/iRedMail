@@ -236,8 +236,8 @@ chomp(\$mydomain = "${HOSTNAME}");
     banned_admin_maps => [],
     warnbadhsender   => 0,
     warnbannedsender   => 0,
-    warnvirussender  => 1,
-    warnspamsender   => 1,
+    warnvirussender  => 0,
+    warnspamsender   => 0,
     # forward to a smtpd service providing DKIM signing service
     #forward_method => 'smtp:[${AMAVISD_SYS_USER}]:10027',
     # force MTA conversion to 7-bit (e.g. before DKIM signing)
@@ -429,27 +429,6 @@ amavisd_config_general()
 #
 #\$X_HEADER_TAG = 'X-Virus-Scanned';
 #\$X_HEADER_LINE = "by amavisd at \$myhostname";
-
-# Notify virus sender?
-#\$warnvirussender = 0;
-
-# Notify spam sender?
-#\$warnspamsender = 0;
-
-# Notify sender of banned files?
-\$warnbannedsender = 0;
-
-# Notify sender of syntactically invalid header containing non-ASCII characters?
-\$warnbadhsender = 0;
-
-# Notify virus (or banned files) RECIPIENT?
-#  (not very useful, but some policies demand it)
-\$warnvirusrecip = 0;
-\$warnbannedrecip = 0;
-
-# Notify also non-local virus/banned recipients if \$warn*recip is true?
-#  (including those not matching local_domains*)
-\$warn_offsite = 0;
 
 #\$notify_sender_templ      = read_text('/var/amavis/notify_sender.txt');
 #\$notify_virus_sender_templ= read_text('/var/amavis/notify_virus_sender.txt');
@@ -715,6 +694,8 @@ CREATE USER ${AMAVISD_DB_USER} WITH ENCRYPTED PASSWORD '${AMAVISD_DB_PASSWD}' NO
 -- Import Amavisd SQL template
 \c ${AMAVISD_DB_NAME};
 \i ${PGSQL_SYS_USER_HOME}/amavisd.sql;
+
+ALTER DATABASE amavisd SET bytea_output TO 'escape';
 
 -- Grant privileges
 GRANT SELECT,INSERT,UPDATE,DELETE ON maddr,mailaddr,msgrcpt,msgs,policy,quarantine,users,wblist TO ${AMAVISD_DB_USER};

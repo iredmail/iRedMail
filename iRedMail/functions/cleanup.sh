@@ -98,6 +98,9 @@ cleanup_replace_firewall_rules()
         export sshd_port='22'
     else
         # Replace port number in iptable, pf and Fail2ban.
+        [ X"${USE_FIREWALLD}" == X'YES' ] && \
+            perl -pi -e 's#(.* )22( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
+
         perl -pi -e 's#(.* )22( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/iptables.rules
         perl -pi -e 's#(.*mail_services=.*)ssh( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/pf.conf
 
@@ -105,7 +108,7 @@ cleanup_replace_firewall_rules()
             perl -pi -e 's#(.*port=.*)ssh(.*)#${1}$ENV{sshd_port}${2}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
     fi
 
-    ECHO_QUESTION "Would you like to use firewall rules provided by iRedMail now?"
+    ECHO_QUESTION "Would you like to use firewall rules provided by iRedMail?"
     ECHO_QUESTION -n "File: ${FIREWALL_RULE_CONF}, with SSHD port: ${sshd_port}. [Y|n]"
     read_setting ${AUTO_CLEANUP_REPLACE_FIREWALL_RULES}
     case $ANSWER in
@@ -114,13 +117,28 @@ cleanup_replace_firewall_rules()
             backup_file ${FIREWALL_RULE_CONF}
             if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
                 ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
-                cp -f ${SAMPLE_DIR}/iptables.rules ${FIREWALL_RULE_CONF}
+                if [ X"${USE_FIREWALLD}" == X'YES' ]; then
+                    cp -f ${SAMPLE_DIR}/firewalld/zones/iredmail.xml ${FIREWALL_RULE_CONF}
+
+                    [ X"${sshd_port}" != X'22' ] && \
+                        cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
+
+                    cp -f ${SAMPLE_DIR}/firewalld/services/{imap,pop3,submission}.xml ${FIREWALLD_CONF_DIR}/services/
+                else
+                    cp -f ${SAMPLE_DIR}/iptables.rules ${FIREWALL_RULE_CONF}
+                fi
 
                 # Replace HTTP port.
                 [ X"${HTTPD_PORT}" != X"80" ]&& \
                     perl -pi -e 's#(.*)80(,.*)#${1}$ENV{HTTPD_PORT}${2}#' ${FIREWALL_RULE_CONF}
 
-                if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+                if [ X"${DISTRO}" == X'RHEL' ]; then
+                    if [ X"${USE_FIREWALLD}" == X'YES' ]; then
+                        service_control enable firewalld >/dev/null
+                    else
+                        eval ${enable_service} iptables >/dev/null
+                    fi
+                elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
                     # Copy sample rc script for Debian.
                     cp -f ${SAMPLE_DIR}/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
                     chmod +x ${DIR_RC_SCRIPTS}/iptables
@@ -145,7 +163,12 @@ cleanup_replace_firewall_rules()
                     if [ X"${DISTRO}" == X'OPENBSD' ]; then
                         /sbin/pfctl -ef ${FIREWALL_RULE_CONF}
                     else
-                        ${DIR_RC_SCRIPTS}/iptables restart &>/dev/null
+                        if [ X"${USE_FIREWALLD}" == X'YES' ]; then
+                            perl -pi -e 's#^(DefaultZone=).*#${1}iredmail#g' ${FIREWALLD_CONF}
+                            firewall-cmd --complete-reload >/dev/null
+                        else
+                            ${DIR_RC_SCRIPTS}/iptables restart &>/dev/null
+                        fi
                     fi
                     ;;
                 N|n|* )
@@ -326,18 +349,6 @@ EOF
 *************************************************************************
 
 EOF
-
-    ECHO_DEBUG "Decrease sshd service start order via chkconfig."
-    if [ X"${DISTRO}" == X"RHEL" ]; then
-        # Unclearly power off might cause damage to OpenLDAP database, it will
-        # hangs while system startup. Decrease sshd start order to make sure you
-        # can always log into server for maintaince.
-        #
-        # 10 -> network, 12 -> syslog, rsyslog.
-        disable_service_rh sshd
-        perl -pi -e 's#(.*chkconfig.*)55(.*)#${1}13${2}#' ${DIR_RC_SCRIPTS}/sshd
-        enable_service_rh sshd
-    fi
 
     ECHO_INFO "Mail sensitive administration info to ${FIRST_USER}@${FIRST_DOMAIN}."
     FILE_IREDMAIL_INSTALLATION_DETAILS="${FIRST_USER_MAILDIR_INBOX}/details.eml"
