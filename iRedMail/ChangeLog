@@ -1,4 +1,4 @@
-iRedMail-0.9.0:
+iRedMail-0.9.0-beta1:
     * Improvement:
         - MariaDB support is now available on FreeBSD.
         - New index in `amavisd` database for SQL column `policy.policy_name`.
