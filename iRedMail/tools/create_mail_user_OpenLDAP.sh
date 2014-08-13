@@ -233,6 +233,7 @@ enabledService: internal
 enabledService: doveadm
 enabledService: lib-storage
 enabledService: indexer-worker
+enabledService: dsync
 enabledService: mail
 enabledService: pop3
 enabledService: pop3secured
