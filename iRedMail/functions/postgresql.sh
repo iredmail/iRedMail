@@ -34,7 +34,11 @@ pgsql_initialize()
 
     # Init db
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ${PGSQL_RC_SCRIPT} initdb &>/dev/null
+        if [ X"${DISTRO_VERSION}"  == X'6' ]; then
+            ${PGSQL_RC_SCRIPT} initdb &>/dev/null
+        else
+            postgresql-setup initdb
+        fi
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         # FreeBSD: Start pgsql when system start up.
         # Warning: We must have 'postgresql_enable=YES' before start/stop pgsql daemon.
