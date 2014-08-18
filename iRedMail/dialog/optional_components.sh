@@ -66,8 +66,9 @@ Note:
     * DKIM is recommended.
     * SPF validation (Sender Policy Framework) is enabled by default.
     * DNS records (TXT type) are required for both SPF and DKIM.
-    * Refer to file for more detail after installation:
-      ${TIP_FILE}
+
+Refer to below file for more detail after installation:
+    * ${TIP_FILE}
 " 20 76 8 \
 "DKIM signing/verification" "DomainKeys Identified Mail" "on" \
 "iRedAdmin" "Official web-based Admin Panel" "on" \

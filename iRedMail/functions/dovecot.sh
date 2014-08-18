@@ -62,7 +62,7 @@ dovecot2_config()
     # Authentication related settings.
     # Append this domain name if client gives empty realm.
     perl -pi -e 's#PH_AUTH_DEFAULT_REALM#$ENV{FIRST_DOMAIN}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_AUTH_MECHANISMS#PLAIN LOGIN#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_AUTH_MECHANISMS#$ENV{DOVECOT_AUTH_MECHS}#' ${DOVECOT_CONF}
 
     # service auth {}
     perl -pi -e 's#PH_DOVECOT_AUTH_USER#$ENV{POSTFIX_DAEMON_USER}#' ${DOVECOT_CONF}

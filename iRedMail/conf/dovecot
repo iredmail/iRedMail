@@ -111,3 +111,4 @@ elif [ X"${BACKEND}" == X"PGSQL" ]; then
 fi
 
 export DOVECOT_PROTOCOLS="pop3 imap sieve lmtp"
+export DOVECOT_AUTH_MECHS='PLAIN LOGIN'
