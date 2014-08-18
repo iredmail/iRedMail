@@ -65,8 +65,6 @@ bayes_auto_expire  1
 #
 #bayes_sql_override_username vmail
 
-score ALL_TRUSTED -10.000
-
 # Turn off ALL DNSBL (DNS Blocklists)
 #skip_rbl_checks  1
 # Turn off DNSBL: rhsbl.ahbl.org.

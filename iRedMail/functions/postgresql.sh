@@ -82,6 +82,8 @@ pgsql_initialize()
     ECHO_DEBUG "Start PostgreSQL server"
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         ${PGSQL_RC_SCRIPT} start  #&>/dev/null
+    elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" != X'6' ]; then
+        service_control restart ${PGSQL_RC_SCRIPT_NAME} &>/dev/null
     else
         ${PGSQL_RC_SCRIPT} restart &>/dev/null
     fi
@@ -142,7 +144,7 @@ EOF
     # PostgreSQL 8.x
     # - Create language plpgsql
     # - Create extension dblink via importing SQL file
-    if [ X"${DISTRO}" == X'RHEL' ]; then
+    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
         cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
 CREATE LANGUAGE plpgsql;
 \i /usr/share/pgsql/contrib/dblink.sql;
