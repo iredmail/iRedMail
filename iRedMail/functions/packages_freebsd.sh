@@ -816,16 +816,14 @@ OPTIONS_FILE_UNSET+=VPX
 EOF
 
     # PHP extensions
-    if [ X"${REQUIRE_PHP}" == X"YES" -o X"${USE_WEBMAIL}" == X"YES" ]; then
-        ALL_PORTS="${ALL_PORTS} mail/php5-imap archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt security/php5-openssl www/php5-session textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml"
+    ALL_PORTS="${ALL_PORTS} mail/php5-imap archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt security/php5-openssl www/php5-session textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml"
 
-        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ALL_PORTS="${ALL_PORTS} net/php5-ldap databases/php5-mysql databases/php5-mysqli"
-        elif [ X"${BACKEND}" == X'MYSQL' ]; then
-            ALL_PORTS="${ALL_PORTS} databases/php5-mysql databases/php5-mysqli"
-        elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PORTS="${ALL_PORTS} databases/php5-pgsql"
-        fi
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ALL_PORTS="${ALL_PORTS} net/php5-ldap databases/php5-mysql databases/php5-mysqli"
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ALL_PORTS="${ALL_PORTS} databases/php5-mysql databases/php5-mysqli"
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ALL_PORTS="${ALL_PORTS} databases/php5-pgsql"
     fi
 
     cat > /var/db/ports/www_mod_php5/options <<EOF

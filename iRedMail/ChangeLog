@@ -26,7 +26,8 @@ iRedMail-0.9.0-beta2:
     * Updated packages:
         + Roundcube webmail -> 1.0.2
 
-    * Below packages are removed from iRedMail for security concern:
+    * Below packages are removed from iRedMail for security concern and their
+      own package dependences:
         - phpMyAdmin
         - phpPgAdmin
 

@@ -229,7 +229,7 @@ dovecot2_config()
 
     # Create MySQL database ${IREDADMIN_DB_USER} and table 'used_quota'
     # which used to store realtime quota.
-    if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # If iRedAdmin is not used, create database and import table here.
         ${MYSQL_CLIENT_ROOT} <<EOF
 # Create databases.
@@ -277,7 +277,7 @@ EOF
 
     # Create MySQL database ${IREDADMIN_DB_USER} and table 'share_folder'
     # which used to store realtime quota.
-    if [ X"${BACKEND}" == X"OPENLDAP" -a X"${USE_IREDADMIN}" != X"YES" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # If iRedAdmin is not used, create database and import table here.
         ${MYSQL_CLIENT_ROOT} <<EOF
 # Create databases.

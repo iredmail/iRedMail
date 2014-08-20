@@ -295,6 +295,7 @@ install_all()
         else
             # ClamAV will be installed automatically as dependency.
             ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF"
+            ENABLED_SERVICES="${ENABLED_SERVICES} clamd@amavisd"
         fi
 
         if [ X"${BACKEND}" == X'PGSQL' ]; then
@@ -451,6 +452,14 @@ install_all()
     # Enable/Disable services.
     enable_all_services()
     {
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            if [ -f /usr/lib/systemd/system/clamd\@.service ]; then
+                if ! grep '\[Install\]' /usr/lib/systemd/system/clamd\@.service &>/dev/null; then
+                    echo '[Install]' >> /usr/lib/systemd/system/clamd\@.service
+                    echo 'WantedBy=multi-user.target' >> /usr/lib/systemd/system/clamd\@.service
+                fi
+            fi
+        fi
         # Enable services.
         eval ${enable_service} ${ENABLED_SERVICES} >/dev/null
 

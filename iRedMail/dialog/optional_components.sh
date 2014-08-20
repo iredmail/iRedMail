@@ -81,22 +81,16 @@ echo ${OPTIONAL_COMPONENTS} | grep -i '\<DKIM\>' >/dev/null 2>&1
 [ X"$?" == X"0" ] && export ENABLE_DKIM='YES' && echo "export ENABLE_DKIM='YES'" >>${IREDMAIL_CONFIG_FILE}
 
 echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' >/dev/null 2>&1
-[ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}
+[ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'roundcubemail' &>/dev/null; then
-    export USE_WEBMAIL='YES'
     export USE_RCM='YES'
-    export REQUIRE_PHP='YES'
-    echo "export USE_WEBMAIL='YES'" >> ${IREDMAIL_CONFIG_FILE}
     echo "export USE_RCM='YES'" >> ${IREDMAIL_CONFIG_FILE}
-    echo "export REQUIRE_PHP='YES'" >> ${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'phpldapadmin' &>/dev/null; then
     export USE_PHPLDAPADMIN='YES'
-    export REQUIRE_PHP='YES'
     echo "export USE_PHPLDAPADMIN='YES'" >>${IREDMAIL_CONFIG_FILE}
-    echo "export REQUIRE_PHP='YES'" >> ${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'awstats' &>/dev/null; then

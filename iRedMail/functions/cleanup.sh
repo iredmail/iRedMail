@@ -47,7 +47,7 @@ cleanup_disable_selinux()
 cleanup_remove_sendmail()
 {
     # Remove sendmail.
-    eval ${LIST_ALL_PKGS} | grep 'sendmail' &>/dev/null
+    eval ${LIST_ALL_PKGS} | grep '^sendmail' &>/dev/null
 
     if [ X"$?" == X"0" ]; then
         ECHO_QUESTION -n "Would you like to *REMOVE* sendmail now? [Y|n]"
@@ -395,32 +395,11 @@ EOF
 ********************************************************************
 * URLs of installed web applications:
 *
-EOF
-
-    # Print URL of web applications.
-    # Webmail.
-    if [ X"${USE_WEBMAIL}" == X"YES" ]; then
-        cat <<EOF
 * - Webmail: httpS://${HOSTNAME}/mail/
-EOF
-    fi
-
-    # iRedAdmin.
-    if [ X"${USE_IREDADMIN}" == X"YES" ]; then
-        cat <<EOF
-* - Admin Panel (iRedAdmin): httpS://${HOSTNAME}/iredadmin/
-EOF
-    fi
-
-    cat <<EOF
+* - Web admin panel (iRedAdmin): httpS://${HOSTNAME}/iredadmin/
 *   + Username: ${SITE_ADMIN_NAME}, Password: ${SITE_ADMIN_PASSWD}
 *
-EOF
-
-    # Reboot system to enable mail related services.
-    # - FreeBSD: sendmail is binding to port '25'
-    cat <<EOF
-
+*
 ********************************************************************
 * Congratulations, mail server setup completed successfully. Please
 * read below file for more information:
