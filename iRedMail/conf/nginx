@@ -43,6 +43,7 @@ export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
 # uWSGI
 export UWSGI_CONF_DIR='/etc/uwsgi'
 export UWSGI_SOCKET_IREDADMIN='/var/run/uwsgi_iredadmin.socket'
+export UWSGI_PID_IREDADMIN='/var/run/uwsgi_iredadmin.pid'
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
     export PHP_FASTCGI_SOCKET='/var/run/php-fpm/php-fpm.socket'
@@ -65,6 +66,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export NGINX_LOG_ERRORLOG='logs/error.log'
 
     export UWSGI_SOCKET_IREDADMIN="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.socket"
+    export UWSGI_PID_IREDADMIN="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.pid"
 fi
 
 export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"

@@ -208,7 +208,7 @@ install_all()
         if [ X"${DISTRO}" == X"RHEL" ]; then
             ALL_PKGS="${ALL_PKGS} nginx php-fpm"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} nginx php5-fpm"
+            ALL_PKGS="${ALL_PKGS} nginx-full php5-fpm"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # Nginx is available in base system
             ALL_PKGS="${ALL_PKGS} php-fpm${OB_PHP_VER}"
@@ -317,17 +317,6 @@ install_all()
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME} ${POSTFIX_RC_SCRIPT_NAME}"
     fi
 
-    # phpPgAdmin
-    if [ X"${USE_PHPPGADMIN}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X"RHEL" ]; then
-            :
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-            ALL_PKGS="${ALL_PKGS} phppgadmin"
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} phpPgAdmin"
-        fi
-    fi
-
     # Roundcube
     if [ X"${USE_RCM}" == X"YES" ]; then
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -341,15 +330,6 @@ install_all()
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_pgsql"
-        fi
-    fi
-
-    # phpMyAdmin
-    if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} phpmyadmin"
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} phpMyAdmin"
         fi
     fi
 

@@ -41,13 +41,4 @@ optional_components()
     [ X"${USE_PHPLDAPADMIN}" == X"YES" ] && \
         check_status_before_run pla_install
 
-    # phpMyAdmin
-    [ X"${USE_PHPMYADMIN}" == X"YES" ] && \
-        check_status_before_run phpmyadmin_install
-
-    # phpPgAdmin
-    [ X"${USE_PHPPGADMIN}" == X"YES" ] && \
-        check_status_before_run phppgadmin_install
-
-
 }

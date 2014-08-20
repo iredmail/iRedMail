@@ -450,6 +450,41 @@ service_control()
     fi
 }
 
+#enable_service()
+#{
+#    services="$@"
+#
+#    for i in $services; do
+#        ECHO_DEBUG "Enable service: $i."
+#
+#        if [ X"${DISTRO}" == X'RHEL' ]; then
+#            if [ X"${DISTRO_VERSION}" == X'6' ]; then
+#                if [ -x /etc/init.d/$i ]; then
+#                    /sbin/chkconfig --level 345 $i on
+#                fi
+#            else
+#                systemctl enable $i
+#            fi
+#        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+#            update-rc.d $i defaults
+#        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+#            [ -f ${RC_CONF_LOCAL} ] || touch ${RC_CONF_LOCAL}
+#            if [ X"$#" == X'2' ]; then
+#                flag="${1}"
+#                value="${2}"
+#                comment_mark="# ${PROG_NAME}-${flag}"
+#                if ! grep "^${comment_mark}$" ${RC_CONF_LOCAL} &>/dev/null; then
+#                    ECHO_DEBUG "Add flag in ${RC_CONF_LOCAL}: ${flag}='${value}'"
+#                    echo "${comment_mark}" >> ${RC_CONF_LOCAL}
+#                    echo "${flag}='${value}'" >> ${RC_CONF_LOCAL}
+#                else
+#                    ECHO_DEBUG "Skip adding flag in ${RC_CONF_LOCAL}: ${pkg}='${value}'"
+#                fi
+#            fi
+#        fi
+#    done
+#}
+
 # Generate MD5 password
 gen_md5_passwd()
 {

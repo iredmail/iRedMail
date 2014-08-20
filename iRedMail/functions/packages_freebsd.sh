@@ -60,7 +60,6 @@ install_all()
     for p in \
         archivers_p5-Archive-Tar \
         converters_libiconv \
-        databases_phpmyadmin \
         databases_postgresql${WANT_PGSQL_VER}-client \
         databases_postgresql${WANT_PGSQL_VER}-contrib \
         databases_postgresql${WANT_PGSQL_VER}-server \
@@ -931,29 +930,6 @@ EOF
     # phpLDAPadmin.
     if [ X"${USE_PHPLDAPADMIN}" == X"YES" ]; then
         ALL_PORTS="${ALL_PORTS} net/phpldapadmin"
-    fi
-
-    # phpMyAdmin.
-    cat > /var/db/ports/databases_phpmyadmin/options <<EOF
-OPTIONS_FILE_SET+=APC
-OPTIONS_FILE_SET+=BZ2
-OPTIONS_FILE_SET+=GD
-OPTIONS_FILE_SET+=MCRYPT
-OPTIONS_FILE_SET+=OPENSSL
-OPTIONS_FILE_UNSET+=PDF
-OPTIONS_FILE_SET+=ZIP
-OPTIONS_FILE_SET+=ZLIB
-OPTIONS_FILE_SET+=MYSQL
-OPTIONS_FILE_SET+=MYSQLI
-EOF
-
-    if [ X"${USE_PHPMYADMIN}" == X"YES" ]; then
-        ALL_PORTS="${ALL_PORTS} databases/phpmyadmin"
-    fi
-
-    # phpPgAdmin
-    if [ X"${USE_PHPPGADMIN}" == X"YES" ]; then
-        ALL_PORTS="${ALL_PORTS} databases/phppgadmin"
     fi
 
     # Python database interfaces

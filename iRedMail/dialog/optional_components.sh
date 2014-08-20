@@ -41,11 +41,6 @@ if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     if [ X"${DIALOG_SELECTABLE_PHPLDAPADMIN}" == X'YES' ]; then
         LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpLDAPadmin Web-based_LDAP_management_tool on"
     fi
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpMyAdmin Web-based_MySQL_management_tool on"
-elif [ X"${BACKEND}" == X'MYSQL' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpMyAdmin Web-based_MySQL_management_tool on"
-elif [ X"${BACKEND}" == X'PGSQL' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpPgAdmin Web-based_PostgreSQL_management_tool on"
 fi
 
 if [ X"${DIALOG_SELECTABLE_AWSTATS}" == X'YES' ]; then
@@ -102,18 +97,6 @@ if echo ${OPTIONAL_COMPONENTS} | grep -i 'phpldapadmin' &>/dev/null; then
     export REQUIRE_PHP='YES'
     echo "export USE_PHPLDAPADMIN='YES'" >>${IREDMAIL_CONFIG_FILE}
     echo "export REQUIRE_PHP='YES'" >> ${IREDMAIL_CONFIG_FILE}
-fi
-
-echo ${OPTIONAL_COMPONENTS} | grep -i 'phpmyadmin' >/dev/null 2>&1
-if [ X"$?" == X"0" ]; then
-    export USE_PHPMYADMIN='YES'
-    echo "export USE_PHPMYADMIN='YES'" >>${IREDMAIL_CONFIG_FILE}
-    echo "export REQUIRE_PHP='YES'" >> ${IREDMAIL_CONFIG_FILE}
-fi
-
-if echo ${OPTIONAL_COMPONENTS} | grep -i 'phppgadmin' &>/dev/null; then
-    export USE_PHPPGADMIN='YES'
-    echo "export USE_PHPPGADMIN='YES'" >>${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'awstats' &>/dev/null; then

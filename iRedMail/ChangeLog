@@ -1,4 +1,4 @@
-iRedMail-0.9.0-beta1:
+iRedMail-0.9.0-beta2:
     * Improvement:
         - Nginx support available on all Linux/BSD distributions.
         - MariaDB support is now available on FreeBSD.
@@ -25,6 +25,13 @@ iRedMail-0.9.0-beta1:
 
     * Updated packages:
         + Roundcube webmail -> 1.0.2
+
+    * Below packages are removed from iRedMail for security concern:
+        - phpMyAdmin
+        - phpPgAdmin
+
+      If you need a sql management tool, please try http://adminer.org/
+      (web-based, a single PHP file) or other desktop applications instead.
 
 iRedMail-0.8.7:
     * Works on new Linux/BSD distribution releases:
