@@ -125,16 +125,6 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_U
 FLUSH PRIVILEGES;
 EOF
 
-        # Import addition tables.
-        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-            ${MYSQL_CLIENT_ROOT} <<EOF
-USE ${IREDADMIN_DB_NAME};
-SOURCE ${SAMPLE_DIR}/dovecot/used_quota.mysql;
-SOURCE ${SAMPLE_DIR}/dovecot/imap_share_folder.sql;
-FLUSH PRIVILEGES;
-EOF
-        fi
-
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/docs/samples/iredadmin.pgsql ${PGSQL_DATA_DIR}/ >/dev/null
         chmod 0777 ${PGSQL_DATA_DIR}/iredadmin.pgsql >/dev/null
