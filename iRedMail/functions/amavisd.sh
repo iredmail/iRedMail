@@ -117,6 +117,7 @@ amavisd_config_rhel()
     fi
 
     backup_file ${AMAVISD_CONF} ${AMAVISD_DKIM_CONF}
+    chgrp ${AMAVISD_SYS_GROUP} ${AMAVISD_CONF} ${AMAVISD_DKIM_CONF}
     chmod 0640 ${AMAVISD_CONF} ${AMAVISD_DKIM_CONF}
 
     ECHO_DEBUG "Configure amavisd-new: ${AMAVISD_CONF}."
@@ -695,13 +696,19 @@ CREATE USER ${AMAVISD_DB_USER} WITH ENCRYPTED PASSWORD '${AMAVISD_DB_PASSWD}' NO
 \c ${AMAVISD_DB_NAME};
 \i ${PGSQL_SYS_USER_HOME}/amavisd.sql;
 
-ALTER DATABASE amavisd SET bytea_output TO 'escape';
-
 -- Grant privileges
 GRANT SELECT,INSERT,UPDATE,DELETE ON maddr,mailaddr,msgrcpt,msgs,policy,quarantine,users,wblist TO ${AMAVISD_DB_USER};
 GRANT SELECT,UPDATE,USAGE ON maddr_id_seq,mailaddr_id_seq,policy_id_seq,users_id_seq TO ${AMAVISD_DB_USER};
 EOF
         rm -f ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
+
+        if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
+            :
+        else
+            su - ${PGSQL_SYS_USER} -c "psql -d ${AMAVISD_DB_NAME}" >/dev/null  <<EOF
+ALTER DATABASE ${AMAVISD_DB_NAME} SET bytea_output TO 'escape';
+EOF
+        fi
     fi
 
     echo 'export status_amavisd_import_sql="DONE"' >> ${STATUS_FILE}

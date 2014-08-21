@@ -32,6 +32,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     if [ X"${DISTRO_VERSION}" == X'6' ]; then
         export HTTPD_WSGI_CONF="${HTTPD_CONF_DIR}/wsgi.conf"
     else
+        export APACHE_VERSION='2.4'
         export HTTPD_MODULES_DIR="${HTTPD_CONF_ROOT}/conf.modules.d"
         export HTTPD_WSGI_CONF="${HTTPD_MODULES_DIR}/10-wsgi.conf"
     fi
@@ -70,6 +71,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/sites-available/default-ssl"
         export HTTPD_MOD_CONF_SECURITY="${HTTPD_CONF_DIR}/security"
     else
+        export APACHE_VERSION='2.4'
         export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf-available"
         export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/sites-available/default-ssl.conf"
         export HTTPD_MOD_CONF_SECURITY="${HTTPD_CONF_DIR}/security.conf"
@@ -84,7 +86,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export APACHE_PHP_INI='/etc/php5/apache2/php.ini'
     export APACHE_PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
 
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export APACHE_RC_SCRIPT_NAME='apache22'
 
     # Apache configuration files.

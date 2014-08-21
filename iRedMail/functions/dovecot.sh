@@ -32,8 +32,11 @@ dovecot2_config()
 
     ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
 
-    # Ubuntu 12.04 ships Dovecot-2.0.
-    if [ X"${DISTRO_CODENAME}" == X'precise' ]; then
+    # RHEL/CentOS 6:    Dovecot-2.1.x
+    # Debian 7:         Dovecot-2.1.x
+    # Ubuntu 12.04:     Dovecot-2.0.x
+    dovecot_version="$(dovecot --version | cut -c1,2,3)"
+    if [ X"${dovecot_version}" == X'2.0' -o X"${dovecot_version}" == X'2.1' ]; then
         cp ${SAMPLE_DIR}/dovecot/dovecot2.conf ${DOVECOT_CONF}
     else
         cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
@@ -227,24 +230,6 @@ dovecot2_config()
     perl -pi -e 's#PH_REALTIME_QUOTA_DB_PASSWORD#$ENV{realtime_quota_db_passwd}#' ${DOVECOT_REALTIME_QUOTA_CONF}
     perl -pi -e 's#PH_DOVECOT_REALTIME_QUOTA_TABLE#$ENV{DOVECOT_REALTIME_QUOTA_TABLE}#' ${DOVECOT_REALTIME_QUOTA_CONF}
 
-    # Create MySQL database ${IREDADMIN_DB_USER} and table 'used_quota'
-    # which used to store realtime quota.
-    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        # If iRedAdmin is not used, create database and import table here.
-        ${MYSQL_CLIENT_ROOT} <<EOF
-# Create databases.
-CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-
-# Import SQL template.
-USE ${IREDADMIN_DB_NAME};
-SOURCE ${SAMPLE_DIR}/dovecot/used_quota.mysql;
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
-
-FLUSH PRIVILEGES;
-EOF
-
-    fi
-
     # IMAP shared folder
     backup_file ${DOVECOT_SHARE_FOLDER_CONF}
 
@@ -275,8 +260,9 @@ EOF
     perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_DB_TABLE#$ENV{DOVECOT_SHARE_FOLDER_DB_TABLE}#' ${DOVECOT_SHARE_FOLDER_CONF}
     perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE#$ENV{DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE}#' ${DOVECOT_SHARE_FOLDER_CONF}
 
-    # Create MySQL database ${IREDADMIN_DB_USER} and table 'share_folder'
-    # which used to store realtime quota.
+    # Create MySQL database ${IREDADMIN_DB_USER} and addition tables:
+    #   - used_quota: used to store realtime quota.
+    #   - share_folder: used to store share folder settings.
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # If iRedAdmin is not used, create database and import table here.
         ${MYSQL_CLIENT_ROOT} <<EOF
@@ -285,6 +271,12 @@ CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 CO
 
 # Import SQL template.
 USE ${IREDADMIN_DB_NAME};
+
+# used_quota
+SOURCE ${SAMPLE_DIR}/dovecot/used_quota.mysql;
+GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
+
+# share_folder
 SOURCE ${SAMPLE_DIR}/dovecot/imap_share_folder.sql;
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
 

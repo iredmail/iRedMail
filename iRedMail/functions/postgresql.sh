@@ -183,7 +183,8 @@ GRANT SELECT,UPDATE,INSERT,DELETE ON used_quota TO ${VMAIL_DB_BIND_USER};
 
 -- Set correct privilege for ROLE: vmailadmin
 GRANT SELECT,UPDATE,INSERT,DELETE ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user,share_folder,anyone_shares,used_quota TO ${VMAIL_DB_ADMIN_USER};
-GRANT SELECT,UPDATE,INSERT,DELETE ON deleted_mailboxes,deleted_mailboxes_id_seq TO ${VMAIL_DB_ADMIN_USER};
+GRANT SELECT,UPDATE,INSERT,DELETE ON deleted_mailboxes TO ${VMAIL_DB_ADMIN_USER};
+GRANT USAGE,SELECT,UPDATE ON deleted_mailboxes_id_seq TO ${VMAIL_DB_ADMIN_USER};
 
 -- Add first mail domain
 INSERT INTO domain (domain,transport,created) VALUES ('${FIRST_DOMAIN}', '${TRANSPORT}', NOW());

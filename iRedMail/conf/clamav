@@ -28,7 +28,7 @@ export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclamd'
 export CLAMD_CONF='/etc/clamd.conf'
 export CLAMD_LOGFILE='/var/log/clamav/clamd.log'
 # CLAMD_BIND_HOST is configured in conf/global
-export CLAMD_LOCAL_SOCKET='/tmp/clamd.socket'   # Used to override default setting.
+export CLAMD_LOCAL_SOCKET='/tmp/clamd.socket'
 
 export FRESHCLAM_CONF='/etc/freshclam.conf'
 export FRESHCLAM_LOGFILE='/var/log/clamav/freshclam.log'
@@ -44,6 +44,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
         export CLAMAV_GROUP='amavis'
 
         export CLAMD_CONF='/etc/clamd.d/amavisd.conf'
+        export CLAMD_LOCAL_SOCKET='/var/run/clamd.amavisd/clamd.socket'
     fi
 
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then

@@ -350,7 +350,8 @@ EOF
 
 EOF
 
-    ECHO_INFO "Mail sensitive administration info to ${FIRST_USER}@${FIRST_DOMAIN}."
+    tip_recipient="${FIRST_USER}@${FIRST_DOMAIN}"
+    ECHO_INFO "Mail sensitive administration info to ${tip_recipient}."
     FILE_IREDMAIL_INSTALLATION_DETAILS="${FIRST_USER_MAILDIR_INBOX}/details.eml"
     FILE_IREDMAIL_LINKS="${FIRST_USER_MAILDIR_INBOX}/links.eml"
 

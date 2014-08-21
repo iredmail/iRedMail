@@ -51,9 +51,6 @@ install_all()
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        #PKG_SCRIPTS: Postfix will flush the queue when startup, so we should
-        #             start amavisd before postfix since Amavisd is content
-        #             filter.
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ALL_PKGS="${ALL_PKGS} postfix${OB_POSTFIX_VER}-ldap"
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
@@ -122,14 +119,12 @@ install_all()
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql"
             if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
-                if [ X"${DISTRO}" == X'UBUNTU' ]; then
-                    # Use Apache module authn_dbd for SQL authentication
-                    if [ X"${DISTRO_CODENAME}" != X'precise' ]; then
-                        ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
-                    fi
-                else
-                    ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
-                fi
+                #if [ X"${DISTRO}" == X'UBUNTU' ]; then
+                #    # Use Apache module authn_dbd for SQL authentication
+                    ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
+                #else
+                #    ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
+                #fi
             fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -159,14 +154,12 @@ install_all()
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
 
             if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
-                if [ X"${DISTRO}" == X'UBUNTU' ]; then
-                    # Use Apache module authn_dbd for SQL authentication
-                    if [ X"${DISTRO_CODENAME}" != X'precise' ]; then
-                        ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
-                    fi
-                else
-                    ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-pgsql"
-                fi
+                #if [ X"${DISTRO}" == X'UBUNTU' ]; then
+                #    # Use Apache module authn_dbd for SQL authentication
+                    ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
+                #else
+                #    ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-pgsql"
+                #fi
             fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -460,8 +453,9 @@ install_all()
                 fi
             fi
         fi
+
         # Enable services.
-        eval ${enable_service} ${ENABLED_SERVICES} >/dev/null
+        eval ${enable_service} ${ENABLED_SERVICES} &>/dev/null
 
         # Disable services.
         if [ X"${DISTRO}" != X'OPENBSD' ]; then
@@ -495,7 +489,7 @@ install_all()
             ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
             ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
 
-            ECHO_INFO "Installing uWSGI with source tarball, depends on your hardware, it may take 1 to 5 minutes, please be patient."
+            ECHO_INFO "Installing uWSGI from source tarball, depends on your hardware, it may take 1 to 5 minutes, please be patient."
             cd ${PKG_MISC_DIR} && \
                 tar zxf uwsgi-*.tar.gz && \
                 cd uwsgi-*/ && \
