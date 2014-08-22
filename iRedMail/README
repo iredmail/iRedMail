@@ -29,10 +29,8 @@
     - http://www.iredmail.org/forum/
 
 ========
-*) Source packages we patched or modified can be download here:
+*) Source packages we patched or modified for RHEL/CentOS can be download here:
     - http://www.iredmail.org/yum/srpms/
 
-   Other packages not listed in above directory are all fetched from
-   dag/epel repositories. Thanks.
-    - Dag: http://dag.wieers.com/
-    - EPEL: http://fedoraproject.org/wiki/EPEL
+   Other packages not listed in above directory are all fetched from EPEL
+   repository: http://fedoraproject.org/wiki/EPEL

@@ -66,11 +66,7 @@ chmod go+rx /dev/null /dev/*random &>/dev/null
 
 check_env
 
-# ------------------------------
-# Import variables.
-# ------------------------------
-# Source 'conf/apache_php' first, other components need some variables
-# defined in it.
+# Import global variables in specified order.
 . ${CONF_DIR}/web_server
 . ${CONF_DIR}/openldap
 . ${CONF_DIR}/ldapd
@@ -89,20 +85,15 @@ check_env
 . ${CONF_DIR}/fail2ban
 . ${CONF_DIR}/iredadmin
 
-# ------------------------------
-# Import functions.
-# ------------------------------
-# All packages.
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+# Import functions in specified order.
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Install packages from freebsd ports tree.
     . ${FUNCTIONS_DIR}/packages_freebsd.sh
 else
     . ${FUNCTIONS_DIR}/packages.sh
 fi
 
-# User/Group: vmail. We will export vmail uid/gid here.
 . ${FUNCTIONS_DIR}/system_accounts.sh
-
 . ${FUNCTIONS_DIR}/web_server.sh
 . ${FUNCTIONS_DIR}/ldap_server.sh
 . ${FUNCTIONS_DIR}/mysql.sh
@@ -130,10 +121,9 @@ fi
 # *************************** Script Main ********************************
 # ************************************************************************
 
-# Install all packages.
-check_status_before_run install_all || (ECHO_ERROR "Package installation error, please check the output log." && exit 255)
+# Install all required packages.
+check_status_before_run install_all || (ECHO_ERROR "Package installation error, please check the output log.\n\n" && exit 255)
 
-echo -e '\n\n'
 cat <<EOF
 
 ********************************************************************
