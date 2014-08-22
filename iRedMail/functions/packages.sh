@@ -459,7 +459,7 @@ install_all()
 
         # Disable services.
         if [ X"${DISTRO}" != X'OPENBSD' ]; then
-            eval ${disable_service} ${DISABLED_SERVICES} >/dev/null
+            eval ${disable_service} ${DISABLED_SERVICES} &>/dev/null
         fi
 
         echo 'export status_enable_all_services="DONE"' >> ${STATUS_FILE}

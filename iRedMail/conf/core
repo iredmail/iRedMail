@@ -381,7 +381,7 @@ disable_service_systemd()
     services="$@"
     for i in $services; do
         ECHO_DEBUG "Disable service: $i."
-        systemctl enable $i
+        systemctl disable $i
     done
 }
 
