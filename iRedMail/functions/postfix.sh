@@ -50,7 +50,7 @@ postfix_config_basic()
     postconf -e virtual_alias_domains=''
 
     ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
-    mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ 2>/dev/null
+    mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ &>/dev/null
     for i in /etc/hosts /etc/resolv.conf /etc/localtime /etc/services; do
         [ -f $i ] && cp ${i} ${POSTFIX_CHROOT_DIR}/etc/
     done
@@ -65,7 +65,7 @@ postfix_config_basic()
     postconf -e swap_bangpath='no'
 
     # Remove the characters before first dot in myhostname is mydomain.
-    echo "${HOSTNAME}" | grep '\..*\.' >/dev/null 2>&1
+    echo "${HOSTNAME}" | grep '\..*\.' &>/dev/null
     if [ X"$?" == X"0" ]; then
         mydomain="$(echo "${HOSTNAME}" | awk -F'.' '{print $2 "." $3}')"
         postconf -e mydomain="${mydomain}"

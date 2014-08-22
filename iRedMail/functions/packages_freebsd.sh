@@ -93,7 +93,7 @@ install_all()
         security_p5-IO-Socket-SSL \
         www_apache${WANT_APACHE_VER} \
         www_nginx; do
-        mkdir -p /var/db/ports/${p} 2>/dev/null
+        mkdir -p /var/db/ports/${p} &>/dev/null
     done
 
     # m4. DEPENDENCE.
@@ -1016,7 +1016,7 @@ EOF
     ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
 
     # Create logrotate.d
-    mkdir -p ${LOGROTATE_DIR} 2>/dev/null
+    mkdir -p ${LOGROTATE_DIR} &>/dev/null
 
     # Log and print used time
     all_used_time="$(($(date +%s)-start_time))"

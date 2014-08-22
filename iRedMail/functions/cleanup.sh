@@ -40,7 +40,7 @@ cleanup_disable_selinux()
         ECHO_INFO "Disable SELinux in /etc/selinux/config."
         [ -f /etc/selinux/config ] && perl -pi -e 's#^(SELINUX=)(.*)#${1}disabled#' /etc/selinux/config
 
-        setenforce 0 >/dev/null 2>&1
+        setenforce 0 &>/dev/null
     fi
 
     echo 'export status_cleanup_disable_selinux="DONE"' >> ${STATUS_FILE}

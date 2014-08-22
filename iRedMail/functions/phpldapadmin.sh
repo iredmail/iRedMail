@@ -16,7 +16,7 @@ pla_install()
 
         # Create symbol link, so that we don't need to modify apache
         # conf.d/phpldapadmin.conf file after upgrade this component.
-        ln -s ${PLA_HTTPD_ROOT} ${PLA_HTTPD_ROOT_SYMBOL_LINK} 2>/dev/null
+        ln -s ${PLA_HTTPD_ROOT} ${PLA_HTTPD_ROOT_SYMBOL_LINK} &>/dev/null
 
         # Patch phpldapadmin-1.2.3 to work under PHP 5.5.x
         cd ${PLA_HTTPD_ROOT} && \

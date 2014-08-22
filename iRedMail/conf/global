@@ -376,7 +376,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 
     # Syslog config file: rsyslog.
     export SYSLOG_CONF='/etc/rsyslog.conf'
-    export SYSLOG_POSTROTATE_CMD='/bin/kill -HUP $(cat /var/run/syslogd.pid 2> /dev/null) 2> /dev/null || true'
+    export SYSLOG_POSTROTATE_CMD='/bin/kill -HUP $(cat /var/run/syslogd.pid 2>/dev/null) 2>/dev/null || true'
 
     # Crontab related.
     export CRON_SPOOL_DIR='/var/spool/cron'
@@ -420,7 +420,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         # Syslog config: rsyslog.
         # Ubuntu >= 9.10
         export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
-        export SYSLOG_POSTROTATE_CMD='reload rsyslog >/dev/null 2>&1 || true'
+        export SYSLOG_POSTROTATE_CMD='reload rsyslog &>/dev/null || true'
 
         # MariaDB support requires Ubuntu >= 14.04
         if [ X"${DISTRO_CODENAME}" != X'precise' ]; then

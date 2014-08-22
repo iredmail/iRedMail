@@ -167,7 +167,7 @@ check_user()
 
 check_hostname()
 {
-    echo ${HOSTNAME} | grep '\.' >/dev/null 2>&1
+    echo ${HOSTNAME} | grep '\.' &>/dev/null
     [ X"$?" != X"0" ] && \
         ECHO_ERROR "Please configure a fully qualified domain name (FQDN) in /etc/hosts before we go further.\n\nExample:\n\n127.0.0.1   mail.iredmail.org mail localhost\n" && \
         exit 255
@@ -266,13 +266,13 @@ extract_pkg()
         DST="$2"
     fi
 
-    if echo $1 | grep '.tar.gz$' >/dev/null 2>&1 ; then
+    if echo $1 | grep '.tar.gz$' &>/dev/null; then
         ECHO_DEBUG "Extracting: $1 -> ${DST}"
         tar zxf $1 -C $DST
-    elif echo $1 | grep '.tgz$' >/dev/null 2>&1 ; then
+    elif echo $1 | grep '.tgz$' &>/dev/null; then
         ECHO_DEBUG "Extracting: $1 -> ${DST}"
         tar zxf $1 -C $DST
-    elif echo $1 | grep '.tar.bz2$' >/dev/null 2>&1 ; then
+    elif echo $1 | grep '.tar.bz2$' &>/dev/null; then
         # Install bzip2 first.
         check_pkg ${BIN_BZIP2} ${PKG_BZIP2}
 
@@ -463,12 +463,12 @@ generate_ssl_keys()
     ECHO_INFO "Create self-signed SSL certification files."
 
     # Create necessary directories.
-    mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} 2>/dev/null
+    mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} &>/dev/null
 
     openssl req \
         -x509 -nodes -days 3650 -newkey rsa:${SSL_KEY_SIZE} \
         -subj "/C=${TLS_COUNTRY}/ST=${TLS_STATE}/L=${TLS_CITY}/O=${TLS_COMPANY}/OU=${TLS_DEPARTMENT}/CN=${TLS_HOSTNAME}/emailAddress=${TLS_ADMIN}/" \
-        -out ${SSL_CERT_FILE} -keyout ${SSL_KEY_FILE} >/dev/null 2>&1
+        -out ${SSL_CERT_FILE} -keyout ${SSL_KEY_FILE} &>/dev/null
 
     # Set correct file permission.
     chmod +r ${SSL_CERT_FILE}
@@ -503,14 +503,14 @@ add_postfix_alias()
     fi
 
     # If alias_orig exists, comment it out
-    if grep "^${alias_orig}:" ${POSTFIX_FILE_ALIASES} >/dev/null 2>&1; then
+    if grep "^${alias_orig}:" ${POSTFIX_FILE_ALIASES} &>/dev/null; then
         perl -pi -e 's/^($ENV{alias_orig}:.*)/#${1}/' ${POSTFIX_FILE_ALIASES}
     fi
 
     # Add new alias
     echo "${alias_orig}: ${alias_dest}" >> ${POSTFIX_FILE_ALIASES}
 
-    postalias hash:${POSTFIX_FILE_ALIASES} >/dev/null 2>&1
+    postalias hash:${POSTFIX_FILE_ALIASES} &>/dev/null
     unset alias_orig
     unset alias_dest
 }

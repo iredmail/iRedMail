@@ -65,10 +65,10 @@ apache_php_config()
     # Load/enable Apache modules
     ECHO_DEBUG "Enable Apache modules."
     if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        a2ensite default-ssl >/dev/null
+        a2ensite default-ssl &>/dev/null
 
-        a2enmod ssl >/dev/null
-        a2enmod deflate >/dev/null 2>&1
+        a2enmod ssl &>/dev/null
+        a2enmod deflate &>/dev/null
 
         [ X"${BACKEND}" == X'OPENLDAP' ] && a2enmod authnz_ldap > /dev/null
 
@@ -118,7 +118,7 @@ apache_php_config()
         perl -pi -e 's/^#(Include.*etc.*apache.*extra.*httpd-ssl.conf.*)/${1}/' ${HTTPD_CONF}
 
         # Create empty directory for htcacheclean.
-        mkdir -p /usr/local/www/proxy/ 2>/dev/null
+        mkdir -p /usr/local/www/proxy/ &>/dev/null
 
         # Start service when system start up.
         if [ X"${DEFAULT_WEB_SERVER}" == X'APACHE' ]; then
@@ -192,7 +192,7 @@ apache_php_config()
             perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${APACHE_PHP_INI_CONF_DIR}/suhosin.ini
 
         # Enable mcrypt
-        php5enmod mcrypt 2>/dev/null
+        php5enmod mcrypt &>/dev/null
     fi
 
     cat >> ${TIP_FILE} <<EOF

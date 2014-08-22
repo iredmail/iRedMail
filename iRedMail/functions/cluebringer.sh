@@ -283,7 +283,7 @@ EOF
         su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >/dev/null 
     fi
 
-    rm -f ${tmp_sql} 2>/dev/null
+    rm -f ${tmp_sql} &>/dev/null
     unset tmp_sql
 
     # Set correct permission.

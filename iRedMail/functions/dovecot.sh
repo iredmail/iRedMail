@@ -130,10 +130,10 @@ dovecot_config()
     perl -pi -e 's#PH_POSTFIX_CHROOT_DIR#$ENV{POSTFIX_CHROOT_DIR}#' ${DOVECOT_CONF}
 
     # Generate dovecot quota warning script.
-    mkdir -p $(dirname ${DOVECOT_QUOTA_WARNING_SCRIPT}) 2>/dev/null
+    mkdir -p $(dirname ${DOVECOT_QUOTA_WARNING_SCRIPT}) &>/dev/null
 
     backup_file ${DOVECOT_QUOTA_WARNING_SCRIPT}
-    rm -f ${DOVECOT_QUOTA_WARNING_SCRIPT} 2>/dev/null
+    rm -f ${DOVECOT_QUOTA_WARNING_SCRIPT} &>/dev/null
     cp -f ${SAMPLE_DIR}/dovecot/dovecot2-quota-warning.sh ${DOVECOT_QUOTA_WARNING_SCRIPT}
     if [ X"${DOVECOT_QUOTA_TYPE}" == X'maildir' ]; then
         perl -pi -e 's#(.*)(-o.*plugin.*)#${1}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
@@ -415,7 +415,7 @@ enable_dovecot()
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         # It seems there's a bug in Dovecot port, it will try to invoke '/usr/lib/sendmail'
         # to send vacation response which should be '/usr/sbin/mailwrapper'.
-        [ ! -e /usr/lib/sendmail ] && ln -s /usr/sbin/mailwrapper /usr/lib/sendmail 2>/dev/null
+        [ ! -e /usr/lib/sendmail ] && ln -s /usr/sbin/mailwrapper /usr/lib/sendmail &>/dev/null
 
         # Start service when system start up.
         service_control enable 'dovecot_enable' 'YES'

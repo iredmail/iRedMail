@@ -29,7 +29,7 @@ amavisd_dkim()
     pem_file="${AMAVISD_DKIM_DIR}/${FIRST_DOMAIN}.pem"
 
     ECHO_DEBUG "Generate DKIM pem files: ${pem_file}." 
-    mkdir -p ${AMAVISD_DKIM_DIR} 2>/dev/null && \
+    mkdir -p ${AMAVISD_DKIM_DIR} &>/dev/null && \
     chown ${AMAVISD_SYS_USER}:${AMAVISD_SYS_GROUP} ${AMAVISD_DKIM_DIR}
     ${AMAVISD_BIN} genrsa ${pem_file} &>/dev/null
     chmod +r ${pem_file}
@@ -507,7 +507,7 @@ EOF
 EOF
 
     # Create directory to store disclaimer files if not exist.
-    [ -d ${DISCLAIMER_DIR} ] || mkdir -p ${DISCLAIMER_DIR} 2>/dev/null
+    [ -d ${DISCLAIMER_DIR} ] || mkdir -p ${DISCLAIMER_DIR} &>/dev/null
     # Create a empty disclaimer.
     echo -e '\n----' > ${DISCLAIMER_DIR}/default.txt
 
@@ -530,7 +530,7 @@ EOF
 
     # Use 'utf8' character set.
     if [ X"${BACKEND}" != X'PGSQL' ]; then
-        grep -i 'set names' ${AMAVISD_BIN} >/dev/null 2>&1
+        grep -i 'set names' ${AMAVISD_BIN} &>/dev/null
         if [ X"$?" != X"0" ]; then
             perl -pi -e 's#(.*)(section_time.*sql-connect.*)#${1}\$dbh->do("SET NAMES utf8"); ${2}#' ${AMAVISD_BIN}
         fi

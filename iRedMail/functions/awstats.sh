@@ -23,7 +23,7 @@
 awstats_config_basic()
 {
     ECHO_INFO "Configure Awstats (logfile analyzer for mail and web server)."
-    [ -f ${AWSTATS_CONF_SAMPLE} ] && dos2unix ${AWSTATS_CONF_SAMPLE} >/dev/null 2>&1
+    [ -f ${AWSTATS_CONF_SAMPLE} ] && dos2unix ${AWSTATS_CONF_SAMPLE} &>/dev/null
 
     ECHO_DEBUG "Generate apache config file for awstats: ${AWSTATS_HTTPD_CONF}."
     backup_file ${AWSTATS_HTTPD_CONF}

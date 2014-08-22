@@ -25,9 +25,9 @@ iredadmin_config()
 {
     ECHO_INFO "Configure iRedAdmin (official web-based admin panel)."
 
-    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ECHO_DEBUG "Enable apache module: wsgi."
-        a2enmod wsgi >/dev/null 2>&1
+        a2enmod wsgi &>/dev/null
     fi
 
     cd ${PKG_MISC_DIR}
@@ -37,7 +37,7 @@ iredadmin_config()
 
     # Create symbol link, so that we don't need to modify apache
     # conf.d/iredadmin.conf file after upgrading this component.
-    ln -s ${IREDADMIN_HTTPD_ROOT} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK} 2>/dev/null
+    ln -s ${IREDADMIN_HTTPD_ROOT} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK} &>/dev/null
 
     ECHO_DEBUG "Set correct permission for iRedAdmin: ${IREDADMIN_HTTPD_ROOT}."
     chown -R ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} ${IREDADMIN_HTTPD_ROOT}

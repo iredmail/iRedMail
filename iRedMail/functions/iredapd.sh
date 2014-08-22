@@ -33,7 +33,7 @@ iredapd_config()
 
     ECHO_DEBUG "Configure iRedAPD."
     # Create symbol link.
-    ln -s ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION} ${IREDAPD_ROOT_DIR}/iredapd 2>/dev/null
+    ln -s ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION} ${IREDAPD_ROOT_DIR}/iredapd &>/dev/null
 
     # Copy init rc script.
     if [ X"${DISTRO}" == X"RHEL" ]; then
