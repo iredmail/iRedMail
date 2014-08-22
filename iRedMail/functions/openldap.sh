@@ -33,13 +33,6 @@ openldap_config()
 
     backup_file ${OPENLDAP_SLAPD_CONF} ${OPENLDAP_LDAP_CONF}
 
-    ###########
-    # Fix file permission issues, so that slapd can read SSL key.
-    #
-    # Add ${OPENLDAP_DAEMON_USER} to 'ssl-cert' group.
-    [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ] && \
-        usermod -G ssl-cert ${OPENLDAP_DAEMON_USER}
-
     if [ X"${DISTRO}" == X"RHEL" ]; then
         # Run slapd with slapd.conf, not slapd.d.
         perl -pi -e 's/#(SLAPD_OPTIONS=).*/${1}"-f $ENV{OPENLDAP_SLAPD_CONF}"/' ${OPENLDAP_SYSCONFIG_CONF}
@@ -52,6 +45,17 @@ openldap_config()
             perl -pi -e 's/#(SLAPD_LDAPS=).*/${1}yes/' ${OPENLDAP_SYSCONFIG_CONF}
         fi
 
+    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        # Add openldap daemon user to 'ssl-cert' group, so that slapd can read SSL key.
+        usermod -G ssl-cert ${OPENLDAP_DAEMON_USER}
+
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # Start service when system start up.
+        # 'slapd_enable=YES' is required to start service immediately.
+        service_control enable 'slapd_enable' 'YES'
+        service_control enable 'slapd_flags' '-h "ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://0.0.0.0/ ldaps://0.0.0.0/"'
+        service_control enable 'slapd_sockets' '/var/run/openldap/ldapi'
+
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable TLS/SSL support
         cat >> ${RC_CONF_LOCAL} <<EOF
@@ -59,10 +63,7 @@ slapd_flags='-u _openldap -h ldap:///\ ldaps:///'
 EOF
     fi
 
-    ###################
-    # LDAP schema file
-    #
-    # Copy ${PROG_NAME}.schema.
+    # Copy iRedMail LDAP schema file
     cp -f ${SAMPLE_DIR}/iredmail.schema ${OPENLDAP_SCHEMA_DIR}
 
     # Copy amavisd schema.
@@ -104,7 +105,7 @@ EOF
     perl -pi -e 's#PH_LDAP_ROOTDN#$ENV{LDAP_ROOTDN}#g' ${OPENLDAP_SLAPD_CONF}
     perl -pi -e 's#PH_LDAP_ROOTPW_SSHA#$ENV{LDAP_ROOTPW_SSHA}#g' ${OPENLDAP_SLAPD_CONF}
 
-    # Make slapd use slapd.conf insteald of slapd.d (cn=config backend).
+    # use slapd.conf insteald of slapd.d
     if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         perl -pi -e 's#^(SLAPD_CONF=).*#${1}"$ENV{OPENLDAP_SLAPD_CONF}"#' ${OPENLDAP_SYSCONFIG_CONF}
         perl -pi -e 's#^(SLAPD_PIDFILE=).*#${1}"$ENV{OPENLDAP_PID_FILE}"#' ${OPENLDAP_SYSCONFIG_CONF}
@@ -167,12 +168,6 @@ EOF
         -o X"${DISTRO}" == X"UBUNTU" ]; then
         service_control restart rsyslog >/dev/null
     fi
-
-    # FreeBSD: Start openldap when system start up.
-    # Warning: Make sure we have 'slapd_enable=YES' before start/stop openldap.
-    freebsd_enable_service_in_rc_conf 'slapd_enable' 'YES'
-    freebsd_enable_service_in_rc_conf 'slapd_flags' '-h "ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://0.0.0.0/ ldaps://0.0.0.0/"'
-    freebsd_enable_service_in_rc_conf 'slapd_sockets' '/var/run/openldap/ldapi'
 
     echo 'export status_openldap_config="DONE"' >> ${STATUS_FILE}
 }

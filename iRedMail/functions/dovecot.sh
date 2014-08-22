@@ -24,7 +24,7 @@
 # Dovecot & dovecot-sieve.
 # -------------------------------------------------------
 
-dovecot2_config()
+dovecot_config()
 {
     ECHO_INFO "Configure Dovecot (pop3/imap/managesieve server)."
 
@@ -405,22 +405,20 @@ Dovecot:
 
 EOF
 
-    echo 'export status_dovecot2_config="DONE"' >> ${STATUS_FILE}
+    echo 'export status_dovecot_config="DONE"' >> ${STATUS_FILE}
 }
 
 enable_dovecot()
 {
-    if [ X"${ENABLE_DOVECOT}" == X"YES" ]; then
-        check_status_before_run dovecot2_config
-    fi
+    check_status_before_run dovecot_config
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         # It seems there's a bug in Dovecot port, it will try to invoke '/usr/lib/sendmail'
         # to send vacation response which should be '/usr/sbin/mailwrapper'.
         [ ! -e /usr/lib/sendmail ] && ln -s /usr/sbin/mailwrapper /usr/lib/sendmail 2>/dev/null
 
-        # Start dovecot when system start up.
-        freebsd_enable_service_in_rc_conf 'dovecot_enable' 'YES'
+        # Start service when system start up.
+        service_control enable 'dovecot_enable' 'YES'
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # By default, the _dovecot user, and so the Dovecot processes run in

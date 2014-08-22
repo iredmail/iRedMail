@@ -45,8 +45,13 @@ cluebringer_config()
 
     backup_file ${CLUEBRINGER_CONF}
 
-    # FreeBSD: Generate sample config file
-    [ X"${DISTRO}" == X'FREEBSD' ] && cp ${CLUEBRINGER_CONF}.sample ${CLUEBRINGER_CONF}
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # Generate sample config file
+        cp ${CLUEBRINGER_CONF}.sample ${CLUEBRINGER_CONF}
+
+        # Start service when system start up.
+        service_control enable 'policyd2_enable' 'YES'
+    fi
 
     #
     # Configure '[server]' section.
@@ -284,9 +289,6 @@ EOF
     # Set correct permission.
     chown ${CLUEBRINGER_USER}:${CLUEBRINGER_GROUP} ${CLUEBRINGER_CONF}
     chmod 0700 ${CLUEBRINGER_CONF}
-
-    # FreeBSD: Enable policyd2
-    freebsd_enable_service_in_rc_conf 'policyd2_enable' 'YES'
 
     if [ X"${CLUEBRINGER_SEPARATE_LOG}" == X"YES" ]; then
         echo -e "local1.*\t\t\t\t\t\t-${CLUEBRINGER_LOG_FILE}" >> ${SYSLOG_CONF}

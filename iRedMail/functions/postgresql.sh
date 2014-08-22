@@ -40,9 +40,9 @@ pgsql_initialize()
             postgresql-setup initdb &>/dev/null
         fi
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-        # FreeBSD: Start pgsql when system start up.
-        # Warning: We must have 'postgresql_enable=YES' before start/stop pgsql daemon.
-        freebsd_enable_service_in_rc_conf 'postgresql_enable' 'YES'
+        # Start service when system start up.
+        # 'postgresql_enable=YES' is required to start service immediately.
+        service_control enable 'postgresql_enable' 'YES'
 
         ${PGSQL_RC_SCRIPT} initdb &>/dev/null
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then

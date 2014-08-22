@@ -51,7 +51,7 @@ iredapd_config()
     chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
 
     ECHO_DEBUG "Make iredapd start after system startup."
-    eval ${enable_service} iredapd &>/dev/null
+    service_control enable iredapd &>/dev/null
     export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
 
     # Set file permission.
@@ -93,8 +93,10 @@ iredapd_config()
         perl -pi -e 's#^(plugins).*#${1} = ["sql_alias_access_policy", "sql_user_restrictions"]#' settings.py
     fi
 
-    # FreeBSD: Start iredapd when system start up.
-    freebsd_enable_service_in_rc_conf 'iredapd_enable' 'YES'
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # Start service when system start up.
+        service_control enable 'iredapd_enable' 'YES'
+    fi
 
     # Log rotate
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then

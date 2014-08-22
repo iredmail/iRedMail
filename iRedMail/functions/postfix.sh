@@ -163,7 +163,7 @@ Postfix (basic):
 EOF
 
     # FreeBSD: Start postfix when system start up.
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         backup_file /etc/mail/mailer.conf
         cat > /etc/mail/mailer.conf <<EOF
 #
@@ -175,15 +175,16 @@ mailq       /usr/local/sbin/sendmail
 newaliases  /usr/local/sbin/sendmail
 EOF
 
-        freebsd_enable_service_in_rc_conf 'postfix_enable' 'YES'
-        freebsd_enable_service_in_rc_conf 'sendmail_enable' 'NO'
-        freebsd_enable_service_in_rc_conf 'sendmail_submit_enable' 'NO'
-        freebsd_enable_service_in_rc_conf 'sendmail_outbound_enable' 'NO'
-        freebsd_enable_service_in_rc_conf 'sendmail_msp_queue_enable' 'NO'
-        freebsd_enable_service_in_rc_conf 'daily_clean_hoststat_enable' 'NO'
-        freebsd_enable_service_in_rc_conf 'daily_status_mail_rejects_enable' 'NO'
-        freebsd_enable_service_in_rc_conf 'daily_status_include_submit_mailq' 'NO'
-        freebsd_enable_service_in_rc_conf 'daily_submit_queuerun' 'NO'
+        # Start service when system start up.
+        service_control enable 'postfix_enable' 'YES'
+        service_control enable 'sendmail_enable' 'NO'
+        service_control enable 'sendmail_submit_enable' 'NO'
+        service_control enable 'sendmail_outbound_enable' 'NO'
+        service_control enable 'sendmail_msp_queue_enable' 'NO'
+        service_control enable 'daily_clean_hoststat_enable' 'NO'
+        service_control enable 'daily_status_mail_rejects_enable' 'NO'
+        service_control enable 'daily_status_include_submit_mailq' 'NO'
+        service_control enable 'daily_submit_queuerun' 'NO'
     fi
 
     # Create directory, used to store lookup files.

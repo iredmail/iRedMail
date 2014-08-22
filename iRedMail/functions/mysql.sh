@@ -44,11 +44,11 @@ mysql_initialize()
     # Initial MySQL database first
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         /usr/local/bin/mysql_install_db &>/dev/null
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # Start service when system start up.
+        # 'mysql_enable=YES' is required to start service immediately.
+        service_control enable 'mysql_enable' 'YES'
     fi
-
-    # FreeBSD: Start mysql when system start up.
-    # Warning: We must have 'mysql_enable=YES' before start/stop mysql daemon.
-    freebsd_enable_service_in_rc_conf 'mysql_enable' 'YES'
 
     if [ ! -f ${MYSQL_MY_CNF} ]; then
         ECHO_DEBUG "Copy sample MySQL config file: ${SAMPLE_DIR}/mysql/my.cnf -> ${MYSQL_MY_CNF}."

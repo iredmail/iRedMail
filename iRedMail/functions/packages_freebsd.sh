@@ -24,8 +24,6 @@ install_all()
 {
     # Port name under /usr/ports/. e.g. mail/dovecot2.
     ALL_PORTS=''
-    ENABLED_SERVICES=''     # Scripts under /usr/local/etc/rc.d/
-    DISABLED_SERVICES=''    # Scripts under /usr/local/etc/rc.d/
 
     # Extension used for backup file during in-place editing.
     SED_EXTENSION="iredmail"
@@ -245,17 +243,14 @@ EOF
 
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
         ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-sasl-client net/openldap${WANT_OPENLDAP_VER}-server databases/mysql${WANT_MYSQL_VER}-server"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
             ALL_PORTS="${ALL_PORTS} databases/mariadb${WANT_MARIADB_VER}-server"
         else
             ALL_PORTS="${ALL_PORTS} databases/mysql${WANT_MYSQL_VER}-server"
         fi
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ALL_PORTS="${ALL_PORTS} databases/postgresql${WANT_PGSQL_VER}-server databases/postgresql${WANT_PGSQL_VER}-contrib"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
     fi
 
     # Dovecot v2.0.x. REQUIRED.
@@ -276,7 +271,6 @@ EOF
 
     # Note: dovecot-sieve will install dovecot first.
     ALL_PORTS="${ALL_PORTS} mail/dovecot2 mail/dovecot2-pigeonhole"
-    ENABLED_SERVICES="${ENABLED_SERVICES} dovecot"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/mail_dovecot2/options
@@ -373,7 +367,6 @@ EOF
     rm -f /var/db/ports/japanese_p5-Mail-SpamAssassin/options${SED_EXTENSION} &>/dev/null
 
     ALL_PORTS="${ALL_PORTS} mail/spamassassin"
-    DISABLED_SERVICES="${DISABLED_SERVICES} spamd"
 
     cat > /var/db/ports/security_p5-Authen-SASL/options <<EOF
 OPTIONS_FILE_SET+=KERBEROS
@@ -429,7 +422,6 @@ EOF
     rm -f /var/db/ports/security_amavisd-new/options${SED_EXTENSION} &>/dev/null
 
     ALL_PORTS="${ALL_PORTS} security/amavisd-new"
-    ENABLED_SERVICES="${ENABLED_SERVICES} ${AMAVISD_RC_SCRIPT_NAME}"
 
     # Postfix. REQUIRED.
     cat > /var/db/ports/mail_postfix/options <<EOF
@@ -466,8 +458,6 @@ EOF
     rm -f /var/db/ports/mail_postfix/options${SED_EXTENSION} &>/dev/null
 
     ALL_PORTS="${ALL_PORTS} mail/postfix"
-    ENABLED_SERVICES="${ENABLED_SERVICES} postfix"
-    DISABLED_SERVICES="${DISABLED_SERVICES} sendmail sendmail_submit sendmail_outbound sendmail_msq_queue"
 
     # Apr. DEPENDENCE.
     cat > /var/db/ports/devel_apr1/options <<EOF
@@ -618,8 +608,7 @@ EOF
     rm -f /var/db/ports/www_apache${WANT_APACHE_VER}/options${SED_EXTENSION} &>/dev/null
 
     ALL_PORTS="${ALL_PORTS} www/apache${WANT_APACHE_VER}"
-    if [ X"${WEB_SERVER_USE_NGINX}" != X'YES' ]; then
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${APACHE_RC_SCRIPT_NAME}"
+    if [ X"${DEFAULT_WEB_SERVER}" == X'APACHE' ]; then
     fi
 
     # Nginx
@@ -715,7 +704,6 @@ EOF
 
     if [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} www/nginx www/uwsgi"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
     fi
 
     # PHP5. REQUIRED.
@@ -859,7 +847,6 @@ EOF
     rm -f /var/db/ports/mail_policyd2/options${SED_EXTENSION} &>/dev/null
 
     ALL_PORTS="${ALL_PORTS} mail/policyd2"
-    ENABLED_SERVICES="${ENABLED_SERVICES} policyd"
 
     # ClamAV. REQUIRED.
     cat > /var/db/ports/security_clamav/options <<EOF
@@ -879,7 +866,6 @@ OPTIONS_FILE_SET+=UNZOO
 EOF
 
     ALL_PORTS="${ALL_PORTS} security/clamav"
-    ENABLED_SERVICES="${ENABLED_SERVICES} clamav-clamd clamav-freshclam"
 
     # Roundcube.
     cat > /var/db/ports/mail_roundcube/options <<EOF
@@ -939,9 +925,6 @@ EOF
         ALL_PORTS="${ALL_PORTS} databases/py-psycopg2"
     fi
 
-    # iRedAPD
-    ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
-
     # iRedAdmin
     # mod_wsgi
     ALL_PORTS="${ALL_PORTS} www/mod_wsgi3 www/webpy devel/py-Jinja2 net/py-netifaces"
@@ -950,7 +933,6 @@ EOF
     if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
         # python-ldap.
         ALL_PORTS="${ALL_PORTS} security/py-fail2ban"
-        ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
     fi
 
     cat > /var/db/ports/net_py-ldap2/options <<EOF

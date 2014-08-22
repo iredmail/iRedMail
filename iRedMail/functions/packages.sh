@@ -119,12 +119,7 @@ install_all()
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql"
             if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
-                #if [ X"${DISTRO}" == X'UBUNTU' ]; then
-                #    # Use Apache module authn_dbd for SQL authentication
-                    ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
-                #else
-                #    ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-mysql"
-                #fi
+                ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
             fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -154,12 +149,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
 
             if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
-                #if [ X"${DISTRO}" == X'UBUNTU' ]; then
-                #    # Use Apache module authn_dbd for SQL authentication
-                    ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
-                #else
-                #    ALL_PKGS="${ALL_PKGS} libapache2-mod-auth-pgsql"
-                #fi
+                ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
             fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -454,13 +444,9 @@ install_all()
             fi
         fi
 
-        # Enable services.
-        eval ${enable_service} ${ENABLED_SERVICES} &>/dev/null
-
-        # Disable services.
-        if [ X"${DISTRO}" != X'OPENBSD' ]; then
-            eval ${disable_service} ${DISABLED_SERVICES} &>/dev/null
-        fi
+        # Enable/Disable services.
+        service_control enable ${ENABLED_SERVICES} &>/dev/null
+        service_control disable ${DISABLED_SERVICES} &>/dev/null
 
         echo 'export status_enable_all_services="DONE"' >> ${STATUS_FILE}
     }
@@ -483,7 +469,6 @@ install_all()
             done
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # Create symbol links for Python.
-            echo "pkg_scripts='${PKG_SCRIPTS}'" >> ${RC_CONF_LOCAL}
             ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
             ln -sf /usr/local/bin/python2.7-2to3 /usr/local/bin/2to3
             ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config

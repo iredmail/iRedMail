@@ -24,9 +24,6 @@
 # For Dovecot and dovecot-sieve. 
 # ----------------------------------------
 
-export ENABLE_DOVECOT="YES"
-export ENABLE_DOVECOT_SSL="YES"
-
 # Dovecot user & group.
 export DOVECOT_USER='dovecot'
 export DOVECOT_GROUP='dovecot'

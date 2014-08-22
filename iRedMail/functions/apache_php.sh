@@ -62,10 +62,8 @@ apache_php_config()
         :
     fi
 
-    #####################
-    # LoadModule
-    #
-    ECHO_DEBUG "Enable modules."
+    # Load/enable Apache modules
+    ECHO_DEBUG "Enable Apache modules."
     if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         a2ensite default-ssl >/dev/null
 
@@ -73,13 +71,6 @@ apache_php_config()
         a2enmod deflate >/dev/null 2>&1
 
         [ X"${BACKEND}" == X'OPENLDAP' ] && a2enmod authnz_ldap > /dev/null
-        if [ X"${BACKEND}" == X'MYSQL' ]; then
-            a2enmod auth_mysql &>/dev/null
-        fi
-
-        if [ X"${BACKEND}" == X'PGSQL' ]; then
-            a2enmod 000_auth_pgsql &>/dev/null
-        fi
 
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && \
@@ -129,17 +120,15 @@ apache_php_config()
         # Create empty directory for htcacheclean.
         mkdir -p /usr/local/www/proxy/ 2>/dev/null
 
-        # Start apache when system start up.
-        if [ X"${WEB_SERVER_USE_NGINX}" != X'YES' ]; then
-            freebsd_enable_service_in_rc_conf 'apache22_enable' 'YES'
-            freebsd_enable_service_in_rc_conf 'htcacheclean_enable' 'NO'
+        # Start service when system start up.
+        if [ X"${DEFAULT_WEB_SERVER}" == X'APACHE' ]; then
+            service_control enable 'apache22_enable' 'YES'
+            service_control enable 'htcacheclean_enable' 'NO'
         fi
-    fi
-
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable httpd.
-        # Note: iRedAdmin doesn't work with chroot.
-        if [ X"${WEB_SERVER_USE_NGINX}" != X'YES' ]; then
+        # Note: iRedAdmin doesn't work under chroot since Python doesn't work.
+        if [ X"${DEFAULT_WEB_SERVER}" == X'APACHE' ]; then
             echo 'httpd_flags="-DSSL -u"  # -u is required by iRedAdmin' >> ${RC_CONF_LOCAL}
         fi
 

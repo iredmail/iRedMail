@@ -84,11 +84,13 @@ nginx_config()
 
         perl -pi -e 's/^(plugins.*)/#${1}/' ${UWSGI_CONF_DIR}/iredadmin.ini
 
-        freebsd_enable_service_in_rc_conf 'nginx_enable' 'YES'
-        freebsd_enable_service_in_rc_conf 'php_fpm_enable' 'YES'
-        freebsd_enable_service_in_rc_conf 'uwsgi_enable' 'YES'
-        freebsd_enable_service_in_rc_conf 'uwsgi_profiles' 'iredadmin'
-        freebsd_enable_service_in_rc_conf 'uwsgi_iredadmin_flags' '--ini /usr/local/etc/uwsgi/iredadmin.ini'
+        if [ X"${DEFAULT_WEB_SERVER}" == X'NGINX' ]; then
+            service_control enable 'nginx_enable' 'YES'
+            service_control enable 'php_fpm_enable' 'YES'
+            service_control enable 'uwsgi_enable' 'YES'
+            service_control enable 'uwsgi_profiles' 'iredadmin'
+            service_control enable 'uwsgi_iredadmin_flags' '--ini /usr/local/etc/uwsgi/iredadmin.ini'
+        fi
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable unchrooted Nginx
         echo 'nginx_flags="-u"' >> ${RC_CONF_LOCAL}

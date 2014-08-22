@@ -104,8 +104,10 @@ failregex = \[<HOST>\]: SASL (PLAIN|LOGIN) authentication failed
 ignoreregex =
 EOF
 
-    # FreeBSD: Start fail2ban when system start up.
-    #freebsd_enable_service_in_rc_conf 'fail2ban_enable' 'YES'
+    #if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    #    # Start service when system start up.
+    #    service_control enable 'fail2ban_enable' 'YES'
+    #fi
 
     echo 'export status_fail2ban_config="DONE"' >> ${STATUS_FILE}
 }

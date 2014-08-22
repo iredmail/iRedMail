@@ -36,10 +36,12 @@
 # -------------------------------------------
 cleanup_disable_selinux()
 {
-    ECHO_INFO "Disable SELinux in /etc/selinux/config."
-    [ -f /etc/selinux/config ] && perl -pi -e 's#^(SELINUX=)(.*)#${1}disabled#' /etc/selinux/config
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        ECHO_INFO "Disable SELinux in /etc/selinux/config."
+        [ -f /etc/selinux/config ] && perl -pi -e 's#^(SELINUX=)(.*)#${1}disabled#' /etc/selinux/config
 
-    setenforce 0 >/dev/null 2>&1
+        setenforce 0 >/dev/null 2>&1
+    fi
 
     echo 'export status_cleanup_disable_selinux="DONE"' >> ${STATUS_FILE}
 }
@@ -47,24 +49,22 @@ cleanup_disable_selinux()
 cleanup_remove_sendmail()
 {
     # Remove sendmail.
-    eval ${LIST_ALL_PKGS} | grep '^sendmail' &>/dev/null
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        eval ${LIST_ALL_PKGS} | grep '^sendmail' &>/dev/null
 
-    if [ X"$?" == X"0" ]; then
-        ECHO_QUESTION -n "Would you like to *REMOVE* sendmail now? [Y|n]"
-        read_setting ${AUTO_CLEANUP_REMOVE_SENDMAIL}
-        case $ANSWER in
-            N|n )
-                ECHO_INFO "Disable sendmail, it is replaced by Postfix." && \
-                eval ${disable_service} sendmail && \
-                export HAS_SENDMAIL='YES'
-                ;;
-            Y|y|* )
-                eval ${remove_pkg} sendmail && \
-                export HAS_SENDMAIL='NO'
-                ;;
-        esac
-    else
-        :
+        if [ X"$?" == X"0" ]; then
+            ECHO_QUESTION -n "Would you like to *REMOVE* sendmail now? [Y|n]"
+            read_setting ${AUTO_CLEANUP_REMOVE_SENDMAIL}
+            case $ANSWER in
+                N|n )
+                    ECHO_INFO "Disable sendmail, it is replaced by Postfix." && \
+                    service_control disable sendmail
+                    ;;
+                Y|y|* )
+                    eval ${remove_pkg} sendmail
+                    ;;
+            esac
+        fi
     fi
 
     echo 'export status_cleanup_remove_sendmail="DONE"' >> ${STATUS_FILE}
@@ -132,21 +132,16 @@ cleanup_replace_firewall_rules()
                 [ X"${HTTPD_PORT}" != X"80" ]&& \
                     perl -pi -e 's#(.*)80(,.*)#${1}$ENV{HTTPD_PORT}${2}#' ${FIREWALL_RULE_CONF}
 
-                if [ X"${DISTRO}" == X'RHEL' ]; then
-                    if [ X"${USE_FIREWALLD}" == X'YES' ]; then
-                        service_control enable firewalld >/dev/null
-                    else
-                        eval ${enable_service} iptables >/dev/null
-                    fi
-                elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-                    # Copy sample rc script for Debian.
-                    cp -f ${SAMPLE_DIR}/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
-                    chmod +x ${DIR_RC_SCRIPTS}/iptables
-
-                    eval ${enable_service} iptables >/dev/null
-
+                if [ X"${USE_FIREWALLD}" == X'YES' ]; then
+                    service_control enable firewalld >/dev/null
                 else
-                    eval ${enable_service} iptables >/dev/null
+                    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+                        # Copy sample rc script for Debian.
+                        cp -f ${SAMPLE_DIR}/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
+                        chmod +x ${DIR_RC_SCRIPTS}/iptables
+                    fi
+
+                    service_control enable iptables >/dev/null
                 fi
             elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
                 ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
@@ -186,27 +181,27 @@ cleanup_replace_firewall_rules()
 
 cleanup_replace_mysql_config()
 {
-    if [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X"OPENLDAP" ]; then
-        # Both MySQL and OpenLDAP backend need MySQL database server, so prompt
-        # this config file replacement.
-        ECHO_QUESTION "Would you like to use MySQL configuration file shipped within iRedMail now?"
-        ECHO_QUESTION -n "File: ${MYSQL_MY_CNF}. [Y|n]"
-        read_setting ${AUTO_CLEANUP_REPLACE_MYSQL_CONFIG}
-        case $ANSWER in
-            N|n ) ECHO_INFO "Skip copy and modify MySQL config file." ;;
-            Y|y|* )
-                backup_file ${MYSQL_MY_CNF}
-                ECHO_INFO "Copy MySQL sample file: ${MYSQL_MY_CNF}."
-                cp -f ${SAMPLE_DIR}/mysql/my.cnf ${MYSQL_MY_CNF}
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'OPENLDAP' ]; then
+            # Both MySQL and OpenLDAP backend need MySQL database server, so prompt
+            # this config file replacement.
+            ECHO_QUESTION "Would you like to use MySQL configuration file shipped within iRedMail now?"
+            ECHO_QUESTION -n "File: ${MYSQL_MY_CNF}. [Y|n]"
+            read_setting ${AUTO_CLEANUP_REPLACE_MYSQL_CONFIG}
+            case $ANSWER in
+                N|n ) ECHO_INFO "Skip copy and modify MySQL config file." ;;
+                Y|y|* )
+                    backup_file ${MYSQL_MY_CNF}
+                    ECHO_INFO "Copy MySQL sample file: ${MYSQL_MY_CNF}."
+                    cp -f ${SAMPLE_DIR}/mysql/my.cnf ${MYSQL_MY_CNF}
 
-                ECHO_INFO "Enable SSL support for MySQL server."
-                perl -pi -e 's/^#(ssl-cert.*=)(.*)/${1} $ENV{SSL_CERT_FILE}/' ${MYSQL_MY_CNF}
-                perl -pi -e 's/^#(ssl-key.*=)(.*)/${1} $ENV{SSL_KEY_FILE}/' ${MYSQL_MY_CNF}
-                perl -pi -e 's/^#(ssl-cipher.*)/${1}/' ${MYSQL_MY_CNF}
-                ;;
-        esac
-    else
-        :
+                    ECHO_INFO "Enable SSL support for MySQL server."
+                    perl -pi -e 's/^#(ssl-cert.*=)(.*)/${1} $ENV{SSL_CERT_FILE}/' ${MYSQL_MY_CNF}
+                    perl -pi -e 's/^#(ssl-key.*=)(.*)/${1} $ENV{SSL_KEY_FILE}/' ${MYSQL_MY_CNF}
+                    perl -pi -e 's/^#(ssl-cipher.*)/${1}/' ${MYSQL_MY_CNF}
+                    ;;
+            esac
+        fi
     fi
 
     echo 'export status_cleanup_replace_mysql_config="DONE"' >> ${STATUS_FILE}
@@ -318,7 +313,7 @@ EOF
     echo 'export status_cleanup_backup_scripts="DONE"' >> ${STATUS_FILE}
 }
 
-cleanup_pgsql_force_password()
+cleanup_pgsql_force_connect_with_password()
 {
     ECHO_DEBUG "Force all users to connect PGSQL server with password."
 
@@ -332,6 +327,8 @@ cleanup_pgsql_force_password()
         perl -pi -e 's#^(local.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
         perl -pi -e 's#^(host.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
     fi
+
+    echo 'export status_cleanup_pgsql_force_connect_with_password="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup()
@@ -375,16 +372,16 @@ EOF
     chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${FILE_IREDMAIL_INSTALLATION_DETAILS} ${FILE_IREDMAIL_LINKS}
     chmod -R 0700 ${FILE_IREDMAIL_INSTALLATION_DETAILS} ${FILE_IREDMAIL_LINKS}
 
-    [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_disable_selinux
-    [ X"${DISTRO}" != X'OPENBSD' ] && check_status_before_run cleanup_remove_sendmail
+    check_status_before_run cleanup_disable_selinux
+    check_status_before_run cleanup_remove_sendmail
     check_status_before_run cleanup_remove_mod_python
 
     [ X"${KERNEL_NAME}" == X'LINUX' -o X"${KERNEL_NAME}" == X'OPENBSD' ] && \
         check_status_before_run cleanup_replace_firewall_rules
 
-    [ X"${DISTRO}" == X"RHEL" ] && check_status_before_run cleanup_replace_mysql_config
+    check_status_before_run cleanup_replace_mysql_config
     check_status_before_run cleanup_backup_scripts
-    [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_password
+    [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_connect_with_password
 
     if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
         check_status_before_run cleanup_update_compile_spamassassin_rules

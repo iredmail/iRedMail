@@ -63,11 +63,11 @@ clamav_config()
     elif [ X"${DISTRO}" == X"FREEBSD" ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         pw usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
-    fi
 
-    # FreeBSD: Start clamd & freshclamd when system start up.
-    freebsd_enable_service_in_rc_conf 'clamav_clamd_enable' 'YES'
-    freebsd_enable_service_in_rc_conf 'clamav_freshclam_enable' 'YES'
+        # Start service when system start up.
+        service_control enable 'clamav_clamd_enable' 'YES'
+        service_control enable 'clamav_freshclam_enable' 'YES'
+    fi
 
     # Add user alias in Postfix
     add_postfix_alias ${CLAMAV_USER} ${SYS_ROOT_USER}

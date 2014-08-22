@@ -364,126 +364,75 @@ hash_maildir()
     echo ${maildir}
 }
 
-# -----------------------------------------------------------------
-# - OS/OS_Version/Arch dependent.
-# -----------------------------------------------------------------
-enable_service_systemd()
-{
-    services="$@"
-    for i in $services; do
-        ECHO_DEBUG "Enable service: $i."
-        systemctl enable $i
-    done
-}
-
-disable_service_systemd()
-{
-    services="$@"
-    for i in $services; do
-        ECHO_DEBUG "Disable service: $i."
-        systemctl disable $i
-    done
-}
-
-enable_service_rh()
-{
-    services="$@"
-    for i in $services; do
-        if [ -x /etc/init.d/$i ]; then
-            ECHO_DEBUG "Enable service: $i."
-            /sbin/chkconfig --level 345 $i on
-        fi
-    done
-}
-
-disable_service_rh()
-{
-    services="$@"
-    for i in $services; do
-        if [ -x /etc/init.d/$i ]; then
-            ECHO_DEBUG "Disable service: $i."
-            /sbin/chkconfig --level 345 $i off
-        fi
-    done
-}
-
-enable_service_debian()
-{
-    services="$@"
-    for i in $services; do
-        if [ -x /etc/init.d/$i ]; then
-            ECHO_DEBUG "Enable service: $i."
-            update-rc.d $i defaults
-        fi
-    done
-}
-
-disable_service_debian()
-{
-    services="$@"
-    for i in $services; do
-        if [ -x /etc/init.d/$i ]; then
-            ECHO_DEBUG "Disable service: $i."
-            update-rc.d -f $i remove
-        fi
-    done
-}
-
-service_control_systemd()
-{
-    action="$1"
-    service="$2"
-    systemctl $action $service
-}
-
+# Service control: enable, disable, [start | stop | restart]
 service_control()
 {
     action="$1"
-    service="$2"
-    tmp_rc_script="${DIR_RC_SCRIPTS}/${service}"
-    if [ -x ${tmp_rc_script} ]; then
-        ${tmp_rc_script} ${action}
-    elif which systemctl &>/dev/null; then
-        service_control_systemd $action $service
-    else
-        ECHO_ERROR "File not exist or not executable: ${tmp_rc_script}."
+    shift 1
+    services="$@"
+
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        for $srv in $services; do
+            ECHO_DEBUG "Service control: $action $srv."
+
+            if [ X"${USE_FIREWALLD}" == X'YES' ]; then
+                systemctl $action $srv
+            else
+                rc_script="${DIR_RC_SCRIPTS}/$src"
+
+                if [ X"${DISTRO}" == X'RHEL' ]; then
+                    if [ X"${action}" == X'enable' ]; then
+                        /sbin/chkconfig --level 345 $srv on
+                    elif [ X"${action}" == X'disable' ]; then
+                        /sbin/chkconfig --level 345 $srv off
+                    else
+                        # start, stop, restart
+                        ${rc_script} $action
+                    fi
+                elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+                    if [ X"${action}" == X'enable' ]; then
+                        update-rc.d $srv defaults
+                    elif [ X"${action}" == X'disable' ]; then
+                        update-rc.d -f $i remove
+                    else
+                        ${rc_script} $action
+                    fi
+                fi
+            fi
+        done
+    elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        if [ X"${action}" == X'enable' ]; then
+            [ -f /etc/rc.conf ] || touch /etc/rc.conf
+            if [ X"$#" == X'2' ]; then
+                var="${1}"
+                value="${2}"
+                final_option="${var}='${value}'"
+                comment_mark="# ${PROG_NAME}-${var}"
+                if ! grep "^${comment_mark}$" /etc/rc.conf &>/dev/null; then
+                    ECHO_DEBUG "Add setting in /etc/rc.conf: ${final_option}"
+                    echo "${comment_mark}" >> /etc/rc.conf
+                    echo "${final_option}" >> /etc/rc.conf
+                else
+                    ECHO_DEBUG "Skip adding setting in /etc/rc.conf: ${final_option}"
+                fi
+            fi
+        elif [ X"${action}" == X'disable' ]; then
+            # Already handled in functions/*.sh.
+            :
+        else
+            ${rc_script} $action
+        fi
+    elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+        if [ X"${action}" == X'enable' ]; then
+            echo "pkg_scripts='${services}'" >> ${RC_CONF_LOCAL}
+        elif [ X"${action}" == X'disable' ]; then
+            # No need to touch files to disable services.
+            :
+        else
+            ${rc_script} $action
+        fi
     fi
 }
-
-#enable_service()
-#{
-#    services="$@"
-#
-#    for i in $services; do
-#        ECHO_DEBUG "Enable service: $i."
-#
-#        if [ X"${DISTRO}" == X'RHEL' ]; then
-#            if [ X"${DISTRO_VERSION}" == X'6' ]; then
-#                if [ -x /etc/init.d/$i ]; then
-#                    /sbin/chkconfig --level 345 $i on
-#                fi
-#            else
-#                systemctl enable $i
-#            fi
-#        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-#            update-rc.d $i defaults
-#        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-#            [ -f ${RC_CONF_LOCAL} ] || touch ${RC_CONF_LOCAL}
-#            if [ X"$#" == X'2' ]; then
-#                flag="${1}"
-#                value="${2}"
-#                comment_mark="# ${PROG_NAME}-${flag}"
-#                if ! grep "^${comment_mark}$" ${RC_CONF_LOCAL} &>/dev/null; then
-#                    ECHO_DEBUG "Add flag in ${RC_CONF_LOCAL}: ${flag}='${value}'"
-#                    echo "${comment_mark}" >> ${RC_CONF_LOCAL}
-#                    echo "${flag}='${value}'" >> ${RC_CONF_LOCAL}
-#                else
-#                    ECHO_DEBUG "Skip adding flag in ${RC_CONF_LOCAL}: ${pkg}='${value}'"
-#                fi
-#            fi
-#        fi
-#    done
-#}
 
 # Generate MD5 password
 gen_md5_passwd()
@@ -608,25 +557,6 @@ remove_pkg_debian()
     [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
 }
 
-enable_service_openbsd()
-{
-    # USAGE: enable_service_openbsd flag value
-    # For example: enable_service_openbsd sendmail_flags ''
-    [ -f ${RC_CONF_LOCAL} ] || touch ${RC_CONF_LOCAL}
-    if [ X"$#" == X'2' ]; then
-        flag="${1}"
-        value="${2}"
-        comment_mark="# ${PROG_NAME}-${flag}"
-        if ! grep "^${comment_mark}$" ${RC_CONF_LOCAL} &>/dev/null; then
-            ECHO_DEBUG "Add flag in ${RC_CONF_LOCAL}: ${flag}='${value}'"
-            echo "${comment_mark}" >> ${RC_CONF_LOCAL}
-            echo "${flag}='${value}'" >> ${RC_CONF_LOCAL}
-        else
-            ECHO_DEBUG "Skip adding flag in ${RC_CONF_LOCAL}: ${pkg}='${value}'"
-        fi
-    fi
-}
-
 freebsd_add_make_conf()
 {
     # USAGE: freebsd_add_make_conf VAR VALUE
@@ -645,25 +575,3 @@ freebsd_add_make_conf()
         fi
     fi
 }
-
-freebsd_enable_service_in_rc_conf()
-{
-    # USAGE: freebsd_enable_service_in_rc_conf VAR VALUE
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        [ -f /etc/rc.conf ] || touch /etc/rc.conf
-        if [ X"$#" == X'2' ]; then
-            var="${1}"
-            value="${2}"
-            final_option="${1}='${2}'"
-            comment_mark="# ${PROG_NAME}-${var}"
-            if ! grep "^${comment_mark}$" /etc/rc.conf &>/dev/null; then
-                ECHO_DEBUG "Add setting in /etc/rc.conf: ${final_option}"
-                echo "${comment_mark}" >> /etc/rc.conf
-                echo "${final_option}" >> /etc/rc.conf
-            else
-                ECHO_DEBUG "Skip adding setting in /etc/rc.conf: ${final_option}"
-            fi
-        fi
-    fi
-}
-

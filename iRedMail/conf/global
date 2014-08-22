@@ -339,8 +339,6 @@ fi
 # remove_pkg: function used to remove packages without confirm.
 # LIST_ALL_PKGS: command used to list all installed packages.
 # LIST_FILES_IN_PKG: command used to list files installed by special package.
-# enable_service: function (defined in conf/core) used to enable services.
-# disable_service: function (defined in conf/core) used to disable services.
 if [ X"${DISTRO}" == X'RHEL' ]; then
     # RHEL/CentOS.
     # System user: root. Note: not all OSes have group 'root'.
@@ -359,19 +357,12 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export LIST_FILES_IN_PKG='rpm -ql'
 
     if [ X"${DISTRO_VERSION}" == X'6' ]; then
-        # Service control. Defined in file: conf/core.
-        export enable_service='enable_service_rh'
-        export disable_service='disable_service_rh'
-
         ENABLE_BACKEND_MYSQL='YES'
         ENABLE_BACKEND_MARIADB='NO'
 
         # iptables rule file.
         export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/iptables"
     else
-        export enable_service='enable_service_systemd'
-        export disable_service='disable_service_systemd'
-
         # No MySQL available since RHEL/CentOS 7.
         ENABLE_BACKEND_MYSQL='NO'
         ENABLE_BACKEND_MARIADB='MYSQL'
@@ -424,10 +415,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export remove_pkg='remove_pkg_debian'
     export LIST_ALL_PKGS="dpkg -l |awk '{print $2}'"
     export LIST_FILES_IN_PKG='dpkg -L'
-
-    # Service control.
-    export enable_service="enable_service_debian"
-    export disable_service="disable_service_debian"
 
     if [ X"${DISTRO}" == X"UBUNTU" ]; then
         # Syslog config: rsyslog.
@@ -488,10 +475,6 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     # Port directory
     export PORT_WRKDIRPREFIX='/usr/ports'
 
-    # Service control.
-    export enable_service="enable_service_freebsd"
-    export disable_service="disable_service_freebsd"
-
     # Syslog config: rsyslog.
     export SYSLOG_CONF='/etc/syslog.conf'
     export SYSLOG_POSTROTATE_CMD=''
@@ -529,10 +512,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export remove_pkg='pkg_delete'
     export LIST_ALL_PKGS="pkg_info -a | awk '{print $1}'"
     export LIST_FILES_IN_PKG='pkg_info -L'
-
-    # Service control.
-    export enable_service="enable_service_openbsd"
-    export disable_service="disable_service_openbsd"
 
     # Syslog config: rsyslog.
     export SYSLOG_CONF='/etc/syslog.conf'

@@ -716,23 +716,22 @@ EOF
 
 amavisd_config()
 {
-    if [ X"${DISTRO}" == X"RHEL" \
+    if [ X"${DISTRO}" == X'RHEL' \
         -o X"${DISTRO}" == X'FREEBSD' \
-        -o X"${DISTRO}" == X'OPENBSD' \
-        ]; then
+        -o X"${DISTRO}" == X'OPENBSD' ]; then
         check_status_before_run amavisd_config_rhel
     elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         check_status_before_run amavisd_config_debian
-    else
-        :
     fi
-
-    # FreeBSD: Start amavisd when system start up.
-    freebsd_enable_service_in_rc_conf 'amavisd_enable' 'YES'
-    freebsd_enable_service_in_rc_conf 'amavisd_pidfile' '/var/amavis/amavisd.pid'
-    freebsd_enable_service_in_rc_conf 'amavis_milter_enable' 'NO'
-    freebsd_enable_service_in_rc_conf 'amavis_p0fanalyzer_enable' 'NO'
 
     check_status_before_run amavisd_config_general
     check_status_before_run amavisd_import_sql
+
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # Start service when system start up.
+        service_control enable 'amavisd_enable' 'YES'
+        service_control enable 'amavisd_pidfile' '/var/amavis/amavisd.pid'
+        service_control enable 'amavis_milter_enable' 'NO'
+        service_control enable 'amavis_p0fanalyzer_enable' 'NO'
+    fi
 }
