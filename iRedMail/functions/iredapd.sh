@@ -50,9 +50,11 @@ iredapd_config()
 
     chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
 
-    ECHO_DEBUG "Make iredapd start after system startup."
-    service_control enable iredapd &>/dev/null
-    export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
+    if [ X"${DISTRO}" != X'OPENBSD' ]; then
+        ECHO_DEBUG "Make iredapd start after system startup."
+        service_control enable iredapd &>/dev/null
+        export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
+    fi
 
     # Set file permission.
     chown -R ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_USER} ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}

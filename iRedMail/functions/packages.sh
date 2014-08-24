@@ -298,7 +298,7 @@ install_all()
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} p5-DBD-Pg"
 
         ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new p5-Mail-SPF p5-Mail-SpamAssassin clamav"
-        PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME} ${POSTFIX_RC_SCRIPT_NAME}"
+        PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
 
     # Roundcube
@@ -329,18 +329,15 @@ install_all()
         fi
     fi
 
-    ############
     # iRedAPD.
-    #
     # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
     # RC script ready in early stage.
-
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap MySQL-python"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} MySQL-python"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
 
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
@@ -351,6 +348,9 @@ install_all()
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} py-psycopg2"
         PKG_SCRIPTS="${PKG_SCRIPTS} iredapd"
     fi
+
+    # OpenBSD: List postfix as last startup script.
+    export PKG_SCRIPTS="${PKG_SCRIPTS} ${POSTFIX_RC_SCRIPT_NAME}"
 
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
@@ -385,7 +385,7 @@ install_all()
         fi
     fi
 
-    #### Fail2ban ####
+    # Fail2ban
     if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
             # No port available.
@@ -401,9 +401,7 @@ install_all()
     fi
 
 
-    ############################
     # Misc packages & services.
-    #
     if [ X"${DISTRO}" == X"RHEL" ]; then
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch tmpwatch crontabs dos2unix logwatch"
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
@@ -417,7 +415,7 @@ install_all()
     # Disable Ubuntu firewall rules, we have iptables init script and rule file.
     [ X"${DISTRO}" == X"UBUNTU" ] && export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
 
-    export ALL_PKGS ENABLED_SERVICES
+    export ALL_PKGS ENABLED_SERVICES PKG_SCRIPTS
 
     # Install all packages.
     install_all_pkgs()
@@ -445,8 +443,12 @@ install_all()
         fi
 
         # Enable/Disable services.
-        service_control enable ${ENABLED_SERVICES} &>/dev/null
-        service_control disable ${DISABLED_SERVICES} &>/dev/null
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            service_control enable ${PKG_SCRIPTS} &>/dev/null
+        else
+            service_control enable ${ENABLED_SERVICES} &>/dev/null
+            service_control disable ${DISABLED_SERVICES} &>/dev/null
+        fi
 
         echo 'export status_enable_all_services="DONE"' >> ${STATUS_FILE}
     }

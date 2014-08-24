@@ -30,8 +30,14 @@ backend_install()
         check_status_before_run ldap_server_config
 
         # Initialize MySQL database server.
+        if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+            ECHO_INFO "Configure MariaDB database server."
+        else
+            ECHO_INFO "Configure MySQL database server."
+        fi
         mysql_generate_defauts_file_root
         check_status_before_run mysql_initialize
+
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
             ECHO_INFO "Configure MariaDB database server."
@@ -43,6 +49,7 @@ backend_install()
             check_status_before_run mysql_initialize
         fi
         check_status_before_run mysql_import_vmail_users
+
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         check_status_before_run pgsql_initialize
         check_status_before_run pgsql_import_vmail_users

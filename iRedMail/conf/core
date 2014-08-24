@@ -285,16 +285,14 @@ extract_pkg()
 
 check_status_before_run()
 {
+    # Every function will append status info to ${STATUS_FILE}. For example,
     #
-    # Every function will append status info to ${STATUS_FILE}.
-    # Format is:
-    #   function_name() {:}
-    # Status info:
-    #   export status_function_name='DONE'
+    #   export status_[function_name]='DONE'
     #
     _status="status_$1"
     if [ X"$(eval echo \$${_status})" != X"DONE" ]; then
         $1
+        echo "#export ${_status}='DONE'" >> ${STATUS_FILE}
     else
         ECHO_SKIP "Function: $1."
     fi
@@ -369,10 +367,11 @@ service_control()
 {
     action="$1"
     shift 1
-    services="$@"
+    service="$1"    # start, stop, restart
+    services="$@"   # enable, disable
 
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-        for $srv in $services; do
+        for $srv in ${services}; do
             ECHO_DEBUG "Service control: $action $srv."
 
             if [ X"${USE_FIREWALLD}" == X'YES' ]; then
@@ -420,7 +419,7 @@ service_control()
             # Already handled in functions/*.sh.
             :
         else
-            ${rc_script} $action
+            ${DIR_RC_SCRIPTS}/${service} $action
         fi
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if [ X"${action}" == X'enable' ]; then
@@ -429,7 +428,7 @@ service_control()
             # No need to touch files to disable services.
             :
         else
-            ${rc_script} $action
+            ${DIR_RC_SCRIPTS}/${service} $action
         fi
     fi
 }
