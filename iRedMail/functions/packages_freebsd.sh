@@ -51,9 +51,10 @@ install_all()
     freebsd_add_make_conf 'WANT_MYSQL_VER' "${WANT_MYSQL_VER}"
     freebsd_add_make_conf 'WANT_MARIADB_VER' "${WANT_MARIADB_VER}"
     freebsd_add_make_conf 'WANT_PGSQL_VER' "${WANT_PGSQL_VER}"
-    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7'
     freebsd_add_make_conf 'APACHE_PORT' "www/apache${WANT_APACHE_VER}"
     freebsd_add_make_conf 'WANT_BDB_VER' "${WANT_BDB_VER}"
+    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7'
+    freebsd_add_make_conf 'DEFAULT_VERSIONS' '+=apache=2.2'
 
     for p in \
         archivers_p5-Archive-Tar \
@@ -608,8 +609,6 @@ EOF
     rm -f /var/db/ports/www_apache${WANT_APACHE_VER}/options${SED_EXTENSION} &>/dev/null
 
     ALL_PORTS="${ALL_PORTS} www/apache${WANT_APACHE_VER}"
-    if [ X"${DEFAULT_WEB_SERVER}" == X'APACHE' ]; then
-    fi
 
     # Nginx
     cat > /var/db/ports/www_nginx/options <<EOF

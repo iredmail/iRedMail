@@ -371,13 +371,13 @@ service_control()
     services="$@"   # enable, disable
 
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-        for $srv in ${services}; do
+        for srv in ${services}; do
             ECHO_DEBUG "Service control: $action $srv."
 
             if [ X"${USE_FIREWALLD}" == X'YES' ]; then
                 systemctl $action $srv
             else
-                rc_script="${DIR_RC_SCRIPTS}/$src"
+                rc_script="${DIR_RC_SCRIPTS}/$srv"
 
                 if [ X"${DISTRO}" == X'RHEL' ]; then
                     if [ X"${action}" == X'enable' ]; then
