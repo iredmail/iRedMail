@@ -565,12 +565,16 @@ freebsd_add_make_conf()
         value="${2}"
         final_option="${1}=${2}"
         comment_mark="# ${PROG_NAME}-${var}"
-        if ! grep "^${comment_mark}$" ${FREEBSD_MAKE_CONF} &>/dev/null; then
-            ECHO_DEBUG "Add make option in ${FREEBSD_MAKE_CONF}: ${final_option}"
-            echo "${comment_mark}" >> ${FREEBSD_MAKE_CONF}
+        if [ X"${var}" == X'DEFAULT_VERSIONS' ]; then
             echo "${final_option}" >> ${FREEBSD_MAKE_CONF}
         else
-            ECHO_DEBUG "Skip adding option in ${FREEBSD_MAKE_CONF}: ${final_option}"
+            if ! grep "^${comment_mark}$" ${FREEBSD_MAKE_CONF} &>/dev/null; then
+                ECHO_DEBUG "Add make option in ${FREEBSD_MAKE_CONF}: ${final_option}"
+                echo "${comment_mark}" >> ${FREEBSD_MAKE_CONF}
+                echo "${final_option}" >> ${FREEBSD_MAKE_CONF}
+            else
+                ECHO_DEBUG "Skip adding option in ${FREEBSD_MAKE_CONF}: ${final_option}"
+            fi
         fi
     fi
 }
