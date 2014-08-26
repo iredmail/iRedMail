@@ -33,35 +33,34 @@ install_all()
     export PACKAGE_BUILDING='yes'
     export BATCH='yes'
 
-    export WANT_OPENLDAP_VER='24'
-    export WANT_MARIADB_VER='55'
-    export WANT_PGSQL_VER='93'
-    export WANT_BDB_VER='48'
-    export WANT_APACHE_VER='22'
+    export PREFERRED_OPENLDAP_VER='24'
+    export PREFERRED_MARIADB_VER='55'
+    export PREFERRED_PGSQL_VER='93'
+    export PREFERRED_BDB_VER='48'
+    export PREFERRED_APACHE_VER='22'
 
     if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-        export WANT_MYSQL_VER='55m'
+        export PREFERRED_MYSQL_VER='55m'
     else
-        export WANT_MYSQL_VER='55'
+        export PREFERRED_MYSQL_VER='55'
     fi
 
     freebsd_add_make_conf 'OPTIONS_SET' 'SASL'
     freebsd_add_make_conf 'OPTIONS_UNSET' 'X11'
-    freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${WANT_OPENLDAP_VER}"
-    freebsd_add_make_conf 'WANT_MYSQL_VER' "${WANT_MYSQL_VER}"
-    freebsd_add_make_conf 'WANT_MARIADB_VER' "${WANT_MARIADB_VER}"
-    freebsd_add_make_conf 'WANT_PGSQL_VER' "${WANT_PGSQL_VER}"
-    freebsd_add_make_conf 'APACHE_PORT' "www/apache${WANT_APACHE_VER}"
-    freebsd_add_make_conf 'WANT_BDB_VER' "${WANT_BDB_VER}"
-    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7'
-    freebsd_add_make_conf 'DEFAULT_VERSIONS' '+=apache=2.2'
+    freebsd_add_make_conf 'PREFERRED_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
+    freebsd_add_make_conf 'PREFERRED_MYSQL_VER' "${PREFERRED_MYSQL_VER}"
+    freebsd_add_make_conf 'PREFERRED_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
+    freebsd_add_make_conf 'PREFERRED_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
+    freebsd_add_make_conf 'APACHE_PORT' "www/apache${PREFERRED_APACHE_VER}"
+    freebsd_add_make_conf 'PREFERRED_BDB_VER' "${PREFERRED_BDB_VER}"
+    freebsd_add_make_conf 'DEFAULT_VERSIONS' "python=2.7 python2=2.7 apache=2.2 pgsql=${PREFERRED_PGSQL_VER}"
 
     for p in \
         archivers_p5-Archive-Tar \
         converters_libiconv \
-        databases_postgresql${WANT_PGSQL_VER}-client \
-        databases_postgresql${WANT_PGSQL_VER}-contrib \
-        databases_postgresql${WANT_PGSQL_VER}-server \
+        databases_postgresql${PREFERRED_PGSQL_VER}-client \
+        databases_postgresql${PREFERRED_PGSQL_VER}-contrib \
+        databases_postgresql${PREFERRED_PGSQL_VER}-server \
         databases_py-MySQLdb \
         devel_apr1 \
         devel_m4 \
@@ -79,9 +78,9 @@ install_all()
         mail_policyd2 \
         mail_postfix \
         mail_roundcube \
-        net_openldap${WANT_OPENLDAP_VER}-client \
-        net_openldap${WANT_OPENLDAP_VER}-sasl-client \
-        net_openldap${WANT_OPENLDAP_VER}-server \
+        net_openldap${PREFERRED_OPENLDAP_VER}-client \
+        net_openldap${PREFERRED_OPENLDAP_VER}-sasl-client \
+        net_openldap${PREFERRED_OPENLDAP_VER}-server \
         net_openslp \
         net_py-ldap2 \
         security_amavisd-new \
@@ -92,7 +91,7 @@ install_all()
         security_libssh2 \
         security_p5-Authen-SASL \
         security_p5-IO-Socket-SSL \
-        www_apache${WANT_APACHE_VER} \
+        www_apache${PREFERRED_APACHE_VER} \
         www_nginx; do
         mkdir -p /var/db/ports/${p} &>/dev/null
     done
@@ -150,7 +149,7 @@ OPTIONS_FILE_SET+=SLP_SECURITY
 EOF
 
     # OpenLDAP. REQUIRED for LDAP backend.
-    cat > /var/db/ports/net_openldap${WANT_OPENLDAP_VER}-server/options <<EOF
+    cat > /var/db/ports/net_openldap${PREFERRED_OPENLDAP_VER}-server/options <<EOF
 OPTIONS_FILE_SET+=ACCESSLOG
 OPTIONS_FILE_SET+=ACI
 OPTIONS_FILE_SET+=AUDITLOG
@@ -192,17 +191,17 @@ OPTIONS_FILE_UNSET+=UNIQUE
 OPTIONS_FILE_SET+=VALSORT
 EOF
 
-    cat > /var/db/ports/net_openldap${WANT_OPENLDAP_VER}-client/options <<EOF
+    cat > /var/db/ports/net_openldap${PREFERRED_OPENLDAP_VER}-client/options <<EOF
 OPTIONS_FILE_UNSET+=FETCH
 EOF
 
-    cat > /var/db/ports/net_openldap${WANT_OPENLDAP_VER}-sasl-client/options <<EOF
+    cat > /var/db/ports/net_openldap${PREFERRED_OPENLDAP_VER}-sasl-client/options <<EOF
 OPTIONS_FILE_UNSET+=FETCH
 EOF
 
     # No options for MySQL server.
     # PostgreSQL
-    cat > /var/db/ports/databases_postgresql${WANT_PGSQL_VER}-server/options <<EOF
+    cat > /var/db/ports/databases_postgresql${PREFERRED_PGSQL_VER}-server/options <<EOF
 OPTIONS_FILE_SET+=INTDATE
 OPTIONS_FILE_SET+=NLS
 OPTIONS_FILE_SET+=SSL
@@ -220,7 +219,7 @@ OPTIONS_FILE_UNSET+=OPTIMIZED_CFLAGS
 OPTIONS_FILE_UNSET+=PAM
 EOF
 
-    cat > /var/db/ports/databases_postgresql${WANT_PGSQL_VER}-client/options <<EOF
+    cat > /var/db/ports/databases_postgresql${PREFERRED_PGSQL_VER}-client/options <<EOF
 OPTIONS_FILE_SET+=INTDATE
 OPTIONS_FILE_SET+=NLS
 OPTIONS_FILE_SET+=SSL
@@ -238,20 +237,20 @@ OPTIONS_FILE_UNSET+=OPTIMIZED_CFLAGS
 OPTIONS_FILE_UNSET+=PAM
 EOF
 
-    cat > /var/db/ports/databases_postgresql${WANT_PGSQL_VER}-contrib/options <<EOF
+    cat > /var/db/ports/databases_postgresql${PREFERRED_PGSQL_VER}-contrib/options <<EOF
 OPTIONS_FILE_UNSET+=OSSP_UUID
 EOF
 
     if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        ALL_PORTS="${ALL_PORTS} net/openldap${WANT_OPENLDAP_VER}-sasl-client net/openldap${WANT_OPENLDAP_VER}-server databases/mysql${WANT_MYSQL_VER}-server"
+        ALL_PORTS="${ALL_PORTS} net/openldap${PREFERRED_OPENLDAP_VER}-sasl-client net/openldap${PREFERRED_OPENLDAP_VER}-server databases/mysql${PREFERRED_MYSQL_VER}-server"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-            ALL_PORTS="${ALL_PORTS} databases/mariadb${WANT_MARIADB_VER}-server"
+            ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-server"
         else
-            ALL_PORTS="${ALL_PORTS} databases/mysql${WANT_MYSQL_VER}-server"
+            ALL_PORTS="${ALL_PORTS} databases/mysql${PREFERRED_MYSQL_VER}-server"
         fi
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ALL_PORTS="${ALL_PORTS} databases/postgresql${WANT_PGSQL_VER}-server databases/postgresql${WANT_PGSQL_VER}-contrib"
+        ALL_PORTS="${ALL_PORTS} databases/postgresql${PREFERRED_PGSQL_VER}-server databases/postgresql${PREFERRED_PGSQL_VER}-contrib"
     fi
 
     # Dovecot v2.0.x. REQUIRED.
@@ -501,7 +500,7 @@ OPTIONS_FILE_SET+=UCS4
 EOF
 
     # Apache v2.2.x. REQUIRED.
-    cat > /var/db/ports/www_apache${WANT_APACHE_VER}/options <<EOF
+    cat > /var/db/ports/www_apache${PREFERRED_APACHE_VER}/options <<EOF
 OPTIONS_FILE_SET+=THREADS
 OPTIONS_FILE_UNSET+=MYSQL
 OPTIONS_FILE_UNSET+=PGSQL
@@ -597,18 +596,18 @@ EOF
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # apr bdb
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/www_apache${WANT_APACHE_VER}/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/www_apache${PREFERRED_APACHE_VER}/options
         # ldap auth module
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/www_apache${WANT_APACHE_VER}/options
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=AUTHNZ_LDAP#OPTIONS_FILE_SET+=AUTHNZ_LDAP#' /var/db/ports/www_apache${WANT_APACHE_VER}/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/www_apache${PREFERRED_APACHE_VER}/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=AUTHNZ_LDAP#OPTIONS_FILE_SET+=AUTHNZ_LDAP#' /var/db/ports/www_apache${PREFERRED_APACHE_VER}/options
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/www_apache${WANT_APACHE_VER}/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/www_apache${PREFERRED_APACHE_VER}/options
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/www_apache${WANT_APACHE_VER}/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/www_apache${PREFERRED_APACHE_VER}/options
     fi
-    rm -f /var/db/ports/www_apache${WANT_APACHE_VER}/options${SED_EXTENSION} &>/dev/null
+    rm -f /var/db/ports/www_apache${PREFERRED_APACHE_VER}/options${SED_EXTENSION} &>/dev/null
 
-    ALL_PORTS="${ALL_PORTS} www/apache${WANT_APACHE_VER}"
+    ALL_PORTS="${ALL_PORTS} www/apache${PREFERRED_APACHE_VER}"
 
     # Nginx
     cat > /var/db/ports/www_nginx/options <<EOF
