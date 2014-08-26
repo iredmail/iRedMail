@@ -959,7 +959,7 @@ EOF
                 if [ X"$?" == X"0" ]; then
                     # Log used time
                     used_time="$(($(date +%s)-port_start_time))"
-                    echo "export status_fetch_port_${portname}='DONE'  # ${used_time} seconds, ~$((used_time/60)) minute(s)" >> ${STATUS_FILE}
+                    echo "export status_fetch_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s)" >> ${STATUS_FILE}
                 else
                     ECHO_ERROR "Tarballs were not downloaded correctly, please fix it manually and then re-execute iRedMail.sh."
                     exit 255
@@ -995,7 +995,7 @@ EOF
                         # Log used time
                         used_time="$(($(date +%s)-port_start_time))"
 
-                        echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~$((used_time/60)) minute(s)" >> ${STATUS_FILE}
+                        echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s)" >> ${STATUS_FILE}
                     else
                         ECHO_ERROR "Port was not success installed, please fix it manually and then re-execute this script."
                         exit 255

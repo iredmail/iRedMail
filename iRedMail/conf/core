@@ -419,7 +419,7 @@ service_control()
             # Already handled in functions/*.sh.
             :
         else
-            ${DIR_RC_SCRIPTS}/${service} $action
+            ${DIR_RC_SCRIPTS}/${service} $action >/dev/null
         fi
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if [ X"${action}" == X'enable' ]; then
