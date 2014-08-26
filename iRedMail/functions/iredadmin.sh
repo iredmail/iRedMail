@@ -226,6 +226,4 @@ iRedAdmin - official web-based admin panel:
         - ${IREDADMIN_HTTPD_CONF}
 
 EOF
-
-    echo 'export status_iredadmin_config="DONE"' >> ${STATUS_FILE}
 }

@@ -404,8 +404,6 @@ Dovecot:
         - Logrotate config file: ${DOVECOT_LOGROTATE_FILE}
 
 EOF
-
-    echo 'export status_dovecot_config="DONE"' >> ${STATUS_FILE}
 }
 
 enable_dovecot()
@@ -439,7 +437,5 @@ EOF
             [ -f /etc/login.conf.db ] && cap_mkdb /etc/login.conf
         fi
     fi
-
-    echo 'export status_enable_dovecot="DONE"' >> ${STATUS_FILE}
 }
 

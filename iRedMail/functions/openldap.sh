@@ -168,8 +168,6 @@ EOF
         -o X"${DISTRO}" == X"UBUNTU" ]; then
         service_control restart rsyslog >/dev/null
     fi
-
-    echo 'export status_openldap_config="DONE"' >> ${STATUS_FILE}
 }
 
 openldap_data_initialize()
@@ -221,7 +219,5 @@ OpenLDAP:
         - ${LDAP_INIT_LDIF}
 
 EOF
-
-    echo 'export status_openldap_data_initialize="DONE"' >> ${STATUS_FILE}
 }
 

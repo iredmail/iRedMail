@@ -995,7 +995,10 @@ EOF
                         # Log used time
                         used_time="$(($(date +%s)-port_start_time))"
 
-                        echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s)" >> ${STATUS_FILE}
+                        # Recent all used time
+                        recent_all_used_time="$(($(date +%s)-start_time))"
+
+                        echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s). Recent ~= $((recent_all_used_time/60)) minutes" >> ${STATUS_FILE}
                     else
                         ECHO_ERROR "Port was not success installed, please fix it manually and then re-execute this script."
                         exit 255
@@ -1018,7 +1021,5 @@ EOF
 
     # Log and print used time
     all_used_time="$(($(date +%s)-start_time))"
-    ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds, ~$((all_used_time/60)) minute(s)"
-
-    echo 'export status_install_all="DONE"' >> ${STATUS_FILE}
+    ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds, ~= $((all_used_time/60)) minute(s)"
 }

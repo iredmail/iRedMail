@@ -64,6 +64,4 @@ EOF
         -h ${LDAP_SERVER_HOST} -p ${LDAP_SERVER_PORT} \
         -D "${LDAP_ROOTDN}" -w "${LDAP_ROOTPW}" \
         -f ${LDAP_INIT_LDIF} >/dev/null
-
-    echo 'export status_ldapd_config="DONE"' >> ${STATUS_FILE}
 }

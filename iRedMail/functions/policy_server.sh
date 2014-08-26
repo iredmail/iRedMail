@@ -51,6 +51,4 @@ policy_server_config()
     if [ X"${USE_SPAMD}" == X'YES' ]; then
         check_status_before_run openbsd_spamd_config
     fi
-
-    echo 'export status_policy_server_config="DONE"' >> ${STATUS_FILE}
 }

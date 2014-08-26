@@ -70,8 +70,6 @@ Mail Storage:
     - Backup scripts and copies: ${BACKUP_DIR}
 
 EOF
-
-    echo 'export status_add_user_vmail="DONE"' >> ${STATUS_FILE}
 }
 
 add_user_iredadmin()
@@ -96,8 +94,6 @@ add_user_iredadmin()
             -d ${IREDADMIN_HOME_DIR} \
             ${IREDADMIN_USER_NAME} &>/dev/null
     fi
-
-    echo 'export status_add_user_iredadmin="DONE"' >> ${STATUS_FILE}
 }
 
 add_user_iredapd()
@@ -122,8 +118,6 @@ add_user_iredapd()
             -d ${IREDAPD_HOME_DIR} \
             ${IREDAPD_DAEMON_USER} &>/dev/null
     fi
-
-    echo 'export status_add_user_iredapd="DONE"' >> ${STATUS_FILE}
 }
 
 add_required_users()
@@ -132,6 +126,4 @@ add_required_users()
     check_status_before_run add_user_vmail
     check_status_before_run add_user_iredadmin
     check_status_before_run add_user_iredapd
-
-    echo 'export status_add_required_users="DONE"' >> ${STATUS_FILE}
 }

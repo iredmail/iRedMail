@@ -119,8 +119,6 @@ PostgreSQL:
         - ${PGSQL_DOT_PGPASS}
 
 EOF
-
-    echo 'export status_pgsql_initialize="DONE"' >> ${STATUS_FILE}
 }
 
 pgsql_import_vmail_users()
@@ -210,6 +208,4 @@ Virtual Users:
     - ${PGSQL_INIT_SQL_SAMPLE}
 
 EOF
-
-    echo 'export status_pgsql_import_vmail_users="DONE"' >> ${STATUS_FILE}
 }

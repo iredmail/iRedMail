@@ -108,6 +108,4 @@ EOF
     #    # Start service when system start up.
     #    service_control enable 'fail2ban_enable' 'YES'
     #fi
-
-    echo 'export status_fail2ban_config="DONE"' >> ${STATUS_FILE}
 }

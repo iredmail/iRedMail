@@ -61,6 +61,4 @@ phpLDAPadmin:
         - ${HTTPD_CONF_DIR}/phpldapadmin.conf
 
 EOF
-
-    echo 'export status_pla_install="DONE"' >> ${STATUS_FILE}
 }

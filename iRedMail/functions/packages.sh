@@ -426,8 +426,6 @@ install_all()
             ECHO_INFO "Installing packages:${ALL_PKGS}"
         fi
         eval ${install_pkg} ${ALL_PKGS}
-
-        echo 'export status_install_all_pkgs="DONE"' >> ${STATUS_FILE}
     }
 
     # Enable/Disable services.
@@ -449,8 +447,6 @@ install_all()
             service_control enable ${ENABLED_SERVICES} &>/dev/null
             service_control disable ${DISABLED_SERVICES} &>/dev/null
         fi
-
-        echo 'export status_enable_all_services="DONE"' >> ${STATUS_FILE}
     }
 
     after_package_installation()
@@ -482,8 +478,6 @@ install_all()
                 cd uwsgi-*/ && \
                 python setup.py install &>/dev/null
         fi
-
-        echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}
     }
 
     check_status_before_run install_all_pkgs

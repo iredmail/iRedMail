@@ -292,7 +292,7 @@ check_status_before_run()
     _status="status_$1"
     if [ X"$(eval echo \$${_status})" != X"DONE" ]; then
         $1
-        echo "#export ${_status}='DONE'" >> ${STATUS_FILE}
+        echo "export ${_status}='DONE'" >> ${STATUS_FILE}
     else
         ECHO_SKIP "Function: $1."
     fi
@@ -480,8 +480,6 @@ SSL cert keys (size: ${SSL_KEY_SIZE}):
     - ${SSL_KEY_FILE}
 
 EOF
-
-    echo 'export status_generate_ssl_keys="DONE"' >> ${STATUS_FILE}
 }
 
 # Add alias entry in Postfix /etc/postfix/aliases.
