@@ -489,4 +489,6 @@ install_all()
     check_status_before_run install_all_pkgs
     check_status_before_run enable_all_services
     check_status_before_run after_package_installation
+
+    echo 'export status_install_all="DONE"' >> ${STATUS_FILE}
 }

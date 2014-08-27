@@ -230,15 +230,16 @@ check_status_before_run()
     #
     #   export status_[function_name]='DONE'
     #
-    function_status_name="status_$1"
+    function_name="${1}"
+    function_status_name="status_${function_name}"
     function_status_value="$(eval echo \$${function_status_name})"
     if [ X"${function_status_value}" == X"DONE" ]; then
         ECHO_SKIP "Function: $1."
     else
-        $1
-        if [ X"$?" == X'0' ]; then
-            echo "export ${function_status_name}='DONE'" >> ${STATUS_FILE}
-        fi
+        $function_name
+        #if [ X"$?" == X'0' ]; then
+        #    echo "export ${function_status_name}='DONE'" >> ${STATUS_FILE}
+        #fi
     fi
 }
 

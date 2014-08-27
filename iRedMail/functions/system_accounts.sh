@@ -6,7 +6,6 @@
 
 add_user_vmail()
 {
-    ECHO_INFO "Create required system account: ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}."
 
     ECHO_DEBUG "Create HOME folder for vmail user."
     homedir="$(dirname $(echo ${VMAIL_USER_HOME_DIR} | sed 's#/$##'))"
@@ -77,9 +76,8 @@ EOF
 
 add_user_iredadmin()
 {
-    ECHO_INFO "Create required system account: ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME}."
-
     ECHO_DEBUG "Create system account: ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} (${IREDADMIN_USER_UID}:${IREDADMIN_USER_GID})"
+
     # Low privilege user used to run iRedAdmin.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         pw groupadd -g ${IREDADMIN_USER_GID} -n ${IREDADMIN_USER_NAME} &>/dev/null
@@ -104,7 +102,6 @@ add_user_iredadmin()
 
 add_user_iredapd()
 {
-    ECHO_INFO "Create required system account: ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_GROUP}."
     ECHO_DEBUG "Create system account: ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_GROUP} (${IREDAPD_DAEMON_USER_UID}:${IREDAPD_DAEMON_USER_GID})."
 
     # Low privilege user used to run iRedAPD daemon.
@@ -131,6 +128,8 @@ add_user_iredapd()
 
 add_required_users()
 {
+    ECHO_INFO "Create required system account: ${VMAIL_USER_NAME}, ${IREDADMIN_USER_NAME}, ${IREDAPD_DAEMON_USER}."
+
     check_status_before_run add_user_vmail
     check_status_before_run add_user_iredadmin
     check_status_before_run add_user_iredapd
