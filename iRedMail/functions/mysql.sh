@@ -184,7 +184,7 @@ EOF
 
 mysql_cron_backup()
 {
-    ECHO_INFO "Setup script to backup SQL databases with cron job: ${BACKUP_SCRIPT_MYSQL}"
+    ECHO_INFO "Setup daily cron job to backup SQL databases: ${BACKUP_SCRIPT_MYSQL}"
 
     [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
 

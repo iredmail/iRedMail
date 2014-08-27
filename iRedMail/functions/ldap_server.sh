@@ -131,7 +131,7 @@ ldap_server_config()
 
 ldap_server_cron_backup()
 {
-    ECHO_INFO "Setup script to backup LDAP data with cron job: ${BACKUP_SCRIPT_OPENLDAP}"
+    ECHO_INFO "Setup daily cron job to backup LDAP data: ${BACKUP_SCRIPT_OPENLDAP}"
 
     [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
 

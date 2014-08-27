@@ -216,7 +216,7 @@ EOF
 
 pgsql_cron_backup()
 {
-    ECHO_INFO "Setup script to backup PostgreSQL databases with cron job: ${BACKUP_SCRIPT_PGSQL}"
+    ECHO_INFO "Setup daily cron job to backup PostgreSQL databases: ${BACKUP_SCRIPT_PGSQL}"
 
     [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
 
