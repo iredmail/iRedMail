@@ -181,3 +181,37 @@ EOF
 
     echo 'export status_mysql_import_vmail_users="DONE"' >> ${STATUS_FILE}
 }
+
+mysql_cron_backup()
+{
+    ECHO_INFO "Setup script to backup SQL databases with cron job: ${BACKUP_SCRIPT_MYSQL}"
+
+    [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
+
+    backup_file ${BACKUP_SCRIPT_MYSQL}
+    cp ${TOOLS_DIR}/backup_mysql.sh ${BACKUP_SCRIPT_MYSQL}
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_MYSQL}
+    chmod 0700 ${BACKUP_SCRIPT_MYSQL}
+
+    export MYSQL_ROOT_PASSWD MYSQL_BACKUP_DATABASES
+    perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_MYSQL}
+    perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{MYSQL_ROOT_USER}"#' ${BACKUP_SCRIPT_MYSQL}
+    perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{MYSQL_ROOT_PASSWD}"#' ${BACKUP_SCRIPT_MYSQL}
+    perl -pi -e 's#^(export DATABASES=).*#${1}"$ENV{MYSQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_MYSQL}
+
+    # Add cron job
+    cat >> ${CRON_SPOOL_DIR}/root <<EOF
+# ${PROG_NAME}: Backup MySQL databases on 03:30 AM
+30   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_MYSQL}
+
+EOF
+
+    cat >> ${TIP_FILE} <<EOF
+Backup MySQL database:
+    * Script: ${BACKUP_SCRIPT_MYSQL}
+    * See also:
+        # crontab -l -u ${SYS_ROOT_USER}
+EOF
+
+    echo 'export status_mysql_cron_backup="DONE"' >> ${STATUS_FILE}
+}

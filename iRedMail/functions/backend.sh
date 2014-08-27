@@ -28,10 +28,12 @@ backend_install()
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # Install, config and initialize LDAP server
         check_status_before_run ldap_server_config
+        check_status_before_run ldap_server_cron_backup
 
         # Initialize MySQL database server.
         check_status_before_run mysql_generate_defauts_file_root
         check_status_before_run mysql_initialize
+        check_status_before_run mysql_cron_backup
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         check_status_before_run mysql_generate_defauts_file_root
@@ -40,11 +42,11 @@ backend_install()
             check_status_before_run mysql_initialize
         fi
         check_status_before_run mysql_import_vmail_users
+        check_status_before_run mysql_cron_backup
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         check_status_before_run pgsql_initialize
         check_status_before_run pgsql_import_vmail_users
-    else
-        :
+        check_status_before_run pgsql_cron_backup
     fi
 }

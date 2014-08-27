@@ -126,6 +126,36 @@ ldap_server_config()
 
         check_status_before_run openldap_config && \
         check_status_before_run openldap_data_initialize
-
     fi
+}
+
+ldap_server_cron_backup()
+{
+    ECHO_INFO "Setup script to backup LDAP data with cron job: ${BACKUP_SCRIPT_OPENLDAP}"
+
+    [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
+
+    backup_file ${BACKUP_SCRIPT_OPENLDAP}
+    cp ${TOOLS_DIR}/backup_openldap.sh ${BACKUP_SCRIPT_OPENLDAP}
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_OPENLDAP}
+    chmod 0700 ${BACKUP_SCRIPT_OPENLDAP}
+
+    perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_OPENLDAP}
+
+    # Add cron job
+    cat >> ${CRON_SPOOL_DIR}/root <<EOF
+# ${PROG_NAME}: Backup OpenLDAP data on 03:00 AM
+0   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_OPENLDAP}
+
+EOF
+
+    cat >> ${TIP_FILE} <<EOF
+Backup OpenLDAP data:
+    * Script: ${BACKUP_SCRIPT_OPENLDAP}
+    * See also:
+        # crontab -l -u ${SYS_ROOT_USER}
+
+EOF
+
+    echo 'export status_ldap_server_cron_backup="DONE"' >> ${STATUS_FILE}
 }

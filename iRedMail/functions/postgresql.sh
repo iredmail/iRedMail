@@ -213,3 +213,28 @@ EOF
 
     echo 'export status_pgsql_import_vmail_users="DONE"' >> ${STATUS_FILE}
 }
+
+pgsql_cron_backup()
+{
+    ECHO_INFO "Setup script to backup PostgreSQL databases with cron job: ${BACKUP_SCRIPT_PGSQL}"
+
+    [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
+
+    backup_file ${BACKUP_SCRIPT_PGSQL}
+    cp ${TOOLS_DIR}/backup_pgsql.sh ${BACKUP_SCRIPT_PGSQL}
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_PGSQL}
+    chmod 0700 ${BACKUP_SCRIPT_PGSQL}
+
+    perl -pi -e 's#^(export PGSQL_SYS_USER=).*#${1}"$ENV{PGSQL_SYS_USER}"#' ${BACKUP_SCRIPT_PGSQL}
+    perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_PGSQL}
+    perl -pi -e 's#^(export DATABASES=).*#${1}"$ENV{PGSQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_PGSQL}
+
+    # Add cron job
+    cat >> ${CRON_SPOOL_DIR}/root <<EOF
+# Backup on 03:01 AM
+1   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_PGSQL}
+
+EOF
+
+    echo 'export status_pgsql_cron_backup="DONE"' >> ${STATUS_FILE}
+}

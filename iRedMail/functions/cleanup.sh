@@ -228,91 +228,6 @@ cleanup_update_clamav_signatures()
     echo 'export status_cleanup_update_clamav_signatures="DONE"' >> ${STATUS_FILE}
 }
 
-cleanup_backup_scripts()
-{
-    [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
-
-    # Backup OpenLDAP data
-    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_OPENLDAP}"
-
-        backup_file ${BACKUP_SCRIPT_OPENLDAP}
-        cp ${TOOLS_DIR}/backup_openldap.sh ${BACKUP_SCRIPT_OPENLDAP}
-        chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_OPENLDAP}
-        chmod 0700 ${BACKUP_SCRIPT_OPENLDAP}
-
-        perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_OPENLDAP}
-
-        # Add cron job
-        cat >> ${CRON_SPOOL_DIR}/root <<EOF
-# ${PROG_NAME}: Backup OpenLDAP data on 03:00 AM
-0   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_OPENLDAP}
-
-EOF
-
-        cat >> ${TIP_FILE} <<EOF
-Backup OpenLDAP data:
-    * Script: ${BACKUP_SCRIPT_OPENLDAP}
-    * See also:
-        # crontab -l -u ${SYS_ROOT_USER}
-
-EOF
-    fi
-
-    # Backup MySQL databases
-    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-        ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_MYSQL}"
-
-        backup_file ${BACKUP_SCRIPT_MYSQL}
-        cp ${TOOLS_DIR}/backup_mysql.sh ${BACKUP_SCRIPT_MYSQL}
-        chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_MYSQL}
-        chmod 0700 ${BACKUP_SCRIPT_MYSQL}
-
-        export MYSQL_ROOT_PASSWD MYSQL_BACKUP_DATABASES
-        perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_MYSQL}
-        perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{MYSQL_ROOT_USER}"#' ${BACKUP_SCRIPT_MYSQL}
-        perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{MYSQL_ROOT_PASSWD}"#' ${BACKUP_SCRIPT_MYSQL}
-        perl -pi -e 's#^(export DATABASES=).*#${1}"$ENV{MYSQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_MYSQL}
-
-        # Add cron job
-        cat >> ${CRON_SPOOL_DIR}/root <<EOF
-# ${PROG_NAME}: Backup MySQL databases on 03:30 AM
-30   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_MYSQL}
-
-EOF
-
-        cat >> ${TIP_FILE} <<EOF
-Backup MySQL database:
-    * Script: ${BACKUP_SCRIPT_MYSQL}
-    * See also:
-        # crontab -l -u ${SYS_ROOT_USER}
-EOF
-    fi
-
-    # Backup PostgreSQL databases
-    if [ X"${BACKEND}" == X'PGSQL' ]; then
-        ECHO_DEBUG "Setup backup script: ${BACKUP_SCRIPT_PGSQL}"
-
-        backup_file ${BACKUP_SCRIPT_PGSQL}
-        cp ${TOOLS_DIR}/backup_pgsql.sh ${BACKUP_SCRIPT_PGSQL}
-        chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_PGSQL}
-        chmod 0700 ${BACKUP_SCRIPT_PGSQL}
-
-        perl -pi -e 's#^(export PGSQL_SYS_USER=).*#${1}"$ENV{PGSQL_SYS_USER}"#' ${BACKUP_SCRIPT_PGSQL}
-        perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_PGSQL}
-        perl -pi -e 's#^(export DATABASES=).*#${1}"$ENV{PGSQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_PGSQL}
-
-        # Add cron job
-        cat >> ${CRON_SPOOL_DIR}/root <<EOF
-# Backup on 03:01 AM
-1   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_PGSQL}
-
-EOF
-    fi
-
-    echo 'export status_cleanup_backup_scripts="DONE"' >> ${STATUS_FILE}
-}
-
 cleanup_pgsql_force_connect_with_password()
 {
     ECHO_DEBUG "Force all users to connect PGSQL server with password."
@@ -380,7 +295,6 @@ EOF
         check_status_before_run cleanup_replace_firewall_rules
 
     check_status_before_run cleanup_replace_mysql_config
-    check_status_before_run cleanup_backup_scripts
     [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_connect_with_password
 
     if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
