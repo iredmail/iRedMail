@@ -39,10 +39,9 @@ install_all()
     export PREFERRED_BDB_VER='48'
     export PREFERRED_APACHE_VER='22'
 
+    export PREFERRED_MYSQL_VER='55'
     if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
         export PREFERRED_MYSQL_VER='55m'
-    else
-        export PREFERRED_MYSQL_VER='55'
     fi
 
     freebsd_add_make_conf 'OPTIONS_SET' 'SASL'

@@ -20,11 +20,6 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-# -------------------------------------------------------
-# ---------------------- Fail2ban -----------------------
-# -------------------------------------------------------
-
-
 fail2ban_config()
 {
     ECHO_INFO "Configure Fail2ban (authentication failure monitor)."
@@ -40,69 +35,22 @@ fail2ban_config()
         perl -pi -e 's#^(socket).*#${1} = $ENV{FAIL2BAN_SOCKET}#' ${FAIL2BAN_MAIN_CONF}
     fi
 
-    ECHO_DEBUG "Enable mail server related components."
-    cat > ${FAIL2BAN_JAIL_LOCAL_CONF} <<EOF
-${CONF_MSG}
+    ECHO_DEBUG "Create Fail2ban config file: ${FAIL2BAN_JAIL_LOCAL_CONF}."
+    backup_file ${FAIL2BAN_JAIL_LOCAL_CONF}
+    cp -f ${SAMPLE_DIR}/fail2ban/jail.local ${FAIL2BAN_JAIL_LOCAL_CONF}
 
-# Refer to ${FAIL2BAN_JAIL_CONF} for more examples.
-[DEFAULT]
-maxretry    = 5
-# attention: time is in seconds - the value of 3600 means ONE hour
-bantime     = 3600
-ignoreip    = ${LOCAL_ADDRESS} 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+    perl -pi -e 's#PH_FAIL2BAN_JAIL_CONF#$ENV{FAIL2BAN_JAIL_CONF}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
 
-[ssh-iredmail]
-enabled     = true
-filter      = sshd
-action      = iptables[name=ssh, port="ssh", protocol=tcp]
-#               sendmail-whois[name=ssh, dest=root, sender=fail2ban@mail.com]
-logpath     = ${FAIL2BAN_SSHD_LOGFILE}
+    perl -pi -e 's#PH_SSHD_LOGFILE#$ENV{SSHD_LOGFILE}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    perl -pi -e 's#PH_RCM_LOGFILE#$ENV{RCM_LOGFILE}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    perl -pi -e 's#PH_MAILLOG#$ENV{MAILLOG}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
 
-[roundcube-iredmail]
-enabled     = true
-filter      = ${FAIL2BAN_FILTER_ROUNDCUBE}
-action      = iptables-multiport[name=roundcube, port="${FAIL2BAN_DISABLED_SERVICES}", protocol=tcp]
-logpath     = ${RCM_LOGFILE}
-findtime    = 3600
+    perl -pi -e 's#PH_FAIL2BAN_DISABLED_SERVICES#$ENV{FAIL2BAN_DISABLED_SERVICES}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
 
-[dovecot-iredmail]
-enabled     = true
-filter      = ${FAIL2BAN_FILTER_DOVECOT}
-action      = iptables-multiport[name=dovecot, port="${FAIL2BAN_DISABLED_SERVICES}", protocol=tcp]
-logpath     = ${DOVECOT_LOG_FILE}
-findtime    = 300
-
-[postfix-iredmail]
-enabled     = true
-filter      = ${FAIL2BAN_FILTER_POSTFIX}
-action      = iptables-multiport[name=postfix, port="${FAIL2BAN_DISABLED_SERVICES}", protocol=tcp]
-#           sendmail[name=Postfix, dest=you@mail.com]
-logpath     = ${MAILLOG}
-EOF
-
-    ECHO_DEBUG "Create filter: ${FAIL2BAN_FILTER_DIR}/${FAIL2BAN_FILTER_ROUNDCUBE}.conf."
-    cat > ${FAIL2BAN_FILTER_DIR}/${FAIL2BAN_FILTER_ROUNDCUBE}.conf <<EOF
-[Definition]
-failregex = roundcube: (.*) Error: Login failed for (.*) from <HOST>\.
-ignoreregex =
-EOF
-
-    ECHO_DEBUG "Create filter: ${FAIL2BAN_FILTER_DIR}/${FAIL2BAN_FILTER_DOVECOT}.conf."
-    cat > ${FAIL2BAN_FILTER_DIR}/${FAIL2BAN_FILTER_DOVECOT}.conf <<EOF
-[Definition]
-failregex = (?: pop3-login|imap-login): .*(?:Authentication failure|Aborted login \(auth failed|Aborted login \(tried to use disabled|Disconnected \(auth failed).*rip=(?P<host>\S*),.*
-ignoreregex =
-EOF
-
-    ECHO_DEBUG "Create filter: ${FAIL2BAN_FILTER_DIR}/${FAIL2BAN_FILTER_POSTFIX}.conf."
-    cat > ${FAIL2BAN_FILTER_DIR}/${FAIL2BAN_FILTER_POSTFIX}.conf <<EOF
-[Definition]
-failregex = \[<HOST>\]: SASL (PLAIN|LOGIN) authentication failed
-            reject: RCPT from (.*)\[<HOST>\]: 550 5.1.1
-            reject: RCPT from (.*)\[<HOST>\]: 450 4.7.1
-            reject: RCPT from (.*)\[<HOST>\]: 554 5.7.1
-ignoreregex =
-EOF
+    ECHO_DEBUG "Copy sample Fail2ban filter config files."
+    cp -f ${SAMPLE_DIR}/fail2ban/filter.d/*.conf ${FAIL2BAN_FILTER_DIR}
 
     #if [ X"${DISTRO}" == X'FREEBSD' ]; then
     #    # Start service when system start up.

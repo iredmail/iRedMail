@@ -378,6 +378,9 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export SYSLOG_CONF='/etc/rsyslog.conf'
     export SYSLOG_POSTROTATE_CMD='/bin/kill -HUP $(cat /var/run/syslogd.pid 2>/dev/null) 2>/dev/null || true'
 
+    # SSHD log file
+    export SSHD_LOGFILE='/var/log/secure'
+
     # Crontab related.
     export CRON_SPOOL_DIR='/var/spool/cron'
 
@@ -433,6 +436,9 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         export SYSLOG_POSTROTATE_CMD='invoke-rc.d rsyslog reload > /dev/null'
     fi
 
+    # SSHD log file
+    export SSHD_LOGFILE='/var/log/auth.log'
+
     # Crontab related.
     export CRON_SPOOL_DIR='/var/spool/cron/crontabs'
 
@@ -479,6 +485,9 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export SYSLOG_CONF='/etc/syslog.conf'
     export SYSLOG_POSTROTATE_CMD=''
 
+    # SSHD log file
+    export SSHD_LOGFILE='/var/log/auth.log'
+
     # Crontab related.
     export CRON_SPOOL_DIR='/var/cron/tabs'
 
@@ -516,6 +525,9 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     # Syslog config: rsyslog.
     export SYSLOG_CONF='/etc/syslog.conf'
     export SYSLOG_POSTROTATE_CMD=''
+
+    # SSHD log file
+    export SSHD_LOGFILE='/var/log/authlog'
 
     # Crontab related.
     export CRON_SPOOL_DIR='/var/cron/tabs'

@@ -1,0 +1,34 @@
+# Refer to PH_FAIL2BAN_JAIL_CONF for more examples.
+[DEFAULT]
+maxretry    = 5
+# time is in seconds. 3600 = 1 hour
+findtime    = 300
+bantime     = 3600
+ignoreip    = PH_LOCAL_ADDRESS 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
+
+[ssh-iredmail]
+enabled     = true
+filter      = sshd
+action      = iptables[name=ssh, port="ssh", protocol=tcp]
+#              sendmail-whois[name=ssh, dest=root, sender=fail2ban@localhost]
+logpath     = PH_SSHD_LOGFILE
+
+[roundcube-iredmail]
+enabled     = true
+filter      = roundcube.iredmail
+action      = iptables-multiport[name=roundcube, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
+logpath     = PH_RCM_LOGFILE
+findtime    = 3600
+
+[dovecot-iredmail]
+enabled     = true
+filter      = dovecot.iredmail
+action      = iptables-multiport[name=dovecot, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
+logpath     = PH_DOVECOT_LOG_FILE
+
+[postfix-iredmail]
+enabled     = true
+filter      = postfix.iredmail
+action      = iptables-multiport[name=postfix, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
+#              sendmail[name=Postfix, dest=root, sender=fail2ban@localhost]
+logpath     = PH_MAILLOG
