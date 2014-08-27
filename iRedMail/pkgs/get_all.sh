@@ -28,7 +28,7 @@ CONF_DIR="${ROOTDIR}/../conf"
 . ${CONF_DIR}/core
 . ${CONF_DIR}/iredadmin
 
-# Re-define $STATUS_FILE, so that iRedMail.sh can read it.
+# Re-define @STATUS_FILE, so that iRedMail.sh can read it.
 export STATUS_FILE="${ROOTDIR}/../.status"
 
 check_user root
@@ -135,6 +135,8 @@ check_md5()
             exit 255
         else
             echo -e "\t[ OK ]"
+            echo 'export status_fetch_misc="DONE"' >> ${STATUS_FILE}
+            echo 'export status_check_md5="DONE"' >> ${STATUS_FILE}
         fi
     fi
 }
@@ -174,6 +176,8 @@ EOF
 
     ECHO_INFO "Clean metadata of yum repositories."
     yum clean metadata
+
+    echo 'export status_create_repo_rhel="DONE"' >> ${STATUS_FILE}
 }
 
 check_new_iredmail()
@@ -203,6 +207,8 @@ check_new_iredmail()
         echo ''
         exit 255
     fi
+
+    echo 'export status_check_new_iredmail="DONE"' >> ${STATUS_FILE}
 }
 
 echo_end_msg()

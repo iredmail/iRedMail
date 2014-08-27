@@ -44,5 +44,7 @@ backend_install()
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         check_status_before_run pgsql_initialize
         check_status_before_run pgsql_import_vmail_users
+    else
+        :
     fi
 }

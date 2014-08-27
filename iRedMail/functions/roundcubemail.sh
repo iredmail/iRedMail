@@ -31,6 +31,8 @@ rcm_install()
     cp -f ${SAMPLE_DIR}/dovecot/dovecot.sieve.roundcube ${RCM_SIEVE_SAMPLE_FILE}
     chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
     chmod 0640 config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
+
+    echo 'export status_rcm_install="DONE"' >> ${STATUS_FILE}
 }
 
 rcm_config_httpd()
@@ -68,6 +70,8 @@ EOF
     </head>
 </html>
 EOF
+
+    echo 'export status_rcm_config_httpd="DONE"' >> ${STATUS_FILE}
 }
 
 rcm_import_sql()
@@ -123,6 +127,8 @@ GRANT UPDATE,SELECT ON ${VMAIL_DB}.mailbox TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HO
 FLUSH PRIVILEGES;
 EOF
     fi
+
+    echo 'export status_rcm_import_sql="DONE"' >> ${STATUS_FILE}
 }
 
 rcm_config()
@@ -252,6 +258,8 @@ Roundcube webmail:
         - ${HTTPD_CONF_DIR}/roundcubemail.conf
 
 EOF
+
+    echo 'export status_rcm_config="DONE"' >> ${STATUS_FILE}
 }
 
 rcm_plugin_managesieve()
@@ -267,6 +275,8 @@ rcm_plugin_managesieve()
     perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} false;#' config.inc.php
     perl -pi -e 's#(.*managesieve_default.*=).*#${1} "$ENV{RCM_SIEVE_SAMPLE_FILE}";#' config.inc.php
     perl -pi -e 's#(.*managesieve_vacation.*=).*#${1} 1;#' config.inc.php
+
+    echo 'export status_rcm_plugin_managesieve="DONE"' >> ${STATUS_FILE}
 }
 
 rcm_plugin_password()
@@ -339,4 +349,6 @@ EOF
     else
         :
     fi
+
+    echo 'export status_rcm_plugin_password="DONE"' >> ${STATUS_FILE}
 }

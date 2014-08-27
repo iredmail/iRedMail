@@ -153,9 +153,7 @@ check_env()
 
     ECHO_INFO -n "Checking configuration file: ${IREDMAIL_CONFIG_FILE} ..."
     if [ -f ${IREDMAIL_CONFIG_FILE} ]; then
-        grep '^#EOF$' ${IREDMAIL_CONFIG_FILE} >/dev/null
-
-        if [ X"$?" == X"0" ]; then
+        if grep '^#EOF$' ${IREDMAIL_CONFIG_FILE} >/dev/null; then
             echo -e " [FOUND]"
             ECHO_QUESTION -n "Use it for mail server setting? [y|N]"
             read_setting ${AUTO_USE_EXISTING_CONFIG_FILE}
@@ -171,7 +169,7 @@ check_env()
                     #   export STATUS_PHP_INSTALLATION='DONE'
                     #   export STATUS_PHP_CONFIGURATION='DONE'
                     #
-                    if [ -e ${STATUS_FILE} ]; then
+                    if [ -f ${STATUS_FILE} ]; then
                         ECHO_INFO "Import installation process status from file: ${STATUS_FILE}."
                         . ${STATUS_FILE}
                     else
@@ -179,25 +177,23 @@ check_env()
                     fi
 
                     # Initialize tip file.
-                    if [ ! -e ${TIP_FILE} ]; then
+                    if [ ! -f ${TIP_FILE} ]; then
                         cat > ${TIP_FILE} <<EOF
 ${CONF_MSG}
 EOF
-                    else
-                        :
                     fi
                     ;;
                 N|n|* )
-                    echo "Skip configuration file: ${IREDMAIL_CONFIG_FILE}."
+                    ECHO_INFO "Skip configuration file: ${IREDMAIL_CONFIG_FILE}."
                     . ${CONFIG_VIA_DIALOG}
                     ;;
             esac
         else
-            echo -e "\tFound, but not finished."
+            ECHO_INFO "Found, but not finished."
             . ${CONFIG_VIA_DIALOG}
         fi
     else
-        echo -e "\t[UNCOMPLETED]"
+        ECHO_INFO "[NOT FOUND]"
         . ${CONFIG_VIA_DIALOG}
     fi
 }
@@ -229,16 +225,20 @@ extract_pkg()
 
 check_status_before_run()
 {
-    # Every function will append status info to ${STATUS_FILE}. For example,
+    # If function was successfully executed, this function will write one line
+    # in $STATUS_FILE:
     #
     #   export status_[function_name]='DONE'
     #
-    function_status="status_$1"
-    if [ X"$(eval echo \$${function_status})" != X"DONE" ]; then
-        $1
-        echo "export ${function_status}='DONE'" >> ${STATUS_FILE}
-    else
+    function_status_name="status_$1"
+    function_status_value="$(eval echo \$${function_status_name})"
+    if [ X"${function_status_value}" == X"DONE" ]; then
         ECHO_SKIP "Function: $1."
+    else
+        $1
+        if [ X"$?" == X'0' ]; then
+            echo "export ${function_status_name}='DONE'" >> ${STATUS_FILE}
+        fi
     fi
 }
 

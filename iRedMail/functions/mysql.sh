@@ -125,6 +125,8 @@ MySQL:
         - ${MYSQL_INIT_SQL}
 
 EOF
+
+    echo 'export status_mysql_initialize="DONE"' >> ${STATUS_FILE}
 }
 
 # It's used only when backend is MySQL.
@@ -176,4 +178,6 @@ Virtual Users:
     - ${MYSQL_VMAIL_SQL}
 
 EOF
+
+    echo 'export status_mysql_import_vmail_users="DONE"' >> ${STATUS_FILE}
 }

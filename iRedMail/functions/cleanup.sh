@@ -42,6 +42,8 @@ cleanup_disable_selinux()
 
         setenforce 0 &>/dev/null
     fi
+
+    echo 'export status_cleanup_disable_selinux="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_remove_sendmail()
@@ -64,6 +66,8 @@ cleanup_remove_sendmail()
             esac
         fi
     fi
+
+    echo 'export status_cleanup_remove_sendmail="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_remove_mod_python()
@@ -81,6 +85,8 @@ cleanup_remove_mod_python()
     else
         :
     fi
+
+    echo 'export status_cleanup_remove_mod_python="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_replace_firewall_rules()
@@ -169,6 +175,8 @@ cleanup_replace_firewall_rules()
 
     # Restarting iptables before restarting fail2ban.
     ENABLED_SERVICES="iptables ${ENABLED_SERVICES}"
+
+    echo 'export status_cleanup_replace_firewall_rules="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_replace_mysql_config()
@@ -195,6 +203,8 @@ cleanup_replace_mysql_config()
             esac
         fi
     fi
+
+    echo 'export status_cleanup_replace_mysql_config="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_update_compile_spamassassin_rules()
@@ -205,6 +215,8 @@ cleanup_update_compile_spamassassin_rules()
 
     ECHO_INFO "Compiling SpamAssassin rulesets (sa-compile), please wait ..."
     ${BIN_SA_COMPILE} &>/dev/null
+
+    echo 'export status_cleanup_update_compile_spamassassin_rules="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_update_clamav_signatures()
@@ -212,6 +224,8 @@ cleanup_update_clamav_signatures()
     # Update clamav before start clamav-clamd service.
     ECHO_INFO "Updating ClamAV database (freshclam), please wait ..."
     freshclam
+
+    echo 'export status_cleanup_update_clamav_signatures="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_backup_scripts()
@@ -295,6 +309,8 @@ EOF
 
 EOF
     fi
+
+    echo 'export status_cleanup_backup_scripts="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_pgsql_force_connect_with_password()
@@ -311,6 +327,8 @@ cleanup_pgsql_force_connect_with_password()
         perl -pi -e 's#^(local.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
         perl -pi -e 's#^(host.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
     fi
+
+    echo 'export status_cleanup_pgsql_force_connect_with_password="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup()
@@ -392,4 +410,6 @@ EOF
 *
 ********************************************************************
 EOF
+
+    echo 'export status_cleanup="DONE"' >> ${STATUS_FILE}
 }

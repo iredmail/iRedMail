@@ -61,4 +61,6 @@ phpLDAPadmin:
         - ${HTTPD_CONF_DIR}/phpldapadmin.conf
 
 EOF
+
+    echo 'export status_phpldapadmin_config="DONE"' >> ${STATUS_FILE}
 }

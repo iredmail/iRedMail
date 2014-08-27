@@ -37,4 +37,6 @@ SpamAssassin:
         - ${SA_CONF_DIR}/local.cf
 
 EOF
+
+    echo 'export status_sa_config="DONE"' >> ${STATUS_FILE}
 }

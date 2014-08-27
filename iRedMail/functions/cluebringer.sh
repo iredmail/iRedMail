@@ -35,6 +35,8 @@ cluebringer_user()
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         pw useradd -n ${CLUEBRINGER_USER} -s ${SHELL_NOLOGIN} -d ${CLUEBRINGER_USER_HOME} -m
     fi
+
+    echo 'export status_cluebringer_user="DONE"' >> ${STATUS_FILE}
 }
 
 cluebringer_config()
@@ -349,6 +351,8 @@ EOF
     else
         echo -e '\n' >> ${TIP_FILE}
     fi
+
+    echo 'export status_cluebringer_config="DONE"' >> ${STATUS_FILE}
 }
 
 cluebringer_webui_config()
@@ -520,4 +524,6 @@ EOF
         a2enmod authn_dbd &>/dev/null
         a2enconf cluebringer &>/dev/null
     fi
+
+    echo 'export status_cluebringer_webui_config="DONE"' >> ${STATUS_FILE}
 }

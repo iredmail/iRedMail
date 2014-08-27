@@ -189,6 +189,8 @@ EOF
 
     # Create directory, used to store lookup files.
     [ -d ${POSTFIX_LOOKUP_DIR} ] || mkdir -p ${POSTFIX_LOOKUP_DIR}
+
+    echo 'export status_postfix_config_basic="DONE"' >> ${STATUS_FILE}
 }
 
 postfix_config_vhost_ldap()
@@ -269,6 +271,8 @@ EOF
     done
 
     echo '' >> ${TIP_FILE}
+
+    echo 'export status_postfix_config_vhost_ldap="DONE"' >> ${STATUS_FILE}
 }
 
 postfix_config_vhost_mysql()
@@ -348,6 +352,8 @@ EOF
         - $i
 EOF
     done
+
+    echo 'export status_postfix_config_vhost_mysql="DONE"' >> ${STATUS_FILE}
 }
 
 postfix_config_vhost_pgsql()
@@ -429,7 +435,8 @@ EOF
 EOF
     done
 
-    echo '' >> ${TIP_FILE}
+        echo '' >> ${TIP_FILE}
+    echo 'export status_postfix_config_vhost_pgsql="DONE"' >> ${STATUS_FILE}
 }
 
 # Starting config.
@@ -442,6 +449,8 @@ postfix_config_virtual_host()
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         check_status_before_run postfix_config_vhost_pgsql
     fi
+
+    echo 'export status_postfix_config_virtual_host="DONE"' >> ${STATUS_FILE}
 }
 
 postfix_config_sasl()
@@ -475,6 +484,8 @@ postfix_config_sasl()
         postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
 
     fi
+
+    echo 'export status_postfix_config_sasl="DONE"' >> ${STATUS_FILE}
 }
 
 postfix_config_tls()
@@ -496,4 +507,6 @@ submission inet n       -       n       -       -       smtpd
 #  -o content_filter=smtp-amavis:[${AMAVISD_SERVER}]:10026
 
 EOF
+
+    echo 'export status_postfix_config_tls="DONE"' >> ${STATUS_FILE}
 }

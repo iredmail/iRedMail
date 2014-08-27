@@ -138,4 +138,6 @@ uWSGI:
         - ${UWSGI_CONF_DIR}
     * Socket for iRedAdmin: ${UWSGI_SOCKET_IREDADMIN}
 EOF
+
+    echo 'export status_nginx_config="DONE"' >> ${STATUS_FILE}
 }

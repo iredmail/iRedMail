@@ -86,4 +86,6 @@ ClamAV:
         - ${FRESHCLAM_LOGFILE}
 
 EOF
+
+    echo 'export status_clamav_config="DONE"' >> ${STATUS_FILE}
 }

@@ -233,6 +233,8 @@ Awstats:
         shell> crontab -l root
 
 EOF
+
+    echo 'export status_awstats_config_basic="DONE"' >> ${STATUS_FILE}
 }
 
 awstats_config_weblog()
@@ -254,6 +256,8 @@ awstats_config_weblog()
     # On RHEL/CentOS/Debian, ${AWSTATS_CONF_SAMPLE} is default config file. Overrided here.
     backup_file ${AWSTATS_CONF_SAMPLE}
     cp -f ${AWSTATS_CONF_WEB} ${AWSTATS_CONF_SAMPLE}
+
+    echo 'export status_awstats_config_weblog="DONE"' >> ${STATUS_FILE}
 }
 
 awstats_config_maillog()
@@ -318,6 +322,8 @@ awstats_config_maillog()
     perl -pi -e 's#^(Lang=)(.*)#${1}$ENV{AWSTATS_LANGUAGE}#' ${AWSTATS_CONF_MAIL}
 
     perl -pi -e 's#^(DirIcons=)(.*)#${1}"/awstats/icon#' ${AWSTATS_CONF_MAIL}
+
+    echo 'export status_awstats_config_maillog="DONE"' >> ${STATUS_FILE}
 }
 
 awstats_config_crontab()
@@ -329,4 +335,6 @@ awstats_config_crontab()
 1   */1   *   *   *   perl ${AWSTATS_CGI_DIR}/awstats.pl -config=web -update >/dev/null
 1   */1   *   *   *   perl ${AWSTATS_CGI_DIR}/awstats.pl -config=smtp -update >/dev/null
 EOF
+
+    echo 'export status_awstats_config_crontab="DONE"' >> ${STATUS_FILE}
 }

@@ -95,7 +95,6 @@ EOF
 DNS record for DKIM support:
 
 EOF
-
     if [ X"${DISTRO}" == X'RHEL' ]; then
         cat >> ${TIP_FILE} <<EOF
 $(${AMAVISD_BIN} -c ${AMAVISD_CONF} showkeys 2>/dev/null)
@@ -105,6 +104,8 @@ EOF
 $(${AMAVISD_BIN} showkeys 2>/dev/null)
 EOF
     fi
+
+    echo 'export status_amavisd_dkim="DONE"' >> ${STATUS_FILE}
 }
 
 amavisd_config_rhel()
@@ -167,6 +168,7 @@ amavisd_config_rhel()
     perl -pi -e 's%(os_fingerprint_method => undef.*)%${1}\n  allow_disclaimers => 1, # enables disclaimer insertion if available%' ${AMAVISD_CONF}
 
     echo '$sa_debug = 0;' >> ${AMAVISD_CONF}
+    echo 'export status_amavisd_config_rhel="DONE"' >> ${STATUS_FILE}
 }
 
 amavisd_config_debian()
@@ -260,6 +262,8 @@ EOF
     # groups when it drops priviledges, and that you add the
     # clamav user to the amavis group.
     adduser --quiet ${CLAMAV_USER} ${AMAVISD_SYS_GROUP} >/dev/null
+
+    echo 'export status_amavisd_config_debian="DONE"' >> ${STATUS_FILE}
 }
 
 amavisd_config_general()
@@ -628,6 +632,8 @@ ${AMAVISD_LOGFILE} {
     endscript
 }
 EOF
+    else
+        :
     fi
 
     # Add crontab job to delete virus mail.
@@ -653,6 +659,8 @@ Amavisd-new:
         - SQL template: ${AMAVISD_DB_MYSQL_TMPL}
 
 EOF
+
+    echo 'export status_amavisd_config_general="DONE"' >> ${STATUS_FILE}
 }
 
 amavisd_import_sql()
@@ -702,6 +710,8 @@ ALTER DATABASE ${AMAVISD_DB_NAME} SET bytea_output TO 'escape';
 EOF
         fi
     fi
+
+    echo 'export status_amavisd_import_sql="DONE"' >> ${STATUS_FILE}
 }
 
 amavisd_config()
