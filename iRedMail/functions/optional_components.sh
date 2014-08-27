@@ -39,6 +39,6 @@ optional_components()
 
     # phpLDAPadmin.
     [ X"${USE_PHPLDAPADMIN}" == X"YES" ] && \
-        check_status_before_run pla_install
+        check_status_before_run phpldapadmin_config
 
 }

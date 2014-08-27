@@ -24,92 +24,36 @@ ECHO_INFO()
 {
     if [ X"$1" == X"-n" ]; then
         shift 1
-        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-            echo -ne "\033[42m${_INFO_FLAG}\033[0m $@"
-        else
-            echo -ne "${_INFO_FLAG} $@"
-        fi
+        echo -ne "${_INFO_FLAG} $@"
     else
-        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-            echo -e "\033[42m${_INFO_FLAG}\033[0m $@"
-        else
-            echo -e "${_INFO_FLAG} $@"
-        fi
+        echo -e "${_INFO_FLAG} $@"
     fi
 }
 
 ECHO_SKIP()
 {
-    if [ X"$1" == X"-n" ]; then
-        shift 1
-        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-            echo -ne "\033[42m${_SKIP_FLAG}\033[0m $@"
-        else
-            echo -ne "${_SKIP_FLAG} $@"
-        fi
-    else
-        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-            echo -e "\033[42m${_SKIP_FLAG}\033[0m $@"
-        else
-            echo -e "${_SKIP_FLAG} $@"
-        fi
-    fi
+    echo -e "${_SKIP_FLAG} $@"
 }
+
 ECHO_QUESTION()
 {
     if [ X"$1" == X"-n" ]; then
         shift 1
-        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-            echo -ne "\033[45m${_QUESTION_FLAG}\033[0m $@"
-        else
-            echo -ne "${_QUESTION_FLAG} $@"
-        fi
+        echo -ne "${_QUESTION_FLAG} $@"
     else
-        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-            echo -e "\033[45m${_QUESTION_FLAG}\033[0m $@"
-        else
-            echo -e "${_QUESTION_FLAG} $@"
-        fi
+        echo -e "${_QUESTION_FLAG} $@"
     fi
 }
 
 ECHO_ERROR()
 {
-    if [ X"$1" == X"-n" ]; then
-        shift 1
-        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-            echo -ne "\033[41m${_ERROR_FLAG}\033[0m $@"
-        else
-            echo -ne "${_ERROR_FLAG} $@"
-        fi
-    else
-        if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-            echo -e "\033[41m${_ERROR_FLAG}\033[0m $@"
-        else
-            echo -e "${_ERROR_FLAG} $@"
-        fi
-    fi
+    echo -e "${_ERROR_FLAG} $@"
 }
 
 ECHO_DEBUG()
 {
     if [ X"${IREDMAIL_DEBUG}" == X"YES" ]; then
-        if [ X"$1" == X"-n" ]; then
-            shift 1
-            if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-                echo -ne "\033[42m${_DEBUG_FLAG}\033[0m $@"
-            else
-                echo -ne "${_DEBUG_FLAG} $@"
-            fi
-        else
-            if [ X"${TERM}" == X"xterm" -o X"${TERM}" == X"linux" -o X"${TERM}" == X"pcconsole" ]; then
-                echo -e "\033[42m${_DEBUG_FLAG}\033[0m $@"
-            else
-                echo -e "${_DEBUG_FLAG} $@"
-            fi
-        fi
-    else
-        :
+        echo -e "${_DEBUG_FLAG} $@"
     fi
 }
 
@@ -289,10 +233,10 @@ check_status_before_run()
     #
     #   export status_[function_name]='DONE'
     #
-    _status="status_$1"
-    if [ X"$(eval echo \$${_status})" != X"DONE" ]; then
+    function_status="status_$1"
+    if [ X"$(eval echo \$${function_status})" != X"DONE" ]; then
         $1
-        echo "export ${_status}='DONE'" >> ${STATUS_FILE}
+        echo "export ${function_status}='DONE'" >> ${STATUS_FILE}
     else
         ECHO_SKIP "Function: $1."
     fi

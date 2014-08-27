@@ -5,7 +5,7 @@
 # -------------------------------------------------------
 # ------------------- phpLDAPadmin ----------------------
 # -------------------------------------------------------
-pla_install()
+phpldapadmin_config()
 {
     ECHO_INFO "Configure phpLDAPadmin (web-based LDAP management tool)."
 

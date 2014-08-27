@@ -27,6 +27,12 @@
 # -------------------------------------------------------
 mysql_generate_defauts_file_root()
 {
+    if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+        ECHO_INFO "Configure MariaDB database server."
+    else
+        ECHO_INFO "Configure MySQL database server."
+    fi
+
     ECHO_DEBUG "Generate temporary defauts file for MySQL client option --defaults-file: ${MYSQL_DEFAULTS_FILE_ROOT}."
     cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 [client]

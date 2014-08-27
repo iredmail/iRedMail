@@ -95,6 +95,7 @@ EOF
 DNS record for DKIM support:
 
 EOF
+
     if [ X"${DISTRO}" == X'RHEL' ]; then
         cat >> ${TIP_FILE} <<EOF
 $(${AMAVISD_BIN} -c ${AMAVISD_CONF} showkeys 2>/dev/null)
@@ -627,8 +628,6 @@ ${AMAVISD_LOGFILE} {
     endscript
 }
 EOF
-    else
-        :
     fi
 
     # Add crontab job to delete virus mail.
