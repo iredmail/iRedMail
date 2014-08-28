@@ -156,7 +156,7 @@ cleanup_replace_firewall_rules()
                     ECHO_INFO "Restarting firewall ..."
 
                     if [ X"${DISTRO}" == X'OPENBSD' ]; then
-                        /sbin/pfctl -ef ${FIREWALL_RULE_CONF} >/dev/null
+                        /sbin/pfctl -ef ${FIREWALL_RULE_CONF} &>/dev/null
                     else
                         if [ X"${USE_FIREWALLD}" == X'YES' ]; then
                             perl -pi -e 's#^(DefaultZone=).*#${1}iredmail#g' ${FIREWALLD_CONF}
