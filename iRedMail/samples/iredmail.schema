@@ -293,6 +293,11 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.2.23 NAME 'mailBlacklistRecipient'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.14 NAME 'disabledService'
+    DESC 'Disabled service names'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 #
 # Mail Service: Mail List related attributes.
@@ -321,7 +326,8 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.3.3 NAME 'listAllowedUser'
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.1 NAME 'mailDomain'
     DESC 'Mail Domain' SUP top STRUCTURAL
     MUST ( domainName )
-    MAY ( cn $ mtaTransport $ domainAdmin $ enabledService $
+    MAY ( cn $ mtaTransport $ domainAdmin $
+        enabledService $ disabledService $
         domainBackupMX $ domainStatus $ accountStatus $ mailHost $
         domainSenderBccAddress $ domainRecipientBccAddress $
         domainMaxQuotaSize $ domainCurrentQuotaSize $
@@ -337,7 +343,8 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.1 NAME 'mailDomain'
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.2 NAME 'mailAdmin'
     DESC 'Mail Domain Admin' SUP top STRUCTURAL
     MUST ( mail )
-    MAY ( domainGlobalAdmin $ description $ enabledService $
+    MAY ( domainGlobalAdmin $ description $
+        enabledService $ disabledService $
         userPassword $ accountStatus $ cn $ sn $ givenName $
         preferredLanguage $ givenName $ expiredDate $
         mailHost $ lastLoginDate $ accountSetting $ shadowLastChange ))
@@ -349,7 +356,8 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
         mailQuota $ mailQuotaMessageLimit $
         mailForwardingAddress $ shadowAddress $ accountStatus $
         userRecipientBccAddress $ userSenderBccAddress $
-        enabledService $ telephoneNumber $ backupMailAddress $
+        enabledService $ disabledService $
+        telephoneNumber $ backupMailAddress $
         mtaTransport $ memberOfGroup $ expiredDate $
         lastLoginDate $ lastLoginIP $ lastLoginProtocol $
         preferredLanguage $ disclaimer $ accountSetting $
@@ -359,17 +367,18 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.4 NAME 'mailAlias'
     DESC 'Mail Alias' SUP top STRUCTURAL
     MUST ( mail )
-    MAY ( enabledService $ accountStatus $ description $ cn $ memberOfGroup $
+    MAY ( accountStatus $ description $ cn $ memberOfGroup $
+        enabledService $ disabledService $
         mailForwardingAddress $ shadowAddress $ expiredDate $
         accountSetting $ mailHost ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.5 NAME 'mailList'
     DESC 'Mail Domain Admin' SUP top STRUCTURAL
     MUST ( mail )
-    MAY ( accountStatus $ description $ accessPolicy $ shadowAddress $
-        enabledService $ memberOfGroup $ hasMember $ listAllowedUser $ cn $
-        expiredDate $ accountSetting $ mailHost ))
+    MAY ( cn $ accountStatus $ description $ accessPolicy $ shadowAddress $
+        enabledService $ disabledService $ memberOfGroup $ hasMember $
+        listAllowedUser $ expiredDate $ accountSetting $ mailHost ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.6 NAME 'mailExternalUser'
     DESC 'Mail External User' SUP top STRUCTURAL
     MUST ( memberOfGroup )
-    MAY ( accountStatus $ mail $ enabledService $ description $
-        cn $ mailHost $ accountSetting $ shadowAddress ))
+    MAY ( cn $ accountStatus $ mail $ enabledService $ disabledService $
+        description $ mailHost $ accountSetting $ shadowAddress ))
