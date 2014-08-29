@@ -927,10 +927,10 @@ EOF
     ALL_PORTS="${ALL_PORTS} www/mod_wsgi3 www/webpy devel/py-Jinja2 net/py-netifaces"
 
     # Fail2ban.
-    if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
-        # python-ldap.
-        ALL_PORTS="${ALL_PORTS} security/py-fail2ban"
-    fi
+    #if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
+    #    # python-ldap.
+    #    ALL_PORTS="${ALL_PORTS} security/py-fail2ban"
+    #fi
 
     cat > /var/db/ports/net_py-ldap2/options <<EOF
 OPTIONS_FILE_SET+=SASL
