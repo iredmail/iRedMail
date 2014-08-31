@@ -36,7 +36,7 @@ install_all()
     export PREFERRED_OPENLDAP_VER='24'
     export PREFERRED_MARIADB_VER='55'
     export PREFERRED_PGSQL_VER='93'
-    export PREFERRED_BDB_VER='48'
+    export PREFERRED_BDB_VER='5'
     export PREFERRED_APACHE_VER='22'
 
     export PREFERRED_MYSQL_VER='55'
@@ -46,12 +46,12 @@ install_all()
 
     freebsd_add_make_conf 'OPTIONS_SET' 'SASL'
     freebsd_add_make_conf 'OPTIONS_UNSET' 'X11'
-    freebsd_add_make_conf 'PREFERRED_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
-    freebsd_add_make_conf 'PREFERRED_MYSQL_VER' "${PREFERRED_MYSQL_VER}"
-    freebsd_add_make_conf 'PREFERRED_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
-    freebsd_add_make_conf 'PREFERRED_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
+    freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
+    freebsd_add_make_conf 'WANT_MYSQL_VER' "${PREFERRED_MYSQL_VER}"
+    freebsd_add_make_conf 'WANT_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
+    freebsd_add_make_conf 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
     freebsd_add_make_conf 'APACHE_PORT' "www/apache${PREFERRED_APACHE_VER}"
-    freebsd_add_make_conf 'PREFERRED_BDB_VER' "${PREFERRED_BDB_VER}"
+    freebsd_add_make_conf 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
     freebsd_add_make_conf 'DEFAULT_VERSIONS' "python=2.7 python2=2.7 apache=2.2 pgsql=${PREFERRED_PGSQL_VER}"
 
     for p in \

@@ -293,7 +293,7 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.2.23 NAME 'mailBlacklistRecipient'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
-attributetype ( 1.3.6.1.4.1.32349.1.2.2.14 NAME 'disabledService'
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.24 NAME 'disabledService'
     DESC 'Disabled service names'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
