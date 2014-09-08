@@ -28,7 +28,12 @@ export DIALOG_SELECTABLE_AWSTATS='YES'
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
 export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
 
-if [ X"${DISTRO}" == X'FREEBSD' ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    # EPEL for RHEL 7 doesn't have awstats yet.
+    if [ X"${DISTRO_VERSION}" == X'7' ]; then
+        export DIALOG_SELECTABLE_AWSTATS='YES'
+    fi
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
 fi
 

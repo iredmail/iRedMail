@@ -24,7 +24,7 @@
 # ---------------- Apache & PHP -------------------------
 # -------------------------------------------------------
 
-apache_php_config()
+apache_config()
 {
     ECHO_INFO "Configure Apache web server and PHP."
 
@@ -141,60 +141,6 @@ apache_php_config()
         [ X"${BACKEND}" == X'PGSQL' ] && /usr/local/sbin/mod_auth_pgsql-enable &>/dev/null
     fi
 
-    # --------------------------
-    # PHP Setting.
-    # --------------------------
-    backup_file ${APACHE_PHP_INI}
-
-    # FreeBSD: Copy sample file.
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        cp -f /usr/local/etc/php.ini-production ${APACHE_PHP_INI}
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ln -s /var/www/conf/modules.sample/php-${PHP_VERSION}.conf /var/www/conf/modules/php.conf
-
-        # Enable Apache modules
-        for i in $(ls -d /etc/php-${PHP_VERSION}.sample/*); do
-            ln -sf ${i} /etc/php-${PHP_VERSION}/$(basename $i)
-        done
-    fi
-
-    #ECHO_DEBUG "Setting error_reporting to 'E_ERROR': ${APACHE_PHP_INI}."
-    #perl -pi -e 's#^(error_reporting.*=)#${1} E_ERROR;#' ${APACHE_PHP_INI}
-
-    ECHO_DEBUG "Disable several functions: ${APACHE_PHP_INI}."
-    perl -pi -e 's/^(disable_functions.*=)(.*)/${1}$ENV{PHP_DISABLED_FUNCTIONS}; # ${2}/' ${APACHE_PHP_INI}
-
-    ECHO_DEBUG "Hide PHP Version in Apache from remote users requests: ${APACHE_PHP_INI}."
-    perl -pi -e 's#^(expose_php.*=).*#${1} Off;#' ${APACHE_PHP_INI}
-
-    ECHO_DEBUG "Increase 'memory_limit' to 256M: ${APACHE_PHP_INI}."
-    perl -pi -e 's#^(memory_limit = ).*#${1} 256M;#' ${APACHE_PHP_INI}
-
-    ECHO_DEBUG "Increase 'upload_max_filesize', 'post_max_size' to 10/12M: ${APACHE_PHP_INI}."
-    perl -pi -e 's/^(upload_max_filesize.*=).*/${1} 10M;/' ${APACHE_PHP_INI}
-    perl -pi -e 's/^(post_max_size.*=).*/${1} 12M;/' ${APACHE_PHP_INI}
-
-    ECHO_DEBUG "Disable php extension: suhosin. ${APACHE_PHP_INI}."
-    perl -pi -e 's/^(suhosin.session.encrypt.*=)/${1} Off;/' ${APACHE_PHP_INI}
-    perl -pi -e 's/^;(suhosin.session.encrypt.*=)/${1} Off;/' ${APACHE_PHP_INI}
-
-    # Set date.timezone. Required by PHP-5.3.
-    grep '^date.timezone' ${APACHE_PHP_INI} >/dev/null
-    if [ X"$?" == X"0" ]; then
-        perl -pi -e 's#^(date.timezone).*#${1} = GMT#' ${APACHE_PHP_INI}
-    else
-        perl -pi -e 's#^;(date.timezone).*#${1} = GMT#' ${APACHE_PHP_INI}
-    fi
-
-    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        # Disable suhosin.session.encrypt on Debian 6. Required by Roundcube webmail.
-        [ -f ${APACHE_PHP_INI_CONF_DIR}/suhosin.ini ] && \
-            perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${APACHE_PHP_INI_CONF_DIR}/suhosin.ini
-
-        # Enable mcrypt
-        php5enmod mcrypt &>/dev/null
-    fi
-
     cat >> ${TIP_FILE} <<EOF
 Apache:
     * Configuration files:
@@ -207,11 +153,7 @@ Apache:
     * See also:
         - ${HTTPD_DOCUMENTROOT}/index.html
 
-PHP:
-    * Configuration file: ${APACHE_PHP_INI}
-    * Disabled functions: ${PHP_DISABLED_FUNCTIONS}
-
 EOF
 
-    echo 'export status_apache_php_config="DONE"' >> ${STATUS_FILE}
+    echo 'export status_apache_config="DONE"' >> ${STATUS_FILE}
 }

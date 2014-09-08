@@ -158,21 +158,9 @@ enabled=1
 gpgcheck=0
 EOF
 
-    ECHO_INFO "Install epel yum repo."
+    ECHO_INFO "Install EPEL yum repo."
     yum clean metadata
-
-    # Create a temporary yum repo to install epel-release without GPG check.
-    cat > ${YUM_REPOS_DIR}/tmp_epel.repo <<EOF
-[tmp_epel]
-name=Extra Packages for Enterprise Linux ${DISTRO_VERSION} - \$basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/${DISTRO_VERSION}/\$basearch
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-${DISTRO_VERSION}&arch=\$basearch
-failovermethod=priority
-enabled=1
-gpgcheck=0
-EOF
-
-    eval ${install_pkg} epel-release && rm ${YUM_REPOS_DIR}/tmp_epel.repo
+    eval ${install_pkg} epel-release
 
     ECHO_INFO "Clean metadata of yum repositories."
     yum clean metadata

@@ -31,13 +31,15 @@ EOF
 
     # Add alias for Apache daemon user
     add_postfix_alias ${HTTPD_USER} ${SYS_ROOT_USER}
+
+    echo 'export status_web_server_extra="DONE"' >> ${STATUS_FILE}
 }
 
 web_server_config()
 {
     if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
-        . ${FUNCTIONS_DIR}/apache_php.sh
-        check_status_before_run apache_php_config
+        . ${FUNCTIONS_DIR}/apache.sh
+        check_status_before_run apache_config
     fi
 
     if [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ]; then
@@ -45,5 +47,10 @@ web_server_config()
         check_status_before_run nginx_config
     fi
 
+    . ${FUNCTIONS_DIR}/php.sh
+    check_status_before_run php_config
+
     check_status_before_run web_server_extra
+
+    echo 'export status_web_server_config="DONE"' >> ${STATUS_FILE}
 }

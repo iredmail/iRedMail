@@ -66,7 +66,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 fi
 
 
-. ${CONF_DIR}/apache_php
+. ${CONF_DIR}/apache
 . ${CONF_DIR}/nginx
 
 # PHP
