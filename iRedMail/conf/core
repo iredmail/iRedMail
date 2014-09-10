@@ -337,7 +337,7 @@ service_control()
                     if [ X"${action}" == X'enable' ]; then
                         update-rc.d $srv defaults
                     elif [ X"${action}" == X'disable' ]; then
-                        update-rc.d -f $i remove
+                        update-rc.d -f $srv remove
                     else
                         ${rc_script} $action
                     fi

@@ -319,14 +319,7 @@ install_all()
 
     # phpLDAPadmin
     if [ X"${USE_PHPLDAPADMIN}" == X'YES' ]; then
-        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-                -o X"${DISTRO_CODENAME}" == X'precise' ]; then
-                ALL_PKGS="${ALL_PKGS} phpldapadmin"
-            fi
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} phpldapadmin"
-        fi
+        ALL_PKGS="${ALL_PKGS} phpldapadmin"
     fi
 
     # iRedAPD.

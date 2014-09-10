@@ -20,38 +20,18 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-# For phpLDAPadmin.
-export PLA_VERSION='1.2.3'
-export PLA_TARBALL="phpldapadmin-${PLA_VERSION}.tgz"
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    export PLA_HTTPD_ROOT='/usr/share/phpldapadmin/htdocs'
+    export PLA_HTTPD_ROOT_SYMBOL_LINK="${PLA_HTTPD_ROOT}"
+    export PLA_CONF_DIR="/etc/phpldapadmin"
 
-# Install phpLDAPadmin with source tarball.
-export PHPLDAPADMIN_USE_SOURCE='YES'
-
-if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-        -o X"${DISTRO_CODENAME}" == X'precise' ]; then
-        # Install phpLDAPadmin via apt repo
-        export PHPLDAPADMIN_USE_SOURCE='NO'
-
-        export PLA_HTTPD_ROOT="/usr/share/phpldapadmin"
-        export PLA_HTTPD_ROOT_SYMBOL_LINK="${PLA_HTTPD_ROOT}"
-        export PLA_CONF_DIR="${PLA_HTTPD_ROOT}/config"
-    else
-        export PLA_HTTPD_ROOT="${HTTPD_SERVERROOT}/phpldapadmin-${PLA_VERSION}"
-        export PLA_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/phpldapadmin"
-        export PLA_CONF_DIR="${PLA_HTTPD_ROOT}/config"
-    fi
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    export PLA_HTTPD_ROOT="/usr/share/phpldapadmin"
+    export PLA_HTTPD_ROOT_SYMBOL_LINK="${PLA_HTTPD_ROOT}"
+    export PLA_CONF_DIR="${PLA_HTTPD_ROOT}/config"
 
 elif [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'OPENBSD' ]; then
-    # Install phpLDAPadmin via ports tree
-    export PHPLDAPADMIN_USE_SOURCE='NO'
-
     export PLA_HTTPD_ROOT="${HTTPD_SERVERROOT}/phpldapadmin/htdocs"
     export PLA_HTTPD_ROOT_SYMBOL_LINK="${PLA_HTTPD_ROOT}"
     export PLA_CONF_DIR="${HTTPD_SERVERROOT}/phpldapadmin/config"
-
-else
-    export PLA_HTTPD_ROOT="${HTTPD_SERVERROOT}/phpldapadmin-${PLA_VERSION}"
-    export PLA_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/phpldapadmin"
-    export PLA_CONF_DIR="${PLA_HTTPD_ROOT_SYMBOL_LINK}/config"
 fi
