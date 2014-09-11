@@ -642,6 +642,7 @@ EOF
 ${CONF_MSG}
 # Delete virus mails which created 15 days ago.
 1   5   *   *   *   touch ${AMAVISD_VIRUSMAILS_DIR}; find ${AMAVISD_VIRUSMAILS_DIR}/ -mtime +15 | xargs rm -rf {}
+
 EOF
 
     cat >> ${TIP_FILE} <<EOF

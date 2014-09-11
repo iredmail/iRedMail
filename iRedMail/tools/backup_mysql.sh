@@ -13,8 +13,8 @@
 #   * Required commands:
 #       + mysqldump
 #       + du
-#       + bzip2 or gzip     # If bzip2 is not available, change 'CMD_COMPRESS'
-#                           # to use 'gzip'.
+#       + bzip2     # If bzip2 is not available, change 'CMD_COMPRESS'
+#                   # to use 'gzip'.
 #
 
 ###########################
@@ -31,8 +31,6 @@
 #       MYSQL_PASSWD
 #       DATABASES
 #       DB_CHARACTER_SET
-#       COMPRESS
-#       DELETE_PLAIN_SQL_FILE
 #
 #   * Add crontab job for root user (or whatever user you want):
 #
@@ -71,12 +69,6 @@ export DATABASES='mysql vmail roundcubemail policyd amavisd iredadmin'
 # Note: Currently, it doesn't support to specify character set for each databases.
 export DB_CHARACTER_SET="utf8"
 
-# Compress plain SQL file: YES, NO.
-export COMPRESS="YES"
-
-# Delete plain SQL files after compressed. Compressed copy will be remained.
-export DELETE_PLAIN_SQL_FILE="YES"
-
 #########################################################
 # You do *NOT* need to modify below lines.
 #########################################################
@@ -108,7 +100,7 @@ export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
 # Check required variables.
 if [ X"${MYSQL_USER}" == X"" -o X"${MYSQL_PASSWD}" == X"" -o X"${DATABASES}" == X"" ]; then
     echo "[ERROR] You don't have correct MySQL related configurations in file: ${0}" 1>&2
-    echo -e "\t- MYSQL_USER\n\t- MYSQL_PASSWD\n\t- DATABASES" 1>&2
+    echo -e "\t- MYSQL_USER\n\t- DATABASES" 1>&2
     echo "Please configure them first." 1>&2
 
     exit 255
@@ -130,14 +122,19 @@ fi
 echo "* Starting backup: ${TIMESTAMP}." >${LOGFILE}
 echo "* Backup directory: ${BACKUP_DIR}." >>${LOGFILE}
 
-backup_db()
-{
-    # USAGE:
-    #  # backup dbname
-    db="${1}"
+# Backup.
+echo "* Backing up databases ..." >> ${LOGFILE}
+for db in ${DATABASES}; do
+    #backup_db ${db} >>${LOGFILE}
+
+    #if [ X"$?" == X"0" ]; then
+    #    echo "  - ${db} [DONE]" >> ${LOGFILE}
+    #else
+    #    [ X"${BACKUP_SUCCESS}" == X"YES" ] && export BACKUP_SUCCESS='NO'
+    #fi
     output_sql="${BACKUP_DIR}/${db}-${TIMESTAMP}.sql"
 
-    # Check whether database exists or not
+    # Check database existence
     ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" -e "use ${db}" &>/dev/null
 
     if [ X"$?" == X'0' ]; then
@@ -149,27 +146,33 @@ backup_db()
             --default-character-set=${DB_CHARACTER_SET} \
             ${db} > ${output_sql}
 
-        # Compress
-        if [ X"${COMPRESS}" == X"YES" ]; then
+        if [ X"$?" == X'0' ]; then
+            # Get original SQL file size
+            original_size="$(${CMD_DU} ${output_sql} | awk '{print $1}')"
+
+            # Compress
             ${CMD_COMPRESS} ${output_sql} >>${LOGFILE}
 
-            if [ X"$?" == X'0' -a X"${DELETE_PLAIN_SQL_FILE}" == X'YES' ]; then
+            if [ X"$?" == X'0' ]; then
                 rm -f ${output_sql} >> ${LOGFILE}
             fi
+
+            # Get compressed file size
+            if echo ${CMD_COMPRESS} | grep '^bzip2' >/dev/null; then
+                compressed_file_name="${output_sql}.bz2"
+            else
+                compressed_file_name="${output_sql}.gz"
+            fi
+            compressed_size="$(${CMD_DU} ${compressed_file_name} | awk '{print $1}')"
+
+            # Log to SQL table `iredadmin.log`, so that global domain admins
+            # can check backup status
+            sql_success="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup: ${db}. Original file size: ${original_size}, compressed: ${compressed_size}, backup file: ${compressed_file_name}', 'cron_backup_sql_db', '127.0.0.1', NOW());"
+            ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_success}"
+        else
+            # TODO Log failure
+            :
         fi
-    fi
-
-}
-
-# Backup.
-echo "* Backing up databases ..." >> ${LOGFILE}
-for db in ${DATABASES}; do
-    backup_db ${db} >>${LOGFILE}
-
-    if [ X"$?" == X"0" ]; then
-        echo "  - ${db} [DONE]" >> ${LOGFILE}
-    else
-        [ X"${BACKUP_SUCCESS}" == X"YES" ] && export BACKUP_SUCCESS='NO'
     fi
 done
 

@@ -303,7 +303,11 @@ install_all()
 
     # Roundcube
     if [ X"${USE_RCM}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            if [ X"${RCM_USE_SOURCE}" != X'YES' ]; then
+                ALL_PKGS="${ALL_PKGS} roundcubemail"
+            fi
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${RCM_USE_SOURCE}" != X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} roundcubemail"
             fi
@@ -320,6 +324,9 @@ install_all()
     # phpLDAPadmin
     if [ X"${USE_PHPLDAPADMIN}" == X'YES' ]; then
         ALL_PKGS="${ALL_PKGS} phpldapadmin"
+        if [ X"${DISTRO_CODENAME}" == X'trusty' ]; then
+            mkdir -p /etc/apache2/conf.d &>/dev/null
+        fi
     fi
 
     # iRedAPD.

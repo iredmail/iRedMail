@@ -331,9 +331,12 @@ awstats_config_crontab()
     ECHO_DEBUG "Setting cronjob for awstats."
 
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
-# ${PROG_NAME}: update Awstats statistics
+# ${PROG_NAME}: update Awstats statistics for web
 1   */1   *   *   *   perl ${AWSTATS_CGI_DIR}/awstats.pl -config=web -update >/dev/null
+
+# ${PROG_NAME}: update Awstats statistics for smtp
 1   */1   *   *   *   perl ${AWSTATS_CGI_DIR}/awstats.pl -config=smtp -update >/dev/null
+
 EOF
 
     echo 'export status_awstats_config_crontab="DONE"' >> ${STATUS_FILE}

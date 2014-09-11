@@ -26,7 +26,7 @@ rcm_install()
     fi
 
     # Copy sample config files.
-    cd ${RCM_HTTPD_ROOT}/config/
+    cd ${RCM_CONF_DIR}
     cp ${SAMPLE_DIR}/roundcubemail/config.inc.php .
     cp -f ${SAMPLE_DIR}/dovecot/dovecot.sieve.roundcube ${RCM_SIEVE_SAMPLE_FILE}
     chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
@@ -133,9 +133,9 @@ EOF
 
 rcm_config()
 {
-    ECHO_DEBUG "Configure database for Roundcubemail: ${RCM_HTTPD_ROOT}/config/*."
+    ECHO_DEBUG "Configure database for Roundcubemail: ${RCM_CONF_DIR}/*."
 
-    cd ${RCM_HTTPD_ROOT}/config/
+    cd ${RCM_CONF_DIR}
 
     #export RCM_DB_USER RCM_DB_PASSWD RCMD_DB SQL_SERVER FIRST_DOMAIN
     #export RCM_DES_KEY
@@ -157,7 +157,7 @@ rcm_config()
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         export LDAP_SERVER_HOST LDAP_SERVER_PORT LDAP_BIND_VERSION LDAP_BASEDN LDAP_ATTR_DOMAIN_RDN LDAP_ATTR_USER_RDN
-        cd ${RCM_HTTPD_ROOT}/config/
+        cd ${RCM_CONF_DIR}
         ECHO_DEBUG "Setting global LDAP address book in Roundcube."
 
         cat >> config.inc.php <<EOF
@@ -241,10 +241,9 @@ EOF
     fi
 
     cat >> ${TIP_FILE} <<EOF
-Roundcube webmail:
+Roundcube webmail: ${RCM_HTTPD_ROOT}
     * Configuration files:
-        - ${HTTPD_SERVERROOT}/roundcubemail-${RCM_VERSION}/
-        - ${HTTPD_SERVERROOT}/roundcubemail-${RCM_VERSION}/config/
+        - ${RCM_CONF_DIR}
     * URL:
         - http://${HOSTNAME}/mail/
         - https://${HOSTNAME}/mail/ (Over SSL/TLS)
@@ -265,7 +264,7 @@ EOF
 rcm_plugin_managesieve()
 {
     ECHO_DEBUG "Config plugin: managesieve."
-    cd ${RCM_HTTPD_ROOT}/config/
+    cd ${RCM_CONF_DIR}
 
     export MANAGESIEVE_BIND_HOST MANAGESIEVE_PORT RCM_SIEVE_SAMPLE_FILE
     cd ${RCM_HTTPD_ROOT}/plugins/managesieve/ && \
@@ -282,7 +281,7 @@ rcm_plugin_managesieve()
 rcm_plugin_password()
 {
     ECHO_DEBUG "Enable and config plugin: password."
-    cd ${RCM_HTTPD_ROOT}/config/
+    cd ${RCM_CONF_DIR}
 
     cd ${RCM_HTTPD_ROOT}/plugins/password/ && \
         cp config.inc.php.dist config.inc.php

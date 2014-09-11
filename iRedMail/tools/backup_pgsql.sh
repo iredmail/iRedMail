@@ -12,8 +12,8 @@
 #   * Required commands:
 #       + pg_dump
 #       + du
-#       + bzip2 or gzip     # If bzip2 is not available, change 'CMD_COMPRESS'
-#                           # to use 'gzip'.
+#       + bzip2     # If bzip2 is not available, change 'CMD_COMPRESS'
+#                   # to use 'gzip'.
 #
 
 ###########################
@@ -28,8 +28,6 @@
 #       PGSQL_ADMIN
 #       BACKUP_ROOTDIR
 #       DATABASES
-#       COMPRESS
-#       DELETE_PLAIN_SQL_FILE
 #
 #   * Add crontab job for root user (or whatever user you want):
 #
@@ -56,12 +54,6 @@ export BACKUP_ROOTDIR='/var/vmail/backup'
 # Your iRedMail server might have below databases:
 # vmail, roundcubemail, cluebringer, amavisd, iredadmin.
 export DATABASES='vmail roundcubemail policyd amavisd iredadmin'
-
-# Compress plain SQL file: YES, NO.
-export COMPRESS="YES"
-
-# Delete plain SQL files after compressed. Compressed copy will be remained.
-export DELETE_PLAIN_SQL_FILE="YES"
 
 #########################################################
 # You do *NOT* need to modify below lines.
@@ -105,30 +97,49 @@ echo "* Backing up databases ..." >> ${LOGFILE}
 for db in ${DATABASES}; do
     output_sql="${db}-${TIMESTAMP}.sql"
 
-    # Check whether database exists or not
+    # Check database existence
     su - "${PGSQL_SYS_USER}" -c "psql -d ${db} -c '\q' >/dev/null 2>&1"
 
     # Dump
     if [ X"$?" == X'0' ]; then
         su - "${PGSQL_SYS_USER}" -c "${CMD_PG_DUMP} ${db} > ${PGSQL_SYS_USER_HOME}/${output_sql}"
 
-        # Move to backup directory.
-        mv ${PGSQL_SYS_USER_HOME}/${output_sql} ${BACKUP_DIR}
+        if [ X"$?" == X'0' ]; then
+            # Move to backup directory.
+            mv ${PGSQL_SYS_USER_HOME}/${output_sql} ${BACKUP_DIR}
 
-        # Compress
-        if [ X"${COMPRESS}" == X"YES" ]; then
             cd ${BACKUP_DIR}
+
+            # Get original SQL file size
+            original_size="$(${CMD_DU} ${output_sql} | awk '{print $1}')"
+
+            # Compress
             ${CMD_COMPRESS} ${output_sql} >>${LOGFILE}
 
-            if [ X"$?" == X'0' -a X"${DELETE_PLAIN_SQL_FILE}" == X'YES' ]; then
-                rm -f ${output_sql} >> ${LOGFILE}
-            fi
-        fi
-
-        if [ X"$?" == X"0" ]; then
+            rm -f ${output_sql} >> ${LOGFILE}
             echo -e "  + ${db} [DONE]" >> ${LOGFILE}
+
+            # Get compressed file size
+            if echo ${CMD_COMPRESS} | grep '^bzip2' >/dev/null; then
+                compressed_file_name="${output_sql}.bz2"
+            else
+                compressed_file_name="${output_sql}.gz"
+            fi
+            compressed_size="$(${CMD_DU} ${compressed_file_name} | awk '{print $1}')"
+
+            # Log to SQL table `iredadmin.log`, so that global domain admins
+            # can check backup status
+            sql_success="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup: ${db}. Original file size: ${original_size}, compressed: ${compressed_size}, backup file: ${compressed_file_name}', 'cron_backup_sql_db', '127.0.0.1', NOW());"
+
+            su - "${PGSQL_SYS_USER}" >/dev/null <<EOF
+psql -d iredadmin <<EOF2
+${sql_success}
+EOF2
+EOF
         else
-            [ X"${BACKUP_SUCCESS}" == X"YES" ] && export BACKUP_SUCCESS='NO'
+            [ X"${BACKUP_SUCCESS}" == X'YES' ] && export BACKUP_SUCCESS='NO'
+            # TODO Log failure
+            :
         fi
     fi
 done
