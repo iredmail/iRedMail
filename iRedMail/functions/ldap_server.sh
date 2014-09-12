@@ -141,6 +141,8 @@ ldap_server_cron_backup()
     chmod 0700 ${BACKUP_SCRIPT_OPENLDAP}
 
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_OPENLDAP}
+    perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{IREDADMIN_DB_USER}"#' ${BACKUP_SCRIPT_OPENLDAP}
+    perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{IREDADMIN_DB_PASSWD}"#' ${BACKUP_SCRIPT_OPENLDAP}
 
     # Add cron job
     cat >> ${CRON_SPOOL_DIR}/root <<EOF

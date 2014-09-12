@@ -165,14 +165,15 @@ for db in ${DATABASES}; do
             fi
             compressed_size="$(${CMD_DU} ${compressed_file_name} | awk '{print $1}')"
 
-            # Log to SQL table `iredadmin.log`, so that global domain admins
-            # can check backup status
-            sql_success="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup: ${db}. Original file size: ${original_size}, compressed: ${compressed_size}, backup file: ${compressed_file_name}', 'cron_backup_sql_db', '127.0.0.1', NOW());"
-            ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_success}"
+            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup: ${db}. Original file size: ${original_size}, compressed: ${compressed_size}, backup file: ${compressed_file_name}', 'cron_backup_sql', '127.0.0.1', NOW());"
         else
-            # TODO Log failure
-            :
+            # backup failed
+            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup failed: ${db}, check log file ${LOGFILE} for more details.', 'cron_backup_sql', '127.0.0.1', NOW());"
         fi
+
+        # Log to SQL table `iredadmin.log`, so that global domain admins can
+        # check backup status (System -> Admin Log)
+        ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
     fi
 done
 

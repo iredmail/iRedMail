@@ -129,18 +129,17 @@ for db in ${DATABASES}; do
 
             # Log to SQL table `iredadmin.log`, so that global domain admins
             # can check backup status
-            sql_success="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup: ${db}. Original file size: ${original_size}, compressed: ${compressed_size}, backup file: ${compressed_file_name}', 'cron_backup_sql_db', '127.0.0.1', NOW());"
-
-            su - "${PGSQL_SYS_USER}" >/dev/null <<EOF
-psql -d iredadmin <<EOF2
-${sql_success}
-EOF2
-EOF
+            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup: ${db}. Original file size: ${original_size}, compressed: ${compressed_size}, backup file: ${compressed_file_name}', 'cron_backup_sql', '127.0.0.1', NOW());"
         else
             [ X"${BACKUP_SUCCESS}" == X'YES' ] && export BACKUP_SUCCESS='NO'
-            # TODO Log failure
-            :
+            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup failed: ${db}, check log file ${LOGFILE} for more details.', 'cron_backup_sql', '127.0.0.1', NOW());"
         fi
+
+        su - "${PGSQL_SYS_USER}" >/dev/null <<EOF
+psql -d iredadmin <<EOF2
+${sql_log_msg}
+EOF2
+EOF
     fi
 done
 
