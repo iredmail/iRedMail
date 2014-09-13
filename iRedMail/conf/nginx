@@ -34,6 +34,9 @@ export NGINX_LOG_ERRORLOG='/var/log/nginx/error.log'
 # PID file
 export NGINX_PID='/var/run/nginx.pid'
 
+# Directory for storing temporary files holding client request bodies.
+export NGINX_CLIENT_BODY_TEMP_PATH='/var/lib/nginx/tmp/client_body'
+
 # uWSGI
 export UWSGI_CONF_DIR='/etc/uwsgi'
 export UWSGI_SOCKET_IREDADMIN='/var/run/uwsgi_iredadmin.socket'
