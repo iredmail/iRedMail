@@ -303,15 +303,7 @@ install_all()
 
     # Roundcube
     if [ X"${USE_RCM}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X'RHEL' ]; then
-            if [ X"${RCM_USE_SOURCE}" != X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} roundcubemail"
-            fi
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            if [ X"${RCM_USE_SOURCE}" != X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} roundcubemail"
-            fi
-
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} php-pspell"
 
             # MySQL driver for PHP, required by Roundcube.

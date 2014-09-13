@@ -27,26 +27,22 @@ export RCM_VERSION='1.0.2'
 export RCM_TARBALL="roundcubemail-${RCM_VERSION}.tar.gz"
 export RCM_USE_SOURCE='YES'
 
-if [ X"${DISTRO}" == X'RHEL' ]; then
-    if [ X"${DISTRO_VERSION}" == X'7' ]; then
-        export RCM_USE_SOURCE='NO'
-        export RCM_HTTPD_ROOT='/usr/share/roundcubemail'
-        export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
-        export RCM_CONF_DIR="/etc/roundcubemail"
-    fi
-elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-    # Install via ports tree or binary package
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    # Install via ports tree
     export RCM_USE_SOURCE='NO'
-    export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcube"
-    export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
-    export RCM_CONF_DIR="${RCM_HTTPD_ROOT}/config"
 fi
 
 if [ X"${RCM_USE_SOURCE}" == X'YES' ]; then
     export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcubemail-${RCM_VERSION}"
     export RCM_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/roundcubemail"
-    export RCM_CONF_DIR="${RCM_HTTPD_ROOT}/config"
+else
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        export RCM_HTTPD_ROOT="${HTTPD_SERVERROOT}/roundcube"
+        export RCM_HTTPD_ROOT_SYMBOL_LINK="${RCM_HTTPD_ROOT}"
+    fi
 fi
+
+export RCM_CONF_DIR="${RCM_HTTPD_ROOT}/config"
 
 # Sample sieve filter template
 export RCM_SIEVE_SAMPLE_FILE="${RCM_CONF_DIR}/dovecot.sieve"

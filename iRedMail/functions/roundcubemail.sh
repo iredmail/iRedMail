@@ -27,7 +27,7 @@ rcm_install()
 
     # Copy sample config files.
     cd ${RCM_CONF_DIR}
-    cp ${SAMPLE_DIR}/roundcubemail/config.inc.php .
+    cp -f ${SAMPLE_DIR}/roundcubemail/config.inc.php .
     cp -f ${SAMPLE_DIR}/dovecot/dovecot.sieve.roundcube ${RCM_SIEVE_SAMPLE_FILE}
     chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
     chmod 0640 config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
