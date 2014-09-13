@@ -22,7 +22,6 @@
 
 # RC scripts
 export NGINX_RC_SCRIPT_NAME='nginx'
-export PHP_FPM_RC_SCRIPT_NAME='php-fpm'
 export UWSGI_RC_SCRIPT_NAME='uwsgi'
 
 # Configuration files
@@ -35,33 +34,19 @@ export NGINX_LOG_ERRORLOG='/var/log/nginx/error.log'
 # PID file
 export NGINX_PID='/var/run/nginx.pid'
 
-# php-fpm
-export PHP_FASTCGI_SOCKET='/var/run/php-fpm.socket'
-export NGINX_PHP_INI="${APACHE_PHP_INI}"
-export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
-
 # uWSGI
 export UWSGI_CONF_DIR='/etc/uwsgi'
 export UWSGI_SOCKET_IREDADMIN='/var/run/uwsgi_iredadmin.socket'
 export UWSGI_PID_IREDADMIN='/var/run/uwsgi_iredadmin.pid'
 
-if [ X"${DISTRO}" == X'RHEL' ]; then
-    export PHP_FASTCGI_SOCKET='/var/run/php-fpm/php-fpm.socket'
-elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export UWSGI_CONF_DIR='/etc/uwsgi/apps-available'
-    export NGINX_PHP_INI='/etc/php5/fpm/php.ini'
-    export PHP_FPM_POOL_WWW_CONF='/etc/php5/fpm/pool.d/www.conf'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export UWSGI_CONF_DIR='/usr/local/etc/uwsgi'
     export NGINX_CONF_ROOT="/usr/local/etc/nginx"
-    export PHP_FPM_POOL_WWW_CONF='/usr/local/etc/php-fpm.conf'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export PHP_FPM_RC_SCRIPT_NAME='php_fpm'
-    export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.conf'
-    export PHP_FASTCGI_SOCKET="${HTTPD_SERVERROOT}/run/php-fpm.socket"
-
     export NGINX_LOG_ACCESSLOG='logs/access.log'
     export NGINX_LOG_ERRORLOG='logs/error.log'
 
@@ -75,5 +60,4 @@ export NGINX_CONF_DEFAULT="${NGINX_CONF_DIR}/default.conf"
 
 export NGINX_MIME_TYPES="${NGINX_CONF_ROOT}/mime.types"
 
-export PHP_FASTCGI_SOCKET_FULL="unix:${PHP_FASTCGI_SOCKET}"
 export UWSGI_SOCKET_IREDADMIN_FULL="unix:${UWSGI_SOCKET_IREDADMIN}"

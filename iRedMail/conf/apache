@@ -49,9 +49,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export HTTPD_LOG_ACCESSLOG='/var/log/httpd/access_log'
     export HTTPD_LOG_ERRORLOG='/var/log/httpd/error_log'
 
-    # PHP
-    export APACHE_PHP_INI='/etc/php.ini'
-
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Daemon user.
     export HTTPD_USER='www-data'
@@ -82,10 +79,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export HTTPD_LOG_ACCESSLOG='/var/log/apache2/access.log'
     export HTTPD_LOG_ERRORLOG='/var/log/apache2/error.log'
 
-    # ---- PHP ----
-    export APACHE_PHP_INI='/etc/php5/apache2/php.ini'
-    export APACHE_PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
-
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export APACHE_RC_SCRIPT_NAME='apache22'
 
@@ -109,10 +102,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export HTTPD_LOG_ACCESSLOG='/var/log/httpd-access.log'
     export HTTPD_LOG_ERRORLOG='/var/log/httpd-error.log'
 
-    # ---- PHP ----
-    # Copy from example: /usr/local/etc/php.ini-production
-    export APACHE_PHP_INI='/usr/local/etc/php.ini'
-
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export APACHE_RC_SCRIPT_NAME='httpd'
 
@@ -134,16 +123,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export HTTPD_LOG_ACCESSLOG="${HTTPD_SERVERROOT}/logs/access_log"
     export HTTPD_LOG_ERRORLOG="${HTTPD_SERVERROOT}/logs/error_log"
 
-    # PHP
-    export PHP_VERSION='5.4'
-    export APACHE_PHP_INI="/etc/php-${PHP_VERSION}.ini"
 fi
 
 export HTTPD_CGIBIN_DIR="${HTTPD_SERVERROOT}/cgi-bin"
-
-# PHP
-export PHP_DISABLED_FUNCTIONS='show_source,system,shell_exec,passthru,exec,phpinfo,proc_open'
-
-# PHP connection type: mysql, mysqli (recommended).
-export PHP_CONN_TYPE='mysqli'
-[ X"${BACKEND}" == X"PGSQL" ] && export PHP_CONN_TYPE='pgsql'

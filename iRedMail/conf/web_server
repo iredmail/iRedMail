@@ -68,10 +68,4 @@ fi
 
 . ${CONF_DIR}/apache
 . ${CONF_DIR}/nginx
-
-# PHP
-export PHP_DISABLED_FUNCTIONS='show_source,system,shell_exec,passthru,exec,phpinfo,proc_open'
-
-# PHP connection type: mysql, mysqli (recommended).
-export PHP_CONN_TYPE='mysqli'
-[ X"${BACKEND}" == X"PGSQL" ] && export PHP_CONN_TYPE='pgsql'
+. ${CONF_DIR}/php
