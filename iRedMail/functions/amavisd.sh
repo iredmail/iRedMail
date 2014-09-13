@@ -512,21 +512,18 @@ EOF
     echo -e '\n----' > ${DISCLAIMER_DIR}/default.txt
 
     # Integrate SQL. Used to store incoming & outgoing related mail information.
-    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-        cat >> ${AMAVISD_CONF} <<EOF
-@storage_sql_dsn = (
-    ['DBI:mysql:database=${AMAVISD_DB_NAME};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
-);
-#@lookup_sql_dsn = @storage_sql_dsn;
-EOF
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        cat >> ${AMAVISD_CONF} <<EOF
-@storage_sql_dsn = (
-    ['DBI:Pg:database=${AMAVISD_DB_NAME};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
-);
-#@lookup_sql_dsn = @storage_sql_dsn;
-EOF
+    if [ X"${BACKEND}" == X'PGSQL' ]; then
+        perl_dbi_type='Pg'
+    else
+        perl_dbi_type='mysql'
     fi
+
+    cat >> ${AMAVISD_CONF} <<EOF
+@storage_sql_dsn = (
+    ['DBI:${perl_dbi_type}:database=${AMAVISD_DB_NAME};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
+);
+@lookup_sql_dsn = @storage_sql_dsn;
+EOF
 
     # Use 'utf8' character set.
     if [ X"${BACKEND}" != X'PGSQL' ]; then

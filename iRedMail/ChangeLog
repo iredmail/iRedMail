@@ -2,6 +2,9 @@ iRedMail-0.9.0:
     * Improvement:
         - Nginx support is now available on all Linux/BSD distributions.
         - MariaDB support is now available on FreeBSD.
+        - Enable '@lookup_sql_dsn' in Amavisd by default, used for per-user,
+          per-domain and global per-recipient policy, including per-recipient
+          white/blacklist, spam policy.
         - New index in `amavisd` database for SQL column `policy.policy_name`.
           Required by iRedAdmin-Pro self-service.
         - On RHEL/CentOS, phpldapadmin is now installed from EPEL repo.
