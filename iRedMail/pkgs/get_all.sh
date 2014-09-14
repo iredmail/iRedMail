@@ -143,8 +143,7 @@ check_md5()
 
 create_repo_rhel()
 {
-    # createrepo
-    ECHO_INFO "Generating yum repository ..."
+    ECHO_INFO "Preparing yum repositories ..."
 
     # Backup old repo file.
     backup_file ${LOCAL_REPO_FILE}
@@ -158,12 +157,11 @@ enabled=1
 gpgcheck=0
 EOF
 
-    ECHO_INFO "Install EPEL yum repo."
-    yum clean metadata
+    yum clean metadata &>/dev/null
     eval ${install_pkg} epel-release
 
     ECHO_INFO "Clean metadata of yum repositories."
-    yum clean metadata
+    yum clean metadata &>/dev/null
 
     echo 'export status_create_repo_rhel="DONE"' >> ${STATUS_FILE}
 }

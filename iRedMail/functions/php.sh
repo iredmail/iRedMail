@@ -24,6 +24,8 @@
 # PHP Setting.
 php_config()
 {
+    ECHO_INFO "Configure PHP."
+
     backup_file ${APACHE_PHP_INI} ${NGINX_PHP_INI}
 
     # FreeBSD: Copy sample file.
@@ -81,4 +83,6 @@ PHP:
     * Disabled functions: ${PHP_DISABLED_FUNCTIONS}
 
 EOF
+
+    echo 'export status_php_config="DONE"' >> ${STATUS_FILE}
 }
