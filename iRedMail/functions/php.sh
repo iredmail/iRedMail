@@ -38,12 +38,6 @@ php_config()
         done
     fi
 
-    #ECHO_DEBUG "Setting error_reporting to 'E_ERROR': ${APACHE_PHP_INI}."
-    #perl -pi -e 's#^(error_reporting.*=)#${1} E_ERROR;#' ${APACHE_PHP_INI}
-
-    ECHO_DEBUG "Disable several functions: ${APACHE_PHP_INI}."
-    perl -pi -e 's/^(disable_functions.*=)(.*)/${1}$ENV{PHP_DISABLED_FUNCTIONS}; # ${2}/' ${APACHE_PHP_INI}
-
     ECHO_DEBUG "Hide PHP Version in Apache from remote users requests: ${APACHE_PHP_INI}."
     perl -pi -e 's#^(expose_php.*=).*#${1} Off;#' ${APACHE_PHP_INI}
 

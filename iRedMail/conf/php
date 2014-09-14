@@ -55,8 +55,6 @@ fi
 
 export PHP_FASTCGI_SOCKET_FULL="unix:${PHP_FASTCGI_SOCKET}"
 
-export PHP_DISABLED_FUNCTIONS='show_source,system,shell_exec,passthru,exec,phpinfo,proc_open'
-
 # connection type: mysql, mysqli (recommended for MySQL/MariaDB), pgsql.
 export PHP_CONN_TYPE='mysqli'
 [ X"${BACKEND}" == X'PGSQL' ] && export PHP_CONN_TYPE='pgsql'
