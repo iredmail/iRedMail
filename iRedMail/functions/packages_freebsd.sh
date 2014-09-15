@@ -925,6 +925,8 @@ EOF
     # iRedAdmin
     # mod_wsgi
     ALL_PORTS="${ALL_PORTS} www/mod_wsgi3 www/webpy devel/py-Jinja2 net/py-netifaces"
+    # bcrypt
+    ALL_PORTS="${ALL_PORTS} security/py-bcrypt"
 
     # Fail2ban.
     #if [ X"${USE_FAIL2BAN}" == X"YES" ]; then

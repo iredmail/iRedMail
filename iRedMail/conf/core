@@ -378,27 +378,11 @@ service_control()
     fi
 }
 
-# Generate MD5 password
-gen_md5_passwd()
+generate_password_hash()
 {
-    # Usage: gen_sql_passwd 'plain_password'
-    openssl passwd -1 ${1}
-}
-
-gen_ldap_passwd()
-{
-    if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
-        SLAPPASSWD='/usr/local/sbin/slappasswd'
-    else
-        SLAPPASSWD='/usr/sbin/slappasswd'
-    fi
-
-    password="${1}"
-    if [ -x ${SLAPPASSWD} ]; then
-        ${SLAPPASSWD} -h {SSHA} -s "${password}"
-    else
-        python ${TOOLS_DIR}/generate_ssha_password.py ${password}
-    fi
+    scheme="${1}"
+    password="${2}"
+    python ${TOOLS_DIR}/generate_password_hash.py ${scheme} ${password}
 }
 
 # Create SSL certs/private files.

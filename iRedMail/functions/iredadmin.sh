@@ -201,6 +201,11 @@ EOF
     perl -pi -e 's#^(amavisd_enable_quarantine =).*#${1} True#' settings.py
     perl -pi -e 's#^(amavisd_quarantine_port =).*#${1} "$ENV{AMAVISD_QUARANTINE_PORT}"#' settings.py
 
+    # Use bcrypt password hash on BSD by default.
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        echo "DEFAULT_PASSWORD_SCHEME = 'BCRYPT'" >> settings.py
+    fi
+
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
 # ${PROG_NAME}: Cleanup Amavisd database
 1   2   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py >/dev/null

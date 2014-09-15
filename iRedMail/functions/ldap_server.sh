@@ -16,7 +16,7 @@ objectClass: top
 cn: ${VMAIL_USER_NAME}
 sn: ${VMAIL_USER_NAME}
 uid: ${VMAIL_USER_NAME}
-${LDAP_ATTR_USER_PASSWD}: $(gen_ldap_passwd "${LDAP_BINDPW}")
+${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash MD5 "${LDAP_BINDPW}")
 
 dn: ${LDAP_ADMIN_DN}
 objectClass: person
@@ -25,7 +25,7 @@ objectClass: top
 cn: ${VMAIL_DB_ADMIN_USER}
 sn: ${VMAIL_DB_ADMIN_USER}
 uid: ${VMAIL_DB_ADMIN_USER}
-${LDAP_ATTR_USER_PASSWD}: $(gen_ldap_passwd "${LDAP_ADMIN_PW}")
+${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash MD5 "${LDAP_ADMIN_PW}")
 
 dn: ${LDAP_BASEDN}
 objectClass: Organization
@@ -82,7 +82,7 @@ ${LDAP_ATTR_USER_STORAGE_BASE_DIRECTORY}: ${STORAGE_BASE_DIR}
 mailMessageStore: ${STORAGE_NODE}/${FIRST_USER_MAILDIR_HASH_PART}
 homeDirectory: ${FIRST_USER_MAILDIR_FULL_PATH}
 ${LDAP_ATTR_USER_QUOTA}: 104857600
-${LDAP_ATTR_USER_PASSWD}: $(gen_ldap_passwd "${FIRST_USER_PASSWD}")
+${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} "${FIRST_USER_PASSWD}")
 ${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_MAIL}
 ${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_INTERNAL}
 ${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_DOVEADM}
@@ -115,7 +115,7 @@ EOF
 ldap_server_config()
 {
     ldap_generate_populate_ldif
-    export LDAP_ROOTPW_SSHA="$(gen_ldap_passwd ${LDAP_ROOTPW})"
+    export LDAP_ROOTPW_SSHA="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${LDAP_ROOTPW})"
 
     if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
         . ${FUNCTIONS_DIR}/ldapd.sh

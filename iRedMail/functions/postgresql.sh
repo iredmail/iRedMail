@@ -81,7 +81,7 @@ pgsql_initialize()
 
     ECHO_DEBUG "Start PostgreSQL server"
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        ${PGSQL_RC_SCRIPT} start  #&>/dev/null
+        ${PGSQL_RC_SCRIPT} start  &>/dev/null
     elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" != X'6' ]; then
         service_control restart ${PGSQL_RC_SCRIPT_NAME} &>/dev/null
     else
@@ -125,8 +125,8 @@ EOF
 
 pgsql_import_vmail_users()
 {
-    export DOMAIN_ADMIN_PASSWD="$(gen_md5_passwd ${DOMAIN_ADMIN_PASSWD})"
-    export FIRST_USER_PASSWD="$(gen_md5_passwd ${FIRST_USER_PASSWD})"
+    export DOMAIN_ADMIN_PASSWD="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${DOMAIN_ADMIN_PASSWD})"
+    export FIRST_USER_PASSWD="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${FIRST_USER_PASSWD})"
 
     # Generate SQL.
     # Modify default SQL template, set storagebasedirectory, storagenode.

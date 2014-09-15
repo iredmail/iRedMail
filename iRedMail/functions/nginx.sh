@@ -112,7 +112,7 @@ nginx_config()
 
         # Start uWSGI
         echo '# Run iRedAdmin with uWSGI' >> /etc/rc.local
-        echo "/usr/local/bin/uwsgi -d --ini ${UWSGI_CONF_DIR}/iredadmin.ini --logto /dev/null" >> /etc/rc.local
+        echo "/usr/local/bin/uwsgi --ini ${UWSGI_CONF_DIR}/iredadmin.ini --daemonize /var/www/logs/uwsgi_iredadmin.log" >> /etc/rc.local
     fi
 
     if [ -f ${UWSGI_CONF_DIR}/iredadmin.ini ]; then
