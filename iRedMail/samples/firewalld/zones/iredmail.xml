@@ -2,7 +2,6 @@
 <zone>
     <short>Mail services</short>
     <description>Allow access to mail services from external network.</description>
-    <service name="ssh"/>
     <service name="http"/>
     <service name="https"/>
     <service name="smtp"/>
@@ -11,6 +10,5 @@
     <service name="pop3s"/>
     <service name="imap"/>
     <service name="imaps"/>
-    <service name="ldap"/>
-    <service name="ldaps"/>
+    <service name="ssh"/>
 </zone>

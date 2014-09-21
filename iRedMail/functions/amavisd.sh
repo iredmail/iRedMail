@@ -519,9 +519,12 @@ EOF
     fi
 
     cat >> ${AMAVISD_CONF} <<EOF
+# Reporting and quarantining.
 @storage_sql_dsn = (
     ['DBI:${perl_dbi_type}:database=${AMAVISD_DB_NAME};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
 );
+
+# Lookup for per-recipient, per-domain and global policy.
 @lookup_sql_dsn = @storage_sql_dsn;
 EOF
 
