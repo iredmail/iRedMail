@@ -30,7 +30,7 @@ iRedMail-0.9.0:
 
     * Updated packages:
         + Roundcube webmail -> 1.0.2
-        + iRedAPD -> 1.4.4. Bug fixes.
+        + iRedAPD -> 1.4.4. Bug fixes and performance improvement.
         + iRedAdmin -> 0.4. New tool scripts, fixes several issues.
 
     * Below packages are removed from iRedMail for security concern and their
