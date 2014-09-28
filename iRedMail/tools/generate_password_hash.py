@@ -2,7 +2,7 @@
 
 import os
 import sys
-import subprocess
+from subprocess import Popen, PIPE
 from base64 import b64encode
 
 
@@ -30,7 +30,8 @@ def generate_ssha_password(p):
 
 def generate_md5_password(p):
     p = str(p).strip()
-    return subprocess.check_output(['openssl', 'passwd', '-1', p])
+    pp = Popen(['openssl', 'passwd', '-1', p], stdout=PIPE)
+    return '{crypt}' + pp.communicate()[0]
 
 
 if __name__ == '__main__':

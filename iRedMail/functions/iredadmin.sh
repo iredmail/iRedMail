@@ -199,6 +199,7 @@ EOF
 
     perl -pi -e 's#^(amavisd_enable_logging =).*#${1} True#' settings.py
     perl -pi -e 's#^(amavisd_enable_quarantine =).*#${1} True#' settings.py
+    perl -pi -e 's#^(amavisd_enable_policy_lookup=).*#${1} True#' settings.py
     perl -pi -e 's#^(amavisd_quarantine_port =).*#${1} "$ENV{AMAVISD_QUARANTINE_PORT}"#' settings.py
 
     # Use bcrypt password hash on BSD by default.

@@ -97,7 +97,7 @@ Admin of domain ${FIRST_DOMAIN}:
     * Account: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
     * Password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
 
-    You can login iRedAdmin with this account, login name is full email address.
+    You can login to iRedAdmin with this account, login name is full email address.
 
 First mail user:
     * Username: ${FIRST_USER}@${FIRST_DOMAIN}
@@ -105,6 +105,6 @@ First mail user:
     * SMTP/IMAP auth type: login
     * Connection security: STARTTLS or SSL/TLS
 
-    You can login webmail with this account, login name is full email address.
+    You can login to webmail with this account, login name is full email address.
 
 EOF
