@@ -155,7 +155,7 @@ USE ${VMAIL_DB};
 SOURCE ${MYSQL_VMAIL_STRUCTURE_SAMPLE};
 
 /* Add your first domain. */
-INSERT INTO domain (domain,transport,created) VALUES ("${FIRST_DOMAIN}", "${TRANSPORT}", NOW());
+INSERT INTO domain (domain,transport,settings,created) VALUES ("${FIRST_DOMAIN}", "${TRANSPORT}", "default_user_quota:1024;", NOW());
 
 /* Add your first normal user. */
 INSERT INTO mailbox (username,password,name,maildir,quota,domain,isadmin,isglobaladmin,created) VALUES ("${FIRST_USER}@${FIRST_DOMAIN}","${FIRST_USER_PASSWD}","${FIRST_USER}","${FIRST_USER_MAILDIR_HASH_PART}",100, "${FIRST_DOMAIN}", 1, 1, NOW());

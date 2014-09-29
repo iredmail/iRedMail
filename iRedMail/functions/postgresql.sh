@@ -187,7 +187,7 @@ GRANT SELECT,UPDATE,INSERT,DELETE ON deleted_mailboxes TO ${VMAIL_DB_ADMIN_USER}
 GRANT USAGE,SELECT,UPDATE ON deleted_mailboxes_id_seq TO ${VMAIL_DB_ADMIN_USER};
 
 -- Add first mail domain
-INSERT INTO domain (domain,transport,created) VALUES ('${FIRST_DOMAIN}', '${TRANSPORT}', NOW());
+INSERT INTO domain (domain,transport,settings,created) VALUES ('${FIRST_DOMAIN}', '${TRANSPORT}', 'default_user_quota:1024;', NOW());
 
 -- Add first mail user
 INSERT INTO mailbox (username,password,name,maildir,quota,domain,isadmin,isglobaladmin,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}','${FIRST_USER_PASSWD}','${FIRST_USER}','${FIRST_USER_MAILDIR_HASH_PART}',100, '${FIRST_DOMAIN}', 1, 1, NOW());
