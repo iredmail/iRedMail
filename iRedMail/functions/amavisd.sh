@@ -636,15 +636,6 @@ EOF
         :
     fi
 
-    # Add crontab job to delete virus mail.
-    ECHO_DEBUG "Setting cron job for vmail user to delete virus mail per month."
-    cat > ${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER} <<EOF
-${CONF_MSG}
-# Delete virus mails which created 15 days ago.
-1   5   *   *   *   touch ${AMAVISD_VIRUSMAILS_DIR}; find ${AMAVISD_VIRUSMAILS_DIR}/ -mtime +15 | xargs rm -rf {}
-
-EOF
-
     cat >> ${TIP_FILE} <<EOF
 Amavisd-new:
     * Configuration files:
