@@ -134,15 +134,6 @@ amavisd_config_rhel()
     # Make Amavisd listen on multiple TCP ports.
     perl -pi -e 's/(\$inet_socket_port.*=.*10024.*)/\$inet_socket_port = [10024, $ENV{'AMAVISD_QUARANTINE_PORT'}];/' ${AMAVISD_CONF}
 
-    # Set admin address.
-    perl -pi -e 's#(virus_admin.*= ")(virusalert)(.*)#${1}root${3}#' ${AMAVISD_CONF}
-    perl -pi -e 's#(mailfrom_notify_admin.*= ")(virusalert)(.*)#${1}root${3}#' ${AMAVISD_CONF}
-    perl -pi -e 's#(mailfrom_notify_recip.*= ")(virusalert)(.*)#${1}root${3}#' ${AMAVISD_CONF}
-    perl -pi -e 's#(mailfrom_notify_spamadmin.*= ")(spam.police)(.*)#${1}root${3}#' ${AMAVISD_CONF}
-
-    perl -pi -e 's#(virus_admin_maps.*=.*)(virusalert)(.*)#${1}root${3}#' ${AMAVISD_CONF}
-    perl -pi -e 's#(spam_admin_maps.*=.*)(virusalert)(.*)#${1}root${3}#' ${AMAVISD_CONF}
-
     # Disable defang banned mail.
     perl -pi -e 's#(.*defang_banned = )1(;.*)#${1}0${2}#' ${AMAVISD_CONF}
 
