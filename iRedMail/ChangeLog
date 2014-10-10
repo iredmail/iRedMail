@@ -1,8 +1,9 @@
 iRedMail-0.9.0:
     * Improvement:
+        - Backup scripts will log backup status in SQL table `iredadmin`, so
+          that admin can easily check backup status with iRedAdmin.
         - Nginx support is now available on all Linux/BSD distributions.
         - MariaDB support is now available on FreeBSD.
-        - Use 'bcrypt' as default password scheme on FreeBSD.
         - Enable '@lookup_sql_dsn' in Amavisd by default, used for per-user,
           per-domain and global per-recipient policy, including per-recipient
           white/blacklist, spam policy.
@@ -11,6 +12,8 @@ iRedMail-0.9.0:
         - On RHEL/CentOS, phpldapadmin is now installed from EPEL repo.
 
     * Fixed:
+        - Replace mod_auth_mysql/pgsql by apr-util-mysql/pgsql for Awstats
+          and Cluebringer webui user authentication on Debian/Ubuntu.
         - Set 'receive_override_options=no_address_mappings' in Postfix to
           disable address mappings before content filter (Amavisd, in our
           case), and remove 'no_address_mappings' in Postfix master.cf defined
