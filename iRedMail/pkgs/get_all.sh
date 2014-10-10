@@ -157,8 +157,25 @@ enabled=1
 gpgcheck=0
 EOF
 
+    if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then
+        # Create a temporary yum repo to install epel-release without GPG check.
+        cat > ${YUM_REPOS_DIR}/tmp_epel.repo <<EOF
+[tmp_epel]
+name=Extra Packages for Enterprise Linux ${DISTRO_VERSION} - \$basearch
+#baseurl=http://download.fedoraproject.org/pub/epel/${DISTRO_VERSION}/\$basearch
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-${DISTRO_VERSION}&arch=\$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=0
+EOF
+    fi
+
     yum clean metadata &>/dev/null
     eval ${install_pkg} epel-release
+
+    if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then
+        rm -f ${YUM_REPOS_DIR}/tmp_epel.repo
+    fi
 
     ECHO_INFO "Clean metadata of yum repositories."
     yum clean metadata &>/dev/null
