@@ -110,8 +110,8 @@ while : ; do
 
 TIP: Use SPACE key to select item." \
 20 76 2 \
-"Apache" "The most popular web server" "off" \
 "Nginx" "The fastest web server" "on" \
+"Apache" "The most popular web server" "off" \
 2>/tmp/web_servers
 
     web_servers="$(cat /tmp/web_servers | tr '[a-z]' '[A-Z]')"
