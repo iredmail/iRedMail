@@ -12,6 +12,8 @@ iRedMail-0.9.0:
         - On RHEL/CentOS, phpldapadmin is now installed from EPEL repo.
 
     * Fixed:
+        - Incorrect file permission on Amavisd DKIM pem files, must be owned
+          by root user with permission 0400.
         - Replace mod_auth_mysql/pgsql by apr-util-mysql/pgsql for Awstats
           and Cluebringer webui user authentication on Debian/Ubuntu.
         - Set 'receive_override_options=no_address_mappings' in Postfix to

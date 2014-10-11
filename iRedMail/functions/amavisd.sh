@@ -32,7 +32,6 @@ amavisd_dkim()
     mkdir -p ${AMAVISD_DKIM_DIR} &>/dev/null && \
     chown ${AMAVISD_SYS_USER}:${AMAVISD_SYS_GROUP} ${AMAVISD_DKIM_DIR}
     ${AMAVISD_BIN} genrsa ${pem_file} &>/dev/null
-    chmod +r ${pem_file}
 
     cat >> ${AMAVISD_DKIM_CONF} <<EOF
 # Hope to fix 'nested MAIL command' issue on high load server.
