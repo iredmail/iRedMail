@@ -98,7 +98,7 @@ EOF
     # Add Dovecot Master User, for vacation message expiration
     sogo_sieve_expiration_pw="$(${RANDOM_STRING})"
     cat >> ${DOVECOT_MASTER_USER_PASSWORD_FILE} <<EOF
-${SOGO_SIEVE_MASTER_USER}:$(generate_password_hash SSHA "${sogo_sieve_expiration_pw}"
+${SOGO_SIEVE_MASTER_USER}:$(generate_password_hash SSHA "${sogo_sieve_expiration_pw}")
 EOF
 
     cat >> ${SOGO_SIEVE_CREDENTIAL_FILE} <<EOF
