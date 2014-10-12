@@ -163,6 +163,7 @@ TIP: Use SPACE key to select item.
     [ X"${BACKEND_ORIG}" != X"" ] && break
 done
 
+rm -f /tmp/backend &>/dev/null
 if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
     export BACKEND='OPENLDAP'
 elif [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
@@ -178,7 +179,14 @@ elif [ X"${BACKEND_ORIG}" == X'POSTGRESQL' ]; then
 fi
 echo "export BACKEND_ORIG='${BACKEND_ORIG}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export BACKEND='${BACKEND}'" >> ${IREDMAIL_CONFIG_FILE}
-rm -f /tmp/backend &>/dev/null
+
+# Use SSHA512 as default password scheme.
+# With 'auth_bind = yes' in dovecot-ldap.conf, Dovecot cannot authenticate
+# user through LDAP bind.
+if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
+    export DEFAULT_PASSWORD_SCHEME='SSHA512'
+    echo "export DEFAULT_PASSWORD_SCHEME='SSHA512'" >> ${IREDMAIL_CONFIG_FILE}
+fi
 
 # Read-only SQL user/role, used to query mail accounts in Postfix, Dovecot.
 export VMAIL_DB_BIND_PASSWD="$(${RANDOM_STRING})"

@@ -15,6 +15,22 @@ def generate_bcrypt_password(p):
     return '{CRYPT}' + bcrypt.hashpw(p, bcrypt.gensalt())
 
 
+def generate_ssha512_password(p):
+    """Generate salted SHA512 password with prefix '{SSHA512}'.
+    Return SSHA instead if python is older than 2.5 (not supported in module hashlib)."""
+    p = str(p).strip()
+    try:
+        from hashlib import sha512
+        salt = os.urandom(8)
+        pw = sha512(p)
+        pw.update(salt)
+        return '{SSHA512}' + b64encode(pw.digest() + salt)
+    except ImportError, e:
+        print e
+        # Use SSHA password instead if python is older than 2.5.
+        return generate_ssha_password(p)
+
+
 def generate_ssha_password(p):
     p = str(p).strip()
     salt = os.urandom(8)
@@ -39,6 +55,8 @@ if __name__ == '__main__':
     password = sys.argv[2]
     if scheme == 'BCRYPT':
         print generate_bcrypt_password(password)
+    elif scheme == 'SSHA512':
+        print generate_ssha512_password(password)
     elif scheme == 'SSHA':
         print generate_ssha_password(password)
     elif scheme == 'MD5':

@@ -16,7 +16,7 @@ objectClass: top
 cn: ${VMAIL_USER_NAME}
 sn: ${VMAIL_USER_NAME}
 uid: ${VMAIL_USER_NAME}
-${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash MD5 "${LDAP_BINDPW}")
+${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} "${LDAP_BINDPW}")
 
 dn: ${LDAP_ADMIN_DN}
 objectClass: person
@@ -25,7 +25,7 @@ objectClass: top
 cn: ${VMAIL_DB_ADMIN_USER}
 sn: ${VMAIL_DB_ADMIN_USER}
 uid: ${VMAIL_DB_ADMIN_USER}
-${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash MD5 "${LDAP_ADMIN_PW}")
+${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} "${LDAP_ADMIN_PW}")
 
 dn: ${LDAP_BASEDN}
 objectClass: Organization
