@@ -106,6 +106,8 @@ export CLUEBRINGER_BIND_HOST="${LOCAL_ADDRESS}"
 export CLAMD_BIND_HOST="${LOCAL_ADDRESS}"
 # iRedAPD
 export IREDAPD_BIND_HOST="${LOCAL_ADDRESS}"
+# Memcached
+export MEMCACHED_BIND_HOST="${LOCAL_ADDRESS}"
 
 # For managesieve service and software.
 export USE_MANAGESIEVE='YES'    # Use managesieve service.

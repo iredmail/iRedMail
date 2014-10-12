@@ -22,13 +22,6 @@ optional_components()
         ] && \
         check_status_before_run fail2ban_config
 
-    # Awstats.
-    [ X"${USE_AWSTATS}" == X"YES" ] && \
-        check_status_before_run awstats_config_basic && \
-        check_status_before_run awstats_config_weblog && \
-        check_status_before_run awstats_config_maillog && \
-        check_status_before_run awstats_config_crontab
-
     # Roundcubemail.
     [ X"${USE_RCM}" == X"YES" ] && \
         check_status_before_run rcm_install && \
@@ -37,6 +30,17 @@ optional_components()
         check_status_before_run rcm_config && \
         check_status_before_run rcm_plugin_managesieve && \
         check_status_before_run rcm_plugin_password
+
+    # SOGo
+    [ X"${USE_SOGO}" == X"YES" ] && \
+        check_status_before_run sogo_config
+
+    # Awstats.
+    [ X"${USE_AWSTATS}" == X"YES" ] && \
+        check_status_before_run awstats_config_basic && \
+        check_status_before_run awstats_config_weblog && \
+        check_status_before_run awstats_config_maillog && \
+        check_status_before_run awstats_config_crontab
 
     # phpLDAPadmin.
     [ X"${USE_PHPLDAPADMIN}" == X"YES" ] && \

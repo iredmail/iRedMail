@@ -75,9 +75,10 @@ check_env
 . ${CONF_DIR}/postgresql
 . ${CONF_DIR}/postfix
 . ${CONF_DIR}/policy_server
-. ${CONF_DIR}/iredapd
 . ${CONF_DIR}/dovecot
 . ${CONF_DIR}/amavisd
+. ${CONF_DIR}/iredapd
+. ${CONF_DIR}/sogo
 . ${CONF_DIR}/clamav
 . ${CONF_DIR}/spamassassin
 . ${CONF_DIR}/roundcube
@@ -104,12 +105,13 @@ fi
 
 . ${FUNCTIONS_DIR}/postfix.sh
 . ${FUNCTIONS_DIR}/policy_server.sh
-. ${FUNCTIONS_DIR}/iredapd.sh
 . ${FUNCTIONS_DIR}/dovecot.sh
-. ${FUNCTIONS_DIR}/clamav.sh
 . ${FUNCTIONS_DIR}/amavisd.sh
+. ${FUNCTIONS_DIR}/iredapd.sh
+. ${FUNCTIONS_DIR}/clamav.sh
 . ${FUNCTIONS_DIR}/spamassassin.sh
 . ${FUNCTIONS_DIR}/roundcubemail.sh
+. ${FUNCTIONS_DIR}/sogo.sh
 . ${FUNCTIONS_DIR}/phpldapadmin.sh
 . ${FUNCTIONS_DIR}/awstats.sh
 . ${FUNCTIONS_DIR}/fail2ban.sh

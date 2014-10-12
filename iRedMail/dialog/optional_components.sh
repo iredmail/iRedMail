@@ -27,12 +27,11 @@
 export DIALOG_SELECTABLE_AWSTATS='YES'
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
 export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
+export DIALOG_SELECTABLE_SOGO='NO'
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
-    # EPEL for RHEL 7 doesn't have awstats yet.
-    if [ X"${DISTRO_VERSION}" == X'7' ]; then
-        export DIALOG_SELECTABLE_AWSTATS='YES'
-    fi
+    # SOGo
+    [ X"${DISTRO_VERSION}" == X'6' ] && export DIALOG_SELECTABLE_SOGO='YES'
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
 fi
@@ -41,6 +40,10 @@ fi
 # Format: item_name item_descrition on/off
 # Note: item_descrition must be concatenated by '_'.
 export LIST_OF_OPTIONAL_COMPONENTS=''
+
+if [ X"${DIALOG_SELECTABLE_SOGO}" == X'YES' ]; then
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} SOGo 'Webmail,_Calendar,_Address_book' off"
+fi
 
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     if [ X"${DIALOG_SELECTABLE_PHPLDAPADMIN}" == X'YES' ]; then
@@ -93,6 +96,11 @@ if echo ${OPTIONAL_COMPONENTS} | grep -i 'roundcubemail' &>/dev/null; then
     echo "export USE_RCM='YES'" >> ${IREDMAIL_CONFIG_FILE}
 fi
 
+if echo ${OPTIONAL_COMPONENTS} | grep -i 'sogo' &>/dev/null; then
+    export USE_SOGO='YES'
+    echo "export USE_SOGO='YES'" >> ${IREDMAIL_CONFIG_FILE}
+fi
+
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'phpldapadmin' &>/dev/null; then
     export USE_PHPLDAPADMIN='YES'
     echo "export USE_PHPLDAPADMIN='YES'" >>${IREDMAIL_CONFIG_FILE}
@@ -119,3 +127,6 @@ echo "export IREDADMIN_DB_PASSWD='${IREDADMIN_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_
 
 export RCM_DB_PASSWD="$(${RANDOM_STRING})"
 echo "export RCM_DB_PASSWD='${RCM_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
+
+export SOGO_DB_PASSWD="$(${RANDOM_STRING})"
+echo "export SOGO_DB_PASSWD='${SOGO_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}

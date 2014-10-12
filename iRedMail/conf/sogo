@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb _at_ iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+
+export SOGO_CONF='/etc/sogo/sogo.conf'
+export SOGO_RC_SCRIPT_NAME='sogod'
+export SOGO_BIND_ADDRESS='127.0.0.1'
+export SOGO_BIND_PORT='20000'
+
+export SOGO_DB_NAME='sogo'
+export SOGO_DB_USER='sogo'
+export SOGO_DB_AUTH_VIEW='sogo_users'
+
+export SOGO_HTTPD_CONF="${HTTPD_CONF_DIR}/SOGo.conf"

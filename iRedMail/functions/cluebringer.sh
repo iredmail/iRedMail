@@ -91,7 +91,7 @@ cluebringer_config()
     perl -pi -e 's#^(bypass_mode=).*#${1}pass#' ${CLUEBRINGER_CONF}
 
     # DSN
-    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X'MYSQL' ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         perl -pi -e 's/^(#*)(DSN=DBI:mysql:).*/${2}host=$ENV{SQL_SERVER};database=$ENV{CLUEBRINGER_DB_NAME};user=$ENV{CLUEBRINGER_DB_USER};password=$ENV{CLUEBRINGER_DB_PASSWD}/' ${CLUEBRINGER_CONF}
         perl -pi -e 's/^(DB_Type=).*/${1}mysql/' ${CLUEBRINGER_CONF}
 
