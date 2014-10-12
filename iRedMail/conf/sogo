@@ -33,7 +33,11 @@ export SOGO_BIND_PORT='20000'
 
 export SOGO_DB_NAME='sogo'
 export SOGO_DB_USER='sogo'
-export SOGO_DB_AUTH_VIEW='sogo_users'
+export SOGO_DB_AUTH_VIEW='users'
+export SOGO_DB_TABLE_USER_PROFILE='user_profiles'
+export SOGO_DB_TABLE_FOLDER_INFO='folders'
+export SOGO_DB_TABLE_SESSIONS_FOLDER='sessions'
+export SOGO_DB_TABLE_ALARMS='alarms'
 
 export SOGO_HTTPD_CONF="${HTTPD_CONF_DIR}/SOGo.conf"
 
