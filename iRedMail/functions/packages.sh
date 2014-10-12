@@ -316,7 +316,7 @@ install_all()
     # SOGo
     if [ X"${USE_SOGO}" == X"YES" ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} sogo sope49-gdl1-mysql sogo-activesync libwbxml"
+            ALL_PKGS="${ALL_PKGS} sogo sope49-gdl1-mysql sogo-activesync libwbxml sogo-ealarms-notify sogo-tool"
 
             # Copy yum repo file
             ECHO_INFO "Add yum repo for SOGo: ${YUM_REPOS_DIR}/sogo.repo."

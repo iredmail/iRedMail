@@ -20,6 +20,14 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
+sogo_user()
+{
+    ECHO_DEBUG "Add user and group for SOGo: ${SOGO_DAEMON_USER}:${SOGO_DAEMON_GROUP}."
+
+    # User/group will be created during installing binary package on: RHEL
+
+    echo 'export status_sogo_user="DONE"' >> ${STATUS_FILE}
+}
 
 sogo_config()
 {
@@ -86,6 +94,48 @@ EOF
         perl -pi -e 's/^(.*x-webobjects-server-name.*)/#${1}/g' ${SOGO_HTTPD_CONF}
         perl -pi -e 's/^(.*x-webobjects-server-url.*)/#${1}/g' ${SOGO_HTTPD_CONF}
     fi
+
+    # Add Dovecot Master User, for vacation message expiration
+    sogo_sieve_expiration_pw="$(${RANDOM_STRING})"
+    cat >> ${DOVECOT_MASTER_USER_PASSWORD_FILE} <<EOF
+${SOGO_SIEVE_MASTER_USER}:$(generate_password_hash SSHA "${sogo_sieve_expiration_pw}"
+EOF
+
+    cat >> ${SOGO_SIEVE_CREDENTIAL_FILE} <<EOF
+${SOGO_SIEVE_MASTER_USER}:${sogo_sieve_expiration_pw}
+EOF
+
+
+    # Add cron job for email reminders
+    cat >> ${CRON_SPOOL_DIR}/${SOGO_DAEMON_USER} <<EOF
+# ${PROG_NAME}: SOGo email reminder, should be run every minute.
+*   *   *   *   *   ${SOGO_DAEMON_USER} ${SOGO_CMD_EALARMS_NOTIFY}
+
+# ${PROG_NAME}: SOGo session cleanup, should be run every minute.
+# Ajust the [X]Minutes parameter to suit your needs
+# Example: Sessions without activity since 30 minutes will be dropped:
+*   *   *   *   *   ${SOGO_DAEMON_USER} ${SOGO_CMD_TOOL} expire-sessions 30
+
+# ${PROG_NAME}: SOGo vacation messages expiration
+# The credentials file should contain the sieve admin credentials (username:passwd)
+0   0   *   *   *   ${SOGO_DAEMON_USER} ${SOGO_CMD_TOOL} expire-autoreply -p ${SOGO_SIEVE_CREDENTIAL_FILE}
+
+EOF
+
+    cat >> ${TIP_FILE} <<EOF
+SOGo Groupware:
+    * Web access: httpS://${HOSTNAME}/SOGo/
+    * Main config file: ${SOGO_CONF}
+    * Apache config file: ${SOGO_HTTPD_CONF}
+    * Nginx config file: ${NGINX_CONF_DEFAULT}
+    * Database:
+        - Database name: ${SOGO_DB_NAME}
+        - Database user: ${SOGO_DB_USER}
+        - Database password: ${SOGO_DB_PASSWD}
+    * See also:
+        - cron job of system user: ${SOGO_DAEMON_USER}
+
+EOF
 
     echo 'export status_sogo_config="DONE"' >> ${STATUS_FILE}
 }

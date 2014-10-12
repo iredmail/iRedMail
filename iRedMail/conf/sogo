@@ -21,7 +21,12 @@
 #---------------------------------------------------------------------
 
 
-export SOGO_CONF='/etc/sogo/sogo.conf'
+export SOGO_DAEMON_USER='sogo'
+export SOGO_DAEMON_GROUP='sogo'
+export SOGO_CONF_DIR='/etc/sogo'
+export SOGO_CONF="${SOGO_CONF_DIR}/sogo.conf"
+export SOGO_SIEVE_MASTER_USER="sogo_sieve_master"
+export SOGO_SIEVE_CREDENTIAL_FILE="${SOGO_CONF_DIR}/sieve.cred"
 export SOGO_RC_SCRIPT_NAME='sogod'
 export SOGO_BIND_ADDRESS='127.0.0.1'
 export SOGO_BIND_PORT='20000'
@@ -31,3 +36,12 @@ export SOGO_DB_USER='sogo'
 export SOGO_DB_AUTH_VIEW='sogo_users'
 
 export SOGO_HTTPD_CONF="${HTTPD_CONF_DIR}/SOGo.conf"
+
+export SOGO_CMD_EALARMS_NOTIFY='/usr/sbin/sogo-ealarms-notify'
+export SOGO_CMD_TOOL='/usr/sbin/sogo-tool'
+export SOGO_GNUSTEP_DIR="/usr/lib/GNUstep/SOGo"
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    if [ X"${OS_ARCH}" == X'x86_64' ]; then
+        export SOGO_GNUSTEP_DIR="/usr/lib64/GNUstep/SOGo"
+    fi
+fi

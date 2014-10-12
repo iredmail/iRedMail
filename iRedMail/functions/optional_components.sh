@@ -33,6 +33,7 @@ optional_components()
 
     # SOGo
     [ X"${USE_SOGO}" == X"YES" ] && \
+        check_status_before_run sogo_user && \
         check_status_before_run sogo_config
 
     # Awstats.

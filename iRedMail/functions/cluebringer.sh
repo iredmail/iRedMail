@@ -25,7 +25,7 @@
 # ---------------------------------------------
 cluebringer_user()
 {
-    ECHO_DEBUG "Add user and group for policyd: ${CLUEBRINGER_USER}:${CLUEBRINGER_GROUP}."
+    ECHO_DEBUG "Add user and group for Cluebringer: ${CLUEBRINGER_USER}:${CLUEBRINGER_GROUP}."
 
     # User/group will be created during installing binary package on:
     #   - Ubuntu
@@ -323,7 +323,7 @@ EOF
 1   3   *   *   *   ${CLUEBRINGER_BIN_CBPADMIN} --config=${CLUEBRINGER_CONF} --cleanup >/dev/null
 
 EOF
-    # Tips.
+
     cat >> ${TIP_FILE} <<EOF
 Policyd (cluebringer):
     * Web UI:
