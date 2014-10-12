@@ -105,6 +105,8 @@ EOF
 ${SOGO_SIEVE_MASTER_USER}:${sogo_sieve_expiration_pw}
 EOF
 
+    chown ${SOGO_DAEMON_USER}:${SOGO_DAEMON_GROUP} ${SOGO_SIEVE_CREDENTIAL_FILE}
+    chmod 0400 ${SOGO_SIEVE_CREDENTIAL_FILE}
 
     # Add cron job for email reminders
     cat >> ${CRON_SPOOL_DIR}/${SOGO_DAEMON_USER} <<EOF
