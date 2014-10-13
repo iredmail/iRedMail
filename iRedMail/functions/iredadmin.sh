@@ -205,6 +205,10 @@ EOF
     # Use bcrypt password hash on BSD by default.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         echo "DEFAULT_PASSWORD_SCHEME = 'BCRYPT'" >> settings.py
+    else
+        if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
+            echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
+        fi
     fi
 
     cat >> ${CRON_SPOOL_DIR}/root <<EOF

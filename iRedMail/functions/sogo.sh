@@ -33,9 +33,10 @@ sogo_config()
 {
     ECHO_INFO "Configure SOGo Groupware (Webmail, Calendar, Address Book, ActiveSync)."
 
-    tmp_sql="${ROOTDIR}/sogo_init.sql"
-
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        export SOGO_DB_TYPE='mysql'
+
+        tmp_sql="${ROOTDIR}/sogo_init.sql"
         cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${SOGO_DB_NAME} CHARSET='UTF8';
 GRANT ALL ON ${SOGO_DB_NAME}.* TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${SOGO_DB_PASSWD}";
@@ -44,23 +45,50 @@ EOF
         if [ X"${BACKEND}" == X'MYSQL' ]; then
             cat >> ${tmp_sql} <<EOF
 GRANT SELECT ON ${VMAIL_DB}.mailbox TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}";
-CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_AUTH_VIEW} (c_uid, c_name, c_password, c_cn, mail, home) AS SELECT username, username, password, name, username, maildir FROM ${VMAIL_DB}.mailbox;
+CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_AUTH_VIEW} (c_uid, c_name, c_password, c_cn, mail, home) AS SELECT username, username, password, name, username, CONCAT(storagebasedirectory, '/', storagenode, '/', maildir) FROM ${VMAIL_DB}.mailbox WHERE active=1;
 EOF
         fi
 
         ${MYSQL_CLIENT_ROOT} -e "SOURCE ${tmp_sql}"
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        export SOGO_DB_TYPE='postgresql'
+        tmp_sql="${PGSQL_DATA_DIR}/create_db.sql"
+
+        # Create db, user/role, set ownership
         cat > ${tmp_sql} <<EOF
 CREATE DATABASE ${SOGO_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${SOGO_DB_USER} WITH ENCRYPTED PASSWORD '${SOGO_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+ALTER DATABASE ${SOGO_DB_NAME} OWNER TO ${SOGO_DB_USER};
 \c ${SOGO_DB_NAME};
 EOF
-        # Grant permission
-        echo "host   sogo   sogo ${LOCAL_ADDRESS}   md5" >> ${PGSQL_CONF_PG_HBA}
+
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            if [ X"${DISTRO_VERSION}" == X'6' ]; then
+                cat >> ${tmp_sql} <<EOF
+CREATE LANGUAGE plpgsql;
+\i /usr/share/pgsql/contrib/dblink.sql;
+EOF
+            else
+                cat >> ${tmp_sql} <<EOF
+CREATE EXTENSION dblink;
+EOF
+            fi
+        fi
+
+        # Create view for user authentication
+        cat >> ${tmp_sql} <<EOF
+CREATE VIEW ${SOGO_DB_AUTH_VIEW} AS
+SELECT *
+FROM dblink('host=${SQL_SERVER} port=${SQL_SERVER_PORT} user=${VMAIL_DB_BIND_USER} password=${VMAIL_DB_BIND_PASSWD} dbname=${VMAIL_DB}', 'SELECT username AS c_uid, username AS c_name, password AS c_password, name AS c_cn, username AS mail, storagebasedirectory || \'/\' || storagenode || \'/\' || maildir AS home FROM mailbox WHERE active=1')
+AS users(c_uid VARCHAR(255), c_name VARCHAR(255), c_password VARCHAR(255), c_cn VARCHAR(255), mail VARCHAR(255), home VARCHAR(255));
+ALTER TABLE ${SOGO_DB_AUTH_VIEW} OWNER TO ${SOGO_DB_USER};
+EOF
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >/dev/null 
     fi
+
+    rm -f ${tmp_sql} &>/dev/null
 
     # Configure SOGo config file
     backup_file ${SOGO_CONF}
@@ -77,6 +105,7 @@ EOF
 
     perl -pi -e 's#PH_MEMCACHED_BIND_HOST#$ENV{MEMCACHED_BIND_HOST}#g' ${SOGO_CONF}
 
+    perl -pi -e 's#PH_SOGO_DB_TYPE#$ENV{SOGO_DB_TYPE}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_USER#$ENV{SOGO_DB_USER}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_PASSWD#$ENV{SOGO_DB_PASSWD}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_NAME#$ENV{SOGO_DB_NAME}#g' ${SOGO_CONF}

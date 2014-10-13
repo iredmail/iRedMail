@@ -1,5 +1,10 @@
 iRedMail-0.9.0:
     * Improvement:
+        - Use SSHA512 as default password hash for MySQL/MariaDB/PostgreSQL
+          backends.
+          Note: iRedAdmin supports SSHA512, but Roundcube/SOGo don't, so if
+          you change password with Roundcube/SOGo, new password will be MD5
+          hash.
         - Backup scripts will log backup status in SQL table `iredadmin`, so
           that admin can easily check backup status with iRedAdmin.
         - Nginx support is now available on all Linux/BSD distributions.
