@@ -145,16 +145,16 @@ EOF
     # Add cron job for email reminders
     cat >> ${CRON_SPOOL_DIR}/${SOGO_DAEMON_USER} <<EOF
 # ${PROG_NAME}: SOGo email reminder, should be run every minute.
-*   *   *   *   *   ${SOGO_DAEMON_USER} ${SOGO_CMD_EALARMS_NOTIFY}
+*   *   *   *   *   ${SOGO_CMD_EALARMS_NOTIFY}
 
 # ${PROG_NAME}: SOGo session cleanup, should be run every minute.
 # Ajust the [X]Minutes parameter to suit your needs
 # Example: Sessions without activity since 30 minutes will be dropped:
-*   *   *   *   *   ${SOGO_DAEMON_USER} ${SOGO_CMD_TOOL} expire-sessions 30
+*   *   *   *   *   ${SOGO_CMD_TOOL} expire-sessions 30
 
 # ${PROG_NAME}: SOGo vacation messages expiration
 # The credentials file should contain the sieve admin credentials (username:passwd)
-0   0   *   *   *   ${SOGO_DAEMON_USER} ${SOGO_CMD_TOOL} expire-autoreply -p ${SOGO_SIEVE_CREDENTIAL_FILE}
+0   0   *   *   *   ${SOGO_CMD_TOOL} expire-autoreply -p ${SOGO_SIEVE_CREDENTIAL_FILE}
 
 EOF
 
