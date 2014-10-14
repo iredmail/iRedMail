@@ -136,8 +136,10 @@ pgsql_import_vmail_users()
     ECHO_DEBUG "Generating SQL template for postfix virtual hosts: ${PGSQL_INIT_SQL_SAMPLE}."
 
     cat > ${PGSQL_INIT_SQL_SAMPLE} <<EOF
--- Create database to store mail accounts
 CREATE DATABASE ${VMAIL_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
+CREATE USER ${VMAIL_DB_BIND_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_BIND_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+CREATE USER ${VMAIL_DB_ADMIN_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_ADMIN_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+ALTER DATABASE ${VMAIL_DB} OWNER TO ${VMAIL_DB_ADMIN_USER};
 \c ${VMAIL_DB};
 EOF
 
@@ -171,20 +173,10 @@ EOF
     fi
 
     cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
--- Crete roles:
--- + vmail: read-only
--- + vmailadmin: read, write
-CREATE USER ${VMAIL_DB_BIND_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_BIND_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-CREATE USER ${VMAIL_DB_ADMIN_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_ADMIN_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 
--- Set correct privilege for ROLE: vmail
+-- role 'vmail': read-only
 GRANT SELECT ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user TO ${VMAIL_DB_BIND_USER};
 GRANT SELECT,UPDATE,INSERT,DELETE ON used_quota TO ${VMAIL_DB_BIND_USER};
-
--- Set correct privilege for ROLE: vmailadmin
-GRANT SELECT,UPDATE,INSERT,DELETE ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user,share_folder,anyone_shares,used_quota TO ${VMAIL_DB_ADMIN_USER};
-GRANT SELECT,UPDATE,INSERT,DELETE ON deleted_mailboxes TO ${VMAIL_DB_ADMIN_USER};
-GRANT USAGE,SELECT,UPDATE ON deleted_mailboxes_id_seq TO ${VMAIL_DB_ADMIN_USER};
 
 -- Add first mail domain
 INSERT INTO domain (domain,transport,settings,created) VALUES ('${FIRST_DOMAIN}', '${TRANSPORT}', 'default_user_quota:1024;', NOW());

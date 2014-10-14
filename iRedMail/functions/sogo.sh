@@ -119,6 +119,9 @@ EOF
     perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#g' ${SOGO_CONF}
 
+    # Enable password change in MySQL backend
+    perl -pi -e 's#(.*SOGoPasswordChangeEnabled = )NO;#${1}YES;#g' ${SOGO_CONF}
+
     # Enable ActiveSync in Apache
     if [ -f ${SOGO_HTTPD_CONF} ]; then
         perl -pi -e 's/^#(.*Microsoft-Server-ActiveSync.*)/${1}/g' ${SOGO_HTTPD_CONF}
