@@ -99,11 +99,14 @@ EOF
 -- Create database and role
 CREATE DATABASE ${RCM_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE ROLE ${RCM_DB_USER} WITH LOGIN ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-ALTER DATABASE ${RCM_DB} OWNER TO ${RCM_DB_USER};
 
 -- Import Roundcubemail SQL template
 \c ${RCM_DB};
 \i ${PGSQL_SYS_USER_HOME}/rcm.sql;
+
+-- Grant privileges
+GRANT SELECT,INSERT,UPDATE,DELETE ON cache,cache_index,cache_messages,cache_shared,cache_thread,contactgroupmembers,contactgroups,contacts,dictionary,identities,searches,session,system,users TO ${RCM_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON contacts_seq,contactgroups_seq,identities_seq,searches_seq,users_seq TO ${RCM_DB_USER};
 
 -- Grant privilege to update password through roundcube webmail
 \c ${VMAIL_DB};

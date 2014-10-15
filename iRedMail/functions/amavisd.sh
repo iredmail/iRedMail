@@ -670,18 +670,24 @@ SOURCE ${AMAVISD_DB_MYSQL_TMPL};
 
 FLUSH PRIVILEGES;
 EOF
-    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+    elif [ X"${BACKEND}" == X"PGSQL" ]; then
         cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
         chmod 0777 ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >/dev/null  <<EOF
+-- Create database
 CREATE DATABASE ${AMAVISD_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
+
+-- Create user
 CREATE USER ${AMAVISD_DB_USER} WITH ENCRYPTED PASSWORD '${AMAVISD_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-ALTER DATABASE ${AMAVISD_DB_NAME} OWNER TO ${AMAVISD_DB_USER};
 
 -- Import Amavisd SQL template
 \c ${AMAVISD_DB_NAME};
 \i ${PGSQL_SYS_USER_HOME}/amavisd.sql;
+
+-- Grant privileges
+GRANT SELECT,INSERT,UPDATE,DELETE ON maddr,mailaddr,msgrcpt,msgs,policy,quarantine,users,wblist TO ${AMAVISD_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON maddr_id_seq,mailaddr_id_seq,policy_id_seq,users_id_seq TO ${AMAVISD_DB_USER};
 EOF
         rm -f ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
 

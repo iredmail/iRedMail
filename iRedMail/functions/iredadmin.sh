@@ -129,11 +129,15 @@ EOF
         cp -f ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/docs/samples/iredadmin.pgsql ${PGSQL_DATA_DIR}/ >/dev/null
         chmod 0777 ${PGSQL_DATA_DIR}/iredadmin.pgsql >/dev/null
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >/dev/null <<EOF
+-- Create database
 CREATE DATABASE ${IREDADMIN_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
+-- Create user
 CREATE USER ${IREDADMIN_DB_USER} WITH ENCRYPTED PASSWORD '${IREDADMIN_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-ALTER DATABASE ${IREDADMIN_DB_NAME} OWNER TO ${IREDADMIN_DB_USER};
 \c ${IREDADMIN_DB_NAME};
 \i ${PGSQL_DATA_DIR}/iredadmin.pgsql;
+-- Grant permissions
+GRANT INSERT,UPDATE,DELETE,SELECT on sessions,log,updatelog to ${IREDADMIN_DB_USER};
+GRANT UPDATE,USAGE,SELECT ON log_id_seq TO ${IREDADMIN_DB_USER};
 EOF
         rm -f ${PGSQL_DATA_DIR}/iredadmin.pgsql
     fi

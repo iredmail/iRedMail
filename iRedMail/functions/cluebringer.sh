@@ -153,7 +153,6 @@ EOF
             cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-ALTER DATABASE ${CLUEBRINGER_DB_NAME} OWNER TO ${CLUEBRINGER_DB_USER};
 \c ${CLUEBRINGER_DB_NAME};
 
 -- Import SQL structure template.
@@ -177,7 +176,6 @@ EOF
             cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-ALTER DATABASE ${CLUEBRINGER_DB_NAME} OWNER TO ${CLUEBRINGER_DB_USER};
 \c ${CLUEBRINGER_DB_NAME};
 EOF
 
@@ -202,7 +200,6 @@ EOF
             cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-ALTER DATABASE ${CLUEBRINGER_DB_NAME} OWNER TO ${CLUEBRINGER_DB_USER};
 \c ${CLUEBRINGER_DB_NAME};
 EOF
         fi
@@ -219,6 +216,28 @@ EOF
         done
 
         unset policyd_sql_type
+    fi
+
+    if [ X"${BACKEND}" == X'PGSQL' ]; then
+        cat >> ${tmp_sql} <<EOF
+GRANT SELECT,INSERT,UPDATE,DELETE ON access_control,amavis_rules,checkhelo,checkhelo_blacklist,checkhelo_tracking,checkhelo_whitelist,checkspf,greylisting,greylisting_autoblacklist,greylisting_autowhitelist,greylisting_tracking,greylisting_whitelist,policies,policy_group_members,policy_groups,policy_members,quotas,quotas_limits,quotas_tracking,session_tracking TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON access_control_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON amavis_rules_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON checkhelo_blacklist_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON checkhelo_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON checkhelo_whitelist_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON checkspf_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON greylisting_autoblacklist_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON greylisting_autowhitelist_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON greylisting_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON greylisting_whitelist_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON policies_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON policy_group_members_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON policy_groups_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON policy_members_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON quotas_id_seq TO ${CLUEBRINGER_DB_USER};
+GRANT SELECT,UPDATE,USAGE ON quotas_limits_id_seq TO ${CLUEBRINGER_DB_USER};
+EOF
     fi
 
     # Enable greylisting on Default Inbound.
