@@ -83,6 +83,16 @@ postfix_config_basic()
     postconf -e smtpd_reject_unlisted_recipient='yes'
     postconf -e smtpd_reject_unlisted_sender='yes'
 
+    # Disable SSLv3
+    # Opportunistic TLS
+    postconf -e smtpd_tls_protocols='!SSLv2 !SSLv3'
+    postconf -e smtp_tls_protocols='!SSLv2 !SSLv3'
+    postconf -e lmtp_tls_protocols='!SSLv2 !SSLv3'
+    # Mandatory TLS
+    postconf -e smtpd_tls_mandatory_protocols='!SSLv2 !SSLv3'
+    postconf -e smtp_tls_mandatory_protocols='!SSLv2 !SSLv3'
+    postconf -e lmtp_tls_mandatory_protocols='!SSLv2 !SSLv3'
+
     # Opportunistic TLS, used when Postfix sends email to remote SMTP server.
     # Use TLS if this is supported by the remote SMTP server, otherwise use
     # plaintext.

@@ -30,7 +30,8 @@ amavisd_dkim()
 
     ECHO_DEBUG "Generate DKIM pem files: ${pem_file}." 
     mkdir -p ${AMAVISD_DKIM_DIR} &>/dev/null && \
-    chown ${AMAVISD_SYS_USER}:${AMAVISD_SYS_GROUP} ${AMAVISD_DKIM_DIR}
+    chown -R ${AMAVISD_SYS_USER}:${AMAVISD_SYS_GROUP} ${AMAVISD_DKIM_DIR}
+    chmod -R 0700 ${AMAVISD_DKIM_DIR}
     ${AMAVISD_BIN} genrsa ${pem_file} &>/dev/null
 
     cat >> ${AMAVISD_DKIM_CONF} <<EOF

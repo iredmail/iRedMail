@@ -45,10 +45,9 @@ nginx_config()
     perl -pi -e 's#PH_NGINX_MIME_TYPES#$ENV{NGINX_MIME_TYPES}#g' ${NGINX_CONF}
     perl -pi -e 's#PH_NGINX_CONF_DIR#$ENV{NGINX_CONF_DIR}#g' ${NGINX_CONF}
 
-    # Create directory used to store uploaded files by clients.
-    perl -pi -e 's#PH_NGINX_CLIENT_BODY_TEMP_PATH#$ENV{NGINX_CLIENT_BODY_TEMP_PATH}#g' ${NGINX_CONF}
-    mkdir -p ${NGINX_CLIENT_BODY_TEMP_PATH} &>/dev/null
-    chown -R ${HTTPD_USER} ${NGINX_CLIENT_BODY_TEMP_PATH}
+    # top directory used to store temporary user uploaded file and other stuffs.
+    [ -d /var/lib/nginx ] && \
+        chown -R ${HTTPD_USER}:${HTTPD_GROUP} /var/lib/nginx
 
     # default server
     perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${NGINX_CONF_DEFAULT}

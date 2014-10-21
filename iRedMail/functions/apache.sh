@@ -45,6 +45,10 @@ apache_config()
     ############
     # SSL
     #
+    # Disable SSLv3
+    echo '# Disable SSLv3' >> ${HTTPD_CONF}
+    echo 'SSLProtocol all -SSLv2 -SSLv3' >> ${HTTPD_CONF}
+
     ECHO_DEBUG "Set correct SSL Cert/Key file location."
     if [ X"${DISTRO}" == X"RHEL" \
         -o X"${DISTRO}" == X'FREEBSD' \
@@ -58,8 +62,6 @@ apache_config()
         ]; then
         perl -pi -e 's#^([ \t]+SSLCertificateFile)(.*)#${1} $ENV{SSL_CERT_FILE}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^([ \t]+SSLCertificateKeyFile)(.*)#${1} $ENV{SSL_KEY_FILE}#' ${HTTPD_SSL_CONF}
-    else
-        :
     fi
 
     # Load/enable Apache modules

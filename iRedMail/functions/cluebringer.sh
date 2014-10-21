@@ -412,9 +412,9 @@ EOF
             [ X"${LDAP_USE_TLS}" == X"YES" ] && \
                 perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
 
-            # Ubuntu 14.04 ships Apache-2.4 which removes directive 'AuthzLDAPAuthoritative'.
-            [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" != X'precise' ] && \
-                perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${CLUEBRINGER_HTTPD_CONF}
+            # Apache-2.4 removes directive 'AuthzLDAPAuthoritative'.
+            [ X"${APACHE_VERSION}" == X'2.4' ] && \
+                perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)//g' ${CLUEBRINGER_HTTPD_CONF}
 
         elif [ X"${BACKEND}" == X"MYSQL" ]; then
             # Use mod_auth_mysql.

@@ -75,8 +75,8 @@ EOF
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${AWSTATS_HTTPD_CONF}
 
         # Apache-2.4 doesn't support AuthzLDAPAuthoritative directive
-        [ X"${DISTRO}" == X'UBUNTU' ] && \
-            perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)/${1}#${2}/g' ${AWSTATS_HTTPD_CONF}
+        [ X"${APACHE_VERSION}" == X'2.4' ] && \
+            perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)//g' ${AWSTATS_HTTPD_CONF}
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         # Use mod_auth_mysql.

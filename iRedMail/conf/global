@@ -308,7 +308,7 @@ elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
     export SHELL_BASH='/usr/local/bin/bash'
 
     # Default password scheme.
-    #export DEFAULT_PASSWORD_SCHEME='BCRYPT'
+    export DEFAULT_PASSWORD_SCHEME='BCRYPT'
 
 elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DISTRO='OPENBSD'
@@ -381,7 +381,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     else
         # No MySQL available since RHEL/CentOS 7.
         ENABLE_BACKEND_MYSQL='NO'
-        ENABLE_BACKEND_MARIADB='MYSQL'
+        ENABLE_BACKEND_MARIADB='YES'
 
         # iptables rule file.
         export USE_FIREWALLD='YES'
