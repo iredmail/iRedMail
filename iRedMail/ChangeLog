@@ -1,5 +1,7 @@
 iRedMail-0.9.0:
     * Improvement:
+        - Enable global sieve script in Dovecot to move spam to Junk folder by
+          default.
         - Disable SSLv3 in Postfix, Dovecot, Apache, Nginx.
         - Use SSHA512 as default password hash for MySQL/MariaDB/PostgreSQL
           backends.
