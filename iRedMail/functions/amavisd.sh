@@ -276,7 +276,7 @@ amavisd_config_general()
 # Set default action.
 # Available actions: D_PASS, D_BOUNCE, D_REJECT, D_DISCARD.
 \$final_virus_destiny      = D_DISCARD;
-\$final_banned_destiny     = D_PASS;
+\$final_banned_destiny     = D_BOUNCE;
 \$final_spam_destiny       = D_PASS;
 \$final_bad_header_destiny = D_PASS;
 
