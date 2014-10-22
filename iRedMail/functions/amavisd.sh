@@ -198,7 +198,6 @@ chomp(\$mydomain = "${HOSTNAME}");
     \$bypass_spam_checks_re,
     );
 
-\$virus_admin = "root\@\$mydomain"; # due to D_DISCARD default
 \$mailfrom_notify_admin = "root\@\$mydomain";
 \$mailfrom_notify_recip = "root\@\$mydomain";
 \$mailfrom_notify_spamadmin = "root\@\$mydomain";
@@ -221,15 +220,17 @@ chomp(\$mydomain = "${HOSTNAME}");
 \$policy_bank{'ORIGINATING'} = {  # mail supposedly originating from our users
     originating => 1,  # declare that mail was submitted by our smtp client
     allow_disclaimers => 1,  # enables disclaimer insertion if available
+
     # notify administrator of locally originating malware
     virus_admin_maps => ["root\@\$mydomain"],
-    spam_admin_maps  => [],
+    spam_admin_maps  => ["root\@\$mydomain"],
     bad_header_admin_maps => [],
-    banned_admin_maps => [],
+    banned_admin_maps => ["root\@\$mydomain"],
     warnbadhsender   => 0,
-    warnbannedsender   => 0,
-    warnvirussender  => 0,
-    warnspamsender   => 0,
+    warnbannedsender => 1,
+    warnvirussender  => 1,
+    warnspamsender   => 1,
+
     # forward to a smtpd service providing DKIM signing service
     #forward_method => 'smtp:[${AMAVISD_SYS_USER}]:10027',
     # force MTA conversion to 7-bit (e.g. before DKIM signing)
@@ -281,7 +282,6 @@ amavisd_config_general()
 \$final_bad_header_destiny = D_PASS;
 
 @av_scanners = (
-
     #### http://www.clamav.net/
     ['ClamAV-clamd',
     \&ask_daemon, ["CONTSCAN {}\n", "${CLAMD_LOCAL_SOCKET}"],
@@ -290,33 +290,13 @@ amavisd_config_general()
 );
 
 @av_scanners_backup = (
-
     ### http://www.clamav.net/   - backs up clamd or Mail::ClamAV
     ['ClamAV-clamscan', 'clamscan',
     "--stdout --disable-summary -r --tempdir=\$TEMPBASE {}", [0], [1],
     qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],
 );
 
-# This policy will perform virus checks only.
-#\$interface_policy{'10026'} = 'VIRUSONLY';
-#\$policy_bank{'VIRUSONLY'} = { # mail from the pickup daemon
-#    bypass_spam_checks_maps   => [1],  # don't spam-check this mail
-#    bypass_banned_checks_maps => [1],  # don't banned-check this mail
-#    bypass_header_checks_maps => [1],  # don't header-check this mail
-#};
-
-# Allow SASL authenticated users to bypass scanning. Typically SASL
-# users already submit messages to the submission port (587) or the
-# smtps port (465):
-#\$interface_policy{'10026'} = 'SASLBYPASS';
-#\$policy_bank{'SASLBYPASS'} = {  # mail from submission and smtps ports
-#    bypass_spam_checks_maps   => [1],  # don't spam-check this mail
-#    bypass_banned_checks_maps => [1],  # don't banned-check this mail
-#    bypass_header_checks_maps => [1],  # don't header-check this mail
-#};
-
-# Apply to mails which coming from internal networks or authenticated
-# roaming users.
+# Apply to mails which coming from internal networks or authenticated users.
 # mail supposedly originating from our users
 \$policy_bank{'MYUSERS'} = {
     # declare that mail was submitted by our smtp client
@@ -327,9 +307,15 @@ amavisd_config_general()
 
     # notify administrator of locally originating malware
     virus_admin_maps => ["root\@\$mydomain"],
-    spam_admin_maps  => [],
+    spam_admin_maps  => ["root\@\$mydomain"],
     bad_header_admin_maps => [],
-    banned_admin_maps => [],
+    banned_admin_maps => ["root\@\$mydomain"],
+
+    # notify sender of malware
+    warnbadhsender => 0,
+    warnbannedsender => 1,
+    warnvirussender => 1,
+    warnspamsender => 1,
 
     # forward to a smtpd service providing DKIM signing service
     #forward_method => 'smtp:[${AMAVISD_SERVER}]:10027',
@@ -352,11 +338,6 @@ amavisd_config_general()
     #clean_quarantine_method => 'sql:',
     #final_destiny_by_ccat => {CC_CLEAN, D_DISCARD},
 };
-
-# regular incoming mail, originating from anywhere (usually from outside)
-#\$policy_bank{'EXT'} = {
-#  # just use global settings, no special overrides
-#};
 
 #
 # Port used to release quarantined mails.
@@ -409,25 +390,6 @@ amavisd_config_general()
 #   0:  disable
 #   1:  enable
 \$sa_spam_modifies_subj = 1;
-
-# remove existing headers
-#\$remove_existing_x_scanned_headers= 0;
-#\$remove_existing_spam_headers = 0;
-
-# Leave empty (undef) to add no header.
-# Modify /usr/sbin/amavisd or /usr/sbin/amavisd-new file to add customize header in:
-#
-#   sub add_forwarding_header_edits_per_recip
-#
-#\$X_HEADER_TAG = 'X-Virus-Scanned';
-#\$X_HEADER_LINE = "by amavisd at \$myhostname";
-
-#\$notify_sender_templ      = read_text('/var/amavis/notify_sender.txt');
-#\$notify_virus_sender_templ= read_text('/var/amavis/notify_virus_sender.txt');
-#\$notify_virus_admin_templ = read_text('/var/amavis/notify_virus_admin.txt');
-#\$notify_virus_recips_templ= read_text('/var/amavis/notify_virus_recips.txt');
-#\$notify_spam_sender_templ = read_text('/var/amavis/notify_spam_sender.txt');
-#\$notify_spam_admin_templ  = read_text('/var/amavis/notify_spam_admin.txt');
 
 \$sql_allow_8bit_address = 1;
 \$timestamp_fmt_mysql = 1;
@@ -542,6 +504,12 @@ EOF
     fi
 
     cat >> ${AMAVISD_CONF} <<EOF
+
+# Do not notify administrator about SPAM/VIRUS from remote servers.
+\$virus_admin = undef;
+\$spam_admin = undef;
+\$banned_admin = undef;
+\$bad_header_admin = undef;
 
 # Num of pre-forked children.
 # WARNING: it must match (equal to or larger than) the number set in
