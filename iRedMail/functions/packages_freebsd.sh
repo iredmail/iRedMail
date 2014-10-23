@@ -52,7 +52,7 @@ install_all()
     freebsd_add_make_conf 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
     freebsd_add_make_conf 'APACHE_PORT' "www/apache${PREFERRED_APACHE_VER}"
     freebsd_add_make_conf 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_add_make_conf 'DEFAULT_VERSIONS' "python=2.7 python2=2.7 apache=2.2 pgsql=${PREFERRED_PGSQL_VER}"
+    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7 apache=2.2 pgsql=9.3'
 
     for p in \
         archivers_p5-Archive-Tar \
