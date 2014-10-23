@@ -228,8 +228,6 @@ chomp(\$mydomain = "${HOSTNAME}");
     banned_admin_maps => ["root\@\$mydomain"],
     warnbadhsender   => 0,
     warnbannedsender => 1,
-    warnvirussender  => 1,
-    warnspamsender   => 1,
 
     # forward to a smtpd service providing DKIM signing service
     #forward_method => 'smtp:[${AMAVISD_SYS_USER}]:10027',
@@ -314,8 +312,6 @@ amavisd_config_general()
     # notify sender of malware
     warnbadhsender => 0,
     warnbannedsender => 1,
-    warnvirussender => 1,
-    warnspamsender => 1,
 
     # forward to a smtpd service providing DKIM signing service
     #forward_method => 'smtp:[${AMAVISD_SERVER}]:10027',
