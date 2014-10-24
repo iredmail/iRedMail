@@ -367,8 +367,8 @@ amavisd_config_general()
 #\$spam_quarantine_to = 'spam-quarantine';
 
 # Virus
-#\$virus_quarantine_to     = 'virus-quarantine';
-#\$virus_quarantine_method = 'sql:';
+\$virus_quarantine_to     = 'virus-quarantine';
+\$virus_quarantine_method = 'sql:';
 
 # Banned
 \$banned_files_quarantine_method = undef;
