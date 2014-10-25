@@ -112,20 +112,20 @@ TIP: Use SPACE key to select item." \
 20 76 2 \
 "Nginx" "The fastest web server" "on" \
 "Apache" "The most popular web server" "off" \
-2>/tmp/web_servers
+2>/tmp/default_web_server
 
-    web_servers="$(cat /tmp/web_servers | tr '[a-z]' '[A-Z]')"
-    [ X"${web_servers}" != X"" ] && break
+    default_web_server="$(cat /tmp/default_web_server | tr '[a-z]' '[A-Z]')"
+    [ X"${default_web_server}" != X"" ] && break
 done
 
-if grep 'APACHE' /tmp/web_servers &>/dev/null; then
+if [ X"${default_web_server}" == X'APACHE' ]; then
     export DEFAULT_WEB_SERVER='APACHE'
     echo "export DEFAULT_WEB_SERVER='APACHE'" >>${IREDMAIL_CONFIG_FILE}
 else
     export DEFAULT_WEB_SERVER='NGINX'
     echo "export DEFAULT_WEB_SERVER='NGINX'" >>${IREDMAIL_CONFIG_FILE}
 fi
-rm -f /tmp/web_servers
+rm -f /tmp/default_web_server
 
 
 # --------------------------------------------------
