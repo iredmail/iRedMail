@@ -119,8 +119,25 @@ EOF
     perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#g' ${SOGO_CONF}
 
-    # Enable password change in MySQL backend
-    perl -pi -e 's#(.*SOGoPasswordChangeEnabled = )NO;#${1}YES;#g' ${SOGO_CONF}
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        # Enable LDAP as SOGoUserSources
+        perl -pi -e 's#/\* LDAP backend##' ${SOGO_CONF}
+        perl -pi -e 's#LDAP backend \*/##' ${SOGO_CONF}
+
+        perl -pi -e 's#PH_LDAP_URI#ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}#' ${SOGO_CONF}
+        perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#' ${SOGO_CONF}
+        perl -pi -e 's#PH_LDAP_ADMIN_DN#$ENV{LDAP_ADMIN_DN}#' ${SOGO_CONF}
+        perl -pi -e 's#PH_LDAP_ADMIN_PW#$ENV{LDAP_ADMIN_PW}#' ${SOGO_CONF}
+    else
+        # Enable LDAP as SOGoUserSources
+        perl -pi -e 's#/\* SQL backend##' ${SOGO_CONF}
+        perl -pi -e 's#SQL backend \*/##' ${SOGO_CONF}
+
+        # Enable password change in MySQL backend
+        if [ X"${BACKEND}" == X'MYSQL' ]; then
+            perl -pi -e 's#(.*SOGoPasswordChangeEnabled = )NO;#${1}YES;#g' ${SOGO_CONF}
+        fi
+    fi
 
     # Enable ActiveSync in Apache
     if [ -f ${SOGO_HTTPD_CONF} ]; then

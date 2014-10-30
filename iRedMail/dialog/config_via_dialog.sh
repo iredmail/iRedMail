@@ -185,8 +185,10 @@ echo "export BACKEND='${BACKEND}'" >> ${IREDMAIL_CONFIG_FILE}
 #   user through LDAP bind.
 # - Apache cannot verify SSHA512 hash with basic auth.
 if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
-    export DEFAULT_PASSWORD_SCHEME='SSHA512'
-    echo "export DEFAULT_PASSWORD_SCHEME='SSHA512'" >> ${IREDMAIL_CONFIG_FILE}
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        export DEFAULT_PASSWORD_SCHEME='SSHA512'
+        echo "export DEFAULT_PASSWORD_SCHEME='SSHA512'" >> ${IREDMAIL_CONFIG_FILE}
+    fi
 fi
 
 # Read-only SQL user/role, used to query mail accounts in Postfix, Dovecot.

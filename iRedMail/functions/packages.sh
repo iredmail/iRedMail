@@ -317,11 +317,10 @@ install_all()
     if [ X"${USE_SOGO}" == X"YES" ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} sogo sogo-activesync libwbxml sogo-ealarms-notify sogo-tool"
-            if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-                ALL_PKGS="${ALL_PKGS} sope49-gdl1-mysql"
-            elif [ X"${BACKEND}" == X'PGSQL' ]; then
-                ALL_PKGS="${ALL_PKGS} sope49-gdl1-postgresql"
-            fi
+
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope49-gdl1-mysql sope49-ldap"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope49-gdl1-mysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope49-gdl1-postgresql"
 
             # Copy yum repo file
             ECHO_INFO "Add yum repo for SOGo: ${YUM_REPOS_DIR}/sogo.repo."

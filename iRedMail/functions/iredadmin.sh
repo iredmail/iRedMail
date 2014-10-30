@@ -202,11 +202,11 @@ EOF
     perl -pi -e 's#^(amavisd_enable_policy_lookup=).*#${1} True#' settings.py
     perl -pi -e 's#^(amavisd_quarantine_port =).*#${1} "$ENV{AMAVISD_QUARANTINE_PORT}"#' settings.py
 
-    # Use bcrypt password hash on BSD by default.
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        echo "DEFAULT_PASSWORD_SCHEME = 'BCRYPT'" >> settings.py
-    else
-        if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
+    if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
+        # Use bcrypt password hash on BSD by default.
+        if [ X"${DISTRO}" == X'FREEBSD' ]; then
+            echo "DEFAULT_PASSWORD_SCHEME = 'BCRYPT'" >> settings.py
+        else
             echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
         fi
     fi

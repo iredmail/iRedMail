@@ -224,7 +224,7 @@ chomp(\$mydomain = "${HOSTNAME}");
 
     # notify administrator of locally originating malware
     virus_admin_maps => ["root\@\$mydomain"],
-    spam_admin_maps  => ["root\@\$mydomain"],
+    spam_admin_maps  => [],
     bad_header_admin_maps => [],
     banned_admin_maps => ["root\@\$mydomain"],
     warnbadhsender   => 0,
@@ -306,7 +306,7 @@ amavisd_config_general()
 
     # notify administrator of locally originating malware
     virus_admin_maps => ["root\@\$mydomain"],
-    spam_admin_maps  => ["root\@\$mydomain"],
+    spam_admin_maps => [],
     bad_header_admin_maps => [],
     banned_admin_maps => ["root\@\$mydomain"],
 
