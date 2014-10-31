@@ -30,8 +30,11 @@ export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
 export DIALOG_SELECTABLE_SOGO='NO'
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
-    # SOGo
     [ X"${DISTRO_VERSION}" == X'6' ] && export DIALOG_SELECTABLE_SOGO='YES'
+elif [ X"${DISTRO}" == X'DEBIAN' ]; then
+    export DIALOG_SELECTABLE_SOGO='YES'
+elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+    export DIALOG_SELECTABLE_SOGO='YES'
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
 fi
@@ -42,7 +45,7 @@ fi
 export LIST_OF_OPTIONAL_COMPONENTS=''
 
 if [ X"${DIALOG_SELECTABLE_SOGO}" == X'YES' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} SOGo 'Webmail,_Calendar,_Address_book' off"
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} SOGo Webmail,_Calendar,_Address_book off"
 fi
 
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then

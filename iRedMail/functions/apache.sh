@@ -69,8 +69,10 @@ apache_config()
     if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         a2ensite default-ssl &>/dev/null
 
-        a2enmod ssl &>/dev/null
-        a2enmod deflate &>/dev/null
+        a2enmod ssl deflate &>/dev/null
+
+        # SOGo
+        [ X"${USE_SOGO}" == X'YES' ] && a2enmod proxy proxy_http headers rewrite version &>/dev/null
 
         [ X"${BACKEND}" == X'OPENLDAP' ] && a2enmod authnz_ldap > /dev/null
 

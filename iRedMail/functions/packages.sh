@@ -328,6 +328,37 @@ install_all()
             ${YUM} clean metadata &>/dev/null
 
             ENABLED_SERVICES="${ENABLED_SERVICES} ${SOGO_RC_SCRIPT_NAME} memcached"
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            ALL_PKGS="${ALL_PKGS} sogo"
+
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql sope4.9-ldap"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-postgresql"
+
+            ECHO_INFO "Add official apt repo for SOGo in /etc/apt/sources.list"
+            if ! grep "http://inverse.ca ${DISTRO_CODENAME}" /etc/apt/sources.list &>/dev/null; then
+                if [ X"${DISTRO}" == X'DEBIAN' ]; then
+                    echo "deb http://inverse.ca/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+                    echo "deb http://inverse.ca/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                fi
+            fi
+
+            ECHO_INFO "Add SOGo GPG public key into apt keyring."
+            apt-key adv --keyserver keys.gnupg.net --recv-key 0x810273C4
+
+            ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."
+            apt-get update
+
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${SOGO_RC_SCRIPT_NAME} memcached"
+
+            # installing phpldapadmin with SOGo will cause iRedMail
+            # installation interrupt, so don't install phpldapadmin here.
+            if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+                if [ X"${DISTRO_CODENAME}" == X'wheezy' -o X"${DISTRO_CODENAME}" == X'precise' ]; then
+                    export USE_PHPLDAPADMIN='NO'
+                fi
+            fi
         fi
     fi
 

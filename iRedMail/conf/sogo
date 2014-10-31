@@ -48,4 +48,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     if [ X"${OS_ARCH}" == X'x86_64' ]; then
         export SOGO_GNUSTEP_DIR="/usr/lib64/GNUstep/SOGo"
     fi
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    export SOGO_RC_SCRIPT_NAME='sogo'
 fi
