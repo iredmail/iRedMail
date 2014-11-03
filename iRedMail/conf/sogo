@@ -28,16 +28,19 @@ export SOGO_CONF="${SOGO_CONF_DIR}/sogo.conf"
 export SOGO_SIEVE_MASTER_USER="sogo_sieve_master"
 export SOGO_SIEVE_CREDENTIAL_FILE="${SOGO_CONF_DIR}/sieve.cred"
 export SOGO_RC_SCRIPT_NAME='sogod'
+export MEMCACHED_RC_SCRIPT_NAME='memcached'
+
+# SOGo deamon listens on port 127.0.0.1:20000 by default.
 export SOGO_BIND_ADDRESS='127.0.0.1'
 export SOGO_BIND_PORT='20000'
 
 export SOGO_DB_NAME='sogo'
 export SOGO_DB_USER='sogo'
 export SOGO_DB_AUTH_VIEW='users'
-export SOGO_DB_TABLE_USER_PROFILE='user_profiles'
-export SOGO_DB_TABLE_FOLDER_INFO='folders'
-export SOGO_DB_TABLE_SESSIONS_FOLDER='sessions'
-export SOGO_DB_TABLE_ALARMS='alarms'
+export SOGO_DB_TABLE_USER_PROFILE='sogo_user_profile'
+export SOGO_DB_TABLE_FOLDER_INFO='sogo_folder_info'
+export SOGO_DB_TABLE_SESSIONS_FOLDER='sogo_sessions_folder'
+export SOGO_DB_TABLE_ALARMS='sogo_alarms_folder'
 
 export SOGO_HTTPD_CONF="${HTTPD_CONF_DIR}/SOGo.conf"
 
@@ -50,4 +53,9 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     fi
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export SOGO_RC_SCRIPT_NAME='sogo'
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export SOGO_DAEMON_USER='_sogo'
+    export SOGO_DAEMON_GROUP='_sogo'
+
+    export SOGO_GNUSTEP_DIR="/usr/local/lib/GNUstep/SOGo"
 fi

@@ -41,7 +41,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PHP_FPM_POOL_WWW_CONF='/usr/local/etc/php-fpm.conf'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export PHP_VERSION='5.4'
+    export PHP_VERSION='5.5'
     export APACHE_PHP_INI="/etc/php-${PHP_VERSION}.ini"
     export PHP_FPM_RC_SCRIPT_NAME='php_fpm'
     export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.conf'

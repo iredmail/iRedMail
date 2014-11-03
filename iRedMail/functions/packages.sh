@@ -27,11 +27,6 @@ install_all()
     DISABLED_SERVICES=''
     PKG_SCRIPTS=''  # OpenBSD only
 
-    # OpenBSD: Hard-code package versions
-    export OB_PHP_VER='-5.4.24'
-    export OB_POSTFIX_VER='-2.11.0'
-    export OB_OPENLDAP_VER='-2.4.38'
-
     # Enable syslog or rsyslog.
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
@@ -52,11 +47,11 @@ install_all()
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix${OB_POSTFIX_VER}-ldap"
+            ALL_PKGS="${ALL_PKGS} postfix--ldap"
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix${OB_POSTFIX_VER}-mysql"
+            ALL_PKGS="${ALL_PKGS} postfix--mysql"
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix${OB_POSTFIX_VER}-pgsql"
+            ALL_PKGS="${ALL_PKGS} postfix--pgsql"
         fi
     fi
 
@@ -78,7 +73,7 @@ install_all()
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
-                ALL_PKGS="${ALL_PKGS} openldap-server${OB_OPENLDAP_VER}"
+                ALL_PKGS="${ALL_PKGS} openldap-server"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
             fi
 
@@ -168,11 +163,11 @@ install_all()
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php5-pgsql"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} php${OB_PHP_VER} php-bz2${OB_PHP_VER} php-imap${OB_PHP_VER} php-mcrypt${OB_PHP_VER} php-gd${OB_PHP_VER} pecl-APC"
+        ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-mcrypt php-gd pecl-APC"
 
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap${OB_PHP_VER} php-mysql${OB_PHP_VER} php-mysqli${OB_PHP_VER} php-pdo_mysql${OB_PHP_VER}"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql${OB_PHP_VER} php-mysqli${OB_PHP_VER} php-pdo_mysql${OB_PHP_VER}"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql${OB_PHP_VER} php-pdo_pgsql${OB_PHP_VER}"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-pdo_mysql"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_pgsql"
     fi
 
     # Apache. Always install Apache.
@@ -194,7 +189,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} nginx-full php5-fpm"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # Nginx is available in base system
-            ALL_PKGS="${ALL_PKGS} php-fpm${OB_PHP_VER}"
+            ALL_PKGS="${ALL_PKGS} php-fpm"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
     fi
@@ -315,6 +310,8 @@ install_all()
 
     # SOGo
     if [ X"${USE_SOGO}" == X"YES" ]; then
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${SOGO_RC_SCRIPT_NAME} ${MEMCACHED_RC_SCRIPT_NAME}"
+
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} sogo sogo-activesync libwbxml sogo-ealarms-notify sogo-tool"
 
@@ -327,7 +324,6 @@ install_all()
             cp ${SAMPLE_DIR}/sogo/sogo.rhel${DISTRO_VERSION}.repo ${YUM_REPOS_DIR}/sogo.repo
             ${YUM} clean metadata &>/dev/null
 
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${SOGO_RC_SCRIPT_NAME} memcached"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} sogo"
 
@@ -350,23 +346,14 @@ install_all()
             ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."
             apt-get update
 
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${SOGO_RC_SCRIPT_NAME} memcached"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            ALL_PKGS="${ALL_PKGS} sogo memcached"
 
-            # installing phpldapadmin with SOGo will cause iRedMail
-            # installation interrupt, so don't install phpldapadmin here.
-            if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-                if [ X"${DISTRO_CODENAME}" == X'wheezy' -o X"${DISTRO_CODENAME}" == X'precise' ]; then
-                    export USE_PHPLDAPADMIN='NO'
-                fi
-            fi
-        fi
-    fi
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope-mysql"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope-mysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope-postgres"
 
-    # phpLDAPadmin
-    if [ X"${USE_PHPLDAPADMIN}" == X'YES' ]; then
-        ALL_PKGS="${ALL_PKGS} phpldapadmin"
-        if [ X"${DISTRO_CODENAME}" == X'trusty' ]; then
-            mkdir -p /etc/apache2/conf.d &>/dev/null
+            PKG_SCRIPTS="${PKG_SCRIPTS} ${MEMCACHED_RC_SCRIPT_NAME} ${SOGO_RC_SCRIPT_NAME}"
         fi
     fi
 
@@ -518,10 +505,11 @@ install_all()
             ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
 
             ECHO_INFO "Installing uWSGI from source tarball, depends on your hardware, it may take 1 to 5 minutes, please be patient."
-            cd ${PKG_MISC_DIR} && \
-                tar zxf uwsgi-*.tar.gz && \
-                cd uwsgi-*/ && \
-                python setup.py install &>/dev/null
+            cd ${PKG_MISC_DIR}
+            tar zxf uwsgi-*.tar.gz
+            cd uwsgi-*/
+            patch -p0 < ${PATCH_DIR}/uwsgi/core_logging_c.patch >/dev/null
+            python setup.py install &>/dev/null
         fi
 
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}

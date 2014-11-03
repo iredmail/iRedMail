@@ -906,11 +906,6 @@ EOF
         ALL_PORTS="${ALL_PORTS} www/awstats"
     fi
 
-    # phpLDAPadmin.
-    if [ X"${USE_PHPLDAPADMIN}" == X"YES" ]; then
-        ALL_PORTS="${ALL_PORTS} net/phpldapadmin"
-    fi
-
     # Python database interfaces
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PORTS="${ALL_PORTS} net/py-ldap2 databases/py-MySQLdb"

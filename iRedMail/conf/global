@@ -326,8 +326,7 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     fi
 
     # Default password scheme.
-    # Require py-bcrypt-0.4 for function "checkpw()", but OpenBSD 5.5 ships 0.3.
-    #export DEFAULT_PASSWORD_SCHEME='BCRYPT'
+    export DEFAULT_PASSWORD_SCHEME='BCRYPT'
 
 else
     # Not support *BSD and other distrobutions yet.

@@ -130,19 +130,8 @@ apache_config()
             service_control enable 'htcacheclean_enable' 'NO'
         fi
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # Enable httpd.
-        # Note: iRedAdmin doesn't work under chroot since Python doesn't work.
-        if [ X"${DEFAULT_WEB_SERVER}" == X'APACHE' ]; then
-            echo 'httpd_flags="-DSSL -u"  # -u is required by iRedAdmin' >> ${RC_CONF_LOCAL}
-        fi
-
-        # Create /var/www/dev/*random.
-        cd /var/www/dev/ && /dev/MAKEDEV random
-
-        # Enable mod_auth_ldap/mysql/pgsql
-        [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'LDAPD' ] && /usr/local/sbin/mod_auth_ldap-enable &>/dev/null
-        [ X"${BACKEND}" == X'MYSQL' ] && /usr/local/sbin/mod_auth_mysql-enable &>/dev/null
-        [ X"${BACKEND}" == X'PGSQL' ] && /usr/local/sbin/mod_auth_pgsql-enable &>/dev/null
+        # iRedMail doesn't support the built-in httpd daemon (not Apache).
+        :
     fi
 
     cat >> ${TIP_FILE} <<EOF

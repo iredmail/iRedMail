@@ -101,12 +101,16 @@ echo "export BACKUP_SCRIPT_MYSQL='${BACKUP_SCRIPT_MYSQL}'" >>${IREDMAIL_CONFIG_F
 echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${IREDMAIL_CONFIG_FILE}
 
 # --------------------------------------------------
-# -------------------- Web server ------------------
+# ------------ Default web server ------------------
 # --------------------------------------------------
-while : ; do
-    ${DIALOG} \
-    --title "Choose default web server" \
-    --radiolist "Both Apache and Nginx will be installed on your server, please choose the default web server you want to run. You're free to switch between them after installation completed.
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export DEFAULT_WEB_SERVER='NGINX'
+    echo "export DEFAULT_WEB_SERVER='NGINX'" >>${IREDMAIL_CONFIG_FILE}
+else
+    while : ; do
+        ${DIALOG} \
+        --title "Choose default web server" \
+        --radiolist "Both Apache and Nginx will be installed on your server, please choose the default web server you want to run. You're free to switch between them after installation completed.
 
 TIP: Use SPACE key to select item." \
 20 76 2 \
@@ -116,16 +120,17 @@ TIP: Use SPACE key to select item." \
 
     default_web_server="$(cat /tmp/default_web_server | tr '[a-z]' '[A-Z]')"
     [ X"${default_web_server}" != X"" ] && break
-done
+    done
 
-if [ X"${default_web_server}" == X'APACHE' ]; then
-    export DEFAULT_WEB_SERVER='APACHE'
-    echo "export DEFAULT_WEB_SERVER='APACHE'" >>${IREDMAIL_CONFIG_FILE}
-else
-    export DEFAULT_WEB_SERVER='NGINX'
-    echo "export DEFAULT_WEB_SERVER='NGINX'" >>${IREDMAIL_CONFIG_FILE}
+    if [ X"${default_web_server}" == X'APACHE' ]; then
+        export DEFAULT_WEB_SERVER='APACHE'
+        echo "export DEFAULT_WEB_SERVER='APACHE'" >>${IREDMAIL_CONFIG_FILE}
+    else
+        export DEFAULT_WEB_SERVER='NGINX'
+        echo "export DEFAULT_WEB_SERVER='NGINX'" >>${IREDMAIL_CONFIG_FILE}
+    fi
+    rm -f /tmp/default_web_server
 fi
-rm -f /tmp/default_web_server
 
 
 # --------------------------------------------------

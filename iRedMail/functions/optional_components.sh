@@ -33,7 +33,6 @@ optional_components()
 
     # SOGo
     [ X"${USE_SOGO}" == X"YES" ] && \
-        check_status_before_run sogo_user && \
         check_status_before_run sogo_config
 
     # Awstats.
@@ -42,9 +41,4 @@ optional_components()
         check_status_before_run awstats_config_weblog && \
         check_status_before_run awstats_config_maillog && \
         check_status_before_run awstats_config_crontab
-
-    # phpLDAPadmin.
-    [ X"${USE_PHPLDAPADMIN}" == X"YES" ] && \
-        check_status_before_run phpldapadmin_config
-
 }

@@ -31,6 +31,7 @@ postfix_config_basic()
     # OpenBSD: Replace sendmail with Postfix
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         echo 'sendmail_flags=NO' >> ${RC_CONF_LOCAL}
+        echo 'smtpd_flags=NO' >> ${RC_CONF_LOCAL}
         /usr/local/sbin/postfix-enable &>/dev/null
         perl -pi -e 's/(.*sendmail -L sm-msp-queue.*)/#${1}/' ${CRON_SPOOL_DIR}/root 
     fi

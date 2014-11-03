@@ -20,15 +20,6 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-sogo_user()
-{
-    ECHO_DEBUG "Add user and group for SOGo: ${SOGO_DAEMON_USER}:${SOGO_DAEMON_GROUP}."
-
-    # User/group will be created during installing binary package on: RHEL
-
-    echo 'export status_sogo_user="DONE"' >> ${STATUS_FILE}
-}
-
 sogo_config()
 {
     ECHO_INFO "Configure SOGo Groupware (Webmail, Calendar, Address Book, ActiveSync)."
@@ -87,10 +78,25 @@ EOF
 
     # Configure SOGo config file
     backup_file ${SOGO_CONF}
+
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        mkdir -p /etc/sogo &>/dev/null
+    fi
+
     cp -f ${SAMPLE_DIR}/sogo/sogo.conf ${SOGO_CONF}
 
     perl -pi -e 's#PH_SOGO_BIND_ADDRESS#$ENV{SOGO_BIND_ADDRESS}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_BIND_PORT#$ENV{SOGO_BIND_PORT}#g' ${SOGO_CONF}
+
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Default 'WOPort = 127.0.0.1:20000;' doesn't work on OpenBSD
+        perl -pi -e 's#(.*WOPort = ).*#${1}\*:$ENV{SOGO_BIND_PORT};#' ${SOGO_CONF}
+
+        # Default pid file is /var/run/sogo/sogo.pid, but SOGo rc script on
+        # OpenBSD doesn't create this directory automatically, so we use this
+        # alternative directory instead.
+        perl -pi -e 's#//(WOPidFile =).*#${1} /var/log/sogo/sogo.pid;#' ${SOGO_CONF}
+    fi
 
     perl -pi -e 's#PH_IMAP_SERVER#$ENV{IMAP_SERVER}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_MANAGESIEVE_BIND_HOST#$ENV{MANAGESIEVE_BIND_HOST}#g' ${SOGO_CONF}
@@ -104,8 +110,10 @@ EOF
         perl -pi -e 's#(//)(SOGoForwardEnabled.*)#${1}#' ${SOGO_CONF}
     fi
 
+    # SMTP server
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${SOGO_CONF}
 
+    # Memcached server
     perl -pi -e 's#PH_MEMCACHED_BIND_HOST#$ENV{MEMCACHED_BIND_HOST}#g' ${SOGO_CONF}
 
     perl -pi -e 's#PH_SOGO_DB_TYPE#$ENV{SOGO_DB_TYPE}#g' ${SOGO_CONF}

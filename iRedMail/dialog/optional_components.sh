@@ -26,7 +26,6 @@
 # Enabled components.
 export DIALOG_SELECTABLE_AWSTATS='YES'
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
-export DIALOG_SELECTABLE_PHPLDAPADMIN='YES'
 export DIALOG_SELECTABLE_SOGO='NO'
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -46,12 +45,6 @@ export LIST_OF_OPTIONAL_COMPONENTS=''
 
 if [ X"${DIALOG_SELECTABLE_SOGO}" == X'YES' ]; then
     LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} SOGo Webmail,_Calendar,_Address_book off"
-fi
-
-if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-    if [ X"${DIALOG_SELECTABLE_PHPLDAPADMIN}" == X'YES' ]; then
-        LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} phpLDAPadmin Web-based_LDAP_management_tool on"
-    fi
 fi
 
 if [ X"${DIALOG_SELECTABLE_AWSTATS}" == X'YES' ]; then
@@ -102,11 +95,6 @@ fi
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'sogo' &>/dev/null; then
     export USE_SOGO='YES'
     echo "export USE_SOGO='YES'" >> ${IREDMAIL_CONFIG_FILE}
-fi
-
-if echo ${OPTIONAL_COMPONENTS} | grep -i 'phpldapadmin' &>/dev/null; then
-    export USE_PHPLDAPADMIN='YES'
-    echo "export USE_PHPLDAPADMIN='YES'" >>${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'awstats' &>/dev/null; then

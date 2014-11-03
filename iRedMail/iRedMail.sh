@@ -70,7 +70,6 @@ check_env
 . ${CONF_DIR}/web_server
 . ${CONF_DIR}/openldap
 . ${CONF_DIR}/ldapd
-. ${CONF_DIR}/phpldapadmin
 . ${CONF_DIR}/mysql
 . ${CONF_DIR}/postgresql
 . ${CONF_DIR}/postfix
@@ -112,7 +111,6 @@ fi
 . ${FUNCTIONS_DIR}/spamassassin.sh
 . ${FUNCTIONS_DIR}/roundcubemail.sh
 . ${FUNCTIONS_DIR}/sogo.sh
-. ${FUNCTIONS_DIR}/phpldapadmin.sh
 . ${FUNCTIONS_DIR}/awstats.sh
 . ${FUNCTIONS_DIR}/fail2ban.sh
 . ${FUNCTIONS_DIR}/iredadmin.sh

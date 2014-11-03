@@ -1,0 +1,15 @@
+# This patch is required for uWSGI-2.0.8 on OpenBSD, not needed for later
+# releases.
+--- core/logging.c.orig Mon Nov  3 21:19:01 2014
++++ core/logging.c      Mon Nov  3 21:30:37 2014
+@@ -21,6 +21,10 @@
+ #include <uwsgi.h>
+ #endif
+ 
++#ifdef __OpenBSD__
++#include <sys/sysctl.h>
++#endif
++
+ extern struct uwsgi_server uwsgi;
+ 
+ //use this instead of fprintf to avoid buffering mess with udp logging
