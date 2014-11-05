@@ -32,6 +32,13 @@ dovecot_config()
 
     ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
 
+    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+        if [ ! -d ${DOVECOT_CONF_DIR} ]; then
+            ECHO_ERROR "${DOVECOT_CONF_DIR} not exist."
+            mkdir -p ${DOVECOT_CONF_DIR} &>/dev/null
+        fi
+    fi
+
     # RHEL/CentOS 6:    Dovecot-2.1.x
     # Debian 7:         Dovecot-2.1.x
     # Ubuntu 12.04:     Dovecot-2.0.x

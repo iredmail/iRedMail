@@ -37,9 +37,9 @@ install_all()
     export PREFERRED_MARIADB_VER='55'
     export PREFERRED_PGSQL_VER='93'
     export PREFERRED_BDB_VER='5'
-    export PREFERRED_APACHE_VER='22'
+    export PREFERRED_APACHE_VER='24'
 
-    export PREFERRED_MYSQL_VER='55'
+    export PREFERRED_MYSQL_VER='56'
     if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
         export PREFERRED_MYSQL_VER='55m'
     fi
@@ -52,7 +52,7 @@ install_all()
     freebsd_add_make_conf 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
     freebsd_add_make_conf 'APACHE_PORT' "www/apache${PREFERRED_APACHE_VER}"
     freebsd_add_make_conf 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7 apache=2.2 pgsql=9.3'
+    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7 apache=2.4 pgsql=9.3'
 
     for p in \
         archivers_p5-Archive-Tar \
@@ -61,13 +61,16 @@ install_all()
         databases_postgresql${PREFERRED_PGSQL_VER}-contrib \
         databases_postgresql${PREFERRED_PGSQL_VER}-server \
         databases_py-MySQLdb \
+        devel_cmake \
         devel_apr1 \
         devel_m4 \
+        devel_py-Jinja2 \
         dns_p5-Net-DNS \
         ftp_curl \
         graphics_php5-gd \
         japanese_p5-Mail-SpamAssassin \
         lang_perl5.18 \
+        lang_perl5.20 \
         lang_php5-extensions \
         lang_php5 \
         www_mod_php5 \
@@ -95,6 +98,11 @@ install_all()
         mkdir -p /var/db/ports/${p} &>/dev/null
     done
 
+    # cmake. DEPENDENCE
+    cat > /var/db/ports/devel_cmake/options <<EOF
+OPTIONS_FILE_UNSET+=DOCS
+EOF
+
     # m4. DEPENDENCE.
     cat > /var/db/ports/devel_m4/options <<EOF
 OPTIONS_FILE_SET+=LIBSIGSEGV
@@ -102,7 +110,7 @@ EOF
 
     # libiconv. DEPENDENCE.
     cat > /var/db/ports/converters_libiconv/options <<EOF
-OPTIONS_FILE_SET+=DOCS
+OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_SET+=ENCODINGS
 OPTIONS_FILE_SET+=PATCHES
 EOF
@@ -139,6 +147,8 @@ OPTIONS_FILE_SET+=USE_PERL
 OPTIONS_FILE_SET+=THREADS
 OPTIONS_FILE_UNSET+=PERL_MALLOC
 EOF
+
+    cp -f /var/db/ports/lang_perl5.18/options /var/db/ports/lang_perl5.20/options
 
     # OpenSLP. DEPENDENCE.
     cat > /var/db/ports/net_openslp/options <<EOF
@@ -327,7 +337,7 @@ EOF
 
     # p5-IO-Socket-SSL. DEPENDENCE.
     cat > /var/db/ports/security_p5-IO-Socket-SSL/options <<EOF
-OPTIONS_FILE_SET+=EXAMPLES
+OPTIONS_FILE_UNSET+=EXAMPLES
 OPTIONS_FILE_SET+=IDN
 OPTIONS_FILE_SET+=IPV6
 EOF
@@ -378,7 +388,7 @@ OPTIONS_FILE_SET+=ARC
 OPTIONS_FILE_SET+=ARJ
 OPTIONS_FILE_SET+=BDB
 OPTIONS_FILE_SET+=CAB
-OPTIONS_FILE_SET+=DOCS
+OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_SET+=FILE
 OPTIONS_FILE_SET+=FREEZE
 OPTIONS_FILE_SET+=IPV6
@@ -461,7 +471,7 @@ EOF
     # Apr. DEPENDENCE.
     cat > /var/db/ports/devel_apr1/options <<EOF
 OPTIONS_FILE_SET+=SSL
-OPTIONS_FILE_SET+=THREADS
+OPTIONS_FILE_UNSET+=NSS
 OPTIONS_FILE_SET+=IPV6
 OPTIONS_FILE_SET+=DEVRANDOM
 OPTIONS_FILE_SET+=BDB
@@ -586,8 +596,8 @@ OPTIONS_FILE_UNSET+=EXAMPLE_HOOKS
 OPTIONS_FILE_UNSET+=EXAMPLE_IPC
 OPTIONS_FILE_UNSET+=OPTIONAL_FN_EXPORT
 OPTIONS_FILE_UNSET+=OPTIONAL_FN_IMPORT
-OPTIONS_FILE_UNSET+=OPTIONAL_HOOK_EXPO
-OPTIONS_FILE_UNSET+=OPTIONAL_HOOK_IMPO
+OPTIONS_FILE_UNSET+=OPTIONAL_HOOK_EXPORT
+OPTIONS_FILE_UNSET+=OPTIONAL_HOOK_IMPORT
 OPTIONS_FILE_UNSET+=BUCKETEER
 EOF
 
@@ -820,7 +830,7 @@ OPTIONS_FILE_UNSET+=ZTS
 EOF
 
     cat > /var/db/ports/www_pecl-APC/options <<EOF
-OPTIONS_FILE_SET+=DOCS
+OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_UNSET+=FILEHITS
 OPTIONS_FILE_UNSET+=IPC
 OPTIONS_FILE_UNSET+=SEMAPHORES
@@ -847,7 +857,7 @@ EOF
     cat > /var/db/ports/security_clamav/options <<EOF
 OPTIONS_FILE_SET+=ARC
 OPTIONS_FILE_SET+=ARJ
-OPTIONS_FILE_SET+=DOCS
+OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_UNSET+=EXPERIMENTAL
 OPTIONS_FILE_SET+=ICONV
 OPTIONS_FILE_UNSET+=LDAP
@@ -886,8 +896,13 @@ EOF
 
     # Python-MySQLdb
     cat > /var/db/ports/databases_py-MySQLdb/options <<EOF
-OPTIONS_FILE_SET+=DOCS
+OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_SET+=MYSQLCLIENT_R
+EOF
+
+    cat > /var/db/ports/devel_py-Jinja2/options <<EOF
+OPTIONS_FILE_SET+=BABEL
+OPTIONS_FILE_UNSET+=EXAMPLES
 EOF
 
     # Roundcube webmail.
@@ -897,12 +912,6 @@ EOF
 
     # Awstats.
     if [ X"${USE_AWSTATS}" == X'YES' ]; then
-        if [ X"${BACKEND}" == X'MYSQL' ]; then
-            ALL_PORTS="${ALL_PORTS} www/mod_auth_mysql_another"
-        elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PORTS="${ALL_PORTS} www/mod_auth_pgsql2"
-        fi
-
         ALL_PORTS="${ALL_PORTS} www/awstats"
     fi
 

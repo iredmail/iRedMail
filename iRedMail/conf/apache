@@ -80,19 +80,20 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export HTTPD_LOG_ERRORLOG='/var/log/apache2/error.log'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-    export APACHE_RC_SCRIPT_NAME='apache22'
+    export APACHE_VERSION='2.4'
+    export APACHE_RC_SCRIPT_NAME='apache24'
 
     # Apache configuration files.
-    export HTTPD_CONF_ROOT="/usr/local/etc/apache22"
+    export HTTPD_CONF_ROOT="/usr/local/etc/apache24"
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/httpd.conf"
     export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/Includes"
 
-    # Copy from example: /usr/local/share/examples/apache22/extra/httpd-ssl.conf
+    # Copy from example: /usr/local/share/examples/apache24/extra/httpd-ssl.conf
     export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/extra/httpd-ssl.conf"
 
     # Web data.
     export HTTPD_SERVERROOT='/usr/local/www'
-    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache22/data"
+    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache24/data"
 
     # Daemon user.
     export HTTPD_USER='www'
