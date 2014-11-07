@@ -3,4 +3,4 @@ password    = yCrSkh8YsoGn6GNKSVCVomi6ecb4Pi
 hosts       = 127.0.0.1
 port        = 5432
 dbname      = vmail
-query       = SELECT transport FROM domain WHERE domain='%s' AND active=1
+query       = SELECT transport FROM domain WHERE domain='%s' AND active=1 AND backupmx=0

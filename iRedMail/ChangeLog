@@ -20,6 +20,8 @@ iRedMail-0.9.0:
         - On RHEL/CentOS, phpldapadmin is now installed from EPEL repo.
 
     * Fixed:
+        - Not detect domain backupmx status while querying Postfix per-domain
+          transport.
         - Replace mod_auth_mysql/pgsql by apr-util-mysql/pgsql for Awstats
           and Cluebringer webui user authentication on Debian/Ubuntu.
         - Set 'receive_override_options=no_address_mappings' in Postfix to

@@ -271,8 +271,7 @@ install_all()
         if [ X"${DISTRO_VERSION}" == X'6' ]; then
             ALL_PKGS="${ALL_PKGS} amavisd-new clamd clamav-db spamassassin altermime perl-LDAP perl-Mail-SPF"
         else
-            # ClamAV will be installed automatically as dependency.
-            ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF"
+            ALL_PKGS="${ALL_PKGS} clamav clamav-update clamav-server clamav-server-systemd amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF"
             ENABLED_SERVICES="${ENABLED_SERVICES} clamd@amavisd"
         fi
 

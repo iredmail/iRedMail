@@ -32,13 +32,6 @@ dovecot_config()
 
     ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
 
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        if [ ! -d ${DOVECOT_CONF_DIR} ]; then
-            ECHO_ERROR "${DOVECOT_CONF_DIR} not exist."
-            mkdir -p ${DOVECOT_CONF_DIR} &>/dev/null
-        fi
-    fi
-
     # RHEL/CentOS 6:    Dovecot-2.1.x
     # Debian 7:         Dovecot-2.1.x
     # Ubuntu 12.04:     Dovecot-2.0.x
@@ -272,7 +265,7 @@ dovecot_config()
     #   - share_folder: used to store share folder settings.
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # If iRedAdmin is not used, create database and import table here.
-        ${MYSQL_CLIENT_ROOT} <<EOF
+        ${MYSQL_CLIENT_ROOT} &>/dev/null <<EOF
 # Create databases.
 CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
