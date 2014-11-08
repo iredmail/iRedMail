@@ -185,17 +185,6 @@ fi
 echo "export BACKEND_ORIG='${BACKEND_ORIG}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export BACKEND='${BACKEND}'" >> ${IREDMAIL_CONFIG_FILE}
 
-# Use SSHA512 as default password scheme.
-# - With 'auth_bind = yes' in dovecot-ldap.conf, Dovecot cannot authenticate
-#   user through LDAP bind.
-# - Apache cannot verify SSHA512 hash with basic auth.
-if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
-    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-        export DEFAULT_PASSWORD_SCHEME='SSHA512'
-        echo "export DEFAULT_PASSWORD_SCHEME='SSHA512'" >> ${IREDMAIL_CONFIG_FILE}
-    fi
-fi
-
 # Read-only SQL user/role, used to query mail accounts in Postfix, Dovecot.
 export VMAIL_DB_BIND_PASSWD="$(${RANDOM_STRING})"
 echo "export VMAIL_DB_BIND_PASSWD='${VMAIL_DB_BIND_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}

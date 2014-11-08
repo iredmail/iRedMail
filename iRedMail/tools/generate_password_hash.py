@@ -1,4 +1,4 @@
-"""Avaiable password schemes: BCRYPT, SSHA, MD5."""
+"""Avaiable password schemes: BCRYPT, SSHA512, SSHA, MD5."""
 
 import os
 import sys

@@ -22,8 +22,10 @@
 
 # web servers and PHP
 
-export WEB_SERVER_USE_APACHE='YES'
 export WEB_SERVER_USE_NGINX='YES'
+if [ X"${DISTRO}" != X'OPENBSD' ]; then
+    export WEB_SERVER_USE_APACHE='YES'
+fi
 
 export HTTPD_PORT='80'
 export HTTPS_PORT='443'

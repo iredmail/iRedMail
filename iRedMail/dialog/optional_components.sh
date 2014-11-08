@@ -36,6 +36,9 @@ elif [ X"${DISTRO}" == X'UBUNTU' ]; then
     export DIALOG_SELECTABLE_SOGO='YES'
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    # No sql/ldap auth module for Nginx.
+    export DIALOG_SELECTABLE_AWSTATS='NO'
 fi
 
 # Construct dialog menu list

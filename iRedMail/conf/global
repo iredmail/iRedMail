@@ -214,7 +214,7 @@ esac
 export PYTHON_BIN='python'
 
 # Default password scheme.
-export DEFAULT_PASSWORD_SCHEME='SSHA'
+export DEFAULT_PASSWORD_SCHEME='SSHA512'
 
 # Check distribution.
 #   - DISTRO

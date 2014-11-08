@@ -16,7 +16,7 @@ objectClass: top
 cn: ${VMAIL_USER_NAME}
 sn: ${VMAIL_USER_NAME}
 uid: ${VMAIL_USER_NAME}
-${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} "${LDAP_BINDPW}")
+${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash SSHA "${LDAP_BINDPW}")
 
 dn: ${LDAP_ADMIN_DN}
 objectClass: person
@@ -25,7 +25,7 @@ objectClass: top
 cn: ${VMAIL_DB_ADMIN_USER}
 sn: ${VMAIL_DB_ADMIN_USER}
 uid: ${VMAIL_DB_ADMIN_USER}
-${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} "${LDAP_ADMIN_PW}")
+${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash SSHA "${LDAP_ADMIN_PW}")
 
 dn: ${LDAP_BASEDN}
 objectClass: Organization
@@ -115,7 +115,10 @@ EOF
 ldap_server_config()
 {
     ldap_generate_populate_ldif
-    export LDAP_ROOTPW_SSHA="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${LDAP_ROOTPW})"
+
+    # Always use SSHA for root dn so that ldap server can verify the password.
+    # SSHA512, BCRYPT is not supported by OpenLDAP.
+    export LDAP_ROOTPW_SSHA="$(generate_password_hash SSHA ${LDAP_ROOTPW})"
 
     if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
         . ${FUNCTIONS_DIR}/ldapd.sh

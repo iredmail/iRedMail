@@ -32,7 +32,9 @@ php_config()
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         cp -f /usr/local/etc/php.ini-production ${APACHE_PHP_INI}
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ln -s /var/www/conf/modules.sample/php-${PHP_VERSION}.conf /var/www/conf/modules/php.conf
+        #if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
+        #    ln -s /var/www/conf/modules.sample/php-${PHP_VERSION}.conf /var/www/conf/modules/php.conf
+        #fi
 
         # Enable Apache modules
         for i in $(ls -d /etc/php-${PHP_VERSION}.sample/*); do

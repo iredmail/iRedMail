@@ -157,8 +157,9 @@ enabled=1
 gpgcheck=0
 EOF
 
+    # For Red Hat Enterprise Linux
     if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then
-        # Create a temporary yum repo to install epel-release without GPG check.
+        # repo to install epel-release without GPG check.
         cat > ${YUM_REPOS_DIR}/tmp_epel.repo <<EOF
 [tmp_epel]
 name=Extra Packages for Enterprise Linux ${DISTRO_VERSION} - \$basearch

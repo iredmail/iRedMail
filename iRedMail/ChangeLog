@@ -1,13 +1,15 @@
 iRedMail-0.9.0:
+    * Notes:
+        - OpenBSD: Nginx is used as web server, the built-in httpd daemon is
+          not used.
+
     * Improvement:
+        - Use SSHA512 as default password hash for all backends on Linux,
+          and BCRYPT on FreeBSD and OpenBSD. Both Roundcube password plugin
+          and iRedAdmin support them.
         - Enable global sieve script in Dovecot to move spam to Junk folder by
           default.
         - Disable SSLv3 in Postfix, Dovecot, Apache, Nginx.
-        - Use SSHA512 as default password hash for MySQL/MariaDB/PostgreSQL
-          backends.
-          Note: iRedAdmin supports SSHA512, but Roundcube/SOGo don't, so if
-          you change password with Roundcube/SOGo, new password will be MD5
-          hash.
         - Backup scripts will log backup status in SQL table `iredadmin`, so
           that admin can easily check backup status with iRedAdmin.
         - Nginx support is now available on all Linux/BSD distributions.
@@ -17,7 +19,6 @@ iRedMail-0.9.0:
           white/blacklist, spam policy.
         - New index in `amavisd` database for SQL column `policy.policy_name`.
           Required by iRedAdmin-Pro self-service.
-        - On RHEL/CentOS, phpldapadmin is now installed from EPEL repo.
 
     * Fixed:
         - Not detect domain backupmx status while querying Postfix per-domain
@@ -56,7 +57,8 @@ iRedMail-0.9.0:
       (web-based, a single PHP file) or other desktop applications instead.
       For remote LDAP management, you can try http://www.ldapadmin.org/ on
       Windows PC, or Apache Directory Studio on Windows/Linux/BSD/Mac:
-      http://directory.apache.org/studio/ (Java application).
+      http://directory.apache.org/studio/ (Java application), or ldapvi
+      (http://www.lichteblau.com/ldapvi/) in terminal.
 
 iRedMail-0.8.7:
     * Works on new Linux/BSD distribution releases:

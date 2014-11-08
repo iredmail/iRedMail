@@ -23,13 +23,18 @@ optional_components()
         check_status_before_run fail2ban_config
 
     # Roundcubemail.
-    [ X"${USE_RCM}" == X"YES" ] && \
-        check_status_before_run rcm_install && \
-        check_status_before_run rcm_config_httpd && \
+    if [ X"${USE_RCM}" == X"YES" ]; then
+        check_status_before_run rcm_install
+
+        if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
+            check_status_before_run rcm_config_httpd
+        fi
+
         check_status_before_run rcm_import_sql && \
         check_status_before_run rcm_config && \
         check_status_before_run rcm_plugin_managesieve && \
         check_status_before_run rcm_plugin_password
+    fi
 
     # SOGo
     [ X"${USE_SOGO}" == X"YES" ] && \

@@ -105,7 +105,7 @@ USE_NAME_AS_PASSWD='YES'
 # Add objectClass and attributes for pure-ftpd integration.
 # Note: You must inlucde pureftpd.schema in OpenLDAP slapd.conf first.
 PUREFTPD_INTEGRATION='NO'
-FTP_STORAGE_BASE_DIRECTORY='/home/ftp'
+FTP_STORAGE_BASE_DIRECTORY="${STORAGE_BASE_DIRECTORY}"
 
 # ------------------------------------------------------------------
 # ------------------------- Welcome Msg ----------------------------
