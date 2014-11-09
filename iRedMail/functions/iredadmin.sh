@@ -202,9 +202,7 @@ EOF
     perl -pi -e 's#^(amavisd_enable_policy_lookup=).*#${1} True#' settings.py
     perl -pi -e 's#^(amavisd_quarantine_port =).*#${1} "$ENV{AMAVISD_QUARANTINE_PORT}"#' settings.py
 
-    if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
-        echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
-    fi
+    echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
 
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
 # ${PROG_NAME}: Cleanup Amavisd database
