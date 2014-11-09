@@ -55,10 +55,11 @@ iRedMail-0.9.0:
 
       If you need a sql management tool, please try http://adminer.org/
       (web-based, a single PHP file) or other desktop applications instead.
+      For local LDAP management, you can try ldapvi
+      (http://www.lichteblau.com/ldapvi/) in terminal.
       For remote LDAP management, you can try http://www.ldapadmin.org/ on
       Windows PC, or Apache Directory Studio on Windows/Linux/BSD/Mac:
-      http://directory.apache.org/studio/ (Java application), or ldapvi
-      (http://www.lichteblau.com/ldapvi/) in terminal.
+      http://directory.apache.org/studio/ (Java application).
 
 iRedMail-0.8.7:
     * Works on new Linux/BSD distribution releases:
