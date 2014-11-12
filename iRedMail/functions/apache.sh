@@ -126,7 +126,7 @@ apache_config()
 
         # Start service when system start up.
         if [ X"${DEFAULT_WEB_SERVER}" == X'APACHE' ]; then
-            service_control enable 'apache24_enable' 'YES'
+            service_control enable "${APACHE_RC_SCRIPT_NAME}_enable" 'YES'
             service_control enable 'htcacheclean_enable' 'NO'
         fi
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
