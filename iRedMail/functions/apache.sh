@@ -66,7 +66,7 @@ apache_config()
 
     # Load/enable Apache modules
     ECHO_DEBUG "Enable Apache modules."
-    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         a2ensite default-ssl &>/dev/null
 
         a2enmod ssl deflate &>/dev/null
@@ -85,15 +85,14 @@ apache_config()
 
         [ X"${BACKEND}" == X'PGSQL' ] && \
             perl -pi -e 's/^#(LoadModule.*auth_pgsql_module.*)/${1}/' ${HTTPD_CONF}
-    fi
 
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Configure Apache."
         # With Apache2.2 it now wants to load an Accept Filter.
         echo 'accf_http_load="YES"' >> /boot/loader.conf &>/dev/null
 
         # Change 'Deny from all' to 'Allow from all'.
-        sed -i '.iredmailtmp' '/Each directory to/,/Note that from/s#Deny\ from\ all#Allow\ from\ all#' ${HTTPD_CONF}
+        sed -i '.iredmailtmp' '/Deny access to the entirety of your server/,/Note that from this point forward/s#Require\ all\ denied#Require\ all\ granted#' ${HTTPD_CONF}
         rm -f ${HTTPD_CONF}.iredmailtmp &>/dev/null
 
         # Set ServerName.
@@ -111,6 +110,10 @@ apache_config()
         perl -pi -e 's/^(LoadModule.*optional_fn_import_module.*)/#${1}/' ${HTTPD_CONF}
         perl -pi -e 's/^(LoadModule.*optional_fn_export_module.*)/#${1}/' ${HTTPD_CONF}
 
+        # Enable module: dbd
+        perl -pi -e 's/^#(LoadModule dbd_module.*)/${1}/' ${HTTPD_CONF}
+        perl -pi -e 's/^#(LoadModule authn_dbd_module.*)/${1}/' ${HTTPD_CONF}
+
         # Add index.php in DirectoryIndex.
         perl -pi -e 's#(.*DirectoryIndex.*)(index.html)#${1} index.php ${2}#' ${HTTPD_CONF}
 
@@ -118,7 +121,9 @@ apache_config()
         echo 'AddType application/x-httpd-php .php' >> ${HTTPD_CONF}
         echo 'AddType application/x-httpd-php-source .phps' >> ${HTTPD_CONF}
 
-        # Enable httpd-ssl.conf.
+        # Enable ssl module and httpd-ssl.conf.
+        perl -pi -e 's/^#(LoadModule.*ssl_module.*)/${1}/' ${HTTPD_CONF}
+        perl -pi -e 's/^#(LoadModule.*socache_shmcb_module.*)/${1}/' ${HTTPD_CONF}
         perl -pi -e 's/^#(Include.*etc.*apache.*extra.*httpd-ssl.conf.*)/${1}/' ${HTTPD_CONF}
 
         # Create empty directory for htcacheclean.
