@@ -81,6 +81,7 @@ nginx_config()
         cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${UWSGI_CONF_DIR}/iredadmin.ini
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${UWSGI_CONF_DIR}/iredadmin.ini
+        perl -pi -e 's/^(pidfile.*)/#${1}/' ${UWSGI_CONF_DIR}/iredadmin.ini
         ln -s ${UWSGI_CONF_DIR}/iredadmin.ini /etc/uwsgi/apps-enabled/iredadmin.ini
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         mkdir -p /var/log/nginx &>/dev/null
