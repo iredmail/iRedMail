@@ -57,9 +57,7 @@ apache_config()
         perl -pi -e 's#^(SSLCertificateFile)(.*)#${1} $ENV{SSL_CERT_FILE}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(SSLCertificateKeyFile)(.*)#${1} $ENV{SSL_KEY_FILE}#' ${HTTPD_SSL_CONF}
 
-    elif [ X"${DISTRO}" == X"DEBIAN" \
-        -o X"${DISTRO}" == X"UBUNTU" \
-        ]; then
+    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         perl -pi -e 's#^([ \t]+SSLCertificateFile)(.*)#${1} $ENV{SSL_CERT_FILE}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^([ \t]+SSLCertificateKeyFile)(.*)#${1} $ENV{SSL_KEY_FILE}#' ${HTTPD_SSL_CONF}
     fi
@@ -86,7 +84,6 @@ apache_config()
         [ X"${BACKEND}" == X'PGSQL' ] && \
             perl -pi -e 's/^#(LoadModule.*auth_pgsql_module.*)/${1}/' ${HTTPD_CONF}
 
-    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Configure Apache."
         # With Apache2.2 it now wants to load an Accept Filter.
         echo 'accf_http_load="YES"' >> /boot/loader.conf &>/dev/null

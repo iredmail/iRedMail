@@ -38,8 +38,10 @@ EOF
 web_server_config()
 {
     if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
-        # The new built-in httpd daemon (Not Apache-1.3) is not supported.
-        if [ X"${DISTRO}" != X'OPENBSD' ]; then
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            # The new built-in httpd daemon (Not Apache-1.3) is not supported.
+            :
+        else
             . ${FUNCTIONS_DIR}/apache.sh
             check_status_before_run apache_config
         fi
