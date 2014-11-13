@@ -180,6 +180,7 @@ CREATE INDEX msgs_idx_mail_id   ON msgs (mail_id);
 CREATE INDEX msgs_idx_content   ON msgs (content);
 CREATE INDEX msgs_idx_quar_type ON msgs (quar_type);
 CREATE INDEX msgs_idx_content_time_num ON msgs (content, time_num);
+CREATE INDEX msgs_idx_spam_level ON msgs (spam_level);
 
 -- alternatively when purging based on time_iso (instead of msgs_idx_time_num):
 -- CREATE INDEX msgs_idx_time_iso ON msgs (time_iso);

@@ -151,6 +151,7 @@ CREATE INDEX msgs_idx_mail_id   ON msgs (mail_id);
 CREATE INDEX msgs_idx_content   ON msgs (content);
 CREATE INDEX msgs_idx_quar_type ON msgs (quar_type);
 -- CREATE INDEX msgs_idx_content_time_num ON msgs (content, time_num);
+CREATE INDEX msgs_idx_spam_level ON msgs (spam_level);
 
 -- per-recipient information related to each processed message;
 -- NOTE: records in msgrcpt without corresponding msgs.mail_id record are

@@ -1,9 +1,11 @@
 iRedMail-0.9.0:
-    * Notes:
-        - OpenBSD: Nginx is used as web server, the built-in httpd daemon is
-          not used.
+    * Supported new distribution releases:
+        - Ubuntu 14.10.
+        - OpenBSD 5.6. Note: Nginx is used as web server, the built-in httpd
+          daemon is not used.
 
     * Improvement:
+        - Add new index for SQL column 'msgs.spam_level' in 'amavisd' database.
         - Use SSHA512 as default password hash for all backends on Linux,
           and BCRYPT on FreeBSD and OpenBSD. Both Roundcube password plugin
           and iRedAdmin support them.
