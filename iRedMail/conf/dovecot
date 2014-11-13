@@ -56,16 +56,16 @@ export DOVECOT_DELIVER='/usr/libexec/dovecot/deliver'
 if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER='/usr/lib/dovecot/deliver'
 
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DOVECOT_CONF_DIR='/usr/local/etc/dovecot'
     export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
+    export DOVECOT_DOVEADM_BIN='/usr/local/bin/doveadm'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export DOVECOT_USER='_dovecot'
     export DOVECOT_GROUP='_dovecot'
     export DOVECOT_DELIVER='/usr/local/libexec/dovecot/deliver'
     export DOVECOT_DOVEADM_BIN='/usr/local/bin/doveadm'
-
 fi
 
 # Dovecot config files
