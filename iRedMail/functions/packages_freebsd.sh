@@ -918,6 +918,7 @@ EOF
     # Roundcube webmail.
     if [ X"${USE_RCM}" == X"YES" ]; then
         ALL_PORTS="${ALL_PORTS} mail/roundcube"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PORTS="${ALL_PORTS} net/pear-Net_LDAP2"
     fi
 
     # Awstats.
