@@ -35,6 +35,8 @@ clamav_config()
         chown ${CLAMAV_USER}:${CLAMAV_GROUP} /var/log/clamav
     fi
 
+    [ -f ${FRESHCLAM_CONF} && perl -pi -e 's#^Example##' ${FRESHCLAM_CONF}
+
     export CLAMD_LOCAL_SOCKET CLAMD_BIND_HOST
     ECHO_DEBUG "Configure ClamAV: ${CLAMD_CONF}."
     perl -pi -e 's/^(TCPSocket .*)/#${1}/' ${CLAMD_CONF}
@@ -54,7 +56,7 @@ clamav_config()
     # Official database only
     perl -pi -e 's/^#(OfficialDatabaseOnly ).*/${1} yes/' ${CLAMD_CONF}
 
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
 
