@@ -35,7 +35,7 @@ clamav_config()
         chown ${CLAMAV_USER}:${CLAMAV_GROUP} /var/log/clamav
     fi
 
-    [ -f ${FRESHCLAM_CONF} && perl -pi -e 's#^Example##' ${FRESHCLAM_CONF}
+    [ -f ${FRESHCLAM_CONF} ] && perl -pi -e 's#^Example##' ${FRESHCLAM_CONF}
 
     export CLAMD_LOCAL_SOCKET CLAMD_BIND_HOST
     ECHO_DEBUG "Configure ClamAV: ${CLAMD_CONF}."

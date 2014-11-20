@@ -1,4 +1,28 @@
 iRedMail-0.9.0:
+    * SOGo integration:
+
+      SOGo is a groupware server with a focus on scalability and open standards,
+      released under the GNU GPL/LGPL v2 and above.
+
+      SOGo provides a rich AJAX-based Web interface and supports multiple
+      native clients through the use of standard protocols such as CalDAV,
+      CardDAV and GroupDAV, as well as Microsoft ActiveSync.
+
+      o SOGo integration is available on below Linux distributions and releases:
+
+        - RHEL/CentOS 6. SOGo project doesn't provide RPMs for CentOS 7 yet.
+        - Debian 7.
+        - Ubuntu 12.04 and 14.04. No official packages for 14.10 yet.
+        - OpenBSD 5.6.
+
+      o If you choose to install both Roundcube webmail and SOGo, Managesieve
+        service is disabled in SOGo by default, because sieve rules generated
+        by SOGo is not compatible with Roundcube webmail. but if you don't
+        install Roundcube, managesieve will be enabled in SOGo by default, plus
+        vacation and forwarding support.
+
+      o User cannot change password with LDAP/PGSQL backend.
+
     * Supported new distribution releases:
         - Ubuntu 14.10.
         - OpenBSD 5.6. Note: Nginx is used as web server, the built-in httpd
