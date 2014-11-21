@@ -307,9 +307,29 @@ EOF
 ********************************************************************
 * URLs of installed web applications:
 *
-* - Webmail: httpS://${HOSTNAME}/mail/
+* - Webmail:
+EOF
+
+    if [ X"${USE_RCM}" == X'YES' ]; then
+cat <<EOF
+*   o Roundcube webmail://${HOSTNAME}/mail/
+EOF
+    fi
+
+    if [ X"${USE_SOGO}" == X'YES' ]; then
+cat <<EOF
+*   o SOGo groupware: httpS://${HOSTNAME}/SOGo/
+EOF
+    fi
+
+    cat <<EOF
+*
 * - Web admin panel (iRedAdmin): httpS://${HOSTNAME}/iredadmin/
-*   + Username: ${SITE_ADMIN_NAME}, Password: ${SITE_ADMIN_PASSWD}
+*
+* You can login to above links with same credential:
+*
+*   o Username: ${SITE_ADMIN_NAME}
+*   o Password: ${SITE_ADMIN_PASSWD}
 *
 *
 ********************************************************************
