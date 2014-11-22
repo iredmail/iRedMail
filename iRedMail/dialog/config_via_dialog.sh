@@ -200,6 +200,9 @@ echo "export LDAP_BINDPW='${LDAP_BINDPW}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export LDAP_ADMIN_PW='${LDAP_ADMIN_PW}'" >> ${IREDMAIL_CONFIG_FILE}
 
 if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    export DEFAULT_PASSWORD_SCHEME='SSHA'
+    echo "export DEFAULT_PASSWORD_SCHEME='SSHA'" >> ${IREDMAIL_CONFIG_FILE}
+
     . ${DIALOG_DIR}/ldap_config.sh
 
     # MySQL server is used to store policyd/roundcube data.

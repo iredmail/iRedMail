@@ -213,7 +213,9 @@ esac
 # Path to python program file.
 export PYTHON_BIN='python'
 
-# Default password scheme.
+# Default password scheme for SQL backends.
+# LDAP backend will use SSHA instead (defined in file
+# dialog/config_via_dialog.sh), because many applications need to bind as user.
 export DEFAULT_PASSWORD_SCHEME='SSHA512'
 
 # Check distribution.
