@@ -145,8 +145,8 @@ EOF
         perl -pi -e 's#SQL backend \*/##' ${SOGO_CONF}
 
         # Enable password change in MySQL backend
-        if [ X"${BACKEND}" == X'MYSQL' ]; then
-            perl -pi -e 's#(.*SOGoPasswordChangeEnabled = )NO;#${1}YES;#g' ${SOGO_CONF}
+        if [ X"${BACKEND}" == X'PGSQL' ]; then
+            perl -pi -e 's#(.*SOGoPasswordChangeEnabled = )YES;#${1}NO;#g' ${SOGO_CONF}
         fi
     fi
 
