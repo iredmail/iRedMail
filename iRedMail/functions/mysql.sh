@@ -206,6 +206,8 @@ mysql_cron_backup()
 
 EOF
 
+    set_cron_file_permission ${CRON_SPOOL_DIR}/root
+
     cat >> ${TIP_FILE} <<EOF
 Backup MySQL database:
     * Script: ${BACKUP_SCRIPT_MYSQL}

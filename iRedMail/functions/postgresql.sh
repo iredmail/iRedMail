@@ -235,6 +235,7 @@ pgsql_cron_backup()
 1   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_PGSQL}
 
 EOF
+    set_cron_file_permission ${CRON_SPOOL_DIR}/root
 
     echo 'export status_pgsql_cron_backup="DONE"' >> ${STATUS_FILE}
 }

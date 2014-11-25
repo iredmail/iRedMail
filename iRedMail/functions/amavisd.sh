@@ -599,6 +599,8 @@ ${CONF_MSG}
 
 EOF
 
+    set_cron_file_permission ${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER}
+
     cat >> ${TIP_FILE} <<EOF
 Amavisd-new:
     * Configuration files:

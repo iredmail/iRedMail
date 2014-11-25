@@ -323,6 +323,7 @@ EOF
 1   3   *   *   *   ${CLUEBRINGER_BIN_CBPADMIN} --config=${CLUEBRINGER_CONF} --cleanup >/dev/null
 
 EOF
+    set_cron_file_permission ${CRON_SPOOL_DIR}/root
 
     cat >> ${TIP_FILE} <<EOF
 Policyd (cluebringer):
