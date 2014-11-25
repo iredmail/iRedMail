@@ -21,7 +21,7 @@ iRedMail-0.9.0:
         install Roundcube, managesieve will be enabled in SOGo by default, plus
         vacation and forwarding support.
 
-      o User cannot change password with LDAP/PGSQL backend.
+      o User cannot change password with PostgreSQL backend.
 
     * Supported new distribution releases:
         - Ubuntu 14.10.
@@ -30,9 +30,9 @@ iRedMail-0.9.0:
 
     * Improvement:
         - Add new index for SQL column 'msgs.spam_level' in 'amavisd' database.
-        - Use SSHA512 as default password hash for all backends on Linux,
-          and BCRYPT on FreeBSD and OpenBSD. Both Roundcube password plugin
-          and iRedAdmin support them.
+        - With MySQL/PostgreSQL backends, password hash is now SSHA512 by
+          default password on Linux, and BCRYPT on FreeBSD and OpenBSD.
+          Both Roundcube password plugin and iRedAdmin support them.
         - Enable global sieve script in Dovecot to move spam to Junk folder by
           default.
         - Disable SSLv3 in Postfix, Dovecot, Apache, Nginx.
