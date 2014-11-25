@@ -435,13 +435,6 @@ add_postfix_alias()
     unset alias_dest
 }
 
-# Set cron file permission to 0600.
-set_cron_file_permission()
-{
-    ECHO_DEBUG "Set file permission to 0600: ${1}."
-    chmod 0600 ${1}
-}
-
 # Install/Remove binary packages on RHEL/CentOS.
 install_pkg_rhel()
 {

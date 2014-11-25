@@ -188,7 +188,6 @@ EOF
 0   0   *   *   *   ${SOGO_CMD_TOOL} expire-autoreply -p ${SOGO_SIEVE_CREDENTIAL_FILE}
 
 EOF
-    set_cron_file_permission ${CRON_SPOOL_DIR}/${SOGO_DAEMON_USER}
 
     cat >> ${TIP_FILE} <<EOF
 SOGo Groupware:

@@ -153,7 +153,6 @@ ldap_server_cron_backup()
 0   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_OPENLDAP}
 
 EOF
-    set_cron_file_permission ${CRON_SPOOL_DIR}/root
 
     cat >> ${TIP_FILE} <<EOF
 Backup OpenLDAP data:

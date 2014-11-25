@@ -209,7 +209,6 @@ EOF
 1   2   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py >/dev/null
 
 EOF
-    set_cron_file_permission ${CRON_SPOOL_DIR}/root
 
     cat >> ${TIP_FILE} <<EOF
 iRedAdmin - official web-based admin panel:

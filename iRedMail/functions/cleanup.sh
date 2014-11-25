@@ -34,6 +34,20 @@
 # -------------------------------------------
 # Misc.
 # -------------------------------------------
+# Set cron file permission to 0600.
+cleanup_set_cron_file_permission()
+{
+    for user in "root ${AMAVISD_SYS_USER} ${SOGO_DAEMON_USER}"; do
+        cron_file="${CRON_SPOOL_DIR}/${user}"
+        if [ -f ${cron_file} ]; then
+            ECHO_DEBUG "Set file permission to 0600: ${cron_file}."
+            && chmod 0600 ${cron_file}
+        fi
+    done
+
+    echo 'export status_cleanup_set_cron_file_permission="DONE"' >> ${STATUS_FILE}
+}
+
 cleanup_disable_selinux()
 {
     if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -287,6 +301,7 @@ EOF
     chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${FILE_IREDMAIL_INSTALLATION_DETAILS} ${FILE_IREDMAIL_LINKS}
     chmod -R 0700 ${FILE_IREDMAIL_INSTALLATION_DETAILS} ${FILE_IREDMAIL_LINKS}
 
+    check_status_before_run cleanup_set_cron_file_permission
     check_status_before_run cleanup_disable_selinux
     check_status_before_run cleanup_remove_sendmail
     check_status_before_run cleanup_remove_mod_python
