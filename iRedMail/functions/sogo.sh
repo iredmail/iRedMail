@@ -189,6 +189,18 @@ EOF
 
 EOF
 
+    # if roundcube is not installed, redirect /mail to /SOGo.
+    if [ X"${USE_RCM}" != X'YES' ]; then
+        mkdir -p ${HTTPD_DOCUMENTROOT}/mail
+        cat > ${HTTPD_DOCUMENTROOT}/mail/index.html <<EOF
+<html>
+    <head>
+        <meta HTTP-EQUIV="REFRESH" content="0; url=/SOGo">
+    </head>
+</html>
+EOF
+    fi
+
     cat >> ${TIP_FILE} <<EOF
 SOGo Groupware:
     * Web access: httpS://${HOSTNAME}/SOGo/
