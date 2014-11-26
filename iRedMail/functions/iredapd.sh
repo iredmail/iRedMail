@@ -83,7 +83,7 @@ iredapd_config()
         perl -pi -e 's#^(ldap_bindpw).*#${1} = "$ENV{LDAP_BINDPW}"#' settings.py
         perl -pi -e 's#^(ldap_basedn).*#${1} = "$ENV{LDAP_BASEDN}"#' settings.py
 
-        perl -pi -e 's#^(plugins).*#${1} = ["ldap_maillist_access_policy", "ldap_amavisd_block_blacklisted_senders", "ldap_recipient_restrictions", "amavisd_wblist"]#' settings.py
+        perl -pi -e 's#^(plugins).*#${1} = ["amavisd_wblist", "ldap_maillist_access_policy"]#' settings.py
 
     elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#^(sql_server).*#${1} = "$ENV{SQL_SERVER}"#' settings.py
@@ -92,7 +92,7 @@ iredapd_config()
         perl -pi -e 's#^(sql_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' settings.py
         perl -pi -e 's#^(sql_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' settings.py
 
-        perl -pi -e 's#^(plugins).*#${1} = ["sql_alias_access_policy", "sql_user_restrictions", "amavisd_wblist"]#' settings.py
+        perl -pi -e 's#^(plugins).*#${1} = ["amavisd_wblist", "sql_alias_access_policy"]#' settings.py
     fi
 
     # Amavisd database
