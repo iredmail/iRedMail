@@ -85,8 +85,9 @@ export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
 export SIEVE_LOGROTATE_FILE="${LOGROTATE_DIR}/sieve"
 
 # Dovecot auth socket and pid file.
-export DOVECOT_SOCKET_MUX='/var/spool/postfix/dovecot-auth'
-export DOVECOT_AUTH_SOCKET_PATH="${DOVECOT_BASE_DIR}/auth-master"
+# Relative path of Dovecot auth socket under Postfix chroot directory.
+export DOVECOT_AUTH_SOCKET_NAME='private/dovecot-auth'
+export DOVECOT_AUTH_MASTER_PATH="${DOVECOT_BASE_DIR}/auth-master"
 export DOVECOT_MASTER_PID="${DOVECOT_BASE_DIR}/master.pid"
 
 # Dovecot plugin: Expire.

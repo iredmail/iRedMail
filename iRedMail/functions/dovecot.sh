@@ -100,7 +100,7 @@ dovecot_config()
     chown ${DOVECOT_USER}:${DOVECOT_GROUP} ${DOVECOT_MASTER_USER_PASSWORD_FILE}
     chmod 0500 ${DOVECOT_MASTER_USER_PASSWORD_FILE}
 
-    perl -pi -e 's#PH_AUTH_SOCKET_PATH#$ENV{DOVECOT_AUTH_SOCKET_PATH}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_AUTH_MASTER_PATH#$ENV{DOVECOT_AUTH_MASTER_PATH}#' ${DOVECOT_CONF}
 
     # Quota.
     perl -pi -e 's#PH_QUOTA_TYPE#$ENV{DOVECOT_QUOTA_TYPE}#' ${DOVECOT_CONF}
@@ -302,7 +302,7 @@ EOF
     postconf -e dovecot_destination_recipient_limit='1'
 
     postconf -e smtpd_sasl_type='dovecot'
-    postconf -e smtpd_sasl_path='private/dovecot-auth'
+    postconf -e smtpd_sasl_path="${DOVECOT_AUTH_SOCKET_NAME}"
 
     ECHO_DEBUG "Create directory for Dovecot plugin: Expire."
     dovecot_expire_dict_dir="$(dirname ${DOVECOT_EXPIRE_DICT_BDB})"
