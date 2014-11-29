@@ -353,16 +353,16 @@ EOF
     exit 255
 fi
 
+# root user/group name. Note: not all OSes have group 'root'.
+export SYS_ROOT_USER='root'
+export SYS_ROOT_GROUP='root'
+
 # install_pkg: function used to install packages without confirm.
 # remove_pkg: function used to remove packages without confirm.
 # LIST_ALL_PKGS: command used to list all installed packages.
 # LIST_FILES_IN_PKG: command used to list files installed by special package.
 if [ X"${DISTRO}" == X'RHEL' ]; then
     # RHEL/CentOS.
-    # System user: root. Note: not all OSes have group 'root'.
-    export SYS_ROOT_USER='root'
-    export SYS_ROOT_GROUP='root'
-
     # Package management.
     if [ X"${YUM}" != X"" ]; then
         export YUM="${YUM}"
@@ -421,10 +421,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Ubuntu & Debian.
     export DEBIAN_FRONTEND='noninteractive'
 
-    # System user: root. Note: not all OSes have group 'root'.
-    export SYS_ROOT_USER='root'
-    export SYS_ROOT_GROUP='root'
-
     # Package management.
     if [ X"${APTGET}" != X"" ]; then
         export APTGET="${APTGET}"
@@ -470,8 +466,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export SSL_FILE_DIR="/etc/ssl"
 
 elif [ X"${DISTRO}" == X"FREEBSD" ]; then
-    # System user: root.
-    export SYS_ROOT_USER='root'
     export SYS_ROOT_GROUP='wheel'
 
     # Package management.
@@ -522,11 +516,9 @@ elif [ X"${DISTRO}" == X"FREEBSD" ]; then
     export LOGROTATE_DIR="/usr/local/etc/logrotate.d"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export ENABLE_BACKEND_LDAPD='YES'
-
-    # System user: root.
-    export SYS_ROOT_USER='root'
     export SYS_ROOT_GROUP='wheel'
+
+    export ENABLE_BACKEND_LDAPD='YES'
 
     # Package management.
     if [ X"${PKG_PATH}" == X"" ]; then

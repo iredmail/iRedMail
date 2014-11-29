@@ -37,11 +37,11 @@
 # Set cron file permission to 0600.
 cleanup_set_cron_file_permission()
 {
-    for user in "root ${AMAVISD_SYS_USER} ${SOGO_DAEMON_USER}"; do
+    for user in ${SYS_ROOT_USER} ${AMAVISD_SYS_USER} ${SOGO_DAEMON_USER}; do
         cron_file="${CRON_SPOOL_DIR}/${user}"
         if [ -f ${cron_file} ]; then
             ECHO_DEBUG "Set file permission to 0600: ${cron_file}."
-            && chmod 0600 ${cron_file}
+            chmod 0600 ${cron_file}
         fi
     done
 
