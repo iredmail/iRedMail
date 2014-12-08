@@ -1,6 +1,7 @@
 -- MySQL template for Amavisd-new-2.7.0 and later releases.
 -- Read-only part of the dataset (@lookup_sql_dsn)
 
+-- used in @lookup_sql_dsn
 -- local users
 CREATE TABLE users (
   id         serial  PRIMARY KEY,  -- unique id
@@ -12,6 +13,7 @@ CREATE TABLE users (
   -- local   char(1)      -- Y/N  (optional field, see note further down)
 );
 
+-- used in @lookup_sql_dsn
 -- any e-mail address (non- rfc2822-quoted), external or local,
 -- used as senders in wblist
 CREATE TABLE mailaddr (
@@ -20,6 +22,7 @@ CREATE TABLE mailaddr (
   email      bytea   NOT NULL UNIQUE
 );
 
+-- used in @lookup_sql_dsn
 -- per-recipient whitelist and/or blacklist,
 -- puts sender and recipient in relation wb  (white or blacklisted sender)
 CREATE TABLE wblist (
@@ -29,6 +32,7 @@ CREATE TABLE wblist (
   PRIMARY KEY (rid,sid)
 );
 
+-- used in @lookup_sql_dsn
 CREATE TABLE policy (
   id  serial PRIMARY KEY,           -- 'id' this is the _only_ required field
   policy_name      varchar(32),     -- not used by amavisd-new, a comment
@@ -97,6 +101,7 @@ CREATE UNIQUE INDEX policy_idx_policy_name ON policy (policy_name);
 --  ones as appropriate to optimize queries needed by a management application.
 --  See your database documentation for further optimization hints.
 
+-- used in @storage_sql_dsn
 -- provide unique id for each e-mail address, avoids storing copies
 CREATE TABLE maddr (
   partition_tag integer   DEFAULT 0,   -- see $partition_tag
@@ -107,6 +112,7 @@ CREATE TABLE maddr (
   CONSTRAINT part_email UNIQUE (partition_tag,email)
 );
 
+-- used in @storage_sql_dsn
 -- information pertaining to each processed message as a whole;
 -- NOTE: records with NULL msgs.content should be ignored by utilities,
 --   as such records correspond to messages just being processes, or were lost
@@ -153,6 +159,7 @@ CREATE INDEX msgs_idx_quar_type ON msgs (quar_type);
 -- CREATE INDEX msgs_idx_content_time_num ON msgs (content, time_num);
 CREATE INDEX msgs_idx_spam_level ON msgs (spam_level);
 
+-- used in @storage_sql_dsn
 -- per-recipient information related to each processed message;
 -- NOTE: records in msgrcpt without corresponding msgs.mail_id record are
 --  orphaned and should be ignored and eventually deleted by external utilities
@@ -177,6 +184,7 @@ CREATE TABLE msgrcpt (
 CREATE INDEX msgrcpt_idx_mail_id  ON msgrcpt (mail_id);
 CREATE INDEX msgrcpt_idx_rid      ON msgrcpt (rid);
 
+-- used in @storage_sql_dsn
 -- mail quarantine in SQL, enabled by $*_quarantine_method='sql:'
 -- NOTE: records in quarantine without corresponding msgs.mail_id record are
 --  orphaned and should be ignored and eventually deleted by external utilities

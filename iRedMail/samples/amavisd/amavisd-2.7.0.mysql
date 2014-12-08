@@ -1,7 +1,7 @@
 -- MySQL template for Amavisd-new-2.7.0 and later releases.
 -- Extracted from Amavisd docs/README.sql-mysql.
 
--- Read-only part of the dataset (@lookup_sql_dsn)
+-- used in @lookup_sql_dsn
 -- local users
 CREATE TABLE users (
   id         int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,  -- unique id
@@ -12,6 +12,7 @@ CREATE TABLE users (
   -- local   char(1)      -- Y/N  (optional field, see note further down)
 );
 
+-- used in @lookup_sql_dsn
 -- any e-mail address (non- rfc2822-quoted), external or local,
 -- used as senders in wblist
 CREATE TABLE mailaddr (
@@ -20,6 +21,7 @@ CREATE TABLE mailaddr (
   email      varbinary(255) NOT NULL UNIQUE
 );
 
+-- used in @lookup_sql_dsn
 -- per-recipient whitelist and/or blacklist,
 -- puts sender and recipient in relation wb  (white or blacklisted sender)
 CREATE TABLE wblist (
@@ -29,6 +31,7 @@ CREATE TABLE wblist (
   PRIMARY KEY (rid,sid)
 );
 
+-- used in @lookup_sql_dsn
 CREATE TABLE policy (
   id  int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                     -- 'id' this is the _only_ required field
@@ -120,6 +123,7 @@ CREATE UNIQUE INDEX policy_idx_policy_name ON policy (policy_name);
 --  The big performance increase is the first two, the third just helps with
 --  lowering disk activity. Consider also adjusting the key_buffer_size.
 
+-- used in @storage_sql_dsn
 -- provide unique id for each e-mail address, avoids storing copies
 CREATE TABLE maddr (
   partition_tag integer      DEFAULT 0, -- see $partition_tag
@@ -133,6 +137,7 @@ CREATE TABLE maddr (
 CREATE INDEX maddr_idx_email ON maddr (email);
 CREATE INDEX maddr_idx_domain ON maddr (domain);
 
+-- used in @storage_sql_dsn
 -- information pertaining to each processed message as a whole;
 -- NOTE: records with NULL msgs.content should be ignored by utilities,
 --   as such records correspond to messages just being processes, or were lost
@@ -185,6 +190,7 @@ CREATE INDEX msgs_idx_spam_level ON msgs (spam_level);
 -- alternatively when purging based on time_iso (instead of msgs_idx_time_num):
 -- CREATE INDEX msgs_idx_time_iso ON msgs (time_iso);
 
+-- used in @storage_sql_dsn
 -- per-recipient information related to each processed message;
 -- NOTE: records in msgrcpt without corresponding msgs.mail_id record are
 --  orphaned and should be ignored and eventually deleted by external utilities
@@ -209,6 +215,7 @@ CREATE TABLE msgrcpt (
 CREATE INDEX msgrcpt_idx_mail_id  ON msgrcpt (mail_id);
 CREATE INDEX msgrcpt_idx_rid      ON msgrcpt (rid);
 
+-- used in @storage_sql_dsn
 -- mail quarantine in SQL, enabled by $*_quarantine_method='sql:'
 -- NOTE: records in quarantine without corresponding msgs.mail_id record are
 --  orphaned and should be ignored and eventually deleted by external utilities
