@@ -736,7 +736,7 @@ OPTIONS_FILE_SET+=LINKTHR
 OPTIONS_FILE_UNSET+=ZTS
 EOF
 
-    ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER} www/mod_php${PREFERRED_PHP_VER} www/pecl-APC"
+    ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER} www/mod_php${PREFERRED_PHP_VER}"
 
     cat > /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options <<EOF
 OPTIONS_FILE_SET+=BCMATH
