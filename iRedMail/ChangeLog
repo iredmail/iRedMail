@@ -73,6 +73,13 @@ iRedMail-0.9.0:
         + iRedAPD -> 1.4.4. Bug fixes, performance improvement, new plugins.
         + iRedAdmin -> 0.4. New tool scripts, fixes several issues.
 
+    * FreeBSD ports of major component:
+        o Apache: www/apache24
+        o PHP: lang/php56
+        o MySQL: databases/mysql56-server
+        o MariaDB: databases/mariadb55-server
+        o PostgreSQL: databases/postgresql93-server
+
     * Below packages are removed from iRedMail for security concern and their
       own package dependences:
         - phpMyAdmin

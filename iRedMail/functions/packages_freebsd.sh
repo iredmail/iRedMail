@@ -38,6 +38,7 @@ install_all()
     export PREFERRED_PGSQL_VER='93'
     export PREFERRED_BDB_VER='5'
     export PREFERRED_APACHE_VER='24'
+    export PREFERRED_PHP_VER='56'
 
     export PREFERRED_MYSQL_VER='56'
     if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
@@ -69,13 +70,13 @@ install_all()
         devel_py-Jinja2 \
         dns_p5-Net-DNS \
         ftp_curl \
-        graphics_php5-gd \
         japanese_p5-Mail-SpamAssassin \
         lang_perl5.18 \
         lang_perl5.20 \
-        lang_php5-extensions \
-        lang_php5 \
-        www_mod_php5 \
+        lang_php${PREFERRED_PHP_VER} \
+        lang_php${PREFERRED_PHP_VER}-extensions \
+        www_mod_php${PREFERRED_PHP_VER} \
+        graphics_php${PREFERRED_PHP_VER}-gd \
         www_pecl-APC \
         lang_python27 \
         mail_dovecot2 \
@@ -722,7 +723,7 @@ EOF
     fi
 
     # PHP5. REQUIRED.
-    cat > /var/db/ports/lang_php5/options <<EOF
+    cat > /var/db/ports/lang_php${PREFERRED_PHP_VER}/options <<EOF
 OPTIONS_FILE_SET+=CLI
 OPTIONS_FILE_SET+=CGI
 OPTIONS_FILE_SET+=FPM
@@ -735,9 +736,9 @@ OPTIONS_FILE_SET+=LINKTHR
 OPTIONS_FILE_UNSET+=ZTS
 EOF
 
-    ALL_PORTS="${ALL_PORTS} lang/php5 www/mod_php5 www/pecl-APC"
+    ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER} www/mod_php${PREFERRED_PHP_VER} www/pecl-APC"
 
-    cat > /var/db/ports/lang_php5-extensions/options <<EOF
+    cat > /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options <<EOF
 OPTIONS_FILE_SET+=BCMATH
 OPTIONS_FILE_SET+=BZ2
 OPTIONS_FILE_SET+=CALENDAR
@@ -799,18 +800,18 @@ OPTIONS_FILE_SET+=ZLIB
 EOF
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/lang_php5-extensions/options
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/lang_php5-extensions/options
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQLI#OPTIONS_FILE_SET+=MYSQLI#' /var/db/ports/lang_php5-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQLI#OPTIONS_FILE_SET+=MYSQLI#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/lang_php5-extensions/options
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQLI#OPTIONS_FILE_SET+=MYSQLI#' /var/db/ports/lang_php5-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQLI#OPTIONS_FILE_SET+=MYSQLI#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/lang_php5-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
     fi
-    rm -f /var/db/ports/lang_php5-extensions/options${SED_EXTENSION} &>/dev/null
+    rm -f /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options${SED_EXTENSION} &>/dev/null
 
-    cat > /var/db/ports/graphics_php5-gd/options <<EOF
+    cat > /var/db/ports/graphics_php${PREFERRED_PHP_VER}-gd/options <<EOF
 OPTIONS_FILE_SET+=T1LIB
 OPTIONS_FILE_UNSET+=TRUETYPE
 OPTIONS_FILE_UNSET+=JIS
@@ -819,17 +820,17 @@ OPTIONS_FILE_UNSET+=VPX
 EOF
 
     # PHP extensions
-    ALL_PORTS="${ALL_PORTS} mail/php5-imap archivers/php5-zip archivers/php5-bz2 archivers/php5-zlib devel/php5-gettext converters/php5-mbstring security/php5-mcrypt security/php5-openssl www/php5-session textproc/php5-ctype security/php5-hash converters/php5-iconv textproc/php5-pspell textproc/php5-dom textproc/php5-xml"
+    ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext converters/php${PREFERRED_PHP_VER}-mbstring security/php${PREFERRED_PHP_VER}-mcrypt security/php${PREFERRED_PHP_VER}-openssl www/php${PREFERRED_PHP_VER}-session textproc/php${PREFERRED_PHP_VER}-ctype security/php${PREFERRED_PHP_VER}-hash converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom textproc/php${PREFERRED_PHP_VER}-xml"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ALL_PORTS="${ALL_PORTS} net/php5-ldap databases/php5-mysql databases/php5-mysqli"
+        ALL_PORTS="${ALL_PORTS} net/php${PREFERRED_PHP_VER}-ldap databases/php${PREFERRED_PHP_VER}-mysql databases/php${PREFERRED_PHP_VER}-mysqli"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        ALL_PORTS="${ALL_PORTS} databases/php5-mysql databases/php5-mysqli"
+        ALL_PORTS="${ALL_PORTS} databases/php${PREFERRED_PHP_VER}-mysql databases/php${PREFERRED_PHP_VER}-mysqli"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ALL_PORTS="${ALL_PORTS} databases/php5-pgsql"
+        ALL_PORTS="${ALL_PORTS} databases/php${PREFERRED_PHP_VER}-pgsql"
     fi
 
-    cat > /var/db/ports/www_mod_php5/options <<EOF
+    cat > /var/db/ports/www_mod_php${PREFERRED_PHP_VER}/options <<EOF
 OPTIONS_FILE_UNSET+=AP2FILTER
 OPTIONS_FILE_UNSET+=DEBUG
 OPTIONS_FILE_UNSET+=DTRACE
