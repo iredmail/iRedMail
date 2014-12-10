@@ -6,11 +6,16 @@ findtime    = 300
 bantime     = 3600
 ignoreip    = PH_LOCAL_ADDRESS 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 
-[ssh-iredmail]
+[sshd]
 enabled     = true
 filter      = sshd
-action      = iptables[name=ssh, port="ssh", protocol=tcp]
-#              sendmail-whois[name=ssh, dest=root, sender=fail2ban@localhost]
+action      = iptables-allports
+logpath     = PH_SSHD_LOGFILE
+
+[sshd-ddos]
+enabled     = true
+filter      = sshd-ddos
+action      = iptables-allports
 logpath     = PH_SSHD_LOGFILE
 
 [roundcube-iredmail]
