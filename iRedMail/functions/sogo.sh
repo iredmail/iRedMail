@@ -104,10 +104,10 @@ EOF
 
     # Enable managesieve support if no Roundcube installed.
     if [ X"${USE_RCM}" != X"YES" ]; then
-        perl -pi -e 's#(//)(SOGoSieveServer.*)#${1}#' ${SOGO_CONF}
-        perl -pi -e 's#(//)(SOGoSieveScriptsEnabled.*)#${1}#' ${SOGO_CONF}
-        perl -pi -e 's#(//)(SOGoVacationEnabled.*)#${1}#' ${SOGO_CONF}
-        perl -pi -e 's#(//)(SOGoForwardEnabled.*)#${1}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoSieveServer.*)#${2}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoSieveScriptsEnabled.*)#${2}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoVacationEnabled.*)#${2}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoForwardEnabled.*)#${2}#' ${SOGO_CONF}
     fi
 
     # SMTP server
