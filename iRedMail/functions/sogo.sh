@@ -102,14 +102,6 @@ EOF
     perl -pi -e 's#PH_MANAGESIEVE_BIND_HOST#$ENV{MANAGESIEVE_BIND_HOST}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_MANAGESIEVE_PORT#$ENV{MANAGESIEVE_PORT}#g' ${SOGO_CONF}
 
-    # Enable managesieve support if no Roundcube installed.
-    if [ X"${USE_RCM}" != X"YES" ]; then
-        perl -pi -e 's#(//)(SOGoSieveServer.*)#${2}#' ${SOGO_CONF}
-        perl -pi -e 's#(//)(SOGoSieveScriptsEnabled.*)#${2}#' ${SOGO_CONF}
-        perl -pi -e 's#(//)(SOGoVacationEnabled.*)#${2}#' ${SOGO_CONF}
-        perl -pi -e 's#(//)(SOGoForwardEnabled.*)#${2}#' ${SOGO_CONF}
-    fi
-
     # SMTP server
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${SOGO_CONF}
 
@@ -160,6 +152,25 @@ EOF
         perl -pi -e 's/^(.*x-webobjects-server-url.*)/#${1}/g' ${SOGO_HTTPD_CONF}
     fi
 
+    # if Roundcube is not installed
+    if [ X"${USE_RCM}" != X"YES" ]; then
+        # Enable managesieve support
+        perl -pi -e 's#(//)(SOGoSieveServer.*)#${2}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoSieveScriptsEnabled.*)#${2}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoVacationEnabled.*)#${2}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoForwardEnabled.*)#${2}#' ${SOGO_CONF}
+
+        # URL redirect: /mail -> /SOGo
+        mkdir -p ${RCM_HTTPD_ROOT_SYMBOL_LINK}
+        cat > ${RCM_HTTPD_ROOT_SYMBOL_LINK}/index.php <<EOF
+<html>
+    <head>
+        <meta HTTP-EQUIV="REFRESH" content="0; url=/SOGo">
+    </head>
+</html>
+EOF
+    fi
+
     # Add Dovecot Master User, for vacation message expiration
     sogo_sieve_expiration_pw="$(${RANDOM_STRING})"
     cat >> ${DOVECOT_MASTER_USER_PASSWORD_FILE} <<EOF
@@ -188,18 +199,6 @@ EOF
 0   0   *   *   *   ${SOGO_CMD_TOOL} expire-autoreply -p ${SOGO_SIEVE_CREDENTIAL_FILE}
 
 EOF
-
-    # if roundcube is not installed, redirect /mail to /SOGo.
-    if [ X"${USE_RCM}" != X'YES' ]; then
-        mkdir -p ${HTTPD_DOCUMENTROOT}/mail
-        cat > ${HTTPD_DOCUMENTROOT}/mail/index.html <<EOF
-<html>
-    <head>
-        <meta HTTP-EQUIV="REFRESH" content="0; url=/SOGo">
-    </head>
-</html>
-EOF
-    fi
 
     cat >> ${TIP_FILE} <<EOF
 SOGo Groupware:
