@@ -200,6 +200,8 @@ EOF
 
 EOF
 
+    add_postfix_alias ${SOGO_DAEMON_USER} ${SYS_ROOT_USER}
+
     cat >> ${TIP_FILE} <<EOF
 SOGo Groupware:
     * Web access: httpS://${HOSTNAME}/SOGo/
