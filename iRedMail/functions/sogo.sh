@@ -172,13 +172,12 @@ EOF
     fi
 
     # Add Dovecot Master User, for vacation message expiration
-    sogo_sieve_expiration_pw="$(${RANDOM_STRING})"
     cat >> ${DOVECOT_MASTER_USER_PASSWORD_FILE} <<EOF
-${SOGO_SIEVE_MASTER_USER}:$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} "${sogo_sieve_expiration_pw}")
+${SOGO_SIEVE_MASTER_USER}:$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} "${SOGO_SIEVE_MASTER_PASSWD}")
 EOF
 
     cat >> ${SOGO_SIEVE_CREDENTIAL_FILE} <<EOF
-${SOGO_SIEVE_MASTER_USER}:${sogo_sieve_expiration_pw}
+${SOGO_SIEVE_MASTER_USER}:${SOGO_SIEVE_MASTER_PASSWD}
 EOF
 
     chown ${SOGO_DAEMON_USER}:${SOGO_DAEMON_GROUP} ${SOGO_SIEVE_CREDENTIAL_FILE}
@@ -212,6 +211,10 @@ SOGo Groupware:
         - Database name: ${SOGO_DB_NAME}
         - Database user: ${SOGO_DB_USER}
         - Database password: ${SOGO_DB_PASSWD}
+    * SOGo sieve account (Warning: it's a Dovecot Master User):
+        - file: ${SOGO_SIEVE_CREDENTIAL_FILE}
+        - username: ${SOGO_SIEVE_MASTER_USER}
+        - password: ${SOGO_SIEVE_MASTER_PASSWD}
     * See also:
         - cron job of system user: ${SOGO_DAEMON_USER}
 

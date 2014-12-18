@@ -75,7 +75,7 @@ export DOVECOT_MYSQL_CONF="${DOVECOT_CONF_DIR}/dovecot-mysql.conf"
 export DOVECOT_PGSQL_CONF="${DOVECOT_CONF_DIR}/dovecot-pgsql.conf"
 export DOVECOT_REALTIME_QUOTA_CONF="${DOVECOT_CONF_DIR}/dovecot-used-quota.conf"
 export DOVECOT_SHARE_FOLDER_CONF="${DOVECOT_CONF_DIR}/dovecot-share-folder.conf"
-export DOVECOT_MASTER_USER_PASSWORD_FILE="${DOVECOT_CONF_DIR}/dovecot-master-users-password"
+export DOVECOT_MASTER_USER_PASSWORD_FILE="${DOVECOT_CONF_DIR}/dovecot-master-users"
 
 # Log & logrotate files.
 export DOVECOT_LOG_FILE='/var/log/dovecot.log'
