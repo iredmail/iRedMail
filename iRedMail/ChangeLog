@@ -69,7 +69,7 @@ iRedMail-0.9.0:
           Thanks dwbotsch <botsch _at_ cnf.cornell.edu> for the report.
 
     * Updated packages:
-        + Roundcube webmail -> 1.0.3
+        + Roundcube webmail -> 1.0.4
         + iRedAPD -> 1.4.4. Bug fixes, performance improvement, new plugins.
         + iRedAdmin -> 0.4. New tool scripts, fixes several issues.
 
