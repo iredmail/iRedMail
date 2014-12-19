@@ -150,25 +150,8 @@ EOF
         perl -pi -e 's/^(.*x-webobjects-server-port.).*/#${1} "443"/g' ${SOGO_HTTPD_CONF}
         perl -pi -e 's/^(.*x-webobjects-server-name.*)/#${1}/g' ${SOGO_HTTPD_CONF}
         perl -pi -e 's/^(.*x-webobjects-server-url.*)/#${1}/g' ${SOGO_HTTPD_CONF}
-    fi
 
-    # if Roundcube is not installed
-    if [ X"${USE_RCM}" != X"YES" ]; then
-        # Enable managesieve support
-        perl -pi -e 's#(//)(SOGoSieveServer.*)#${2}#' ${SOGO_CONF}
-        perl -pi -e 's#(//)(SOGoSieveScriptsEnabled.*)#${2}#' ${SOGO_CONF}
-        perl -pi -e 's#(//)(SOGoVacationEnabled.*)#${2}#' ${SOGO_CONF}
-        perl -pi -e 's#(//)(SOGoForwardEnabled.*)#${2}#' ${SOGO_CONF}
-
-        # URL redirect: /mail -> /SOGo
-        mkdir -p ${RCM_HTTPD_ROOT_SYMBOL_LINK}
-        cat > ${RCM_HTTPD_ROOT_SYMBOL_LINK}/index.php <<EOF
-<html>
-    <head>
-        <meta HTTP-EQUIV="REFRESH" content="0; url=/SOGo">
-    </head>
-</html>
-EOF
+        perl -pi -e 's#yourhostname#$ENV{HOSTNAME}#g' ${SOGO_HTTPD_CONF}
     fi
 
     # Add Dovecot Master User, for vacation message expiration
@@ -200,6 +183,37 @@ EOF
 EOF
 
     add_postfix_alias ${SOGO_DAEMON_USER} ${SYS_ROOT_USER}
+
+    # if Roundcube is not installed
+    if [ X"${USE_RCM}" != X"YES" ]; then
+        # Enable managesieve support
+        perl -pi -e 's#(//)(SOGoSieveServer.*)#${2}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoSieveScriptsEnabled.*)#${2}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoVacationEnabled.*)#${2}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoForwardEnabled.*)#${2}#' ${SOGO_CONF}
+
+        # URL redirect: /mail -> /SOGo
+        mkdir -p ${RCM_HTTPD_ROOT_SYMBOL_LINK}
+        cat > ${RCM_HTTPD_ROOT_SYMBOL_LINK}/index.php <<EOF
+<html>
+    <head>
+        <meta HTTP-EQUIV="REFRESH" content="0; url=/SOGo">
+    </head>
+</html>
+EOF
+    fi
+
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        # SOGo package doesn't install Apache config file to correct place,
+        # we have to fix it here.
+        if [ -f /etc/apache2/conf.d/SOGo.conf \
+            -a -d /etc/apache2/conf-available \
+            -a -d /etc/apache2/conf-enabled ]; then
+            cd /etc/apache2/conf-available/ && ln -s ../conf.d/SOGo.conf . &>/dev/null
+        fi
+
+        a2enconf SOGo &>/dev/null
+    fi
 
     cat >> ${TIP_FILE} <<EOF
 SOGo Groupware:

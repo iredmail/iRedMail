@@ -29,7 +29,7 @@ awstats_config_basic()
     backup_file ${AWSTATS_HTTPD_CONF}
 
     # Assign Apache daemon user to group 'adm', so that Awstats cron job can read log files.
-    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         usermod -G adm ${HTTPD_USER} >/dev/null
     fi
 
