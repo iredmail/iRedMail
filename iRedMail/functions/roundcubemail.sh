@@ -61,16 +61,6 @@ EOF
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /mail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
     fi
 
-    # Redirect home page to webmail by default
-    backup_file ${HTTPD_DOCUMENTROOT}/index.html
-    cat > ${HTTPD_DOCUMENTROOT}/index.html <<EOF
-<html>
-    <head>
-        <meta HTTP-EQUIV="REFRESH" content="0; url=/mail/">
-    </head>
-</html>
-EOF
-
     echo 'export status_rcm_config_httpd="DONE"' >> ${STATUS_FILE}
 }
 

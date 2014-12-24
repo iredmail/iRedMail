@@ -329,7 +329,7 @@ install_all()
             ${YUM} clean metadata &>/dev/null
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} sogo"
+            ALL_PKGS="${ALL_PKGS} sogo sogo-activesync"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"

@@ -29,6 +29,16 @@ User-agent: *
 Disallow: /
 EOF
 
+    # Redirect home page to webmail by default
+    backup_file ${HTTPD_DOCUMENTROOT}/index.html
+    cat > ${HTTPD_DOCUMENTROOT}/index.html <<EOF
+<html>
+    <head>
+        <meta HTTP-EQUIV="REFRESH" content="0; url=/mail/">
+    </head>
+</html>
+EOF
+
     # Add alias for Apache daemon user
     add_postfix_alias ${HTTPD_USER} ${SYS_ROOT_USER}
 
