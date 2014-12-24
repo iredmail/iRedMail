@@ -28,7 +28,7 @@ CREATE TABLE wblist (
 
 CREATE TABLE policy (
   id  serial PRIMARY KEY,           -- 'id' this is the _only_ required field
-  policy_name      varchar(255),     -- not used by amavisd-new, a comment
+  policy_name      varchar(32),     -- not used by amavisd-new, a comment
 
   virus_lover          char(1) default NULL,     -- Y/N
   spam_lover           char(1) default NULL,     -- Y/N
@@ -78,6 +78,7 @@ CREATE TABLE policy (
 );
 
 -- Required by iRedMail
+ALTER TABLE policy ALTER COLUMN policy_name TYPE varchar(255);
 CREATE UNIQUE INDEX policy_idx_policy_name ON policy (policy_name);
 
 -- R/W part of the dataset (optional)
