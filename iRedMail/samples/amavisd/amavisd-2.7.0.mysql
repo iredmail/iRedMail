@@ -35,7 +35,7 @@ CREATE TABLE wblist (
 CREATE TABLE policy (
   id  int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                     -- 'id' this is the _only_ required field
-  policy_name      varchar(32),     -- not used by amavisd-new, a comment
+  policy_name      varchar(255),     -- not used by amavisd-new, a comment
 
   virus_lover           char(1) default NULL,     -- Y/N
   spam_lover            char(1) default NULL,     -- Y/N
