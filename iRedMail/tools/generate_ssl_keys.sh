@@ -12,10 +12,10 @@
 #
 #    It will create two new files under CURRENT directory:
 #
-#       - certs/iRedMail_CA.pem: Used to replace file on iRedMail server:
-#           + on RHEL/CentOS/Scientific Linux: /etc/pki/tls/certs/iRedMail_CA.pem
-#           + on Debian/Ubuntu: /etc/ssl/certs/iRedMail_CA.pem
-#           + on FreeBSD: /etc/ssl/certs/iRedMail_CA.pem
+#       - certs/iRedMail.crt: Used to replace file on iRedMail server:
+#           + on RHEL/CentOS/Scientific Linux: /etc/pki/tls/certs/iRedMail.crt
+#           + on Debian/Ubuntu: /etc/ssl/certs/iRedMail.crt
+#           + on FreeBSD: /etc/ssl/certs/iRedMail.crt
 #       - private/iRedMail.key: Used to replace file on iRedMail server:
 #           + on RHEL/CentOS/Scientific Linux: /etc/pki/tls/private/iRedMail.key
 #           + on Debian/Ubuntu: /etc/ssl/private/iRedMail.key
@@ -23,7 +23,7 @@
 #
 # 3) Grant read access to all users. e.g. on RHEL/CentOS/Scientific Linux:
 #
-#   # chmod +r /etc/ssl/certs/iRedMail_CA.pem
+#   # chmod +r /etc/ssl/certs/iRedMail.crt
 #   # chmod +r /etc/ssl/private/iRedMail.key
 #
 #   If you need more restrict file permission, please use file system ACL instead.
@@ -59,7 +59,7 @@ export TLS_ADMIN="root@${HOSTNAME}"
 
 # Do not edit below lines.
 export ROOTDIR="$(pwd)"
-export SSL_CERT_FILE="${ROOTDIR}/certs/iRedMail_CA.pem"
+export SSL_CERT_FILE="${ROOTDIR}/certs/iRedMail.crt"
 export SSL_KEY_FILE="${ROOTDIR}/private/iRedMail.key"
 
 # Create SSL certs/private files.

@@ -564,7 +564,7 @@ fi
 
 # SSL key.
 export OPENSSL_CONF="${SSL_FILE_DIR}/openssl.cnf"
-export SSL_CERT_FILE="${SSL_CERT_DIR}/iRedMail_CA.pem"
+export SSL_CERT_FILE="${SSL_CERT_DIR}/iRedMail.crt"
 export SSL_KEY_FILE="${SSL_KEY_DIR}/iRedMail.key"
 export TLS_COUNTRY='CN'
 export TLS_STATE='GuangDong'
