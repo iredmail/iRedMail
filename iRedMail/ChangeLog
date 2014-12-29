@@ -1,12 +1,17 @@
 iRedMail-0.9.0:
-    * SOGo integration:
+    * Works on new distribution releases:
+        - Ubuntu 14.10 (codename: utopic)
+        - OpenBSD 5.6. Note: Nginx is used as web server, the built-in httpd
+          daemon is not used.
 
-      SOGo is a groupware server with a focus on scalability and open standards,
-      released under the GNU GPL/LGPL v2 and above.
+    * SOGo groupware integration:
 
-      SOGo provides a rich AJAX-based Web interface and supports multiple
-      native clients through the use of standard protocols such as CalDAV,
-      CardDAV and GroupDAV, as well as Microsoft ActiveSync.
+      SOGo groupware provides a rich AJAX-based Web interface and supports
+      multiple native clients through the use of standard protocols such as
+      CalDAV, CardDAV and GroupDAV, as well as Microsoft ActiveSync.
+      Check its website for more details: http://sogo.nu/
+
+      Important notes of SOGo integration in iRedMail:
 
       o SOGo integration is available on below Linux distributions and releases:
 
@@ -14,6 +19,14 @@ iRedMail-0.9.0:
         - Debian 7.
         - Ubuntu 12.04 and 14.04. No official packages for 14.10 yet.
         - OpenBSD 5.6.
+
+      o Full/native Exchange protocol support requires OpenChange and Samba4,
+        but they're not integrated in iRedMail, so iRedMail-0.9.0 doesn't
+        provide full/native support for Microsoft Outlook clients, Apple
+        Mail.app and iOS devices. BlackBerry 10 works fine.
+
+        Check our tutorial to setup your mail clients:
+        http://www.iredmail.org/docs/index.html#configure-mail-client-applications
 
       o If you choose to install both Roundcube webmail and SOGo, Managesieve
         service is disabled in SOGo by default, because sieve rules generated
@@ -23,26 +36,32 @@ iRedMail-0.9.0:
 
       o User cannot change password with PostgreSQL backend.
 
-    * Supported new distribution releases:
-        - Ubuntu 14.10.
-        - OpenBSD 5.6. Note: Nginx is used as web server, the built-in httpd
-          daemon is not used.
+    * Improvements:
+        - Nginx support is now available on all Linux/BSD distributions.
 
-    * Improvement:
+          If you choose to use Nginx as default web server, both Awstats and
+          Cluebringer are not accessible, because Nginx doesn't have official
+          SQL/LDAP auth modules. You have to switch to Apache instead, and
+          reset mail user password to MD5.
+
+        - MariaDB support is now available on FreeBSD.
         - Add new index for SQL column 'msgs.spam_level' in 'amavisd' database.
         - With MySQL/PostgreSQL backends, password hash is now SSHA512 by
           default password on Linux, and BCRYPT on FreeBSD and OpenBSD.
           Both Roundcube password plugin and iRedAdmin support them.
+
+          if you want to login to Awstats/Cluebringer, you have to reset mail
+          user password to MD5 since Apache sql/ldap auth doesn't support
+          SSHA512/BCRYPT.
+
         - Enable global sieve script in Dovecot to move spam to Junk folder by
           default.
         - Disable SSLv3 in Postfix, Dovecot, Apache, Nginx.
         - Backup scripts will log backup status in SQL table `iredadmin`, so
           that admin can easily check backup status with iRedAdmin.
-        - Nginx support is now available on all Linux/BSD distributions.
-        - MariaDB support is now available on FreeBSD.
-        - Enable '@lookup_sql_dsn' in Amavisd by default, used for per-user,
-          per-domain and global per-recipient policy, including per-recipient
-          white/blacklist, spam policy.
+        - Enable '@lookup_sql_dsn' in Amavisd by default, used for
+          per-recipient lookup policy, including white/blacklist, spam policy,
+          incoming message size limit.
         - New index in `amavisd` database for SQL column `policy.policy_name`.
           Required by iRedAdmin-Pro self-service.
 
@@ -61,8 +80,8 @@ iRedMail-0.9.0:
         - Not enable cron job to update SpamAssassin rules in file
           /etc/default/spamassassin (CRON=1) on Debian/Ubuntu.
         - Incorrect quota dict name in Dovecot quota warning script.
-        - Decrease number of pre-forked Amavisd processes to 4 to reduce
-          memory usage.
+        - Decrease number of pre-forked Amavisd processes ($max_servers) to 4
+          by default to reduce memory usage.
         - Add missing SQL column (mailbox.enableindexer-worker) and LDAP
           attribute/value pair: enabledService=indexer-worker. Required by
           Dovecot.
@@ -80,8 +99,7 @@ iRedMail-0.9.0:
         o MariaDB: databases/mariadb55-server
         o PostgreSQL: databases/postgresql93-server
 
-    * Below packages are removed from iRedMail for security concern and their
-      own package dependences:
+    * Below packages are removed from iRedMail due to security concern:
         - phpMyAdmin
         - phpPgAdmin
         - phpLDAPadmin
