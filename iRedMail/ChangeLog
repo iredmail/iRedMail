@@ -1,8 +1,9 @@
 iRedMail-0.9.0:
     * Works on new distribution releases:
+        - RHEL/CentOS 7
         - Ubuntu 14.10 (codename: utopic)
-        - OpenBSD 5.6. Note: Nginx is used as web server, the built-in httpd
-          daemon is not used.
+        - OpenBSD 5.6. Note: Nginx is used as web server, the new built-in
+          httpd daemon (not Apache-1.3) is not used.
 
     * SOGo groupware integration:
 
@@ -65,7 +66,7 @@ iRedMail-0.9.0:
         - New index in `amavisd` database for SQL column `policy.policy_name`.
           Required by iRedAdmin-Pro self-service.
 
-    * Fixed:
+    * Fixed issues:
         - Not detect domain backupmx status while querying Postfix per-domain
           transport.
         - Replace mod_auth_mysql/pgsql by apr-util-mysql/pgsql for Awstats
