@@ -67,17 +67,8 @@ iRedMail-0.9.0:
           Required by iRedAdmin-Pro self-service.
 
     * Fixed issues:
-        - Not detect domain backupmx status while querying Postfix per-domain
-          transport.
         - Replace mod_auth_mysql/pgsql by apr-util-mysql/pgsql for Awstats
           and Cluebringer webui user authentication on Debian/Ubuntu.
-        - Set 'receive_override_options=no_address_mappings' in Postfix to
-          disable address mappings before content filter (Amavisd, in our
-          case), and remove 'no_address_mappings' in Postfix master.cf defined
-          for transport '127.0.0.1:10025'.
-          Important note: you should comment out
-          'receive_override_options=no_address_mappings' in Postfix if you
-          don't have a content filter.
         - Not enable cron job to update SpamAssassin rules in file
           /etc/default/spamassassin (CRON=1) on Debian/Ubuntu.
         - Incorrect quota dict name in Dovecot quota warning script.
@@ -95,7 +86,7 @@ iRedMail-0.9.0:
 
     * FreeBSD ports of major component:
         o Apache: www/apache24
-        o PHP: lang/php56
+        o PHP: lang/php55
         o MySQL: databases/mysql56-server
         o MariaDB: databases/mariadb55-server
         o PostgreSQL: databases/postgresql93-server

@@ -39,6 +39,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     # No sql/ldap auth module for Nginx.
     export DIALOG_SELECTABLE_AWSTATS='NO'
+    export DIALOG_SELECTABLE_SOGO='YES'
 fi
 
 # Construct dialog menu list
