@@ -58,4 +58,5 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SOGO_DAEMON_GROUP='_sogo'
 
     export SOGO_GNUSTEP_DIR="/usr/local/lib/GNUstep/SOGo"
+    export SOGO_CMD_TOOL='/usr/local/sbin/sogo-tool'
 fi
