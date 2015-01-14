@@ -79,9 +79,8 @@ EOF
     # Configure SOGo config file
     backup_file ${SOGO_CONF}
 
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        mkdir -p /etc/sogo &>/dev/null
-    fi
+    # Create directory to store config files
+    [ ! -d ${SOGO_CONF_DIR} ] && mkdir -p ${SOGO_CONF_DIR}
 
     cp -f ${SAMPLE_DIR}/sogo/sogo.conf ${SOGO_CONF}
 
@@ -165,6 +164,10 @@ EOF
 
     chown ${SOGO_DAEMON_USER}:${SOGO_DAEMON_GROUP} ${SOGO_SIEVE_CREDENTIAL_FILE}
     chmod 0400 ${SOGO_SIEVE_CREDENTIAL_FILE}
+
+    # Start SOGo service to avoid cron job error.
+    service_control restart ${SOGO_RC_SCRIPT_NAME}
+    sleep 3
 
     # Add cron job for email reminders
     cat >> ${CRON_SPOOL_DIR}/${SOGO_DAEMON_USER} <<EOF
