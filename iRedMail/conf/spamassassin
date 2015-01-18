@@ -29,7 +29,7 @@ export SA_LOCAL_CF="${SA_CONF_DIR}/local.cf"
 export BIN_SA_UPDATE='sa-update'
 export BIN_SA_COMPILE='sa-compile'
 
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SA_CONF_DIR='/usr/local/etc/mail/spamassassin'
     export SA_RULES_DIR='/usr/local/share/spamassassin'
     export SA_INIT_PRE="${SA_CONF_DIR}/init.pre"

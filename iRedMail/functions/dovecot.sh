@@ -75,18 +75,18 @@ dovecot_config()
 
     # Virtual mail accounts.
     # Reference: http://wiki2.dovecot.org/AuthDatabase/LDAP
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         perl -pi -e 's#PH_USERDB_ARGS#$ENV{DOVECOT_LDAP_CONF}#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_USERDB_DRIVER#ldap#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_PASSDB_ARGS#$ENV{DOVECOT_LDAP_CONF}#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_PASSDB_DRIVER#ldap#' ${DOVECOT_CONF}
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
         # MySQL.
         perl -pi -e 's#PH_USERDB_ARGS#$ENV{DOVECOT_MYSQL_CONF}#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_USERDB_DRIVER#sql#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_PASSDB_ARGS#$ENV{DOVECOT_MYSQL_CONF}#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_PASSDB_DRIVER#sql#' ${DOVECOT_CONF}
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
         # PostgreSQL.
         perl -pi -e 's#PH_USERDB_ARGS#$ENV{DOVECOT_PGSQL_CONF}#' ${DOVECOT_CONF}
         perl -pi -e 's#PH_USERDB_DRIVER#sql#' ${DOVECOT_CONF}
@@ -147,11 +147,11 @@ dovecot_config()
     chmod 0755 ${DOVECOT_QUOTA_WARNING_SCRIPT}
 
     # Use '/usr/local/bin/bash' as shabang line, otherwise quota waning will be failed.
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         perl -pi -e 's#(.*)/usr/bin/env bash.*#${1}/usr/local/bin/bash#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
     fi
 
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         backup_file ${DOVECOT_LDAP_CONF}
         cp -f ${SAMPLE_DIR}/dovecot/dovecot-ldap.conf ${DOVECOT_LDAP_CONF}
         perl -pi -e 's/^#(iterate_.*)/${1}/' ${DOVECOT_LDAP_CONF}
@@ -167,7 +167,7 @@ dovecot_config()
         # Set file permission.
         chmod 0500 ${DOVECOT_LDAP_CONF}
 
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
 
         backup_file ${DOVECOT_MYSQL_CONF}
         cp -f ${SAMPLE_DIR}/dovecot/dovecot-sql.conf ${DOVECOT_MYSQL_CONF}
@@ -182,7 +182,7 @@ dovecot_config()
 
         # Set file permission.
         chmod 0550 ${DOVECOT_MYSQL_CONF}
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
 
         backup_file ${DOVECOT_PGSQL_CONF}
         if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -204,15 +204,15 @@ dovecot_config()
     fi
 
     # Realtime quota
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         export realtime_quota_db_name="${IREDADMIN_DB_NAME}"
         export realtime_quota_db_user="${IREDADMIN_DB_USER}"
         export realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
         export realtime_quota_db_name="${VMAIL_DB}"
         export realtime_quota_db_user="${VMAIL_DB_ADMIN_USER}"
         export realtime_quota_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
         export realtime_quota_db_name="${VMAIL_DB}"
         export realtime_quota_db_user="${VMAIL_DB_BIND_USER}"
         export realtime_quota_db_passwd="${VMAIL_DB_BIND_PASSWD}"
@@ -233,11 +233,11 @@ dovecot_config()
     # IMAP shared folder
     backup_file ${DOVECOT_SHARE_FOLDER_CONF}
 
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         export share_folder_db_name="${IREDADMIN_DB_NAME}"
         export share_folder_db_user="${IREDADMIN_DB_USER}"
         export share_folder_db_passwd="${IREDADMIN_DB_PASSWD}"
-    elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
+    elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         export share_folder_db_name="${VMAIL_DB}"
         export share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
         export share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"

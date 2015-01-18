@@ -166,7 +166,7 @@ EOF
     chmod 0400 ${SOGO_SIEVE_CREDENTIAL_FILE}
 
     # Start SOGo service to avoid cron job error.
-    service_control restart ${SOGO_RC_SCRIPT_NAME}
+    service_control restart ${SOGO_RC_SCRIPT_NAME} &>/dev/null
     sleep 3
 
     # Add cron job for email reminders

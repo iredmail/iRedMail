@@ -331,15 +331,15 @@ EOF
     perl -pi -e 's#(.*password_dovecotpw_method.*=).*#${1} "$ENV{dovecotpw_method}";#' config.inc.php
     perl -pi -e 's#(.*password_dovecotpw_with_method.*=).*#${1} true;#' config.inc.php
 
-    if [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X"PGSQL" ]; then
+    if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
         perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER}/$ENV{VMAIL_DB}";#' config.inc.php
 
-        if [ X"${BACKEND}" == X"MYSQL" ]; then
+        if [ X"${BACKEND}" == X'MYSQL' ]; then
             perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE $ENV{VMAIL_DB}.mailbox SET password=%D,passwordlastchange=NOW() WHERE username=%u LIMIT 1";#' config.inc.php
         fi
 
-    elif [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    elif [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # cannot verify current password since OpenLDAP doesn't support ssha512/bcrypt
         perl -pi -e 's#(.*password_confirm_current.*=).*#${1} false;#' config.inc.php
 

@@ -36,11 +36,11 @@ iredapd_config()
     ln -s ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION} ${IREDAPD_ROOT_DIR}/iredapd &>/dev/null
 
     # Copy init rc script.
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd
-    elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd
@@ -85,7 +85,7 @@ iredapd_config()
 
         perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "amavisd_message_size_limit", "amavisd_wblist", "ldap_maillist_access_policy"]#' settings.py
 
-    elif [ X"${BACKEND}" == X"MYSQL" -o X"${BACKEND}" == X'PGSQL' ]; then
+    elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#^(sql_server).*#${1} = "$ENV{SQL_SERVER}"#' settings.py
         perl -pi -e 's#^(sql_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' settings.py
         perl -pi -e 's#^(sql_db).*#${1} = "$ENV{VMAIL_DB}"#' settings.py

@@ -160,8 +160,8 @@ CREATE USER ${CLUEBRINGER_DB_USER} WITH ENCRYPTED PASSWORD '${CLUEBRINGER_DB_PAS
 EOF
         fi
 
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
             cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME};
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${CLUEBRINGER_DB_PASSWD}";
@@ -188,14 +188,14 @@ EOF
         cd /usr/local/share/policyd2/database/
         chmod +x ./convert-tsql
 
-        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+        if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
             policyd_sql_type='mysql'
             cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME};
 GRANT SELECT,INSERT,UPDATE,DELETE ON ${CLUEBRINGER_DB_NAME}.* TO "${CLUEBRINGER_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${CLUEBRINGER_DB_PASSWD}";
 USE ${CLUEBRINGER_DB_NAME};
 EOF
-        elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
             policyd_sql_type='pgsql'
             cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${CLUEBRINGER_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
@@ -267,7 +267,7 @@ EOF
 
     # Initial cluebringer db.
     # Enable greylisting on all inbound emails by default.
-    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         perl -pi -e 's#TYPE=#ENGINE=#g' ${tmp_sql}
 
         ${MYSQL_CLIENT_ROOT} <<EOF
@@ -275,7 +275,7 @@ SOURCE ${tmp_sql};
 SOURCE ${SAMPLE_DIR}/cluebringer/column_character_set.mysql;
 EOF
 
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
         # Comment out all lines starts with '#'
         perl -pi -e 's=^(#.*)=/*${1}*/=' ${tmp_sql}
 
@@ -290,7 +290,7 @@ EOF
     chown ${CLUEBRINGER_USER}:${CLUEBRINGER_GROUP} ${CLUEBRINGER_CONF}
     chmod 0700 ${CLUEBRINGER_CONF}
 
-    if [ X"${CLUEBRINGER_SEPARATE_LOG}" == X"YES" ]; then
+    if [ X"${CLUEBRINGER_SEPARATE_LOG}" == X'YES' ]; then
         echo -e "local1.*\t\t\t\t\t\t-${CLUEBRINGER_LOG_FILE}" >> ${SYSLOG_CONF}
         cat > ${CLUEBRINGER_LOGROTATE_FILE} <<EOF
 ${CONF_MSG}
@@ -342,7 +342,7 @@ Policyd (cluebringer):
 
 EOF
 
-    if [ X"${CLUEBRINGER_SEPARATE_LOG}" == X"YES" ]; then
+    if [ X"${CLUEBRINGER_SEPARATE_LOG}" == X'YES' ]; then
         cat >> ${TIP_FILE} <<EOF
     * Log file:
         - ${SYSLOG_CONF}
@@ -397,7 +397,7 @@ ${CONF_MSG}
 EOF
 
         ECHO_DEBUG "Setup user auth for cluebringer webui: ${CLUEBRINGER_HTTPD_CONF}."
-        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             # Use LDAP auth.
             cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthBasicProvider ldap
@@ -409,16 +409,16 @@ EOF
     AuthLDAPBindPassword "${LDAP_BINDPW}"
 EOF
 
-            [ X"${LDAP_USE_TLS}" == X"YES" ] && \
+            [ X"${LDAP_USE_TLS}" == X'YES' ] && \
                 perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${CLUEBRINGER_HTTPD_CONF}
 
             # Apache-2.4 removes directive 'AuthzLDAPAuthoritative'.
             [ X"${APACHE_VERSION}" == X'2.4' ] && \
                 perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)//g' ${CLUEBRINGER_HTTPD_CONF}
 
-        elif [ X"${BACKEND}" == X"MYSQL" ]; then
+        elif [ X"${BACKEND}" == X'MYSQL' ]; then
             # Use mod_auth_mysql.
-            if [ X"${DISTRO}" == X"RHEL" -o X"${DISTRO}" == X"FREEBSD" ]; then
+            if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'FREEBSD' ]; then
                 cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     AuthMYSQLEnable On
     AuthMySQLHost ${SQL_SERVER}
@@ -432,7 +432,7 @@ EOF
 EOF
 
                 # FreeBSD special.
-                if [ X"${DISTRO}" == X"FREEBSD" ]; then
+                if [ X"${DISTRO}" == X'FREEBSD' ]; then
                     # Enable mod_auth_mysql module in httpd.conf.
                     perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
                     echo "AuthBasicAuthoritative Off" >> ${CLUEBRINGER_HTTPD_CONF}
@@ -466,7 +466,7 @@ EOF
                 chmod 0600 ${CLUEBRINGER_HTTPD_CONF}
             fi  # DISTRO
 
-        elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
             # mod_auth_pgsql
             cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
     Auth_PG_authoritative on

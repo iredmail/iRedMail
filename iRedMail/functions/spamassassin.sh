@@ -18,14 +18,14 @@ sa_config()
     #perl -pi -e 's/(^loadplugin.*Mail.*SpamAssassin.*Plugin.*URIDNSBL.*)/#${1}/' ${SA_INIT_PRE}
 
     ECHO_DEBUG "Enable crontabs for SpamAssassin update."
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         chmod 0644 /etc/cron.d/sa-update
         perl -pi -e 's/#(10.*)/${1}/' /etc/cron.d/sa-update
     elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
         perl -pi -e 's#^(CRON=)0#${1}1#' /etc/default/spamassassin
     fi
 
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Compile SpamAssassin ruleset into native code."
         sa-compile &>/dev/null
     fi
