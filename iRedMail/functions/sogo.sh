@@ -146,9 +146,10 @@ EOF
         perl -pi -e 's/^#(.*Microsoft-Server-ActiveSync.*)/${1}/g' ${SOGO_HTTPD_CONF}
         perl -pi -e 's/^#(.*retry.*connectiontimeout.*timeout.*)/${1}/g' ${SOGO_HTTPD_CONF}
 
-        perl -pi -e 's/^(.*x-webobjects-server-port.).*/#${1} "443"/g' ${SOGO_HTTPD_CONF}
-        perl -pi -e 's/^(.*x-webobjects-server-name.*)/#${1}/g' ${SOGO_HTTPD_CONF}
-        perl -pi -e 's/^(.*x-webobjects-server-url.*)/#${1}/g' ${SOGO_HTTPD_CONF}
+        perl -pi -e 's#yourhostname#$ENV{HOSTNAME}#g' ${SOGO_HTTPD_CONF}
+        #perl -pi -e 's/^(.*x-webobjects-server-port.).*/#${1} "443"/g' ${SOGO_HTTPD_CONF}
+        #perl -pi -e 's/^(.*x-webobjects-server-name.*)/#${1}/g' ${SOGO_HTTPD_CONF}
+        #perl -pi -e 's/^(.*x-webobjects-server-url.*)/#${1}/g' ${SOGO_HTTPD_CONF}
 
         perl -pi -e 's#yourhostname#$ENV{HOSTNAME}#g' ${SOGO_HTTPD_CONF}
     fi

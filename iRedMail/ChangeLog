@@ -4,6 +4,9 @@ iRedMail-0.9.1:
         - Not apply service restriction in Dovecot SQL query file while acting
           as SASL server.
 
+    * Updated packages:
+        + Roundcube webmail -> 1.0.5
+
 iRedMail-0.9.0:
     * Works on new distribution releases:
         - RHEL/CentOS 7
