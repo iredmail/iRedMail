@@ -327,7 +327,7 @@ EOF
 
     if [ X"${USE_RCM}" == X'YES' ]; then
 cat <<EOF
-*   o Roundcube webmail://${HOSTNAME}/mail/
+*   o Roundcube webmail: httpS://${HOSTNAME}/mail/
 EOF
     fi
 
