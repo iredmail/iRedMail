@@ -48,7 +48,7 @@ Alias /mail "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
 EOF
 
     # Enable this config file on Ubuntu 13.10 and later releases.
-    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         if [ X"${DISTRO_CODENAME}" != X'wheezy' \
             -a X"${DISTRO_CODENAME}" != X'precise' ]; then
             # Enable conf file: conf-available/roundcubemail.conf

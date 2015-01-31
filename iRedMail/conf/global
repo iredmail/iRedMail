@@ -417,7 +417,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PKG_DIALOG="dialog"
     export PKG_BZIP2="bzip2"
 
-elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Ubuntu & Debian.
     export DEBIAN_FRONTEND='noninteractive'
 
@@ -433,7 +433,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export LIST_ALL_PKGS="dpkg -l |awk '{print $2}'"
     export LIST_FILES_IN_PKG='dpkg -L'
 
-    if [ X"${DISTRO}" == X"UBUNTU" ]; then
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
         # Syslog config: rsyslog.
         # Ubuntu >= 9.10
         export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
@@ -445,7 +445,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
         fi
     fi
 
-    if [ X"${DISTRO}" == X"DEBIAN" ]; then
+    if [ X"${DISTRO}" == X'DEBIAN' ]; then
         export SYSLOG_CONF='/etc/rsyslog.conf'
         export SYSLOG_POSTROTATE_CMD='invoke-rc.d rsyslog reload > /dev/null'
     fi
@@ -465,7 +465,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
 
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SYS_ROOT_GROUP='wheel'
 
     # Package management.

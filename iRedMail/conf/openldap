@@ -64,7 +64,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
         export OPENLDAP_MODULE_PATH='/usr/lib64/openldap'
     fi
 
-elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # LDAP daemon user & group.
     export OPENLDAP_DAEMON_USER='openldap'
     export OPENLDAP_DAEMON_GROUP='openldap'
@@ -81,7 +81,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/lib/ldap'
 
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Configuration files.
     export OPENLDAP_CONF_ROOT='/usr/local/etc/openldap'
     export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"

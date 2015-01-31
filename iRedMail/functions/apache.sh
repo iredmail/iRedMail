@@ -38,7 +38,7 @@ apache_config()
     perl -pi -e 's#^(ServerSignature).*#${1} EMail#' ${HTTPD_CONF}
     perl -pi -e 's#^(LogLevel).*#${1} warn#' ${HTTPD_CONF}
 
-    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_MOD_CONF_SECURITY}
     fi
 
@@ -50,14 +50,14 @@ apache_config()
     echo 'SSLProtocol all -SSLv2 -SSLv3' >> ${HTTPD_CONF}
 
     ECHO_DEBUG "Set correct SSL Cert/Key file location."
-    if [ X"${DISTRO}" == X"RHEL" \
+    if [ X"${DISTRO}" == X'RHEL' \
         -o X"${DISTRO}" == X'FREEBSD' \
         -o X"${DISTRO}" == X'OPENBSD' \
         ]; then
         perl -pi -e 's#^(SSLCertificateFile)(.*)#${1} $ENV{SSL_CERT_FILE}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(SSLCertificateKeyFile)(.*)#${1} $ENV{SSL_KEY_FILE}#' ${HTTPD_SSL_CONF}
 
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         perl -pi -e 's#^([ \t]+SSLCertificateFile)(.*)#${1} $ENV{SSL_CERT_FILE}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^([ \t]+SSLCertificateKeyFile)(.*)#${1} $ENV{SSL_KEY_FILE}#' ${HTTPD_SSL_CONF}
     fi

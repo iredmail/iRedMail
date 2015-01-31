@@ -31,19 +31,19 @@ install_all()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
         DISABLED_SERVICES="${DISABLED_SERVICES} exim"
-    elif [ X"${DISTRO}" == X"DEBIAN" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' ]; then
         # Debian.
         ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
-    elif [ X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         # Ubuntu >= 9.10.
         ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
     fi
 
     # Postfix.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${POSTFIX_RC_SCRIPT_NAME}"
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} postfix"
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
@@ -60,7 +60,7 @@ install_all()
         # OpenLDAP server & client.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
-        if [ X"${DISTRO}" == X"RHEL" ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} openldap openldap-clients openldap-servers"
             if [ X"${DISTRO_VERSION}" == X'6' ]; then
                 ALL_PKGS="${ALL_PKGS} mysql-server"
@@ -68,7 +68,7 @@ install_all()
                 ALL_PKGS="${ALL_PKGS} mariadb-server mod_ldap"
             fi
 
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl mysql-server mysql-client"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -84,7 +84,7 @@ install_all()
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         # MySQL server & client.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
-        if [ X"${DISTRO}" == X"RHEL" ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
                 [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-server"
                 [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-server"
@@ -102,7 +102,7 @@ install_all()
                 fi
             fi
 
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # MySQL server and client.
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
                 if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
@@ -139,7 +139,7 @@ install_all()
                 fi
             fi
 
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
 
@@ -154,7 +154,7 @@ install_all()
     fi
 
     # PHP
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} php php-common php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -171,7 +171,7 @@ install_all()
     fi
 
     # Apache. Always install Apache.
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Will be installed as dependency of 'libapache2-mod-php5'
@@ -183,7 +183,7 @@ install_all()
 
     # Nginx
     if [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ]; then
-        if [ X"${DISTRO}" == X"RHEL" ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} nginx php-fpm"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} nginx-full php5-fpm"
@@ -205,11 +205,11 @@ install_all()
     fi
 
     # Policyd.
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} cluebringer perl-DBD-MySQL perl-DBD-Pg"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} postfix-cluebringer"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
@@ -239,7 +239,7 @@ install_all()
         # We use Dovecot SASL auth instead of saslauthd
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
 
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d dovecot-lmtpd dovecot-managesieved dovecot-sieve"
 
         if [ X"${BACKEND}" == X"OPENLDAP" ]; then
@@ -267,7 +267,7 @@ install_all()
 
     # Amavisd-new & ClamAV & Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         if [ X"${DISTRO_VERSION}" == X'6' ]; then
             ALL_PKGS="${ALL_PKGS} amavisd-new clamd clamav-db spamassassin altermime perl-LDAP perl-Mail-SPF"
         else
@@ -281,7 +281,7 @@ install_all()
 
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj zoo nomarch cpio lzop cabextract p7zip rpm unrar-free ripole libmail-spf-perl"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
@@ -386,12 +386,12 @@ install_all()
 
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy"
         [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
         [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy"
         [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
         [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
@@ -404,7 +404,7 @@ install_all()
     if [ X"${USE_AWSTATS}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         fi
     fi
@@ -418,7 +418,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} fail2ban"
             ENABLED_SERVICES="${ENABLED_SERVICES} ${FAIL2BAN_RC_SCRIPT_NAME}"
 
-            if [ X"${DISTRO}" == X"RHEL" ]; then
+            if [ X"${DISTRO}" == X'RHEL' ]; then
                 DISABLED_SERVICES="${DISABLED_SERVICES} shorewall"
             fi
         fi
@@ -426,10 +426,10 @@ install_all()
 
 
     # Misc packages & services.
-    if [ X"${DISTRO}" == X"RHEL" ]; then
+    if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} unzip bzip2 acl patch tmpwatch crontabs dos2unix logwatch"
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -437,7 +437,7 @@ install_all()
     fi
 
     # Disable Ubuntu firewall rules, we have iptables init script and rule file.
-    [ X"${DISTRO}" == X"UBUNTU" ] && export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
+    [ X"${DISTRO}" == X'UBUNTU' ] && export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
 
     export ALL_PKGS ENABLED_SERVICES PKG_SCRIPTS
 

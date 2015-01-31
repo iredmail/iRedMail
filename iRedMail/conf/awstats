@@ -33,7 +33,7 @@ export AWSTATS_CONF_MAIL="${AWSTATS_CONF_DIR}/awstats.smtp.conf"
 export AWSTATS_HTPASSWD_FILE="${HTTPD_CONF_ROOT}/awstats.users"
 
 # Config files.
-if [ X"${DISTRO}" == X"RHEL" ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
     export AWSTATS_CONF_SAMPLE="${AWSTATS_CONF_DIR}/awstats.localhost.localdomain.conf"
     export AWSTATS_HTTPD_ROOT="/usr/share/awstats/wwwroot"
     export AWSTATS_CGI_DIR="${AWSTATS_HTTPD_ROOT}/cgi-bin"
@@ -41,7 +41,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export AWSTATS_CSS_DIR="${AWSTATS_HTTPD_ROOT}/css"
     export AWSTATS_JS_DIR="${AWSTATS_HTTPD_ROOT}/js"
 
-elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
+elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
     export AWSTATS_CONF_SAMPLE="${AWSTATS_CONF_DIR}/awstats.conf"
     export AWSTATS_HTTPD_ROOT="/usr/share/awstats"
     export AWSTATS_ICON_DIR="${AWSTATS_HTTPD_ROOT}/icon"
@@ -51,7 +51,7 @@ elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
     # This path will be changed in 'functions/awstats.sh'.
     export AWSTATS_CGI_DIR="/usr/lib/cgi-bin"
 
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export AWSTATS_HTTPD_ROOT="${HTTPD_SERVERROOT}/awstats"
     export AWSTATS_ICON_DIR="${AWSTATS_HTTPD_ROOT}/icon"
     export AWSTATS_CSS_DIR="${AWSTATS_HTTPD_ROOT}/css"
@@ -84,4 +84,4 @@ fi
 #   English:        en
 #   Simp Chinese:   cn
 #   Trad Chinese:   tw
-export AWSTATS_LANGUAGE="en"
+export AWSTATS_LANGUAGE='en'

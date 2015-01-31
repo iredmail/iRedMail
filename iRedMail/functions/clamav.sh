@@ -67,7 +67,7 @@ clamav_config()
             # Enable freshclam
             perl -pi -e 's/^(FRESHCLAM_DELAY.*)/#${1}/g' ${ETC_SYSCONFIG_DIR}/freshclam
         fi
-    elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         pw usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
 

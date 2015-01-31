@@ -30,7 +30,7 @@ fi
 export HTTPD_PORT='80'
 export HTTPS_PORT='443'
 
-if [ X"${DISTRO}" == X"RHEL" ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
     # Web data.
     export HTTPD_SERVERROOT='/var/www'
     export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/html"
@@ -39,7 +39,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export HTTPD_USER='apache'
     export HTTPD_GROUP='apache'
 
-elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Web data.
     export HTTPD_SERVERROOT='/usr/share/apache2'
     export HTTPD_DOCUMENTROOT="/var/www"
@@ -48,7 +48,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export HTTPD_USER='www-data'
     export HTTPD_GROUP='www-data'
 
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Web data.
     export HTTPD_SERVERROOT='/usr/local/www'
     export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache22/data"

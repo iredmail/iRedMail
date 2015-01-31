@@ -21,7 +21,7 @@ sa_config()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         chmod 0644 /etc/cron.d/sa-update
         perl -pi -e 's/#(10.*)/${1}/' /etc/cron.d/sa-update
-    elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
+    elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
         perl -pi -e 's#^(CRON=)0#${1}1#' /etc/default/spamassassin
     fi
 

@@ -49,7 +49,7 @@ export AMAVISD_VERSION='2.7'
 export ALTERMIME_BIN='/usr/bin/altermime'
 export DISCLAIMER_DIR="${POSTFIX_ROOTDIR}/disclaimer"
 
-if [ X"${DISTRO}" == X"RHEL" ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
 
@@ -63,7 +63,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
 
     export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
 
-elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Ubuntu 12.04 ships Amavisd-new-2.6.x
     if [ X"${DISTRO_CODENAME}" == X'precise' ]; then
         export AMAVISD_VERSION='2.6'
@@ -76,7 +76,7 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export AMAVISD_LDAP_SCHEMA_NAME='amavis.schema'
     export AMAVISD_VIRUSMAILS_DIR='/var/lib/amavis/virusmails'
 
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Override global setting: user/group.
     export AMAVISD_SYS_USER='vscan'
     export AMAVISD_SYS_GROUP='vscan'

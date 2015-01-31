@@ -149,7 +149,7 @@ cleanup_replace_firewall_rules()
                 if [ X"${USE_FIREWALLD}" == X'YES' ]; then
                     service_control enable firewalld >/dev/null
                 else
-                    if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+                    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
                         # Copy sample rc script for Debian.
                         cp -f ${SAMPLE_DIR}/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
                         chmod +x ${DIR_RC_SCRIPTS}/iptables

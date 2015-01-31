@@ -127,7 +127,7 @@ amavisd_config_rhel()
     perl -pi -e 's/^(\$mydomain)/$1\ =\ \"$ENV{HOSTNAME}\"\;\t#/' ${AMAVISD_CONF}
     perl -pi -e 's/^(\@local_domains_maps)(.*=.*)/${1} = 1;/' ${AMAVISD_CONF}
 
-    if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X"6" ]; then
+    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X"6" ]; then
         perl -pi -e 's#(.*--tempdir=).*\{\}(.*)#${1}$ENV{AMAVISD_TEMPDIR}${2}#' ${AMAVISD_CONF}
         perl -pi -e 's#^(.QUARANTINEDIR =).*#${1} "$ENV{AMAVISD_QUARANTINEDIR}";#' ${AMAVISD_CONF}
     fi
@@ -402,10 +402,10 @@ EOF
 
     # Enable/Disable DKIM feature.
     if [ X"${ENABLE_DKIM}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X"RHEL" ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
             perl -pi -e 's/^(\$enable_dkim_verification = )\d(;.*)/${1}1${2}/' ${AMAVISD_CONF}
             perl -pi -e 's/^(\$enable_dkim_signing = )\d(;.*)/${1}1${2}/' ${AMAVISD_CONF}
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             cat >> ${AMAVISD_CONF} <<EOF
 \$enable_dkim_verification = 1;  # enable DKIM signatures verification
 \$enable_dkim_signing = 1;    # load DKIM signing code, keys defined by dkim_key
@@ -415,10 +415,10 @@ EOF
         fi
 
     else
-        if [ X"${DISTRO}" == X"RHEL" ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
             perl -pi -e 's/^(\$enable_dkim_verification = )\d(;.*)/${1}0${2}/' ${AMAVISD_CONF}
             perl -pi -e 's/^(\$enable_dkim_signing = )\d(;.*)/${1}0${2}/' ${AMAVISD_CONF}
-        elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             cat >> ${AMAVISD_CONF} <<EOF
 \$enable_dkim_verification = 0;  # enable DKIM signatures verification
 \$enable_dkim_signing = 0;    # load DKIM signing code, keys defined by dkim_key
@@ -669,7 +669,7 @@ amavisd_config()
         -o X"${DISTRO}" == X'FREEBSD' \
         -o X"${DISTRO}" == X'OPENBSD' ]; then
         check_status_before_run amavisd_config_rhel
-    elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         check_status_before_run amavisd_config_debian
     fi
 

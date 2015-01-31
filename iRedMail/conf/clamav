@@ -35,7 +35,7 @@ export FRESHCLAM_LOGFILE='/var/log/clamav/freshclam.log'
 export FRESHCLAM_PID_FILE='/var/run/clamav/freshclam.pid'
 
 # Clamav.
-if [ X"${DISTRO}" == X"RHEL" ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
     if [ X"${DISTRO_VERSION}" == X'6' ]; then
         export CLAMAV_USER='clam'
         export CLAMAV_GROUP='clam'
@@ -47,14 +47,14 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
         export CLAMD_LOCAL_SOCKET='/var/run/clamd.amavisd/clamd.socket'
     fi
 
-elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export CLAMAV_CLAMD_RC_SCRIPT_NAME='clamav-daemon'
     export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='clamav-freshclam'
 
     export CLAMD_CONF='/etc/clamav/clamd.conf'
     export FRESHCLAM_CONF='/etc/clamav/freshclam.conf'
 
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export CLAMD_CONF='/usr/local/etc/clamd.conf'
     export FRESHCLAM_CONF='/usr/local/etc/freshclam.conf'
 
@@ -67,6 +67,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 fi
 
 # Clamd local socket.
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
     export CLAMD_LOCAL_SOCKET='/var/run/clamav/clamd.sock'
 fi

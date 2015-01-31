@@ -29,17 +29,17 @@ export MYSQL_MY_CNF='/etc/my.cnf'
 export MYSQL_RC_SCRIPT_NAME='mysql'
 
 # MySQL config file.
-if [ X"${DISTRO}" == X"RHEL" ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
     if [ X"${DISTRO_VERSION}" == X'6' ]; then
         export MYSQL_RC_SCRIPT_NAME='mysqld'
     else
         export MYSQL_RC_SCRIPT_NAME='mariadb'
     fi
 
-elif [ X"${DISTRO}" == X"UBUNTU" -o X"${DISTRO}" == X"DEBIAN" ]; then
+elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
     export MYSQL_MY_CNF='/etc/mysql/my.cnf'
 
-elif [ X"${DISTRO}" == X"FREEBSD" ]; then
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export MYSQL_RC_SCRIPT_NAME='mysql-server'
     export MYSQL_MY_CNF="/var/db/mysql/my.cnf"
 

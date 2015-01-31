@@ -22,7 +22,7 @@
 
 export APACHE_RC_SCRIPT_NAME='apache2'
 
-if [ X"${DISTRO}" == X"RHEL" ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
     export APACHE_RC_SCRIPT_NAME='httpd'
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/etc/httpd"
@@ -49,7 +49,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export HTTPD_LOG_ACCESSLOG='/var/log/httpd/access_log'
     export HTTPD_LOG_ERRORLOG='/var/log/httpd/error_log'
 
-elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Daemon user.
     export HTTPD_USER='www-data'
     export HTTPD_GROUP='www-data'

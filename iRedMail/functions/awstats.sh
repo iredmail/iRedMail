@@ -95,7 +95,7 @@ EOF
 EOF
 
             # FreeBSD special.
-            if [ X"${DISTRO}" == X"FREEBSD" ]; then
+            if [ X"${DISTRO}" == X'FREEBSD' ]; then
                 # Enable mod_auth_mysql module in httpd.conf.
                 perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
 
@@ -270,7 +270,7 @@ awstats_config_maillog()
     cp -f ${AWSTATS_CONF_SAMPLE} ${AWSTATS_CONF_MAIL}
     cp -f ${AWSTATS_CONF_MAIL} ${AWSTATS_CONF_DIR}/awstats.conf
 
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         if [ X"${DISTRO_VERSION}" == X'9' ]; then
             export maillogconvert_pl="$( eval ${LIST_FILES_IN_PKG} "/var/db/pkg/awstats-*" | grep 'maillogconvert.pl')"
         else
