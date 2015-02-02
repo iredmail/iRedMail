@@ -60,3 +60,9 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SOGO_GNUSTEP_DIR="/usr/local/lib/GNUstep/SOGo"
     export SOGO_CMD_TOOL='/usr/local/sbin/sogo-tool'
 fi
+
+# Backup database.
+if [ X"${USE_SOGO}" == X'YES' ]; then
+    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${SOGO_DB_NAME}"
+    export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${SOGO_DB_NAME}"
+fi

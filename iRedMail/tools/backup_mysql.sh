@@ -63,7 +63,7 @@ export MYSQL_PASSWD='passwd'
 # Multiple databases MUST be seperated by SPACE.
 # Your iRedMail server might have below databases:
 # mysql, roundcubemail, policyd (or postfixpolicyd), amavisd, iredadmin
-export DATABASES='mysql vmail roundcubemail policyd amavisd iredadmin'
+export DATABASES='mysql vmail roundcubemail policyd amavisd iredadmin sogo'
 
 # Database character set for ALL databases.
 # Note: Currently, it doesn't support to specify character set for each databases.

@@ -53,11 +53,15 @@ export RCM_LOGFILE="${MAILLOG}"
 # Database setting.
 export RCM_DB="roundcubemail"
 export RCM_DB_USER="roundcube"
-export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${RCM_DB}"
-export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${RCM_DB}"
 
 # this key is used to encrypt the users imap password which is stored
 # in the session record (and the client cookie if remember password is enabled).
 # please provide a string of exactly 24 chars.
 export tmp_rcm_des_key="$(${RANDOM_STRING})"
 export RCM_DES_KEY="$(echo ${tmp_rcm_des_key} | cut -c-24)"
+
+# Backup database.
+if [ X"${USE_RCM}" == X'YES' ]; then
+    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${RCM_DB}"
+    export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${RCM_DB}"
+fi
