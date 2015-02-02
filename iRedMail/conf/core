@@ -28,11 +28,13 @@ ECHO_INFO()
     else
         echo -e "${_INFO_FLAG} $@"
     fi
+    echo -e "${_INFO_FLAG} $@" >> ${INSTALL_LOG}
 }
 
 ECHO_SKIP()
 {
     echo -e "${_SKIP_FLAG} $@"
+    echo -e "${_SKIP_FLAG} $@" >> ${INSTALL_LOG}
 }
 
 ECHO_QUESTION()
@@ -48,13 +50,12 @@ ECHO_QUESTION()
 ECHO_ERROR()
 {
     echo -e "${_ERROR_FLAG} $@"
+    echo -e "${_ERROR_FLAG} $@" >> ${INSTALL_LOG}
 }
 
 ECHO_DEBUG()
 {
-    if [ X"${IREDMAIL_DEBUG}" == X"YES" ]; then
-        echo -e "${_DEBUG_FLAG} $@"
-    fi
+    echo -e "${_DEBUG_FLAG} $@" >> ${INSTALL_LOG}
 }
 
 read_setting()
@@ -133,6 +134,10 @@ check_pkg()
     unset HAS_CMD
 }
 
+check_runtime_dir() {
+    [ -d ${RUNTIME_DIR} ] || mkdir -p ${RUNTIME_DIR}
+}
+
 # Check necessery privileges/files/dirs.
 check_env()
 {
@@ -190,6 +195,8 @@ EOF
         ECHO_INFO "[NOT FOUND]"
         . ${CONFIG_VIA_DIALOG}
     fi
+
+    check_runtime_dir
 }
 
 extract_pkg()

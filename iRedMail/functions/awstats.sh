@@ -30,7 +30,7 @@ awstats_config_basic()
 
     # Assign Apache daemon user to group 'adm', so that Awstats cron job can read log files.
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        usermod -G adm ${HTTPD_USER} >/dev/null
+        usermod -G adm ${HTTPD_USER} >> ${INSTALL_LOG}
     fi
 
     cat > ${AWSTATS_HTTPD_CONF} <<EOF
@@ -182,11 +182,11 @@ EOF
     fi
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        a2enmod cgi &>/dev/null
+        a2enmod cgi >> ${INSTALL_LOG} 2>&1
 
         # serve-cgi-bin.conf contains duplicate and conflict setting for cgi-bin
-        a2disconf serve-cgi-bin &>/dev/null
-        a2enconf awstats &>/dev/null
+        a2disconf serve-cgi-bin >> ${INSTALL_LOG} 2>&1
+        a2enconf awstats >> ${INSTALL_LOG} 2>&1
     fi
 
     # Enable authn_dbd under Apache 2.4
@@ -212,7 +212,7 @@ EOF
         fi
 
         if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            a2enmod authn_dbd &>/dev/null
+            a2enmod authn_dbd >> ${INSTALL_LOG} 2>&1
         fi
     fi
 

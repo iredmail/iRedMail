@@ -32,7 +32,7 @@ postfix_config_basic()
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         echo 'sendmail_flags=NO' >> ${RC_CONF_LOCAL}
         echo 'smtpd_flags=NO' >> ${RC_CONF_LOCAL}
-        /usr/local/sbin/postfix-enable &>/dev/null
+        /usr/local/sbin/postfix-enable >> ${INSTALL_LOG} 2>&1
         perl -pi -e 's/(.*sendmail -L sm-msp-queue.*)/#${1}/' ${CRON_SPOOL_DIR}/root 
     fi
 
@@ -51,7 +51,7 @@ postfix_config_basic()
     postconf -e virtual_alias_domains=''
 
     ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
-    mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ &>/dev/null
+    mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ >> ${INSTALL_LOG} 2>&1
     for i in /etc/hosts /etc/resolv.conf /etc/localtime /etc/services; do
         [ -f $i ] && cp ${i} ${POSTFIX_CHROOT_DIR}/etc/
     done

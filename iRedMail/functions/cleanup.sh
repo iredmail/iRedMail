@@ -54,7 +54,7 @@ cleanup_disable_selinux()
         ECHO_INFO "Disable SELinux in /etc/selinux/config."
         [ -f /etc/selinux/config ] && perl -pi -e 's#^(SELINUX=)(.*)#${1}disabled#' /etc/selinux/config
 
-        setenforce 0 &>/dev/null
+        setenforce 0 >> ${INSTALL_LOG} 2>&1
     fi
 
     echo 'export status_cleanup_disable_selinux="DONE"' >> ${STATUS_FILE}
@@ -147,7 +147,7 @@ cleanup_replace_firewall_rules()
                     perl -pi -e 's#(.*)80(,.*)#${1}$ENV{HTTPD_PORT}${2}#' ${FIREWALL_RULE_CONF}
 
                 if [ X"${USE_FIREWALLD}" == X'YES' ]; then
-                    service_control enable firewalld >/dev/null
+                    service_control enable firewalld >> ${INSTALL_LOG} 2>&1
                 else
                     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
                         # Copy sample rc script for Debian.
@@ -155,7 +155,7 @@ cleanup_replace_firewall_rules()
                         chmod +x ${DIR_RC_SCRIPTS}/iptables
                     fi
 
-                    service_control enable iptables >/dev/null
+                    service_control enable iptables >> ${INSTALL_LOG} 2>&1
                 fi
             elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
                 ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
@@ -170,13 +170,13 @@ cleanup_replace_firewall_rules()
                     ECHO_INFO "Restarting firewall ..."
 
                     if [ X"${DISTRO}" == X'OPENBSD' ]; then
-                        /sbin/pfctl -ef ${FIREWALL_RULE_CONF} &>/dev/null
+                        /sbin/pfctl -ef ${FIREWALL_RULE_CONF} >> ${INSTALL_LOG} 2>&1
                     else
                         if [ X"${USE_FIREWALLD}" == X'YES' ]; then
                             perl -pi -e 's#^(DefaultZone=).*#${1}iredmail#g' ${FIREWALLD_CONF}
-                            firewall-cmd --complete-reload >/dev/null
+                            firewall-cmd --complete-reload >> ${INSTALL_LOG} 2>&1
                         else
-                            ${DIR_RC_SCRIPTS}/iptables restart &>/dev/null
+                            ${DIR_RC_SCRIPTS}/iptables restart >> ${INSTALL_LOG} 2>&1
                         fi
                     fi
                     ;;
@@ -225,10 +225,10 @@ cleanup_update_compile_spamassassin_rules()
 {
     # Required on FreeBSD to start Amavisd-new.
     ECHO_INFO "Updating SpamAssassin rules (sa-update), please wait ..."
-    ${BIN_SA_UPDATE} &>/dev/null
+    ${BIN_SA_UPDATE} >> ${INSTALL_LOG} 2>&1
 
     ECHO_INFO "Compiling SpamAssassin rulesets (sa-compile), please wait ..."
-    ${BIN_SA_COMPILE} &>/dev/null
+    ${BIN_SA_COMPILE} >> ${INSTALL_LOG} 2>&1
 
     echo 'export status_cleanup_update_compile_spamassassin_rules="DONE"' >> ${STATUS_FILE}
 }

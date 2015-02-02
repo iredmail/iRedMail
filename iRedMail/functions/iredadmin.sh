@@ -27,7 +27,7 @@ iredadmin_config()
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ECHO_DEBUG "Enable apache module: wsgi."
-        a2enmod wsgi &>/dev/null
+        a2enmod wsgi >> ${INSTALL_LOG} 2>&1
     fi
 
     cd ${PKG_MISC_DIR}
@@ -37,7 +37,7 @@ iredadmin_config()
 
     # Create symbol link, so that we don't need to modify apache
     # conf.d/iredadmin.conf file after upgrading this component.
-    ln -s ${IREDADMIN_HTTPD_ROOT} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK} &>/dev/null
+    ln -s ${IREDADMIN_HTTPD_ROOT} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Set correct permission for iRedAdmin: ${IREDADMIN_HTTPD_ROOT}."
     chown -R ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} ${IREDADMIN_HTTPD_ROOT}
@@ -105,7 +105,7 @@ EOF
 
         # Enable Apache module config file on Ubuntu 14.04.
         if [ X"${DISTRO}" == X'UBUNTU' ]; then
-            a2enconf iredadmin &>/dev/null
+            a2enconf iredadmin >> ${INSTALL_LOG} 2>&1
         fi
     fi
 
@@ -128,7 +128,7 @@ EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/docs/samples/iredadmin.pgsql ${PGSQL_DATA_DIR}/ >/dev/null
         chmod 0777 ${PGSQL_DATA_DIR}/iredadmin.pgsql >/dev/null
-        su - ${PGSQL_SYS_USER} -c "psql -d template1" >/dev/null <<EOF
+        su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create database
 CREATE DATABASE ${IREDADMIN_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 -- Create user

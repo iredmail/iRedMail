@@ -54,7 +54,7 @@ EOF
     perl -pi -e 's#PH_LDAP_ADMIN_DN#$ENV{LDAP_ADMIN_DN}#g' ${LDAPD_CONF}
 
     ECHO_DEBUG "Start ldapd"
-    ${DIR_RC_SCRIPTS}/${LDAPD_RC_SCRIPT_NAME} restart &>/dev/null
+    ${DIR_RC_SCRIPTS}/${LDAPD_RC_SCRIPT_NAME} restart >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Sleep 5 seconds for LDAP daemon initialize ..."
     sleep 5
@@ -63,7 +63,7 @@ EOF
     ldapadd -x \
         -h ${LDAP_SERVER_HOST} -p ${LDAP_SERVER_PORT} \
         -D "${LDAP_ROOTDN}" -w "${LDAP_ROOTPW}" \
-        -f ${LDAP_INIT_LDIF} >/dev/null
+        -f ${LDAP_INIT_LDIF} >> ${INSTALL_LOG} 2>&1
 
     echo 'export status_ldapd_config="DONE"' >> ${STATUS_FILE}
 }

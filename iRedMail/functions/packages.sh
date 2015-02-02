@@ -468,10 +468,10 @@ install_all()
 
         # Enable/Disable services.
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            service_control enable ${PKG_SCRIPTS} &>/dev/null
+            service_control enable ${PKG_SCRIPTS} >> ${INSTALL_LOG} 2>&1
         else
-            service_control enable ${ENABLED_SERVICES} &>/dev/null
-            service_control disable ${DISABLED_SERVICES} &>/dev/null
+            service_control enable ${ENABLED_SERVICES} >> ${INSTALL_LOG} 2>&1
+            service_control disable ${DISABLED_SERVICES} >> ${INSTALL_LOG} 2>&1
         fi
 
         echo 'export status_enable_all_services="DONE"' >> ${STATUS_FILE}
@@ -504,8 +504,7 @@ install_all()
             cd ${PKG_MISC_DIR}
             tar zxf uwsgi-*.tar.gz
             cd uwsgi-*/
-            patch -p0 < ${PATCH_DIR}/uwsgi/core_logging_c.patch >/dev/null
-            python setup.py install &>/dev/null
+            python setup.py install >> ${RUNTIME_DIR}/wsgi_install.log 2>&1
         fi
 
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}

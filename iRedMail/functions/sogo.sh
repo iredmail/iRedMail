@@ -71,7 +71,7 @@ CREATE VIEW ${SOGO_DB_AUTH_VIEW} AS SELECT * FROM dblink('host=${SQL_SERVER} por
 ALTER TABLE ${SOGO_DB_AUTH_VIEW} OWNER TO ${SOGO_DB_USER};
 EOF
 
-        su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >/dev/null 
+        su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >> ${INSTALL_LOG} 2>&1
     fi
 
     rm -f ${tmp_sql} &>/dev/null
@@ -167,7 +167,7 @@ EOF
     chmod 0400 ${SOGO_SIEVE_CREDENTIAL_FILE}
 
     # Start SOGo service to avoid cron job error.
-    service_control restart ${SOGO_RC_SCRIPT_NAME} &>/dev/null
+    service_control restart ${SOGO_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     sleep 3
 
     # Add cron job for email reminders
@@ -213,10 +213,10 @@ EOF
         if [ -f /etc/apache2/conf.d/SOGo.conf \
             -a -d /etc/apache2/conf-available \
             -a -d /etc/apache2/conf-enabled ]; then
-            cd /etc/apache2/conf-available/ && ln -s ../conf.d/SOGo.conf . &>/dev/null
+            cd /etc/apache2/conf-available/ && ln -s ../conf.d/SOGo.conf . >> ${INSTALL_LOG} 2>&1
         fi
 
-        a2enconf SOGo &>/dev/null
+        a2enconf SOGo >> ${INSTALL_LOG} 2>&1
     fi
 
     cat >> ${TIP_FILE} <<EOF

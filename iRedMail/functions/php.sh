@@ -70,7 +70,7 @@ php_config()
             perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${APACHE_PHP_INI_CONF_DIR}/suhosin.ini
 
         # Enable mcrypt
-        php5enmod mcrypt &>/dev/null
+        php5enmod mcrypt >> ${INSTALL_LOG} 2>&1
     fi
 
     # Copy to ${NGINX_PHP_INI}

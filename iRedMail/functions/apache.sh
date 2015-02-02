@@ -65,14 +65,13 @@ apache_config()
     # Load/enable Apache modules
     ECHO_DEBUG "Enable Apache modules."
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        a2ensite default-ssl &>/dev/null
-
-        a2enmod ssl deflate &>/dev/null
+        a2ensite default-ssl >> ${INSTALL_LOG} 2>&1
+        a2enmod ssl deflate >> ${INSTALL_LOG} 2>&1
 
         # SOGo
-        [ X"${USE_SOGO}" == X'YES' ] && a2enmod proxy proxy_http headers rewrite version &>/dev/null
+        [ X"${USE_SOGO}" == X'YES' ] && a2enmod proxy proxy_http headers rewrite version >> ${INSTALL_LOG} 2>&1
 
-        [ X"${BACKEND}" == X'OPENLDAP' ] && a2enmod authnz_ldap > /dev/null
+        [ X"${BACKEND}" == X'OPENLDAP' ] && a2enmod authnz_ldap >> ${INSTALL_LOG} 2>&1
 
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && \
@@ -86,7 +85,7 @@ apache_config()
 
         ECHO_DEBUG "Configure Apache."
         # With Apache2.2 it now wants to load an Accept Filter.
-        echo 'accf_http_load="YES"' >> /boot/loader.conf &>/dev/null
+        echo 'accf_http_load="YES"' >> /boot/loader.conf >> ${INSTALL_LOG} 2>&1
 
         # Change 'Deny from all' to 'Allow from all'.
         sed -i '.iredmailtmp' '/Deny access to the entirety of your server/,/Note that from this point forward/s#Require\ all\ denied#Require\ all\ granted#' ${HTTPD_CONF}
@@ -124,7 +123,7 @@ apache_config()
         perl -pi -e 's/^#(Include.*etc.*apache.*extra.*httpd-ssl.conf.*)/${1}/' ${HTTPD_CONF}
 
         # Create empty directory for htcacheclean.
-        mkdir -p /usr/local/www/proxy/ &>/dev/null
+        mkdir -p /usr/local/www/proxy/ >> ${INSTALL_LOG} 2>&1
 
         # Start service when system start up.
         if [ X"${DEFAULT_WEB_SERVER}" == X'APACHE' ]; then

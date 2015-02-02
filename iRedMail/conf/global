@@ -139,7 +139,9 @@ export CONFIG_VIA_DIALOG="${DIALOG_DIR}/config_via_dialog.sh"
 export IREDMAIL_CONFIG_FILE="${ROOTDIR}/config"
 export TIP_FILE="${ROOTDIR}/${PROG_NAME}.tips"
 export DOC_FILE="${ROOTDIR}/Documentations"
-export STATUS_FILE="${ROOTDIR}/.status"
+export RUNTIME_DIR="${ROOTDIR}/runtime"
+export STATUS_FILE="${RUNTIME_DIR}/install.status"
+export INSTALL_LOG="${RUNTIME_DIR}/install.log"
 
 # Output flag.
 export _INFO_FLAG="< INFO >"

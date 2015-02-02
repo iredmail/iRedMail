@@ -130,10 +130,10 @@ dovecot_config()
     perl -pi -e 's#PH_POSTFIX_CHROOT_DIR#$ENV{POSTFIX_CHROOT_DIR}#' ${DOVECOT_CONF}
 
     # Generate dovecot quota warning script.
-    mkdir -p $(dirname ${DOVECOT_QUOTA_WARNING_SCRIPT}) &>/dev/null
+    mkdir -p $(dirname ${DOVECOT_QUOTA_WARNING_SCRIPT}) >> ${INSTALL_LOG} 2>&1
 
     backup_file ${DOVECOT_QUOTA_WARNING_SCRIPT}
-    rm -f ${DOVECOT_QUOTA_WARNING_SCRIPT} &>/dev/null
+    rm -f ${DOVECOT_QUOTA_WARNING_SCRIPT} >> ${INSTALL_LOG} 2>&1
     cp -f ${SAMPLE_DIR}/dovecot/dovecot2-quota-warning.sh ${DOVECOT_QUOTA_WARNING_SCRIPT}
     if [ X"${DOVECOT_QUOTA_TYPE}" == X'maildir' ]; then
         perl -pi -e 's#(.*)(-o.*plugin.*)#${1}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
@@ -265,7 +265,7 @@ dovecot_config()
     #   - share_folder: used to store share folder settings.
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # If iRedAdmin is not used, create database and import table here.
-        ${MYSQL_CLIENT_ROOT} &>/dev/null <<EOF
+        ${MYSQL_CLIENT_ROOT} >> ${INSTALL_LOG} 2>&1 <<EOF
 # Create databases.
 CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
@@ -415,7 +415,7 @@ enable_dovecot()
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         # It seems there's a bug in Dovecot port, it will try to invoke '/usr/lib/sendmail'
         # to send vacation response which should be '/usr/sbin/mailwrapper'.
-        [ ! -e /usr/lib/sendmail ] && ln -s /usr/sbin/mailwrapper /usr/lib/sendmail &>/dev/null
+        [ ! -e /usr/lib/sendmail ] && ln -s /usr/sbin/mailwrapper /usr/lib/sendmail >> ${INSTALL_LOG} 2>&1
 
         # Start service when system start up.
         service_control enable 'dovecot_enable' 'YES'

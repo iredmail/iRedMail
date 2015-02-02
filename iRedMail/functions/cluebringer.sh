@@ -280,7 +280,7 @@ EOF
         perl -pi -e 's=^(#.*)=/*${1}*/=' ${tmp_sql}
 
         # Initial cluebringer db.
-        su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >/dev/null 
+        su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >> ${INSTALL_LOG} 2>&1
     fi
 
     rm -f ${tmp_sql} &>/dev/null
@@ -522,8 +522,8 @@ EOF
     fi
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        a2enmod authn_dbd &>/dev/null
-        a2enconf cluebringer &>/dev/null
+        a2enmod authn_dbd >> ${INSTALL_LOG} 2>&1
+        a2enconf cluebringer >> ${INSTALL_LOG} 2>&1
     fi
 
     echo 'export status_cluebringer_webui_config="DONE"' >> ${STATUS_FILE}

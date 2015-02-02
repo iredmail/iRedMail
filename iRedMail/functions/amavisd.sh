@@ -98,11 +98,11 @@ DNS record for DKIM support:
 EOF
     if [ X"${DISTRO}" == X'RHEL' ]; then
         cat >> ${TIP_FILE} <<EOF
-$(${AMAVISD_BIN} -c ${AMAVISD_CONF} showkeys 2>/dev/null)
+$(${AMAVISD_BIN} -c ${AMAVISD_CONF} showkeys 2>> ${INSTALL_LOG})
 EOF
     else
         cat >> ${TIP_FILE} <<EOF
-$(${AMAVISD_BIN} showkeys 2>/dev/null)
+$(${AMAVISD_BIN} showkeys 2>> ${INSTALL_LOG})
 EOF
     fi
 
@@ -114,7 +114,7 @@ amavisd_config_rhel()
     ECHO_INFO "Configure Amavisd-new (interface between MTA and content checkers)."
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER} >/dev/null
+        usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER} >> ${INSTALL_LOG} 2>&1
     fi
 
     backup_file ${AMAVISD_CONF} ${AMAVISD_DKIM_CONF}
@@ -252,7 +252,7 @@ EOF
     # Make sure that clamav is configured to init supplementary
     # groups when it drops priviledges, and that you add the
     # clamav user to the amavis group.
-    adduser --quiet ${CLAMAV_USER} ${AMAVISD_SYS_GROUP} >/dev/null
+    adduser --quiet ${CLAMAV_USER} ${AMAVISD_SYS_GROUP} >> ${INSTALL_LOG} 2>&1
 
     echo 'export status_amavisd_config_debian="DONE"' >> ${STATUS_FILE}
 }
@@ -457,7 +457,7 @@ EOF
 EOF
 
     # Create directory to store disclaimer files if not exist.
-    [ -d ${DISCLAIMER_DIR} ] || mkdir -p ${DISCLAIMER_DIR} &>/dev/null
+    [ -d ${DISCLAIMER_DIR} ] || mkdir -p ${DISCLAIMER_DIR} >> ${INSTALL_LOG} 2>&1
     # Create a empty disclaimer.
     echo -e '\n----' > ${DISCLAIMER_DIR}/default.txt
 
@@ -631,10 +631,10 @@ SOURCE ${AMAVISD_DB_MYSQL_TMPL};
 FLUSH PRIVILEGES;
 EOF
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
+        cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_SYS_USER_HOME}/amavisd.sql >> ${INSTALL_LOG} 2>&1
         chmod 0777 ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
 
-        su - ${PGSQL_SYS_USER} -c "psql -d template1" >/dev/null  <<EOF
+        su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG}  <<EOF
 -- Create database
 CREATE DATABASE ${AMAVISD_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 
@@ -649,12 +649,12 @@ CREATE USER ${AMAVISD_DB_USER} WITH ENCRYPTED PASSWORD '${AMAVISD_DB_PASSWD}' NO
 GRANT SELECT,INSERT,UPDATE,DELETE ON maddr,mailaddr,msgrcpt,msgs,policy,quarantine,users,wblist TO ${AMAVISD_DB_USER};
 GRANT SELECT,UPDATE,USAGE ON maddr_id_seq,mailaddr_id_seq,policy_id_seq,users_id_seq TO ${AMAVISD_DB_USER};
 EOF
-        rm -f ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
+        rm -f ${PGSQL_SYS_USER_HOME}/amavisd.sql >> ${INSTALL_LOG}
 
         if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
             :
         else
-            su - ${PGSQL_SYS_USER} -c "psql -d ${AMAVISD_DB_NAME}" >/dev/null  <<EOF
+            su - ${PGSQL_SYS_USER} -c "psql -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG}  <<EOF
 ALTER DATABASE ${AMAVISD_DB_NAME} SET bytea_output TO 'escape';
 EOF
         fi

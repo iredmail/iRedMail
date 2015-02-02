@@ -17,7 +17,7 @@ rcm_install()
 
         # Create symbol link, so that we don't need to modify apache
         # conf.d/roundcubemail.conf file after upgrade this component.
-        ln -s ${RCM_HTTPD_ROOT} ${RCM_HTTPD_ROOT_SYMBOL_LINK} &>/dev/null
+        ln -s ${RCM_HTTPD_ROOT} ${RCM_HTTPD_ROOT_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
 
         ECHO_DEBUG "Set correct permission for Roundcubemail: ${RCM_HTTPD_ROOT}."
         chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${RCM_HTTPD_ROOT}
@@ -52,7 +52,7 @@ EOF
         if [ X"${DISTRO_CODENAME}" != X'wheezy' \
             -a X"${DISTRO_CODENAME}" != X'precise' ]; then
             # Enable conf file: conf-available/roundcubemail.conf
-            a2enconf roundcubemail &>/dev/null
+            a2enconf roundcubemail >> ${INSTALL_LOG} 2>&1
         fi
     fi
 
@@ -82,10 +82,10 @@ SOURCE ${RCM_HTTPD_ROOT}/SQL/mysql.initial.sql;
 FLUSH PRIVILEGES;
 EOF
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_SYS_USER_HOME}/rcm.sql >/dev/null
-        chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql >/dev/null
+        cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_SYS_USER_HOME}/rcm.sql >> ${INSTALL_LOG} 2>&1
+        chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql 
 
-        su - ${PGSQL_SYS_USER} -c "psql -d template1 >/dev/null" >/dev/null <<EOF
+        su - ${PGSQL_SYS_USER} -c "psql -d template1 >/dev/null" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create database and role
 CREATE DATABASE ${RCM_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE ROLE ${RCM_DB_USER} WITH LOGIN ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
@@ -102,7 +102,7 @@ GRANT SELECT,UPDATE,USAGE ON contacts_seq,contactgroups_seq,identities_seq,searc
 \c ${VMAIL_DB};
 GRANT UPDATE,SELECT ON mailbox TO ${RCM_DB_USER};
 EOF
-        rm -f ${PGSQL_SYS_USER_HOME}/rcm.sql >/dev/null
+        rm -f ${PGSQL_SYS_USER_HOME}/rcm.sql >> ${INSTALL_LOG} 2>&1
     fi
 
 
@@ -279,13 +279,13 @@ rcm_plugin_password()
     if [ X"${BACKEND}" == X'MYSQL' ]; then
         # Patch to support ssha512, bcrypt via doveadm.
         cd ${RCM_HTTPD_ROOT}
-        patch -p1 < ${PATCH_DIR}/roundcubemail/password_driver_mysql.patch &>/dev/null
+        patch -p1 < ${PATCH_DIR}/roundcubemail/password_driver_mysql.patch >> ${INSTALL_LOG} 2>&1
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         # Patch to escape single quote while updating password, and supports
         # ssha512 + bcrypt via doveadm.
         cd ${RCM_HTTPD_ROOT}
-        patch -p1 < ${PATCH_DIR}/roundcubemail/password_driver_pgsql.patch &>/dev/null
+        patch -p1 < ${PATCH_DIR}/roundcubemail/password_driver_pgsql.patch >> ${INSTALL_LOG} 2>&1
 
         # Re-generate config.inc.php because it's hard to use perl to update
         # 'password_query' setting.
@@ -302,7 +302,7 @@ EOF
     elif [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # Patch to support ssha512, bcrypt via doveadm.
         cd ${RCM_HTTPD_ROOT}
-        patch -p1 < ${PATCH_DIR}/roundcubemail/password_driver_ldap.patch &>/dev/null
+        patch -p1 < ${PATCH_DIR}/roundcubemail/password_driver_ldap.patch >> ${INSTALL_LOG} 2>&1
     fi
 
     cd ${RCM_HTTPD_ROOT}/plugins/password/

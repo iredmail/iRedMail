@@ -49,7 +49,7 @@ mysql_initialize()
 
     # Initial MySQL database first
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        /usr/local/bin/mysql_install_db &>/dev/null
+        /usr/local/bin/mysql_install_db >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.
         # 'mysql_enable=YES' is required to start service immediately.
@@ -58,26 +58,26 @@ mysql_initialize()
 
     if [ ! -f ${MYSQL_MY_CNF} ]; then
         ECHO_DEBUG "Copy sample MySQL config file: ${SAMPLE_DIR}/mysql/my.cnf -> ${MYSQL_MY_CNF}."
-        cp ${SAMPLE_DIR}/mysql/my.cnf ${MYSQL_MY_CNF} &>/dev/null
+        cp ${SAMPLE_DIR}/mysql/my.cnf ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 
     # Disable 'skip-networking' in my.cnf.
-    perl -pi -e 's#^(skip-networking.*)#${1}#' ${MYSQL_MY_CNF} &>/dev/null
+    perl -pi -e 's#^(skip-networking.*)#${1}#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
 
     # Enable innodb_file_per_table by default.
-    grep '^innodb_file_per_table' ${MYSQL_MY_CNF} &>/dev/null
+    grep '^innodb_file_per_table' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     if [ X"$?" != X'0' ]; then
-        perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF}
+        perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 
-    service_control restart ${MYSQL_RC_SCRIPT_NAME} &>/dev/null
+    service_control restart ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialization ..."
     sleep 5
 
     if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
         # Try to access without password, set a password if it's empty.
-        mysql -u${MYSQL_ROOT_USER} -e "show databases" &>/dev/null
+        mysql -u${MYSQL_ROOT_USER} -e "show databases" >> ${INSTALL_LOG} 2>&1
         if [ X"$?" == X'0' ]; then
             ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
             mysqladmin --user=root password "${MYSQL_ROOT_PASSWD}"
@@ -186,7 +186,7 @@ mysql_cron_backup()
 {
     ECHO_INFO "Setup daily cron job to backup SQL databases: ${BACKUP_SCRIPT_MYSQL}"
 
-    [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
+    [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} >> ${INSTALL_LOG} 2>&1
 
     backup_file ${BACKUP_SCRIPT_MYSQL}
     cp ${TOOLS_DIR}/backup_mysql.sh ${BACKUP_SCRIPT_MYSQL}

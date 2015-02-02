@@ -21,23 +21,24 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-ROOTDIR="$(pwd)"
-CONF_DIR="${ROOTDIR}/../conf"
+_ROOTDIR="$(pwd)"
+CONF_DIR="${_ROOTDIR}/../conf"
 
 . ${CONF_DIR}/global
 . ${CONF_DIR}/core
 . ${CONF_DIR}/iredadmin
 
 # Re-define @STATUS_FILE, so that iRedMail.sh can read it.
-export STATUS_FILE="${ROOTDIR}/../.status"
+#export STATUS_FILE="${_ROOTDIR}/../.status"
 
 check_user root
 check_hostname
+check_runtime_dir
 
 # Where to fetch/store binary packages and source tarball.
 export IREDMAIL_MIRROR="${IREDMAIL_MIRROR:=http://iredmail.org}"
-export PKG_DIR="${ROOTDIR}/pkgs"
-export PKG_MISC_DIR="${ROOTDIR}/misc"
+export PKG_DIR="${_ROOTDIR}/pkgs"
+export PKG_MISC_DIR="${_ROOTDIR}/misc"
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     # Special package.
@@ -79,7 +80,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 else
     PKGMISC='MD5.misc'
 fi
-MISCLIST="$(cat ${ROOTDIR}/${PKGMISC} | awk -F'misc/' '{print $2}')"
+MISCLIST="$(cat ${_ROOTDIR}/${PKGMISC} | awk -F'misc/' '{print $2}')"
 
 prepare_dirs()
 {
@@ -112,7 +113,7 @@ fetch_misc()
 
 check_md5()
 {
-    cd ${ROOTDIR}
+    cd ${_ROOTDIR}
 
     if [ X"${DISTRO}" != X"FREEBSD" ]; then
         ECHO_INFO -n "Validate packages ..."

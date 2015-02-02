@@ -48,8 +48,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 fi
 
 export MYSQLD_RC_SCRIPT="${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME}"
-export MYSQL_INIT_SQL="${CONF_DIR}/mysql_init.sql"
-export MYSQL_VMAIL_SQL="${CONF_DIR}/mysql_vmail.sql"
+export MYSQL_INIT_SQL="${RUNTIME_DIR}/mysql_init.sql"
+export MYSQL_VMAIL_SQL="${RUNTIME_DIR}/mysql_vmail.sql"
 
 # SQL structure of MySQL vmail database.
 export MYSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.mysql"

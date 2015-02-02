@@ -18,32 +18,32 @@ add_user_vmail()
     # vmail/vmail must has the same UID/GID on all supported Linux/BSD
     # distributions, required by cluster environment. e.g. GlusterFS.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${VMAIL_USER_GID} -n ${VMAIL_GROUP_NAME} &>/dev/null
+        pw groupadd -g ${VMAIL_USER_GID} -n ${VMAIL_GROUP_NAME} 
         pw useradd -m \
             -u ${VMAIL_USER_UID} \
             -g ${VMAIL_GROUP_NAME} \
             -s ${SHELL_NOLOGIN} \
             -d ${VMAIL_USER_HOME_DIR} \
-            -n ${VMAIL_USER_NAME} &>/dev/null
+            -n ${VMAIL_USER_NAME} >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME} &>/dev/null
+        groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME} >> ${INSTALL_LOG} 2>&1
         # Don't use -m to create new home directory
         useradd \
             -u ${VMAIL_USER_UID} \
             -g ${VMAIL_GROUP_NAME} \
             -s ${SHELL_NOLOGIN} \
             -d ${VMAIL_USER_HOME_DIR} \
-            ${VMAIL_USER_NAME} &>/dev/null
+            ${VMAIL_USER_NAME} >> ${INSTALL_LOG} 2>&1
     else
-        groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME} &>/dev/null
+        groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME} >> ${INSTALL_LOG} 2>&1
         useradd -m \
             -u ${VMAIL_USER_UID} \
             -g ${VMAIL_GROUP_NAME} \
             -s ${SHELL_NOLOGIN} \
             -d ${VMAIL_USER_HOME_DIR} \
-            ${VMAIL_USER_NAME} &>/dev/null
+            ${VMAIL_USER_NAME} >> ${INSTALL_LOG} 2>&1
     fi
-    rm -f ${VMAIL_USER_HOME_DIR}/.* &>/dev/null
+    rm -f ${VMAIL_USER_HOME_DIR}/.* >> ${INSTALL_LOG} 2>&1
 
     export FIRST_USER_MAILDIR_HASH_PART="$(hash_domain ${FIRST_DOMAIN})/$(hash_maildir ${FIRST_USER})"
     export FIRST_USER_MAILDIR_FULL_PATH="${STORAGE_MAILBOX_DIR}/${FIRST_USER_MAILDIR_HASH_PART}"
@@ -52,7 +52,7 @@ add_user_vmail()
     # to postmaster immediately after installation completed.
     # NOTE: 'Maildir/' is appended by Dovecot (defined in dovecot.conf).
     export FIRST_USER_MAILDIR_INBOX="${FIRST_USER_MAILDIR_FULL_PATH}/Maildir/new"
-    mkdir -p ${FIRST_USER_MAILDIR_INBOX} &>/dev/null
+    mkdir -p ${FIRST_USER_MAILDIR_INBOX} >> ${INSTALL_LOG} 2>&1
 
     # Reset permission for home directory. Required by FIRST_USER_MAILDIR_FULL_PATH.
     chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${VMAIL_USER_HOME_DIR}
@@ -80,21 +80,21 @@ add_user_iredadmin()
 
     # Low privilege user used to run iRedAdmin.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${IREDADMIN_USER_GID} -n ${IREDADMIN_USER_NAME} &>/dev/null
+        pw groupadd -g ${IREDADMIN_USER_GID} -n ${IREDADMIN_USER_NAME} >> ${INSTALL_LOG} 2>&1
         pw useradd -m \
             -u ${IREDADMIN_USER_GID} \
             -g ${IREDADMIN_GROUP_NAME} \
             -s ${SHELL_NOLOGIN} \
             -d ${IREDADMIN_HOME_DIR} \
-            -n ${IREDADMIN_USER_NAME} &>/dev/null
+            -n ${IREDADMIN_USER_NAME} >> ${INSTALL_LOG} 2>&1
     else
-        groupadd -g ${IREDADMIN_USER_GID} ${IREDADMIN_GROUP_NAME} &>/dev/null
+        groupadd -g ${IREDADMIN_USER_GID} ${IREDADMIN_GROUP_NAME} >> ${INSTALL_LOG} 2>&1
         useradd -m \
             -u ${IREDADMIN_USER_UID} \
             -g ${IREDADMIN_GROUP_NAME} \
             -s ${SHELL_NOLOGIN} \
             -d ${IREDADMIN_HOME_DIR} \
-            ${IREDADMIN_USER_NAME} &>/dev/null
+            ${IREDADMIN_USER_NAME} >> ${INSTALL_LOG} 2>&1
     fi
 
     echo 'export status_add_user_iredadmin="DONE"' >> ${STATUS_FILE}
@@ -106,21 +106,21 @@ add_user_iredapd()
 
     # Low privilege user used to run iRedAPD daemon.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${IREDAPD_DAEMON_USER_GID} -n ${IREDAPD_DAEMON_GROUP} &>/dev/null
+        pw groupadd -g ${IREDAPD_DAEMON_USER_GID} -n ${IREDAPD_DAEMON_GROUP} >> ${INSTALL_LOG} 2>&1
         pw useradd -m \
             -u ${IREDAPD_DAEMON_USER_GID} \
             -g ${IREDAPD_DAEMON_GROUP} \
             -s ${SHELL_NOLOGIN} \
             -d ${IREDAPD_HOME_DIR} \
-            -n ${IREDAPD_DAEMON_USER} &>/dev/null
+            -n ${IREDAPD_DAEMON_USER} >> ${INSTALL_LOG} 2>&1
     else
-        groupadd -g ${IREDAPD_DAEMON_USER_GID} ${IREDAPD_DAEMON_GROUP} &>/dev/null
+        groupadd -g ${IREDAPD_DAEMON_USER_GID} ${IREDAPD_DAEMON_GROUP} >> ${INSTALL_LOG} 2>&1
         useradd -m \
             -u ${IREDAPD_DAEMON_USER_UID} \
             -g ${IREDAPD_DAEMON_GROUP} \
             -s ${SHELL_NOLOGIN} \
             -d ${IREDAPD_HOME_DIR} \
-            ${IREDAPD_DAEMON_USER} &>/dev/null
+            ${IREDAPD_DAEMON_USER} >> ${INSTALL_LOG} 2>&1
     fi
 
     echo 'export status_add_user_iredapd="DONE"' >> ${STATUS_FILE}

@@ -119,7 +119,7 @@ export LDAP_DATA_DIR="${OPENLDAP_DATA_DIR}/${dn2dnsname}"
 
 # Setting for one instance. You can edit ${OPENLDAP_SLAPD_CONF} manually to hold
 # multi instances.
-export LDAP_INIT_LDIF="${CONF_DIR}/ldap_init.ldif"
+export LDAP_INIT_LDIF="${RUNTIME_DIR}/ldap_init.ldif"
 
 ##################################################
 # iRedMail LDAP schema related

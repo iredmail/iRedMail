@@ -35,20 +35,20 @@ pgsql_initialize()
     # Init db
     if [ X"${DISTRO}" == X'RHEL' ]; then
         if [ X"${DISTRO_VERSION}"  == X'6' ]; then
-            ${PGSQL_RC_SCRIPT} initdb &>/dev/null
+            ${PGSQL_RC_SCRIPT} initdb >> ${INSTALL_LOG} 2>&1
         else
-            postgresql-setup initdb &>/dev/null
+            postgresql-setup initdb >> ${INSTALL_LOG} 2>&1
         fi
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.
         # 'postgresql_enable=YES' is required to start service immediately.
         service_control enable 'postgresql_enable' 'YES'
 
-        ${PGSQL_RC_SCRIPT} initdb &>/dev/null
+        ${PGSQL_RC_SCRIPT} initdb >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        mkdir -p ${PGSQL_DATA_DIR} &>/dev/null
+        mkdir -p ${PGSQL_DATA_DIR} >> ${INSTALL_LOG} 2>&1
         chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_DATA_DIR}
-        su - ${PGSQL_SYS_USER} -c "initdb -D ${PGSQL_DATA_DIR} -U ${PGSQL_SYS_USER} -A trust" >/dev/null
+        su - ${PGSQL_SYS_USER} -c "initdb -D ${PGSQL_DATA_DIR} -U ${PGSQL_SYS_USER} -A trust" >> ${INSTALL_LOG} 2>&1
     fi
 
     backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
@@ -66,13 +66,13 @@ pgsql_initialize()
 
     ECHO_DEBUG "Copy iRedMail SSL cert/key with strict permission."
     backup_file ${PGSQL_DATA_DIR}/server.{crt,key}
-    rm -f ${PGSQL_DATA_DIR}/server.{crt,key} >/dev/null
-    cp -f ${SSL_CERT_FILE} ${PGSQL_SSL_CERT} >/dev/null
-    cp -f ${SSL_KEY_FILE} ${PGSQL_SSL_KEY} >/dev/null
-    chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_SSL_CERT} ${PGSQL_SSL_KEY}
-    chmod 0600 ${PGSQL_SSL_CERT} ${PGSQL_SSL_KEY}
-    ln -s ${PGSQL_SSL_CERT} ${PGSQL_DATA_DIR}/server.crt >/dev/null
-    ln -s ${PGSQL_SSL_KEY} ${PGSQL_DATA_DIR}/server.key >/dev/null
+    rm -f ${PGSQL_DATA_DIR}/server.{crt,key} >> ${INSTALL_LOG} 2>&1
+    cp -f ${SSL_CERT_FILE} ${PGSQL_SSL_CERT} >> ${INSTALL_LOG} 2>&1
+    cp -f ${SSL_KEY_FILE} ${PGSQL_SSL_KEY} >> ${INSTALL_LOG} 2>&1
+    chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_SSL_CERT} ${PGSQL_SSL_KEY} >> ${INSTALL_LOG} 2>&1
+    chmod 0600 ${PGSQL_SSL_CERT} ${PGSQL_SSL_KEY} >> ${INSTALL_LOG} 2>&1
+    ln -s ${PGSQL_SSL_CERT} ${PGSQL_DATA_DIR}/server.crt >> ${INSTALL_LOG} 2>&1
+    ln -s ${PGSQL_SSL_KEY} ${PGSQL_DATA_DIR}/server.key >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Copy iRedMail SSL cert/key with strict permission."
     # SSL is enabled by default on Ubuntu.
@@ -81,18 +81,18 @@ pgsql_initialize()
 
     ECHO_DEBUG "Start PostgreSQL server"
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        ${PGSQL_RC_SCRIPT} start  &>/dev/null
+        ${PGSQL_RC_SCRIPT} start 
     elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" != X'6' ]; then
-        service_control restart ${PGSQL_RC_SCRIPT_NAME} &>/dev/null
+        service_control restart ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     else
-        ${PGSQL_RC_SCRIPT} restart &>/dev/null
+        ${PGSQL_RC_SCRIPT} restart >> ${INSTALL_LOG} 2>&1
     fi
 
     ECHO_DEBUG "Sleep 5 seconds for PostgreSQL daemon initialize ..."
     sleep 5
 
     ECHO_DEBUG "Setting password for PostgreSQL admin: (${PGSQL_ROOT_USER})."
-    su - ${PGSQL_SYS_USER} -c "psql -d template1" >/dev/null <<EOF
+    su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 ALTER USER ${PGSQL_ROOT_USER} WITH ENCRYPTED PASSWORD '${PGSQL_ROOT_PASSWD}';
 EOF
 
@@ -102,7 +102,7 @@ localhost:*:*:${PGSQL_ROOT_USER}:${PGSQL_ROOT_PASSWD}
 EOF
 
     chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_DOT_PGPASS}
-    chmod 0600 ${PGSQL_DOT_PGPASS} >/dev/null
+    chmod 0600 ${PGSQL_DOT_PGPASS} >> ${INSTALL_LOG} 2>&1
 
     cat >> ${TIP_FILE} <<EOF
 PostgreSQL:
@@ -198,11 +198,11 @@ INSERT INTO domain_admins (username,domain,created) VALUES ('${DOMAIN_ADMIN_NAME
 EOF
 
     ECHO_DEBUG "Import postfix virtual hosts/users: ${PGSQL_INIT_SQL_SAMPLE}."
-    cp -f ${PGSQL_VMAIL_STRUCTURE_SAMPLE} ${PGSQL_DATA_DIR}/vmail.sql >/dev/null
-    cp -f ${PGSQL_INIT_SQL_SAMPLE} ${PGSQL_DATA_DIR}/init.sql >/dev/null
-    chmod 0777 ${PGSQL_DATA_DIR}/{vmail,init}.sql >/dev/null
-    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init.sql" >/dev/null
-    rm -f ${PGSQL_DATA_DIR}/{vmail,init}.sql >/dev/null
+    cp -f ${PGSQL_VMAIL_STRUCTURE_SAMPLE} ${PGSQL_DATA_DIR}/vmail.sql >> ${INSTALL_LOG} 2>&1
+    cp -f ${PGSQL_INIT_SQL_SAMPLE} ${PGSQL_DATA_DIR}/init.sql >> ${INSTALL_LOG} 2>&1
+    chmod 0777 ${PGSQL_DATA_DIR}/{vmail,init}.sql >> ${INSTALL_LOG} 2>&1
+    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init.sql" >> ${INSTALL_LOG} 2>&1
+    rm -f ${PGSQL_DATA_DIR}/{vmail,init}.sql >> ${INSTALL_LOG} 2>&1
 
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:
@@ -218,7 +218,7 @@ pgsql_cron_backup()
 {
     ECHO_INFO "Setup daily cron job to backup PostgreSQL databases: ${BACKUP_SCRIPT_PGSQL}"
 
-    [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
+    [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} >> ${INSTALL_LOG} 2>&1
 
     backup_file ${BACKUP_SCRIPT_PGSQL}
     cp ${TOOLS_DIR}/backup_pgsql.sh ${BACKUP_SCRIPT_PGSQL}

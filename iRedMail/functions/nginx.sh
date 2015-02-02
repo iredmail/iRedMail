@@ -84,9 +84,9 @@ nginx_config()
         perl -pi -e 's/^(pidfile.*)/#${1}/' ${UWSGI_CONF_DIR}/iredadmin.ini
         ln -s ${UWSGI_CONF_DIR}/iredadmin.ini /etc/uwsgi/apps-enabled/iredadmin.ini
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-        mkdir -p /var/log/nginx &>/dev/null
+        mkdir -p /var/log/nginx >> ${INSTALL_LOG} 2>&1
 
-        mkdir -p ${UWSGI_CONF_DIR} &>/dev/null
+        mkdir -p ${UWSGI_CONF_DIR} >> ${INSTALL_LOG} 2>&1
         cp -f ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${UWSGI_CONF_DIR}/iredadmin.ini
 
         perl -pi -e 's/^(plugins.*)/#${1}/' ${UWSGI_CONF_DIR}/iredadmin.ini
@@ -106,7 +106,7 @@ nginx_config()
         perl -pi -e 's#^(chroot *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
         perl -pi -e 's#^(chdir *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
 
-        mkdir -p ${UWSGI_CONF_DIR} &>/dev/null
+        mkdir -p ${UWSGI_CONF_DIR} >> ${INSTALL_LOG} 2>&1
         cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${UWSGI_CONF_DIR}/iredadmin.ini
         perl -pi -e 's#^(uid).*#${1} = $ENV{HTTPD_USER}#g' ${UWSGI_CONF_DIR}/iredadmin.ini
         perl -pi -e 's#^(gid).*#${1} = $ENV{HTTPD_GROUP}#g' ${UWSGI_CONF_DIR}/iredadmin.ini

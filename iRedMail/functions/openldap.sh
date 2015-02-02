@@ -29,7 +29,7 @@ openldap_config()
     ECHO_INFO "Configure LDAP server: OpenLDAP."
 
     ECHO_DEBUG "Stoping OpenLDAP."
-    ${OPENLDAP_RC_SCRIPT} stop &>/dev/null
+    ${OPENLDAP_RC_SCRIPT} stop >> ${INSTALL_LOG} 2>&1
 
     backup_file ${OPENLDAP_SLAPD_CONF} ${OPENLDAP_LDAP_CONF}
 
@@ -166,7 +166,7 @@ EOF
     if [ X"${DISTRO}" == X'RHEL' \
         -o X"${DISTRO}" == X'DEBIAN' \
         -o X"${DISTRO}" == X'UBUNTU' ]; then
-        service_control restart rsyslog >/dev/null
+        service_control restart rsyslog >> ${INSTALL_LOG} 2>&1
     fi
 
     echo 'export status_openldap_config="DONE"' >> ${STATUS_FILE}
@@ -186,13 +186,13 @@ openldap_data_initialize()
     chmod -R 0700 ${OPENLDAP_DATA_DIR}
 
     ECHO_DEBUG "Starting OpenLDAP."
-    service_control restart ${OPENLDAP_RC_SCRIPT_NAME} &>/dev/null
+    service_control restart ${OPENLDAP_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Sleep 5 seconds for LDAP daemon initialization ..."
     sleep 5
 
     ECHO_DEBUG "Populate LDAP tree."
-    ldapadd -x -D "${LDAP_ROOTDN}" -w "${LDAP_ROOTPW}" -f ${LDAP_INIT_LDIF} >/dev/null
+    ldapadd -x -D "${LDAP_ROOTDN}" -w "${LDAP_ROOTPW}" -f ${LDAP_INIT_LDIF} >> ${INSTALL_LOG} 2>&1
 
     cat >> ${TIP_FILE} <<EOF
 OpenLDAP:

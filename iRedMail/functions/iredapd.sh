@@ -33,7 +33,7 @@ iredapd_config()
 
     ECHO_DEBUG "Configure iRedAPD."
     # Create symbol link.
-    ln -s ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION} ${IREDAPD_ROOT_DIR}/iredapd &>/dev/null
+    ln -s ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION} ${IREDAPD_ROOT_DIR}/iredapd >> ${INSTALL_LOG} 2>&1
 
     # Copy init rc script.
     if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -52,7 +52,7 @@ iredapd_config()
 
     if [ X"${DISTRO}" != X'OPENBSD' ]; then
         ECHO_DEBUG "Make iredapd start after system startup."
-        service_control enable iredapd &>/dev/null
+        service_control enable iredapd >> ${INSTALL_LOG} 2>&1
         export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
     fi
 
