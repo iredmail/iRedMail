@@ -34,6 +34,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export APACHE_PHP_INI='/etc/php5/apache2/php.ini'
     export APACHE_PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
     export PHP_FPM_POOL_WWW_CONF='/etc/php5/fpm/pool.d/www.conf'
+    export PHP_FPM_RC_SCRIPT_NAME='php5_fpm'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Copy from example: /usr/local/etc/php.ini-production

@@ -523,6 +523,8 @@ EOF
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         a2enmod authn_dbd >> ${INSTALL_LOG} 2>&1
+
+        # Apache 2.2 doesn't have 'a2enconf'
         a2enconf cluebringer >> ${INSTALL_LOG} 2>&1
     fi
 
