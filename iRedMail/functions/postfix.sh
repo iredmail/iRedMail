@@ -41,7 +41,6 @@ postfix_config_basic()
     ECHO_DEBUG "Enable chroot."
     perl -pi -e 's/^(smtp.*inet)(.*)(n)(.*)(n)(.*smtpd)$/${1}${2}${3}${4}-${6}/' ${POSTFIX_FILE_MASTER_CF}
 
-    # Use ipv4 only
     # Comment out the parameter first to avoid duplicate entries
     perl -pi -e 's/^(inet_protocols*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
     postconf -e inet_protocols='all'

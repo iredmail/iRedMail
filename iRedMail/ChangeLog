@@ -1,5 +1,7 @@
 iRedMail-0.9.1:
     * Fixed issues:
+        - Not use user's identity as envelope sender for 'return receipt'
+          responses.
         - Not backup SOGo SQL database.
         - Incorrect path of command 'sogo-tool' on OpenBSD.
         - Not apply service restriction in Dovecot SQL query file while acting

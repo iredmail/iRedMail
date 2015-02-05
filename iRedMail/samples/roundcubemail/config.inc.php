@@ -20,6 +20,10 @@ $config['smtp_user'] = '%u';
 $config['smtp_pass'] = '%p';
 $config['smtp_auth_type'] = 'LOGIN';
 
+// Use user's identity as envelope sender for 'return receipt' responses,
+// otherwise it will be rejected by iRedAPD plugin `reject_null_sender`.
+$config['mdn_use_from'] = true;
+
 // SYSTEM
 $config['force_https'] = true;
 $config['login_autocomplete'] = 2;
