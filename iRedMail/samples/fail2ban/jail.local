@@ -1,9 +1,9 @@
 # Refer to PH_FAIL2BAN_JAIL_CONF for more examples.
 [DEFAULT]
+# time is in seconds. 3600 = 1 hour, 86400 = 24 hours (1 day)
+findtime    = 3600
+bantime     = 86400
 maxretry    = 5
-# time is in seconds. 3600 = 1 hour
-findtime    = 300
-bantime     = 3600
 ignoreip    = PH_LOCAL_ADDRESS 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 
 [sshd]

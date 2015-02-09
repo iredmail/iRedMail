@@ -1,4 +1,7 @@
 iRedMail-0.9.1:
+    * Improvements:
+        - Add one new Fail2ban filter to help catch spam.
+
     * Fixed issues:
         - Not use user's identity as envelope sender for 'return receipt'
           responses.
