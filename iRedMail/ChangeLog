@@ -3,6 +3,7 @@ iRedMail-0.9.1:
         - Add one new Fail2ban filter to help catch spam.
 
     * Fixed issues:
+        - Cannot run PHP scripts under web document root with Nginx.
         - Not use user's identity as envelope sender for 'return receipt'
           responses.
         - Not backup SOGo SQL database.
