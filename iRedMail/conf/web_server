@@ -51,7 +51,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Web data.
     export HTTPD_SERVERROOT='/usr/local/www'
-    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache22/data"
+    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache24/data"
 
     # Daemon user.
     export HTTPD_USER='www'
