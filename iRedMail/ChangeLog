@@ -1,5 +1,6 @@
 iRedMail-0.9.1:
     * Improvements:
+        - Setup Fail2ban to monitor SOGo log file.
         - Add one new Fail2ban filter to help catch spam.
 
     * Fixed issues:

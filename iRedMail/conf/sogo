@@ -23,6 +23,10 @@
 
 export SOGO_DAEMON_USER='sogo'
 export SOGO_DAEMON_GROUP='sogo'
+
+export SOGO_PID_FILE='/var/run/sogo/sogo.pid'
+export SOGO_LOG_FILE='/var/log/sogo/sogo.log'
+
 export SOGO_CONF_DIR='/etc/sogo'
 export SOGO_CONF="${SOGO_CONF_DIR}/sogo.conf"
 export SOGO_SIEVE_MASTER_USER="sogo_sieve_master"
