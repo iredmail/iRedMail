@@ -41,8 +41,5 @@ logpath     = PH_MAILLOG
 [SOGo]
 enabled     = true
 filter      = sogo-auth
-port        = https
-# without proxy this would be:
-# port    = 20000
 action      = iptables-multiport[name=SOGo, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
 logpath     = PH_SOGO_LOG_FILE

@@ -298,12 +298,14 @@ install_all()
     # Roundcube
     if [ X"${USE_RCM}" == X"YES" ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
+            ALL_PKGS="${ALL_PKGS} php-pear-Net-IDNA2"
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-pear-Net-LDAP2"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            ALL_PKGS="${ALL_PKGS} php-pear php5-intl"
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-net-ldap2"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} php-pspell"
+            ALL_PKGS="${ALL_PKGS} php-pspell php-intl"
 
             # MySQL driver for PHP, required by Roundcube.
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql pear-Net-LDAP2"

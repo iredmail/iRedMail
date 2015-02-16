@@ -71,6 +71,9 @@ php_config()
 
         # Enable mcrypt
         php5enmod mcrypt >> ${INSTALL_LOG} 2>&1
+
+        # `intl` is required by Roundcube.
+        php5enmod intl >> ${INSTALL_LOG} 2>&1
     fi
 
     # Copy to ${NGINX_PHP_INI}
