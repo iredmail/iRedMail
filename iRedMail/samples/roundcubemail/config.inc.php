@@ -42,6 +42,7 @@ $config['default_charset'] = 'UTF-8';
 //$config['addressbook_sort_col'] = 'name';
 $config['draft_autosave'] = 60;
 $config['preview_pane'] = true;
+$config['default_list_mode'] = 'threads';
 $config['autoexpand_threads'] = 2;
 $config['check_all_folders'] = true;
 
