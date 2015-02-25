@@ -49,3 +49,31 @@ INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:19
 INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:8.25.194.26/31','TWITTER',0);
 INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:204.92.114.203','TWITTER',0);
 INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:204.92.114.204/31','TWITTER',0);
+
+-- Below records come from Cluebringer package
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:127.0.0.0/8','Local loopback address',0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:192.168.0.0/8','Local loopback address',0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:10.0.0.0/8','Local loopback address',0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:172.16.0.0/12','Local loopback address',0);
+-- Cluebringer: Servers that don't like greylisting
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:12.5.136.141', 'Southwest Airlines (unique sender, no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:12.5.136.142', 'Southwest Airlines (unique sender, no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:12.5.136.143', 'Southwest Airlines (unique sender, no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:12.5.136.144', 'Southwest Airlines (unique sender, no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:63.169.44.143', 'Southwest Airlines (unique sender, no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:63.169.44.144', 'Southwest Airlines (unique sender, no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:12.107.209.244', 'kernel.org mailing lists (high traffic, unique sender per mail)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:64.124.204.39', 'moveon.org (unique sender per attempt)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:64.125.132.254', 'collab.net (unique sender per attempt)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:66.135.209.0/24', 'Ebay (for time critical alerts)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:66.218.66.0/24', 'Yahoo Groups servers (common pool, no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:66.218.67.0/24', 'Yahoo Groups servers (common pool, no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:66.218.69.0/24', 'Yahoo Groups servers (common pool, no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:66.94.237.0/24', 'Yahoo Groups servers (common pool, no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:204.107.120.10', 'Ameritrade (no retry)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:207.115.63.0/24', 'Prodigy (broken software that retries continually with no delay)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:205.206.231.0/24', 'SecurityFocus.com (unique sender per attempt)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:209.132.176.174', 'Sourceware.org mailing lists (high traffic, unique sender per mail)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:211.29.132.0/24', 'optusnet.com.au (wierd retry pattern and more than 48hrs)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:213.136.52.31', 'Mysql.com (unique sender)', 0);
+INSERT INTO greylisting_whitelist (Source,Comment,Disabled) VALUES ('SenderIP:217.158.50.178', 'AXKit mailing list (unique sender per attempt)', 0);
