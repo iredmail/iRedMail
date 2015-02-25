@@ -264,6 +264,8 @@ EOF
 
     # Add necessary records for white/blacklists
     cat ${SAMPLE_DIR}/cluebringer/extra.sql >> ${tmp_sql}
+    # Add greylisting-whitelist for big ISPs.
+    cat ${SAMPLE_DIR}/cluebringer/greylisting-whitelist.sql >> ${tmp_sql}
 
     # Initial cluebringer db.
     # Enable greylisting on all inbound emails by default.

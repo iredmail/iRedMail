@@ -20,7 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-# Use policyd-1.8 by default
+# Use Cluebringer by default
 export USE_CLUEBRINGER='YES'
 
 if [ X"${DISTRO}" == X'OPENBSD' ]; then

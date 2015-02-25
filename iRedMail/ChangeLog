@@ -1,7 +1,9 @@
 iRedMail-0.9.1:
     * Improvements:
+        - Bypass greylisting for some big ISPs
+          (samples/cluebringer/greylisting-whitelist.sql).
         - Setup Fail2ban to monitor SOGo log file.
-        - Add one new Fail2ban filter to help catch spam.
+        - Add two new Fail2ban filters to help catch spam.
 
     * Fixed issues:
         - Cannot run PHP scripts under web document root with Nginx.
