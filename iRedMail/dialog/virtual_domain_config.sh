@@ -60,14 +60,11 @@ Please specify password for the administrator user:
 
     * ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
 
-Note:
-
-    * You can login to both webmail and iRedAdmin with this account.
-    * Please reset password immediately after installation completed.
+You can login to both webmail and iRedAdmin with this account.
 
 WARNING:
 
-    * Do *NOT* use special characters in password. e.g. $, #.
+    * Do *NOT* use special characters in password right now. e.g. $, #, space.
     * EMPTY password is *NOT* permitted.
 
 " 20 76 2>/tmp/first_domain_admin_passwd

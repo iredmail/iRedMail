@@ -34,7 +34,7 @@ trap "exit 255" 2
 # Initialize config file.
 echo '' > ${IREDMAIL_CONFIG_FILE}
 
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
     DIALOG='dialog'
     PASSWORDBOX='--inputbox'
 else

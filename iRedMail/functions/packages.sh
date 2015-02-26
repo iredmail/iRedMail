@@ -210,7 +210,7 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} postfix-cluebringer"
+        ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
         if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
@@ -389,7 +389,7 @@ install_all()
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces"
         [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
         [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
