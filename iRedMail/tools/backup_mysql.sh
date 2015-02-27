@@ -123,7 +123,7 @@ echo "* Starting backup: ${TIMESTAMP}." >${LOGFILE}
 echo "* Backup directory: ${BACKUP_DIR}." >>${LOGFILE}
 
 # Backup.
-echo "* Backing up databases ..." >> ${LOGFILE}
+echo "* Backing up databases: ${DATABASES}." >> ${LOGFILE}
 for db in ${DATABASES}; do
     #backup_db ${db} >>${LOGFILE}
 
@@ -168,6 +168,7 @@ for db in ${DATABASES}; do
             sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup: ${db}. Original file size: ${original_size}, compressed: ${compressed_size}, backup file: ${compressed_file_name}', 'cron_backup_sql', '127.0.0.1', NOW());"
         else
             # backup failed
+            export BACKUP_SUCCESS='NO'
             sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup failed: ${db}, check log file ${LOGFILE} for more details.', 'cron_backup_sql', '127.0.0.1', NOW());"
         fi
 
