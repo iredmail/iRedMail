@@ -145,7 +145,8 @@ done
 
 # Append file size of backup files.
 echo -e "* File size:\n----" >>${LOGFILE}
-${CMD_DU} ${BACKUP_DIR}/*${TIMESTAMP}*sql* >>${LOGFILE}
+cd ${BACKUP_DIR} && \
+${CMD_DU} *${TIMESTAMP}*sql* >>${LOGFILE}
 echo "----" >>${LOGFILE}
 
 echo "* Backup completed (Success? ${BACKUP_SUCCESS})." >>${LOGFILE}

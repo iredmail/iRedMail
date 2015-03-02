@@ -514,6 +514,7 @@ EOF
 \$max_servers = ${AMAVISD_MAX_SERVERS};
 
 \$sa_spam_subject_tag = '[SPAM] ';
+\$localhost_name = \$myhostname;
 
 1;  # insure a defined return
 EOF
