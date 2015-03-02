@@ -48,11 +48,21 @@ STORAGE_BASE = '/'.join(std)
 #       - hashed: d/do/domain.ltd/z/zh/zha/zhang/
 #       - normal: domain.ltd/zhang/
 HASHED_MAILDIR = True
+
+# Default password schemes.
+# Multiple passwords are supported if you separate schemes with '+'.
+# For example: 'SSHA+NTLM', 'CRAM-MD5+SSHA', 'CRAM-MD5+SSHA+MD5'.
+DEFAULT_PASSWORD_SCHEME = 'SSHA'
+
+# Do not prefix password scheme name in password hash.
+HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME = ['NTLM']
 # ------------------------------------------------------------------
 
 import os
 import sys
 import time
+from subprocess import Popen, PIPE
+from base64 import b64encode
 import re
 
 try:
@@ -116,6 +126,68 @@ def convEmailToUserDN(email):
 
     return dn
 
+
+def generate_password_hash(p, pwscheme=None):
+    """Generate password for LDAP mail user and admin."""
+    p = str(p).strip()
+
+    if not pwscheme:
+        pwscheme = DEFAULT_PASSWORD_SCHEME
+
+    # Supports returning multiple passwords.
+    pw_schemes = pwscheme.split('+')
+    pws = []
+
+    for scheme in pw_schemes:
+        if scheme == 'PLAIN':
+            pws.append(p)
+        else:
+            pw = generate_password_with_doveadmpw(scheme, p)
+
+            if scheme in HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME:
+                pw = pw.lstrip('{' + scheme + '}')
+
+            pws.append(pw)
+
+    return pws
+
+
+def generate_ssha_password(p):
+    p = str(p).strip()
+    salt = os.urandom(8)
+    try:
+        from hashlib import sha1
+        pw = sha1(p)
+    except ImportError:
+        import sha
+        pw = sha.new(p)
+    pw.update(salt)
+    return "{SSHA}" + b64encode(pw.digest() + salt)
+
+
+def generate_password_with_doveadmpw(scheme, plain_password):
+    """Generate password hash with `doveadm pw` command.
+    Return SSHA instead if no 'doveadm' command found or other error raised."""
+    # scheme: CRAM-MD5, NTLM
+    scheme = scheme.upper()
+    p = str(plain_password).strip()
+
+    try:
+        pp = Popen(['doveadm', 'pw', '-s', scheme, '-p', p],
+                   stdout=PIPE)
+        pw = pp.communicate()[0]
+
+        if scheme in HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME:
+            pw.lstrip('{' + scheme + '}')
+
+        # remove '\n'
+        pw = pw.strip()
+
+        return pw
+    except:
+        return generate_ssha_password(p)
+
+
 def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     # Append timestamp in maildir path
     DATE = time.strftime('%Y.%m.%d.%H.%M.%S')
@@ -161,7 +233,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     ldif = [
         ('objectClass',         ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount',]),
         ('mail',                [mail]),
-        ('userPassword',        [passwd]),
+        ('userPassword',        generate_password_hash(passwd)),
         ('mailQuota',           [quota]),
         ('cn',                  [cn]),
         ('sn',                  [username]),

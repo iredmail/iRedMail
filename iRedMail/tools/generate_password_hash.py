@@ -6,6 +6,10 @@ from subprocess import Popen, PIPE
 from base64 import b64encode
 
 
+# Do not prefix password scheme name in password hash.
+HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME = ['NTLM']
+
+
 def generate_bcrypt_password(p):
     try:
         import bcrypt
@@ -50,6 +54,26 @@ def generate_md5_password(p):
     return '{crypt}' + pp.communicate()[0]
 
 
+def generate_password_with_doveadmpw(scheme, plain_password):
+    """Generate password hash with `doveadm pw` command.
+    Return SSHA instead if no 'doveadm' command found or other error raised."""
+    # scheme: CRAM-MD5, NTLM
+    scheme = scheme.upper()
+    p = str(plain_password).strip()
+
+    try:
+        pp = Popen(['doveadm', 'pw', '-s', scheme, '-p', p],
+                   stdout=PIPE)
+        pw = pp.communicate()[0]
+
+        if scheme in HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME:
+            pw = pw.lstrip('{' + scheme + '}')
+
+        return pw
+    except:
+        return generate_ssha_password(p)
+
+
 if __name__ == '__main__':
     scheme = sys.argv[1]
     password = sys.argv[2]
@@ -61,5 +85,7 @@ if __name__ == '__main__':
         print generate_ssha_password(password)
     elif scheme == 'MD5':
         print generate_md5_password(password)
+    elif scheme == 'NTLM':
+        print generate_password_with_doveadmpw('NTLM', password)
     else:
         print generate_ssha_password(password)
