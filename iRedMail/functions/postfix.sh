@@ -64,16 +64,8 @@ postfix_config_basic()
     # Disable the rewriting of "site!user" into "user@site".
     postconf -e swap_bangpath='no'
 
-    # Remove the characters before first dot in myhostname is mydomain.
-    echo "${HOSTNAME}" | grep '\..*\.' &>/dev/null
-    if [ X"$?" == X"0" ]; then
-        mydomain="$(echo "${HOSTNAME}" | awk -F'.' '{print $2 "." $3}')"
-        postconf -e mydomain="${mydomain}"
-    else
-        postconf -e mydomain="${HOSTNAME}"
-    fi
-
-    postconf -e mydestination="\$myhostname, localhost, localhost.localdomain, localhost.\$myhostname"
+    postconf -e mydomain="${HOSTNAME}"
+    postconf -e mydestination="\$myhostname, localhost, localhost.localdomain"
     # Do not notify local user.
     postconf -e biff='no'
     postconf -e inet_interfaces="all"
