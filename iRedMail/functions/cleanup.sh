@@ -113,7 +113,7 @@ cleanup_replace_firewall_rules()
     else
         # Replace port number in iptable, pf and Fail2ban.
         [ X"${USE_FIREWALLD}" == X'YES' ] && \
-            perl -pi -e 's#(.* )22( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
+            perl -pi -e 's#(.*)22(.*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
 
         perl -pi -e 's#(.* )22( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/iptables.rules
         perl -pi -e 's#(.*mail_services=.*)ssh( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/pf.conf

@@ -55,16 +55,15 @@ postfix_config_basic()
         [ -f $i ] && cp ${i} ${POSTFIX_CHROOT_DIR}/etc/
     done
 
-    # Normally, myhostname is the same as myorigin.
     postconf -e myhostname="${HOSTNAME}"
     postconf -e myorigin="${HOSTNAME}"
+    postconf -e mydomain="${HOSTNAME}"
 
     # Disable the rewriting of the form "user%domain" to "user@domain".
     postconf -e allow_percent_hack='no'
     # Disable the rewriting of "site!user" into "user@site".
     postconf -e swap_bangpath='no'
 
-    postconf -e mydomain="${HOSTNAME}"
     postconf -e mydestination="\$myhostname, localhost, localhost.localdomain"
     # Do not notify local user.
     postconf -e biff='no'
