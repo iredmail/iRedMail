@@ -45,6 +45,7 @@ $config['preview_pane'] = true;
 $config['default_list_mode'] = 'threads';
 $config['autoexpand_threads'] = 2;
 $config['check_all_folders'] = true;
+$config['default_font_size'] = '12pt';
 
 // PLUGINS
 $config['plugins'] = array('managesieve', 'password');

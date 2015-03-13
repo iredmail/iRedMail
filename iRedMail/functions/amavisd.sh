@@ -260,10 +260,10 @@ EOF
 amavisd_config_general()
 {
     # Disable $final_xxx_destiny to avoid duplicate
-    perl -pi -e 's/^(\$final_virus_destiny.*)/#${1}/' ${AMAVISD_CONF}
-    perl -pi -e 's/^(\$final_banned_destiny.*)/#${1}/' ${AMAVISD_CONF}
-    perl -pi -e 's/^(\$final_spam_destiny.*)/#${1}/' ${AMAVISD_CONF}
-    perl -pi -e 's/^(\$final_bad_header_destiny.*)/#${1}/' ${AMAVISD_CONF}
+    perl -pi -e 's/^(.final_virus_destiny.*)/#${1}/' ${AMAVISD_CONF}
+    perl -pi -e 's/^(.final_banned_destiny.*)/#${1}/' ${AMAVISD_CONF}
+    perl -pi -e 's/^(.final_spam_destiny.*)/#${1}/' ${AMAVISD_CONF}
+    perl -pi -e 's/^(.final_bad_header_destiny.*)/#${1}/' ${AMAVISD_CONF}
 
     cat >> ${AMAVISD_CONF} <<EOF
 # Set hostname.
@@ -272,13 +272,6 @@ amavisd_config_general()
 # Set listen IP/PORT.
 \$notify_method  = 'smtp:[${SMTP_SERVER}]:10025';
 \$forward_method = 'smtp:[${SMTP_SERVER}]:10025';
-
-# Set default action.
-# Available actions: D_PASS, D_BOUNCE, D_REJECT, D_DISCARD.
-\$final_virus_destiny      = D_DISCARD;
-\$final_banned_destiny     = D_BOUNCE;
-\$final_spam_destiny       = D_PASS;
-\$final_bad_header_destiny = D_PASS;
 
 @av_scanners = (
     #### http://www.clamav.net/
@@ -347,6 +340,13 @@ amavisd_config_general()
     #log_level => 4,
     #always_bcc_by_ccat => {CC_CLEAN, 'admin@example.com'},
 };
+
+# Set default action.
+# Available actions: D_PASS, D_BOUNCE, D_REJECT, D_DISCARD.
+\$final_virus_destiny      = D_DISCARD;
+\$final_banned_destiny     = D_BOUNCE;
+\$final_spam_destiny       = D_PASS;
+\$final_bad_header_destiny = D_PASS;
 
 #########################
 # Quarantine mails.
