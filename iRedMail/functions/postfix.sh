@@ -479,10 +479,10 @@ postfix_config_sasl()
     fi
 
     if [ X"${USE_CLUEBRINGER}" == X"YES" ]; then
-        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
+        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_rbl_client zen.spamhaus.org"
         postconf -e smtpd_end_of_data_restrictions="${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER}"
     else
-        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
+        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination, reject_rbl_client zen.spamhaus.org"
 
     fi
 
