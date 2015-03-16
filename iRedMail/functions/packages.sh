@@ -389,17 +389,17 @@ install_all()
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces python-beautifulsoup4 python-lxml"
         [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
         [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy python-beautifulsoup"
         [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
         [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt"
+        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-beautifulsoup4 py-lxml"
     fi
 
     # Awstats.

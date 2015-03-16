@@ -939,7 +939,7 @@ EOF
     # iRedAdmin
     # mod_wsgi
     #ALL_PORTS="${ALL_PORTS} www/mod_wsgi3 www/webpy devel/py-Jinja2 net/py-netifaces"
-    ALL_PORTS="${ALL_PORTS} www/mod_wsgi3 www/webpy net/py-netifaces"
+    ALL_PORTS="${ALL_PORTS} www/mod_wsgi3 www/webpy net/py-netifaces devel/py-lxml www/py-beautifulsoup"
     # bcrypt
     ALL_PORTS="${ALL_PORTS} security/py-bcrypt"
 

@@ -152,5 +152,11 @@ Steps to import these users looks like below:
     mysql> USE vmail;
     mysql> SOURCE ${SQL};
 
+Or, PostgreSQL:
+
+    # su - postgres
+    $ psql -d vmail
+    sql> \i ${SQL};
+
 EOF
 fi
