@@ -15,7 +15,7 @@ iRedMail-0.9.1:
           as SASL server.
 
     * Updated packages:
-        + Roundcube webmail -> 1.1.0
+        + Roundcube webmail -> 1.1.1
         + uwsgi -> 2.0.9. OpenBSD only.
 
 iRedMail-0.9.0:

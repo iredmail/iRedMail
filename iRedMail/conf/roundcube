@@ -23,7 +23,7 @@
 # ---------------------------------------
 # RoundcubeMail. http://roundcube.net
 # ---------------------------------------
-export RCM_VERSION='1.1.0'
+export RCM_VERSION='1.1.1'
 export RCM_TARBALL="roundcubemail-${RCM_VERSION}-complete.tar.gz"
 export RCM_USE_SOURCE='YES'
 
