@@ -421,7 +421,7 @@ install_all()
             ENABLED_SERVICES="${ENABLED_SERVICES} ${FAIL2BAN_RC_SCRIPT_NAME}"
 
             if [ X"${DISTRO}" == X'RHEL' ]; then
-                DISABLED_SERVICES="${DISABLED_SERVICES} shorewall"
+                DISABLED_SERVICES="${DISABLED_SERVICES} shorewall gamin gamin-python"
             fi
         fi
     fi
