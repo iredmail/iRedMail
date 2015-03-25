@@ -161,7 +161,8 @@ CREATE TABLE IF NOT EXISTS mailbox (
     `enableindexer-worker` TINYINT(1) NOT NULL DEFAULT 1,
     enablelmtp TINYINT(1) NOT NULL DEFAULT 1,
     enabledsync TINYINT(1) NOT NULL DEFAULT 1,
-    allow_nets TEXT NOT NULL DEFAULT '',
+    -- Must be set to NULL if it's not restricted.
+    allow_nets TEXT DEFAULT NULL,
     lastlogindate DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     lastloginipv4 INT(4) UNSIGNED NOT NULL DEFAULT 0,
     lastloginprotocol CHAR(255) NOT NULL DEFAULT '',

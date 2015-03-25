@@ -147,7 +147,8 @@ CREATE TABLE mailbox (
     "enableindexer-worker" INT2 NOT NULL DEFAULT 1,
     enablelmtp INT2 NOT NULL DEFAULT 1,
     enabledsync INT2 NOT NULL DEFAULT 1,
-    allow_nets TEXT NOT NULL DEFAULT '',
+    -- Must be set to NULL if it's not restricted.
+    allow_nets TEXT DEFAULT NULL,
     lastlogindate TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     lastloginipv4 INET NOT NULL DEFAULT '0.0.0.0',
     lastloginprotocol CHAR(255) NOT NULL DEFAULT '',

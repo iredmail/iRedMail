@@ -1,5 +1,14 @@
 iRedMail-0.9.1:
     * Improvements:
+        - Allow to restrict user to login for specified IP addresses or
+          networks, multiple IP addresses or networks must be separated by
+          comma.
+
+          o LDAP: IP addresses or networks must be listed in attribute
+                  `allowNets` in user object.
+          o SQL: IP addresses or networks must be listed in SQL column
+                  `mailbox.allow_nets`.
+
         - Bypass greylisting for some big ISPs
           (samples/cluebringer/greylisting-whitelist.sql).
         - Setup Fail2ban to monitor SOGo log file.
