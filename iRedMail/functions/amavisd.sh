@@ -138,9 +138,6 @@ amavisd_config_rhel()
     # Disable defang banned mail.
     perl -pi -e 's#(.*defang_banned = )1(;.*)#${1}0${2}#' ${AMAVISD_CONF}
 
-    # Reset $sa_spam_subject_tag, default is '***SPAM***'.
-    perl -pi -e 's#(.*sa_spam_subject_tag.*=)(.*SPAM.*)#${1} "[SPAM] ";#' ${AMAVISD_CONF}
-
     # TODO fixed on RHEL & Debian/Ubuntu.
     # Allow clients on my internal network to bypass scanning.
     #perl -pi -e 's#(.*policy_bank.*MYNETS.*\{)(.*)#${1} bypass_spam_checks_maps => [1], bypass_banned_checks_maps => [1], bypass_header_checks_maps => [1], ${2}#' ${AMAVISD_CONF}
@@ -383,11 +380,6 @@ amavisd_config_general()
 #\$clean_quarantine_method = 'sql:';
 #\$clean_quarantine_to = 'clean-quarantine';
 
-# Modify email subject, add '\$sa_spam_subject_tag'.
-#   0:  disable
-#   1:  enable
-\$sa_spam_modifies_subj = 1;
-
 \$sql_allow_8bit_address = 1;
 \$timestamp_fmt_mysql = 1;
 
@@ -513,7 +505,6 @@ EOF
 # /etc/postfix/master.cf "maxproc" column for the 'smtp-amavis' service.
 \$max_servers = ${AMAVISD_MAX_SERVERS};
 
-\$sa_spam_subject_tag = '[SPAM] ';
 \$localhost_name = \$myhostname;
 
 1;  # insure a defined return

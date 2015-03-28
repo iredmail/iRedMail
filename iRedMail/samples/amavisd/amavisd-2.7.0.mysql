@@ -48,8 +48,6 @@ CREATE TABLE policy (
   bypass_banned_checks  char(1) default NULL,     -- Y/N
   bypass_header_checks  char(1) default NULL,     -- Y/N
 
-  spam_modifies_subj    char(1) default NULL,     -- Y/N
-
   virus_quarantine_to      varchar(64) default NULL,
   spam_quarantine_to       varchar(64) default NULL,
   banned_quarantine_to     varchar(64) default NULL,
