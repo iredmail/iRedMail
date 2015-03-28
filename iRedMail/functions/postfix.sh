@@ -43,7 +43,8 @@ postfix_config_basic()
 
     # Comment out the parameter first to avoid duplicate entries
     perl -pi -e 's/^(inet_protocols*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
-    postconf -e inet_protocols='all'
+    # Disable IPv6 here since old Cluebringer release doesn't support ipv6.
+    postconf -e inet_protocols='ipv4'
 
     # Do not set virtual_alias_domains.
     perl -pi -e 's/^(virtual_alias_domains*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}

@@ -12,6 +12,13 @@ $config['default_host'] = '127.0.0.1';
 $config['default_port'] = 143;
 $config['imap_auth_type'] = 'LOGIN';
 $config['imap_delimiter'] = '/';
+// Required if you're running PHP 5.6
+$config['imap_conn_options'] = array(
+    'ssl' => array(
+        'verify_peer'  => false,
+        'verify_peer_name' => false,
+    ),
+);
 
 // SMTP
 $config['smtp_server'] = 'tls://PH_SMTP_SERVER';
@@ -19,6 +26,13 @@ $config['smtp_port'] = 587;
 $config['smtp_user'] = '%u';
 $config['smtp_pass'] = '%p';
 $config['smtp_auth_type'] = 'LOGIN';
+// Required if you're running PHP 5.6
+$config['smtp_conn_options'] = array(
+    'ssl' => array(
+        'verify_peer'      => false,
+        'verify_peer_name' => false,
+    ),
+);
 
 // Use user's identity as envelope sender for 'return receipt' responses,
 // otherwise it will be rejected by iRedAPD plugin `reject_null_sender`.

@@ -15,6 +15,7 @@ iRedMail-0.9.1:
         - Add two new Fail2ban filters to help catch spam.
 
     * Fixed issues:
+        - Cannot send mail with Roundcube and PHP 5.6.
         - Cannot run PHP scripts under web document root with Nginx.
         - Not use user's identity as envelope sender for 'return receipt'
           responses.
