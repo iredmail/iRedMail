@@ -1,5 +1,8 @@
 iRedMail-0.9.1:
     * Improvements:
+        - Make Dovecot subscribe newly created folder automatically.
+          Thanks Michael Telatynski <postmaster _at_ webdevguru.co.uk> for the
+          patch.
         - Allow to restrict user to login for specified IP addresses or
           networks, multiple IP addresses or networks must be separated by
           comma.
