@@ -98,7 +98,7 @@ postfix_config_basic()
     postconf -e smtp_tls_note_starttls_offer='yes'
 
     # Sender restrictions
-    postconf -e smtpd_sender_restrictions="permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"
+    postconf -e smtpd_sender_restrictions="reject_unknown_sender_domain, reject_non_fqdn_sender, reject_unlisted_sender, permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"
 
     postconf -e delay_warning_time='0h'
     postconf -e maximal_queue_lifetime='4h'
@@ -480,10 +480,10 @@ postfix_config_sasl()
     fi
 
     if [ X"${USE_CLUEBRINGER}" == X"YES" ]; then
-        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
+        postconf -e smtpd_recipient_restrictions="reject_unknown_recipient_domain, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
         postconf -e smtpd_end_of_data_restrictions="${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER}"
     else
-        postconf -e smtpd_recipient_restrictions="reject_unknown_sender_domain, reject_unknown_recipient_domain, reject_non_fqdn_sender, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
+        postconf -e smtpd_recipient_restrictions="reject_unknown_recipient_domain, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
 
     fi
 
