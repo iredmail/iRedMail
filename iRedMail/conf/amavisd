@@ -64,10 +64,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    # Ubuntu 12.04 ships Amavisd-new-2.6.x
-    if [ X"${DISTRO_CODENAME}" == X'precise' ]; then
-        export AMAVISD_VERSION='2.6'
-    fi
     export AMAVISD_BIN='/usr/sbin/amavisd-new'
     export AMAVISD_CONF_DIR='/etc/amavis/conf.d'
     export AMAVISD_CONF='/etc/amavis/conf.d/50-user'

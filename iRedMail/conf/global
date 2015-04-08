@@ -265,15 +265,14 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
         export DISTRO='UBUNTU'
 
         # Ubuntu version number and code name:
-        #   - 12.04: precise (Long Term support by Ubuntu)
         #   - 14.04: trusty
         #   - 14.10: utopic
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
 
-        # Unsupported releases: 12.10, 13.04, 13.10
-        if echo "${DISTRO_VERSION}" | grep -E '^(12\.10|13\.04|13\.10)' &>/dev/null ; then
+        # Unsupported releases: 12.x, 13.x
+        if echo "${DISTRO_VERSION}" | grep -E '^(12|13)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then
@@ -442,9 +441,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export SYSLOG_POSTROTATE_CMD='reload rsyslog &>/dev/null || true'
 
         # MariaDB support requires Ubuntu >= 14.04
-        if [ X"${DISTRO_CODENAME}" != X'precise' ]; then
-            export ENABLE_BACKEND_MARIADB='YES'
-        fi
+        export ENABLE_BACKEND_MARIADB='YES'
     fi
 
     if [ X"${DISTRO}" == X'DEBIAN' ]; then

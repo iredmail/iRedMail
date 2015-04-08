@@ -49,11 +49,8 @@ EOF
 
     # Enable this config file on Ubuntu 13.10 and later releases.
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        if [ X"${DISTRO_CODENAME}" != X'wheezy' \
-            -a X"${DISTRO_CODENAME}" != X'precise' ]; then
-            # Enable conf file: conf-available/roundcubemail.conf
-            a2enconf roundcubemail >> ${INSTALL_LOG} 2>&1
-        fi
+        # Enable conf file: conf-available/roundcubemail.conf
+        a2enconf roundcubemail >> ${INSTALL_LOG} 2>&1
     fi
 
     # Make Roundcube can be accessed via HTTPS.

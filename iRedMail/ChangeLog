@@ -1,4 +1,7 @@
 iRedMail-0.9.1:
+    * Drop support for old distributions:
+        - Ubuntu 12.04. Please use Ubuntu 14.04 LTS instead.
+
     * Improvements:
         - Make Dovecot subscribe newly created folder automatically.
           Thanks Michael Telatynski <postmaster _at_ webdevguru.co.uk> for the

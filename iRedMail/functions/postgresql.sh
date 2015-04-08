@@ -190,7 +190,7 @@ GRANT USAGE,SELECT,UPDATE ON deleted_mailboxes_id_seq TO ${VMAIL_DB_ADMIN_USER};
 INSERT INTO domain (domain,transport,settings,created) VALUES ('${FIRST_DOMAIN}', '${TRANSPORT}', 'default_user_quota:1024;', NOW());
 
 -- Add first mail user
-INSERT INTO mailbox (username,password,name,maildir,quota,domain,isadmin,isglobaladmin,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}','${FIRST_USER_PASSWD}','${FIRST_USER}','${FIRST_USER_MAILDIR_HASH_PART}',100, '${FIRST_DOMAIN}', 1, 1, NOW());
+INSERT INTO mailbox (username,password,name,maildir,quota,domain,isadmin,isglobaladmin,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}','${FIRST_USER_PASSWD}','${FIRST_USER}','${FIRST_USER_MAILDIR_HASH_PART}',1024, '${FIRST_DOMAIN}', 1, 1, NOW());
 INSERT INTO alias (address,goto,domain,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}', '${FIRST_USER}@${FIRST_DOMAIN}', '${FIRST_DOMAIN}', NOW());
 
 -- Mark first mail user as global admin

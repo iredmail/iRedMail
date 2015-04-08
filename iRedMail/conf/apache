@@ -62,8 +62,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export HTTPD_SERVERROOT='/usr/share/apache2'
     export HTTPD_DOCUMENTROOT="/var/www"
 
-    if [ X"${DISTRO_CODENAME}" == X'wheezy' \
-        -o X"${DISTRO_CODENAME}" == X'precise' ]; then
+    if [ X"${DISTRO_CODENAME}" == X'wheezy' ]; then
         export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
         export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/sites-available/default-ssl"
         export HTTPD_MOD_CONF_SECURITY="${HTTPD_CONF_DIR}/security"
