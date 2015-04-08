@@ -37,10 +37,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
         export HTTPD_WSGI_CONF="${HTTPD_MODULES_DIR}/10-wsgi.conf"
     fi
 
-    # Web data.
-    export HTTPD_SERVERROOT='/var/www'
-    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/html"
-
     # Daemon user.
     export HTTPD_USER='apache'
     export HTTPD_GROUP='apache'
@@ -50,10 +46,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export HTTPD_LOG_ERRORLOG='/var/log/httpd/error_log'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    # Daemon user.
-    export HTTPD_USER='www-data'
-    export HTTPD_GROUP='www-data'
-
     # Apache configuration files.
     export HTTPD_CONF_ROOT="/etc/apache2"
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/apache2.conf"
@@ -110,14 +102,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/httpd.conf"
     export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/modules"
     export HTTPD_SSL_CONF="${HTTPD_CONF}"
-
-    # Web data.
-    export HTTPD_SERVERROOT='/var/www'
-    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/htdocs"
-
-    # Daemon user.
-    export HTTPD_USER='www'
-    export HTTPD_GROUP='www'
 
     # Log file location.
     export HTTPD_LOG_ACCESSLOG="${HTTPD_SERVERROOT}/logs/access_log"

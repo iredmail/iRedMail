@@ -46,8 +46,8 @@ nginx_config()
     perl -pi -e 's#PH_NGINX_CONF_DIR#$ENV{NGINX_CONF_DIR}#g' ${NGINX_CONF}
 
     # top directory used to store temporary user uploaded file and other stuffs.
-    [ -d /var/lib/nginx ] && \
-        chown -R ${HTTPD_USER}:${HTTPD_GROUP} /var/lib/nginx
+    #[ -d /var/lib/nginx ] && \
+    #    chown -R ${HTTPD_USER}:${HTTPD_GROUP} /var/lib/nginx
 
     # default server
     perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${NGINX_CONF_DEFAULT}
@@ -91,13 +91,11 @@ nginx_config()
 
         perl -pi -e 's/^(plugins.*)/#${1}/' ${UWSGI_CONF_DIR}/iredadmin.ini
 
-        if [ X"${DEFAULT_WEB_SERVER}" == X'NGINX' ]; then
-            service_control enable 'nginx_enable' 'YES'
-            service_control enable 'php_fpm_enable' 'YES'
-            service_control enable 'uwsgi_enable' 'YES'
-            service_control enable 'uwsgi_profiles' 'iredadmin'
-            service_control enable 'uwsgi_iredadmin_flags' '--ini /usr/local/etc/uwsgi/iredadmin.ini'
-        fi
+        service_control enable 'nginx_enable' 'YES'
+        service_control enable 'php_fpm_enable' 'YES'
+        service_control enable 'uwsgi_enable' 'YES'
+        service_control enable 'uwsgi_profiles' 'iredadmin'
+        service_control enable 'uwsgi_iredadmin_flags' '--ini /usr/local/etc/uwsgi/iredadmin.ini'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable unchrooted Nginx
         echo 'nginx_flags="-u"' >> ${RC_CONF_LOCAL}

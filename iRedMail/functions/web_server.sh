@@ -47,7 +47,11 @@ EOF
 
 web_server_config()
 {
-    if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
+    # Create required directories
+    [ -d ${HTTPD_SERVERROOT} ] || mkdir -p ${HTTPD_SERVERROOT} >> ${INSTALL_LOG} 2>&1
+    [ -d ${HTTPD_DOCUMENTROOT} ] || mkdir -p ${HTTPD_DOCUMENTROOT} >> ${INSTALL_LOG} 2>&1
+
+    if [ X"${USE_APACHE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
             # The new built-in httpd daemon (Not Apache-1.3) is not supported.
             :
@@ -57,7 +61,7 @@ web_server_config()
         fi
     fi
 
-    if [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ]; then
+    if [ X"${USE_NGINX}" == X'YES' ]; then
         . ${FUNCTIONS_DIR}/nginx.sh
         check_status_before_run nginx_config
     fi

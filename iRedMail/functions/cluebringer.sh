@@ -379,7 +379,7 @@ cluebringer_webui_config()
     perl -pi -e 's#(.DB_PASS=).*#${1}"$ENV{CLUEBRINGER_DB_PASSWD}";#' ${CLUEBRINGER_WEBUI_CONF}
 
     # Make Cluebringer accessible via HTTPS.
-    if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
+    if [ X"${USE_APACHE}" == X'YES' ]; then
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /cluebringer "$ENV{CLUEBRINGER_HTTPD_ROOT}/"\n${1}#' ${HTTPD_SSL_CONF}
 
         cat > ${CLUEBRINGER_HTTPD_CONF} <<EOF

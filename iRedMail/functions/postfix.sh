@@ -465,8 +465,7 @@ postfix_config_sasl()
     postconf -e broken_sasl_auth_clients="yes"
     postconf -e smtpd_sasl_security_options="noanonymous"
 
-    # offer SASL authentication only after a TLS-encrypted session has been
-    # established
+    # Offer SASL authentication only after a TLS-encrypted session has been established
     postconf -e smtpd_tls_auth_only='yes'
 
     POSTCONF_IREDAPD=''

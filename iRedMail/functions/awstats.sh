@@ -175,7 +175,7 @@ EOF
 EOF
 
     # Make Awstats accessible via HTTPS.
-    if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
+    if [ X"${USE_APACHE}" == X'YES' ]; then
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(\s*</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}

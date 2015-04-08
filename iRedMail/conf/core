@@ -320,7 +320,7 @@ service_control()
         for srv in ${services}; do
             ECHO_DEBUG "Service control: $action $srv."
 
-            if [ X"${USE_FIREWALLD}" == X'YES' ]; then
+            if [ X"${USE_SYSTEMD}" == X'YES' ]; then
                 systemctl $action $srv
             else
                 rc_script="${DIR_RC_SCRIPTS}/$srv"

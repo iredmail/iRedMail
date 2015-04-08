@@ -34,7 +34,8 @@ dovecot_config()
 
     # RHEL/CentOS 6:    Dovecot-2.1.x
     # Debian 7:         Dovecot-2.1.x
-    # Ubuntu 12.04:     Dovecot-2.0.x
+    # Debian 8:         Dovecot-2.2.x
+    # Ubuntu 14.04:     Dovecot-2.2.x
     dovecot_version="$(dovecot --version | cut -c1,2,3)"
     if [ X"${dovecot_version}" == X'2.0' -o X"${dovecot_version}" == X'2.1' ]; then
         cp ${SAMPLE_DIR}/dovecot/dovecot2.conf ${DOVECOT_CONF}

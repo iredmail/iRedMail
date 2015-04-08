@@ -113,7 +113,7 @@ install_all()
             fi
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql"
-            if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
+            if [ X"${USE_APACHE}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
             fi
 
@@ -143,7 +143,7 @@ install_all()
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
 
-            if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
+            if [ X"${USE_APACHE}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
             fi
 
@@ -171,18 +171,20 @@ install_all()
     fi
 
     # Apache. Always install Apache.
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
-    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        # Will be installed as dependency of 'libapache2-mod-php5'
-        ALL_PKGS="${ALL_PKGS} libapache2-mod-php5"
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # Apache is available in base system
-        :
+    if [ X"${USE_APACHE}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            # Will be installed as dependency of 'libapache2-mod-php5'
+            ALL_PKGS="${ALL_PKGS} libapache2-mod-php5"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            # Apache is not available in base system
+            :
+        fi
     fi
 
     # Nginx
-    if [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ]; then
+    if [ X"${USE_NGINX}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} nginx php-fpm"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -194,7 +196,7 @@ install_all()
         fi
     fi
 
-    if [ X"${DEFAULT_WEB_SERVER}" == X'NGINX' ]; then
+    if [ X"${USE_NGINX}" == X'YES' ]; then
         # Use Nginx as web server if it's selected.
         # php-fpm will be listed in variable 'pkg_scripts' in /etc/rc.conf.local.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
@@ -204,25 +206,27 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
     fi
 
-    # Policyd.
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} cluebringer perl-DBD-MySQL perl-DBD-Pg"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
+    # Cluebringer
+    if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            ALL_PKGS="${ALL_PKGS} cluebringer perl-DBD-MySQL perl-DBD-Pg"
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
-    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
+            ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
-        if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-            if [ X"${BACKEND_ORIG}" != X'MARIADB' ]; then
-                ALL_PKGS="${ALL_PKGS} postfix-cluebringer-mysql"
+            if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+                if [ X"${BACKEND_ORIG}" != X'MARIADB' ]; then
+                    ALL_PKGS="${ALL_PKGS} postfix-cluebringer-mysql"
+                fi
+            elif [ X"${BACKEND}" == X"PGSQL" ]; then
+                ALL_PKGS="${ALL_PKGS} postfix-cluebringer-pgsql"
             fi
-        elif [ X"${BACKEND}" == X"PGSQL" ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-cluebringer-pgsql"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            # No port available.
+            :
         fi
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # No port available.
-        :
     fi
 
     # Dovecot.
@@ -331,18 +335,22 @@ install_all()
             ${YUM} clean metadata &>/dev/null
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} sogo sogo-activesync"
+            if [ X"${DISTRO_CODENAME}" == X'wheezy' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
+                ALL_PKGS="${ALL_PKGS} sogo sogo-activesync"
 
-            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
-            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
-            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-postgresql"
+                [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
+                [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
+                [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-postgresql"
 
-            ECHO_INFO "Add official apt repo for SOGo in /etc/apt/sources.list"
-            if ! grep "http://inverse.ca ${DISTRO_CODENAME}" /etc/apt/sources.list &>/dev/null; then
-                if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                    echo "deb http://inverse.ca/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
-                elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                    echo "deb http://inverse.ca/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                ECHO_INFO "Add official apt repo for SOGo in /etc/apt/sources.list"
+                if ! grep "http://inverse.ca ${DISTRO_CODENAME}" /etc/apt/sources.list &>/dev/null; then
+                    if [ X"${DISTRO}" == X'wheezy' ]; then
+                        # Debian 7
+                        echo "deb http://inverse.ca/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    elif [ X"${DISTRO}" == X'trusty' ]; then
+                        # Ubuntu 14.04
+                        echo "deb http://inverse.ca/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    fi
                 fi
             fi
 
@@ -390,13 +398,13 @@ install_all()
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces python-beautifulsoup4 python-lxml"
-        [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
-        [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
+        [ X"${USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
+        [ X"${USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy python-beautifulsoup"
-        [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
-        [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
+        [ X"${USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
+        [ X"${USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-beautifulsoup4 py-lxml"

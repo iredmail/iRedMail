@@ -103,35 +103,36 @@ echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${IREDMAIL_CONFIG_F
 # --------------------------------------------------
 # ------------ Default web server ------------------
 # --------------------------------------------------
+export USE_APACHE='NO'
+export USE_NGINX='NO'
 if [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export DEFAULT_WEB_SERVER='NGINX'
-    echo "export DEFAULT_WEB_SERVER='NGINX'" >>${IREDMAIL_CONFIG_FILE}
+    export USE_NGINX='YES'
 else
     while : ; do
         ${DIALOG} \
-        --title "Choose default web server" \
-        --radiolist "Both Apache and Nginx will be installed on your server, please choose the default web server you want to run. You're free to switch between them after installation completed.
+        --title "Preferred web server" \
+        --radiolist "Choose a web server you want to run.
 
 TIP: Use SPACE key to select item." \
 20 76 2 \
 "Nginx" "The fastest web server" "on" \
 "Apache" "The most popular web server" "off" \
-2>/tmp/default_web_server
+2>/tmp/web_server
 
-    default_web_server="$(cat /tmp/default_web_server | tr '[a-z]' '[A-Z]')"
-    [ X"${default_web_server}" != X"" ] && break
+    web_server="$(cat /tmp/web_server | tr '[a-z]' '[A-Z]')"
+    [ X"${web_server}" != X"" ] && break
     done
 
-    if [ X"${default_web_server}" == X'APACHE' ]; then
-        export DEFAULT_WEB_SERVER='APACHE'
-        echo "export DEFAULT_WEB_SERVER='APACHE'" >>${IREDMAIL_CONFIG_FILE}
+    if [ X"${web_server}" == X'APACHE' ]; then
+        export USE_APACHE='YES'
     else
-        export DEFAULT_WEB_SERVER='NGINX'
-        echo "export DEFAULT_WEB_SERVER='NGINX'" >>${IREDMAIL_CONFIG_FILE}
+        export USE_NGINX='YES'
     fi
-    rm -f /tmp/default_web_server
+    rm -f /tmp/web_server
 fi
 
+echo "export USE_NGINX='${USE_NGINX}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export USE_APACHE='${USE_APACHE}'" >>${IREDMAIL_CONFIG_FILE}
 
 # --------------------------------------------------
 # --------------------- Backends --------------------

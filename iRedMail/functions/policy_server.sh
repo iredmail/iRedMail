@@ -44,12 +44,14 @@ policy_server_config()
         ECHO_INFO "Configure Cluebringer (postfix policy server)."
         check_status_before_run cluebringer_user
         check_status_before_run cluebringer_config
-        check_status_before_run cluebringer_webui_config
+        [ X"${USE_APACHE}" == X'YES' ] && check_status_before_run cluebringer_webui_config
     fi
 
     # OpenBSD special
-    if [ X"${USE_SPAMD}" == X'YES' ]; then
-        check_status_before_run openbsd_spamd_config
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        if [ X"${USE_SPAMD}" == X'YES' ]; then
+            check_status_before_run openbsd_spamd_config
+        fi
     fi
 
     echo 'export status_policy_server_config="DONE"' >> ${STATUS_FILE}

@@ -23,7 +23,10 @@
 # Use Cluebringer by default
 export USE_CLUEBRINGER='YES'
 
-if [ X"${DISTRO}" == X'OPENBSD' ]; then
+if [ X"${DISTRO}" == X'DEBIAN' ]; then
+    # Not available on Debian 8 yet.
+    [ X"${DISTRO_CODENAME}" == X'jessie' ] && export USE_CLUEBRINGER='NO'
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export USE_CLUEBRINGER='NO'
     export USE_SPAMD='YES'
 fi

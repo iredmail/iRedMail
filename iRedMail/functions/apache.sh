@@ -126,10 +126,8 @@ apache_config()
         mkdir -p /usr/local/www/proxy/ >> ${INSTALL_LOG} 2>&1
 
         # Start service when system start up.
-        if [ X"${DEFAULT_WEB_SERVER}" == X'APACHE' ]; then
-            service_control enable "${APACHE_RC_SCRIPT_NAME}_enable" 'YES'
-            service_control enable 'htcacheclean_enable' 'NO'
-        fi
+        service_control enable "${APACHE_RC_SCRIPT_NAME}_enable" 'YES'
+        service_control enable 'htcacheclean_enable' 'NO'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # iRedMail doesn't support the built-in httpd daemon (not Apache).
         :

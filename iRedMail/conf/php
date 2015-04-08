@@ -27,32 +27,28 @@ export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
 
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
-    export APACHE_PHP_INI='/etc/php.ini'
+    export PHP_INI='/etc/php.ini'
     export PHP_FASTCGI_SOCKET='/var/run/php-fpm/php-fpm.socket'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    export APACHE_PHP_INI='/etc/php5/apache2/php.ini'
-    export APACHE_PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
+    [ X"${USE_APACHE}" == X'YES' ] && export PHP_INI='/etc/php5/apache2/php.ini'
+    [ X"${USE_NGINX}" == X'YES' ] && export PHP_INI='/etc/php5/fpm/php.ini'
+
+    export PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
     export PHP_FPM_POOL_WWW_CONF='/etc/php5/fpm/pool.d/www.conf'
     export PHP_FPM_RC_SCRIPT_NAME='php5_fpm'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Copy from example: /usr/local/etc/php.ini-production
-    export APACHE_PHP_INI='/usr/local/etc/php.ini'
+    export PHP_INI='/usr/local/etc/php.ini'
     export PHP_FPM_POOL_WWW_CONF='/usr/local/etc/php-fpm.conf'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export PHP_VERSION='5.5'
-    export APACHE_PHP_INI="/etc/php-${PHP_VERSION}.ini"
+    export PHP_INI="/etc/php-${PHP_VERSION}.ini"
     export PHP_FPM_RC_SCRIPT_NAME='php_fpm'
     export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.conf'
     export PHP_FASTCGI_SOCKET="${HTTPD_SERVERROOT}/run/php-fpm.socket"
-fi
-
-if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    export NGINX_PHP_INI='/etc/php5/fpm/php.ini'
-else
-    export NGINX_PHP_INI="${APACHE_PHP_INI}"
 fi
 
 export PHP_FASTCGI_SOCKET_FULL="unix:${PHP_FASTCGI_SOCKET}"

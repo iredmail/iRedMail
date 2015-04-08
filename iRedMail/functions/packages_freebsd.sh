@@ -625,7 +625,9 @@ EOF
     fi
     rm -f /var/db/ports/www_apache${PREFERRED_APACHE_VER}/options${SED_EXTENSION} &>/dev/null
 
-    ALL_PORTS="${ALL_PORTS} www/apache${PREFERRED_APACHE_VER}"
+    if [ X"${USE_APACHE}" == X'YES' ]; then
+        ALL_PORTS="${ALL_PORTS} www/apache${PREFERRED_APACHE_VER}"
+    fi
 
     # Nginx
     cat > /var/db/ports/www_nginx/options <<EOF
@@ -718,7 +720,7 @@ OPTIONS_FILE_UNSET+=HTTP_MP4
 OPTIONS_FILE_UNSET+=HTTP_MP4_H264
 EOF
 
-    if [ X"${WEB_SERVER_USE_NGINX}" == X'YES' ]; then
+    if [ X"${USE_NGINX}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} www/nginx www/uwsgi"
     fi
 

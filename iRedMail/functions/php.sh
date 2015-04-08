@@ -26,13 +26,13 @@ php_config()
 {
     ECHO_INFO "Configure PHP."
 
-    backup_file ${APACHE_PHP_INI} ${NGINX_PHP_INI}
+    backup_file ${PHP_INI}
 
     # FreeBSD: Copy sample file.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        cp -f /usr/local/etc/php.ini-production ${APACHE_PHP_INI}
+        cp -f /usr/local/etc/php.ini-production ${PHP_INI}
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        #if [ X"${WEB_SERVER_USE_APACHE}" == X'YES' ]; then
+        #if [ X"${USE_APACHE}" == X'YES' ]; then
         #    ln -s /var/www/conf/modules.sample/php-${PHP_VERSION}.conf /var/www/conf/modules/php.conf
         #fi
 
@@ -42,32 +42,34 @@ php_config()
         done
     fi
 
-    ECHO_DEBUG "Hide PHP Version in Apache from remote users requests: ${APACHE_PHP_INI}."
-    perl -pi -e 's#^(expose_php.*=).*#${1} Off;#' ${APACHE_PHP_INI}
+    ECHO_DEBUG "Hide PHP Version in Apache from remote users requests: ${PHP_INI}."
+    perl -pi -e 's#^(expose_php.*=).*#${1} Off;#' ${PHP_INI}
 
-    ECHO_DEBUG "Increase 'memory_limit' to 256M: ${APACHE_PHP_INI}."
-    perl -pi -e 's#^(memory_limit = ).*#${1} 256M;#' ${APACHE_PHP_INI}
+    ECHO_DEBUG "Increase 'memory_limit' to 256M: ${PHP_INI}."
+    perl -pi -e 's#^(memory_limit = ).*#${1} 256M;#' ${PHP_INI}
 
-    ECHO_DEBUG "Increase 'upload_max_filesize', 'post_max_size' to 10/12M: ${APACHE_PHP_INI}."
-    perl -pi -e 's/^(upload_max_filesize.*=).*/${1} 10M;/' ${APACHE_PHP_INI}
-    perl -pi -e 's/^(post_max_size.*=).*/${1} 12M;/' ${APACHE_PHP_INI}
+    ECHO_DEBUG "Increase 'upload_max_filesize', 'post_max_size' to 10/12M: ${PHP_INI}."
+    perl -pi -e 's/^(upload_max_filesize.*=).*/${1} 10M;/' ${PHP_INI}
+    perl -pi -e 's/^(post_max_size.*=).*/${1} 12M;/' ${PHP_INI}
 
-    ECHO_DEBUG "Disable php extension: suhosin. ${APACHE_PHP_INI}."
-    perl -pi -e 's/^(suhosin.session.encrypt.*=)/${1} Off;/' ${APACHE_PHP_INI}
-    perl -pi -e 's/^;(suhosin.session.encrypt.*=)/${1} Off;/' ${APACHE_PHP_INI}
+    ECHO_DEBUG "Disable php extension: suhosin. ${PHP_INI}."
+    perl -pi -e 's/^(suhosin.session.encrypt.*=)/${1} Off;/' ${PHP_INI}
+    perl -pi -e 's/^;(suhosin.session.encrypt.*=)/${1} Off;/' ${PHP_INI}
 
     # Set date.timezone. Required by PHP-5.3.
-    grep '^date.timezone' ${APACHE_PHP_INI} >/dev/null
+    grep '^date.timezone' ${PHP_INI} >/dev/null
     if [ X"$?" == X"0" ]; then
-        perl -pi -e 's#^(date.timezone).*#${1} = GMT#' ${APACHE_PHP_INI}
+        perl -pi -e 's#^(date.timezone).*#${1} = GMT#' ${PHP_INI}
     else
-        perl -pi -e 's#^;(date.timezone).*#${1} = GMT#' ${APACHE_PHP_INI}
+        perl -pi -e 's#^;(date.timezone).*#${1} = GMT#' ${PHP_INI}
     fi
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Disable suhosin.session.encrypt on Debian 6. Required by Roundcube webmail.
-        [ -f ${APACHE_PHP_INI_CONF_DIR}/suhosin.ini ] && \
-            perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${APACHE_PHP_INI_CONF_DIR}/suhosin.ini
+        if [ X"${USE_APACHE}" == X'YES' ]; then
+            [ -f ${PHP_INI_CONF_DIR}/suhosin.ini ] && \
+                perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${PHP_INI_CONF_DIR}/suhosin.ini
+        fi
 
         # Enable mcrypt
         php5enmod mcrypt >> ${INSTALL_LOG} 2>&1
@@ -76,15 +78,10 @@ php_config()
         php5enmod intl >> ${INSTALL_LOG} 2>&1
     fi
 
-    # Copy to ${NGINX_PHP_INI}
-    if [ X"${APACHE_PHP_INI}" != X"${NGINX_PHP_INI}" ]; then
-        cp -f ${APACHE_PHP_INI} ${NGINX_PHP_INI}
-    fi
-
     cat >> ${TIP_FILE} <<EOF
 PHP:
-    * PHP config file for Apache: ${APACHE_PHP_INI}
-    * PHP config file for Nginx: ${NGINX_PHP_INI}
+    * PHP config file for Apache: ${PHP_INI} (not exist if you're running Nginx)
+    * PHP config file for Nginx: ${NGINX_PHP_INI} (not exist if you're running Apache)
     * Disabled functions: ${PHP_DISABLED_FUNCTIONS}
 
 EOF
