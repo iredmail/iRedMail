@@ -411,7 +411,7 @@ install_all()
     fi
 
     # Awstats.
-    if [ X"${USE_AWSTATS}" == X'YES' ]; then
+    if [ X"${USE_AWSTATS}" == X'YES' -a X"${USE_APACHE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then

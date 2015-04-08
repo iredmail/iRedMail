@@ -1,8 +1,25 @@
 iRedMail-0.9.1:
+    * Works on new distribution releases:
+        - Debian 8. Notes:
+            o web applications are now stored under /opt/www.
+            o Cluebringer is not installed due to package missing in official repo.
+            o SOGo is not installed due to package missing in upstream (SOGo) repo.
+
     * Drop support for old distributions:
         - Ubuntu 12.04. Please use Ubuntu 14.04 LTS instead.
 
     * Improvements:
+        - Don't install both Apache and Nginx, just one of them.
+
+          Debian/Ubuntu package maintainer over-designed the post-install
+          script, it will restart service after package installed, if we have
+          both installed, installing another one will fail, because network
+          ports are used by the first one.
+
+          Same reason as above, if we have both installed, upgrading both of
+          them will trigger service restarting too. This may cause the
+          currently running web service cannot start.
+
         - Make Dovecot subscribe newly created folder automatically.
           Thanks Michael Telatynski <postmaster _at_ webdevguru.co.uk> for the
           patch.

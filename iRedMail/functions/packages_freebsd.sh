@@ -925,7 +925,7 @@ EOF
     fi
 
     # Awstats.
-    if [ X"${USE_AWSTATS}" == X'YES' ]; then
+    if [ X"${USE_AWSTATS}" == X'YES' -a X"${USE_APACHE}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} www/awstats"
     fi
 
