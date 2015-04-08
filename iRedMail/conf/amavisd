@@ -42,9 +42,6 @@ export AMAVISD_DB_USER='amavisd'
 export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
 export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
 
-# Amavisd-new-2.7 and 2.8.0 use the same SQL structure, but different from 2.6.
-export AMAVISD_VERSION='2.7'
-
 # Altermime.
 export ALTERMIME_BIN='/usr/bin/altermime'
 export DISCLAIMER_DIR="${POSTFIX_ROOTDIR}/disclaimer"
@@ -101,13 +98,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
 fi
 
-if [ X"${AMAVISD_VERSION}" == X'2.7' ]; then
-    export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd-2.7.0.mysql"
-    export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd-2.7.0.pgsql"
-else
-    export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.mysql"
-    export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.pgsql"
-fi
+export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.mysql"
+export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.pgsql"
 
 # Syslog setting, 'YES' or 'NO'
 export AMAVISD_SEPERATE_LOG='NO'

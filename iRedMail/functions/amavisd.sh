@@ -486,11 +486,9 @@ EOF
     fi
 
     # Don't send email with subject "UNCHECKED contents in mail FROM xxx".
-    if [ X"${AMAVISD_VERSION}" == X'2.7' ]; then
-        cat >> ${AMAVISD_CONF} <<EOF
+    cat >> ${AMAVISD_CONF} <<EOF
 delete \$admin_maps_by_ccat{&CC_UNCHECKED};
 EOF
-    fi
 
     cat >> ${AMAVISD_CONF} <<EOF
 

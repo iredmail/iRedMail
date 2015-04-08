@@ -1,6 +1,7 @@
--- MySQL template for Amavisd. Extracted from Amavisd docs/README.sql-mysql.
--- Used by @lookup_sql_dsn and @storage_sql_dsn
+-- MySQL template for Amavisd-new-2.7.0 and later releases.
+-- Extracted from Amavisd docs/README.sql-mysql.
 
+-- used in @lookup_sql_dsn
 -- local users
 CREATE TABLE users (
   id         int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,  -- unique id
@@ -11,6 +12,7 @@ CREATE TABLE users (
   -- local   char(1)      -- Y/N  (optional field, see note further down)
 );
 
+-- used in @lookup_sql_dsn
 -- any e-mail address (non- rfc2822-quoted), external or local,
 -- used as senders in wblist
 CREATE TABLE mailaddr (
@@ -19,6 +21,7 @@ CREATE TABLE mailaddr (
   email      varbinary(255) NOT NULL UNIQUE
 );
 
+-- used in @lookup_sql_dsn
 -- per-recipient whitelist and/or blacklist,
 -- puts sender and recipient in relation wb  (white or blacklisted sender)
 CREATE TABLE wblist (
@@ -28,30 +31,34 @@ CREATE TABLE wblist (
   PRIMARY KEY (rid,sid)
 );
 
+-- used in @lookup_sql_dsn
 CREATE TABLE policy (
   id  int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                     -- 'id' this is the _only_ required field
   policy_name      varchar(32),     -- not used by amavisd-new, a comment
 
-  virus_lover          char(1) default NULL,     -- Y/N
-  spam_lover           char(1) default NULL,     -- Y/N
-  banned_files_lover   char(1) default NULL,     -- Y/N
-  bad_header_lover     char(1) default NULL,     -- Y/N
+  virus_lover           char(1) default NULL,     -- Y/N
+  spam_lover            char(1) default NULL,     -- Y/N
+  unchecked_lover       char(1) default NULL,     -- Y/N
+  banned_files_lover    char(1) default NULL,     -- Y/N
+  bad_header_lover      char(1) default NULL,     -- Y/N
 
-  bypass_virus_checks  char(1) default NULL,     -- Y/N
-  bypass_spam_checks   char(1) default NULL,     -- Y/N
-  bypass_banned_checks char(1) default NULL,     -- Y/N
-  bypass_header_checks char(1) default NULL,     -- Y/N
+  bypass_virus_checks   char(1) default NULL,     -- Y/N
+  bypass_spam_checks    char(1) default NULL,     -- Y/N
+  bypass_banned_checks  char(1) default NULL,     -- Y/N
+  bypass_header_checks  char(1) default NULL,     -- Y/N
 
   virus_quarantine_to      varchar(64) default NULL,
   spam_quarantine_to       varchar(64) default NULL,
   banned_quarantine_to     varchar(64) default NULL,
+  unchecked_quarantine_to  varchar(64) default NULL,
   bad_header_quarantine_to varchar(64) default NULL,
   clean_quarantine_to      varchar(64) default NULL,
-  other_quarantine_to      varchar(64) default NULL,
+  archive_quarantine_to    varchar(64) default NULL,
 
   spam_tag_level  float default NULL, -- higher score inserts spam info headers
   spam_tag2_level float default NULL, -- inserts 'declared spam' header fields
+  spam_tag3_level float default NULL, -- inserts 'blatant spam' header fields
   spam_kill_level float default NULL, -- higher score triggers evasive actions
                                       -- e.g. reject/drop, quarantine, ...
                                      -- (subject to final_spam_destiny setting)
@@ -73,16 +80,21 @@ CREATE TABLE policy (
   spam_admin          varchar(64) default NULL,
   spam_subject_tag    varchar(64) default NULL,
   spam_subject_tag2   varchar(64) default NULL,
+  spam_subject_tag3   varchar(64) default NULL,
   message_size_limit  integer     default NULL, -- max size in bytes, 0 disable
-  banned_rulenames    varchar(64) default NULL  -- comma-separated list of ...
+  banned_rulenames    varchar(64) default NULL, -- comma-separated list of ...
         -- names mapped through %banned_rules to actual banned_filename tables
+  disclaimer_options  varchar(64) default NULL,
+  forward_method      varchar(64) default NULL,
+  sa_userconf         varchar(64) default NULL,
+  sa_username         varchar(64) default NULL
 );
 
 -- Required by iRedMail
 ALTER TABLE policy MODIFY COLUMN policy_name VARCHAR(255) NOT NULL DEFAULT '';
 CREATE UNIQUE INDEX policy_idx_policy_name ON policy (policy_name);
 
--- R/W part of the dataset (optional)
+-- Read-write part of the dataset (optional) - @storage_sql_dsn.
 --   May reside in the same or in a separate database as lookups database;
 --   REQUIRES SUPPORT FOR TRANSACTIONS; specified in @storage_sql_dsn
 --
@@ -110,6 +122,7 @@ CREATE UNIQUE INDEX policy_idx_policy_name ON policy (policy_name);
 --  The big performance increase is the first two, the third just helps with
 --  lowering disk activity. Consider also adjusting the key_buffer_size.
 
+-- used in @storage_sql_dsn
 -- provide unique id for each e-mail address, avoids storing copies
 CREATE TABLE maddr (
   partition_tag integer      DEFAULT 0, -- see $partition_tag
@@ -123,6 +136,7 @@ CREATE TABLE maddr (
 CREATE INDEX maddr_idx_email ON maddr (email);
 CREATE INDEX maddr_idx_domain ON maddr (domain);
 
+-- used in @storage_sql_dsn
 -- information pertaining to each processed message as a whole;
 -- NOTE: records with NULL msgs.content should be ignored by utilities,
 --   as such records correspond to messages just being processes, or were lost
@@ -130,15 +144,15 @@ CREATE INDEX maddr_idx_domain ON maddr (domain);
 --   time_iso TIMESTAMP NOT NULL DEFAULT 0,
 --   but the following MUST then be set in amavisd.conf: $timestamp_fmt_mysql=1
 CREATE TABLE msgs (
-  partition_tag integer    DEFAULT 0,   -- see $partition_tag
+  partition_tag integer     DEFAULT 0,   -- see $partition_tag
   mail_id     varbinary(16) NOT NULL,    -- long-term unique mail id, dflt 12 ch
   secret_id   varbinary(16) DEFAULT '',  -- authorizes release of mail_id, 12 ch
   am_id       varchar(20)   NOT NULL,    -- id used in the log
   time_num    integer unsigned NOT NULL, -- rx_time: seconds since Unix epoch
   time_iso    char(16)      NOT NULL,    -- rx_time: ISO8601 UTC ascii time
   sid         bigint unsigned NOT NULL,  -- sender: maddr.id
-  policy      varchar(255) DEFAULT '',   -- policy bank path (like macro %p)
-  client_addr varchar(255) DEFAULT '',   -- SMTP client IP address (IPv4 or v6)
+  policy      varchar(255)  DEFAULT '',  -- policy bank path (like macro %p)
+  client_addr varchar(255)  DEFAULT '',  -- SMTP client IP address (IPv4 or v6)
   size        integer unsigned NOT NULL, -- message size in bytes
   originating char(1) DEFAULT ' ' NOT NULL,  -- sender from inside or auth'd
   content     char(1),                   -- content type: V/B/U/S/Y/M/H/O/T/C
@@ -168,11 +182,14 @@ CREATE INDEX msgs_idx_time_num ON msgs (time_num);
 
 CREATE INDEX msgs_idx_mail_id   ON msgs (mail_id);
 CREATE INDEX msgs_idx_content   ON msgs (content);
+CREATE INDEX msgs_idx_quar_type ON msgs (quar_type);
 CREATE INDEX msgs_idx_content_time_num ON msgs (content, time_num);
+CREATE INDEX msgs_idx_spam_level ON msgs (spam_level);
 
 -- alternatively when purging based on time_iso (instead of msgs_idx_time_num):
 -- CREATE INDEX msgs_idx_time_iso ON msgs (time_iso);
 
+-- used in @storage_sql_dsn
 -- per-recipient information related to each processed message;
 -- NOTE: records in msgrcpt without corresponding msgs.mail_id record are
 --  orphaned and should be ignored and eventually deleted by external utilities
@@ -190,13 +207,14 @@ CREATE TABLE msgrcpt (
   wl         char(1)  DEFAULT ' ',       -- sender whitelisted by this recip
   bspam_level float,                     -- per-recipient (total) spam level
   smtp_resp  varchar(255)  DEFAULT '',   -- SMTP response given to MTA
-  KEY (mail_id),
-  KEY (rid)
+  PRIMARY KEY (partition_tag,mail_id,rseqnum)
+-- FOREIGN KEY (rid)     REFERENCES maddr(id)     ON DELETE RESTRICT,
+-- FOREIGN KEY (mail_id) REFERENCES msgs(mail_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
 CREATE INDEX msgrcpt_idx_mail_id  ON msgrcpt (mail_id);
 CREATE INDEX msgrcpt_idx_rid      ON msgrcpt (rid);
 
+-- used in @storage_sql_dsn
 -- mail quarantine in SQL, enabled by $*_quarantine_method='sql:'
 -- NOTE: records in quarantine without corresponding msgs.mail_id record are
 --  orphaned and should be ignored and eventually deleted by external utilities
@@ -219,3 +237,4 @@ CREATE INDEX quar_idx_mail_id   ON quarantine (mail_id);
 --   'p' => pending (a status given to messages when the admin received the
 --                   request but not yet released; targeted to banned parts)
 --   'D' => marked for deletion; a cleanup script may delete it
+
