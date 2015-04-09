@@ -30,7 +30,7 @@ rcm_install()
     cp -f ${SAMPLE_DIR}/roundcubemail/config.inc.php .
     cp -f ${SAMPLE_DIR}/dovecot/dovecot.sieve.roundcube ${RCM_SIEVE_SAMPLE_FILE}
     chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
-    chmod 0640 config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
+    chmod 0600 config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
 
     echo 'export status_rcm_install="DONE"' >> ${STATUS_FILE}
 }

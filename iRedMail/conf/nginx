@@ -42,7 +42,12 @@ export UWSGI_CONF_DIR='/etc/uwsgi'
 export UWSGI_SOCKET_IREDADMIN='/var/run/uwsgi_iredadmin.socket'
 export UWSGI_PID_IREDADMIN='/var/run/uwsgi_iredadmin.pid'
 
-if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    # Daemon user.
+    export HTTPD_USER='nginx'
+    export HTTPD_GROUP='nginx'
+
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export UWSGI_CONF_DIR='/etc/uwsgi/apps-available'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then

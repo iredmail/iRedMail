@@ -95,10 +95,12 @@ install_all()
             [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb"
 
             if [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ]; then
-                if [ X"${DISTRO_VERSION}" == X'6' ]; then
-                    ALL_PKGS="${ALL_PKGS} mod_auth_mysql"
-                else
-                    ALL_PKGS="${ALL_PKGS} apr-util-mysql"
+                if [ X"${USE_APACHE}" == X'YES' ]; then
+                    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+                        ALL_PKGS="${ALL_PKGS} mod_auth_mysql"
+                    else
+                        ALL_PKGS="${ALL_PKGS} apr-util-mysql"
+                    fi
                 fi
             fi
 
@@ -155,15 +157,17 @@ install_all()
 
     # PHP
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} php php-common php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc"
+        ALL_PKGS="${ALL_PKGS} php-common php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
+
+        [ X"${USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} php"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} php5-imap php5-json php5-gd php5-mcrypt php5-curl mcrypt php-apc"
+        ALL_PKGS="${ALL_PKGS} php5-imap php5-json php5-gd php5-mcrypt php5-curl mcrypt php-apc php5-intl"
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php5-ldap php5-mysql"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php5-pgsql"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-mcrypt php-gd"
+        ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-mcrypt php-gd php-intl"
 
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-pdo_mysql"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql"
@@ -344,10 +348,10 @@ install_all()
 
                 ECHO_INFO "Add official apt repo for SOGo in /etc/apt/sources.list"
                 if ! grep "http://inverse.ca ${DISTRO_CODENAME}" /etc/apt/sources.list &>/dev/null; then
-                    if [ X"${DISTRO}" == X'wheezy' ]; then
+                    if [ X"${DISTRO_CODENAME}" == X'wheezy' ]; then
                         # Debian 7
                         echo "deb http://inverse.ca/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
-                    elif [ X"${DISTRO}" == X'trusty' ]; then
+                    elif [ X"${DISTRO_CODENAME}" == X'trusty' ]; then
                         # Ubuntu 14.04
                         echo "deb http://inverse.ca/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
                     fi
