@@ -210,16 +210,18 @@ EOF
 EOF
     fi
 
-    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        # SOGo package doesn't install Apache config file to correct place,
-        # we have to fix it here.
-        if [ -f /etc/apache2/conf.d/SOGo.conf \
-            -a -d /etc/apache2/conf-available \
-            -a -d /etc/apache2/conf-enabled ]; then
-            cd /etc/apache2/conf-available/ && ln -s ../conf.d/SOGo.conf . >> ${INSTALL_LOG} 2>&1
-        fi
+    if [ X"${USE_APACHE}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            # SOGo package doesn't install Apache config file to correct place,
+            # we have to fix it here.
+            if [ -f /etc/apache2/conf.d/SOGo.conf \
+                -a -d /etc/apache2/conf-available \
+                -a -d /etc/apache2/conf-enabled ]; then
+                cd /etc/apache2/conf-available/ && ln -s ../conf.d/SOGo.conf . >> ${INSTALL_LOG} 2>&1
+            fi
 
-        a2enconf SOGo >> ${INSTALL_LOG} 2>&1
+            a2enconf SOGo >> ${INSTALL_LOG} 2>&1
+        fi
     fi
 
     cat >> ${TIP_FILE} <<EOF

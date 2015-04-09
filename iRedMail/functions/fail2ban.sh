@@ -53,10 +53,10 @@ fail2ban_config()
     ECHO_DEBUG "Copy sample Fail2ban filter config files."
     cp -f ${SAMPLE_DIR}/fail2ban/filter.d/*.conf ${FAIL2BAN_FILTER_DIR}
 
-    #if [ X"${DISTRO}" == X'FREEBSD' ]; then
-    #    # Start service when system start up.
-    #    service_control enable 'fail2ban_enable' 'YES'
-    #fi
+    # Enable SOGo.
+    if [ X"${USE_SOGO}" == X'YES' ]; then
+        perl -pi -e 's#(enabled.*=.*)false#${1}true#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    fi
 
     echo 'export status_fail2ban_config="DONE"' >> ${STATUS_FILE}
 }

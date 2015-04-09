@@ -26,8 +26,10 @@ iredadmin_config()
     ECHO_INFO "Configure iRedAdmin (official web-based admin panel)."
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ECHO_DEBUG "Enable apache module: wsgi."
-        a2enmod wsgi >> ${INSTALL_LOG} 2>&1
+        if [ X"${USE_APACHE}" == X'YES' ]; then
+            ECHO_DEBUG "Enable apache module: wsgi."
+            a2enmod wsgi >> ${INSTALL_LOG} 2>&1
+        fi
     fi
 
     cd ${PKG_MISC_DIR}
@@ -105,7 +107,9 @@ EOF
 
         # Enable Apache module config file on Ubuntu 14.04.
         if [ X"${DISTRO}" == X'UBUNTU' ]; then
-            a2enconf iredadmin >> ${INSTALL_LOG} 2>&1
+            if [ X"${USE_APACHE}" == X'YES' ]; then
+                a2enconf iredadmin >> ${INSTALL_LOG} 2>&1
+            fi
         fi
     fi
 

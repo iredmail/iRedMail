@@ -48,9 +48,11 @@ Alias /mail "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
 EOF
 
     # Enable this config file on Ubuntu 13.10 and later releases.
-    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        # Enable conf file: conf-available/roundcubemail.conf
-        a2enconf roundcubemail >> ${INSTALL_LOG} 2>&1
+    if [ X"${USE_APACHE}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            # Enable conf file: conf-available/roundcubemail.conf
+            a2enconf roundcubemail >> ${INSTALL_LOG} 2>&1
+        fi
     fi
 
     # Make Roundcube can be accessed via HTTPS.

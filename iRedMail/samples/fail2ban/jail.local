@@ -38,8 +38,8 @@ action      = iptables-multiport[name=postfix, port="PH_FAIL2BAN_DISABLED_SERVIC
 #              sendmail[name=Postfix, dest=root, sender=fail2ban@localhost]
 logpath     = PH_MAILLOG
 
-[SOGo]
-enabled     = true
+[sogo-iredmail]
+enabled     = false
 filter      = sogo-auth
 action      = iptables-multiport[name=SOGo, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
 logpath     = PH_SOGO_LOG_FILE

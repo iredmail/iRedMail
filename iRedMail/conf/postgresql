@@ -46,6 +46,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export PGSQL_VERSION='9.1'
     [ X"${DISTRO_CODENAME}" == X'trusty' ] && export PGSQL_VERSION='9.3'
     [ X"${DISTRO_CODENAME}" == X'utopic' ] && export PGSQL_VERSION='9.4'
+    [ X"${DISTRO_CODENAME}" == X'jessie' ] && export PGSQL_VERSION='9.4'
 
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"
     export PGSQL_CONF_DIR="/etc/postgresql/${PGSQL_VERSION}/main"

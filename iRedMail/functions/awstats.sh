@@ -181,12 +181,14 @@ EOF
         perl -pi -e 's#^(\s*</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
     fi
 
-    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        a2enmod cgi >> ${INSTALL_LOG} 2>&1
+    if [ X"${USE_APACHE}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            a2enmod cgi >> ${INSTALL_LOG} 2>&1
 
-        # serve-cgi-bin.conf contains duplicate and conflict setting for cgi-bin
-        a2disconf serve-cgi-bin >> ${INSTALL_LOG} 2>&1
-        a2enconf awstats >> ${INSTALL_LOG} 2>&1
+            # serve-cgi-bin.conf contains duplicate and conflict setting for cgi-bin
+            a2disconf serve-cgi-bin >> ${INSTALL_LOG} 2>&1
+            a2enconf awstats >> ${INSTALL_LOG} 2>&1
+        fi
     fi
 
     # Enable authn_dbd under Apache 2.4
@@ -211,8 +213,10 @@ EOF
             perl -pi -e 's/^(Auth_MySQL_.*)//g' ${HTTPD_CONF}
         fi
 
-        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            a2enmod authn_dbd >> ${INSTALL_LOG} 2>&1
+        if [ X"${USE_APACHE}" == X'YES' ]; then
+            if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+                a2enmod authn_dbd >> ${INSTALL_LOG} 2>&1
+            fi
         fi
     fi
 
