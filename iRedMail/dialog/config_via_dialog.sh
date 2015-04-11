@@ -103,10 +103,10 @@ echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${IREDMAIL_CONFIG_F
 # --------------------------------------------------
 # ------------ Default web server ------------------
 # --------------------------------------------------
-export USE_APACHE='NO'
-export USE_NGINX='NO'
+export WEB_SERVER_IS_APACHE='NO'
+export WEB_SERVER_IS_NGINX='NO'
 if [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export USE_NGINX='YES'
+    export WEB_SERVER_IS_NGINX='YES'
 else
     while : ; do
         ${DIALOG} \
@@ -124,15 +124,15 @@ TIP: Use SPACE key to select item." \
     done
 
     if [ X"${web_server}" == X'APACHE' ]; then
-        export USE_APACHE='YES'
+        export WEB_SERVER_IS_APACHE='YES'
     else
-        export USE_NGINX='YES'
+        export WEB_SERVER_IS_NGINX='YES'
     fi
     rm -f /tmp/web_server
 fi
 
-echo "export USE_NGINX='${USE_NGINX}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export USE_APACHE='${USE_APACHE}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export WEB_SERVER_IS_NGINX='${WEB_SERVER_IS_NGINX}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export WEB_SERVER_IS_APACHE='${WEB_SERVER_IS_APACHE}'" >>${IREDMAIL_CONFIG_FILE}
 
 # --------------------------------------------------
 # --------------------- Backends --------------------

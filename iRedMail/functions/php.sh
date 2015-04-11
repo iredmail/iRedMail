@@ -32,7 +32,7 @@ php_config()
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         cp -f /usr/local/etc/php.ini-production ${PHP_INI}
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        #if [ X"${USE_APACHE}" == X'YES' ]; then
+        #if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         #    ln -s /var/www/conf/modules.sample/php-${PHP_VERSION}.conf /var/www/conf/modules/php.conf
         #fi
 
@@ -66,7 +66,7 @@ php_config()
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Disable suhosin.session.encrypt on Debian 6. Required by Roundcube webmail.
-        if [ X"${USE_APACHE}" == X'YES' ]; then
+        if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
             [ -f ${PHP_INI_CONF_DIR}/suhosin.ini ] && \
                 perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${PHP_INI_CONF_DIR}/suhosin.ini
         fi

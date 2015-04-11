@@ -44,7 +44,7 @@ policy_server_config()
         ECHO_INFO "Configure Cluebringer (postfix policy server)."
         check_status_before_run cluebringer_user
         check_status_before_run cluebringer_config
-        [ X"${USE_APACHE}" == X'YES' ] && check_status_before_run cluebringer_webui_config
+        [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && check_status_before_run cluebringer_webui_config
     fi
 
     # OpenBSD special

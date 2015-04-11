@@ -625,7 +625,7 @@ EOF
     fi
     rm -f /var/db/ports/www_apache${PREFERRED_APACHE_VER}/options${SED_EXTENSION} &>/dev/null
 
-    if [ X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} www/apache${PREFERRED_APACHE_VER}"
     fi
 
@@ -720,7 +720,7 @@ OPTIONS_FILE_UNSET+=HTTP_MP4
 OPTIONS_FILE_UNSET+=HTTP_MP4_H264
 EOF
 
-    if [ X"${USE_NGINX}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} www/nginx www/uwsgi"
     fi
 
@@ -925,7 +925,7 @@ EOF
     fi
 
     # Awstats.
-    if [ X"${USE_AWSTATS}" == X'YES' -a X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${USE_AWSTATS}" == X'YES' -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} www/awstats"
     fi
 

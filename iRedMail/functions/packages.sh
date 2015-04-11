@@ -95,7 +95,7 @@ install_all()
             [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb"
 
             if [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ]; then
-                if [ X"${USE_APACHE}" == X'YES' ]; then
+                if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
                     if [ X"${DISTRO_VERSION}" == X'6' ]; then
                         ALL_PKGS="${ALL_PKGS} mod_auth_mysql"
                     else
@@ -115,7 +115,7 @@ install_all()
             fi
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql"
-            if [ X"${USE_APACHE}" == X'YES' ]; then
+            if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
             fi
 
@@ -145,7 +145,7 @@ install_all()
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
 
-            if [ X"${USE_APACHE}" == X'YES' ]; then
+            if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
             fi
 
@@ -159,7 +159,7 @@ install_all()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} php-common php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
 
-        [ X"${USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} php"
+        [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} php"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} php5-imap php5-json php5-gd php5-mcrypt php5-curl mcrypt php-apc php5-intl"
@@ -175,7 +175,7 @@ install_all()
     fi
 
     # Apache. Always install Apache.
-    if [ X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -188,7 +188,7 @@ install_all()
     fi
 
     # Nginx
-    if [ X"${USE_NGINX}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} nginx php-fpm"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -200,7 +200,7 @@ install_all()
         fi
     fi
 
-    if [ X"${USE_NGINX}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
         # Use Nginx as web server if it's selected.
         # php-fpm will be listed in variable 'pkg_scripts' in /etc/rc.conf.local.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
@@ -402,20 +402,20 @@ install_all()
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces python-beautifulsoup4 python-lxml"
-        [ X"${USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
-        [ X"${USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
+        [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
+        [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy python-beautifulsoup"
-        [ X"${USE_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
-        [ X"${USE_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
+        [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
+        [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-beautifulsoup4 py-lxml"
     fi
 
     # Awstats.
-    if [ X"${USE_AWSTATS}" == X'YES' -a X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${USE_AWSTATS}" == X'YES' -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then

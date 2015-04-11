@@ -175,13 +175,13 @@ EOF
 EOF
 
     # Make Awstats accessible via HTTPS.
-    if [ X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(\s*</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
     fi
 
-    if [ X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             a2enmod cgi >> ${INSTALL_LOG} 2>&1
 
@@ -213,7 +213,7 @@ EOF
             perl -pi -e 's/^(Auth_MySQL_.*)//g' ${HTTPD_CONF}
         fi
 
-        if [ X"${USE_APACHE}" == X'YES' ]; then
+        if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
             if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
                 a2enmod authn_dbd >> ${INSTALL_LOG} 2>&1
             fi

@@ -31,8 +31,8 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PHP_FASTCGI_SOCKET='/var/run/php-fpm/php-fpm.socket'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    [ X"${USE_APACHE}" == X'YES' ] && export PHP_INI='/etc/php5/apache2/php.ini'
-    [ X"${USE_NGINX}" == X'YES' ] && export PHP_INI='/etc/php5/fpm/php.ini'
+    [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && export PHP_INI='/etc/php5/apache2/php.ini'
+    [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ] && export PHP_INI='/etc/php5/fpm/php.ini'
 
     export PHP_INI_CONF_DIR='/etc/php5/apache2/conf.d/'
     export PHP_FPM_POOL_WWW_CONF='/etc/php5/fpm/pool.d/www.conf'

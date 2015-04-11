@@ -210,7 +210,7 @@ EOF
 EOF
     fi
 
-    if [ X"${USE_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # SOGo package doesn't install Apache config file to correct place,
             # we have to fix it here.
