@@ -35,7 +35,7 @@ install_all()
 
     export PREFERRED_OPENLDAP_VER='24'
     export PREFERRED_MARIADB_VER='55'
-    export PREFERRED_PGSQL_VER='93'
+    export PREFERRED_PGSQL_VER='94'
     export PREFERRED_BDB_VER='5'
     export PREFERRED_APACHE_VER='24'
     export PREFERRED_PHP_VER='55'
@@ -738,7 +738,10 @@ OPTIONS_FILE_SET+=LINKTHR
 OPTIONS_FILE_UNSET+=ZTS
 EOF
 
-    ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER} www/mod_php${PREFERRED_PHP_VER}"
+    ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER}"
+    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+        ALL_PORTS="${ALL_PORTS} www/mod_php${PREFERRED_PHP_VER}"
+    fi
 
     cat > /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options <<EOF
 OPTIONS_FILE_SET+=BCMATH
@@ -940,10 +943,11 @@ EOF
 
     # iRedAdmin
     # mod_wsgi
-    #ALL_PORTS="${ALL_PORTS} www/mod_wsgi3 www/webpy devel/py-Jinja2 net/py-netifaces"
-    ALL_PORTS="${ALL_PORTS} www/mod_wsgi3 www/webpy net/py-netifaces devel/py-lxml www/py-beautifulsoup"
-    # bcrypt
-    ALL_PORTS="${ALL_PORTS} security/py-bcrypt"
+    ALL_PORTS="${ALL_PORTS} www/webpy net/py-netifaces devel/py-lxml www/py-beautifulsoup security/py-bcrypt"
+
+    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+        ALL_PORTS="${ALL_PORTS} www/mod_wsgi3"
+    fi
 
     # Fail2ban.
     #if [ X"${USE_FAIL2BAN}" == X"YES" ]; then

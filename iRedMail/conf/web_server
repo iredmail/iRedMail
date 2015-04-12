@@ -40,6 +40,10 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export HTTPD_GROUP='www-data'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    # Daemon user.
+    export HTTPD_USER='www'
+    export HTTPD_GROUP='www'
+
     # Web data.
     export HTTPD_SERVERROOT='/usr/local/www'
     # TODO choose a proper document root

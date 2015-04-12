@@ -5,7 +5,10 @@ iRedMail-0.9.1:
             o Cluebringer is not installed due to package missing in official repo.
             o SOGo is not installed due to package missing in upstream (SOGo) repo.
 
-    * Drop support for old distributions:
+        - OpenBSd 5.7. Notes:
+            o MySQL is not support, please use MariaDB instead.
+
+    * Drop support for old distribution releases:
         - Ubuntu 12.04. Please use Ubuntu 14.04 LTS instead.
 
     * Improvements:

@@ -54,10 +54,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export UWSGI_CONF_DIR='/usr/local/etc/uwsgi'
     export NGINX_CONF_ROOT="/usr/local/etc/nginx"
 
-    # Daemon user.
-    export HTTPD_USER='nginx'
-    export HTTPD_GROUP='nginx'
-
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export NGINX_LOG_ACCESSLOG='logs/access.log'
     export NGINX_LOG_ERRORLOG='logs/error.log'

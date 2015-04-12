@@ -328,8 +328,8 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export SHELL_BASH='/usr/local/bin/bash'
     export PYTHON_BIN='/usr/local/bin/python'
 
-    # Unsupported release: 5.1, 5.2, 5.3.
-    if echo "${DISTRO_VERSION}" | grep '^5.[123]' &>/dev/null ; then
+    # Unsupported release: 5.6 and earlier versions.
+    if echo "${DISTRO_VERSION}" | grep '^5.[123456]' &>/dev/null ; then
         export UNSUPPORTED_RELEASE='YES'
     fi
 
@@ -530,6 +530,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SYS_ROOT_GROUP='wheel'
 
     export ENABLE_BACKEND_LDAPD='YES'
+    export ENABLE_BACKEND_MARIADB='YES'
+    export ENABLE_BACKEND_MYSQL='NO'
 
     # Package management.
     if [ X"${PKG_PATH}" == X"" ]; then

@@ -194,9 +194,8 @@ install_all()
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} nginx-full php5-fpm"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # Nginx is available in base system
-            ALL_PKGS="${ALL_PKGS} php-fpm"
-            PKG_SCRIPTS="${PKG_SCRIPTS} ${PHP_FPM_RC_SCRIPT_NAME}"
+            ALL_PKGS="${ALL_PKGS} nginx php-fpm"
+            PKG_SCRIPTS="${PKG_SCRIPTS} ${NGINX_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
     fi
 

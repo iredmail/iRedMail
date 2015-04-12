@@ -86,10 +86,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export HTTPD_SERVERROOT='/usr/local/www'
     export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache24/data"
 
-    # Daemon user.
-    export HTTPD_USER='www'
-    export HTTPD_GROUP='www'
-
     # Log file location.
     export HTTPD_LOG_ACCESSLOG='/var/log/httpd-access.log'
     export HTTPD_LOG_ERRORLOG='/var/log/httpd-error.log'

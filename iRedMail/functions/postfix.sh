@@ -28,7 +28,7 @@ postfix_config_basic()
 {
     ECHO_INFO "Configure Postfix (Message Transfer Agent)."
 
-    # OpenBSD: Replace sendmail with Postfix
+    # OpenBSD: Replace sendmail, opensmtpd by Postfix
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         echo 'sendmail_flags=NO' >> ${RC_CONF_LOCAL}
         echo 'smtpd_flags=NO' >> ${RC_CONF_LOCAL}
