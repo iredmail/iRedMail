@@ -77,7 +77,7 @@ install_all()
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
             fi
 
-            ALL_PKGS="${ALL_PKGS} openldap-client mysql-server mysql-client"
+            ALL_PKGS="${ALL_PKGS} openldap-client mariadb-server mariadb-client"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
 
         fi
@@ -121,10 +121,10 @@ install_all()
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} mysql-server"
+                ALL_PKGS="${ALL_PKGS} mariadb-server"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
             fi
-            ALL_PKGS="${ALL_PKGS} mysql-client"
+            ALL_PKGS="${ALL_PKGS} mariadb-client"
         fi
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"

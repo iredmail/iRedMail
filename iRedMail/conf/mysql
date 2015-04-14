@@ -44,7 +44,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export MYSQL_MY_CNF="/var/db/mysql/my.cnf"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export MYSQL_RC_SCRIPT_NAME='mysqld'
+    export MYSQL_RC_SCRIPT_NAME='mariadb'
 fi
 
 export MYSQLD_RC_SCRIPT="${DIR_RC_SCRIPTS}/${MYSQL_RC_SCRIPT_NAME}"
