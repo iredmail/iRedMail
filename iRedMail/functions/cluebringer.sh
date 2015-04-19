@@ -494,8 +494,7 @@ EOF
 
         # Close <Directory> container.
         cat >> ${CLUEBRINGER_HTTPD_CONF} <<EOF
-    Order allow,deny
-    Allow from all
+    ${HTACCESS_ALLOW_ALL}
     Require valid-user
 </Directory>
 EOF

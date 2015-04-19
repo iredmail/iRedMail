@@ -50,10 +50,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export HTTPD_CONF_ROOT="/etc/apache2"
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/apache2.conf"
 
-    # Web data.
-    export HTTPD_SERVERROOT='/usr/share/apache2'
-    export HTTPD_DOCUMENTROOT="/var/www"
-
     if [ X"${DISTRO_CODENAME}" == X'wheezy' ]; then
         export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
         export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/sites-available/default-ssl"
@@ -106,3 +102,10 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 fi
 
 export HTTPD_CGIBIN_DIR="${HTTPD_SERVERROOT}/cgi-bin"
+
+if [[ X"${APACHE_VERSION}" == X'2.4' ]]; then
+    export HTACCESS_ALLOW_ALL='Require all granted'
+else
+    export HTACCESS_ALLOW_ALL='Order allow,deny
+Allow from all'
+fi

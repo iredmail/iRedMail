@@ -31,7 +31,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Web data.
-    #export HTTPD_SERVERROOT='/usr/share/apache2'
     export HTTPD_SERVERROOT='/opt/www'
     export HTTPD_DOCUMENTROOT="/var/www"
 

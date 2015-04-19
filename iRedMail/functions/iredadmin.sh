@@ -81,9 +81,8 @@ AddType text/html .py
 AddHandler cgi-script .py
 
 <Directory "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}">
+    ${HTACCESS_ALLOW_ALL}
     Options +ExecCGI
-    Order allow,deny
-    Allow from all
 </Directory>
 EOF
         else
@@ -99,8 +98,7 @@ WSGIProcessGroup ${IREDADMIN_GROUP_NAME}
 AddType text/html .py
 
 <Directory ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/>
-    Order allow,deny
-    Allow from all
+    ${HTACCESS_ALLOW_ALL}
 </Directory>
 EOF
         fi

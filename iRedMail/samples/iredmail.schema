@@ -376,18 +376,19 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
         mailWhitelistRecipient $ mailBlacklistRecipient $
         domainGlobalAdmin $ allowNets ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.4 NAME 'mailAlias'
-    DESC 'Mail Alias' SUP top STRUCTURAL
+    DESC 'Mail Alias Account' SUP top STRUCTURAL
     MUST ( mail )
     MAY ( accountStatus $ description $ cn $ memberOfGroup $
         enabledService $ disabledService $
         mailForwardingAddress $ shadowAddress $ expiredDate $
         accountSetting $ mailHost ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.5 NAME 'mailList'
-    DESC 'Mail Domain Admin' SUP top STRUCTURAL
+    DESC 'Mailing List Account' SUP top STRUCTURAL
     MUST ( mail )
     MAY ( cn $ accountStatus $ description $ accessPolicy $ shadowAddress $
         enabledService $ disabledService $ memberOfGroup $ hasMember $
-        listAllowedUser $ expiredDate $ accountSetting $ mailHost ))
+        listAllowedUser $ expiredDate $ accountSetting $ mailHost $
+        memberUid ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.6 NAME 'mailExternalUser'
     DESC 'Mail External User' SUP top STRUCTURAL
     MUST ( memberOfGroup )
