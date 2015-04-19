@@ -296,11 +296,11 @@ EOF
         echo -e "local1.*\t\t\t\t\t\t-${CLUEBRINGER_LOG_FILE}" >> ${SYSLOG_CONF}
         cat > ${CLUEBRINGER_LOGROTATE_FILE} <<EOF
 ${CONF_MSG}
-${AMAVISD_LOGFILE} {
+${CLUEBRINGER_LOG_FILE} {
     compress
     weekly
     rotate 10
-    create 0600 amavis amavis
+    create 0600 ${CLUEBRINGER_USER} ${CLUEBRINGER_GROUP}
     missingok
 
     # Use bzip2 for compress.
