@@ -43,6 +43,7 @@ ${CONF_MSG}
 # Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
 Alias /mail "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
 <Directory "${RCM_HTTPD_ROOT_SYMBOL_LINK}/">
+    ${HTACCESS_ALLOW_ALL}
     Options -Indexes
 </Directory>
 EOF
