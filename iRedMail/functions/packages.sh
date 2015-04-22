@@ -276,9 +276,9 @@ install_all()
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
         if [ X"${DISTRO_VERSION}" == X'6' ]; then
-            ALL_PKGS="${ALL_PKGS} amavisd-new clamd clamav-db spamassassin altermime perl-LDAP perl-Mail-SPF"
+            ALL_PKGS="${ALL_PKGS} amavisd-new clamd clamav-db spamassassin altermime perl-LDAP perl-Mail-SPF unrar"
         else
-            ALL_PKGS="${ALL_PKGS} clamav clamav-update clamav-server clamav-server-systemd amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF"
+            ALL_PKGS="${ALL_PKGS} clamav clamav-update clamav-server clamav-server-systemd amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF unrar"
             ENABLED_SERVICES="${ENABLED_SERVICES} clamd@amavisd"
         fi
 
@@ -289,7 +289,7 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj zoo nomarch cpio lzop cabextract p7zip rpm unrar-free ripole libmail-spf-perl"
+        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj zoo nomarch cpio lzop cabextract p7zip rpm unrar ripole libmail-spf-perl"
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 

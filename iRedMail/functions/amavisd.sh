@@ -485,12 +485,9 @@ EOF
 EOF
     fi
 
-    # Don't send email with subject "UNCHECKED contents in mail FROM xxx".
     cat >> ${AMAVISD_CONF} <<EOF
+# Don't send email with subject "UNCHECKED contents in mail FROM xxx".
 delete \$admin_maps_by_ccat{&CC_UNCHECKED};
-EOF
-
-    cat >> ${AMAVISD_CONF} <<EOF
 
 # Do not notify administrator about SPAM/VIRUS from remote servers.
 \$virus_admin = undef;
@@ -504,7 +501,17 @@ EOF
 \$max_servers = ${AMAVISD_MAX_SERVERS};
 
 \$localhost_name = \$myhostname;
+EOF
 
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        cat >> ${AMAVISD_CONF} <<EOF
+# Use 'unrar-nonfree' (package 'unrar') instead of 'unrar-free' (package 'unrar-free').
+# With 'unrar-free', Amavisd cannot detect compressed '.exe' file.
+\$unrar = ['unrar-nonfree'];
+EOF
+    fi
+
+    cat >> ${AMAVISD_CONF} <<EOF
 1;  # insure a defined return
 EOF
     # ------------- END configure /etc/amavisd.conf ------------

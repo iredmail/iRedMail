@@ -41,6 +41,7 @@ iRedMail-0.9.1:
         - Add two new Fail2ban filters to help catch spam.
 
     * Fixed issues:
+        - Install package `unrar` as rar unarchiver on RHEL/CentOS/Debian/Ubuntu.
         - Incorrect log file and owner/group in /etc/logrotate.d/policyd.
         - Cannot send email to user+ext@domain.com when per-domain catch-all
           is enabled. Note: not fixed with LDAP backend yet.
