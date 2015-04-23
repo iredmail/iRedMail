@@ -12,6 +12,8 @@ iRedMail-0.9.1:
         - Ubuntu 12.04. Please use Ubuntu 14.04 LTS instead.
 
     * Improvements:
+        - [LDAP] Allow mailing list account to use attributes: gidNumber,
+          memberUid.
         - Don't install both Apache and Nginx, just one of them.
 
           Debian/Ubuntu package maintainer over-designed the post-install
