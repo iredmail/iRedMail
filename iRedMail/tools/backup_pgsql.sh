@@ -40,6 +40,9 @@
 #########################################################
 # Modify below variables to fit your need ----
 #########################################################
+# Keep backup for how many days. Default is 90 days.
+KEEP_DAYS='90'
+
 # System user used to run PostgreSQL daemon.
 #   - On Linux, it's postgres.
 #   - On FreeBSD, it's pgsql.
@@ -78,6 +81,14 @@ export BACKUP_SUCCESS='YES'
 
 # Define, check, create directories.
 export BACKUP_DIR="${BACKUP_ROOTDIR}/pgsql/${YEAR}/${MONTH}/${DAY}"
+
+# Find the old backup which should be removed.
+py_cmd="import time; import datetime; t=time.localtime(); print datetime.date(t.tm_year, t.tm_mon, t.tm_mday) - datetime.timedelta(days=${KEEP_DAYS})"
+shift_date=$(python -c "${py_cmd}")
+shift_year="$(echo ${shift_date} | awk -F'-' '{print $1}')"
+shift_month="$(echo ${shift_date} | awk -F'-' '{print $2}')"
+shift_day="$(echo ${shift_date} | awk -F'-' '{print $3}')"
+export REMOVED_BACKUP_DIR="${BACKUP_ROOTDIR}/pgsql/${shift_year}/${shift_month}/${shift_day}"
 
 # Log file
 export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
@@ -155,6 +166,11 @@ if [ X"${BACKUP_SUCCESS}" == X"YES" ]; then
     echo -e "\n[OK] Backup successfully completed.\n"
 else
     echo -e "\n[ERROR] Backup completed with ERRORS.\n" 1>&2
+fi
+
+if [[ -d ${REMOVED_BACKUP_DIR} ]]; then
+    echo -e "* Delete old backup: ${REMOVED_BACKUP_DIR}." >> ${LOGFILE}
+    rm -rf ${REMOVED_BACKUP_DIR} >/dev/null 2>${LOGFILE}
 fi
 
 echo "* Backup log: ${LOGFILE}:"

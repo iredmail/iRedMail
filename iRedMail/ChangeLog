@@ -12,6 +12,8 @@ iRedMail-0.9.1:
         - Ubuntu 12.04. Please use Ubuntu 14.04 LTS instead.
 
     * Improvements:
+        - Backup scripts are able to delete old backup copies. Default setting
+          is keeping backup copies for 90 days.
         - [LDAP] Allow mailing list account to use attributes: gidNumber,
           memberUid.
         - Don't install both Apache and Nginx, just one of them.

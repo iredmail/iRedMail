@@ -54,6 +54,8 @@
 #########################################################
 # Modify below variables to fit your need ----
 #########################################################
+# Keep backup for how many days. Default is 90 days.
+KEEP_DAYS='90'
 
 # Where to store backup copies.
 export BACKUP_ROOTDIR='/var/vmail/backup'
@@ -101,6 +103,15 @@ export BACKUP_SUCCESS='NO'
 # Backup directory.
 export BACKUP_DIR="${BACKUP_ROOTDIR}/ldap/${YEAR}/${MONTH}"
 export BACKUP_FILE="${BACKUP_DIR}/${TIMESTAMP}.ldif"
+
+# Find the old backup which should be removed.
+py_cmd="import time; import datetime; t=time.localtime(); print datetime.date(t.tm_year, t.tm_mon, t.tm_mday) - datetime.timedelta(days=${KEEP_DAYS})"
+shift_date=$(python -c "${py_cmd}")
+shift_year="$(echo ${shift_date} | awk -F'-' '{print $1}')"
+shift_month="$(echo ${shift_date} | awk -F'-' '{print $2}')"
+shift_day="$(echo ${shift_date} | awk -F'-' '{print $3}')"
+export REMOVED_BACKUP_DIR="${BACKUP_ROOTDIR}/ldap/${shift_year}/${shift_month}"
+export REMOVED_BACKUPS="${BACKUP_ROOTDIR}/ldap/${shift_year}/${shift_month}/${shift_date}*"
 
 # Log file
 export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
@@ -166,6 +177,11 @@ if [ X"${BACKUP_SUCCESS}" == X"YES" ]; then
     echo "==> Backup completed successfully."
 else
     echo -e "==> Backup completed with !!!ERRORS!!!.\n" 1>&2
+fi
+
+if [[ -d ${REMOVED_BACKUP_DIR} ]]; then
+    echo -e "* Delete old backup under ${REMOVED_BACKUP_DIR}." >> ${LOGFILE}
+    rm -rf ${REMOVED_BACKUPS} >/dev/null 2>${LOGFILE}
 fi
 
 echo "==> Detailed log (${LOGFILE}):"
