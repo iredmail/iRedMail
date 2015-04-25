@@ -98,12 +98,16 @@ export BACKUP_SUCCESS='YES'
 export BACKUP_DIR="${BACKUP_ROOTDIR}/mysql/${YEAR}/${MONTH}/${DAY}"
 
 # Find the old backup which should be removed.
-py_cmd="import time; import datetime; t=time.localtime(); print datetime.date(t.tm_year, t.tm_mon, t.tm_mday) - datetime.timedelta(days=${KEEP_DAYS})"
-shift_date=$(python -c "${py_cmd}")
-shift_year="$(echo ${shift_date} | awk -F'-' '{print $1}')"
-shift_month="$(echo ${shift_date} | awk -F'-' '{print $2}')"
-shift_day="$(echo ${shift_date} | awk -F'-' '{print $3}')"
-export REMOVED_BACKUP_DIR="${BACKUP_ROOTDIR}/mysql/${shift_year}/${shift_month}/${shift_day}"
+export REMOVE_OLD_BACKUP='NO'
+if which python &>/dev/null; then
+    export REMOVE_OLD_BACKUP='YES'
+    py_cmd="import time; import datetime; t=time.localtime(); print datetime.date(t.tm_year, t.tm_mon, t.tm_mday) - datetime.timedelta(days=${KEEP_DAYS})"
+    shift_date=$(python -c "${py_cmd}")
+    shift_year="$(echo ${shift_date} | awk -F'-' '{print $1}')"
+    shift_month="$(echo ${shift_date} | awk -F'-' '{print $2}')"
+    shift_day="$(echo ${shift_date} | awk -F'-' '{print $3}')"
+    export REMOVED_BACKUP_DIR="${BACKUP_ROOTDIR}/mysql/${shift_year}/${shift_month}/${shift_day}"
+fi
 
 # Log file
 export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
@@ -203,9 +207,12 @@ else
     echo -e "==> Backup completed with !!!ERRORS!!!.\n" 1>&2
 fi
 
-if [[ -d ${REMOVED_BACKUP_DIR} ]]; then
+if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Delete old backup: ${REMOVED_BACKUP_DIR}." >> ${LOGFILE}
     rm -rf ${REMOVED_BACKUP_DIR} >/dev/null 2>${LOGFILE}
+
+    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUP_DIR}.', 'cron_backup_sql', '127.0.0.1', NOW());"
+    ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
 fi
 
 echo "==> Detailed log (${LOGFILE}):"
