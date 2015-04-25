@@ -9,7 +9,7 @@ iRedMail-0.9.1:
             o MySQL is not support, please use MariaDB instead.
 
     * Drop support for old distribution releases:
-        - Ubuntu 12.04. Please use Ubuntu 14.04 LTS instead.
+        - Ubuntu 12.04, 14.10. Please use Ubuntu 14.04 LTS or 15.04 instead.
 
     * Improvements:
         - Backup scripts are able to delete old backup copies. Default setting

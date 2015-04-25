@@ -266,13 +266,13 @@ if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
 
         # Ubuntu version number and code name:
         #   - 14.04: trusty
-        #   - 14.10: utopic
+        #   - 15.04: vivid
         export DISTRO_ID="$(grep 'DISTRIB_ID' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
         export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
 
-        # Unsupported releases: 12.x, 13.x
-        if echo "${DISTRO_VERSION}" | grep -E '^(12|13)' &>/dev/null ; then
+        # Unsupported releases: 12.x, 13.x, 14.10
+        if echo "${DISTRO_VERSION}" | grep -E '^(12|13|14\.10)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then
@@ -459,6 +459,10 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
         # MariaDB support requires Ubuntu >= 14.04
         export ENABLE_BACKEND_MARIADB='YES'
+
+        if [ X"${DISTRO_CODENAME}" == X'vivid' ]; then
+            export USE_SYSTEMD='YES'
+        fi
     fi
 
     # SSHD log file
