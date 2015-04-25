@@ -67,6 +67,7 @@ export PATH='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin'
 export CMD_DATE='/bin/date'
 export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'
+export COMPRESS_SUFFIX='bz2'
 export CMD_PG_DUMP='pg_dump'
 
 # Date.
@@ -135,11 +136,7 @@ for db in ${DATABASES}; do
             echo -e "  + ${db} [DONE]" >> ${LOGFILE}
 
             # Get compressed file size
-            if echo ${CMD_COMPRESS} | grep '^bzip2' >/dev/null; then
-                compressed_file_name="${output_sql}.bz2"
-            else
-                compressed_file_name="${output_sql}.gz"
-            fi
+            compressed_file_name="${output_sql}.${COMPRESS_SUFFIX}"
             compressed_size="$(${CMD_DU} ${compressed_file_name} | awk '{print $1}')"
 
             # Log to SQL table `iredadmin.log`, so that global domain admins

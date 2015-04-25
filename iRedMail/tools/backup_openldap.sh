@@ -70,6 +70,7 @@ export PATH="$PATH:/usr/sbin:/usr/local/sbin/"
 export CMD_DATE='/bin/date'
 export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'
+export COMPRESS_SUFFIX='bz2'
 export CMD_MYSQL='mysql'
 
 # MySQL user and password, used to log backup status to sql table `iredadmin.log`.
@@ -147,11 +148,7 @@ if [ X"$?" == X"0" ]; then
     echo "* [DONE]" >>${LOGFILE}
 
     # Get compressed file size
-    if echo ${CMD_COMPRESS} | grep '^bzip2' >/dev/null; then
-        compressed_file_name="${BACKUP_FILE}.bz2"
-    else
-        compressed_file_name="${BACKUP_FILE}.gz"
-    fi
+    compressed_file_name="${BACKUP_FILE}.${COMPRESS_SUFFIX}"
     compressed_size="$(${CMD_DU} ${compressed_file_name} | awk '{print $1}')"
 
     echo -n "* Removing plain LDIF file: ${BACKUP_FILE}..." >>${LOGFILE}
