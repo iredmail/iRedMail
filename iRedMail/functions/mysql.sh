@@ -36,8 +36,8 @@ mysql_generate_defauts_file_root()
     ECHO_DEBUG "Generate temporary defauts file for MySQL client option --defaults-file: ${MYSQL_DEFAULTS_FILE_ROOT}."
     cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 [client]
-host=${MYSQL_SERVER}
-port=${MYSQL_SERVER_PORT}
+#host=${MYSQL_SERVER}
+#port=${MYSQL_SERVER_PORT}
 user=${MYSQL_ROOT_USER}
 password=${MYSQL_ROOT_PASSWD}
 EOF

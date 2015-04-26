@@ -39,6 +39,11 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
     export MYSQL_MY_CNF='/etc/mysql/my.cnf'
 
+    if [ X"${DISTRO_CODENAME}" == X'vivid' ]; then
+        if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+            export MYSQL_MY_CNF='/etc/mysql/mariadb.conf.d/mysqld.cnf'
+        fi
+    fi
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export MYSQL_RC_SCRIPT_NAME='mysql-server'
     export MYSQL_MY_CNF="/var/db/mysql/my.cnf"

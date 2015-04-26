@@ -202,7 +202,7 @@ rcm_config()
     ),
     'sort'          => 'cn',
     'scope'         => 'sub',
-    'filter'        => '(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK})(|(objectClass=${LDAP_OBJECTCLASS_MAILGROUP})(objectClass=${LDAP_OBJECTCLASS_MAILALIAS})(objectClass=${LDAP_OBJECTCLASS_MAILUSER})))',
+    'filter'        => '(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK})(|(objectClass=${LDAP_OBJECTCLASS_MAILGROUP})(objectClass=${LDAP_OBJECTCLASS_MAILALIAS})(|(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(objectClass=${LDAP_OBJECTCLASS_MAILGROUP})(objectClass=${LDAP_OBJECTCLASS_MAILALIAS}))))',
     'fuzzy_search'  => true,
     'vlv'           => false,   // Enable Virtual List View to more efficiently fetch paginated data (if server supports it)
     'sizelimit'     => '0',     // Enables you to limit the count of entries fetched. Setting this to 0 means no limit.
@@ -214,7 +214,7 @@ rcm_config()
             'name'    => 'Mailing Lists',
             'scope'   => 'sub',
             'base_dn' => '${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
-            'filter'  => '(&(objectclass=mailList)(accountStatus=active)(enabledService=${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK}))',
+            'filter'  => '(&(|(objectclass=${LDAP_OBJECTCLASS_MAILGROUP})(objectClass=${LDAP_OBJECTCLASS_MAILALIAS}))(accountStatus=active)(enabledService=${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK}))',
             'name_attr' => 'cn',
             'email'     => 'mail',
         ),

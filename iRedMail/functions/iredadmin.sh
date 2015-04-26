@@ -104,10 +104,8 @@ EOF
         fi
 
         # Enable Apache module config file on Ubuntu 14.04.
-        if [ X"${DISTRO}" == X'UBUNTU' ]; then
-            if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
-                a2enconf iredadmin >> ${INSTALL_LOG} 2>&1
-            fi
+        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            a2enconf iredadmin >> ${INSTALL_LOG} 2>&1
         fi
     fi
 
