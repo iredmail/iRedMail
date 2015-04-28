@@ -1,9 +1,12 @@
 iRedMail-0.9.1:
     * Works on new distribution releases:
-        - Debian 8. Notes:
-            o web applications are now stored under /opt/www.
-            o Cluebringer is not installed due to package missing in official repo.
-            o SOGo is not installed due to package missing in upstream (SOGo) repo.
+        - Debian 8, Ubuntu 15.04. Notes:
+            o Roundcube and iRedAdmin are now stored under /opt/www.
+            o Cluebringer is not installed due to package missing in official
+              repo, that means your server doesn't support greylisting and
+              throttling.
+            o SOGo is not installed due to package missing in upstream (SOGo)
+              repo.
 
         - OpenBSd 5.7. Notes:
             o MySQL is not support, please use MariaDB instead.
@@ -12,6 +15,8 @@ iRedMail-0.9.1:
         - Ubuntu 12.04, 14.10. Please use Ubuntu 14.04 LTS or 15.04 instead.
 
     * Improvements:
+        - Log most terminal output of iRedMail installation to file
+          'runtime/install.log', used for troubleshooting.
         - Backup scripts are able to delete old backup copies. Default setting
           is keeping backup copies for 90 days.
         - [LDAP] Allow mailing list account to use attributes: gidNumber,

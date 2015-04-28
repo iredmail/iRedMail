@@ -77,7 +77,7 @@ install_all()
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
             fi
 
-            ALL_PKGS="${ALL_PKGS} openldap-client mariadb-server mariadb-client"
+            ALL_PKGS="${ALL_PKGS} openldap-client mariadb-server mariadb-client p5-ldap p5-DBD-mysql"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
 
         fi
@@ -93,6 +93,9 @@ install_all()
             # Client
             [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql"
             [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb"
+
+            # Perl module
+            ALL_PKGS="${ALL_PKGS} perl-DBD-MySQL"
 
             if [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ]; then
                 if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
@@ -124,14 +127,14 @@ install_all()
                 ALL_PKGS="${ALL_PKGS} mariadb-server"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
             fi
-            ALL_PKGS="${ALL_PKGS} mariadb-client"
+            ALL_PKGS="${ALL_PKGS} mariadb-client p5-DBD-mysql"
         fi
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
 
         # PGSQL server & client.
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib"
+            ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib perl-DBD-Pg"
 
             if [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ]; then
                 if [ X"${DISTRO_VERSION}" == X'6' ]; then
@@ -143,14 +146,14 @@ install_all()
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
-            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql"
+            ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql libdbd-pg-perl"
 
             if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
             fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} postgresql-client postgresql-server postgresql-contrib"
+            ALL_PKGS="${ALL_PKGS} postgresql-client postgresql-server postgresql-contrib p5-DBD-Pg"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${PGSQL_RC_SCRIPT_NAME}"
         fi
     fi
@@ -212,7 +215,7 @@ install_all()
     # Cluebringer
     if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} cluebringer perl-DBD-MySQL perl-DBD-Pg"
+            ALL_PKGS="${ALL_PKGS} cluebringer"
             ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -282,10 +285,6 @@ install_all()
             ENABLED_SERVICES="${ENABLED_SERVICES} clamd@amavisd"
         fi
 
-        if [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} perl-DBD-Pg"
-        fi
-
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -298,10 +297,6 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} p5-ldap p5-DBD-mysql"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} p5-DBD-mysql"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} p5-DBD-Pg"
-
         ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new p5-Mail-SPF p5-Mail-SpamAssassin clamav"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
@@ -466,7 +461,7 @@ install_all()
             ECHO_INFO "PKG_PATH: ${PKG_PATH}"
             ECHO_INFO "Installing packages:${ALL_PKGS}"
         fi
-        eval ${install_pkg} ${ALL_PKGS}
+        eval ${install_pkg} ${ALL_PKGS} | tee ${INSTALL_LOG}
 
         echo 'export status_install_all_pkgs="DONE"' >> ${STATUS_FILE}
     }
