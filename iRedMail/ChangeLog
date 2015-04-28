@@ -67,6 +67,12 @@ iRedMail-0.9.1:
         + Roundcube webmail -> 1.1.1
         + uwsgi -> 2.0.9. OpenBSD only.
 
+    * Known issues:
+        + OpenLDAP backend:
+            - if you have catch-all account enabled for mail domain, email
+              sent to user+extension@domain.com will be delivered to catch-all
+              account.
+
 iRedMail-0.9.0:
     * Works on new distribution releases:
         - RHEL/CentOS 7
