@@ -136,7 +136,7 @@ CREATE USER ${IREDADMIN_DB_USER} WITH ENCRYPTED PASSWORD '${IREDADMIN_DB_PASSWD}
 \c ${IREDADMIN_DB_NAME};
 \i ${PGSQL_DATA_DIR}/iredadmin.pgsql;
 -- Grant permissions
-GRANT ALL on sessions,log,updatelog,deleted_mailboxes,quar_notify_tracking to ${IREDADMIN_DB_USER};
+GRANT ALL on sessions,log,updatelog,deleted_mailboxes to ${IREDADMIN_DB_USER};
 GRANT ALL ON log_id_seq,deleted_mailboxes_id_seq TO ${IREDADMIN_DB_USER};
 EOF
         rm -f ${PGSQL_DATA_DIR}/iredadmin.pgsql
