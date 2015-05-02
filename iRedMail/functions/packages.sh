@@ -297,7 +297,7 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new p5-Mail-SPF p5-Mail-SpamAssassin clamav"
+        ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new p5-Mail-SPF p5-Mail-SpamAssassin clamav unrar"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
 
@@ -410,6 +410,8 @@ install_all()
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-beautifulsoup4 py-lxml"
+        # /etc/rc.d/uwsgi
+        export PKG_SCRIPTS="${PKG_SCRIPTS} ${UWSGI_RC_SCRIPT_NAME}"
     fi
 
     # Awstats.
@@ -516,7 +518,8 @@ install_all()
             cd ${PKG_MISC_DIR}
             tar zxf uwsgi-*.tar.gz
             cd uwsgi-*/
-            python setup.py install >> ${RUNTIME_DIR}/wsgi_install.log 2>&1
+            patch -p1 < ${PATCH_DIR}/uwsgi/core_logging_c.patch >> ${INSTALL_LOG} 2>&1
+            python setup.py install > ${RUNTIME_DIR}/uwsgi_install.log 2>&1
         fi
 
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}

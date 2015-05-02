@@ -1,0 +1,8 @@
+#!/bin/sh
+
+daemon='/usr/local/bin/uwsgi --ini /etc/uwsgi/iredadmin.ini --daemonize /var/www/logs/uwsgi_iredadmin.log'
+
+. /etc/rc.d/rc.subr
+
+rc_reload=NO
+rc_cmd $1

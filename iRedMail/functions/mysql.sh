@@ -47,8 +47,11 @@ mysql_initialize()
 {
     ECHO_DEBUG "Starting MySQL."
 
+    backup_file ${MYSQL_MY_CNF}
+
     # Initial MySQL database first
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        perl -pi -e 's#^(\[mysqld\])#${1}\nbind-address = 127.0.0.1#' ${MYSQL_MY_CNF}
         /usr/local/bin/mysql_install_db >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.

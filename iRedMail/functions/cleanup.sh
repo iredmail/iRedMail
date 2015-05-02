@@ -116,7 +116,7 @@ cleanup_replace_firewall_rules()
             perl -pi -e 's#(.*)22(.*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
 
         perl -pi -e 's#(.* )22( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/iptables.rules
-        perl -pi -e 's#(.*mail_services=.*)ssh( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/pf.conf
+        perl -pi -e 's#(.*mail_services=.*)ssh( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/openbsd/pf.conf
 
         [ -f ${FAIL2BAN_JAIL_LOCAL_CONF} ] && \
             perl -pi -e 's#(.*port=.*)ssh(.*)#${1}$ENV{sshd_port}${2}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
@@ -159,7 +159,7 @@ cleanup_replace_firewall_rules()
                 fi
             elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
                 ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
-                cp -f ${SAMPLE_DIR}/pf.conf ${FIREWALL_RULE_CONF}
+                cp -f ${SAMPLE_DIR}/openbsd/pf.conf ${FIREWALL_RULE_CONF}
             fi
 
             # Prompt to restart iptables.
