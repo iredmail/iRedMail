@@ -60,6 +60,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
     export UWSGI_SOCKET_IREDADMIN="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.socket"
     export UWSGI_PID_IREDADMIN="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.pid"
+    export UWSGI_LOG_FILE='/var/www/logs/uwsgi.log'
 fi
 
 export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"

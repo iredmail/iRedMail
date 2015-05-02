@@ -40,5 +40,3 @@ export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${IREDADMIN_DB_NAME}"
 
 # Configure file for uwsgi
 export IREDADMIN_UWSGI_CONF="${UWSGI_CONF_DIR}/iredadmin.ini"
-# Used in OpenBSD.
-export IREDADMIN_UWSGI_LOGFILE='/var/www/logs/uwsgi_iredadmin.log'

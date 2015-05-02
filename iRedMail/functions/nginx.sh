@@ -119,7 +119,7 @@ nginx_config()
         # Start uWSGI
         cp ${SAMPLE_DIR}/openbsd/rc.d/uwsgi ${DIR_RC_SCRIPTS}
         chmod +x ${DIR_RC_SCRIPTS}/uwsgi
-        echo "uwsgi_flags='--ini ${IREDADMIN_UWSGI_CONF} --daemonize ${IREDADMIN_UWSGI_LOGFILE}'" >> ${RC_CONF_LOCAL}
+        echo "uwsgi_flags='--ini ${IREDADMIN_UWSGI_CONF} --daemonize ${UWSGI_LOG_FILE}'" >> ${RC_CONF_LOCAL}
     fi
 
     if [ -f ${IREDADMIN_UWSGI_CONF} ]; then
