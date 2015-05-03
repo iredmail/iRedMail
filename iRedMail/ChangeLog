@@ -50,6 +50,7 @@ iRedMail-0.9.1:
         - Add two new Fail2ban filters to help catch spam.
 
     * Fixed issues:
+        - Amavisd cannot ban zipped '.exe' file on RHEL/CentOS.
         - Install package `unrar` as rar unarchiver on RHEL/CentOS/Debian/Ubuntu.
         - Incorrect log file and owner/group in /etc/logrotate.d/policyd.
         - Cannot send email to user+ext@domain.com when per-domain catch-all
@@ -66,6 +67,8 @@ iRedMail-0.9.1:
     * Updated packages:
         + Roundcube webmail -> 1.1.1
         + uwsgi -> 2.0.9. OpenBSD only.
+        + iRedAdmin -> 0.4.2 (open source edition).
+        + iRedAPD -> 1.5.0.
 
     * Known issues:
         + OpenLDAP backend:

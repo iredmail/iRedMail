@@ -503,6 +503,31 @@ delete \$admin_maps_by_ccat{&CC_UNCHECKED};
 \$localhost_name = \$myhostname;
 EOF
 
+    cat >> ${AMAVISD_CONF} <<EOF
+# Amavisd on some Linux/BSD distribution use \$banned_namepath_re instead of
+# \$banned_filename_re, so we define some blocked file types here.
+#
+# Sample input for \$banned_namepath_re:
+#
+#   P=p003\tL=1\tM=multipart/mixed\nP=p002\tL=1/2\tM=application/octet-stream\tT=dat\tN=my_docum.zip
+#
+# What it means:
+#   - T: type. e.g. zip archive.
+#   - M: MIME type. e.g. application/octet-stream.
+#   - N: suggested (MIME) name. e.g. my_docum.zip.
+
+\$banned_namepath_re = new_RE(
+    [qr'T=(exe|exe-ms|dat|lha|cab|dll)\t'xmi => 'DISCARD'],   # banned file(1) types
+    [qr'T=(pif|scr)\t'xmi => 'DISCARD'],                      # banned extensions - rudimentary
+    [qr'T=ani\t'xmi => 'DISCARD'],                            # banned animated cursor file(1) type
+    [qr'T=(mim|b64|bhx|hqx|xxe|uu|uue)\t'xmi => 'DISCARD'],   # banned extension - WinZip vulnerab.
+    [qr'M=application/x-msdownload\t'xmi => 'DISCARD'],       # block these MIME types
+    [qr'M=application/x-msdos-program\t'xmi => 'DISCARD'],
+    [qr'M=application/hta\t'xmi => 'DISCARD'],
+    [qr'M=(application/x-msmetafile|image/x-wmf)\t'xmi => 'DISCARD'],  # Windows Metafile MIME type
+);
+EOF
+
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         cat >> ${AMAVISD_CONF} <<EOF
 # Use 'unrar-nonfree' (package 'unrar') instead of 'unrar-free' (package 'unrar-free').
