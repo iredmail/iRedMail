@@ -16,7 +16,7 @@ iRedMail-0.9.1:
 
     * Improvements:
         - Log most terminal output of iRedMail installation to file
-          'runtime/install.log', used for troubleshooting.
+          'runtime/install.log', used for troubleshooting after installation.
         - Backup scripts are able to delete old backup copies. Default setting
           is keeping backup copies for 90 days.
         - [LDAP] Allow mailing list account to use attributes: gidNumber,
@@ -35,7 +35,7 @@ iRedMail-0.9.1:
         - Make Dovecot subscribe newly created folder automatically.
           Thanks Michael Telatynski <postmaster _at_ webdevguru.co.uk> for the
           patch.
-        - Allow to restrict user to login for specified IP addresses or
+        - Able to restrict user to login for specified IP addresses or
           networks, multiple IP addresses or networks must be separated by
           comma.
 
