@@ -517,7 +517,7 @@ EOF
 #   - N: suggested (MIME) name. e.g. my_docum.zip.
 
 \$banned_namepath_re = new_RE(
-    [qr'T=(exe|exe-ms|dat|lha|cab|dll)\t'xmi => 'DISCARD'],   # banned file(1) types
+    [qr'T=(exe|exe-ms|lha|cab|dll)\t'xmi => 'DISCARD'],   # banned file(1) types
     [qr'T=(pif|scr)\t'xmi => 'DISCARD'],                      # banned extensions - rudimentary
     [qr'T=ani\t'xmi => 'DISCARD'],                            # banned animated cursor file(1) type
     [qr'T=(mim|b64|bhx|hqx|xxe|uu|uue)\t'xmi => 'DISCARD'],   # banned extension - WinZip vulnerab.
