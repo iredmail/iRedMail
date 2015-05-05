@@ -490,9 +490,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         export PKGADD="pkg_add"
     fi
 
-    # Package management.
-    export install_pkg='install_pkg_freebsd'
-    export remove_pkg='remove_pkg_freebsd'
     if [ X"${DISTRO_VERSION}" == X'9' ]; then
         export LIST_ALL_PKGS="pkg_info | awk '{print $1}'"
         export LIST_FILES_IN_PKG='pkg_info -L'
@@ -544,7 +541,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     fi
 
     # Package management.
-    export install_pkg='pkg_add -i'
+    export install_pkg='pkg_add -i -m'
     export remove_pkg='pkg_delete'
     export LIST_ALL_PKGS="pkg_info -a | awk '{print $1}'"
     export LIST_FILES_IN_PKG='pkg_info -L'

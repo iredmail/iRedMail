@@ -25,7 +25,11 @@ install_all()
     ALL_PKGS=''
     ENABLED_SERVICES=''
     DISABLED_SERVICES=''
-    PKG_SCRIPTS=''  # OpenBSD only
+
+    # OpenBSD only
+    PKG_SCRIPTS=''
+    OB_PKG_POSTFIX_VER='-2.11.4'
+    OB_PKG_PHP_VER='-5.6.5'
 
     # Enable syslog or rsyslog.
     if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -46,13 +50,9 @@ install_all()
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix--ldap"
-        elif [ X"${BACKEND}" == X'MYSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix--mysql"
-        elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix--pgsql"
-        fi
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-ldap"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-mysql"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-pgsql"
     fi
 
     # Backend: OpenLDAP, MySQL, PGSQL and extra packages.
@@ -170,11 +170,11 @@ install_all()
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php5-pgsql"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} php php-bz2 php-imap php-mcrypt php-gd php-intl"
+        ALL_PKGS="${ALL_PKGS} php${OB_PKG_PHP_VER} php-bz2${OB_PKG_PHP_VER} php-imap${OB_PKG_PHP_VER} php-mcrypt${OB_PKG_PHP_VER} php-gd${OB_PKG_PHP_VER} php-intl${OB_PKG_PHP_VER}"
 
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-pdo_mysql"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_pgsql"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap${OB_PKG_PHP_VER} php-pdo_mysql${OB_PKG_PHP_VER}"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql${OB_PKG_PHP_VER}"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_pgsql${OB_PKG_PHP_VER}"
     fi
 
     # Apache. Always install Apache.
@@ -197,7 +197,7 @@ install_all()
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} nginx-full php5-fpm"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} nginx php-fpm"
+            ALL_PKGS="${ALL_PKGS} nginx php-fpm${OB_PKG_PHP_VER}"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${NGINX_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
     fi
@@ -311,7 +311,7 @@ install_all()
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-net-ldap2"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} php-pspell php-intl"
+            ALL_PKGS="${ALL_PKGS} php-pspell${OB_PKG_PHP_VER} php-intl${OB_PKG_PHP_VER}"
         fi
     fi
 
