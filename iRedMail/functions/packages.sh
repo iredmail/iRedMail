@@ -29,7 +29,10 @@ install_all()
     # OpenBSD only
     PKG_SCRIPTS=''
     OB_PKG_POSTFIX_VER='-2.11.4'
+    OB_PKG_OPENLDAP_VER='-2.4.40p1'
     OB_PKG_PHP_VER='-5.6.5'
+    OB_PKG_NGINX_VER='-1.7.10'
+    OB_PKG_MEMCACHED_VER='-1.4.21p1'
 
     # Enable syslog or rsyslog.
     if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -73,11 +76,11 @@ install_all()
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
-                ALL_PKGS="${ALL_PKGS} openldap-server"
+                ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_VER}"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
             fi
 
-            ALL_PKGS="${ALL_PKGS} openldap-client mariadb-server mariadb-client p5-ldap p5-DBD-mysql"
+            ALL_PKGS="${ALL_PKGS} openldap-client${OB_PKG_OPENLDAP_VER} mariadb-server mariadb-client p5-ldap p5-DBD-mysql"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
 
         fi
@@ -197,7 +200,7 @@ install_all()
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} nginx-full php5-fpm"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} nginx php-fpm${OB_PKG_PHP_VER}"
+            ALL_PKGS="${ALL_PKGS} nginx${OB_PKG_NGINX_VER} php-fpm${OB_PKG_PHP_VER}"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${NGINX_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
     fi
@@ -358,7 +361,7 @@ install_all()
             apt-get update
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} sogo memcached"
+            ALL_PKGS="${ALL_PKGS} sogo memcached${OB_PKG_MEMCACHED_VER}"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope-mysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope-mysql"
