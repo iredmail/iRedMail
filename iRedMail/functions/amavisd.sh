@@ -503,7 +503,8 @@ delete \$admin_maps_by_ccat{&CC_UNCHECKED};
 \$localhost_name = \$myhostname;
 EOF
 
-    cat >> ${AMAVISD_CONF} <<EOF
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        cat >> ${AMAVISD_CONF} <<EOF
 # Amavisd on some Linux/BSD distribution use \$banned_namepath_re instead of
 # \$banned_filename_re, so we define some blocked file types here.
 #
@@ -527,6 +528,7 @@ EOF
     [qr'M=(application/x-msmetafile|image/x-wmf)\t'xmi => 'DISCARD'],  # Windows Metafile MIME type
 );
 EOF
+    fi
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         cat >> ${AMAVISD_CONF} <<EOF
