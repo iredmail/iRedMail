@@ -518,14 +518,17 @@ EOF
 #   - N: suggested (MIME) name. e.g. my_docum.zip.
 
 \$banned_namepath_re = new_RE(
-    [qr'T=(exe|exe-ms|lha|cab|dll)\t'xmi => 'DISCARD'],   # banned file(1) types
-    [qr'T=(pif|scr)\t'xmi => 'DISCARD'],                      # banned extensions - rudimentary
-    [qr'T=ani\t'xmi => 'DISCARD'],                            # banned animated cursor file(1) type
-    [qr'T=(mim|b64|bhx|hqx|xxe|uu|uue)\t'xmi => 'DISCARD'],   # banned extension - WinZip vulnerab.
-    [qr'M=application/x-msdownload\t'xmi => 'DISCARD'],       # block these MIME types
-    [qr'M=application/x-msdos-program\t'xmi => 'DISCARD'],
-    [qr'M=application/hta\t'xmi => 'DISCARD'],
-    [qr'M=(application/x-msmetafile|image/x-wmf)\t'xmi => 'DISCARD'],  # Windows Metafile MIME type
+    # Unknown binary files.
+    [qr'M=application/(zip|rar|arc|arj|zoo|gz|bz2|octet-stream)(,|\t).*T=dat(,|\t)'xmi => 'DISCARD'],
+
+    [qr'T=(exe|exe-ms|lha|cab|dll)(,|\t)'xmi => 'DISCARD'],       # banned file(1) types
+    [qr'T=(pif|scr)(,|\t)'xmi => 'DISCARD'],                      # banned extensions - rudimentary
+    [qr'T=ani(,|\t)'xmi => 'DISCARD'],                            # banned animated cursor file(1) type
+    [qr'T=(mim|b64|bhx|hqx|xxe|uu|uue)(,|\t)'xmi => 'DISCARD'],   # banned extension - WinZip vulnerab.
+    [qr'M=application/x-msdownload(,|\t)'xmi => 'DISCARD'],       # block these MIME types
+    [qr'M=application/x-msdos-program(,|\t)'xmi => 'DISCARD'],
+    [qr'M=application/hta(,|\t)'xmi => 'DISCARD'],
+    [qr'M=(application/x-msmetafile|image/x-wmf)(,|\t)'xmi => 'DISCARD'],  # Windows Metafile MIME type
 );
 EOF
     fi
