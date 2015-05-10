@@ -199,7 +199,7 @@ OpenLDAP:
     * LDAP suffix: ${LDAP_SUFFIX}
     * LDAP root dn: ${LDAP_ROOTDN}, password: ${LDAP_ROOTPW}
     * LDAP bind dn (read-only): ${LDAP_BINDDN}, password: ${LDAP_BINDPW}
-    * LDAP admin dn (used for iRedAdmin): ${LDAP_ADMIN_DN}, password: ${LDAP_ADMIN_PW}
+    * LDAP admin dn (read-write): ${LDAP_ADMIN_DN}, password: ${LDAP_ADMIN_PW}
     * LDAP base dn: ${LDAP_BASEDN}
     * LDAP admin base dn: ${LDAP_ADMIN_BASEDN}
     * Configuration files:
