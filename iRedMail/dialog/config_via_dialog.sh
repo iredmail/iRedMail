@@ -63,10 +63,11 @@ NOTE:
 [ X"$?" != X"0" ] && ECHO_INFO "Exit." && exit 0
 
 # VMAIL_USER_HOME_DIR
-VMAIL_USER_HOME_DIR="/var/vmail"
-${DIALOG} \
-    --title "Default mail storage path" \
-    --inputbox "\
+while :; do
+    VMAIL_USER_HOME_DIR="/var/vmail"
+    ${DIALOG} \
+        --title "Default mail storage path" \
+        --inputbox "\
 Please specify a directory (in lowercase) used to store user mailboxes.
 Default is: ${VMAIL_USER_HOME_DIR}
 
@@ -78,9 +79,18 @@ NOTES:
 
     * Depends on the mail traffic, it may take large disk space.
     * Path will be converted to lowercases.
+    * It cannot be /var/mail (used to store mails sent to system accounts).
 " 20 76 "${VMAIL_USER_HOME_DIR}" 2>/tmp/vmail_user_home_dir
 
-export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"
+    export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"
+    if echo ${VMAIL_USER_HOME_DIR} | grep -i '^/var/mail\>' &>/dev/null; then
+        # Cannot be /var/vmail
+        :
+    else
+        break
+    fi
+done
+
 rm -f /tmp/vmail_user_home_dir &>/dev/null
 
 export STORAGE_BASE_DIR="${VMAIL_USER_HOME_DIR}"
