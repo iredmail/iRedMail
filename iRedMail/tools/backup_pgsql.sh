@@ -25,7 +25,7 @@
 #
 #   * Set correct values for below variables:
 #
-#       PGSQL_ADMIN
+#       PGSQL_SYS_USER
 #       BACKUP_ROOTDIR
 #       DATABASES
 #
@@ -173,8 +173,10 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Delete old backup: ${REMOVED_BACKUP_DIR}." >> ${LOGFILE}
     rm -rf ${REMOVED_BACKUP_DIR} >/dev/null 2>${LOGFILE}
 
-    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUP_DIR}.', 'cron_backup_sql', '127.0.0.1', NOW());"
-    ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
+    su - ${PGSQL_SYS_USER} -c "psql -d iredadmin" <<EOF
+INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES
+    ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUP_DIR}.', 'cron_backup_sql', '127.0.0.1', NOW());
+EOF
 fi
 
 echo "* Backup log: ${LOGFILE}:"
