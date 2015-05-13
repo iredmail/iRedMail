@@ -208,9 +208,6 @@ EOF
 # ${PROG_NAME}: Cleanup Amavisd database
 1   2   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py >/dev/null
 
-# ${PROG_NAME}: Notify users when some incoming emails have been quarantined
-1   5   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/notify_quarantined_recipients.py &>dev/null
-
 EOF
 
     cat >> ${TIP_FILE} <<EOF
