@@ -355,7 +355,9 @@ EOF
 *
 * And it's sent to your mail account ${tip_recipient}.
 *
-* Please reboot your system to enable mail services.
+********************* WARNING **************************************
+*
+* Rebooting your system is required to enable mail services.
 *
 ********************************************************************
 EOF
