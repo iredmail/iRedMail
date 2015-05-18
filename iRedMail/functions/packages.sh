@@ -405,9 +405,15 @@ install_all()
         [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy python-beautifulsoup python-xml"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy python-beautifulsoup python-lxml"
+
         [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
         [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
+
+        # Debian
+        [ X"${DISTRO_CODENAME}" == X'jessie' ] && ALL_PKGS="${ALL_PKGS} python-bcrypt"
+        # Ubuntu
+        [ X"${DISTRO}" == X'UBUNTU' ] && ALL_PKGS="${ALL_PKGS} python-bcrypt"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-beautifulsoup4 py-lxml"
