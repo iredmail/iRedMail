@@ -533,14 +533,6 @@ EOF
 EOF
     fi
 
-    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        cat >> ${AMAVISD_CONF} <<EOF
-# Use 'unrar-nonfree' (package 'unrar') instead of 'unrar-free' (package 'unrar-free').
-# With 'unrar-free', Amavisd cannot detect compressed '.exe' file.
-\$unrar = ['unrar-nonfree'];
-EOF
-    fi
-
     cat >> ${AMAVISD_CONF} <<EOF
 1;  # insure a defined return
 EOF
