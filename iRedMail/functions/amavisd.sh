@@ -534,6 +534,11 @@ EOF
     fi
 
     cat >> ${AMAVISD_CONF} <<EOF
+# Listen on specified addresses.
+#\$inet_socket_bind = [ '127.0.0.1', '[::1]' ];
+EOF
+
+    cat >> ${AMAVISD_CONF} <<EOF
 1;  # insure a defined return
 EOF
     # ------------- END configure /etc/amavisd.conf ------------
