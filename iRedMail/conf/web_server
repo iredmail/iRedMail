@@ -59,7 +59,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
 fi
 
-
 [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && . ${CONF_DIR}/apache
 [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ] && . ${CONF_DIR}/nginx
 

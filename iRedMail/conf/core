@@ -403,6 +403,12 @@ generate_ssl_keys()
     chmod +r ${SSL_CERT_FILE}
     chmod +r ${SSL_KEY_FILE}
 
+    # Fix 'The Logjam Attack'. References:
+    #   - https://weakdh.org/
+    #   - https://weakdh.org/sysadmin.html
+    ECHO_INFO "Generate a strong, unique Diffie Hellman Group with openssl, please wait."
+    openssl dhparam -out ${SSL_DHPARAM_FILE} 2048 5>&1 &>/dev/null | tee ${INSTALL_LOG}
+
     cat >> ${TIP_FILE} <<EOF
 
 SSL cert keys (size: ${SSL_KEY_SIZE}):

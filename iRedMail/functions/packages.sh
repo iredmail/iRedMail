@@ -329,7 +329,6 @@ install_all()
             # Copy yum repo file
             ECHO_INFO "Add yum repo for SOGo: ${YUM_REPOS_DIR}/sogo.repo."
             cp ${SAMPLE_DIR}/sogo/sogo.rhel${DISTRO_VERSION}.repo ${YUM_REPOS_DIR}/sogo.repo
-            ${YUM} clean metadata &>/dev/null
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" == X'wheezy' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then

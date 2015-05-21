@@ -172,15 +172,11 @@ gpgcheck=0
 EOF
     fi
 
-    yum clean metadata &>/dev/null
     eval ${install_pkg} epel-release
 
     if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then
         rm -f ${YUM_REPOS_DIR}/tmp_epel.repo
     fi
-
-    ECHO_INFO "Clean metadata of yum repositories."
-    yum clean metadata &>/dev/null
 
     echo 'export status_create_repo_rhel="DONE"' >> ${STATUS_FILE}
 }
