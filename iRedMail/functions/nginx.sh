@@ -85,7 +85,7 @@ nginx_config()
     fi
 
     # Copy uwsgi config file for iRedAdmin
-    [ -d ${UWSGI_CONF_DIR} || mkdir -p ${UWSGI_CONF_DIR} &>/dev/null
+    [ -d ${UWSGI_CONF_DIR} ] || mkdir -p ${UWSGI_CONF_DIR} &>/dev/null
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
         cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${IREDADMIN_UWSGI_CONF}
