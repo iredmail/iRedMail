@@ -519,7 +519,7 @@ EOF
 
 \$banned_namepath_re = new_RE(
     # Unknown binary files.
-    [qr'M=application/(zip|rar|arc|arj|zoo|gz|bz2|octet-stream)(,|\t).*T=dat(,|\t)'xmi => 'DISCARD'],
+    [qr'M=application/(zip|rar|arc|arj|zoo|gz|bz2)(,|\t).*T=dat(,|\t)'xmi => 'DISCARD'],
 
     [qr'T=(exe|exe-ms|lha|cab|dll)(,|\t)'xmi => 'DISCARD'],       # banned file(1) types
     [qr'T=(pif|scr)(,|\t)'xmi => 'DISCARD'],                      # banned extensions - rudimentary
