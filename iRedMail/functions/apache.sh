@@ -77,7 +77,6 @@ apache_config()
         fi
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         perl -pi -e 's#(SSLEngine on)$#${1}\nSSLCipherSuite $ENV{SSL_CIPHERS}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
-        perl -pi -e 's#(SSLEngine on)$#${1}\nSSLOpenSSLConfCmd DHParameters $ENV{SSL_DHPARAM_FILE}#g' ${HTTPD_SSL_CONF}
     fi
 
     ECHO_DEBUG "Set correct SSL Cert/Key file location."

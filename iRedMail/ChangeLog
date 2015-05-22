@@ -1,5 +1,7 @@
 iRedMail-0.9.2:
     * Improvements:
+        - Fix 'The Logjam Attack' ssl related issue. Reference:
+          https://weakdh.org/
         - Improve Fail2ban filter `postfix.iredmail.conf` to prevent DoS
           attack to SMTP service.
 

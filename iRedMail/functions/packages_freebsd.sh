@@ -918,6 +918,7 @@ OPTIONS_FILE_SET+=MYSQLCLIENT_R
 EOF
 
     # py-sqlalchemy
+    ALL_PORTS="${ALL_PORTS} database/py-sqlalchemy"
     cat > /var/db/ports/databases_py-sqlalchemy/options <<EOF
 OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_UNSET+=EXAMPLES
