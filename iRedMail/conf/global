@@ -541,7 +541,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     fi
 
     # Package management.
-    export install_pkg='pkg_add -i -m'
+    export install_pkg='install_pkg_openbsd'
     export remove_pkg='pkg_delete'
     export LIST_ALL_PKGS="pkg_info -a | awk '{print $1}'"
     export LIST_FILES_IN_PKG='pkg_info -L'

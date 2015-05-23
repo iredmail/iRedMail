@@ -136,6 +136,9 @@ check_pkg()
 
 check_runtime_dir() {
     [ -d ${RUNTIME_DIR} ] || mkdir -p ${RUNTIME_DIR}
+
+    # Cleanup
+    rm -f ${RUNTIME_DIR}/.pkg_install_failed &>/dev/null
 }
 
 # Check necessery privileges/files/dirs.
@@ -453,14 +456,9 @@ install_pkg_rhel()
 {
     ECHO_INFO "Installing package(s): $@"
     ${YUM} -y --disablerepo=rpmforge,ius,remi install $@
-    if [ X"$?" != X"0" ]; then
-        ECHO_ERROR "Installation failed, please check the terminal output."
-        ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
-        ECHO_ERROR "forum: http://www.iredmail.org/forum/"
-        exit 255
-    else
-        :
-    fi
+
+    # Leave a mark if package installation failed.
+    [ X"$?" != X"0" ] && echo '' > ${RUNTIME_DIR}/.pkg_install_failed
 }
 
 remove_pkg_rhel()
@@ -475,12 +473,9 @@ install_pkg_debian()
 {
     ECHO_INFO "Installing package(s): $@"
     ${APTGET} install -y --force-yes $@
-    if [ X"$?" != X"0" ]; then
-        ECHO_ERROR "Installation failed, please check the terminal output."
-        exit 255
-    else
-        :
-    fi
+
+    # Leave a mark if package installation failed.
+    [ X"$?" != X"0" ] && echo '' > ${RUNTIME_DIR}/.pkg_install_failed
 }
 
 remove_pkg_debian()
@@ -490,6 +485,16 @@ remove_pkg_debian()
     [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
 }
 
+install_pkg_openbsd()
+{
+    ECHO_INFO "PKG_PATH: ${PKG_PATH}"
+    ECHO_INFO "Installing packages (pkg_add -i -m): $@"
+
+    pkg_add -i -m $@
+
+    # Leave a mark if package installation failed.
+    [ X"$?" != X"0" ] && echo '' > ${RUNTIME_DIR}/.pkg_install_failed
+}
 freebsd_add_make_conf()
 {
     # USAGE: freebsd_add_make_conf VAR VALUE

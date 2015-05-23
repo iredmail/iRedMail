@@ -206,8 +206,6 @@ install_all()
     fi
 
     if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
-        # Use Nginx as web server if it's selected.
-        # php-fpm will be listed in variable 'pkg_scripts' in /etc/rc.conf.local.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} ${APACHE_RC_SCRIPT_NAME}"
     else
@@ -463,14 +461,16 @@ install_all()
     # Install all packages.
     install_all_pkgs()
     {
-        # Install all packages.
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ECHO_INFO "PKG_PATH: ${PKG_PATH}"
-            ECHO_INFO "Installing packages:${ALL_PKGS}"
-        fi
         eval ${install_pkg} ${ALL_PKGS} | tee ${INSTALL_LOG}
 
-        echo 'export status_install_all_pkgs="DONE"' >> ${STATUS_FILE}
+        if [ -f ${RUNTIME_DIR}/.pkg_install_failed ]; then
+            ECHO_ERROR "Installation failed, please check the terminal output."
+            ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
+            ECHO_ERROR "forum: http://www.iredmail.org/forum/"
+            exit 255
+        else
+            echo 'export status_install_all_pkgs="DONE"' >> ${STATUS_FILE}
+        fi
     }
 
     # Enable/Disable services.

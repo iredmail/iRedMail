@@ -38,7 +38,6 @@ export NGINX_PID='/var/run/nginx.pid'
 export NGINX_CLIENT_BODY_TEMP_PATH='/var/lib/nginx_tmp_client_body'
 
 # uWSGI
-export UWSGI_CONF_DIR='/etc/uwsgi'
 export UWSGI_SOCKET_IREDADMIN='/var/run/uwsgi_iredadmin.socket'
 export UWSGI_PID_IREDADMIN='/var/run/uwsgi_iredadmin.pid'
 
@@ -47,6 +46,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export HTTPD_USER='nginx'
     export HTTPD_GROUP='nginx'
 
+    export UWSGI_CONF_DIR='/etc/uwsgi.d'
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export UWSGI_CONF_DIR='/etc/uwsgi/apps-available'
 
@@ -58,6 +58,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export NGINX_LOG_ACCESSLOG='logs/access.log'
     export NGINX_LOG_ERRORLOG='logs/error.log'
 
+    export UWSGI_CONF_DIR='/etc/uwsgi'
     export UWSGI_SOCKET_IREDADMIN="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.socket"
     export UWSGI_PID_IREDADMIN="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.pid"
     export UWSGI_LOG_FILE='/var/www/logs/uwsgi.log'
