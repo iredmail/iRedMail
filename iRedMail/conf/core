@@ -458,14 +458,19 @@ install_pkg_rhel()
     ${YUM} -y --disablerepo=rpmforge,ius,remi install $@
 
     # Leave a mark if package installation failed.
-    [ X"$?" != X"0" ] && echo '' > ${RUNTIME_DIR}/.pkg_install_failed
+    if [ X"$?" != X'0' ]; then
+        echo '' > ${RUNTIME_DIR}/.pkg_install_failed
+    fi
 }
 
 remove_pkg_rhel()
 {
     ECHO_INFO "Removing package(s): $@"
     ${YUM} remove -y $@
-    [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
+    if [ X"$?" != X"0" ]; then
+        ECHO_ERROR "Package removed failed, please check the terminal output."
+        echo '' > ${RUNTIME_DIR}/.pkg_remove_failed
+    fi
 }
 
 # Install/Remove binary packages on Debian/Ubuntu.
@@ -475,14 +480,19 @@ install_pkg_debian()
     ${APTGET} install -y --force-yes $@
 
     # Leave a mark if package installation failed.
-    [ X"$?" != X"0" ] && echo '' > ${RUNTIME_DIR}/.pkg_install_failed
+    if [ X"$?" != X"0" ]; then
+        echo '' > ${RUNTIME_DIR}/.pkg_install_failed
+    fi
 }
 
 remove_pkg_debian()
 {
     ECHO_INFO "Removing package(s): $@"
     ${APTGET} purge -y $@
-    [ X"$?" != X"0" ] && ECHO_ERROR "Package removed failed, please check the terminal output."
+    if [ X"$?" != X"0" ]; then
+        ECHO_ERROR "Package removed failed, please check the terminal output."
+        echo '' > ${RUNTIME_DIR}/.pkg_remove_failed
+    fi
 }
 
 install_pkg_openbsd()
@@ -493,7 +503,9 @@ install_pkg_openbsd()
     pkg_add -i -m $@
 
     # Leave a mark if package installation failed.
-    [ X"$?" != X"0" ] && echo '' > ${RUNTIME_DIR}/.pkg_install_failed
+    if [ X"$?" != X"0" ]; then
+        echo '' > ${RUNTIME_DIR}/.pkg_install_failed
+    fi
 }
 freebsd_add_make_conf()
 {

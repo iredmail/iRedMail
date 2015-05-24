@@ -46,7 +46,20 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export HTTPD_USER='nginx'
     export HTTPD_GROUP='nginx'
 
+    export UWSGI_CONF='/etc/uwsgi.ini'
     export UWSGI_CONF_DIR='/etc/uwsgi.d'
+
+    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        export UWSGI_PID='/var/run/uwsgi.pid'
+        export UWSGI_SOCKET='/var/run/uwsgi.sock'
+        export UWSGI_SOCKET_IREDADMIN='/var/run/uwsgi_iredadmin.socket'
+        export UWSGI_PID_IREDADMIN='/var/run/uwsgi_iredadmin.pid'
+    else
+        export UWSGI_PID='/run/uwsgi/uwsgi.pid'
+        export UWSGI_SOCKET='/run/uwsgi/uwsgi.sock'
+        export UWSGI_SOCKET_IREDADMIN='/run/uwsgi/iredadmin.socket'
+        export UWSGI_PID_IREDADMIN='/run/uwsgi/iredadmin.pid'
+    fi
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export UWSGI_CONF_DIR='/etc/uwsgi/apps-available'
 

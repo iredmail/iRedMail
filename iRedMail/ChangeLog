@@ -1,9 +1,17 @@
 iRedMail-0.9.2:
     * Improvements:
-        - Fix 'The Logjam Attack' ssl related issue. Reference:
-          https://weakdh.org/
         - Improve Fail2ban filter `postfix.iredmail.conf` to prevent DoS
           attack to SMTP service.
+
+    * Fixed issues:
+        - uwsgi service doesn't work on RHEL/CentOS. A new version of uwsgi
+          package was submitted to EPEL repo with higher priority (not
+          submitted by iRedMail team), it's not compatible with settings
+          configured by iRedMail, this causes uwsgi service cannot be started.
+        - Cannot import MySQL database on Jailed FreeBSD.
+        - Not install required port 'databases/py-sqlalchemy' on FreeBSD.
+        - Fix 'The Logjam Attack' ssl related issue. Reference:
+          https://weakdh.org/
 
 iRedMail-0.9.1:
     * Works on new distribution releases:
