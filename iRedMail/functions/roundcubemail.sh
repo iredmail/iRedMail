@@ -273,39 +273,8 @@ rcm_plugin_password()
     ECHO_DEBUG "Enable and config plugin: password."
     cd ${RCM_CONF_DIR}
 
-    cd ${RCM_HTTPD_ROOT}/plugins/password/ && \
-        cp config.inc.php.dist config.inc.php
-
-    if [ X"${BACKEND}" == X'MYSQL' ]; then
-        # Patch to support ssha512, bcrypt via doveadm.
-        cd ${RCM_HTTPD_ROOT}
-        patch -p1 < ${PATCH_DIR}/roundcubemail/password_driver_mysql.patch >> ${INSTALL_LOG} 2>&1
-
-    elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        # Patch to escape single quote while updating password, and supports
-        # ssha512 + bcrypt via doveadm.
-        cd ${RCM_HTTPD_ROOT}
-        patch -p1 < ${PATCH_DIR}/roundcubemail/password_driver_pgsql.patch >> ${INSTALL_LOG} 2>&1
-
-        # Re-generate config.inc.php because it's hard to use perl to update
-        # 'password_query' setting.
-        cd ${RCM_HTTPD_ROOT}/plugins/password/
-        sed '/password_query/,$d' config.inc.php.dist > config.inc.php.tmp
-        # Update 'password_query' setting.
-        cat >> config.inc.php.tmp <<EOF
-\$rcmail_config['password_query'] = "SELECT * from dblink_exec(E'host=\'${SQL_SERVER}\' user=\'${RCM_DB_USER}\' password=\'${RCM_DB_PASSWD}\' dbname=\'${VMAIL_DB}\'', E'UPDATE mailbox SET password=%D,passwordlastchange=NOW() WHERE username=%u')";
-EOF
-
-        sed '1,/password_query/d' config.inc.php.dist >> config.inc.php.tmp
-        rm -f config.inc.php &>/dev/null && \
-            mv config.inc.php.tmp config.inc.php
-    elif [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        # Patch to support ssha512, bcrypt via doveadm.
-        cd ${RCM_HTTPD_ROOT}
-        patch -p1 < ${PATCH_DIR}/roundcubemail/password_driver_ldap.patch >> ${INSTALL_LOG} 2>&1
-    fi
-
     cd ${RCM_HTTPD_ROOT}/plugins/password/
+    cp config.inc.php.dist config.inc.php
 
     # Determine whether current password is required to change password
     perl -pi -e 's#(.*password_confirm_current.*=).*#${1} true;#' config.inc.php
@@ -335,16 +304,12 @@ EOF
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
         perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER}/$ENV{VMAIL_DB}";#' config.inc.php
 
-        if [ X"${BACKEND}" == X'MYSQL' ]; then
-            perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE $ENV{VMAIL_DB}.mailbox SET password=%D,passwordlastchange=NOW() WHERE username=%u LIMIT 1";#' config.inc.php
-        fi
+        perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE mailbox SET password=%D,passwordlastchange=NOW() WHERE username=%u";#' config.inc.php
 
     elif [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        # cannot verify current password since OpenLDAP doesn't support ssha512/bcrypt
-        perl -pi -e 's#(.*password_confirm_current.*=).*#${1} false;#' config.inc.php
+        perl -pi -e 's#(.*password_confirm_current.*=).*#${1} true;#' config.inc.php
 
-        # LDAP backend. Driver: ldap_simple.
-        perl -pi -e 's#(.*password_driver.*=).*#${1} "ldap";#' config.inc.php
+        perl -pi -e 's#(.*password_driver.*=).*#${1} "ldap_simple";#' config.inc.php
         perl -pi -e 's#(.*password_ldap_host.*=).*#${1} "$ENV{LDAP_SERVER_HOST}";#' config.inc.php
         perl -pi -e 's#(.*password_ldap_port.*=).*#${1} "$ENV{LDAP_SERVER_PORT}";#' config.inc.php
         perl -pi -e 's#(.*password_ldap_starttls.*=).*#${1} false;#' config.inc.php
@@ -352,21 +317,14 @@ EOF
         perl -pi -e 's#(.*password_ldap_basedn...=).*#${1} "$ENV{LDAP_BASEDN}";#' config.inc.php
         perl -pi -e 's#(.*password_ldap_userDN_mask...=).*#${1} "$ENV{LDAP_ATTR_USER_RDN}=%login,$ENV{LDAP_ATTR_GROUP_RDN}=$ENV{LDAP_ATTR_GROUP_USERS},$ENV{LDAP_ATTR_DOMAIN_RDN}=%domain,$ENV{LDAP_BASEDN}";#' config.inc.php
 
-        # for driver: ldap_simple. supports ssha, md5.
-        #perl -pi -e 's#(.*password_ldap_method.*=).*#${1} "user";#' config.inc.php
-        #perl -pi -e 's#(.*password_ldap_adminDN.*=).*#${1} "null";#' config.inc.php
-        #perl -pi -e 's#(.*password_ldap_adminPW.*=).*#${1} "null";#' config.inc.php
-
-        # for driver: ldap
-        perl -pi -e 's#(.*password_ldap_method.*=).*#${1} "admin";#' config.inc.php
-        perl -pi -e 's#(.*password_ldap_adminDN.*=).*#${1} "$ENV{LDAP_ADMIN_DN}";#' config.inc.php
-        perl -pi -e 's#(.*password_ldap_adminPW.*=).*#${1} "$ENV{LDAP_ADMIN_PW}";#' config.inc.php
+        perl -pi -e 's#(.*password_ldap_method.*=).*#${1} "user";#' config.inc.php
+        perl -pi -e 's#(.*password_ldap_adminDN.*=).*#${1} "null";#' config.inc.php
+        perl -pi -e 's#(.*password_ldap_adminPW.*=).*#${1} "null";#' config.inc.php
 
         perl -pi -e 's#(.*password_ldap_encodage.*=).*#${1} "$ENV{default_password_scheme}";#' config.inc.php
-
         perl -pi -e 's#(.*password_ldap_pwattr.*=).*#${1} "userPassword";#' config.inc.php
         perl -pi -e 's#(.*password_ldap_lchattr.*=).*#${1} "shadowLastChange";#' config.inc.php
-        #perl -pi -e 's#(.*password_ldap_force_replace.*=).*#${1} false;#' config.inc.php
+        perl -pi -e 's#(.*password_ldap_force_replace.*=).*#${1} true;#' config.inc.php
     fi
 
     echo 'export status_rcm_plugin_password="DONE"' >> ${STATUS_FILE}
