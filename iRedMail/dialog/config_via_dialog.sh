@@ -129,8 +129,8 @@ TIP: Use SPACE key to select item." \
 "Apache" "The most popular web server" "off" \
 2>/tmp/web_server
 
-    web_server="$(cat /tmp/web_server | tr '[a-z]' '[A-Z]')"
-    [ X"${web_server}" != X"" ] && break
+        web_server="$(cat /tmp/web_server | tr '[a-z]' '[A-Z]')"
+        [ X"${web_server}" != X"" ] && break
     done
 
     if [ X"${web_server}" == X'APACHE' ]; then

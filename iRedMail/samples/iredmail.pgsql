@@ -21,7 +21,7 @@ CREATE TABLE admin (
     username VARCHAR(255) NOT NULL DEFAULT '',
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
-    language VARCHAR(5) NOT NULL DEFAULT 'en_US',
+    language VARCHAR(5) NOT NULL DEFAULT '',
     passwordlastchange TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     -- Store per-admin settings. Used in iRedAdmin-Pro.
     settings TEXT NOT NULL DEFAULT '',
@@ -117,7 +117,7 @@ CREATE TABLE mailbox (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
-    language VARCHAR(5) NOT NULL DEFAULT 'en_US',
+    language VARCHAR(5) NOT NULL DEFAULT '',
     storagebasedirectory VARCHAR(255) NOT NULL DEFAULT '',
     storagenode VARCHAR(255) NOT NULL DEFAULT '',
     maildir VARCHAR(255) NOT NULL DEFAULT '',

@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS admin (
     username VARCHAR(255) NOT NULL DEFAULT '',
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
-    language VARCHAR(5) NOT NULL DEFAULT 'en_US',
+    language VARCHAR(5) NOT NULL DEFAULT '',
     passwordlastchange DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     -- Store per-admin settings. Used in iRedAdmin-Pro.
     settings TEXT,
@@ -131,7 +131,7 @@ CREATE TABLE IF NOT EXISTS mailbox (
     username VARCHAR(255) NOT NULL DEFAULT '',
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
-    language VARCHAR(5) NOT NULL DEFAULT 'en_US',
+    language VARCHAR(5) NOT NULL DEFAULT '',
     storagebasedirectory VARCHAR(255) NOT NULL DEFAULT '',
     storagenode VARCHAR(255) NOT NULL DEFAULT '',
     maildir VARCHAR(255) NOT NULL DEFAULT '',
