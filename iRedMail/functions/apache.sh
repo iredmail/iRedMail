@@ -63,11 +63,6 @@ apache_config()
         perl -pi -e 's#^(SSLCipherSuite.*)#${1}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
     elif [ X"${DISTRO}" == X'DEBIAN' ]; then
         perl -pi -e 's#(SSLEngine on)$#${1}\nSSLCipherSuite $ENV{SSL_CIPHERS}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
-
-        # For Apache-2.4.8+
-        if [ X"${DISTRO_CODENAME}" != X'wheezy' ]; then
-            perl -pi -e 's#(SSLEngine on)$#${1}\nSSLOpenSSLConfCmd DHParameters $ENV{SSL_DHPARAM_FILE}#g' ${HTTPD_SSL_CONF}
-        fi
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         perl -pi -e 's#(SSLEngine on)$#${1}\nSSLCipherSuite $ENV{SSL_CIPHERS}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
 
