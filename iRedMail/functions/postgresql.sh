@@ -141,35 +141,6 @@ CREATE DATABASE ${VMAIL_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
 \c ${VMAIL_DB};
 EOF
 
-    # PostgreSQL 8.x
-    # - Create language plpgsql
-    # - Create extension dblink via importing SQL file
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        if [ X"${DISTRO_VERSION}" == X'6' ]; then
-            cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
-CREATE LANGUAGE plpgsql;
-\i /usr/share/pgsql/contrib/dblink.sql;
-EOF
-        else
-            cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
-CREATE EXTENSION dblink;
-EOF
-        fi
-    fi
-
-    cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
-\i ${PGSQL_DATA_DIR}/vmail.sql;
-EOF
-
-    # PostgreSQL 9.x can create extension directly
-    if [ X"${DISTRO}" != X'RHEL' ]; then
-        cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
--- Create extension dblink.
--- Used to change password through Roundcube webmail
-CREATE EXTENSION dblink;
-EOF
-    fi
-
     cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
 -- Crete roles:
 -- + vmail: read-only

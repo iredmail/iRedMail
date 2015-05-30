@@ -69,6 +69,12 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SOGO_CMD_EALARMS_NOTIFY='/usr/local/sbin/sogo-ealarms-notify'
 fi
 
+if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+    export SOGO_DB_TYPE='mysql'
+elif [ X"${BACKEND}" == X'PGSQL' ]; then
+    export SOGO_DB_TYPE='postgresql'
+fi
+
 # Backup database.
 if [ X"${USE_SOGO}" == X'YES' ]; then
     export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${SOGO_DB_NAME}"

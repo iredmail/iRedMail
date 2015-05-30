@@ -25,8 +25,6 @@ sogo_config()
     ECHO_INFO "Configure SOGo Groupware (Webmail, Calendar, Address Book, ActiveSync)."
 
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-        export SOGO_DB_TYPE='mysql'
-
         tmp_sql="${ROOTDIR}/sogo_init.sql"
         cat >> ${tmp_sql} <<EOF
 CREATE DATABASE ${SOGO_DB_NAME} CHARSET='UTF8';
@@ -42,8 +40,7 @@ EOF
 
         ${MYSQL_CLIENT_ROOT} -e "SOURCE ${tmp_sql}"
 
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        export SOGO_DB_TYPE='postgresql'
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
         tmp_sql="${PGSQL_DATA_DIR}/create_db.sql"
 
         # Create db, user/role, set ownership
