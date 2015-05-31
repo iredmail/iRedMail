@@ -171,7 +171,7 @@ fi
 
 if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Delete old backup: ${REMOVED_BACKUP_DIR}." >> ${LOGFILE}
-    rm -rf ${REMOVED_BACKUP_DIR} >/dev/null 2>${LOGFILE}
+    rm -rf ${REMOVED_BACKUP_DIR} >/dev/null 2>> ${LOGFILE}
 
     su - ${PGSQL_SYS_USER} -c "psql -d iredadmin" <<EOF
 INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES

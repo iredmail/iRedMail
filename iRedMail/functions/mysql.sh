@@ -40,7 +40,7 @@ user=${MYSQL_ROOT_USER}
 password=${MYSQL_ROOT_PASSWD}
 EOF
 
-    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' -o X"${MYSQL_SERVER}" != X'127.0.0.1' ]; then
         cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 host=${MYSQL_SERVER}
 port=${MYSQL_SERVER_PORT}
