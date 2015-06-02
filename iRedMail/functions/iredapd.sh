@@ -103,11 +103,11 @@ iredapd_config()
     perl -pi -e 's#^(amavisd_db_password).*#${1} = "$ENV{AMAVISD_DB_PASSWD}"#' settings.py
 
     # iRedAdmin database
-    perl -pi -e 's#^(log_db_server).*#${1} = "$ENV{SQL_SERVER}"#' settings.py
-    perl -pi -e 's#^(log_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' settings.py
-    perl -pi -e 's#^(log_db_name).*#${1} = "$ENV{IREDADMIN_DB_NAME}"#' settings.py
-    perl -pi -e 's#^(log_db_user).*#${1} = "$ENV{IREDADMIN_DB_USER}"#' settings.py
-    perl -pi -e 's#^(log_db_password).*#${1} = "$ENV{IREDADMIN_DB_PASSWD}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_server).*#${1} = "$ENV{SQL_SERVER}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_name).*#${1} = "$ENV{IREDADMIN_DB_NAME}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_user).*#${1} = "$ENV{IREDADMIN_DB_USER}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_password).*#${1} = "$ENV{IREDADMIN_DB_PASSWD}"#' settings.py
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.

@@ -5,9 +5,11 @@ iRedMail-0.9.2:
           attack to SMTP service.
 
     * Fixed issues:
+        - Cannot create required SQL tables in `vmail` database with PostgreSQL
+          backend.
         - catch-all support doesn't work with user+extension@domain.com.
-          Thanks stevekez's <iredmail@stevekerrison.com> contribution in
-          forum.
+          Thanks to stevekez <iredmail@stevekerrison.com> for the contribution
+          in iRedMail support forum.
         - uwsgi service doesn't work on RHEL/CentOS. A new version of uwsgi
           package was submitted to EPEL repo with higher priority (not
           submitted by iRedMail team), it's not compatible with settings
