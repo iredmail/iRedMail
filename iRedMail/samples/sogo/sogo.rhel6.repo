@@ -1,5 +1,0 @@
-[SOGo]
-name=Inverse SOGo Repository
-baseurl=http://inverse.ca/downloads/SOGo/RHEL6/$basearch
-enabled=1
-gpgcheck=0

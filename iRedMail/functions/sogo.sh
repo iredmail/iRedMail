@@ -24,6 +24,9 @@ sogo_config()
 {
     ECHO_INFO "Configure SOGo Groupware (Webmail, Calendar, Address Book, ActiveSync)."
 
+    # Create log directory
+    mkdir -p $(dirname ${SOGO_LOG_FILE}) >> ${INSTALL_LOG} 2>&1
+
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         tmp_sql="${ROOTDIR}/sogo_init.sql"
         cat >> ${tmp_sql} <<EOF

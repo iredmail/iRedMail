@@ -92,8 +92,6 @@ nginx_config()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         cp -f ${SAMPLE_DIR}/nginx/uwsgi.ini ${UWSGI_CONF}
 
-        perl -pi -e 's/^(uid.*)/#${1}/' ${UWSGI_CONF}
-        perl -pi -e 's/^(gid.*)/#${1}/' ${UWSGI_CONF}
         perl -pi -e 's#^(pidfile.*=).*#${1} $ENV{UWSGI_PID}#' ${UWSGI_CONF}
         perl -pi -e 's#^(emperor *=).*#${1} $ENV{UWSGI_CONF_DIR}#' ${UWSGI_CONF}
         perl -pi -e 's#^(emperor-tyrant.*=).*#${1} false#' ${UWSGI_CONF}

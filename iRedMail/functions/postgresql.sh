@@ -141,6 +141,8 @@ CREATE DATABASE ${VMAIL_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
 \c ${VMAIL_DB};
 EOF
 
+    cat ${PGSQL_VMAIL_STRUCTURE_SAMPLE} >> ${PGSQL_INIT_SQL_SAMPLE}
+
     cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
 -- Crete roles:
 -- + vmail: read-only
@@ -169,11 +171,10 @@ INSERT INTO domain_admins (username,domain,created) VALUES ('${DOMAIN_ADMIN_NAME
 EOF
 
     ECHO_DEBUG "Import postfix virtual hosts/users: ${PGSQL_INIT_SQL_SAMPLE}."
-    cp -f ${PGSQL_VMAIL_STRUCTURE_SAMPLE} ${PGSQL_DATA_DIR}/vmail.sql >> ${INSTALL_LOG} 2>&1
     cp -f ${PGSQL_INIT_SQL_SAMPLE} ${PGSQL_DATA_DIR}/init.sql >> ${INSTALL_LOG} 2>&1
-    chmod 0777 ${PGSQL_DATA_DIR}/{vmail,init}.sql >> ${INSTALL_LOG} 2>&1
+    chmod 0777 ${PGSQL_DATA_DIR}/init.sql >> ${INSTALL_LOG} 2>&1
     su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init.sql" >> ${INSTALL_LOG} 2>&1
-    rm -f ${PGSQL_DATA_DIR}/{vmail,init}.sql >> ${INSTALL_LOG} 2>&1
+    rm -f ${PGSQL_DATA_DIR}/init.sql >> ${INSTALL_LOG} 2>&1
 
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:

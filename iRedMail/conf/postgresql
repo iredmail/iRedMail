@@ -32,7 +32,7 @@ export PGSQL_SYS_USER_HOME='/var/lib/postgresql'
 export PGSQL_RC_SCRIPT_NAME='postgresql'
 
 export PGSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.pgsql"
-export PGSQL_INIT_SQL_SAMPLE="${CONF_DIR}/pgsql_init.pgsql"
+export PGSQL_INIT_SQL_SAMPLE="${RUNTIME_DIR}/pgsql_init.pgsql"
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
     # RHEL/CENTOS 6 ships PostgreSQL-8.4
