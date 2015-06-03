@@ -1,5 +1,5 @@
 iRedMail-0.9.2:
-    * SOGo now works on Debian 8, RHEL/CentOS 7.
+    * SOGo now works on Debian 8.
     * Improvements:
         - LMTP (port 24) and managesieve (port 4190) services are now listening
           on only localhost (127.0.0,1 and ::1) by default.
