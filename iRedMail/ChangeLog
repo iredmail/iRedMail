@@ -21,6 +21,9 @@ iRedMail-0.9.2:
         - Fix 'The Logjam Attack' ssl related issue. Reference:
           https://weakdh.org/
 
+    * Updated packages:
+        + iRedAPD -> 1.6.0, bug fixes.
+
 iRedMail-0.9.1:
     * Works on new distribution releases:
         - Debian 8, Ubuntu 15.04. Notes:
