@@ -28,7 +28,10 @@ export DIALOG_SELECTABLE_AWSTATS='YES'
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
 export DIALOG_SELECTABLE_SOGO='YES'
 
-if [ X"${DISTRO}" == X'UBUNTU' ]; then
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    # There's a critical bug in SOGo-2.3.0, doesn't work with mysql backend.
+    [ X"${DISTRO_VERSION}" == X'7' -a X"${BACKEND}" == X'MYSQL' ] && export DIALOG_SELECTABLE_SOGO='NO'
+elif [ X"${DISTRO}" == X'UBUNTU' ]; then
     [ X"${DISTRO_CODENAME}" != X'trusty' ] && export DIALOG_SELECTABLE_SOGO='NO'
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
