@@ -49,7 +49,7 @@ amavisd_dkim()
 
 # Make sure it sings all inbound mails, avoid error log like this:
 # 'dkim: not signing inbound mail'.
-#\$originating = 1;
+\$originating = 1;
 
 # Add dkim_key here.
 dkim_key("${FIRST_DOMAIN}", "${AMAVISD_DKIM_SELECTOR}", "${pem_file}");
