@@ -1,3 +1,8 @@
+iRedMail-0.9.3:
+    * Fixed issues:
+        - Not preserve the case of ${extension} while delivering message to
+          mailbox.
+
 iRedMail-0.9.2:
     * SOGo now works on Debian 8.
     * Improvements:
