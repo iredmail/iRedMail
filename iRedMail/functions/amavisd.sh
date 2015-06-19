@@ -224,15 +224,25 @@ chomp(\$mydomain = "${HOSTNAME}");
     spam_admin_maps  => [],
     bad_header_admin_maps => [],
     banned_admin_maps => ["root\@\$mydomain"],
-    warnbadhsender   => 0,
-    warnbannedsender => 0,
+    warnbadhsender   => 1,
+    warnbannedsender => 1,
 
     # forward to a smtpd service providing DKIM signing service
     #forward_method => 'smtp:[${AMAVISD_SYS_USER}]:10027',
+
     # force MTA conversion to 7-bit (e.g. before DKIM signing)
-    smtpd_discard_ehlo_keywords => ['8BITMIME'],
-    #bypass_banned_checks_maps => [1],  # allow sending any file names and types
-    terminate_dsn_on_notify_success => 0,  # don't remove NOTIFY=SUCCESS option
+    #smtpd_discard_ehlo_keywords => ['8BITMIME'],
+
+    # don't remove NOTIFY=SUCCESS option
+    terminate_dsn_on_notify_success => 0,
+
+    # don't perform spam/virus/header check.
+    #bypass_spam_checks_maps => [1],
+    #bypass_virus_checks_maps => [1],
+    #bypass_header_checks_maps => [1],
+
+    # allow sending any file names and types
+    #bypass_banned_checks_maps => [1],
 };
 
 # SpamAssassin debugging. Default if off(0).
