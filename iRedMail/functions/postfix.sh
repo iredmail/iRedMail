@@ -508,7 +508,7 @@ submission inet n       -       n       -       -       smtpd
   -o smtpd_tls_security_level=encrypt
   -o smtpd_sasl_auth_enable=yes
   -o smtpd_client_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
-#  -o content_filter=smtp-amavis:[${AMAVISD_SERVER}]:10026
+  -o content_filter=smtp-amavis:[${AMAVISD_SERVER}]:10026
 
 EOF
 
