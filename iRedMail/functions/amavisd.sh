@@ -133,17 +133,10 @@ amavisd_config_rhel()
     fi
 
     # Make Amavisd listen on multiple TCP ports.
-    perl -pi -e 's/(\$inet_socket_port.*=.*10024.*)/\$inet_socket_port = [10024, $ENV{'AMAVISD_QUARANTINE_PORT'}];/' ${AMAVISD_CONF}
+    perl -pi -e 's/(\$inet_socket_port.*=.*10024.*)/\$inet_socket_port = [10024, 10026, $ENV{'AMAVISD_QUARANTINE_PORT'}];/' ${AMAVISD_CONF}
 
     # Disable defang banned mail.
     perl -pi -e 's#(.*defang_banned = )1(;.*)#${1}0${2}#' ${AMAVISD_CONF}
-
-    # TODO fixed on RHEL & Debian/Ubuntu.
-    # Allow clients on my internal network to bypass scanning.
-    #perl -pi -e 's#(.*policy_bank.*MYNETS.*\{)(.*)#${1} bypass_spam_checks_maps => [1], bypass_banned_checks_maps => [1], bypass_header_checks_maps => [1], ${2}#' ${AMAVISD_CONF}
-
-    # Allow all authenticated virtual users to bypass scanning.
-    #perl -pi -e 's#(.*policy_bank.*ORIGINATING.*\{)(.*)#${1} bypass_spam_checks_maps => [1], bypass_banned_checks_maps => [1], bypass_header_checks_maps => [1], ${2}#' ${AMAVISD_CONF}
 
     # Remove the content from '@av_scanners' to the end of file.
     new_conf="$(sed '/\@av_scanners/,$d' ${AMAVISD_CONF})"
@@ -237,12 +230,10 @@ chomp(\$mydomain = "${HOSTNAME}");
     terminate_dsn_on_notify_success => 0,
 
     # don't perform spam/virus/header check.
-    #bypass_spam_checks_maps => [1],
-    #bypass_virus_checks_maps => [1],
-    #bypass_header_checks_maps => [1],
-
-    # allow sending any file names and types
-    #bypass_banned_checks_maps => [1],
+    #bypass_spam_checks_maps => [1],    # spam
+    #bypass_header_checks_maps => [1],  # bad header
+    #bypass_virus_checks_maps => [1],   # virus
+    #bypass_banned_checks_maps => [1],  # banned file names and types
 };
 
 # SpamAssassin debugging. Default if off(0).
@@ -324,12 +315,10 @@ amavisd_config_general()
     terminate_dsn_on_notify_success => 0,
 
     # don't perform spam/virus/header check.
-    #bypass_spam_checks_maps => [1],
-    #bypass_virus_checks_maps => [1],
-    #bypass_header_checks_maps => [1],
-
-    # allow sending any file names and types
-    #bypass_banned_checks_maps => [1],
+    bypass_spam_checks_maps => [1],     # spam
+    bypass_header_checks_maps => [1],   # bad header
+    #bypass_virus_checks_maps => [1],   # virus
+    #bypass_banned_checks_maps => [1],  # banned file names and types
 
     # Quarantine clean messages
     #clean_quarantine_method => 'sql:',

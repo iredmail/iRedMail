@@ -88,7 +88,7 @@ install_all()
         net_openldap${PREFERRED_OPENLDAP_VER}-sasl-client \
         net_openldap${PREFERRED_OPENLDAP_VER}-server \
         net_openslp \
-        net_py-ldap2 \
+        net_py-ldap \
         security_amavisd-new \
         security_ca_root_nss \
         security_clamav \
@@ -917,6 +917,31 @@ OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_SET+=MYSQLCLIENT_R
 EOF
 
+    cat > /var/db/ports/devel_py-Jinja2/options <<EOF
+OPTIONS_FILE_SET+=BABEL
+OPTIONS_FILE_UNSET+=EXAMPLES
+EOF
+
+    # Roundcube webmail.
+    if [ X"${USE_RCM}" == X"YES" ]; then
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PORTS="${ALL_PORTS} net/pear-Net_LDAP2"
+        ALL_PORTS="${ALL_PORTS} mail/roundcube"
+    fi
+
+    # Awstats.
+    if [ X"${USE_AWSTATS}" == X'YES' -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+        ALL_PORTS="${ALL_PORTS} www/awstats"
+    fi
+
+    # Python database interfaces
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ALL_PORTS="${ALL_PORTS} net/py-ldap databases/py-MySQLdb"
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ALL_PORTS="${ALL_PORTS} databases/py-MySQLdb"
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ALL_PORTS="${ALL_PORTS} databases/py-psycopg2"
+    fi
+
     # py-sqlalchemy
     ALL_PORTS="${ALL_PORTS} databases/py-sqlalchemy"
     cat > /var/db/ports/databases_py-sqlalchemy/options <<EOF
@@ -936,31 +961,6 @@ EOF
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/databases_py-sqlalchemy/options
     fi
 
-    cat > /var/db/ports/devel_py-Jinja2/options <<EOF
-OPTIONS_FILE_SET+=BABEL
-OPTIONS_FILE_UNSET+=EXAMPLES
-EOF
-
-    # Roundcube webmail.
-    if [ X"${USE_RCM}" == X"YES" ]; then
-        ALL_PORTS="${ALL_PORTS} mail/roundcube"
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PORTS="${ALL_PORTS} net/pear-Net_LDAP2"
-    fi
-
-    # Awstats.
-    if [ X"${USE_AWSTATS}" == X'YES' -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
-        ALL_PORTS="${ALL_PORTS} www/awstats"
-    fi
-
-    # Python database interfaces
-    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ALL_PORTS="${ALL_PORTS} net/py-ldap2 databases/py-MySQLdb"
-    elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        ALL_PORTS="${ALL_PORTS} databases/py-MySQLdb"
-    elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ALL_PORTS="${ALL_PORTS} databases/py-psycopg2"
-    fi
-
     # iRedAdmin
     # mod_wsgi
     ALL_PORTS="${ALL_PORTS} www/webpy net/py-netifaces devel/py-lxml www/py-beautifulsoup security/py-bcrypt"
@@ -975,7 +975,7 @@ EOF
     #    ALL_PORTS="${ALL_PORTS} security/py-fail2ban"
     #fi
 
-    cat > /var/db/ports/net_py-ldap2/options <<EOF
+    cat > /var/db/ports/net_py-ldap/options <<EOF
 OPTIONS_FILE_SET+=SASL
 EOF
 

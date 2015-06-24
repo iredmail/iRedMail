@@ -182,7 +182,8 @@ fi
 
 if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Delete old backup under ${REMOVED_BACKUP_DIR}." >> ${LOGFILE}
-    rm -rf ${REMOVED_BACKUPS} >/dev/null 2>> ${LOGFILE}
+    echo -e "* Suppose to delete: ${REMOVED_BACKUPS}" >> ${LOGFILE}
+    rm -rf ${REMOVED_BACKUPS} >> ${LOGFILE} 2>&1
 
     sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUPS}.', 'cron_backup_sql', '127.0.0.1', NOW());"
     ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
