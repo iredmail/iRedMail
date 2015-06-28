@@ -227,6 +227,8 @@ export DEFAULT_PASSWORD_SCHEME='SSHA512'
 #
 # UNSUPPORTED_RELEASE will be set to 'YES' if current Linux/BSD release is
 # an old release and unsupported anymore.
+export UNSUPPORTED_RELEASE='NO'
+
 if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/etc/init.d'

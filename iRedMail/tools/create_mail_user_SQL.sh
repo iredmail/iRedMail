@@ -38,8 +38,13 @@
 # Storage base directory used to store users' mail.
 STORAGE_BASE_DIRECTORY="/var/vmail/vmail1"
 
-# Password setting.
-# Note: password will be crypted in MD5.
+###########
+# Password
+#
+# Password scheme. Available schemes: BCRYPT, SSHA512, SSHA, MD5, NTLM, PLAIN.
+# Check file Available
+PASSWORD_SCHEME='SSHA512'
+
 DEFAULT_PASSWD='88888888'
 USE_DEFAULT_PASSWD='NO'     # If set to 'NO', password is the same as username.
 
@@ -71,12 +76,8 @@ STORAGE_NODE="$(basename ${STORAGE_BASE_DIRECTORY})"
 SQL="output.sql"
 echo '' > ${SQL}
 
-# Cyrpt the password.
-if [ X"${USE_DEFAULT_PASSWD}" == X"YES" ]; then
-    export CRYPT_PASSWD="$(openssl passwd -1 ${DEFAULT_PASSWD})"
-else
-    :
-fi
+# Cyrpt default password.
+export CRYPT_PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${DEFAULT_PASSWD})"
 
 generate_sql()
 {
@@ -89,9 +90,7 @@ generate_sql()
         mail="${username}@${DOMAIN}"
 
         if [ X"${USE_DEFAULT_PASSWD}" != X"YES" ]; then
-            export CRYPT_PASSWD="$(openssl passwd -1 ${username})"
-        else
-            :
+            export CRYPT_PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${username})"
         fi
 
         # Different maildir style: hashed, normal.

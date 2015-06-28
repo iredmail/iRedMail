@@ -41,8 +41,8 @@ WARNING:
 
     PGSQL_ROOT_PASSWD="$(cat /tmp/pgsql_rootpw)"
 
-    # Check '$' in password
-    echo ${PGSQL_ROOT_PASSWD} | grep '\$' &>/dev/null
+    # Check $, #, space
+    echo ${PGSQL_ROOT_PASSWD} | grep '[\$\#\ ]' &>/dev/null
     [ X"$?" != X'0' -a X"${PGSQL_ROOT_PASSWD}" != X'' ] && break
 done
 

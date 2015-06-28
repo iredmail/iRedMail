@@ -1,4 +1,4 @@
-"""Avaiable password schemes: BCRYPT, SSHA512, SSHA, MD5."""
+"""Avaiable password schemes: BCRYPT, SSHA512, SSHA, MD5, NTLM, PLAIN."""
 
 import os
 import sys
@@ -75,7 +75,10 @@ def generate_password_with_doveadmpw(scheme, plain_password):
 
 
 if __name__ == '__main__':
-    scheme = sys.argv[1]
+    if len(sys.argv) < 3:
+        sys.exit('Usage:\n\t# python ./generate_password_hash.py <scheme> <password>\n')
+
+    scheme = sys.argv[1].upper()
     password = sys.argv[2]
     if scheme == 'BCRYPT':
         print generate_bcrypt_password(password)
@@ -88,4 +91,5 @@ if __name__ == '__main__':
     elif scheme == 'NTLM':
         print generate_password_with_doveadmpw('NTLM', password)
     else:
+        # Plain
         print generate_ssha_password(password)

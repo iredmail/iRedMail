@@ -42,8 +42,8 @@ WARNING:
 
     MYSQL_ROOT_PASSWD="$(cat /tmp/mysql_rootpw)"
 
-    # Check '$' in password
-    echo ${MYSQL_ROOT_PASSWD} | grep '\$' &>/dev/null
+    # Check $, #, space
+    echo ${MYSQL_ROOT_PASSWD} | grep '[\$\#\ ]' &>/dev/null
     [ X"$?" != X'0' -a X"${MYSQL_ROOT_PASSWD}" != X'' ] && break
 done
 

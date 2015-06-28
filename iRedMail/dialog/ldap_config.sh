@@ -83,8 +83,8 @@ WARNING:
 
     LDAP_ROOTPW="$(cat /tmp/ldap_rootpw)"
 
-    # Check '$' in password
-    echo ${LDAP_ROOTPW} | grep '\$' &>/dev/null
+    # Check $, #, space
+    echo ${LDAP_ROOTPW} | grep '[\$\#\ ]' &>/dev/null
     [ X"$?" != X'0' -a X"${LDAP_ROOTPW}" != X'' ] && break
 done
 
