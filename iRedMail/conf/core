@@ -73,19 +73,14 @@ backup_file()
 {
     # Usage: backup_file file1 [file2 file3 ... fileN]
     if [ X"$#" != X"0" ]; then
-        for conf_file in $@; do
-            if [ -f ${conf_file} ]; then
+        for f in $@; do
+            if [ -f ${f} ]; then
                 if [ X"${IREDMAIL_DEBUG}" == X"YES" ]; then
-                    echo -e "${_BACKUP_FLAG} ${conf_file} -> $(basename ${conf_file}).${DATE}."
+                    echo -e "${_BACKUP_FLAG} ${f} -> ${f}.${DATE}."
                 fi
-
-                cp -f ${conf_file} ${conf_file}.${DATE}
-            else
-                :
+                cp -f ${f} ${f}.${DATE}
             fi
         done
-    else
-        :
     fi
 }
 
