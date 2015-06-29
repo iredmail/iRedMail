@@ -48,13 +48,12 @@ perl -pi -e 's/^#(tlsproxy.*unix.*tlsproxy)$/${1}/g' ${MASTER_CF}
 echo "* Uncomment the new 'dnsblog unix ... dnsblog' service in ${MASTER_CF}."
 perl -pi -e 's/^#(dnsblog.*unix.*dnsblog)$/${1}/g' ${MASTER_CF}
 
-echo "* Enable DNSBL lookups in ${MAIN_CF}."
+echo "* Update ${MAIN_CF} to enable postscreen."
 postconf -e postscreen_dnsbl_whitelist_threshold='-2'
 postconf -e postscreen_dnsbl_threshold=2
 postconf -e postscreen_dnsbl_sites='zen.spamhaus.org*3
     b.barracudacentral.org*2
     bl.spameatingmonkey.net*2
-    dnsbl.ahbl.org*2
     bl.spamcop.net
     dnsbl.sorbs.net
     psbl.surriel.com
