@@ -3,8 +3,14 @@
 # Author: Zhang Huangbin <zhb@iredmail.org>
 # Purpose: Enable Postfix postscreen.
 
-# Note: postscreen is available in Postfix 2.8 or later, check version with
-#       command `postconf mail_version`.
+# Get Postfix version number.
+export POSTFIX_VERSION="$(postconf mail_version 2>/dev/null | awk '{print $NF}')"
+
+# postscreen requires Postfix 2.8 or later.
+if echo ${POSTFIX_VERSION} | grep '^2\.[01234567]\.' &>/dev/null; then
+    echo "<ERROR> postscreen requires Postfix 2.8 or later, you're running ${POSTFIX_VERSION}."
+    exit 255
+fi
 
 export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
@@ -27,7 +33,7 @@ backup_file()
     if [ X"$#" != X"0" ]; then
         for f in $@; do
             if [ -f ${f} ]; then
-                echo -e "Backup file: ${f} -> ${f}.${DATE}."
+                echo -e "* [BACKUP] ${f} -> ${f}.${DATE}."
                 cp -f ${f} ${f}.${DATE}
             fi
         done
@@ -49,19 +55,8 @@ echo "* Uncomment the new 'dnsblog unix ... dnsblog' service in ${MASTER_CF}."
 perl -pi -e 's/^#(dnsblog.*unix.*dnsblog)$/${1}/g' ${MASTER_CF}
 
 echo "* Update ${MAIN_CF} to enable postscreen."
-postconf -e postscreen_dnsbl_whitelist_threshold='-2'
 postconf -e postscreen_dnsbl_threshold=2
-postconf -e postscreen_dnsbl_sites='zen.spamhaus.org*3
-    b.barracudacentral.org*2
-    bl.spameatingmonkey.net*2
-    bl.spamcop.net
-    dnsbl.sorbs.net
-    psbl.surriel.com
-    bl.mailspike.net
-    swl.spamhaus.org*-4
-    list.dnswl.org=127.[0..255].[0..255].0*-2
-    list.dnswl.org=127.[0..255].[0..255].1*-3
-    list.dnswl.org=127.[0..255].[0..255].[2..255]*-4'
+postconf -e postscreen_dnsbl_sites='zen.spamhaus.org*3 b.barracudacentral.org*2 bl.spameatingmonkey.net*2 bl.spamcop.net dnsbl.sorbs.net psbl.surriel.com bl.mailspike.net swl.spamhaus.org*-4 list.dnswl.org=127.[0..255].[0..255].0*-2 list.dnswl.org=127.[0..255].[0..255].1*-3 list.dnswl.org=127.[0..255].[0..255].[2..255]*-4'
 
 postconf -e postscreen_dnsbl_reply_map="hash:${DNSBL_REPLY}"
 cat > ${DNSBL_REPLY} <<EOF
@@ -79,5 +74,12 @@ postconf -e postscreen_greet_action='enforce'
 postconf -e postscreen_dnsbl_action='enforce'
 postconf -e postscreen_blacklist_action='enforce'
 
-echo "* Reload postfix service to read the new configuration."
+# Require Postfix-2.11.
+if echo ${POSTFIX_VERSION} | grep '^2\.[123456789][123456789]' &>/dev/null; then
+    postconf -e postscreen_dnsbl_whitelist_threshold='-2'
+fi
+
+echo "* Reloading postfix service to read the new configuration."
 postfix reload
+
+echo "* postscreen is now enabled."
