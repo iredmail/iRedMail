@@ -63,6 +63,7 @@ iredapd_config()
     # Copy sample config file.
     cd ${IREDAPD_ROOT_DIR}/iredapd/
     cp settings.py.sample settings.py
+    chown ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_USER} settings.py
     chmod -R 0500 settings.py
 
     # General settings.
