@@ -1,5 +1,7 @@
 iRedMail-0.9.3:
     * Fixed issues:
+        - [RHEL/CentOS] Cannot start uwsgi service with 'daemonize' setting in
+          /etc/uwsgi.ini.
         - Not preserve the case of ${extension} while delivering message to
           mailbox.
 
