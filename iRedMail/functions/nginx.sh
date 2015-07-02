@@ -85,19 +85,43 @@ nginx_config()
     fi
 
     # Copy uwsgi config file for iRedAdmin
-    [ -d ${UWSGI_CONF_DIR} ] || mkdir -p ${UWSGI_CONF_DIR} &>/dev/null
+    [ -d ${UWSGI_CONF_DIR} ] || mkdir -p ${UWSGI_CONF_DIR} >> ${INSTALL_LOG} 2>&1
 
     backup_file ${UWSGI_CONF} ${IREDADMIN_UWSGI_CONF}
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
         cp -f ${SAMPLE_DIR}/nginx/uwsgi.ini ${UWSGI_CONF}
 
+        perl -pi -e 's#^(daemonize .*=).*#${1} $ENV{UWSGI_LOG_FILE}#' ${UWSGI_CONF}
         perl -pi -e 's#^(pidfile.*=).*#${1} $ENV{UWSGI_PID}#' ${UWSGI_CONF}
         perl -pi -e 's#^(emperor *=).*#${1} $ENV{UWSGI_CONF_DIR}#' ${UWSGI_CONF}
         perl -pi -e 's#^(emperor-tyrant.*=).*#${1} false#' ${UWSGI_CONF}
         perl -pi -e 's#^(stats.*=).*#${1} $ENV{UWSGI_SOCKET}#' ${UWSGI_CONF}
 
         cp -f ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${IREDADMIN_UWSGI_CONF}
+
+        mkdir -p ${UWSGI_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+        ECHO_DEBUG "Setting logrotate for uwsgi log file: ${UWSGI_LOG_FILE}."
+        cat > ${UWSGI_LOGROTATE_FILE} <<EOF
+${CONF_MSG}
+${UWSGI_LOG_FILE} {
+    compress
+    weekly
+    rotate 10
+    create 0600 ${SYS_ROOT_USER} ${SYS_ROOT_GROUP}
+    missingok
+
+    # Use bzip2 for compress.
+    compresscmd $(which bzip2)
+    uncompresscmd $(which bunzip2)
+    compressoptions -9
+    compressext .bz2
+
+    postrotate
+        ${SYSLOG_POSTROTATE_CMD}
+    endscript
+}
+EOF
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${IREDADMIN_UWSGI_CONF}
         perl -pi -e 's/^(pidfile.*)/#${1}/' ${IREDADMIN_UWSGI_CONF}

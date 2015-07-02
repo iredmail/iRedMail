@@ -178,6 +178,17 @@ EOF
         rm -f ${YUM_REPOS_DIR}/tmp_epel.repo
     fi
 
+    # Use specified EPEL local mirror site (url doesn't end with slash)
+    epel_repo="${YUM_REPOS_DIR}/epel.repo"
+    if [ -n "${IREDMAIL_EPEL_MIRROR}" -a -f ${epel_repo} ]; then
+        # comment out all 'mirrorlist=' and 'baseurl='
+        perl -pi -e 's/^(mirrorlist=.*)/#${1}/g' ${epel_repo}
+        perl -pi -e 's/^(baseurl=.*)/#${1}/g' ${epel_repo}
+        # Add a new 'baseurl='
+        export IREDMAIL_EPEL_MIRROR
+        perl -pi -e 's/^(\[epel\])$/${1}\nbaseurl=$ENV{IREDMAIL_EPEL_MIRROR}\/$ENV{DISTRO_VERSION}\/\$basearch/g' ${epel_repo}
+    fi
+
     echo 'export status_create_repo_rhel="DONE"' >> ${STATUS_FILE}
 }
 

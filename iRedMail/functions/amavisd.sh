@@ -598,7 +598,7 @@ ${AMAVISD_LOGFILE} {
     compresscmd $(which bzip2)
     uncompresscmd $(which bunzip2)
     compressoptions -9
-    compressext .bz2 
+    compressext .bz2
 
     postrotate
         ${SYSLOG_POSTROTATE_CMD}
