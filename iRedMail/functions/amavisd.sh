@@ -47,10 +47,6 @@ amavisd_dkim()
 \$signed_header_fields{'received'} = 0;
 \$signed_header_fields{'to'} = 1;
 
-# Make sure it sings all inbound mails, avoid error log like this:
-# 'dkim: not signing inbound mail'.
-#\$originating = 1;
-
 # Add dkim_key here.
 dkim_key("${FIRST_DOMAIN}", "${AMAVISD_DKIM_SELECTOR}", "${pem_file}");
 
@@ -289,45 +285,6 @@ amavisd_config_general()
     "--stdout --disable-summary -r --tempdir=\$TEMPBASE {}", [0], [1],
     qr/^.*?: (?!Infected Archive)(.*) FOUND$/ ],
 );
-
-# Apply to mails which coming from internal networks or authenticated users.
-# mail supposedly originating from our users
-#\$policy_bank{'MYUSERS'} = {
-#    # declare that mail was submitted by our smtp client
-#    originating => 1,
-#
-#    # enables disclaimer insertion if available
-#    allow_disclaimers => 1,
-#
-#    # notify administrator of locally originating malware
-#    virus_admin_maps => ["root\@\$mydomain"],
-#    spam_admin_maps => [],
-#    bad_header_admin_maps => [],
-#    banned_admin_maps => ["root\@\$mydomain"],
-#
-#    # notify sender of malware
-#    warnbadhsender => 0,
-#    warnbannedsender => 0,
-#
-#    # forward to a smtpd service providing DKIM signing service
-#    #forward_method => 'smtp:[${AMAVISD_SERVER}]:10027',
-#
-#    # force MTA conversion to 7-bit (e.g. before DKIM signing)
-#    smtpd_discard_ehlo_keywords => ['8BITMIME'],
-#
-#    # don't remove NOTIFY=SUCCESS option
-#    terminate_dsn_on_notify_success => 0,
-#
-#    # don't perform spam/virus/header check.
-#    bypass_spam_checks_maps => [1],     # spam
-#    bypass_header_checks_maps => [1],   # bad header
-#    #bypass_virus_checks_maps => [1],   # virus
-#    #bypass_banned_checks_maps => [1],  # banned file names and types
-#
-#    # Quarantine clean messages
-#    #clean_quarantine_method => 'sql:',
-#    #final_destiny_by_ccat => {CC_CLEAN, D_DISCARD},
-#};
 
 #
 # Port used to release quarantined mails.
