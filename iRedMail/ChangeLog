@@ -1,4 +1,9 @@
 iRedMail-0.9.3:
+    * Improvements:
+        - New SQL table `amavisd.outbound_wblist`, used to store whitelists
+          and blacklists for outbound messages. It's required by iRedAPD
+          plugin 'amavisd_wblist'.
+
     * Fixed issues:
         - Incorrect quota warning priorities in Dovecot.
           Thanks Peter <rs _at_ samplezone.ch> for the feedback.

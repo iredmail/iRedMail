@@ -25,9 +25,19 @@ CREATE TABLE mailaddr (
 -- used in @lookup_sql_dsn
 -- per-recipient whitelist and/or blacklist,
 -- puts sender and recipient in relation wb  (white or blacklisted sender)
+-- White/blacklist for inbound message
 CREATE TABLE wblist (
   rid        integer NOT NULL CHECK (rid >= 0),  -- recipient: users.id
   sid        integer NOT NULL CHECK (sid >= 0),  -- sender: mailaddr.id
+  wb         varchar(10) NOT NULL,  -- W or Y / B or N / space=neutral / score
+  PRIMARY KEY (rid,sid)
+);
+
+-- White/blacklist for outbound message
+-- Note: it's used by iRedAPD plugin `amavisd_wblist`, not by Amavisd.
+CREATE TABLE outbound_wblist (
+  rid        integer NOT NULL CHECK (rid >= 0),  -- recipient: mailaddr.id
+  sid        integer NOT NULL CHECK (sid >= 0),  -- sender: users.id
   wb         varchar(10) NOT NULL,  -- W or Y / B or N / space=neutral / score
   PRIMARY KEY (rid,sid)
 );

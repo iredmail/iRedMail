@@ -448,7 +448,7 @@ EOF
         ALL_PKGS="${ALL_PKGS} unzip bzip2 acl patch tmpwatch crontabs dos2unix logwatch"
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch"
+        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch unzip"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} bzip2"
