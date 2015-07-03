@@ -36,7 +36,7 @@ ${MYSQL_SERVER}.
 
 WARNING:
 
-    * Do *NOT* use special characters in password right now. e.g. $, #, space.
+    * Do *NOT* use special characters in password right now. e.g. $, #, @, space.
     * EMPTY password is *NOT* permitted.
 " 20 76 2>/tmp/mysql_rootpw
 

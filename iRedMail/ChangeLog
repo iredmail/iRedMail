@@ -1,5 +1,8 @@
 iRedMail-0.9.3:
     * Fixed issues:
+        - Incorrect quota warning priorities in Dovecot.
+          Thanks Peter <rs _at_ samplezone.ch> for the feedback.
+        - Incorrect Amavisd setting to sign DKIM on inbound messages.
         - [RHEL/CentOS] Cannot start uwsgi service with 'daemonize' setting in
           /etc/uwsgi.ini.
         - Not preserve the case of ${extension} while delivering message to
