@@ -153,13 +153,10 @@ CREATE TABLE mailbox (
     lastloginipv4 INET NOT NULL DEFAULT '0.0.0.0',
     lastloginprotocol CHAR(255) NOT NULL DEFAULT '',
     disclaimer TEXT NOT NULL DEFAULT '',
-    -- Allow emails sent from certain users
+    -- Below 4 columns are deprecated, don't use them.
     allowedsenders TEXT NOT NULL DEFAULT '',
-    -- Reject emails sent from certain users
     rejectedsenders TEXT NOT NULL DEFAULT '',
-    -- Allow to sent email to certain users
     allowedrecipients TEXT NOT NULL DEFAULT '',
-    -- Reject to sent email to certain users
     rejectedrecipients TEXT NOT NULL DEFAULT '',
     -- Store per-user settings. Used in iRedAdmin-Pro.
     settings TEXT NOT NULL DEFAULT '',
