@@ -57,14 +57,14 @@ iredapd_config()
     fi
 
     # Set file permission.
-    chown -R ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_USER} ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
-    chmod -R 0555 ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
+    chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
+    chmod -R 0500 ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
 
     # Copy sample config file.
     cd ${IREDAPD_ROOT_DIR}/iredapd/
     cp settings.py.sample settings.py
-    chown ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_USER} settings.py
-    chmod -R 0500 settings.py
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} settings.py
+    chmod -R 0400 settings.py
 
     # General settings.
     perl -pi -e 's#^(listen_address).*#${1} = "$ENV{IREDAPD_BIND_HOST}"#' settings.py
