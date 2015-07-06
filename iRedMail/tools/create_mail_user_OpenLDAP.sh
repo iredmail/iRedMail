@@ -185,7 +185,7 @@ add_new_user()
     # If you do *NOT* want to keep rootpw in script, use '-W' instead of 
     # '-w "${BINDPW}".
 
-    maildir="$( hash_domain ${DOMAIN_NAME})/$( hash_maildir ${USERNAME} )"
+    maildir="${DOMAIN_NAME}/$(hash_maildir ${USERNAME})"
 
     # Generate user password.
     if [ X"${USE_DEFAULT_PASSWD}" == X"YES" ]; then

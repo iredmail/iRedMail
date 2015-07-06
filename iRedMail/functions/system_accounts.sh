@@ -45,7 +45,7 @@ add_user_vmail()
     fi
     rm -f ${VMAIL_USER_HOME_DIR}/.* >> ${INSTALL_LOG} 2>&1
 
-    export FIRST_USER_MAILDIR_HASH_PART="$(hash_domain ${FIRST_DOMAIN})/$(hash_maildir ${FIRST_USER})"
+    export FIRST_USER_MAILDIR_HASH_PART="${FIRST_DOMAIN}/$(hash_maildir ${FIRST_USER})"
     export FIRST_USER_MAILDIR_FULL_PATH="${STORAGE_MAILBOX_DIR}/${FIRST_USER_MAILDIR_HASH_PART}"
     # Create maildir.
     # We will deliver emails with sensitive info of iRedMail installation
