@@ -145,10 +145,7 @@ check_status_before_run web_server_config
 check_status_before_run backend_install
 
 # Postfix.
-check_status_before_run postfix_config_basic && \
-check_status_before_run postfix_config_virtual_host && \
-check_status_before_run postfix_config_sasl && \
-check_status_before_run postfix_config_tls
+check_status_before_run postfix_config
 
 # Policy service for Postfix: Policyd.
 check_status_before_run policy_server_config

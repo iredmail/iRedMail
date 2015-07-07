@@ -515,3 +515,24 @@ EOF
 
     echo 'export status_postfix_config_tls="DONE"' >> ${STATUS_FILE}
 }
+
+postfix_config_postscreen()
+{
+    ECHO_DEBUG "Enable postscreen service."
+
+    bash ${TOOLS_DIR}/enable_postscreen.sh >> ${INSTALL_LOG} 2>&1
+
+    echo 'export status_postfix_config_postscreen="DONE"' >> ${STATUS_FILE}
+}
+
+postfix_config()
+{
+    # Include all sub-steps
+    check_status_before_run postfix_config_basic && \
+    check_status_before_run postfix_config_virtual_host && \
+    check_status_before_run postfix_config_sasl && \
+    check_status_before_run postfix_config_tls && \
+    check_status_before_run postfix_config_postscreen
+
+    echo 'export status_postfix_config="DONE"' >> ${STATUS_FILE}
+}

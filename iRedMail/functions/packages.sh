@@ -80,7 +80,7 @@ install_all()
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
             fi
 
-            ALL_PKGS="${ALL_PKGS} openldap-client${OB_PKG_OPENLDAP_VER} mariadb-server mariadb-client p5-ldap p5-DBD-mysql"
+            ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client p5-ldap p5-DBD-mysql"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
 
         fi
