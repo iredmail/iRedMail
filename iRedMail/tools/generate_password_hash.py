@@ -7,7 +7,7 @@ from base64 import b64encode
 
 
 # Do not prefix password scheme name in password hash.
-HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME = ['NTLM']
+HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME = ['NTLM', 'MD5']
 
 
 def generate_bcrypt_password(p):
@@ -51,7 +51,11 @@ def generate_ssha_password(p):
 def generate_md5_password(p):
     p = str(p).strip()
     pp = Popen(['openssl', 'passwd', '-1', p], stdout=PIPE)
-    return '{crypt}' + pp.communicate()[0]
+    pw = pp.communicate()[0]
+    if 'MD5' in HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME:
+        return pw
+    else:
+        return '{CRYPT}' + pw
 
 
 def generate_password_with_doveadmpw(scheme, plain_password):
