@@ -79,9 +79,6 @@ score URIBL_SBL 0 0.1094 0 0.1639
 score URIBL_SC_SURBL 0 0.3600 0 0.4498
 score URIBL_WS_SURBL 0 0.1533 0 0.2140
 
-# For Mail::SPF
-spf_timeout         5
-
 # For SpamAssassin-3.2.x. Reference:
 # http://spamassassin.apache.org/full/3.2.x/doc/Mail_SpamAssassin_Plugin_SPF.html
 #do_not_use_mail_spf 0
