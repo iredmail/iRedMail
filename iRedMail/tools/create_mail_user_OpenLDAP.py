@@ -291,8 +291,11 @@ for entry in userList.readlines():
     ldif_writer = ldif.LDIFWriter(result)
     ldif_writer.unparse(dn, data)
 
-# Notify info.
-print "< INFO > User data are stored in %s, you can verify it before import it." % os.path.abspath(ldif_file)
+
+ldif_file_path = os.path.abspath(ldif_file)
+print "< INFO > User data are stored in %s, you can verify it before importing it." % ldif_file_path
+print "< INFO > You can import it with below command:"
+print "ldapadd -x -D %s -W -f %s" % (BINDDN, ldif_file_path)
 
 # Prompt to import user data.
 '''
