@@ -77,9 +77,10 @@ EXAMPLE:
 
 NOTES:
 
-    * Depends on the mail traffic, it may take large disk space.
-    * Path will be converted to lowercases.
-    * It cannot be /var/mail (used to store mails sent to system accounts).
+* Depends on the mail traffic, it may take large disk space.
+* Maildir path will be converted to lowercases, so please create this
+  directory in lowcases.
+* It cannot be /var/mail (used to store mails sent to system accounts).
 " 20 76 "${VMAIL_USER_HOME_DIR}" 2>/tmp/vmail_user_home_dir
 
     export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"

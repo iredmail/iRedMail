@@ -1,5 +1,8 @@
 iRedMail-0.9.3:
     * Improvements:
+        - Enable postscreen service in Postfix by default.
+          Important Note: all users must use port 587 for sending email, port
+          25 doesn't accept submitted mail by authenticated users anymore.
         - New SQL table `amavisd.outbound_wblist`, used to store whitelists
           and blacklists for outbound messages. It's required by iRedAPD
           plugin 'amavisd_wblist'.
