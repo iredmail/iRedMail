@@ -229,6 +229,9 @@ export DEFAULT_PASSWORD_SCHEME='SSHA512'
 # an old release and unsupported anymore.
 export UNSUPPORTED_RELEASE='NO'
 
+# Check whether it's Debian or Ubuntu.
+
+# Detect distro name and release version.
 if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/etc/init.d'
@@ -262,7 +265,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
 
-    elif [ -f /etc/lsb-release ]; then
+    elif [ -f /etc/lsb-release -a grep -i 'DISTRIB_ID=Ubuntu' /etc/lsb-release &>/dev/null ]; then
         # Ubuntu
         export DISTRO='UBUNTU'
 

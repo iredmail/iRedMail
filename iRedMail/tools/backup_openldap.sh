@@ -121,18 +121,20 @@ fi
 # Log file
 export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
 
+touch ${LOGFILE}
+
 # Check and create directories.
 if [ ! -d ${BACKUP_DIR} ]; then
-    echo "* Create data directory: ${BACKUP_DIR}."
+    echo "* Create data directory: ${BACKUP_DIR}." >> ${LOGFILE}
     mkdir -p ${BACKUP_DIR}
 fi
 
 # Initialize log file.
-echo "* Starting backup at ${TIMESTAMP}" >${LOGFILE}
-echo "* Backup directory: ${BACKUP_DIR}." >>${LOGFILE}
+echo "* Starting backup at ${TIMESTAMP}" >> ${LOGFILE}
+echo "* Backup directory: ${BACKUP_DIR}." >> ${LOGFILE}
 
 # Backup
-echo "* Dumping LDAP data into file: ${BACKUP_FILE}..." >>${LOGFILE}
+echo "* Dumping LDAP data into file: ${BACKUP_FILE}..." >> ${LOGFILE}
 ${CMD_SLAPCAT} > ${BACKUP_FILE}
 
 if [ X"$?" == X"0" ]; then
@@ -143,7 +145,7 @@ if [ X"$?" == X"0" ]; then
 
     # Compress backup file.
     echo "* Compressing LDIF file with command: '${CMD_COMPRESS}' ..." >> ${LOGFILE}
-    ${CMD_COMPRESS} ${BACKUP_FILE} &>${LOGFILE}
+    ${CMD_COMPRESS} ${BACKUP_FILE} >> ${LOGFILE} 2>&1
 
     echo "* [DONE]" >>${LOGFILE}
 
@@ -152,7 +154,7 @@ if [ X"$?" == X"0" ]; then
     compressed_size="$(${CMD_DU} ${compressed_file_name} | awk '{print $1}')"
 
     echo -n "* Removing plain LDIF file: ${BACKUP_FILE}..." >>${LOGFILE}
-    rm -f ${BACKUP_FILE} &>${LOGFILE}
+    rm -f ${BACKUP_FILE} >> ${LOGFILE} 2>&1
     [ X"$?" == X"0" ] && echo -e "\t[DONE]" >>${LOGFILE}
 
     sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Backup LDAP data. Original file size: ${original_size}, compressed: ${compressed_size}, backup file: ${compressed_file_name}', 'cron_backup_ldap', '127.0.0.1', NOW());"
@@ -171,13 +173,11 @@ echo "=================" >>${LOGFILE}
 ${CMD_DU} ${BACKUP_FILE}* >>${LOGFILE}
 echo "=================" >>${LOGFILE}
 
-echo "* Backup completed (Success? ${BACKUP_SUCCESS})." >>${LOGFILE}
-
 # Print some message. It will cause cron generates an email to root user.
 if [ X"${BACKUP_SUCCESS}" == X"YES" ]; then
-    echo "==> Backup completed successfully."
+    echo "* [ OK ] Backup completes successfully." >> ${LOGFILE}
 else
-    echo -e "==> Backup completed with !!!ERRORS!!!.\n" 1>&2
+    echo "* <<< ERROR >>> Backup not successfully complete." >> ${LOGFILE}
 fi
 
 if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
@@ -189,6 +189,4 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
 fi
 
-echo "==> Detailed log (${LOGFILE}):"
-echo "========================="
 cat ${LOGFILE}
