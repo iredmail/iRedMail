@@ -266,6 +266,7 @@ amavisd_config_general()
     cat >> ${AMAVISD_CONF} <<EOF
 # Set hostname.
 \$myhostname = "${HOSTNAME}";
+\$localhost_name = \$myhostname;
 
 # Set listen IP/PORT.
 \$notify_method  = 'smtp:[${SMTP_SERVER}]:10025';
@@ -445,6 +446,9 @@ EOF
 EOF
     fi
 
+    # Comment out existing `$max_servers` setting
+    perl -pi -e 's/^(\$max_servers.*)/#${1}/g' ${AMAVISD_CONF}
+
     cat >> ${AMAVISD_CONF} <<EOF
 # Don't send email with subject "UNCHECKED contents in mail FROM xxx".
 delete \$admin_maps_by_ccat{&CC_UNCHECKED};
@@ -459,8 +463,6 @@ delete \$admin_maps_by_ccat{&CC_UNCHECKED};
 # WARNING: it must match (equal to or larger than) the number set in
 # /etc/postfix/master.cf "maxproc" column for the 'smtp-amavis' service.
 \$max_servers = ${AMAVISD_MAX_SERVERS};
-
-\$localhost_name = \$myhostname;
 EOF
 
     if [ X"${DISTRO}" == X'RHEL' ]; then

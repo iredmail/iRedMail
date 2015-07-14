@@ -85,6 +85,26 @@ if echo ${POSTFIX_VERSION} | grep '^2\.[123456789][123456789]' &>/dev/null; then
     postconf -e postscreen_dnsbl_whitelist_threshold='-2'
 fi
 
+# From Postfix author Wietse Venema, posted in Postfix mailing list on Jul 14, 2015:
+# ----
+# I would not enable the "after 220 greeting" protocol tests, because
+# some senders that pass the tests will not retry (mail will never
+# be delivered), and some will retry from a different client IP address
+# (mail will be delayed).  Whitelisting Google does not solve the
+# problem because it also affects other senders.
+#
+# The amount of mail stopped by these tests is so small that it is not
+# worth the trouble at this time.
+# ----
+#postscreen_pipelining_enable=yes
+#postscreen_pipelining_action=
+#
+#postscreen_non_smtp_command_enable=yes
+#postscreen_non_smtp_command_action=
+#
+#postscreen_bare_newline_enable=yes
+#postscreen_bare_newline_action=
+
 echo "* Reloading postfix service to read the new configuration."
 postfix reload
 
