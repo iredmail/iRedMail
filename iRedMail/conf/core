@@ -139,6 +139,8 @@ check_runtime_dir() {
 # Check necessery privileges/files/dirs.
 check_env()
 {
+    check_runtime_dir
+
     # Check user privilege.
     check_user root
 
@@ -193,8 +195,6 @@ EOF
         ECHO_INFO "[NOT FOUND]"
         . ${CONFIG_VIA_DIALOG}
     fi
-
-    check_runtime_dir
 }
 
 extract_pkg()

@@ -169,7 +169,7 @@ chomp(\$mydomain = "${HOSTNAME}");
                   10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 );
 
 # listen on multiple TCP ports. ${AMAVISD_QUARANTINE_PORT} is used for releasing quarantined mails.
-\$inet_socket_port = [10024, ${AMAVISD_QUARANTINE_PORT},];
+\$inet_socket_port = [10024, 10026, ${AMAVISD_QUARANTINE_PORT}];
 
 # Enable virus check.
 @bypass_virus_checks_maps = (
@@ -497,7 +497,7 @@ EOF
 
     cat >> ${AMAVISD_CONF} <<EOF
 # Listen on specified addresses.
-#\$inet_socket_bind = [ '127.0.0.1', '[::1]' ];
+\$inet_socket_bind = ['127.0.0.1'];
 EOF
 
     cat >> ${AMAVISD_CONF} <<EOF

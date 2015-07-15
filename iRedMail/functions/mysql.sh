@@ -37,7 +37,7 @@ mysql_generate_defauts_file_root()
     cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 [client]
 user=${MYSQL_ROOT_USER}
-password=${MYSQL_ROOT_PASSWD}
+password="${MYSQL_ROOT_PASSWD}"
 EOF
 
     if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' -o X"${MYSQL_SERVER}" != X'127.0.0.1' ]; then
@@ -123,7 +123,7 @@ EOF
 
     cat >> ${TIP_FILE} <<EOF
 MySQL:
-    * Root user: ${MYSQL_ROOT_USER}, Password: ${MYSQL_ROOT_PASSWD}
+    * Root user: ${MYSQL_ROOT_USER}, Password: "${MYSQL_ROOT_PASSWD}" (without quotes)
     * Bind account (read-only):
         - Username: ${VMAIL_DB_BIND_USER}, Password: ${VMAIL_DB_BIND_PASSWD}
     * Vmail admin account (read-write):
