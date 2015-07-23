@@ -36,6 +36,7 @@ ${MYSQL_SERVER}.
 
 WARNING:
 
+    * Do *NOT* use double quote (\") in password.
     * EMPTY password is *NOT* permitted.
 " 20 76 2>/tmp/mysql_rootpw
 

@@ -128,16 +128,15 @@ dovecot_config()
     perl -pi -e 's#PH_SSL_CERT#$ENV{SSL_CERT_FILE}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_SSL_KEY#$ENV{SSL_KEY_FILE}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_SSL_CIPHERS#$ENV{SSL_CIPHERS}#' ${DOVECOT_CONF}
-    # Enable parameters which requires at least Dovecot-2.2.6
+
+    # Enable parameters which requires at least Dovecot-2.2.6.
+    #   - RHEL/CentOS 6 uses Dovecot-2.1.x
+    #   - Debian 7 uses Dovecot-2.1.x
     use_longer_dhparam_length='YES'
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        if [ X"${DISTRO_VERSION}" == X'6' ]; then
-            use_longer_dhparam_length='NO'
-        fi
-    elif [ X"${DISTRO}" == X'DEBIAN' ]; then
-        if [ X"${DISTRO_VERSION}" == X'7' ]; then
-            use_longer_dhparam_length='NO'
-        fi
+    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
+        use_longer_dhparam_length='NO'
+    elif [ X"${DISTRO}" == X'DEBIAN' -a X"${DISTRO_VERSION}" == X'7' ]; then
+        use_longer_dhparam_length='NO'
     fi
     if [ X"${use_longer_dhparam_length}" == X'YES' ]; then
         perl -pi -e 's/^#(ssl_dh_parameters_length.*)/${1}/' ${DOVECOT_CONF}
