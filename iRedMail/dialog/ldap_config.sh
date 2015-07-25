@@ -73,12 +73,12 @@ while : ; do
     ${PASSWORDBOX} "\
 Please specify password for LDAP rootdn:
 
-    * ${LDAP_ROOTDN}
+* ${LDAP_ROOTDN}
 
 WARNING:
 
-    * Do *NOT* use special characters in password right now. e.g. $, #, @, space.
-    * EMPTY password is *NOT* permitted.
+* Do *NOT* use special characters in password right now. e.g. $, #, @, space.
+* EMPTY password is *NOT* permitted.
 " 20 76 2>/tmp/ldap_rootpw
 
     LDAP_ROOTPW="$(cat /tmp/ldap_rootpw)"

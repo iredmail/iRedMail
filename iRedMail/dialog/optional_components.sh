@@ -64,10 +64,11 @@ export tmp_config_optional_components="${ROOTDIR}/.optional_components"
 ${DIALOG} \
 --title "Optional components" \
 --checklist "\
-Note:
-    * DKIM is recommended.
-    * SPF validation (Sender Policy Framework) is enabled by default.
-    * DNS records (TXT type) are required for both SPF and DKIM.
+Notes:
+
+* DKIM is recommended.
+* SPF validation (Sender Policy Framework) is enabled by default.
+* DNS records (TXT type) are required for both SPF and DKIM.
 
 Refer to below file for more detail after installation:
     * ${TIP_FILE}

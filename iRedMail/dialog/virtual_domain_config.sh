@@ -29,11 +29,11 @@ Please specify your first virtual domain name.
 
 EXAMPLE:
 
-    * example.com
+* example.com
 
 WARNING:
 
-    * It cannot be the same as server hostname: ${HOSTNAME}.
+* It cannot be the same as server hostname: ${HOSTNAME}.
 " 20 76 2>/tmp/first_domain
 
     FIRST_DOMAIN="$(cat /tmp/first_domain)"
@@ -58,14 +58,14 @@ while : ; do
     ${PASSWORDBOX} "\
 Please specify password for the administrator user:
 
-    * ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
+* ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
 
 You can login to both webmail and iRedAdmin with this account.
 
 WARNING:
 
-    * Do *NOT* use special characters in password right now. e.g. $, #, @, space.
-    * EMPTY password is *NOT* permitted.
+* Do *NOT* use special characters in password right now. e.g. $, #, @, space.
+* EMPTY password is *NOT* permitted.
 
 " 20 76 2>/tmp/first_domain_admin_passwd
 
@@ -91,6 +91,7 @@ echo "export FIRST_USER_PASSWD_PLAIN='${FIRST_USER_PASSWD_PLAIN}'" >>${IREDMAIL_
 
 cat >> ${TIP_FILE} <<EOF
 Admin of domain ${FIRST_DOMAIN}:
+
     * Account: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
     * Password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
 

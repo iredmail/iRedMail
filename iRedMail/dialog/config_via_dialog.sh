@@ -73,7 +73,7 @@ Default is: ${VMAIL_USER_HOME_DIR}
 
 EXAMPLE:
 
-    * ${VMAIL_USER_HOME_DIR}
+* ${VMAIL_USER_HOME_DIR}
 
 NOTES:
 

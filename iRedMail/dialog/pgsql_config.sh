@@ -35,8 +35,8 @@ Please specify password for PostgreSQL administrator: ${PGSQL_ROOT_USER}
 
 WARNING:
 
-    * Do *NOT* use special characters in password right now. e.g. $, #, @, space.
-    * EMPTY password is *NOT* permitted.
+* Do *NOT* use special characters in password right now. e.g. $, #, @, space.
+* EMPTY password is *NOT* permitted.
 " 20 76 2>/tmp/pgsql_rootpw
 
     PGSQL_ROOT_PASSWD="$(cat /tmp/pgsql_rootpw)"
