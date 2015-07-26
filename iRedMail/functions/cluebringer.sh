@@ -74,6 +74,8 @@ cluebringer_config()
 
     # File to log to instead of stdout
     perl -pi -e 's/^#(log_file=).*/${1}$ENV{CLUEBRINGER_LOG_FILE}/' ${CLUEBRINGER_CONF}
+    touch ${CLUEBRINGER_LOG_FILE}
+    chown ${CLUEBRINGER_USER}:${CLUEBRINGER_GROUP} ${CLUEBRINGER_LOG_FILE}
 
     # IP to listen on, * for all
     perl -pi -e 's/^(host=).*/${1}$ENV{CLUEBRINGER_BIND_HOST}/' ${CLUEBRINGER_CONF}
