@@ -66,14 +66,12 @@ ${DIALOG} \
 --checklist "\
 Notes:
 
-* DKIM is recommended.
-* SPF validation (Sender Policy Framework) is enabled by default.
+* DKIM signing/verification and SPF validation are enabled by default.
 * DNS records (TXT type) are required for both SPF and DKIM.
 
 Refer to below file for more detail after installation:
     * ${TIP_FILE}
 " 20 76 8 \
-"DKIM signing/verification" "DomainKeys Identified Mail" "on" \
 "iRedAdmin" "Official web-based Admin Panel" "on" \
 "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
 ${LIST_OF_OPTIONAL_COMPONENTS} \
@@ -84,9 +82,6 @@ rm -f ${tmp_config_optional_components} &>/dev/null
 
 echo ${OPTIONAL_COMPONENTS} | grep -i '\<SPF\>' >/dev/null 2>&1
 [ X"$?" == X"0" ] && export ENABLE_SPF='YES' && echo "export ENABLE_SPF='YES'" >>${IREDMAIL_CONFIG_FILE}
-
-echo ${OPTIONAL_COMPONENTS} | grep -i '\<DKIM\>' >/dev/null 2>&1
-[ X"$?" == X"0" ] && export ENABLE_DKIM='YES' && echo "export ENABLE_DKIM='YES'" >>${IREDMAIL_CONFIG_FILE}
 
 echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' >/dev/null 2>&1
 [ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}

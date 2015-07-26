@@ -350,34 +350,6 @@ EOF
     # Write dkim settings.
     check_status_before_run amavisd_dkim
 
-    # Enable/Disable DKIM feature.
-    if [ X"${ENABLE_DKIM}" == X"YES" ]; then
-        if [ X"${DISTRO}" == X'RHEL' ]; then
-            perl -pi -e 's/^(\$enable_dkim_verification = )\d(;.*)/${1}1${2}/' ${AMAVISD_CONF}
-            perl -pi -e 's/^(\$enable_dkim_signing = )\d(;.*)/${1}1${2}/' ${AMAVISD_CONF}
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            cat >> ${AMAVISD_CONF} <<EOF
-\$enable_dkim_verification = 1;  # enable DKIM signatures verification
-\$enable_dkim_signing = 1;    # load DKIM signing code, keys defined by dkim_key
-EOF
-        else
-            :
-        fi
-
-    else
-        if [ X"${DISTRO}" == X'RHEL' ]; then
-            perl -pi -e 's/^(\$enable_dkim_verification = )\d(;.*)/${1}0${2}/' ${AMAVISD_CONF}
-            perl -pi -e 's/^(\$enable_dkim_signing = )\d(;.*)/${1}0${2}/' ${AMAVISD_CONF}
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            cat >> ${AMAVISD_CONF} <<EOF
-\$enable_dkim_verification = 0;  # enable DKIM signatures verification
-\$enable_dkim_signing = 0;    # load DKIM signing code, keys defined by dkim_key
-EOF
-        else
-            :
-        fi
-    fi
-
     # Enable disclaimer if available.
     cat >> ${AMAVISD_CONF} <<EOF
 # ------------ Disclaimer Setting ---------------
@@ -460,6 +432,12 @@ delete \$admin_maps_by_ccat{&CC_UNCHECKED};
 # WARNING: it must match (equal to or larger than) the number set in
 # /etc/postfix/master.cf "maxproc" column for the 'smtp-amavis' service.
 \$max_servers = ${AMAVISD_MAX_SERVERS};
+EOF
+
+    # Enable DKIM signing and verification.
+    cat >> ${AMAVISD_CONF} <<EOF
+\$enable_dkim_verification = 1;     # enable DKIM signatures verification
+\$enable_dkim_signing = 1;          # enable DKIM signing
 EOF
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
