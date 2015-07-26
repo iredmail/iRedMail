@@ -18,6 +18,7 @@ if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
 elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export POSTFIX_DAEMON_USER='_postfix'
     export POSTFIX_DAEMON_GROUP='_postfix'
+    export POSTFIX_DATA_DIRECTORY='/var/postfix'
 fi
 
 export MAIN_CF="${POSTFIX_ROOT_DIR}/main.cf"
