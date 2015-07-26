@@ -524,7 +524,6 @@ EOF
             cd ${PKG_MISC_DIR}
             tar zxf uwsgi-*.tar.gz
             cd uwsgi-*/
-            patch -p1 < ${PATCH_DIR}/uwsgi/core_logging_c.patch >> ${INSTALL_LOG} 2>&1
             python setup.py install > ${RUNTIME_DIR}/uwsgi_install.log 2>&1
         fi
 
