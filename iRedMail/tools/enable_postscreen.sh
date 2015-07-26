@@ -25,7 +25,6 @@ export MAIN_CF="${POSTFIX_ROOT_DIR}/main.cf"
 export MASTER_CF="${POSTFIX_ROOT_DIR}/master.cf"
 export POSTSCREEN_DNSBL_REPLY="${POSTFIX_ROOT_DIR}/postscreen_dnsbl_reply"
 export POSTSCREEN_ACCESS_CIDR="${POSTFIX_ROOT_DIR}/postscreen_access.cidr"
-export POSTSCREEN_CACHE_FILE="${POSTFIX_DATA_DIRECTORY}/postscreen_cache"
 
 # Get Postfix version number.
 export POSTFIX_VERSION="$(postconf mail_version 2>/dev/null | awk '{print $NF}')"
@@ -113,11 +112,6 @@ fi
 #
 #postscreen_bare_newline_enable=yes
 #postscreen_bare_newline_action=
-
-echo "* Create ${POSTSCREEN_CACHE_FILE}"
-touch ${POSTSCREEN_CACHE_FILE}
-postmap btree:${POSTSCREEN_CACHE_FILE}
-chown ${POSTFIX_DAEMON_USER}:${POSTFIX_DAEMON_GROUP} ${POSTSCREEN_CACHE_FILE}*
 
 echo "* Reloading postfix service to read the new configuration."
 postfix reload
