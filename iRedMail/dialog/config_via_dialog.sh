@@ -48,11 +48,7 @@ fi
 ${DIALOG} \
     --title "Welcome and thanks for your use" \
     --yesno "\
-Thanks for your use of ${PROG_NAME}.
-Bug report, feedback, suggestion are always welcome.
-
-* Community: http://www.iredmail.org/forum/
-* Admin FAQ: http://www.iredmail.org/faq.html
+Welcome to the iRedMail setup wizard, we will ask you some simple questions required to setup a mail server. If you encouraged any trouble or issue, please report to our support forum: http://www.iredmail.org/forum/
 
 NOTE:
 
@@ -71,16 +67,14 @@ while :; do
 Please specify a directory (in lowercase) used to store user mailboxes.
 Default is: ${VMAIL_USER_HOME_DIR}
 
-EXAMPLE:
-
-* ${VMAIL_USER_HOME_DIR}
-
 NOTES:
 
 * Depends on the mail traffic, it may take large disk space.
 * Maildir path will be converted to lowercases, so please create this
   directory in lowcases.
 * It cannot be /var/mail (used to store mails sent to system accounts).
+* Mailboxes will be stored under its sub-directory: /var/vmail/vmail1.
+* Daily backup of SQL/LDAP databases will be stored under another sub-directory: /var/vmail/backup.
 " 20 76 "${VMAIL_USER_HOME_DIR}" 2>/tmp/vmail_user_home_dir
 
     export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"
