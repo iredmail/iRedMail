@@ -56,7 +56,7 @@ echo "export SITE_ADMIN_NAME='${SITE_ADMIN_NAME}'" >>${IREDMAIL_CONFIG_FILE}
 while : ; do
     ${DIALOG} \
     --title "Password for the mail domain administrator" \
-    ${PASSWORDBOX} "\
+    --passwordbox "\
 Please specify password for the mail domain administrator:
 
 * ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
