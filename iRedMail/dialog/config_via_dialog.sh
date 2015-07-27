@@ -130,7 +130,8 @@ TIP: Use SPACE key to select item." \
 "Apache" "The most popular web server" "off" \
 2>/tmp/web_server
 
-        web_server="$(cat /tmp/web_server | tr '[a-z]' '[A-Z]')"
+        web_server_case_sensitive="$(cat /tmp/web_server)"
+        web_server="$(echo ${web_server_case_sensitive} | tr '[a-z]' '[A-Z]')"
         [ X"${web_server}" != X"" ] && break
     done
 
@@ -176,7 +177,8 @@ while : ; do
 TIP: Use SPACE key to select item.
 " 20 76 4 ${DIALOG_AVAILABLE_BACKENDS} 2>/tmp/backend
 
-    BACKEND_ORIG="$(cat /tmp/backend | tr '[a-z]' '[A-Z]')"
+    BACKEND_ORIG_CASE_SENSITIVE="$(cat /tmp/backend)"
+    BACKEND_ORIG="$(echo ${BACKEND_ORIG_CASE_SENSITIVE} | tr '[a-z]' '[A-Z]')"
     [ X"${BACKEND_ORIG}" != X"" ] && break
 done
 
@@ -205,26 +207,33 @@ echo "export VMAIL_DB_BIND_PASSWD='${VMAIL_DB_BIND_PASSWD}'" >> ${IREDMAIL_CONFI
 export VMAIL_DB_ADMIN_PASSWD="$(${RANDOM_STRING})"
 echo "export VMAIL_DB_ADMIN_PASSWD='${VMAIL_DB_ADMIN_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
-# LDAP bind dn & password.
+# LDAP bind dn, passwords.
 export LDAP_BINDPW="$(${RANDOM_STRING})"
 export LDAP_ADMIN_PW="$(${RANDOM_STRING})"
+export LDAP_ROOTPW="$(${RANDOM_STRING})"
 echo "export LDAP_BINDPW='${LDAP_BINDPW}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export LDAP_ADMIN_PW='${LDAP_ADMIN_PW}'" >> ${IREDMAIL_CONFIG_FILE}
+echo "export LDAP_ROOTPW='${LDAP_ROOTPW}'" >> ${IREDMAIL_CONFIG_FILE}
 
-if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+# MySQL root password
+# MYSQL_ROOT_USER is defined in conf/global
+export MYSQL_ROOT_PASSWD="$(${RANDOM_STRING})"
+echo "export MYSQL_ROOT_USER='${MYSQL_ROOT_USER}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export MYSQL_ROOT_PASSWD='${MYSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
+
+# PostgreSQL root password.
+# PGSQL_ROOT_USER is defined in conf/global
+export PGSQL_ROOT_PASSWD="$(${RANDOM_STRING})"
+echo "export PGSQL_ROOT_USER='${PGSQL_ROOT_USER}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
+
+if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     if [ X"${DISTRO}" != X'OPENBSD' ]; then
         export DEFAULT_PASSWORD_SCHEME='SSHA'
         echo "export DEFAULT_PASSWORD_SCHEME='SSHA'" >> ${IREDMAIL_CONFIG_FILE}
     fi
 
     . ${DIALOG_DIR}/ldap_config.sh
-
-    # MySQL server is used to store policyd/roundcube data.
-    . ${DIALOG_DIR}/mysql_config.sh
-elif [ X"${BACKEND}" == X"MYSQL" ]; then
-    . ${DIALOG_DIR}/mysql_config.sh
-elif [ X"${BACKEND}" == X"PGSQL" ]; then
-    . ${DIALOG_DIR}/pgsql_config.sh
 fi
 
 if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X'MYSQL' ]; then
@@ -255,8 +264,6 @@ echo "#EOF" >> ${IREDMAIL_CONFIG_FILE}
 # Ending message.
 #
 cat <<EOF
-Configuration completed.
-
 *************************************************************************
 ***************************** WARNING ***********************************
 *************************************************************************
@@ -267,6 +274,18 @@ Configuration completed.
 *   * ${IREDMAIL_CONFIG_FILE}
 *                                                                       *
 *************************************************************************
+********************** REVIEW YOUR SETTINGS *****************************
+*************************************************************************
+
+* Storage base directory: ${STORAGE_BASE_DIR}
+    - Mailboxes: ${STORAGE_MAILBOX_DIR}
+    - Daily backup of SQL/LDAP databases: ${BACKUP_DIR}
+* Store mail accounts in: ${BACKEND_ORIG_CASE_SENSITIVE}
+* Web server: ${web_server_case_sensitive}
+* First mail domain name: ${FIRST_DOMAIN}
+* Mail domain admin: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
+* Additional components: ${OPTIONAL_COMPONENTS}
+
 EOF
 
 ECHO_QUESTION -n "Continue? [y|N]"

@@ -64,14 +64,13 @@ export tmp_config_optional_components="${ROOTDIR}/.optional_components"
 ${DIALOG} \
 --title "Optional components" \
 --checklist "\
-Notes:
-
 * DKIM signing/verification and SPF validation are enabled by default.
-* DNS records (TXT type) are required for both SPF and DKIM.
+* DNS records for SPF and DKIM are required after installation.
 
 Refer to below file for more detail after installation:
-    * ${TIP_FILE}
-" 20 76 8 \
+
+* ${TIP_FILE}
+" 20 76 6 \
 "iRedAdmin" "Official web-based Admin Panel" "on" \
 "Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
 ${LIST_OF_OPTIONAL_COMPONENTS} \
@@ -80,10 +79,10 @@ ${LIST_OF_OPTIONAL_COMPONENTS} \
 OPTIONAL_COMPONENTS="$(cat ${tmp_config_optional_components})"
 rm -f ${tmp_config_optional_components} &>/dev/null
 
-echo ${OPTIONAL_COMPONENTS} | grep -i '\<SPF\>' >/dev/null 2>&1
+echo ${OPTIONAL_COMPONENTS} | grep -i '\<SPF\>' &>/dev/null
 [ X"$?" == X"0" ] && export ENABLE_SPF='YES' && echo "export ENABLE_SPF='YES'" >>${IREDMAIL_CONFIG_FILE}
 
-echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' >/dev/null 2>&1
+echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' &>/dev/null
 [ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'roundcubemail' &>/dev/null; then

@@ -29,13 +29,15 @@ while : ; do
     ${DIALOG} \
         --title "LDAP suffix (root dn)" \
         --inputbox "\
-Please specify your LDAP suffix (root dn).
+Please specify your LDAP suffix (root dn):
 
 EXAMPLE:
 
 * Domain 'example.com': dc=example,dc=com
 * Domain 'test.com.cn': dc=test,dc=com,dc=cn
 
+Note: Password for LDAP rootdn (cn=Manager,dc=xx,dc=xx) will be
+generated randomly.
 " 20 76 "dc=example,dc=com" 2>/tmp/ldap_suffix
 
     LDAP_SUFFIX="$(cat /tmp/ldap_suffix)"
@@ -65,28 +67,3 @@ export LDAP_BASEDN_NAME="domains"
 export LDAP_BASEDN="o=${LDAP_BASEDN_NAME},${LDAP_SUFFIX}"
 export LDAP_ADMIN_BASEDN="o=${LDAP_ATTR_DOMAINADMIN_DN_NAME},${LDAP_SUFFIX}"
 EOF
-
-# LDAP rootpw.
-while : ; do
-    ${DIALOG} \
-    --title "Password for LDAP rootdn: ${LDAP_ROOTDN}" \
-    ${PASSWORDBOX} "\
-Please specify password for LDAP rootdn:
-
-* ${LDAP_ROOTDN}
-
-WARNING:
-
-* Do *NOT* use special characters in password right now. e.g. $, #, @, space.
-* EMPTY password is *NOT* permitted.
-" 20 76 2>/tmp/ldap_rootpw
-
-    LDAP_ROOTPW="$(cat /tmp/ldap_rootpw)"
-
-    # Check $, #, space
-    echo ${LDAP_ROOTPW} | grep '[\$\#\ ]' &>/dev/null
-    [ X"$?" != X'0' -a X"${LDAP_ROOTPW}" != X'' ] && break
-done
-
-echo "export LDAP_ROOTPW='${LDAP_ROOTPW}'" >>${IREDMAIL_CONFIG_FILE}
-rm -f /tmp/ldap_rootpw

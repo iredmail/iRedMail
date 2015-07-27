@@ -23,9 +23,9 @@
 # First domain name.
 while : ; do
     ${DIALOG} \
-    --title "Your first virtual domain name" \
+    --title "Your first mail domain name" \
     --inputbox "\
-Please specify your first virtual domain name.
+Please specify your first mail domain name.
 
 EXAMPLE:
 
@@ -33,7 +33,8 @@ EXAMPLE:
 
 WARNING:
 
-* It cannot be the same as server hostname: ${HOSTNAME}.
+It cannot be the same as server hostname: ${HOSTNAME}, please either
+change your server hostname or use another mail domain name.
 " 20 76 2>/tmp/first_domain
 
     FIRST_DOMAIN="$(cat /tmp/first_domain)"
@@ -54,17 +55,17 @@ echo "export SITE_ADMIN_NAME='${SITE_ADMIN_NAME}'" >>${IREDMAIL_CONFIG_FILE}
 # DOMAIN_ADMIN_PASSWD
 while : ; do
     ${DIALOG} \
-    --title "Password for the administrator of your domain" \
+    --title "Password for the mail domain administrator" \
     ${PASSWORDBOX} "\
-Please specify password for the administrator user:
+Please specify password for the mail domain administrator:
 
 * ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
 
-You can login to both webmail and iRedAdmin with this account.
+You can login to webmail and iRedAdmin with this account.
 
 WARNING:
 
-* Do *NOT* use special characters in password right now. e.g. $, #, @, space.
+* Do *NOT* use special characters in password right now. e.g. $, #, @.
 * EMPTY password is *NOT* permitted.
 
 " 20 76 2>/tmp/first_domain_admin_passwd
