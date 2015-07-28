@@ -85,7 +85,7 @@ postfix_config_basic()
     postconf -e smtp_tls_mandatory_protocols='!SSLv2 !SSLv3'
     postconf -e lmtp_tls_mandatory_protocols='!SSLv2 !SSLv3'
     # Fix 'The Logjam Attack'.
-    postconf -e smtpd_tls_mandatory_exclude_ciphers='aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA'
+    postconf -e smtpd_tls_exclude_ciphers='aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA'
     postconf -e smtpd_tls_dh1024_param_file="${SSL_DHPARAM_FILE}"
 
     # Opportunistic TLS, used when Postfix sends email to remote SMTP server.

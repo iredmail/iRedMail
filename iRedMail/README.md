@@ -4,11 +4,13 @@
 * Check whether this is the lastest version:
   [Download the latest iRedMail](http://www.iredmail.org/download.html)
 
-* Please follow our installation guides strictly to install iRedMail:
+* Install iRedMail by following our installation guides strictly:
   [Installation Guides](http://www.iredmail.org/docs/)
 
 * Community, bug report, feature requests:
   [online support forum](http://www.iredmail.org/forum/)
+
+* [Paid support service](http://www.iredmail.org/support.html)
 
 * Source packages patched or modified for RHEL/CentOS can be download here:
   [http://www.iredmail.org/yum/srpms/](http://www.iredmail.org/yum/srpms/)
