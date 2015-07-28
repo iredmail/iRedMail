@@ -259,7 +259,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
 
-    elif [ -f /etc/lsb-release -a grep -i 'DISTRIB_ID=Ubuntu' /etc/lsb-release &>/dev/null ]; then
+    elif [ -f /etc/lsb-release ] && grep -i 'DISTRIB_ID=Ubuntu' /etc/lsb-release &>/dev/null; then
         # Ubuntu
         export DISTRO='UBUNTU'
 
