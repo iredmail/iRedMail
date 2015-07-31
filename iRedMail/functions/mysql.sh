@@ -80,8 +80,8 @@ mysql_initialize()
 
     service_control restart ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
-    ECHO_DEBUG "Sleep 5 seconds for MySQL daemon initialization ..."
-    sleep 5
+    ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
+    sleep 10
 
     if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
         # Try to access without password, set a password if it's empty.
