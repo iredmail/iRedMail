@@ -8,6 +8,7 @@ iRedMail-0.9.3:
           plugin 'amavisd_wblist'.
 
     * Fixed issues:
+        - Dovecot Master User doesn't work with LDAP backend.
         - Incorrect quota warning priorities in Dovecot.
           Thanks Peter <rs _at_ samplezone.ch> for the feedback.
         - Incorrect Amavisd setting to sign DKIM on inbound messages.

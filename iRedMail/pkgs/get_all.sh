@@ -156,6 +156,7 @@ name=${LOCAL_REPO_NAME}
 baseurl=${IREDMAIL_MIRROR}/yum/rpms/${DISTRO_VERSION}/
 enabled=1
 gpgcheck=0
+#exclude=postfix*
 EOF
 
     # For Red Hat Enterprise Linux

@@ -233,11 +233,6 @@ chomp(\$mydomain = "${HOSTNAME}");
     #bypass_banned_checks_maps => [1],  # banned file names and types
 };
 
-# SpamAssassin debugging. Default if off(0).
-# Note: '\$log_level' variable above is required for SA debug.
-\$log_level = 0;              # verbosity 0..5, -d
-\$sa_debug = 0;
-
 EOF
 
     # Add postfix alias for user: amavis.
@@ -432,12 +427,24 @@ delete \$admin_maps_by_ccat{&CC_UNCHECKED};
 # WARNING: it must match (equal to or larger than) the number set in
 # /etc/postfix/master.cf "maxproc" column for the 'smtp-amavis' service.
 \$max_servers = ${AMAVISD_MAX_SERVERS};
+
 EOF
 
     # Enable DKIM signing and verification.
     cat >> ${AMAVISD_CONF} <<EOF
-\$enable_dkim_verification = 1;     # enable DKIM signatures verification
-\$enable_dkim_signing = 1;          # enable DKIM signing
+# Enable DKIM signing/verification
+\$enable_dkim_verification = 1;
+\$enable_dkim_signing = 1;
+
+EOF
+
+    # Logging.
+    cat >> ${AMAVISD_CONF} <<EOF
+# Amavisd log level. Verbosity: 0, 1, 2, 3, 4, 5, -d.
+\$log_level = 0;
+# SpamAssassin debugging (require \$log_level). Default if off (0).
+\$sa_debug = 0;
+
 EOF
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -473,6 +480,7 @@ EOF
     cat >> ${AMAVISD_CONF} <<EOF
 # Listen on specified addresses.
 \$inet_socket_bind = ['127.0.0.1'];
+
 EOF
 
     cat >> ${AMAVISD_CONF} <<EOF

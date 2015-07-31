@@ -50,6 +50,17 @@ install_all()
     ENABLED_SERVICES="${ENABLED_SERVICES} ${POSTFIX_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} postfix"
+
+        # Exclude postfix package from iRedMail repo.
+        # Postfix in iRedMail repo was rebuilt to support PostgreSQL.
+        if [ X"${DISTRO_VERSION}" == X'7' ]; then
+            if [ X"${BACKEND}" == X'OPENLDAP' ] || [ X"${BACKEND}" == X'MYSQL' ]; then
+                if [ -f ${LOCAL_REPO_FILE} ]; then
+                    perl -pi -e 's/^#(exclude=postfix.*)/${1}/' ${LOCAL_REPO_FILE}
+                fi
+            fi
+        fi
+
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
