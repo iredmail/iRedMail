@@ -50,7 +50,7 @@ apache_config()
     echo 'SSLProtocol all -SSLv2 -SSLv3' >> ${HTTPD_CONF}
 
     # Fix 'The Logjam Attack'
-    # Note: SSLOpenSSLConfCmd requires at least Apache 2.4.8
+    #
     # RHEL/CentOS 7: 2.4.6
     # Debian 7: 2.2.x
     # Debian 8: 2.4.10+
@@ -58,6 +58,8 @@ apache_config()
     # Ubuntu 15.04: 2.4.10
     # FreeBSD: 2.4.12+
     # OpenBSD: n/a (we use nginx)
+    #
+    # Note: SSLOpenSSLConfCmd requires at least Apache 2.4.8 and OpenSSL 1.0.2
     if [ X"${DISTRO}" == X'RHEL' ]; then
         perl -pi -e 's#^(SSLCipherSuite).*#${1} $ENV{SSL_CIPHERS}#g' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(SSLCipherSuite.*)#${1}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
@@ -65,11 +67,6 @@ apache_config()
         perl -pi -e 's#(SSLEngine on)$#${1}\nSSLCipherSuite $ENV{SSL_CIPHERS}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         perl -pi -e 's#(SSLEngine on)$#${1}\nSSLCipherSuite $ENV{SSL_CIPHERS}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
-
-        # For Apache-2.4.8+
-        if [ X"${DISTRO_CODENAME}" != X'trusty' ]; then
-            perl -pi -e 's#(SSLEngine on)$#${1}\nSSLOpenSSLConfCmd DHParameters $ENV{SSL_DHPARAM_FILE}#g' ${HTTPD_SSL_CONF}
-        fi
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         perl -pi -e 's#(SSLEngine on)$#${1}\nSSLCipherSuite $ENV{SSL_CIPHERS}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
     fi
