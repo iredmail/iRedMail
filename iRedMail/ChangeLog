@@ -1,5 +1,7 @@
 iRedMail-0.9.3:
     * Improvements:
+        - Supports per-user alias address in SQL backends. 2 new sql columns
+          are required: `alias.is_alias`, `alias.alias_to`.
         - Enable postscreen service in Postfix by default.
           Important Note: all users must use port 587 for sending email, port
           25 doesn't accept submitted mail by authenticated users anymore.

@@ -52,8 +52,14 @@ CREATE TABLE IF NOT EXISTS alias (
     moderators TEXT,
     accesspolicy VARCHAR(30) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
-    -- Mark this record is a mail list account
+    -- Mark this record as a mail list/alias account
     islist TINYINT(1) NOT NULL DEFAULT 0,
+    -- Mark this record as a per-account alias account
+    is_alias TINYINT(1) NOT NULL DEFAULT 0,
+    -- Required by per-account alias account (`is_alias=1`), used for indexed
+    -- searching (`goto` is not good for searching). Its value must be same as
+    -- `goto`.
+    alias_to VARCHAR(255) NOT NULL DEFAULT '',
     created DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     modified DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
     expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
@@ -61,6 +67,8 @@ CREATE TABLE IF NOT EXISTS alias (
     PRIMARY KEY (address),
     INDEX (domain),
     INDEX (islist),
+    INDEX (is_alias),
+    INDEX (alias_to),
     INDEX (expired),
     INDEX (active)
 ) ENGINE=MyISAM;

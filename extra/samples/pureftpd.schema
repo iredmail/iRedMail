@@ -1,0 +1,69 @@
+#
+# pureftpd.schema
+#
+# Pure-FTPd User LDAP Schema
+# See README.LDAP in the Pure-FTPd documentation for more information.
+#
+# Written by Ben Gertzfield <che =AT= debian -DOT- org>
+#
+
+## Pure-FTPd-related LDAP attributes
+
+attributetype ( 1.3.6.1.4.1.6981.11.3.1 NAME 'FTPQuotaFiles'
+        DESC 'Quota (in number of files) for an FTP user'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.6981.11.3.2 NAME 'FTPQuotaMBytes'
+        DESC 'Quota (in megabytes) for an FTP user'
+        EQUALITY integerMatch        
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.6981.11.3.3 NAME 'FTPUploadRatio'
+        DESC 'Ratio (compared with FTPRatioDown) for uploaded files'
+        EQUALITY integerMatch        
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.6981.11.3.4 NAME 'FTPDownloadRatio'
+        DESC 'Ratio (compared with FTPRatioUp) for downloaded files'
+        EQUALITY integerMatch        
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.6981.11.3.5 NAME 'FTPUploadBandwidth'
+        DESC 'Bandwidth (in KB/s) to limit upload speeds to'
+        EQUALITY integerMatch        
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.6981.11.3.6 NAME 'FTPDownloadBandwidth'
+        DESC 'Bandwidth (in KB/s) to limit download speeds to'
+        EQUALITY integerMatch        
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.6981.11.3.7 NAME 'FTPStatus'
+        DESC 'Account status: enabled or disabled'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.6981.11.3.8 NAME 'FTPuid'
+        DESC 'System uid (overrides uidNumber if present)'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.6981.11.3.9 NAME 'FTPgid'
+        DESC 'System uid (overrides gidNumber if present)'
+        EQUALITY integerMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.6981.11.3.10 NAME 'FTPHomeDir'
+        DESC 'FTP directory'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+## New Pure-FTPd object type
+
+objectclass ( 1.3.6.1.4.1.6981.11.2.3 NAME 'PureFTPdUser'
+        DESC 'PureFTPd user with optional quota, throttling and ratio'
+        SUP top AUXILIARY
+        MAY ( FTPStatus $ FTPQuotaFiles $ FTPQuotaMBytes $ FTPUploadRatio $ 
+              FTPDownloadRatio $ FTPUploadBandwidth $ FTPDownloadBandwidth $
+              FTPuid $ FTPgid $ FTPHomeDir ) )
