@@ -51,7 +51,7 @@ backup_file()
 backup_file ${MAIN_CF} ${MASTER_CF} ${POSTSCREEN_ACCESS_CIDR} ${POSTSCREEN_DNSBL_REPLY}
 
 echo "* Comment out 'smtp inet ... smtpd' service in ${MASTER_CF}."
-perl -pi -e 's/^(smtp.*inet.*smtpd)$/#${1}/g' ${MASTER_CF}
+perl -pi -e 's/^(smtp .*inet.*smtpd)$/#${1}/g' ${MASTER_CF}
 
 echo "* Uncomment the new 'smtpd pass ... smtpd' service in ${MASTER_CF}."
 perl -pi -e 's/^#(smtpd.*pass.*smtpd)$/${1}/g' ${MASTER_CF}
