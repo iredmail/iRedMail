@@ -147,7 +147,7 @@ check_status_before_run backend_install
 # Postfix.
 check_status_before_run postfix_config
 
-# Policy service for Postfix: Policyd.
+# Postfix Policy Server
 check_status_before_run policy_server_config
 
 # Dovecot.

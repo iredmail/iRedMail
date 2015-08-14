@@ -12,7 +12,7 @@ import ldap
 #   * bind_dn must have write privilege on LDAP server.
 uri = 'ldap://127.0.0.1:389'
 basedn = 'o=domains,dc=iredmail,dc=org'
-bind_dn = 'cn=vmailadmin,dc=iredmail,dc=org'
+bind_dn = 'cn=Manager,dc=example,dc=com'
 #bind_dn = 'cn=Manager,dc=iredmail,dc=org'
 bind_pw = 'passwd'
 

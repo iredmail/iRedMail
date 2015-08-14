@@ -41,10 +41,8 @@ postfix_config_basic()
     ECHO_DEBUG "Enable chroot."
     perl -pi -e 's/^(smtp.*inet)(.*)(n)(.*)(n)(.*smtpd)$/${1}${2}${3}${4}-${6}/' ${POSTFIX_FILE_MASTER_CF}
 
-    # Comment out the parameter first to avoid duplicate entries
-    perl -pi -e 's/^(inet_protocols*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
-    # Disable IPv6 here since old Cluebringer release doesn't support ipv6.
-    postconf -e inet_protocols='ipv4'
+    # Enable both IPv4 and IPv6.
+    postconf -e inet_protocols='all'
 
     # Do not set virtual_alias_domains.
     perl -pi -e 's/^(virtual_alias_domains*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
@@ -471,23 +469,10 @@ postfix_config_sasl()
     # Offer SASL authentication only after a TLS-encrypted session has been established
     postconf -e smtpd_tls_auth_only='yes'
 
-    POSTCONF_IREDAPD=''
-    if [ X"${USE_IREDAPD}" == X"YES" ]; then
-        POSTCONF_IREDAPD="check_policy_service inet:${IREDAPD_BIND_HOST}:${IREDAPD_LISTEN_PORT},"
-    fi
+    postconf_iredapd="check_policy_service inet:${IREDAPD_BIND_HOST}:${IREDAPD_LISTEN_PORT}"
 
-    POSTCONF_CLUEBRINGER=''
-    if [ X"${USE_CLUEBRINGER}" == X"YES" ]; then
-        POSTCONF_CLUEBRINGER="check_policy_service inet:${CLUEBRINGER_BIND_HOST}:${CLUEBRINGER_BIND_PORT},"
-    fi
-
-    if [ X"${USE_CLUEBRINGER}" == X"YES" ]; then
-        postconf -e smtpd_recipient_restrictions="reject_unknown_recipient_domain, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
-        postconf -e smtpd_end_of_data_restrictions="${POSTCONF_IREDAPD} ${POSTCONF_CLUEBRINGER}"
-    else
-        postconf -e smtpd_recipient_restrictions="reject_unknown_recipient_domain, reject_non_fqdn_recipient, reject_unlisted_recipient, ${POSTCONF_IREDAPD} permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
-
-    fi
+    postconf -e smtpd_recipient_restrictions="reject_unknown_recipient_domain, reject_non_fqdn_recipient, reject_unlisted_recipient, ${postconf_iredapd}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
+    postconf -e smtpd_end_of_data_restrictions="${postconf_iredapd}"
 
     echo 'export status_postfix_config_sasl="DONE"' >> ${STATUS_FILE}
 }

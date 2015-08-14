@@ -111,7 +111,7 @@ install_all()
             # Perl module
             ALL_PKGS="${ALL_PKGS} perl-DBD-MySQL"
 
-            if [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ]; then
+            if [ X"${USE_AWSTATS}" == X'YES' ]; then
                 if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
                     if [ X"${DISTRO_VERSION}" == X'6' ]; then
                         ALL_PKGS="${ALL_PKGS} mod_auth_mysql"
@@ -150,7 +150,7 @@ install_all()
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib perl-DBD-Pg"
 
-            if [ X"${USE_AWSTATS}" == X'YES' -o X"${USE_CLUEBRINGER}" == X'YES' ]; then
+            if [ X"${USE_AWSTATS}" == X'YES' ]; then
                 if [ X"${DISTRO_VERSION}" == X'6' ]; then
                     ALL_PKGS="${ALL_PKGS} mod_auth_pgsql"
                 else
@@ -222,29 +222,6 @@ install_all()
     else
         ENABLED_SERVICES="${ENABLED_SERVICES} ${APACHE_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
-    fi
-
-    # Cluebringer
-    if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
-        if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} cluebringer"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
-
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-cluebringer postfix-cluebringer-webui"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${CLUEBRINGER_RC_SCRIPT_NAME}"
-
-            if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
-                if [ X"${BACKEND_ORIG}" != X'MARIADB' ]; then
-                    ALL_PKGS="${ALL_PKGS} postfix-cluebringer-mysql"
-                fi
-            elif [ X"${BACKEND}" == X"PGSQL" ]; then
-                ALL_PKGS="${ALL_PKGS} postfix-cluebringer-pgsql"
-            fi
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # No port available.
-            :
-        fi
     fi
 
     # Dovecot.

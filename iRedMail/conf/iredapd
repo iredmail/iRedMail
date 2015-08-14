@@ -20,8 +20,6 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-export USE_IREDAPD='YES'
-
 export IREDAPD_VERSION='1.6.0'
 export IREDAPD_DAEMON_USER='iredapd'
 export IREDAPD_DAEMON_GROUP='iredapd'

@@ -176,18 +176,8 @@ EOF
         perl -pi -e 's#^(vmail_db_password =).*#${1} "$ENV{VMAIL_DB_ADMIN_PASSWD}"#' settings.py
     fi
 
-    # Policyd or Cluebringer
-    if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
-        ECHO_DEBUG "Configure Cluebringer related settings."
-        perl -pi -e 's#^(policyd_enabled =).*#${1} True#' settings.py
-        perl -pi -e 's#^(policyd_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
-        perl -pi -e 's#^(policyd_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
-        perl -pi -e 's#^(policyd_db_name =).*#${1} "$ENV{CLUEBRINGER_DB_NAME}"#' settings.py
-        perl -pi -e 's#^(policyd_db_user =).*#${1} "$ENV{CLUEBRINGER_DB_USER}"#' settings.py
-        perl -pi -e 's#^(policyd_db_password =).*#${1} "$ENV{CLUEBRINGER_DB_PASSWD}"#' settings.py
-    else
-        perl -pi -e 's#^(policyd_enabled =).*#${1} False#' settings.py
-    fi
+    # Disable Policyd/Cluebringer
+    perl -pi -e 's#^(policyd_enabled =).*#${1} False#' settings.py
 
     # Amavisd.
     ECHO_DEBUG "Configure Amavisd related settings."

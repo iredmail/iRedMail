@@ -20,17 +20,6 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-# Use Cluebringer by default
-export USE_CLUEBRINGER='YES'
-
-if [ X"${DISTRO}" == X'DEBIAN' ]; then
-    # Not available on Debian 8 yet.
-    [ X"${DISTRO_CODENAME}" == X'jessie' ] && export USE_CLUEBRINGER='NO'
-elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export USE_CLUEBRINGER='NO'
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
     export USE_SPAMD='YES'
-fi
-
-if [ X"${USE_CLUEBRINGER}" == X'YES' ]; then
-    . ${CONF_DIR}/cluebringer
 fi
