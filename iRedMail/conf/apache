@@ -74,6 +74,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export HTTPD_CONF_ROOT="/usr/local/etc/apache24"
     export HTTPD_CONF="${HTTPD_CONF_ROOT}/httpd.conf"
     export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/Includes"
+    export HTTPD_MODULES_DIR="${HTTPD_CONF_ROOT}/modules.d"
 
     # Copy from example: /usr/local/share/examples/apache24/extra/httpd-ssl.conf
     export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/extra/httpd-ssl.conf"

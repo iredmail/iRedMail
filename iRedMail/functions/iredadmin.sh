@@ -25,10 +25,14 @@ iredadmin_config()
 {
     ECHO_INFO "Configure iRedAdmin (official web-based admin panel)."
 
-    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ECHO_DEBUG "Enable apache module: wsgi."
             a2enmod wsgi >> ${INSTALL_LOG} 2>&1
+        elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+            if ls ${HTTPD_MODULES_DIR}/*mod_wsgi.conf &>/dev/null; then
+                perl -pi -e 's/^#(LoadModule.*wsgi_module.*)/${1}/' ${HTTPD_MODULES_DIR}/*mod_wsgi.conf
+            fi
         fi
     fi
 
