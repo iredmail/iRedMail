@@ -26,7 +26,7 @@
 
 apache_config()
 {
-    ECHO_INFO "Configure Apache web server and PHP."
+    ECHO_INFO "Configure Apache web server."
 
     backup_file ${HTTPD_CONF} ${HTTPD_SSL_CONF}
 

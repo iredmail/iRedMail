@@ -145,6 +145,16 @@ EOF
         fi
     fi
 
+    # SOGo reads some additional config file for certain parameters.
+    # Increase WOWorkerCount.
+    if [ X"${DISTRO}" == X'RHEL' \
+        -o X"${DISTRO}" == X'DEBIAN' \
+        -o X"${DISTRO}" == X'UBUNTU' ]; then
+        if [ -f ${ETC_SYSCONFIG_DIR}/sogo ]; then
+            perl -pi -e 's/^# (PREFORK=).*/${1}10/g' ${ETC_SYSCONFIG_DIR}/sogo
+        fi
+    fi
+
     # Enable ActiveSync in Apache
     if [ -f ${SOGO_HTTPD_CONF} ]; then
         perl -pi -e 's/^#(.*Microsoft-Server-ActiveSync.*)/${1}/g' ${SOGO_HTTPD_CONF}
