@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# Author:   Zhang Huangbin (zhb _at_ iredmail.org)
+
+tmprootdir="$(dirname $0)"
+echo ${tmprootdir} | grep '^/' >/dev/null 2>&1
+if [ X"$?" == X"0" ]; then
+    export ROOTDIR="${tmprootdir}"
+else
+    export ROOTDIR="$(pwd)"
+fi
+
+. ${ROOTDIR}/../../conf/global
+. ${ROOTDIR}/../../conf/core
+
+check_runtime_dir

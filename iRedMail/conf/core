@@ -156,7 +156,7 @@ check_env()
             echo -e " [FOUND]"
             ECHO_QUESTION -n "Use it for mail server setting? [y|N]"
             read_setting ${AUTO_USE_EXISTING_CONFIG_FILE}
-            case $ANSWER in
+            case ${ANSWER} in
                 Y|y )
                     ECHO_INFO "Use config file: ${IREDMAIL_CONFIG_FILE} for mail server setting."
                     . ${IREDMAIL_CONFIG_FILE}
@@ -475,6 +475,7 @@ install_pkg_openbsd()
         echo '' > ${RUNTIME_DIR}/.pkg_install_failed
     fi
 }
+
 freebsd_add_make_conf()
 {
     # USAGE: freebsd_add_make_conf VAR VALUE
@@ -492,4 +493,16 @@ freebsd_add_make_conf()
             ECHO_DEBUG "Skip adding option in ${FREEBSD_MAKE_CONF}: ${final_option}"
         fi
     fi
+}
+
+ask_confirm()
+{
+    # Usage: ask_confirm 'prompt text'
+    prompt_text="${1}"
+    echo -ne "${prompt_text} [y|N]"
+    read ANSWER
+    case ${ANSWER} in
+        Y|y ) : ;;
+        N|n|* ) echo "Exit." && exit ;;
+    esac
 }

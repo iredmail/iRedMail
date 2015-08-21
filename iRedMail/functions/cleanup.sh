@@ -69,7 +69,7 @@ cleanup_remove_sendmail()
         if [ X"$?" == X"0" ]; then
             ECHO_QUESTION -n "Would you like to *REMOVE* sendmail now? [Y|n]"
             read_setting ${AUTO_CLEANUP_REMOVE_SENDMAIL}
-            case $ANSWER in
+            case ${ANSWER} in
                 N|n )
                     ECHO_INFO "Disable sendmail, it is replaced by Postfix." && \
                     service_control disable sendmail
@@ -92,7 +92,7 @@ cleanup_remove_mod_python()
     if [ X"$?" == X"0" ]; then
         ECHO_QUESTION -n "iRedAdmin doesn't work with mod_python, *REMOVE* it now? [Y|n]"
         read_setting ${AUTO_CLEANUP_REMOVE_MOD_PYTHON}
-        case $ANSWER in
+        case ${ANSWER} in
             N|n ) : ;;
             Y|y|* ) eval ${remove_pkg} mod_python ;;
         esac
@@ -125,7 +125,7 @@ cleanup_replace_firewall_rules()
     ECHO_QUESTION "Would you like to use firewall rules provided by iRedMail?"
     ECHO_QUESTION -n "File: ${FIREWALL_RULE_CONF}, with SSHD port: ${sshd_port}. [Y|n]"
     read_setting ${AUTO_CLEANUP_REPLACE_FIREWALL_RULES}
-    case $ANSWER in
+    case ${ANSWER} in
         N|n ) ECHO_INFO "Skip firewall rules." ;;
         Y|y|* ) 
             backup_file ${FIREWALL_RULE_CONF}
@@ -165,7 +165,7 @@ cleanup_replace_firewall_rules()
             # Prompt to restart iptables.
             ECHO_QUESTION -n "Restart firewall now (with SSHD port ${sshd_port})? [y|N]"
             read_setting ${AUTO_CLEANUP_RESTART_IPTABLES}
-            case $ANSWER in
+            case ${ANSWER} in
                 Y|y )
                     ECHO_INFO "Restarting firewall ..."
 
@@ -202,7 +202,7 @@ cleanup_replace_mysql_config()
             ECHO_QUESTION "Would you like to use MySQL configuration file shipped within iRedMail now?"
             ECHO_QUESTION -n "File: ${MYSQL_MY_CNF}. [Y|n]"
             read_setting ${AUTO_CLEANUP_REPLACE_MYSQL_CONFIG}
-            case $ANSWER in
+            case ${ANSWER} in
                 N|n ) ECHO_INFO "Skip copy and modify MySQL config file." ;;
                 Y|y|* )
                     backup_file ${MYSQL_MY_CNF}
