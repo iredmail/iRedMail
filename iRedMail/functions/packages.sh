@@ -267,10 +267,12 @@ install_all()
     # Amavisd-new & ClamAV & Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
+        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF unrar"
+
         if [ X"${DISTRO_VERSION}" == X'6' ]; then
-            ALL_PKGS="${ALL_PKGS} amavisd-new clamd clamav-db spamassassin altermime perl-LDAP perl-Mail-SPF unrar"
+            ALL_PKGS="${ALL_PKGS} clamd clamav-db"
         else
-            ALL_PKGS="${ALL_PKGS} clamav clamav-update clamav-server clamav-server-systemd amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF unrar"
+            ALL_PKGS="${ALL_PKGS} clamav clamav-update clamav-server clamav-server-systemd"
             ENABLED_SERVICES="${ENABLED_SERVICES} clamd@amavisd"
         fi
 
@@ -481,6 +483,11 @@ EOF
             service_control enable ${ENABLED_SERVICES} >> ${INSTALL_LOG} 2>&1
             service_control disable ${DISABLED_SERVICES} >> ${INSTALL_LOG} 2>&1
         fi
+
+        cat >> ${TIP_FILE} <<EOF
+* Enabled services: ${ENABLED_SERVICES}
+
+EOF
 
         echo 'export status_enable_all_services="DONE"' >> ${STATUS_FILE}
     }
