@@ -83,7 +83,7 @@ install_all()
             fi
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl mysql-server mysql-client"
+            ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl mysql-server mysql-client libdbd-mysql-perl"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
@@ -131,7 +131,7 @@ install_all()
                 fi
             fi
 
-            ALL_PKGS="${ALL_PKGS} postfix-mysql"
+            ALL_PKGS="${ALL_PKGS} postfix-mysql libdbd-mysql-perl"
             if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
             fi
