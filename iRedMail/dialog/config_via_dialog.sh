@@ -261,17 +261,17 @@ cat <<EOF
 *   * ${IREDMAIL_CONFIG_FILE}
 *                                                                       *
 *************************************************************************
-********************** REVIEW YOUR SETTINGS *****************************
+********************** Review your settings *****************************
 *************************************************************************
 
-* Storage base directory: ${STORAGE_BASE_DIR}
-    - Mailboxes: ${STORAGE_MAILBOX_DIR}
-    - Daily backup of SQL/LDAP databases: ${BACKUP_DIR}
-* Store mail accounts in: ${BACKEND_ORIG_CASE_SENSITIVE}
-* Web server: ${web_server_case_sensitive}
-* First mail domain name: ${FIRST_DOMAIN}
-* Mail domain admin: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
-* Additional components: ${OPTIONAL_COMPONENTS}
+* Storage base directory:               ${STORAGE_BASE_DIR}
+* Mailboxes:                            ${STORAGE_MAILBOX_DIR}
+* Daily backup of SQL/LDAP databases:   ${BACKUP_DIR}
+* Store mail accounts in:               ${BACKEND_ORIG_CASE_SENSITIVE}
+* Web server:                           ${web_server_case_sensitive}
+* First mail domain name:               ${FIRST_DOMAIN}
+* Mail domain admin:                    ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
+* Additional components:                ${OPTIONAL_COMPONENTS}
 
 EOF
 
