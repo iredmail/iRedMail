@@ -83,6 +83,8 @@ EOF
     [ ! -d ${SOGO_CONF_DIR} ] && mkdir -p ${SOGO_CONF_DIR}
 
     cp -f ${SAMPLE_DIR}/sogo/sogo.conf ${SOGO_CONF}
+    chown ${SOGO_DAEMON_USER}:${SOGO_DAEMON_GROUP} ${SOGO_CONF}
+    chmod 0400 ${SOGO_CONF}
 
     perl -pi -e 's#PH_SOGO_BIND_ADDRESS#$ENV{SOGO_BIND_ADDRESS}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_BIND_PORT#$ENV{SOGO_BIND_PORT}#g' ${SOGO_CONF}

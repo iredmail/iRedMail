@@ -5,6 +5,7 @@
 
 export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
+export SYS_ROOT_GROUP='root'
 
 # Postfix config files: main.cf, master.cf
 export POSTFIX_DAEMON_USER='postfix'
@@ -13,9 +14,11 @@ export POSTFIX_ROOT_DIR='/etc/postfix'
 export POSTFIX_DATA_DIRECTORY='/var/lib/postfix'   # postconf data_directory
 
 if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+    export SYS_ROOT_GROUP='wheel'
     export POSTFIX_ROOT_DIR='/usr/local/etc/postfix'
     export POSTFIX_DATA_DIRECTORY='/var/db/postfix'
 elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+    export SYS_ROOT_GROUP='wheel'
     export POSTFIX_DAEMON_USER='_postfix'
     export POSTFIX_DAEMON_GROUP='_postfix'
     export POSTFIX_DATA_DIRECTORY='/var/postfix'
@@ -112,6 +115,16 @@ fi
 #
 #postscreen_bare_newline_enable=yes
 #postscreen_bare_newline_action=
+
+# Create directory inside chroot directory used to store file `postscreen_cache`.
+# queue directory. Postfix will be chrooted to this directory.
+queue_directory="$(postconf queue_directory | awk '{print $3}')"
+# data directory. used to store additional files.
+data_directory="$(postconf data_directory | awk '{print $3}')"
+chrooted_data_directory="${queue_directory}/${data_directory}"
+mkdir -p ${chrooted_data_directory}
+chown ${POSTFIX_DAEMON_USER}:${SYS_ROOT_GROUP} ${chrooted_data_directory}
+chmod 0700 ${chrooted_data_directory}
 
 echo "* Reloading postfix service to read the new configuration."
 postfix reload
