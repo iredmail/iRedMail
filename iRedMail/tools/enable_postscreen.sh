@@ -116,15 +116,21 @@ fi
 #postscreen_bare_newline_enable=yes
 #postscreen_bare_newline_action=
 
-# Create directory inside chroot directory used to store file `postscreen_cache`.
+# Required by some chrooted programs, e.g. postscreen.
+echo "* Create symbol link: /var/lib/postfix -> /var/spool/postfix/var/lib/postfix"
 # queue directory. Postfix will be chrooted to this directory.
 queue_directory="$(postconf queue_directory | awk '{print $3}')"
 # data directory. used to store additional files.
 data_directory="$(postconf data_directory | awk '{print $3}')"
 chrooted_data_directory="${queue_directory}/${data_directory}"
-mkdir -p ${chrooted_data_directory}
-chown ${POSTFIX_DAEMON_USER}:${SYS_ROOT_GROUP} ${chrooted_data_directory}
-chmod 0700 ${chrooted_data_directory}
+
+_dir_name="$(dirname ${chrooted_data_directory})"
+_base_name="$(basename ${chrooted_data_directory})"
+mkdir -p ${_dir_name}
+ln -s ${data_directory} ${_dir_name}/${_base_name}
+
+unset _dir_name
+unset _base_name
 
 echo "* Reloading postfix service to read the new configuration."
 postfix reload
