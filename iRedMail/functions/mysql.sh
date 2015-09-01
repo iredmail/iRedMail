@@ -62,6 +62,7 @@ mysql_initialize()
         # Start service when system start up.
         # 'mysql_enable=YES' is required to start service immediately.
         service_control enable 'mysql_enable' 'YES'
+        service_control enable 'mysql_optfile' "${MYSQL_MY_CNF}"
     fi
 
     if [ ! -f ${MYSQL_MY_CNF} ]; then
