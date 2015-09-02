@@ -69,6 +69,7 @@ install_all()
         devel_apr1 \
         devel_m4 \
         devel_py-Jinja2 \
+        devel_py-babel \
         dns_p5-Net-DNS \
         ftp_curl \
         mail_spamassassin \
@@ -977,6 +978,9 @@ OPTIONS_FILE_SET+=BABEL
 OPTIONS_FILE_UNSET+=EXAMPLES
 EOF
 
+    cat > /var/db/ports/devel_py-babel/options <<EOF
+OPTIONS_FILE_UNSET+=DOCS
+EOF
     # Roundcube webmail.
     if [ X"${USE_RCM}" == X"YES" ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PORTS="${ALL_PORTS} net/pear-Net_LDAP2"
@@ -1017,7 +1021,7 @@ EOF
     fi
 
     # iRedAdmin: dependencies
-    ALL_PORTS="${ALL_PORTS} www/webpy net/py-netifaces devel/py-lxml www/py-beautifulsoup security/py-bcrypt"
+    ALL_PORTS="${ALL_PORTS} www/webpy devel/py-Jinja2 net/py-netifaces devel/py-lxml www/py-beautifulsoup security/py-bcrypt"
 
     # iRedAdmin: mod_wsgi
     if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
