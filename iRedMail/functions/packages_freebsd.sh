@@ -1037,88 +1037,99 @@ EOF
     # Misc
     ALL_PORTS="${ALL_PORTS} sysutils/logwatch sysutils/logrotate"
 
-    # Fetch all source tarballs.
-    ECHO_INFO "Ports tree: ${PORT_WRKDIRPREFIX}"
-    ECHO_INFO "Fetching all distfiles for required ports (make fetch-recursive)"
+    fetch_all_src_tarballs()
+    {
+        # Fetch all source tarballs.
+        ECHO_INFO "Ports tree: ${PORT_WRKDIRPREFIX}"
+        ECHO_INFO "Fetching all distfiles for required ports (make fetch-recursive)"
 
-    for i in ${ALL_PORTS}; do
-        if [ X"${i}" != X'' ]; then
-            portname="$( echo ${i} | tr '/' '_' | tr -d '[-\.]')"
-            status="\$status_fetch_port_$portname"
-            if [ X"$(eval echo ${status})" != X"DONE" ]; then
-                ECHO_INFO "Fetching all distfiles for port ${i} and dependencies"
-                cd ${PORT_WRKDIRPREFIX}/${i}
-
-                # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
-                port_start_time="$(date +%s)"
-
-                make DISABLE_LICENSES=yes fetch-recursive
-                if [ X"$?" == X"0" ]; then
-                    # Log used time
-                    used_time="$(($(date +%s)-port_start_time))"
-                    echo "export status_fetch_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s)" >> ${STATUS_FILE}
-                else
-                    ECHO_ERROR "Tarballs were not downloaded correctly, please fix it manually and then re-execute iRedMail.sh."
-                    exit 255
-                fi
-            else
-                ECHO_SKIP "Fetching all distfiles for port ${i} and dependencies"
-            fi
-        fi
-    done
-
-    # Install all packages.
-    ECHO_INFO "==== Install packages ===="
-
-    start_time="$(date +%s)"
-    for i in ${ALL_PORTS}; do
-        if [ X"${i}" != X'' ]; then
-            # Remove special characters in port name: -, /, '.'.
-            portname="$( echo ${i} | tr '/' '_' | tr -d '[-\.]')"
-
-            status="\$status_install_port_$portname"
-            if [ X"$(eval echo ${status})" != X"DONE" ]; then
-                cd ${PORT_WRKDIRPREFIX}/${i} && \
-                    ECHO_INFO "Installing port: ${i} ($(date '+%Y-%m-%d %H:%M:%S')) ..."
-                    echo "export status_install_port_${portname}='processing'" >> ${STATUS_FILE}
+        for i in ${ALL_PORTS}; do
+            if [ X"${i}" != X'' ]; then
+                portname="$( echo ${i} | tr '/' '_' | tr -d '[-\.]')"
+                status="\$status_fetch_port_$portname"
+                if [ X"$(eval echo ${status})" != X"DONE" ]; then
+                    ECHO_INFO "Fetching all distfiles for port ${i} and dependencies"
+                    cd ${PORT_WRKDIRPREFIX}/${i}
 
                     # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
                     port_start_time="$(date +%s)"
 
-                    # Clean up and compile
-                    make clean && make DISABLE_MAKE_JOBS=yes install clean
-
+                    make DISABLE_LICENSES=yes fetch-recursive
                     if [ X"$?" == X"0" ]; then
                         # Log used time
                         used_time="$(($(date +%s)-port_start_time))"
-
-                        # Recent all used time
-                        recent_all_used_time="$(($(date +%s)-start_time))"
-
-                        echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s). Recent ~= $((recent_all_used_time/60)) minutes" >> ${STATUS_FILE}
+                        echo "export status_fetch_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s)" >> ${STATUS_FILE}
                     else
-                        ECHO_ERROR "Port was not successfully installed, please fix it manually and then re-execute this script."
+                        ECHO_ERROR "Tarballs were not downloaded correctly, please fix it manually and then re-execute iRedMail.sh."
                         exit 255
                     fi
-            else
-                ECHO_SKIP "Installing port: ${i}."
+                else
+                    ECHO_SKIP "Fetching all distfiles for port ${i} and dependencies"
+                fi
             fi
-        fi
-    done
+        done
 
-    # Create symbol link for Python.
-    ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
-    ln -sf /usr/local/bin/python2.7 /usr/local/bin/python2
-    ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
-    ln -sf /usr/local/bin/2to3-2.7 /usr/local/bin/2to3
-    ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
+        echo "export status_fetch_all_src_tarballs='DONE'" >> ${STATUS_FILE}
+    }
 
-    # Create logrotate.d
-    mkdir -p ${LOGROTATE_DIR} >> ${INSTALL_LOG} 2>&1
+    # Install all packages.
+    install_all_ports()
+    {
+        ECHO_INFO "Install packages."
 
-    # Log and print used time
-    all_used_time="$(($(date +%s)-start_time))"
-    ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds, ~= $((all_used_time/60)) minute(s)"
+        start_time="$(date +%s)"
+        for i in ${ALL_PORTS}; do
+            if [ X"${i}" != X'' ]; then
+                # Remove special characters in port name: -, /, '.'.
+                portname="$( echo ${i} | tr '/' '_' | tr -d '[-\.]')"
 
-    echo 'export status_install_all="DONE"' >> ${STATUS_FILE}
+                status="\$status_install_port_$portname"
+                if [ X"$(eval echo ${status})" != X"DONE" ]; then
+                    cd ${PORT_WRKDIRPREFIX}/${i} && \
+                        ECHO_INFO "Installing port: ${i} ($(date '+%Y-%m-%d %H:%M:%S')) ..."
+                        echo "export status_install_port_${portname}='processing'" >> ${STATUS_FILE}
+
+                        # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
+                        port_start_time="$(date +%s)"
+
+                        # Clean up and compile
+                        make clean && make DISABLE_MAKE_JOBS=yes install clean
+
+                        if [ X"$?" == X"0" ]; then
+                            # Log used time
+                            used_time="$(($(date +%s)-port_start_time))"
+
+                            # Recent all used time
+                            recent_all_used_time="$(($(date +%s)-start_time))"
+
+                            echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s). Recent ~= $((recent_all_used_time/60)) minutes" >> ${STATUS_FILE}
+                        else
+                            ECHO_ERROR "Port was not successfully installed, please fix it manually and then re-execute this script."
+                            exit 255
+                        fi
+                else
+                    ECHO_SKIP "Installing port: ${i}."
+                fi
+            fi
+        done
+
+        # Create symbol link for Python.
+        ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
+        ln -sf /usr/local/bin/python2.7 /usr/local/bin/python2
+        ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
+        ln -sf /usr/local/bin/2to3-2.7 /usr/local/bin/2to3
+        ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
+
+        # Create logrotate.d
+        mkdir -p ${LOGROTATE_DIR} >> ${INSTALL_LOG} 2>&1
+
+        # Log and print used time
+        all_used_time="$(($(date +%s)-start_time))"
+        ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds, ~= $((all_used_time/60)) minute(s)"
+
+        echo "export status_install_all_ports='DONE'" >> ${STATUS_FILE}
+    }
+
+    check_status_before_run fetch_all_src_tarballs
+    check_status_before_run install_all_ports
 }
