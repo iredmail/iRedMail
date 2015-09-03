@@ -28,10 +28,7 @@ export DIALOG_SELECTABLE_AWSTATS='YES'
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
 export DIALOG_SELECTABLE_SOGO='YES'
 
-if [ X"${DISTRO}" == X'RHEL' ]; then
-    # There's packaging bug in SOGo-2.3.0, temporary disable it.
-    [ X"${DISTRO_VERSION}" == X'7' ] && export DIALOG_SELECTABLE_SOGO='NO'
-elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+if [ X"${DISTRO}" == X'UBUNTU' ]; then
     [ X"${DISTRO_CODENAME}" != X'trusty' ] && export DIALOG_SELECTABLE_SOGO='NO'
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
