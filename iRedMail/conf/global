@@ -169,9 +169,6 @@ export LOGROTATE_DIR='/etc/logrotate.d'
 # Kernel name, in upper cases.
 export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 
-# Hostname.
-export HOSTNAME="$(hostname -f)"
-
 # Command used to genrate a random string.
 # Usage: str="$(${RANDOM_STRING})"
 export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 30)'
@@ -325,7 +322,6 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export SHELL_BASH='/usr/local/bin/bash'
     export PYTHON_BIN='/usr/local/bin/python'
 
-    export HOSTNAME="$(hostname)"
     export RANDOM_STRING='eval echo $RANDOM | md5'
 
     # Unsupported release: 5.6 and earlier versions.
@@ -356,6 +352,13 @@ http://www.iredmail.org/download.html
 EOF
 
     exit 255
+fi
+
+# Hostname.
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export HOSTNAME="$(hostname)"
+else
+    export HOSTNAME="$(hostname -f)"
 fi
 
 # root user/group name. Note: not all OSes have group 'root'.
