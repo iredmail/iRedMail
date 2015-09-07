@@ -1,7 +1,7 @@
 iRedMail-0.9.3:
     * Cluebringer has been removed. It's not under active development and no
-      new release since 2013 (stable release doesn't support IPv6), we have
-      throttling support in iRedAPD as replacement.
+      new release since 2013 (the latest stable release doesn't support IPv6),
+      we have throttling support in iRedAPD as replacement.
     * Improvements:
         - Supports per-user alias address in SQL backends. 2 new sql columns
           are required: `alias.is_alias`, `alias.alias_to`.

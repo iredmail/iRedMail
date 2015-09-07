@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Purpose: Find and sort usernames used for smtp authentication in Postfix log
-#          file.
+# Purpose: Find usernames used for smtp authentication in Postfix log file,
+#          sorted by login times.
 
 MAIL_LOG="$1"
 
