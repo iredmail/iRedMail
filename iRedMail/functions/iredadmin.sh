@@ -113,7 +113,7 @@ EOF
         fi
     fi
 
-    ECHO_DEBUG "Import iredadmin database template."
+    ECHO_DEBUG "Import iRedAdmin database template."
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         # Required by MySQL-5.6: TEXT/BLOB column cannot have a default value.
         perl -pi -e 's#(.*maildir.*)TEXT(.*)#${1}VARCHAR\(255\)${2}#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql;
@@ -135,10 +135,14 @@ EOF
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create database
 CREATE DATABASE ${IREDADMIN_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
+
 -- Create user
 CREATE USER ${IREDADMIN_DB_USER} WITH ENCRYPTED PASSWORD '${IREDADMIN_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+
+-- Import SQL template
 \c ${IREDADMIN_DB_NAME};
 \i ${PGSQL_DATA_DIR}/iredadmin.pgsql;
+
 -- Grant permissions
 GRANT ALL on sessions,log,updatelog,deleted_mailboxes to ${IREDADMIN_DB_USER};
 GRANT ALL ON log_id_seq,deleted_mailboxes_id_seq TO ${IREDADMIN_DB_USER};

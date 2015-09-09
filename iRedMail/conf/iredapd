@@ -20,7 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-export IREDAPD_VERSION='1.6.0'
+export IREDAPD_VERSION='1.7.0'
 export IREDAPD_DAEMON_USER='iredapd'
 export IREDAPD_DAEMON_GROUP='iredapd'
 export IREDAPD_HOME_DIR='/home/iredapd'
@@ -34,3 +34,8 @@ export IREDAPD_LISTEN_PORT='7777'
 export IREDAPD_PID_FILE='/var/run/iredapd.pid'
 export IREDAPD_LOG_FILE='/var/log/iredapd.log'
 export IREDAPD_LOGROTATE_FILE="${LOGROTATE_DIR}/iredapd"
+
+# Database
+# IREDAPD_DB_PASSWD is generated in dialog/optional_components.sh.
+export IREDAPD_DB_NAME='iredapd'
+export IREDAPD_DB_USER='iredapd'
