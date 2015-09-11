@@ -38,7 +38,7 @@ install_all()
     export PREFERRED_PGSQL_VER='94'
     export PREFERRED_BDB_VER='5'
     export PREFERRED_APACHE_VER='24'
-    export PREFERRED_PHP_VER='56'
+    export PREFERRED_PHP_VER='55'
 
     export PREFERRED_MYSQL_VER='56'
     if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
@@ -875,11 +875,14 @@ EOF
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQLI#OPTIONS_FILE_SET+=MYSQLI#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PDO_MYSQL#OPTIONS_FILE_SET+=PDO_MYSQL#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQLI#OPTIONS_FILE_SET+=MYSQLI#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PDO_MYSQL#OPTIONS_FILE_SET+=PDO_MYSQL#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PDO_PGSQL#OPTIONS_FILE_SET+=PDO_PGSQL#' /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options
     fi
     rm -f /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options${SED_EXTENSION} &>/dev/null
 

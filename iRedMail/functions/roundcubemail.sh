@@ -230,6 +230,13 @@ EOF
         perl -pi -e 's#(.*post_max_size.*)6M#${1}12M#' ${RCM_HTTPD_ROOT}/.htaccess
     fi
 
+    ECHO_DEBUG "Setup daily cron job to keep SQL database clean."
+    cat >> ${CRON_SPOOL_DIR}/root <<EOF
+# ${PROG_NAME}: Cleanup Roundcube SQL database
+2   2   *   *   *   php ${RCM_HTTPD_ROOT_SYMBOL_LINK}/bin/cleandb.sh >/dev/null
+
+EOF
+
     cat >> ${TIP_FILE} <<EOF
 Roundcube webmail: ${RCM_HTTPD_ROOT}
     * Configuration files:
@@ -245,6 +252,7 @@ Roundcube webmail: ${RCM_HTTPD_ROOT}
         - Password: ${RCM_DB_PASSWD}
     * See also:
         - ${HTTPD_CONF_DIR}/roundcubemail.conf
+        - Cron job: crontab -l -u ${SYS_ROOT_USER}
 
 EOF
 
