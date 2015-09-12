@@ -20,11 +20,13 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
+# path to php program
+export PHP_BIN='/usr/bin/php'
+
 # php-fpm
 export PHP_FPM_RC_SCRIPT_NAME='php-fpm'
 export PHP_FASTCGI_SOCKET='/var/run/php-fpm.socket'
 export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
-
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
     export PHP_INI='/etc/php.ini'
@@ -39,11 +41,14 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export PHP_FPM_RC_SCRIPT_NAME='php5_fpm'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export PHP_BIN='/usr/local/bin/php'
+
     # Copy from example: /usr/local/etc/php.ini-production
     export PHP_INI='/usr/local/etc/php.ini'
     export PHP_FPM_POOL_WWW_CONF='/usr/local/etc/php-fpm.conf'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export PHP_BIN='/usr/local/bin/php-5.?'
     export PHP_INI="/etc/php-5.?.ini"
     export PHP_FPM_RC_SCRIPT_NAME='php_fpm'
     export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.conf'

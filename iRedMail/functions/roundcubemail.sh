@@ -233,7 +233,7 @@ EOF
     ECHO_DEBUG "Setup daily cron job to keep SQL database clean."
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
 # ${PROG_NAME}: Cleanup Roundcube SQL database
-2   2   *   *   *   php ${RCM_HTTPD_ROOT_SYMBOL_LINK}/bin/cleandb.sh >/dev/null
+2   2   *   *   *   ${PHP_BIN} ${RCM_HTTPD_ROOT_SYMBOL_LINK}/bin/cleandb.sh >/dev/null
 
 EOF
 
