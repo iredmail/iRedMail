@@ -38,7 +38,7 @@ install_all()
     export PREFERRED_PGSQL_VER='94'
     export PREFERRED_BDB_VER='5'
     export PREFERRED_APACHE_VER='24'
-    export PREFERRED_PHP_VER='55'
+    export PREFERRED_PHP_VER='56'
 
     export PREFERRED_MYSQL_VER='56'
     if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then

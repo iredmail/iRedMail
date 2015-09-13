@@ -200,8 +200,9 @@ case $arch in
         ;;
 esac
 
-# Path to python program file.
+# Path to some programs
 export PYTHON_BIN='python'
+export PERL_BIN='/usr/bin/perl'
 
 # Default password scheme for SQL backends.
 # LDAP backend will use SSHA instead (defined in file
@@ -301,6 +302,7 @@ elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
     export DIR_RC_SCRIPTS='/usr/local/etc/rc.d'
 
     export PYTHON_BIN='/usr/local/bin/python'
+    export PERL_BIN='/usr/local/bin/perl'
 
     # Unsupported releases: 7, 8.
     if echo "${DISTRO_VERSION}" | grep '^[78]' &>/dev/null ; then

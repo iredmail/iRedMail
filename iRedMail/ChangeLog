@@ -26,6 +26,8 @@ iRedMail-0.9.3:
     * Updated packages:
         + Roundcube webmail -> 1.1.2.
         + uwsgi -> 2.0.11.1 (OpenBSD only)
+        + FreeBSD:
+            - php-5.6
 
 iRedMail-0.9.2:
     * SOGo now works on Debian 8.

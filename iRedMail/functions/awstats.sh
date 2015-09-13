@@ -335,10 +335,10 @@ awstats_config_crontab()
 
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
 # ${PROG_NAME}: update Awstats statistics for web
-1   */1   *   *   *   perl ${AWSTATS_CGI_DIR}/awstats.pl -config=web -update >/dev/null
+1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CGI_DIR}/awstats.pl -config=web -update >/dev/null
 
 # ${PROG_NAME}: update Awstats statistics for smtp
-1   */1   *   *   *   perl ${AWSTATS_CGI_DIR}/awstats.pl -config=smtp -update >/dev/null
+1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CGI_DIR}/awstats.pl -config=smtp -update >/dev/null
 
 EOF
 
