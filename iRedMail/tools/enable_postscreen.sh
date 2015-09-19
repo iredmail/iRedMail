@@ -7,9 +7,9 @@ export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
 export SYS_ROOT_GROUP='root'
 
-# Postfix config files: main.cf, master.cf
 export POSTFIX_DAEMON_USER='postfix'
 export POSTFIX_DAEMON_GROUP='postfix'
+
 export POSTFIX_ROOT_DIR='/etc/postfix'
 export POSTFIX_DATA_DIRECTORY='/var/lib/postfix'   # postconf data_directory
 
@@ -24,6 +24,7 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export POSTFIX_DATA_DIRECTORY='/var/postfix'
 fi
 
+# path to some config files
 export MAIN_CF="${POSTFIX_ROOT_DIR}/main.cf"
 export MASTER_CF="${POSTFIX_ROOT_DIR}/master.cf"
 export POSTSCREEN_DNSBL_REPLY="${POSTFIX_ROOT_DIR}/postscreen_dnsbl_reply"
