@@ -200,6 +200,14 @@ EOF
     perl -pi -e 's#^(amavisd_enable_policy_lookup=).*#${1} True#' settings.py
     perl -pi -e 's#^(amavisd_quarantine_port =).*#${1} "$ENV{AMAVISD_QUARANTINE_PORT}"#' settings.py
 
+    ECHO_DEBUG "Configure iRedAPD related settings."
+    perl -pi -e 's#^(iredapd_enabled =).*#${1} True#' settings.py
+    perl -pi -e 's#^(iredapd_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
+    perl -pi -e 's#^(iredapd_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
+    perl -pi -e 's#^(iredapd_db_name =).*#${1} "$ENV{IREDAPD_DB_NAME}"#' settings.py
+    perl -pi -e 's#^(iredapd_db_user =).*#${1} "$ENV{IREDAPD_DB_USER}"#' settings.py
+    perl -pi -e 's#^(iredapd_db_password =).*#${1} "$ENV{IREDAPD_DB_PASSWD}"#' settings.py
+
     echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
 
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
