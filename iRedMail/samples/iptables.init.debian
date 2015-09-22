@@ -150,6 +150,12 @@ set_policy() {
     for i in $tables; do
         echo -n " $i"
         case "$i" in
+           security)
+               $IPTABLES -t filter -P INPUT $policy \
+                   && $IPTABLES -t filter -P OUTPUT $policy \
+                   && $IPTABLES -t filter -P FORWARD $policy \
+                   || let ret+=1
+               ;;
             raw)
                 $IPTABLES -t raw -P PREROUTING $policy \
                 && $IPTABLES -t raw -P OUTPUT $policy \
