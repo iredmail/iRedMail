@@ -1,4 +1,5 @@
 iRedMail-0.9.3:
+    * SOGo Groupware is now available on FreeBSD (from official ports tree).
     * Cluebringer has been removed. It's not under active development and no
       new release since 2013 (the latest stable release doesn't support IPv6),
       we have throttling support in iRedAPD as replacement.
@@ -13,6 +14,9 @@ iRedMail-0.9.3:
           plugin 'amavisd_wblist'.
 
     * Fixed issues:
+        - Incorrectly set default fireewall zone on RHEL/CentOS 7 if you
+          didn't choose to restart firewall immediately.
+        - 'daemonze =' is required by RHEL/CentOS v6, but not v7.
         - Incorrect Dovecot Master User account used by SOGo.
         - Dovecot Master User doesn't work with LDAP backend.
         - Incorrect quota warning priorities in Dovecot.

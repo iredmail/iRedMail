@@ -131,8 +131,10 @@ cleanup_replace_firewall_rules()
             backup_file ${FIREWALL_RULE_CONF}
             if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
                 ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
+
                 if [ X"${USE_FIREWALLD}" == X'YES' ]; then
                     cp -f ${SAMPLE_DIR}/firewalld/zones/iredmail.xml ${FIREWALL_RULE_CONF}
+                    perl -pi -e 's#^(DefaultZone=).*#${1}iredmail#g' ${FIREWALLD_CONF}
 
                     [ X"${sshd_port}" != X'22' ] && \
                         cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
@@ -173,7 +175,6 @@ cleanup_replace_firewall_rules()
                         /sbin/pfctl -ef ${FIREWALL_RULE_CONF} >> ${INSTALL_LOG} 2>&1
                     else
                         if [ X"${USE_FIREWALLD}" == X'YES' ]; then
-                            perl -pi -e 's#^(DefaultZone=).*#${1}iredmail#g' ${FIREWALLD_CONF}
                             firewall-cmd --complete-reload >> ${INSTALL_LOG} 2>&1
                         else
                             ${DIR_RC_SCRIPTS}/iptables restart >> ${INSTALL_LOG} 2>&1

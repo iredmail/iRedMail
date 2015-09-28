@@ -28,9 +28,7 @@ export SOGO_PID_FILE='/var/run/sogo/sogo.pid'
 export SOGO_LOG_FILE='/var/log/sogo/sogo.log'
 
 export SOGO_CONF_DIR='/etc/sogo'
-export SOGO_CONF="${SOGO_CONF_DIR}/sogo.conf"
 export SOGO_SIEVE_MASTER_USER="sogo_sieve_master"
-export SOGO_SIEVE_CREDENTIAL_FILE="${SOGO_CONF_DIR}/sieve.cred"
 export SOGO_RC_SCRIPT_NAME='sogod'
 export MEMCACHED_RC_SCRIPT_NAME='memcached'
 
@@ -60,6 +58,13 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export SOGO_RC_SCRIPT_NAME='sogo'
 
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export SOGO_DAEMON_USER='sogod'
+    export SOGO_DAEMON_GROUP='sogod'
+
+    export SOGO_RC_SCRIPT_NAME='sogod'
+    export SOGO_CONF_DIR='/usr/local/etc/sogo'
+
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SOGO_DAEMON_USER='_sogo'
     export SOGO_DAEMON_GROUP='_sogo'
@@ -68,6 +73,9 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SOGO_CMD_TOOL='/usr/local/sbin/sogo-tool'
     export SOGO_CMD_EALARMS_NOTIFY='/usr/local/sbin/sogo-ealarms-notify'
 fi
+
+export SOGO_CONF="${SOGO_CONF_DIR}/sogo.conf"
+export SOGO_SIEVE_CREDENTIAL_FILE="${SOGO_CONF_DIR}/sieve.cred"
 
 if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
     export SOGO_DB_TYPE='mysql'

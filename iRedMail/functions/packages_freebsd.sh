@@ -33,6 +33,7 @@ install_all()
     export PACKAGE_BUILDING='yes'
     export BATCH='yes'
 
+    # Preferred package versions. Don't forget to update DEFAULT_VERSIONS below.
     export PREFERRED_OPENLDAP_VER='24'
     export PREFERRED_MARIADB_VER='55'
     export PREFERRED_PGSQL_VER='94'
@@ -45,15 +46,15 @@ install_all()
         export PREFERRED_MYSQL_VER='55m'
     fi
 
-    freebsd_add_make_conf 'OPTIONS_SET' 'SASL'
-    freebsd_add_make_conf 'OPTIONS_UNSET' 'X11'
+    freebsd_add_make_conf 'OPTIONS_SET' 'SASL X11'
+    #freebsd_add_make_conf 'OPTIONS_UNSET' 'X11'
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
     freebsd_add_make_conf 'WANT_MYSQL_VER' "${PREFERRED_MYSQL_VER}"
     freebsd_add_make_conf 'WANT_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
     freebsd_add_make_conf 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
     freebsd_add_make_conf 'APACHE_PORT' "www/apache${PREFERRED_APACHE_VER}"
     freebsd_add_make_conf 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7 apache=2.4 pgsql=9.3'
+    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7 apache=2.4 pgsql=9.4'
 
     for p in \
         archivers_p5-Archive-Tar \
@@ -990,6 +991,27 @@ EOF
         ALL_PORTS="${ALL_PORTS} mail/roundcube"
     fi
 
+    cat > /var/db/ports/devel_sope/options <<EOF
+OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_SET+=MEMCACHED
+OPTIONS_FILE_UNSET+=MYSQL
+OPTIONS_FILE_UNSET+=PGSQL
+EOF
+
+    # SOGo groupware.
+    if [ X"${USE_SOGO}" == X'YES' ]; then
+        ALL_PORTS="${ALL_PORTS} www/sogo"
+
+        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+            ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/devel_sope/options
+            ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/devel_sope/options
+        elif [ X"${BACKEND}" == X'MYSQL' ]; then
+            ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/devel_sope/options
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/devel_sope/options
+        fi
+    fi
+
     # Awstats.
     if [ X"${USE_AWSTATS}" == X'YES' -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} www/awstats"
@@ -1024,7 +1046,7 @@ EOF
     fi
 
     # iRedAdmin: dependencies
-    ALL_PORTS="${ALL_PORTS} www/webpy devel/py-Jinja2 net/py-netifaces devel/py-lxml www/py-beautifulsoup security/py-bcrypt"
+    ALL_PORTS="${ALL_PORTS} www/webpy devel/py-Jinja2 devel/py-lxml net/py-netifaces www/py-beautifulsoup security/py-bcrypt"
 
     # iRedAdmin: mod_wsgi
     if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
