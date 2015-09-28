@@ -1,5 +1,4 @@
 iRedMail-0.9.3:
-    * SOGo Groupware is now available on FreeBSD (from official ports tree).
     * Cluebringer has been removed. It's not under active development and no
       new release since 2013 (the latest stable release doesn't support IPv6),
       we have throttling support in iRedAPD as replacement.

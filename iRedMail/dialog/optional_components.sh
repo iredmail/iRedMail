@@ -32,6 +32,7 @@ if [ X"${DISTRO}" == X'UBUNTU' ]; then
     [ X"${DISTRO_CODENAME}" != X'trusty' ] && export DIALOG_SELECTABLE_SOGO='NO'
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
+    export DIALOG_SELECTABLE_SOGO='NO'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     # No sql/ldap auth module for Nginx.
     export DIALOG_SELECTABLE_AWSTATS='NO'
