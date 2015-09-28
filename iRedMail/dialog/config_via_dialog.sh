@@ -186,6 +186,12 @@ fi
 echo "export BACKEND_ORIG='${BACKEND_ORIG}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export BACKEND='${BACKEND}'" >> ${IREDMAIL_CONFIG_FILE}
 
+# The postfix package built by iRedMail team enables PostgreSQL support,
+# we should exclude it if current installation is not a pgsql backend.
+if [ X"${DISTRO}" == X'RHEL' -a X"${BACKEND}" != X'PGSQL' ]; then
+    echo 'exclude=postfix*' >> ${LOCAL_REPO_FILE}
+fi
+
 # Read-only SQL user/role, used to query mail accounts in Postfix, Dovecot.
 export VMAIL_DB_BIND_PASSWD="$(${RANDOM_STRING})"
 echo "export VMAIL_DB_BIND_PASSWD='${VMAIL_DB_BIND_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}

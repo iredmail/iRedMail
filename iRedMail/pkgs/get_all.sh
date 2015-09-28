@@ -198,7 +198,12 @@ check_new_iredmail()
     # Check new version and track basic information,
     # Used to help iRedMail team understand which Linux/BSD distribution
     # we should take more care of.
-    # iRedMail version number, OS distribution, release version, code name, backend.
+    #
+    #   - PROG_VERSION: iRedMail version number
+    #   - OS_ARCH: arch (i386, x86_64)
+    #   - DISTRO: OS distribution
+    #   - DISTRO_VERSION: distribution release number
+    #   - DISTRO_CODENAME: code name
     ECHO_INFO "Checking new version of iRedMail ..."
     ${FETCH_CMD} "${IREDMAIL_MIRROR}/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${OS_ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
 
