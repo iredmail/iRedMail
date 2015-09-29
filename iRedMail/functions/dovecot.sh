@@ -66,6 +66,7 @@ dovecot_config()
 
     # Authentication related settings.
     # Append this domain name if client gives empty realm.
+    export FIRST_DOMAIN
     perl -pi -e 's#PH_AUTH_DEFAULT_REALM#$ENV{FIRST_DOMAIN}#' ${DOVECOT_CONF}
 
     # service auth {}

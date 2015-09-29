@@ -24,10 +24,9 @@
 #   - In 'Virtual Domains & Users' section:
 #       * QUOTA
 #       * TRANSPORT
-#       * CRYPT_MECH                # SSHA is recommended.
+#       * PASSWORD_SCHEME       # SSHA is recommended.
 #       * DEFAULT_PASSWD
 #       * USE_DEFAULT_PASSWD
-#       * USE_NAME_AS_PASSWD
 #
 #   - Pure-FTPd integration:
 #       * PUREFTPD_INTEGRATION      # <- set to 'YES' if you want to integrate it.
@@ -94,10 +93,9 @@ QUOTA='1048576000'
 TRANSPORT='dovecot'
 
 # Password setting.
-CRYPT_MECH='SSHA'   # MD5, SSHA. SSHA is recommended.
+PASSWORD_SCHEME='SSHA'   # MD5, SSHA. SSHA is recommended.
 DEFAULT_PASSWD='888888'
 USE_DEFAULT_PASSWD='NO'
-USE_NAME_AS_PASSWD='YES'
 
 # ------------------------------------------------------------------
 # -------------------- Pure-FTPd Integration -----------------------
@@ -189,9 +187,9 @@ add_new_user()
 
     # Generate user password.
     if [ X"${USE_DEFAULT_PASSWD}" == X"YES" ]; then
-        PASSWD="$(slappasswd -h {${CRYPT_MECH}} -s ${DEFAULT_PASSWD})"
+        PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${DEFAULT_PASSWD})"
     else
-        PASSWD="$(slappasswd -h {${CRYPT_MECH}} -s ${USERNAME})"
+        PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${USERNAME})"
     fi
 
     if [ X"${PUREFTPD_INTEGRATION}" == X"YES" ]; then
@@ -269,7 +267,7 @@ usage()
 {
     echo "Usage:"
     echo -e "\t$0 DOMAIN USERNAME"
-    echo -e "\t$0 DOMAIN USER1 USER2 USER3..."
+    echo -e "\t$0 DOMAIN USER1 USER2 USER3 ..."
 }
 
 if [ $# -lt 2 ]; then

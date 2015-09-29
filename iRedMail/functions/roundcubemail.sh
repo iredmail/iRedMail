@@ -150,78 +150,10 @@ rcm_config()
         cd ${RCM_CONF_DIR}
         ECHO_DEBUG "Setting global LDAP address book in Roundcube."
 
-        cat >> config.inc.php <<EOF
-// Global LDAP address book.
-\$config['ldap_public']["global_ldap_abook"] = array(
-    'name'          => 'Global LDAP Address Book',
-    'hosts'         => array('${LDAP_SERVER_HOST}'),
-    'port'          => ${LDAP_SERVER_PORT},
-    'use_tls'       => false,
-    'ldap_version'  => '${LDAP_BIND_VERSION}',
-    'network_timeout' => 10,
-    'user_specific' => true,
-
-    // Search mail users under same domain.
-    'base_dn'       => '${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
-    'bind_dn'       => '${LDAP_ATTR_USER_RDN}=%u@%d,${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
-
-    'hidden'        => false,
-    'searchonly'    => false,
-    'writable'      => false,
-
-    'search_fields' => array('mail', 'cn', 'sn', 'givenName', 'street', 'telephoneNumber', 'mobile', 'stree', 'postalCode'),
-
-    // mapping of contact fields to directory attributes
-    'fieldmap' => array(
-        'name'        => 'cn',
-        'surname'     => 'sn',
-        'firstname'   => 'givenName',
-        'title'       => 'title',
-        'email'       => 'mail:*',
-        'phone:work'  => 'telephoneNumber',
-        'phone:mobile' => 'mobile',
-        'street'      => 'street',
-        'zipcode'     => 'postalCode',
-        'locality'    => 'l',
-        'department'  => 'departmentNumber',
-        'notes'       => 'description',
-        'name'        => 'cn',
-        'surname'     => 'sn',
-        'firstname'   => 'givenName',
-        'title'       => 'title',
-        'email'       => 'mail:*',
-        'phone:work'  => 'telephoneNumber',
-        'phone:mobile' => 'mobile',
-        'phone:workfax' => 'facsimileTelephoneNumber',
-        'street'      => 'street',
-        'zipcode'     => 'postalCode',
-        'locality'    => 'l',
-        'department'  => 'departmentNumber',
-        'notes'       => 'description',
-        'photo'       => 'jpegPhoto',
-    ),
-    'sort'          => 'cn',
-    'scope'         => 'sub',
-    'filter'        => '(&(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_MAIL})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DELIVER})(${LDAP_ENABLED_SERVICE}=${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK})(|(objectClass=${LDAP_OBJECTCLASS_MAILUSER})(objectClass=${LDAP_OBJECTCLASS_MAILGROUP})(objectClass=${LDAP_OBJECTCLASS_MAILALIAS})))',
-    'fuzzy_search'  => true,
-    'vlv'           => false,   // Enable Virtual List View to more efficiently fetch paginated data (if server supports it)
-    'sizelimit'     => '0',     // Enables you to limit the count of entries fetched. Setting this to 0 means no limit.
-    'timelimit'     => '0',     // Sets the number of seconds how long is spend on the search. Setting this to 0 means no limit.
-    'referrals'     => false,  // Sets the LDAP_OPT_REFERRALS option. Mostly used in multi-domain Active Directory setups
-
-    'group_filters' => array(
-        'departments' => array(
-            'name'    => 'Mailing Lists',
-            'scope'   => 'sub',
-            'base_dn' => '${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
-            'filter'  => '(&(|(objectclass=${LDAP_OBJECTCLASS_MAILGROUP})(objectClass=${LDAP_OBJECTCLASS_MAILALIAS}))(accountStatus=active)(enabledService=${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK}))',
-            'name_attr' => 'cn',
-            'email'     => 'mail',
-        ),
-    ),
-);
-\$config['autocomplete_addressbooks'] = array('sql', 'global_ldap_abook');
-EOF
+        cat ${SAMPLE_DIR}/roundcubemail/global_ldap_address_book.inc.php >> config.inc.php
+        perl -pi -e 's#PH_LDAP_SERVER_HOST#$ENV{LDAP_SERVER_HOST}#g' config.inc.php
+        perl -pi -e 's#PH_LDAP_SERVER_PORT#$ENV{LDAP_SERVER_PORT}#g' config.inc.php
+        perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#g' config.inc.php
     fi
 
     # Attachment size.

@@ -255,6 +255,10 @@ OPTIONS_FILE_UNSET+=MIT_KRB5
 OPTIONS_FILE_UNSET+=HEIMDAL_KRB5
 EOF
 
+    # Install Python and some modules first, otherwise they may be installed as
+    # package dependencies and cause port installation conflict.
+    ALL_PORTS="${ALL_PORTS} devel/py-Jinja2 devel/py-lxml net/py-netifaces www/py-beautifulsoup security/py-bcrypt"
+
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PORTS="${ALL_PORTS} net/openldap${PREFERRED_OPENLDAP_VER}-sasl-client net/openldap${PREFERRED_OPENLDAP_VER}-server databases/mysql${PREFERRED_MYSQL_VER}-server"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
@@ -1045,8 +1049,8 @@ EOF
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/databases_py-sqlalchemy/options
     fi
 
-    # iRedAdmin: dependencies
-    ALL_PORTS="${ALL_PORTS} www/webpy devel/py-Jinja2 devel/py-lxml net/py-netifaces www/py-beautifulsoup security/py-bcrypt"
+    # iRedAdmin: dependencies. webpy, Jinja2, bcrypt, beautifulsoup, lxml.
+    ALL_PORTS="${ALL_PORTS} www/webpy"
 
     # iRedAdmin: mod_wsgi
     if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
