@@ -83,7 +83,7 @@ EOF
         if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'FREEBSD' ]; then
             cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     AuthMYSQLEnable On
-    AuthMySQLHost ${SQL_SERVER}
+    AuthMySQLHost ${SQL_SERVER_ADDRESS}
     AuthMySQLPort ${SQL_SERVER_PORT}
     AuthMySQLUser ${VMAIL_DB_BIND_USER}
     AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
@@ -123,7 +123,7 @@ EOF
             cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server address, username, password.
-Auth_MySQL_Info ${SQL_SERVER} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
+Auth_MySQL_Info ${SQL_SERVER_ADDRESS} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 Auth_MySQL_General_DB ${VMAIL_DB}
 EOF
 
@@ -144,14 +144,14 @@ EOF
             cat >> ${HTTPD_CONF} <<EOF
 # MySQL auth (mod_auth_mysql)
 # Global config of MySQL server address, port number, username, password.
-Auth_MySQL_Info "${SQL_SERVER}:${SQL_SERVER_PORT}" ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
+Auth_MySQL_Info "${SQL_SERVER_ADDRESS}:${SQL_SERVER_PORT}" ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
 EOF
         fi
 
     elif [ X"${BACKEND}" == X"PGSQL" ]; then
         cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     Auth_PG_authoritative on
-    Auth_PG_host ${SQL_SERVER}
+    Auth_PG_host ${SQL_SERVER_ADDRESS}
     Auth_PG_port ${SQL_SERVER_PORT}
     Auth_PG_database ${VMAIL_DB}
     Auth_PG_user ${VMAIL_DB_BIND_USER}
@@ -203,7 +203,7 @@ EOF
             fi
 
             perl -pi -e 's#PH_DIRECTORY#$ENV{AWSTATS_CGI_DIR}#' ${AWSTATS_HTTPD_CONF}
-            perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#' ${AWSTATS_HTTPD_CONF}
+            perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${AWSTATS_HTTPD_CONF}
             perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#' ${AWSTATS_HTTPD_CONF}
             perl -pi -e 's#PH_SQL_DB_NAME#$ENV{VMAIL_DB}#' ${AWSTATS_HTTPD_CONF}
             perl -pi -e 's#PH_SQL_DB_USER#$ENV{VMAIL_DB_BIND_USER}#' ${AWSTATS_HTTPD_CONF}

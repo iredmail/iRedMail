@@ -21,8 +21,8 @@
 #---------------------------------------------------------------------
 
 # Variables for MySQL database server and related.
-# MYSQL_SERVER and MYSQL_SERVER_PORT are defined in conf/global.
-# SQL_SERVER and SQL_SERVER_PORT are defined in dialog/config_via_dialog.sh.
+# MYSQL_SERVER_ADDRESS and MYSQL_SERVER_PORT are defined in conf/global.
+# SQL_SERVER_ADDRESS and SQL_SERVER_PORT are defined in dialog/config_via_dialog.sh.
 
 export MYSQL_MY_CNF='/etc/my.cnf'
 

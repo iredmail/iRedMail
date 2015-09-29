@@ -160,7 +160,7 @@ EOF
 
     # [iredadmin] section.
     ECHO_DEBUG "Configure iredadmin database related settings."
-    perl -pi -e 's#^(iredadmin_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_host =).*#${1} "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
     perl -pi -e 's#^(iredadmin_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
     perl -pi -e 's#^(iredadmin_db_name =).*#${1} "$ENV{IREDADMIN_DB_NAME}"#' settings.py
     perl -pi -e 's#^(iredadmin_db_user =).*#${1} "$ENV{IREDADMIN_DB_USER}"#' settings.py
@@ -177,7 +177,7 @@ EOF
 
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         ECHO_DEBUG "Configure SQL mail accounts related settings."
-        perl -pi -e 's#^(vmail_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
+        perl -pi -e 's#^(vmail_db_host =).*#${1} "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
         perl -pi -e 's#^(vmail_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
         perl -pi -e 's#^(vmail_db_name =).*#${1} "$ENV{VMAIL_DB}"#' settings.py
         perl -pi -e 's#^(vmail_db_user =).*#${1} "$ENV{VMAIL_DB_ADMIN_USER}"#' settings.py
@@ -189,7 +189,7 @@ EOF
 
     # Amavisd.
     ECHO_DEBUG "Configure Amavisd related settings."
-    perl -pi -e 's#^(amavisd_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
+    perl -pi -e 's#^(amavisd_db_host =).*#${1} "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
     perl -pi -e 's#^(amavisd_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
     perl -pi -e 's#^(amavisd_db_name =).*#${1} "$ENV{AMAVISD_DB_NAME}"#' settings.py
     perl -pi -e 's#^(amavisd_db_user =).*#${1} "$ENV{AMAVISD_DB_USER}"#' settings.py
@@ -202,7 +202,7 @@ EOF
 
     ECHO_DEBUG "Configure iRedAPD related settings."
     perl -pi -e 's#^(iredapd_enabled =).*#${1} True#' settings.py
-    perl -pi -e 's#^(iredapd_db_host =).*#${1} "$ENV{SQL_SERVER}"#' settings.py
+    perl -pi -e 's#^(iredapd_db_host =).*#${1} "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
     perl -pi -e 's#^(iredapd_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
     perl -pi -e 's#^(iredapd_db_name =).*#${1} "$ENV{IREDAPD_DB_NAME}"#' settings.py
     perl -pi -e 's#^(iredapd_db_user =).*#${1} "$ENV{IREDAPD_DB_USER}"#' settings.py

@@ -1,7 +1,7 @@
 <?php
 
 // SQL DATABASE
-$config['db_dsnw'] = 'PH_PHP_CONN_TYPE://PH_RCM_DB_USER:PH_RCM_DB_PASSWD@PH_SQL_SERVER/PH_RCM_DB';
+$config['db_dsnw'] = 'PH_PHP_CONN_TYPE://PH_RCM_DB_USER:PH_RCM_DB_PASSWD@PH_SQL_SERVER_ADDRESS/PH_RCM_DB';
 
 // LOGGING
 $config['log_driver'] = 'syslog';

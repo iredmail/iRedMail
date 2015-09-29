@@ -1,6 +1,6 @@
-user        = vmail
-password    = NSep2RRC7vzN9k6dW5bnc07fTLDEW7
-hosts       = 127.0.0.1
-port        = 3306
-dbname      = vmail
+hosts       = PH_SQL_SERVER_ADDRESS
+port        = PH_SQL_SERVER_PORT
+user        = PH_VMAIL_DB_BIND_USER
+password    = PH_VMAIL_DB_BIND_PASSWD
+dbname      = PH_VMAIL_DB
 query       = SELECT bcc_address FROM sender_bcc_domain WHERE domain='%d' AND active=1

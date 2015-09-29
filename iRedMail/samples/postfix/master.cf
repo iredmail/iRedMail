@@ -1,0 +1,37 @@
+# Submission, port 587, force TLS connection.
+submission inet n       -       n       -       -       smtpd
+  -o syslog_name=postfix/submission
+  -o smtpd_tls_security_level=encrypt
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_client_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
+  -o content_filter=smtp-amavis:[PH_AMAVISD_SERVER]:10026
+
+# Amavisd integration.
+smtp-amavis unix -  -   -   -   PH_AMAVISD_MAX_SERVERS  smtp
+    -o smtp_data_done_timeout=1200
+    -o smtp_send_xforward_command=yes
+    -o disable_dns_lookups=yes
+    -o max_use=20
+
+PH_AMAVISD_SERVER:10025 inet n  -   -   -   -  smtpd
+    -o content_filter=
+    -o mynetworks_style=host
+    -o mynetworks=PH_AMAVISD_MYNETWORKS
+    -o local_recipient_maps=
+    -o relay_recipient_maps=
+    -o strict_rfc821_envelopes=yes
+    -o smtp_tls_security_level=none
+    -o smtpd_tls_security_level=none
+    -o smtpd_restriction_classes=
+    -o smtpd_delay_reject=no
+    -o smtpd_client_restrictions=permit_mynetworks,reject
+    -o smtpd_helo_restrictions=
+    -o smtpd_sender_restrictions=
+    -o smtpd_recipient_restrictions=permit_mynetworks,reject
+    -o smtpd_end_of_data_restrictions=
+    -o smtpd_error_sleep_time=0
+    -o smtpd_soft_error_limit=1001
+    -o smtpd_hard_error_limit=1000
+    -o smtpd_client_connection_count_limit=0
+    -o smtpd_client_connection_rate_limit=0
+    -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_address_mappings

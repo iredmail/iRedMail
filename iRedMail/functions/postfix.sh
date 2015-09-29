@@ -38,131 +38,81 @@ postfix_config_basic()
 
     backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
 
-    ECHO_DEBUG "Enable chroot."
-    perl -pi -e 's/^(smtp.*inet)(.*)(n)(.*)(n)(.*smtpd)$/${1}${2}${3}${4}-${6}/' ${POSTFIX_FILE_MASTER_CF}
-
-    # Enable both IPv4 and IPv6.
-    postconf -e inet_protocols='all'
-
-    # Do not set virtual_alias_domains.
-    perl -pi -e 's/^(virtual_alias_domains*)/#${1}/' ${POSTFIX_FILE_MAIN_CF}
-    postconf -e virtual_alias_domains=''
-
     ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
     mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ >> ${INSTALL_LOG} 2>&1
     for i in /etc/hosts /etc/resolv.conf /etc/localtime /etc/services; do
         [ -f $i ] && cp ${i} ${POSTFIX_CHROOT_DIR}/etc/
     done
 
-    postconf -e myhostname="${HOSTNAME}"
-    postconf -e myorigin="${HOSTNAME}"
-    postconf -e mydomain="${HOSTNAME}"
+    #
+    # main.cf
+    #
+    ECHO_DEBUG "Copy sample main.cf and update values."
+    export queue_directory="$(postconf queue_directory | awk '{print $NF}')"
+    export command_directory="$(postconf command_directory | awk '{print $NF}')"
+    export daemon_directory="$(postconf daemon_directory | awk '{print $NF}')"
+    export data_directory="$(postconf data_directory | awk '{print $NF}')"
+    export mail_owner="$(postconf mail_owner | awk '{print $NF}')"
 
-    # Disable the rewriting of the form "user%domain" to "user@domain".
-    postconf -e allow_percent_hack='no'
-    # Disable the rewriting of "site!user" into "user@site".
-    postconf -e swap_bangpath='no'
+    cp ${SAMPLE_DIR}/postfix/main.cf ${POSTFIX_FILE_MAIN_CF}
 
-    postconf -e mydestination="\$myhostname, localhost, localhost.localdomain"
-    # Do not notify local user.
-    postconf -e biff='no'
-    postconf -e inet_interfaces="all"
-    postconf -e mynetworks="127.0.0.1"
-    postconf -e mynetworks_style="host"
-    postconf -e smtpd_data_restrictions='reject_unauth_pipelining'
-    postconf -e smtpd_reject_unlisted_recipient='yes'
-    postconf -e smtpd_reject_unlisted_sender='yes'
+    perl -pi -e 's#PH_QUEUE_DIRECTORY#$ENV{queue_directory}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_COMMAND_DIRECTORY#$ENV{command_directory}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_DAEMON_DIRECTORY#$ENV{daemon_directory}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_DATA_DIRECTORY#$ENV{data_directory}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_MAIL_OWNER#$ENV{mail_owner}#g' ${POSTFIX_FILE_MAIN_CF}
 
-    # Disable SSLv3
-    # Opportunistic TLS
-    postconf -e smtpd_tls_protocols='!SSLv2 !SSLv3'
-    postconf -e smtp_tls_protocols='!SSLv2 !SSLv3'
-    postconf -e lmtp_tls_protocols='!SSLv2 !SSLv3'
-    # Mandatory TLS
-    postconf -e smtpd_tls_mandatory_protocols='!SSLv2 !SSLv3'
-    postconf -e smtp_tls_mandatory_protocols='!SSLv2 !SSLv3'
-    postconf -e lmtp_tls_mandatory_protocols='!SSLv2 !SSLv3'
-    # Fix 'The Logjam Attack'.
-    postconf -e smtpd_tls_exclude_ciphers='aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA'
-    postconf -e smtpd_tls_dh1024_param_file="${SSL_DHPARAM_FILE}"
+    unset queue_directory command_directory daemon_directory data_directory mail_owner
 
-    # Opportunistic TLS, used when Postfix sends email to remote SMTP server.
-    # Use TLS if this is supported by the remote SMTP server, otherwise use
-    # plaintext.
-    # References:
-    #   - http://www.postfix.org/TLS_README.html#client_tls_may
-    #   - http://www.postfix.org/postconf.5.html#smtp_tls_security_level
-    postconf -e smtp_tls_security_level='may'
-    # Use the same CA file as smtpd.
-    postconf -e smtp_tls_CAfile='$smtpd_tls_CAfile'
-    postconf -e smtp_tls_loglevel='0'
-    postconf -e smtp_tls_note_starttls_offer='yes'
+    # Update normal settings.
+    perl -pi -e 's#PH_SSL_DHPARAM_FILE#$ENV{SSL_DHPARAM_FILE}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_MESSAGE_SIZE_LIMIT#$ENV{MESSAGE_SIZE_LIMIT}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_SSL_CERT_FILE#$ENV{SSL_CERT_FILE}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_SSL_KEY_FILE#$ENV{SSL_KEY_FILE}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_STORAGE_BASE_DIR#$ENV{STORAGE_BASE_DIR}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_VMAIL_USER_UID#$ENV{VMAIL_USER_UID}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_POSTFIX_FILE_ALIASES#$ENV{POSTFIX_FILE_ALIASES}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_POSTFIX_FILE_HELO_ACCESS#$ENV{POSTFIX_FILE_HELO_ACCESS}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_VMAIL_USER_GID#$ENV{VMAIL_USER_GID}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_VMAIL_USER_UID#$ENV{VMAIL_USER_UID}#g' ${POSTFIX_FILE_MAIN_CF}
 
-    # Sender restrictions
-    postconf -e smtpd_sender_restrictions="reject_unknown_sender_domain, reject_non_fqdn_sender, reject_unlisted_sender, permit_mynetworks, reject_sender_login_mismatch, permit_sasl_authenticated"
+    # iRedAPD
+    perl -pi -e 's#PH_IREDAPD_BIND_HOST#$ENV{IREDAPD_BIND_HOST}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_IREDAPD_LISTEN_PORT#$ENV{IREDAPD_LISTEN_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
 
-    postconf -e delay_warning_time='0h'
-    postconf -e maximal_queue_lifetime='4h'
-    postconf -e bounce_queue_lifetime='4h'
-    postconf -e recipient_delimiter='+'
-    postconf -e proxy_read_maps='$canonical_maps $lmtp_generic_maps $local_recipient_maps $mydestination $mynetworks $recipient_bcc_maps $recipient_canonical_maps $relay_domains $relay_recipient_maps $relocated_maps $sender_bcc_maps $sender_canonical_maps $smtp_generic_maps $smtpd_sender_login_maps $transport_maps $virtual_alias_domains $virtual_alias_maps $virtual_mailbox_domains $virtual_mailbox_maps $smtpd_sender_restrictions'
+    #
+    # master.cf
+    #
+    ECHO_DEBUG "Enable chroot."
+    perl -pi -e 's/^(smtp.*inet)(.*)(n)(.*)(n)(.*smtpd)$/${1}${2}${3}${4}-${6}/' ${POSTFIX_FILE_MASTER_CF}
 
-    postconf -e smtp_data_init_timeout='240s'
-    postconf -e smtp_data_xfer_timeout='600s'
+    ECHO_DEBUG "Enable submission."
+    cat ${SAMPLE_DIR}/postfix/master.cf >> ${POSTFIX_FILE_MASTER_CF}
 
-    # HELO restriction
-    postconf -e smtpd_helo_required="yes"
-    postconf -e smtpd_helo_restrictions="permit_mynetworks, permit_sasl_authenticated, reject_non_fqdn_helo_hostname, reject_invalid_helo_hostname, check_helo_access pcre:${POSTFIX_FILE_HELO_ACCESS}"
+    # Amavisd integration.
+    perl -pi -e 's#PH_AMAVISD_SERVER#$ENV{AMAVISD_SERVER}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_AMAVISD_MAX_SERVERS#$ENV{AMAVISD_MAX_SERVERS}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_AMAVISD_MYNETWORKS#$ENV{AMAVISD_MYNETWORKS}#g' ${POSTFIX_FILE_MASTER_CF}
 
     backup_file ${POSTFIX_FILE_HELO_ACCESS}
     cp -f ${SAMPLE_DIR}/postfix/helo_access.pcre ${POSTFIX_FILE_HELO_ACCESS}
-
-    # Reduce queue run delay time.
-    postconf -e queue_run_delay='300s'          # default '300s' in postfix-2.4.
-    postconf -e minimal_backoff_time='300s'     # default '300s' in postfix-2.4.
-    postconf -e maximal_backoff_time='1800s'    # default '4000s' in postfix-2.4.
-
-    # Avoid duplicate recipient messages. Default is 'yes'.
-    postconf -e enable_original_recipient='no'
-
-    # Disable the SMTP VRFY command. This stops some techniques used to
-    # harvest email addresses.
-    postconf -e disable_vrfy_command='yes'
-
-    # We use 'maildir' format, not 'mbox'.
-    if [ X"${MAILBOX_FORMAT}" == X"Maildir" ]; then
-        postconf -e home_mailbox="Maildir/"
-    fi
-
-    postconf -e maximal_backoff_time="4000s"
-
-    # Allow recipient address start with '-'.
-    postconf -e allow_min_user='no'
 
     # Update Postfix aliases file.
     add_postfix_alias nobody ${SYS_ROOT_USER}
     add_postfix_alias ${VMAIL_USER_NAME} ${SYS_ROOT_USER}
     add_postfix_alias ${SYS_ROOT_USER} ${FIRST_USER}@${FIRST_DOMAIN}
 
-    postconf -e alias_maps="hash:${POSTFIX_FILE_ALIASES}"
-    postconf -e alias_database="hash:${POSTFIX_FILE_ALIASES}"
-
-    # Set message_size_limit.
-    postconf -e message_size_limit="${MESSAGE_SIZE_LIMIT}"
-    # Virtual support.
-    postconf -e virtual_minimum_uid="${VMAIL_USER_UID}"
-    postconf -e virtual_uid_maps="static:${VMAIL_USER_UID}"
-    postconf -e virtual_gid_maps="static:${VMAIL_USER_GID}"
-    postconf -e virtual_mailbox_base="${STORAGE_BASE_DIR}"
-
     cat >> ${TIP_FILE} <<EOF
-Postfix (basic):
+Postfix:
     * Configuration files:
         - ${POSTFIX_ROOTDIR}
         - ${POSTFIX_ROOTDIR}/aliases
         - ${POSTFIX_FILE_MAIN_CF}
         - ${POSTFIX_FILE_MASTER_CF}
 
+    * SQL/LDAP lookup config files:
+        - ${POSTFIX_LOOKUP_DIR}
 EOF
 
     # FreeBSD: Start postfix when system start up.
@@ -196,309 +146,36 @@ EOF
     echo 'export status_postfix_config_basic="DONE"' >> ${STATUS_FILE}
 }
 
-postfix_config_vhost_ldap()
+postfix_config_vhost()
 {
-    ECHO_DEBUG "Configure Postfix for LDAP lookup."
+    ECHO_DEBUG "Configure Postfix for SQL/LDAP lookup."
 
-    postconf -e transport_maps="proxy:ldap:${ldap_transport_maps_user_cf}, proxy:ldap:${ldap_transport_maps_domain_cf}"
-    postconf -e virtual_alias_maps="proxy:ldap:${ldap_virtual_alias_maps_cf}, proxy:ldap:${ldap_virtual_group_maps_cf}, proxy:ldap:${ldap_virtual_group_members_maps_cf}, proxy:ldap:${ldap_catch_all_maps_cf}"
-    postconf -e virtual_mailbox_domains="proxy:ldap:${ldap_virtual_mailbox_domains_cf}"
-    postconf -e virtual_mailbox_maps="proxy:ldap:${ldap_virtual_mailbox_maps_cf}"
-    postconf -e sender_bcc_maps="proxy:ldap:${ldap_sender_bcc_maps_user_cf}, proxy:ldap:${ldap_sender_bcc_maps_domain_cf}"
-    postconf -e recipient_bcc_maps="proxy:ldap:${ldap_recipient_bcc_maps_user_cf}, proxy:ldap:${ldap_recipient_bcc_maps_domain_cf}"
-    postconf -e relay_domains="\$mydestination, proxy:ldap:${ldap_relay_domains_cf}"
+    cat ${SAMPLE_DIR}/postfix/main.cf.${POSTFIX_LOOKUP_DB} >> ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_POSTFIX_LOOKUP_DIR#$ENV{POSTFIX_LOOKUP_DIR}#g' ${POSTFIX_FILE_MAIN_CF}
 
-    postconf -e smtpd_sender_login_maps="proxy:ldap:${ldap_sender_login_maps_cf}"
+    cp -f ${SAMPLE_DIR}/postfix/${POSTFIX_LOOKUP_DB}/*.cf ${POSTFIX_LOOKUP_DIR}
 
-    # Copy sample ldap lookup files
-    cp ${SAMPLE_DIR}/postfix/ldap/virtual_mailbox_domains.cf ${ldap_virtual_mailbox_domains_cf}
-    cp ${SAMPLE_DIR}/postfix/ldap/relay_domains.cf ${ldap_relay_domains_cf}
-    # Per-domain and per-user transport maps
-    cp ${SAMPLE_DIR}/postfix/ldap/transport_maps_domain.cf ${ldap_transport_maps_domain_cf}
-    cp ${SAMPLE_DIR}/postfix/ldap/transport_maps_user.cf ${ldap_transport_maps_user_cf}
-    # Virtual mailboxes
-    cp ${SAMPLE_DIR}/postfix/ldap/virtual_mailbox_maps.cf ${ldap_virtual_mailbox_maps_cf}
-    # Sender login maps
-    cp ${SAMPLE_DIR}/postfix/ldap/sender_login_maps.cf ${ldap_sender_login_maps_cf}
-    # Virtual alias
-    cp ${SAMPLE_DIR}/postfix/ldap/virtual_alias_maps.cf ${ldap_virtual_alias_maps_cf}
-    cp ${SAMPLE_DIR}/postfix/ldap/virtual_group_maps.cf ${ldap_virtual_group_maps_cf}
-    # Used to avoid listing normal mail users in catch-all
-    cp ${SAMPLE_DIR}/postfix/ldap/virtual_group_members_maps.cf ${ldap_virtual_group_members_maps_cf}
-    cp ${SAMPLE_DIR}/postfix/ldap/catchall_maps.cf ${ldap_catch_all_maps_cf}
-    # Per-domain and per-user recipient bcc maps
-    cp ${SAMPLE_DIR}/postfix/ldap/recipient_bcc_maps_domain.cf ${ldap_recipient_bcc_maps_domain_cf}
-    cp ${SAMPLE_DIR}/postfix/ldap/recipient_bcc_maps_user.cf ${ldap_recipient_bcc_maps_user_cf}
-    # Per-domain and per-user sender bcc maps
-    cp ${SAMPLE_DIR}/postfix/ldap/sender_bcc_maps_domain.cf ${ldap_sender_bcc_maps_domain_cf}
-    cp ${SAMPLE_DIR}/postfix/ldap/sender_bcc_maps_user.cf ${ldap_sender_bcc_maps_user_cf}
+    chown ${SYS_ROOT_USER}:${POSTFIX_DAEMON_GROUP} ${POSTFIX_LOOKUP_DIR}/*.cf
+    chmod 0640 ${POSTFIX_LOOKUP_DIR}/*.cf
 
-    ECHO_DEBUG "Set file permission: Owner/Group -> root/root, Mode -> 0640."
-
-    cat >> ${TIP_FILE} <<EOF
-Postfix (LDAP):
-    * Configuration files:
-EOF
-
-    for i in \
-        ${ldap_virtual_mailbox_domains_cf} \
-        ${ldap_relay_domains_cf} \
-        ${ldap_transport_maps_domain_cf} \
-        ${ldap_transport_maps_user_cf} \
-        ${ldap_virtual_mailbox_maps_cf} \
-        ${ldap_sender_login_maps_cf} \
-        ${ldap_virtual_alias_maps_cf} \
-        ${ldap_virtual_group_maps_cf} \
-        ${ldap_virtual_group_members_maps_cf} \
-        ${ldap_catch_all_maps_cf} \
-        ${ldap_recipient_bcc_maps_domain_cf} \
-        ${ldap_recipient_bcc_maps_user_cf} \
-        ${ldap_sender_bcc_maps_domain_cf} \
-        ${ldap_sender_bcc_maps_user_cf}; do
-
-        # Set file owner and permission
-        chown ${SYS_ROOT_USER}:${POSTFIX_DAEMON_GROUP} ${i}
-        chmod 0640 ${i}
-
-        # Replace placeholders
-        perl -pi -e 's#(^server_host * = ).*#${1}$ENV{LDAP_SERVER_HOST}#' ${i}
-        perl -pi -e 's#(^server_port * = ).*#${1}$ENV{LDAP_SERVER_PORT}#' ${i}
-        perl -pi -e 's#(^bind_dn * = ).*#${1}$ENV{LDAP_BINDDN}#' ${i}
-        perl -pi -e 's#(^bind_pw * = ).*#${1}$ENV{LDAP_BINDPW}#' ${i}
-        # search_base
-        perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#' ${i}
-
-        cat >> ${TIP_FILE} <<EOF
-        - ${i}
-EOF
-    done
-
-    echo '' >> ${TIP_FILE}
-
-    echo 'export status_postfix_config_vhost_ldap="DONE"' >> ${STATUS_FILE}
-}
-
-postfix_config_vhost_mysql()
-{
-    ECHO_DEBUG "Configure Postfix for MySQL lookup."
-
-    postconf -e transport_maps="proxy:mysql:${mysql_transport_maps_user_cf}, proxy:mysql:${mysql_transport_maps_domain_cf}"
-    postconf -e virtual_mailbox_domains="proxy:mysql:${mysql_virtual_mailbox_domains_cf}"
-    postconf -e virtual_mailbox_maps="proxy:mysql:${mysql_virtual_mailbox_maps_cf}"
-    postconf -e virtual_alias_maps="proxy:mysql:${mysql_virtual_alias_maps_cf}, proxy:mysql:${mysql_domain_alias_maps_cf}, proxy:mysql:${mysql_catchall_maps_cf}, proxy:mysql:${mysql_domain_alias_catchall_maps_cf}"
-    postconf -e sender_bcc_maps="proxy:mysql:${mysql_sender_bcc_maps_user_cf}, proxy:mysql:${mysql_sender_bcc_maps_domain_cf}"
-    postconf -e recipient_bcc_maps="proxy:mysql:${mysql_recipient_bcc_maps_user_cf}, proxy:mysql:${mysql_recipient_bcc_maps_domain_cf}"
-    postconf -e relay_domains="\$mydestination, proxy:mysql:${mysql_relay_domains_cf}"
-    postconf -e smtpd_sender_login_maps="proxy:mysql:${mysql_sender_login_maps_cf}"
-
-    # Per-domain and per-user transport maps.
-    cp ${SAMPLE_DIR}/postfix/mysql/transport_maps_domain.cf ${mysql_transport_maps_domain_cf}
-    cp ${SAMPLE_DIR}/postfix/mysql/transport_maps_user.cf ${mysql_transport_maps_user_cf}
-
-    # Virtual domains
-    cp ${SAMPLE_DIR}/postfix/mysql/virtual_mailbox_domains.cf ${mysql_virtual_mailbox_domains_cf}
-    # Relay domains
-    cp ${SAMPLE_DIR}/postfix/mysql/relay_domains.cf ${mysql_relay_domains_cf}
-    # Virtual mail users
-    cp ${SAMPLE_DIR}/postfix/mysql/virtual_mailbox_maps.cf ${mysql_virtual_mailbox_maps_cf}
-    # Virtual alias
-    cp ${SAMPLE_DIR}/postfix/mysql/virtual_alias_maps.cf ${mysql_virtual_alias_maps_cf}
-    # Alias domain
-    cp ${SAMPLE_DIR}/postfix/mysql/domain_alias_maps.cf ${mysql_domain_alias_maps_cf}
-    # Catch-all
-    cp ${SAMPLE_DIR}/postfix/mysql/catchall_maps.cf ${mysql_catchall_maps_cf}
-    # Alias domain support of catch-all
-    cp ${SAMPLE_DIR}/postfix/mysql/domain_alias_catchall_maps.cf ${mysql_domain_alias_catchall_maps_cf}
-    # Sender login maps
-    cp ${SAMPLE_DIR}/postfix/mysql/sender_login_maps.cf ${mysql_sender_login_maps_cf}
-    # Sender bcc maps
-    cp ${SAMPLE_DIR}/postfix/mysql/sender_bcc_maps_domain.cf ${mysql_sender_bcc_maps_domain_cf}
-    cp ${SAMPLE_DIR}/postfix/mysql/sender_bcc_maps_user.cf ${mysql_sender_bcc_maps_user_cf}
-    # Recipient bcc maps
-    cp ${SAMPLE_DIR}/postfix/mysql/recipient_bcc_maps_domain.cf ${mysql_recipient_bcc_maps_domain_cf}
-    cp ${SAMPLE_DIR}/postfix/mysql/recipient_bcc_maps_user.cf ${mysql_recipient_bcc_maps_user_cf}
-
-    ECHO_DEBUG "Set file permission: Owner/Group -> postfix/postfix, Mode -> 0640."
-    cat >> ${TIP_FILE} <<EOF
-Postfix (MySQL):
-    * Configuration files:
-EOF
-
-    for i in \
-        ${mysql_transport_maps_domain_cf} \
-        ${mysql_transport_maps_user_cf} \
-        ${mysql_virtual_mailbox_domains_cf} \
-        ${mysql_relay_domains_cf} \
-        ${mysql_virtual_mailbox_maps_cf} \
-        ${mysql_virtual_alias_maps_cf} \
-        ${mysql_domain_alias_maps_cf} \
-        ${mysql_catchall_maps_cf} \
-        ${mysql_domain_alias_catchall_maps_cf} \
-        ${mysql_sender_login_maps_cf} \
-        ${mysql_sender_bcc_maps_domain_cf} \
-        ${mysql_sender_bcc_maps_user_cf} \
-        ${mysql_recipient_bcc_maps_domain_cf} \
-        ${mysql_recipient_bcc_maps_user_cf}; do
-
-        # Set file owner and permission
-        chown ${SYS_ROOT_USER}:${POSTFIX_DAEMON_GROUP} ${i}
-        chmod 0640 ${i}
-
-        # Place placeholders
-        perl -pi -e 's#^(user * = ).*#${1}$ENV{VMAIL_DB_BIND_USER}#' ${i}
-        perl -pi -e 's#^(password * = ).*#${1}$ENV{VMAIL_DB_BIND_PASSWD}#' ${i}
-        perl -pi -e 's#^(hosts * = ).*#${1}$ENV{SQL_SERVER}#' ${i}
-        perl -pi -e 's#^(port * = ).*#${1}$ENV{SQL_SERVER_PORT}#' ${i}
-        perl -pi -e 's#^(dbname * = ).*#${1}$ENV{VMAIL_DB}#' ${i}
-
-        cat >> ${TIP_FILE} <<EOF
-        - $i
-EOF
-    done
-
-    echo 'export status_postfix_config_vhost_mysql="DONE"' >> ${STATUS_FILE}
-}
-
-postfix_config_vhost_pgsql()
-{
-    ECHO_DEBUG "Configure Postfix for PostgreSQL lookup."
-
-    postconf -e transport_maps="proxy:pgsql:${pgsql_transport_maps_user_cf}, proxy:pgsql:${pgsql_transport_maps_domain_cf}"
-    postconf -e virtual_mailbox_domains="proxy:pgsql:${pgsql_virtual_mailbox_domains_cf}"
-    postconf -e virtual_mailbox_maps="proxy:pgsql:${pgsql_virtual_mailbox_maps_cf}"
-    postconf -e virtual_alias_maps="proxy:pgsql:${pgsql_virtual_alias_maps_cf}, proxy:pgsql:${pgsql_domain_alias_maps_cf}, proxy:pgsql:${pgsql_catchall_maps_cf}, proxy:pgsql:${pgsql_domain_alias_catchall_maps_cf}"
-    postconf -e sender_bcc_maps="proxy:pgsql:${pgsql_sender_bcc_maps_user_cf}, proxy:pgsql:${pgsql_sender_bcc_maps_domain_cf}"
-    postconf -e recipient_bcc_maps="proxy:pgsql:${pgsql_recipient_bcc_maps_user_cf}, proxy:pgsql:${pgsql_recipient_bcc_maps_domain_cf}"
-    postconf -e relay_domains="\$mydestination, proxy:pgsql:${pgsql_relay_domains_cf}"
-    #postconf -e relay_recipient_maps="proxy:pgsql:${pgsql_virtual_mailbox_maps_cf}"
-
-    postconf -e smtpd_sender_login_maps="proxy:pgsql:${pgsql_sender_login_maps_cf}"
-
-    # Per-domain and per-user transport maps.
-    cp ${SAMPLE_DIR}/postfix/pgsql/transport_maps_domain.cf ${pgsql_transport_maps_domain_cf}
-    cp ${SAMPLE_DIR}/postfix/pgsql/transport_maps_user.cf ${pgsql_transport_maps_user_cf}
-    # Virtual domains
-    cp ${SAMPLE_DIR}/postfix/pgsql/virtual_mailbox_domains.cf ${pgsql_virtual_mailbox_domains_cf}
-    # Relay domains
-    cp ${SAMPLE_DIR}/postfix/pgsql/relay_domains.cf ${pgsql_relay_domains_cf}
-    # Virtual mailboxes
-    cp ${SAMPLE_DIR}/postfix/pgsql/virtual_mailbox_maps.cf ${pgsql_virtual_mailbox_maps_cf}
-    # Virtual aliases
-    cp ${SAMPLE_DIR}/postfix/pgsql/virtual_alias_maps.cf ${pgsql_virtual_alias_maps_cf}
-    # Alias domains
-    cp ${SAMPLE_DIR}/postfix/pgsql/domain_alias_maps.cf ${pgsql_domain_alias_maps_cf}
-    # Catch-all
-    cp ${SAMPLE_DIR}/postfix/pgsql/catchall_maps.cf ${pgsql_catchall_maps_cf}
-    # Alias domain support of catch-all
-    cp ${SAMPLE_DIR}/postfix/pgsql/domain_alias_catchall_maps.cf ${pgsql_domain_alias_catchall_maps_cf}
-    # Sender login maps
-    cp ${SAMPLE_DIR}/postfix/pgsql/sender_login_maps.cf ${pgsql_sender_login_maps_cf}
-    # Per-domain and per-user sender bcc maps
-    cp ${SAMPLE_DIR}/postfix/pgsql/sender_bcc_maps_domain.cf ${pgsql_sender_bcc_maps_domain_cf}
-    cp ${SAMPLE_DIR}/postfix/pgsql/sender_bcc_maps_user.cf ${pgsql_sender_bcc_maps_user_cf}
-    # Per-domain and per-user recipient bcc maps
-    cp ${SAMPLE_DIR}/postfix/pgsql/recipient_bcc_maps_domain.cf ${pgsql_recipient_bcc_maps_domain_cf}
-    cp ${SAMPLE_DIR}/postfix/pgsql/recipient_bcc_maps_user.cf ${pgsql_recipient_bcc_maps_user_cf}
-
-    ECHO_DEBUG "Set file permission: Owner/Group -> postfix/postfix, Mode -> 0640."
-    cat >> ${TIP_FILE} <<EOF
-Postfix (PostgreSQL):
-    * Configuration files:
-EOF
-
-    for i in \
-        ${pgsql_transport_maps_domain_cf} \
-        ${pgsql_transport_maps_user_cf} \
-        ${pgsql_virtual_mailbox_domains_cf} \
-        ${pgsql_relay_domains_cf} \
-        ${pgsql_virtual_mailbox_maps_cf} \
-        ${pgsql_virtual_alias_maps_cf} \
-        ${pgsql_domain_alias_maps_cf} \
-        ${pgsql_catchall_maps_cf} \
-        ${pgsql_domain_alias_catchall_maps_cf} \
-        ${pgsql_sender_login_maps_cf} \
-        ${pgsql_sender_bcc_maps_domain_cf} \
-        ${pgsql_sender_bcc_maps_user_cf} \
-        ${pgsql_recipient_bcc_maps_domain_cf} \
-        ${pgsql_recipient_bcc_maps_user_cf}; do
-
-        # Set file owner and permission
-        chown ${SYS_ROOT_USER}:${POSTFIX_DAEMON_GROUP} ${i}
-        chmod 0640 ${i}
-
-        # Place placeholders
-        perl -pi -e 's#^(user * = ).*#${1}$ENV{VMAIL_DB_BIND_USER}#' ${i}
-        perl -pi -e 's#^(password * = ).*#${1}$ENV{VMAIL_DB_BIND_PASSWD}#' ${i}
-        perl -pi -e 's#^(hosts * = ).*#${1}$ENV{SQL_SERVER}#' ${i}
-        perl -pi -e 's#^(port * = ).*#${1}$ENV{SQL_SERVER_PORT}#' ${i}
-        perl -pi -e 's#^(dbname * = ).*#${1}$ENV{VMAIL_DB}#' ${i}
-
-        cat >> ${TIP_FILE} <<EOF
-        - $i
-EOF
-    done
-
-        echo '' >> ${TIP_FILE}
-    echo 'export status_postfix_config_vhost_pgsql="DONE"' >> ${STATUS_FILE}
-}
-
-# Starting config.
-postfix_config_virtual_host()
-{
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-        check_status_before_run postfix_config_vhost_ldap
-    elif [ X"${BACKEND}" == X"MYSQL" ]; then
-        check_status_before_run postfix_config_vhost_mysql
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
-        check_status_before_run postfix_config_vhost_pgsql
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        # LDAP server and bind dn/password
+        perl -pi -e 's#PH_LDAP_SERVER_HOST#$ENV{LDAP_SERVER_HOST}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_LDAP_SERVER_PORT#$ENV{LDAP_SERVER_PORT}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_LDAP_BIND_VERSION#$ENV{LDAP_BIND_VERSION}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+    elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
+        # SQL server and bind username/password
+        perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
     fi
 
-    echo 'export status_postfix_config_virtual_host="DONE"' >> ${STATUS_FILE}
-}
-
-postfix_config_sasl()
-{
-    ECHO_DEBUG "Configure SMTP SASL authentication."
-
-    # For SASL auth
-    postconf -e smtpd_sasl_auth_enable="yes"
-    postconf -e smtpd_sasl_local_domain=''
-    postconf -e broken_sasl_auth_clients="yes"
-    postconf -e smtpd_sasl_security_options="noanonymous"
-
-    # Offer SASL authentication only after a TLS-encrypted session has been established
-    postconf -e smtpd_tls_auth_only='yes'
-
-    postconf_iredapd="check_policy_service inet:${IREDAPD_BIND_HOST}:${IREDAPD_LISTEN_PORT}"
-
-    postconf -e smtpd_recipient_restrictions="reject_unknown_recipient_domain, reject_non_fqdn_recipient, reject_unlisted_recipient, ${postconf_iredapd}, permit_mynetworks, permit_sasl_authenticated, reject_unauth_destination"
-    postconf -e smtpd_end_of_data_restrictions="${postconf_iredapd}"
-
-    echo 'export status_postfix_config_sasl="DONE"' >> ${STATUS_FILE}
-}
-
-postfix_config_tls()
-{
-    ECHO_DEBUG "Enable TLS/SSL support in Postfix."
-
-    postconf -e smtpd_tls_security_level='may'
-    postconf -e smtpd_tls_loglevel='0'
-    postconf -e smtpd_tls_key_file="${SSL_KEY_FILE}"
-    postconf -e smtpd_tls_cert_file="${SSL_CERT_FILE}"
-    postconf -e smtpd_tls_CAfile="${SSL_CERT_FILE}"
-    postconf -e tls_random_source='dev:/dev/urandom'
-
-    cat >> ${POSTFIX_FILE_MASTER_CF} <<EOF
-submission inet n       -       n       -       -       smtpd
-  -o syslog_name=postfix/submission
-  -o smtpd_tls_security_level=encrypt
-  -o smtpd_sasl_auth_enable=yes
-  -o smtpd_client_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
-  -o content_filter=smtp-amavis:[${AMAVISD_SERVER}]:10026
-
-EOF
-
-    echo 'export status_postfix_config_tls="DONE"' >> ${STATUS_FILE}
+    echo 'export status_postfix_config_vhost="DONE"' >> ${STATUS_FILE}
 }
 
 postfix_config_postscreen()
@@ -514,9 +191,7 @@ postfix_config()
 {
     # Include all sub-steps
     check_status_before_run postfix_config_basic && \
-    check_status_before_run postfix_config_virtual_host && \
-    check_status_before_run postfix_config_sasl && \
-    check_status_before_run postfix_config_tls && \
+    check_status_before_run postfix_config_vhost && \
     check_status_before_run postfix_config_postscreen
 
     echo 'export status_postfix_config="DONE"' >> ${STATUS_FILE}

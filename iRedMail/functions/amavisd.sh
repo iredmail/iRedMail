@@ -388,7 +388,7 @@ EOF
     cat >> ${AMAVISD_CONF} <<EOF
 # Reporting and quarantining.
 @storage_sql_dsn = (
-    ['DBI:${perl_dbi_type}:database=${AMAVISD_DB_NAME};host=${SQL_SERVER};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
+    ['DBI:${perl_dbi_type}:database=${AMAVISD_DB_NAME};host=${SQL_SERVER_ADDRESS};port=${SQL_SERVER_PORT}', '${AMAVISD_DB_USER}', '${AMAVISD_DB_PASSWD}'],
 );
 
 # Lookup for per-recipient, per-domain and global policy.
@@ -487,38 +487,6 @@ EOF
 1;  # insure a defined return
 EOF
     # End amavisd.conf
-
-    # Configure postfix: master.cf.
-    cat >> ${POSTFIX_FILE_MASTER_CF} <<EOF
-smtp-amavis unix -  -   -   -   ${AMAVISD_MAX_SERVERS}  smtp
-    -o smtp_data_done_timeout=1200
-    -o smtp_send_xforward_command=yes
-    -o disable_dns_lookups=yes
-    -o max_use=20
-
-${AMAVISD_SERVER}:10025 inet n  -   -   -   -  smtpd
-    -o content_filter=
-    -o mynetworks_style=host
-    -o mynetworks=${AMAVISD_MYNETWORKS}
-    -o local_recipient_maps=
-    -o relay_recipient_maps=
-    -o strict_rfc821_envelopes=yes
-    -o smtp_tls_security_level=none
-    -o smtpd_tls_security_level=none
-    -o smtpd_restriction_classes=
-    -o smtpd_delay_reject=no
-    -o smtpd_client_restrictions=permit_mynetworks,reject
-    -o smtpd_helo_restrictions=
-    -o smtpd_sender_restrictions=
-    -o smtpd_recipient_restrictions=permit_mynetworks,reject
-    -o smtpd_end_of_data_restrictions=
-    -o smtpd_error_sleep_time=0
-    -o smtpd_soft_error_limit=1001
-    -o smtpd_hard_error_limit=1000
-    -o smtpd_client_connection_count_limit=0
-    -o smtpd_client_connection_rate_limit=0
-    -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_address_mappings
-EOF
 
     postconf -e content_filter="smtp-amavis:[${AMAVISD_SERVER}]:10024"
     # Concurrency per recipient limit.

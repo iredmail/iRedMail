@@ -67,7 +67,7 @@ EOF
 
         # Create view for user authentication
         cat >> ${tmp_sql} <<EOF
-CREATE VIEW ${SOGO_DB_AUTH_VIEW} AS SELECT * FROM dblink('host=${SQL_SERVER} port=${SQL_SERVER_PORT} user=${VMAIL_DB_ADMIN_USER} password=${VMAIL_DB_ADMIN_PASSWD} dbname=${VMAIL_DB}', 'SELECT username AS c_uid, username AS c_name, password AS c_password, name AS c_cn, username AS mail FROM mailbox WHERE active=1') AS ${SOGO_DB_AUTH_VIEW} (c_uid VARCHAR(255), c_name VARCHAR(255), c_password VARCHAR(255), c_cn VARCHAR(255), mail VARCHAR(255));
+CREATE VIEW ${SOGO_DB_AUTH_VIEW} AS SELECT * FROM dblink('host=${SQL_SERVER_ADDRESS} port=${SQL_SERVER_PORT} user=${VMAIL_DB_ADMIN_USER} password=${VMAIL_DB_ADMIN_PASSWD} dbname=${VMAIL_DB}', 'SELECT username AS c_uid, username AS c_name, password AS c_password, name AS c_cn, username AS mail FROM mailbox WHERE active=1') AS ${SOGO_DB_AUTH_VIEW} (c_uid VARCHAR(255), c_name VARCHAR(255), c_password VARCHAR(255), c_cn VARCHAR(255), mail VARCHAR(255));
 ALTER TABLE ${SOGO_DB_AUTH_VIEW} OWNER TO ${SOGO_DB_USER};
 EOF
 
@@ -125,7 +125,7 @@ EOF
     perl -pi -e 's#PH_SOGO_DB_TABLE_ALARMS#$ENV{SOGO_DB_TABLE_ALARMS}#g' ${SOGO_CONF}
 
     perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#g' ${SOGO_CONF}
-    perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#g' ${SOGO_CONF}
+    perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' ${SOGO_CONF}
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # Enable LDAP as SOGoUserSources

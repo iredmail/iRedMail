@@ -1,0 +1,226 @@
+# location of the Postfix queue. Default is /var/spool/postfix.
+queue_directory = PH_QUEUE_DIRECTORY
+
+# location of all postXXX commands. Default is /usr/sbin.
+command_directory = PH_COMMAND_DIRECTORY
+
+# location of all Postfix daemon programs (i.e. programs listed in the
+# master.cf file). This directory must be owned by root.
+# Default is /usr/libexec/postfix
+daemon_directory = PH_DAEMON_DIRECTORY
+
+# location of Postfix-writable data files (caches, random numbers).
+# This directory must be owned by the mail_owner account (see below).
+# Default is /var/lib/postfix.
+data_directory = PH_DATA_DIRECTORY
+
+# owner of the Postfix queue and of most Postfix daemon processes.
+# Specify the name of a user account THAT DOES NOT SHARE ITS USER OR GROUP ID
+# WITH OTHER ACCOUNTS AND THAT OWNS NO OTHER FILES OR PROCESSES ON THE SYSTEM.
+# In particular, don't specify nobody or daemon. PLEASE USE A DEDICATED USER.
+# Default is postfix.
+mail_owner = PH_MAIL_OWNER
+
+# external command that is executed when a Postfix daemon program is run with
+# the -D option.
+#
+# Use "command .. & sleep 5" so that the debugger can attach before
+# the process marches on. If you use an X-based debugger, be sure to
+# set up your XAUTHORITY environment variable before starting Postfix.
+#
+debugger_command =
+    PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
+    ddd $daemon_directory/$process_name $process_id & sleep 5
+
+# --------------------
+# INSTALL-TIME CONFIGURATION INFORMATION
+#
+# The following parameters are used when installing a new Postfix version.
+# 
+# sendmail_path: The full pathname of the Postfix sendmail command.
+# This is the Sendmail-compatible mail posting interface.
+# 
+sendmail_path = /usr/sbin/sendmail.postfix
+
+# newaliases_path: The full pathname of the Postfix newaliases command.
+# This is the Sendmail-compatible command to build alias databases.
+#
+newaliases_path = /usr/bin/newaliases.postfix
+
+# mailq_path: The full pathname of the Postfix mailq command.  This
+# is the Sendmail-compatible mail queue listing command.
+# 
+mailq_path = /usr/bin/mailq.postfix
+
+# setgid_group: The group for mail submission and queue management
+# commands.  This must be a group name with a numerical group ID that
+# is not shared with other accounts, not even with the Postfix account.
+#
+setgid_group = postdrop
+
+# html_directory: The location of the Postfix HTML documentation.
+#
+html_directory = no
+
+# manpage_directory: The location of the Postfix on-line manual pages.
+#
+manpage_directory = /usr/share/man
+
+# sample_directory: The location of the Postfix sample configuration files.
+# This parameter is obsolete as of Postfix 2.1.
+#
+sample_directory = /usr/share/doc/postfix-2.11.0/samples
+
+# readme_directory: The location of the Postfix README files.
+#
+readme_directory = /usr/share/doc/postfix-2.11.0/README_FILES
+# --------------------
+
+# SMTP server response code when recipient or domain not found.
+unknown_local_recipient_reject_code = 550
+
+# Do not notify local user.
+biff = no
+
+# Disable the rewriting of "site!user" into "user@site".
+swap_bangpath = no
+
+# Disable the rewriting of the form "user%domain" to "user@domain".
+allow_percent_hack = no
+
+# Allow recipient address start with '-'.
+allow_min_user = no
+
+# Disable the SMTP VRFY command. This stops some techniques used to
+# harvest email addresses.
+disable_vrfy_command = yes
+
+# Enable both IPv4 and IPv6.
+inet_protocols = all
+
+# Enable all network interfaces.
+inet_interfaces = all
+
+home_mailbox = Maildir/
+
+#
+# TLS settings.
+#
+# Disable SSLv3
+#
+# Opportunistic TLS
+smtpd_tls_protocols = !SSLv2 !SSLv3
+smtp_tls_protocols = !SSLv2 !SSLv3
+lmtp_tls_protocols = !SSLv2 !SSLv3
+# Mandatory TLS
+smtpd_tls_mandatory_protocols = !SSLv2 !SSLv3
+smtp_tls_mandatory_protocols = !SSLv2 !SSLv3
+lmtp_tls_mandatory_protocols = !SSLv2 !SSLv3
+
+#
+# Fix 'The Logjam Attack'.
+#
+smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
+smtpd_tls_dh1024_param_file = PH_SSL_DHPARAM_FILE
+
+myhostname = PH_HOSTNAME
+myorigin = PH_HOSTNAME
+mydomain = PH_HOSTNAME
+
+mynetworks = 127.0.0.1
+mynetworks_style = host
+
+mydestination = $myhostname, localhost, localhost.localdomain
+
+smtpd_reject_unlisted_recipient = yes
+smtpd_reject_unlisted_sender = yes
+
+smtpd_data_restrictions = reject_unauth_pipelining
+
+# Opportunistic TLS, used when Postfix sends email to remote SMTP server.
+# Use TLS if this is supported by the remote SMTP server, otherwise use
+# plaintext.
+# References:
+#   - http://www.postfix.org/TLS_README.html#client_tls_may
+#   - http://www.postfix.org/postconf.5.html#smtp_tls_security_level
+smtp_tls_security_level = may
+# Use the same CA file as smtpd.
+smtp_tls_CAfile = $smtpd_tls_CAfile
+smtp_tls_loglevel = 0
+smtp_tls_note_starttls_offer = yes
+
+# HELO restriction
+smtpd_helo_required = yes
+smtpd_helo_restrictions =
+    permit_mynetworks
+    permit_sasl_authenticated
+    reject_non_fqdn_helo_hostname
+    reject_invalid_helo_hostname
+    check_helo_access pcre:PH_POSTFIX_FILE_HELO_ACCESS
+
+# Sender restrictions
+smtpd_sender_restrictions =
+    reject_unknown_sender_domain
+    reject_non_fqdn_sender
+    reject_unlisted_sender
+    permit_mynetworks
+    reject_sender_login_mismatch
+    permit_sasl_authenticated
+
+# Recipient restrictions
+smtpd_recipient_restrictions =
+    reject_unknown_recipient_domain
+    reject_non_fqdn_recipient
+    reject_unlisted_recipient
+    check_policy_service inet:PH_IREDAPD_BIND_HOST:PH_IREDAPD_LISTEN_PORT
+    permit_mynetworks
+    permit_sasl_authenticated
+    reject_unauth_destination
+
+# END-OF-MESSAGE restrictions
+smtpd_end_of_data_restrictions =
+    check_policy_service inet:PH_IREDAPD_BIND_HOST:PH_IREDAPD_LISTEN_PORT
+
+# The set of characters that can separate a user name from its extension
+# (example: user+foo), or a .forward file name from its extension (example:
+# .forward+foo).
+# Postfix 2.11 and later supports multiple characters.
+recipient_delimiter = +
+
+proxy_read_maps = $canonical_maps $lmtp_generic_maps $local_recipient_maps $mydestination $mynetworks $recipient_bcc_maps $recipient_canonical_maps $relay_domains $relay_recipient_maps $relocated_maps $sender_bcc_maps $sender_canonical_maps $smtp_generic_maps $smtpd_sender_login_maps $transport_maps $virtual_alias_domains $virtual_alias_maps $virtual_mailbox_domains $virtual_mailbox_maps $smtpd_sender_restrictions
+
+# Avoid duplicate recipient messages. Default is 'yes'.
+enable_original_recipient = no
+
+alias_maps = hash:PH_POSTFIX_FILE_ALIASES
+alias_database = hash:PH_POSTFIX_FILE_ALIASES
+
+# Default message_size_limit.
+message_size_limit = PH_MESSAGE_SIZE_LIMIT
+
+# Virtual support.
+virtual_minimum_uid = PH_VMAIL_USER_UID
+virtual_uid_maps = static:PH_VMAIL_USER_UID
+virtual_gid_maps = static:PH_VMAIL_USER_GID
+virtual_mailbox_base = PH_STORAGE_BASE_DIR
+
+#
+# Enable SASL authentication
+#
+smtpd_sasl_auth_enable = yes
+smtpd_sasl_local_domain =
+broken_sasl_auth_clients = yes
+smtpd_sasl_security_options = noanonymous
+
+# Force TLS-encrypted SASL authentication.
+smtpd_tls_auth_only = yes
+
+smtpd_tls_security_level = may
+smtpd_tls_loglevel = 0
+smtpd_tls_key_file = PH_SSL_KEY_FILE
+smtpd_tls_cert_file = PH_SSL_CERT_FILE
+smtpd_tls_CAfile = PH_SSL_CERT_FILE
+tls_random_source = dev:/dev/urandom
+
+# Do not set virtual_alias_domains.
+virtual_alias_domains =

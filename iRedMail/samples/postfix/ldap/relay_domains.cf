@@ -1,10 +1,10 @@
-server_host     = 127.0.0.1
-server_port     = 389
+server_host     = PH_LDAP_SERVER_HOST
+server_port     = PH_LDAP_SERVER_PORT
+version         = PH_LDAP_BIND_VERSION
 bind            = yes
 start_tls       = no
-version         = 3
-bind_dn         = cn=vmail,dc=example,dc=com
-bind_pw         = RBUuFDo31MJbLkJgrwkaKkmRg7Cldw
+bind_dn         = PH_LDAP_BINDDN
+bind_pw         = PH_LDAP_BINDPW
 search_base     = PH_LDAP_BASEDN
 scope           = one
 query_filter    = (&(objectClass=mailDomain)(|(domainName=%s)(&(enabledService=domainalias)(domainAliasName=%s)))(domainBackupMX=yes)(accountStatus=active)(enabledService=mail))

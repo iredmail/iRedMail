@@ -68,14 +68,16 @@ export MESSAGE_SIZE_LIMIT='15728640'
 
 # LDAP/MYSQL/PGSQL lookup configuration files.
 if [ X"${BACKEND}" == X"OPENLDAP" ]; then
-    export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/ldap"
+    export POSTFIX_LOOKUP_DB='ldap'
 elif [ X"${BACKEND}" == X"MYSQL" ]; then
-    export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/mysql"
+    export POSTFIX_LOOKUP_DB='mysql'
 elif [ X"${BACKEND}" == X"PGSQL" ]; then
-    export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/pgsql"
+    export POSTFIX_LOOKUP_DB='pgsql'
 else
     export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/lookups"
 fi
+
+export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/${POSTFIX_LOOKUP_DB}"
 
 export ldap_virtual_mailbox_domains_cf="${POSTFIX_LOOKUP_DIR}/virtual_mailbox_domains.cf"
 export ldap_transport_maps_user_cf="${POSTFIX_LOOKUP_DIR}/transport_maps_user.cf"

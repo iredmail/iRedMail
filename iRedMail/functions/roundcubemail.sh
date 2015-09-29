@@ -127,14 +127,14 @@ rcm_config()
 
     cd ${RCM_CONF_DIR}
 
-    #export RCM_DB_USER RCM_DB_PASSWD RCMD_DB SQL_SERVER FIRST_DOMAIN
+    #export RCM_DB_USER RCM_DB_PASSWD RCMD_DB SQL_SERVER_ADDRESS FIRST_DOMAIN
     #export RCM_DES_KEY
 
     perl -pi -e 's#PH_PHP_CONN_TYPE#$ENV{PHP_CONN_TYPE}#g' config.inc.php
     perl -pi -e 's#PH_RCM_DB_USER#$ENV{RCM_DB_USER}#g' config.inc.php
     perl -pi -e 's#PH_RCM_DB_PASSWD#$ENV{RCM_DB_PASSWD}#g' config.inc.php
     perl -pi -e 's#PH_RCM_DB#$ENV{RCM_DB}#g' config.inc.php
-    perl -pi -e 's#PH_SQL_SERVER#$ENV{SQL_SERVER}#g' config.inc.php
+    perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' config.inc.php
 
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' config.inc.php
     perl -pi -e 's#PH_RCM_DES_KEY#$ENV{RCM_DES_KEY}#g' config.inc.php
@@ -242,7 +242,7 @@ rcm_plugin_password()
 
     if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
-        perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER}/$ENV{VMAIL_DB}";#' config.inc.php
+        perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER_ADDRESS}/$ENV{VMAIL_DB}";#' config.inc.php
 
         perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE mailbox SET password=%D,passwordlastchange=NOW() WHERE username=%u";#' config.inc.php
 

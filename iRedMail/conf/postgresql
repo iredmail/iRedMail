@@ -21,8 +21,8 @@
 #---------------------------------------------------------------------
 
 # Variables for PostgreSQL database server and related.
-# PGSQL_SERVER and PGSQL_SERVER_PORT are defined in conf/global.
-# SQL_SERVER and SQL_SERVER_PORT are defined in dialog/config_via_dialog.sh.
+# PGSQL_SERVER_ADDRESS and PGSQL_SERVER_PORT are defined in conf/global.
+# SQL_SERVER_ADDRESS and SQL_SERVER_PORT are defined in dialog/config_via_dialog.sh.
 
 export PGSQL_SYS_USER='postgres'
 export PGSQL_SYS_GROUP='postgres'
