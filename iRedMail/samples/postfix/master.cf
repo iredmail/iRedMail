@@ -6,6 +6,10 @@ submission inet n       -       n       -       -       smtpd
   -o smtpd_client_restrictions=permit_mynetworks,permit_sasl_authenticated,reject
   -o content_filter=smtp-amavis:[PH_AMAVISD_SERVER]:10026
 
+# Use dovecot's `deliver` program as LDA.
+dovecot unix    -       n       n       -       -      pipe
+    flags=DRh user=PH_VMAIL_USER_NAME:PH_VMAIL_GROUP_NAME argv=PH_DOVECOT_DELIVER_BIN -f ${sender} -d ${user}@${domain} -m ${extension}
+
 # Amavisd integration.
 smtp-amavis unix -  -   -   -   PH_AMAVISD_MAX_SERVERS  smtp
     -o smtp_data_done_timeout=1200

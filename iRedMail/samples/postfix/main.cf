@@ -1,3 +1,6 @@
+# --------------------
+# INSTALL-TIME CONFIGURATION INFORMATION
+#
 # location of the Postfix queue. Default is /var/spool/postfix.
 queue_directory = PH_QUEUE_DIRECTORY
 
@@ -21,6 +24,27 @@ data_directory = PH_DATA_DIRECTORY
 # Default is postfix.
 mail_owner = PH_MAIL_OWNER
 
+# The following parameters are used when installing a new Postfix version.
+# 
+# sendmail_path: The full pathname of the Postfix sendmail command.
+# This is the Sendmail-compatible mail posting interface.
+# 
+sendmail_path = PH_SENDMAIL_PATH
+
+# newaliases_path: The full pathname of the Postfix newaliases command.
+# This is the Sendmail-compatible command to build alias databases.
+#
+newaliases_path = PH_NEWALIASES_PATH
+
+# full pathname of the Postfix mailq command.  This is the Sendmail-compatible
+# mail queue listing command.
+mailq_path = PH_MAILQ_PATH
+
+# group for mail submission and queue management commands.
+# This must be a group name with a numerical group ID that is not shared with
+# other accounts, not even with the Postfix account.
+setgid_group = PH_SETGID_GROUP
+
 # external command that is executed when a Postfix daemon program is run with
 # the -D option.
 #
@@ -32,49 +56,11 @@ debugger_command =
     PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
     ddd $daemon_directory/$process_name $process_id & sleep 5
 
+debug_peer_level = 2
+
 # --------------------
-# INSTALL-TIME CONFIGURATION INFORMATION
+# CUSTOM SETTINGS
 #
-# The following parameters are used when installing a new Postfix version.
-# 
-# sendmail_path: The full pathname of the Postfix sendmail command.
-# This is the Sendmail-compatible mail posting interface.
-# 
-sendmail_path = /usr/sbin/sendmail.postfix
-
-# newaliases_path: The full pathname of the Postfix newaliases command.
-# This is the Sendmail-compatible command to build alias databases.
-#
-newaliases_path = /usr/bin/newaliases.postfix
-
-# mailq_path: The full pathname of the Postfix mailq command.  This
-# is the Sendmail-compatible mail queue listing command.
-# 
-mailq_path = /usr/bin/mailq.postfix
-
-# setgid_group: The group for mail submission and queue management
-# commands.  This must be a group name with a numerical group ID that
-# is not shared with other accounts, not even with the Postfix account.
-#
-setgid_group = postdrop
-
-# html_directory: The location of the Postfix HTML documentation.
-#
-html_directory = no
-
-# manpage_directory: The location of the Postfix on-line manual pages.
-#
-manpage_directory = /usr/share/man
-
-# sample_directory: The location of the Postfix sample configuration files.
-# This parameter is obsolete as of Postfix 2.1.
-#
-sample_directory = /usr/share/doc/postfix-2.11.0/samples
-
-# readme_directory: The location of the Postfix README files.
-#
-readme_directory = /usr/share/doc/postfix-2.11.0/README_FILES
-# --------------------
 
 # SMTP server response code when recipient or domain not found.
 unknown_local_recipient_reject_code = 550
@@ -101,6 +87,7 @@ inet_protocols = all
 # Enable all network interfaces.
 inet_interfaces = all
 
+# Mailbox type
 home_mailbox = Maildir/
 
 #
@@ -108,11 +95,9 @@ home_mailbox = Maildir/
 #
 # Disable SSLv3
 #
-# Opportunistic TLS
 smtpd_tls_protocols = !SSLv2 !SSLv3
 smtp_tls_protocols = !SSLv2 !SSLv3
 lmtp_tls_protocols = !SSLv2 !SSLv3
-# Mandatory TLS
 smtpd_tls_mandatory_protocols = !SSLv2 !SSLv3
 smtp_tls_mandatory_protocols = !SSLv2 !SSLv3
 lmtp_tls_mandatory_protocols = !SSLv2 !SSLv3
@@ -122,20 +107,6 @@ lmtp_tls_mandatory_protocols = !SSLv2 !SSLv3
 #
 smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
 smtpd_tls_dh1024_param_file = PH_SSL_DHPARAM_FILE
-
-myhostname = PH_HOSTNAME
-myorigin = PH_HOSTNAME
-mydomain = PH_HOSTNAME
-
-mynetworks = 127.0.0.1
-mynetworks_style = host
-
-mydestination = $myhostname, localhost, localhost.localdomain
-
-smtpd_reject_unlisted_recipient = yes
-smtpd_reject_unlisted_sender = yes
-
-smtpd_data_restrictions = reject_unauth_pipelining
 
 # Opportunistic TLS, used when Postfix sends email to remote SMTP server.
 # Use TLS if this is supported by the remote SMTP server, otherwise use
@@ -148,6 +119,21 @@ smtp_tls_security_level = may
 smtp_tls_CAfile = $smtpd_tls_CAfile
 smtp_tls_loglevel = 0
 smtp_tls_note_starttls_offer = yes
+
+# hostname
+myhostname = PH_HOSTNAME
+myorigin = PH_HOSTNAME
+mydomain = PH_HOSTNAME
+
+# trusted SMTP clients which are allowed to relay mail through Postfix.
+mynetworks = 127.0.0.1
+
+# Accepted local emails
+mydestination = $myhostname, localhost, localhost.localdomain
+
+# Reject unlisted sender and recipient
+smtpd_reject_unlisted_recipient = yes
+smtpd_reject_unlisted_sender = yes
 
 # HELO restriction
 smtpd_helo_required = yes
@@ -177,9 +163,11 @@ smtpd_recipient_restrictions =
     permit_sasl_authenticated
     reject_unauth_destination
 
+# Data restrictions
+smtpd_data_restrictions = reject_unauth_pipelining
+
 # END-OF-MESSAGE restrictions
-smtpd_end_of_data_restrictions =
-    check_policy_service inet:PH_IREDAPD_BIND_HOST:PH_IREDAPD_LISTEN_PORT
+smtpd_end_of_data_restrictions = check_policy_service inet:PH_IREDAPD_BIND_HOST:PH_IREDAPD_LISTEN_PORT
 
 # The set of characters that can separate a user name from its extension
 # (example: user+foo), or a .forward file name from its extension (example:

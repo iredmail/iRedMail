@@ -156,8 +156,8 @@ dovecot_config()
         perl -pi -e 's#(.*)(-o.*plugin.*)#${1}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
     fi
 
-    export DOVECOT_DELIVER HOSTNAME
-    perl -pi -e 's#PH_DOVECOT_DELIVER#$ENV{DOVECOT_DELIVER}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
+    export DOVECOT_DELIVER_BIN HOSTNAME
+    perl -pi -e 's#PH_DOVECOT_DELIVER_BIN#$ENV{DOVECOT_DELIVER_BIN}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
     perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
 
     chown root ${DOVECOT_QUOTA_WARNING_SCRIPT}
@@ -313,7 +313,7 @@ EOF
     done
 
     ECHO_DEBUG "Enable dovecot SASL support in postfix: ${POSTFIX_FILE_MAIN_CF}."
-    postconf -e mailbox_command="${DOVECOT_DELIVER}"
+    postconf -e mailbox_command="${DOVECOT_DELIVER_BIN}"
     postconf -e virtual_transport="${TRANSPORT}"
     postconf -e dovecot_destination_recipient_limit='1'
 
@@ -325,13 +325,6 @@ EOF
     mkdir -p ${dovecot_expire_dict_dir} && \
     chown -R ${DOVECOT_USER}:${DOVECOT_GROUP} ${dovecot_expire_dict_dir} && \
     chmod -R 0750 ${dovecot_expire_dict_dir}
-
-    cat >> ${POSTFIX_FILE_MASTER_CF} <<EOF
-# Use dovecot deliver program as LDA.
-dovecot unix    -       n       n       -       -      pipe
-    flags=DRh user=${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} argv=${DOVECOT_DELIVER} -f \${sender} -d \${user}@\${domain} -m \${extension}
-
-EOF
 
     ECHO_DEBUG "Setting logrotate for dovecot log file."
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then

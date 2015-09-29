@@ -28,41 +28,39 @@ postfix_config_basic()
 {
     ECHO_INFO "Configure Postfix (Message Transfer Agent)."
 
-    # OpenBSD: Replace sendmail, opensmtpd by Postfix
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        echo 'sendmail_flags=NO' >> ${RC_CONF_LOCAL}
-        echo 'smtpd_flags=NO' >> ${RC_CONF_LOCAL}
-        /usr/local/sbin/postfix-enable >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's/(.*sendmail -L sm-msp-queue.*)/#${1}/' ${CRON_SPOOL_DIR}/root 
-    fi
-
     backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
-
-    ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
-    mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ >> ${INSTALL_LOG} 2>&1
-    for i in /etc/hosts /etc/resolv.conf /etc/localtime /etc/services; do
-        [ -f $i ] && cp ${i} ${POSTFIX_CHROOT_DIR}/etc/
-    done
 
     #
     # main.cf
     #
-    ECHO_DEBUG "Copy sample main.cf and update values."
+    # Get values with default main.cf before we modify it.
     export queue_directory="$(postconf queue_directory | awk '{print $NF}')"
     export command_directory="$(postconf command_directory | awk '{print $NF}')"
     export daemon_directory="$(postconf daemon_directory | awk '{print $NF}')"
     export data_directory="$(postconf data_directory | awk '{print $NF}')"
-    export mail_owner="$(postconf mail_owner | awk '{print $NF}')"
 
+    export sendmail_path="$(postconf sendmail_path | awk '{print $NF}')"
+    export newaliases_path="$(postconf newaliases_path | awk '{print $NF}')"
+    export mailq_path="$(postconf mailq_path | awk '{print $NF}')"
+    export mail_owner="$(postconf mail_owner | awk '{print $NF}')"
+    export setgid_group="$(postconf setgid_group | awk '{print $NF}')"
+
+    # Copy sample main.cf and update values.
     cp ${SAMPLE_DIR}/postfix/main.cf ${POSTFIX_FILE_MAIN_CF}
 
     perl -pi -e 's#PH_QUEUE_DIRECTORY#$ENV{queue_directory}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_COMMAND_DIRECTORY#$ENV{command_directory}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_DAEMON_DIRECTORY#$ENV{daemon_directory}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_DATA_DIRECTORY#$ENV{data_directory}#g' ${POSTFIX_FILE_MAIN_CF}
-    perl -pi -e 's#PH_MAIL_OWNER#$ENV{mail_owner}#g' ${POSTFIX_FILE_MAIN_CF}
 
-    unset queue_directory command_directory daemon_directory data_directory mail_owner
+    perl -pi -e 's#PH_SENDMAIL_PATH#$ENV{sendmail_path}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_NEWALIASES_PATH#$ENV{newaliases_path}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_MAILQ_PATH#$ENV{mailq_path}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_MAIL_OWNER#$ENV{mail_owner}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_SETGID_GROUP#$ENV{setgid_group}#g' ${POSTFIX_FILE_MAIN_CF}
+
+    unset queue_directory command_directory daemon_directory data_directory
+    unset mail_owner sendmail_path newaliases_path mailq_path setgid_group
 
     # Update normal settings.
     perl -pi -e 's#PH_SSL_DHPARAM_FILE#$ENV{SSL_DHPARAM_FILE}#g' ${POSTFIX_FILE_MAIN_CF}
@@ -77,7 +75,7 @@ postfix_config_basic()
     perl -pi -e 's#PH_VMAIL_USER_GID#$ENV{VMAIL_USER_GID}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_VMAIL_USER_UID#$ENV{VMAIL_USER_UID}#g' ${POSTFIX_FILE_MAIN_CF}
 
-    # iRedAPD
+    # iRedAPD listen address/port
     perl -pi -e 's#PH_IREDAPD_BIND_HOST#$ENV{IREDAPD_BIND_HOST}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_IREDAPD_LISTEN_PORT#$ENV{IREDAPD_LISTEN_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
 
@@ -87,13 +85,24 @@ postfix_config_basic()
     ECHO_DEBUG "Enable chroot."
     perl -pi -e 's/^(smtp.*inet)(.*)(n)(.*)(n)(.*smtpd)$/${1}${2}${3}${4}-${6}/' ${POSTFIX_FILE_MASTER_CF}
 
-    ECHO_DEBUG "Enable submission."
+    ECHO_DEBUG "Enable submission and additional transports required by Amavisd and Dovecot."
     cat ${SAMPLE_DIR}/postfix/master.cf >> ${POSTFIX_FILE_MASTER_CF}
 
     # Amavisd integration.
     perl -pi -e 's#PH_AMAVISD_SERVER#$ENV{AMAVISD_SERVER}#g' ${POSTFIX_FILE_MASTER_CF}
     perl -pi -e 's#PH_AMAVISD_MAX_SERVERS#$ENV{AMAVISD_MAX_SERVERS}#g' ${POSTFIX_FILE_MASTER_CF}
     perl -pi -e 's#PH_AMAVISD_MYNETWORKS#$ENV{AMAVISD_MYNETWORKS}#g' ${POSTFIX_FILE_MASTER_CF}
+
+    # Dovecot LDA
+    perl -pi -e 's#PH_VMAIL_USER_NAME#$ENV{VMAIL_USER_NAME}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_VMAIL_GROUP_NAME#$ENV{VMAIL_GROUP_NAME}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_DOVECOT_DELIVER_BIN#$ENV{DOVECOT_DELIVER_BIN}#g' ${POSTFIX_FILE_MASTER_CF}
+
+    ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
+    mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ >> ${INSTALL_LOG} 2>&1
+    for i in /etc/hosts /etc/resolv.conf /etc/localtime /etc/services; do
+        [ -f $i ] && cp ${i} ${POSTFIX_CHROOT_DIR}/etc/
+    done
 
     backup_file ${POSTFIX_FILE_HELO_ACCESS}
     cp -f ${SAMPLE_DIR}/postfix/helo_access.pcre ${POSTFIX_FILE_HELO_ACCESS}
@@ -103,30 +112,10 @@ postfix_config_basic()
     add_postfix_alias ${VMAIL_USER_NAME} ${SYS_ROOT_USER}
     add_postfix_alias ${SYS_ROOT_USER} ${FIRST_USER}@${FIRST_DOMAIN}
 
-    cat >> ${TIP_FILE} <<EOF
-Postfix:
-    * Configuration files:
-        - ${POSTFIX_ROOTDIR}
-        - ${POSTFIX_ROOTDIR}/aliases
-        - ${POSTFIX_FILE_MAIN_CF}
-        - ${POSTFIX_FILE_MASTER_CF}
-
-    * SQL/LDAP lookup config files:
-        - ${POSTFIX_LOOKUP_DIR}
-EOF
-
     # FreeBSD: Start postfix when system start up.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         backup_file /etc/mail/mailer.conf
-        cat > /etc/mail/mailer.conf <<EOF
-#
-# Execute the Postfix sendmail program, named /usr/local/sbin/sendmail
-#
-sendmail    /usr/local/sbin/sendmail
-send-mail   /usr/local/sbin/sendmail
-mailq       /usr/local/sbin/sendmail
-newaliases  /usr/local/sbin/sendmail
-EOF
+        cp -f ${SAMPLE_DIR}/postfix/freebsd/mailer.conf /etc/mail/mailer.conf
 
         # Start service when system start up.
         service_control enable 'postfix_enable' 'YES'
@@ -138,10 +127,14 @@ EOF
         service_control enable 'daily_status_mail_rejects_enable' 'NO'
         service_control enable 'daily_status_include_submit_mailq' 'NO'
         service_control enable 'daily_submit_queuerun' 'NO'
-    fi
 
-    # Create directory, used to store lookup files.
-    [ -d ${POSTFIX_LOOKUP_DIR} ] || mkdir -p ${POSTFIX_LOOKUP_DIR}
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Replace sendmail, opensmtpd by Postfix
+        echo 'sendmail_flags=NO' >> ${RC_CONF_LOCAL}
+        echo 'smtpd_flags=NO' >> ${RC_CONF_LOCAL}
+        /usr/local/sbin/postfix-enable >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's/(.*sendmail -L sm-msp-queue.*)/#${1}/' ${CRON_SPOOL_DIR}/root 
+    fi
 
     echo 'export status_postfix_config_basic="DONE"' >> ${STATUS_FILE}
 }
@@ -149,6 +142,9 @@ EOF
 postfix_config_vhost()
 {
     ECHO_DEBUG "Configure Postfix for SQL/LDAP lookup."
+
+    # Create directory which used to store sql/ldap lookup files.
+    [ -d ${POSTFIX_LOOKUP_DIR} ] || mkdir -p ${POSTFIX_LOOKUP_DIR}
 
     cat ${SAMPLE_DIR}/postfix/main.cf.${POSTFIX_LOOKUP_DB} >> ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_POSTFIX_LOOKUP_DIR#$ENV{POSTFIX_LOOKUP_DIR}#g' ${POSTFIX_FILE_MAIN_CF}
@@ -193,6 +189,18 @@ postfix_config()
     check_status_before_run postfix_config_basic && \
     check_status_before_run postfix_config_vhost && \
     check_status_before_run postfix_config_postscreen
+
+    cat >> ${TIP_FILE} <<EOF
+Postfix:
+    * Configuration files:
+        - ${POSTFIX_ROOTDIR}
+        - ${POSTFIX_ROOTDIR}/aliases
+        - ${POSTFIX_FILE_MAIN_CF}
+        - ${POSTFIX_FILE_MASTER_CF}
+
+    * SQL/LDAP lookup config files:
+        - ${POSTFIX_LOOKUP_DIR}
+EOF
 
     echo 'export status_postfix_config="DONE"' >> ${STATUS_FILE}
 }
