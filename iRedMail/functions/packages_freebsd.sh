@@ -1004,7 +1004,7 @@ EOF
 
     # SOGo groupware.
     if [ X"${USE_SOGO}" == X'YES' ]; then
-        ALL_PORTS="${ALL_PORTS} www/sogo"
+        ALL_PORTS="${ALL_PORTS} devel/sope www/sogo"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/devel_sope/options

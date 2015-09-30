@@ -318,17 +318,16 @@ service_control()
         if [ X"${action}" == X'enable' ]; then
             [ -f /etc/rc.conf ] || touch /etc/rc.conf
             if [ X"$#" == X'2' ]; then
-                var="${1}"
-                value="${2}"
-                final_option="${var}='${value}'"
-                comment_mark="# ${PROG_NAME}-${var}"
-                if ! grep "^${comment_mark}$" /etc/rc.conf &>/dev/null; then
-                    ECHO_DEBUG "Add setting in /etc/rc.conf: ${final_option}"
-                    echo "${comment_mark}" >> /etc/rc.conf
-                    echo "${final_option}" >> /etc/rc.conf
+                export var="${1}"
+                export value="${2}"
+                export full_setting="${var}='${value}'"
+                if grep "^${var}=" /etc/rc.conf &>/dev/null; then
+                    ECHO_DEBUG "Update ${var}= in /etc/rc.conf: ${full_setting}"
+                    perl -pi -e 's#^($ENV{var}=).*#${1}$ENV{value}#g' /etc/rc.conf
                 else
-                    ECHO_DEBUG "Skip adding setting in /etc/rc.conf: ${final_option}"
+                    echo "${full_setting}" >> /etc/rc.conf
                 fi
+                unset var value full_setting
             fi
         elif [ X"${action}" == X'disable' ]; then
             # Already handled in functions/*.sh.

@@ -231,6 +231,12 @@ EOF
         fi
     fi
 
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # Start service when system start up.
+        service_control enable 'memcached_enable' 'YES'
+        service_control enable 'sogod_enable' 'YES'
+    fi
+
     cat >> ${TIP_FILE} <<EOF
 SOGo Groupware:
     * Web access: httpS://${HOSTNAME}/SOGo/
