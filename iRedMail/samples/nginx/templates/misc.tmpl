@@ -1,0 +1,6 @@
+# Deny all attempts to access hidden files such as .htaccess.
+location ~ /\. { deny all; }
+
+# Handling noisy messages
+location = ^/favicon.ico { access_log off; log_not_found off; }
+location = ^/robots.txt { log_not_found off; access_log off; allow all; }

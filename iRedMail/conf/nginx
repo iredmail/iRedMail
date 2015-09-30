@@ -84,6 +84,7 @@ fi
 export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"
 export NGINX_CONF_DIR="${NGINX_CONF_ROOT}/conf.d"
 export NGINX_CONF_DEFAULT="${NGINX_CONF_DIR}/default.conf"
+export NGINX_CONF_TMPL_DIR="${NGINX_CONF_ROOT}/templates"
 
 export NGINX_MIME_TYPES="${NGINX_CONF_ROOT}/mime.types"
 
