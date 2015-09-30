@@ -71,6 +71,7 @@ install_all()
         devel_m4 \
         devel_py-Jinja2 \
         devel_py-babel \
+        devel_sope \
         dns_p5-Net-DNS \
         ftp_curl \
         mail_spamassassin \

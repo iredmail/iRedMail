@@ -1,0 +1,48 @@
+# Settings for SOGo Groupware
+
+# SOGo
+location ~ ^/sogo { rewrite ^ https://$host/SOGo; }
+location ~ ^/SOGO { rewrite ^ https://$host/SOGo; }
+
+# For IOS 7
+location = /principals/ {
+    rewrite ^ https://$server_name/SOGo/dav;
+    allow all;
+}
+
+location ^~ /SOGo {
+    proxy_pass http://PH_SOGO_BIND_ADDRESS:PH_SOGO_BIND_PORT;
+    #proxy_redirect http://PH_SOGO_BIND_ADDRESS:PH_SOGO_BIND_PORT/SOGo/ /SOGo;
+    # forward user's IP address
+    #proxy_set_header X-Real-IP $remote_addr;
+    #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #proxy_set_header Host $host;
+    proxy_set_header x-webobjects-server-protocol HTTP/1.0;
+    #proxy_set_header x-webobjects-remote-host 127.0.0.1;
+    #proxy_set_header x-webobjects-server-name $server_name;
+    #proxy_set_header x-webobjects-server-url $scheme://$host;
+    proxy_connect_timeout 600;
+    proxy_send_timeout 600;
+    proxy_read_timeout 600;
+}
+
+location ^~ /Microsoft-Server-ActiveSync {
+    proxy_pass http://PH_SOGO_BIND_ADDRESS:PH_SOGO_BIND_PORT/SOGo/Microsoft-Server-ActiveSync;
+    proxy_redirect http://PH_SOGO_BIND_ADDRESS:PH_SOGO_BIND_PORT/Microsoft-Server-ActiveSync /;
+}
+
+location ^~ /SOGo/Microsoft-Server-ActiveSync {
+    proxy_pass http://PH_SOGO_BIND_ADDRESS:PH_SOGO_BIND_PORT/SOGo/Microsoft-Server-ActiveSync;
+    proxy_redirect http://PH_SOGO_BIND_ADDRESS:PH_SOGO_BIND_PORT/SOGo/Microsoft-Server-ActiveSync /;
+}
+
+location /SOGo.woa/WebServerResources/ {
+    alias PH_SOGO_GNUSTEP_DIR/WebServerResources/;
+}
+location /SOGo/WebServerResources/ {
+    alias PH_SOGO_GNUSTEP_DIR/WebServerResources/;
+}
+location ^/SOGo/so/ControlPanel/Products/([^/]*)/Resources/(.*)$ {
+    alias PH_SOGO_GNUSTEP_DIR/$1.SOGo/Resources/$2;
+}
+

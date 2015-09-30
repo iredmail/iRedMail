@@ -34,7 +34,9 @@ Available optional options:
     --copy Assign members of old group to new groups without removing
            membership of old group. That means user will be member of both
            old and new groups.
-           If not --copy specified, user will be not member of old group.
+
+           If no --copy specified, this script will remove membership of old
+           group.
 """
 
 if len(sys.argv) < 3:
