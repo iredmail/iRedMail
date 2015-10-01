@@ -79,6 +79,11 @@ EOF
     # Configure SOGo config file
     backup_file ${SOGO_CONF}
 
+    # Create /etc/timezone required by sogo
+    if [ ! -f /etc/timezone ]; then
+        echo 'America/New_York' > /etc/timezone
+    fi
+
     # Create directory to store config files
     [ ! -d ${SOGO_CONF_DIR} ] && mkdir -p ${SOGO_CONF_DIR}
 

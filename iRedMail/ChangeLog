@@ -4,6 +4,10 @@ iRedMail-0.9.3:
       new release since 2013 (the latest stable release doesn't support IPv6),
       we have throttling support in iRedAPD as replacement.
     * Improvements:
+        - New script: tools/ldap_assign_user_to_groups.py. Used to assign user
+          to specified mailing lists, or remove membership.
+        - New script: tools/ldap_move_members_to_another_group.py. Used to
+          move or copy ALL members of specified mailing list to another.
         - Supports per-user alias address in SQL backends. 2 new sql columns
           are required: `alias.is_alias`, `alias.alias_to`.
         - Enable postscreen service in Postfix by default.

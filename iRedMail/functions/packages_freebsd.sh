@@ -1015,6 +1015,8 @@ EOF
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
             ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/devel_sope/options
         fi
+
+        rm -f /var/db/ports/devel_sope/options${SED_EXTENSION} &>/dev/null
     fi
 
     # Awstats.

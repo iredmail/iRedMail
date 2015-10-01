@@ -2,11 +2,17 @@
 # encoding: utf-8
 
 # Author: Zhang Huangbin <zhb _at_ iredmail.org>
-# Purpose: Move ALL members of one mailing list to another mailing list.
+# Purpose: Move or copy ALL members of specified mailing list to another
+#          mailing list.
 
 # USAGE
 #
-#   $ python ldap_move_members_to_another_group.py old_group@domain.com new_group@domain.com
+#   * Set correct LDAP server address (LDAP_URI), LDAP suffix (LDAP_SUFFIX),
+#     bind dn (BINDDN) and password (BINDPW).
+#
+#   * Run this script:
+#
+#       $ python ldap_move_members_to_another_group.py [options] old_group@domain.com new_group@domain.com [new_group2@domain.com ...]
 
 # LDAP server address.
 LDAP_URI = 'ldap://127.0.0.1:389'
@@ -56,7 +62,7 @@ new_groups = args
 
 # Initialize LDAP connection.
 print "* Connecting to LDAP server: %s" % LDAP_URI
-conn = ldap.initialize(uri=LDAP_URI, trace_level=0,)
+conn = ldap.initialize(uri=LDAP_URI, trace_level=0)
 conn.bind_s(BINDDN, BINDPW)
 
 # Get all members of old mailing list.

@@ -46,8 +46,8 @@ export SOGO_DB_TABLE_ALARMS='sogo_alarms_folder'
 
 export SOGO_HTTPD_CONF="${HTTPD_CONF_DIR}/SOGo.conf"
 
-export SOGO_CMD_EALARMS_NOTIFY='/usr/sbin/sogo-ealarms-notify'
 export SOGO_CMD_TOOL='/usr/sbin/sogo-tool'
+export SOGO_CMD_EALARMS_NOTIFY='/usr/sbin/sogo-ealarms-notify'
 export SOGO_GNUSTEP_DIR="/usr/lib/GNUstep/SOGo"
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -66,6 +66,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SOGO_RC_SCRIPT_NAME='sogod'
     export SOGO_CONF_DIR='/usr/local/etc/sogo'
 
+    export SOGO_CMD_TOOL='/usr/local/GNUstep/Local/Tools/Admin/sogo-tool'
+    export SOGO_CMD_EALARMS_NOTIFY='/usr/local/GNUstep/Local/Tools/Admin/sogo-ealarms-notify'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SOGO_DAEMON_USER='_sogo'
     export SOGO_DAEMON_GROUP='_sogo'
