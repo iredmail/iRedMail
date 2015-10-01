@@ -168,46 +168,6 @@ iredapd_config()
         service_control enable 'iredapd_enable' 'YES'
     fi
 
-    # Log rotate
-    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-        ECHO_DEBUG "Setting logrotate for iRedAPD log file."
-        cat > ${IREDAPD_LOGROTATE_FILE} <<EOF
-${CONF_MSG}
-${IREDAPD_LOG_FILE} {
-    compress
-    weekly
-    rotate 10
-    create 0600 ${SYS_ROOT_USER} ${SYS_ROOT_GROUP}
-    missingok
-
-    # Use bzip2 for compress.
-    compresscmd $(which bzip2)
-    uncompresscmd $(which bunzip2)
-    compressoptions -9
-    compressext .bz2
-
-    postrotate
-        ${DIR_RC_SCRIPTS}/iredapd restart
-    endscript
-}
-EOF
-    elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-        if ! grep 'iredapd.log' /etc/newsyslog.conf &>/dev/null; then
-            # Define path of PID file to restart iRedAPD service after rotated
-            cat >> /etc/newsyslog.conf <<EOF
-${IREDAPD_LOG_FILE}    ${SYS_ROOT_USER}:${SYS_ROOT_GROUP}   640  7     *    24    Z ${IREDAPD_PID_FILE}
-EOF
-        fi
-
-    elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-        if ! grep 'iredapd.log' /etc/newsyslog.conf &>/dev/null; then
-            # Define command used to restart iRedAPD service after rotated
-            cat >> /etc/newsyslog.conf <<EOF
-${IREDAPD_LOG_FILE}    ${SYS_ROOT_USER}:${SYS_ROOT_GROUP}   640  7     *    24    Z "${DIR_RC_SCRIPTS}/iredapd restart >/dev/null"
-EOF
-        fi
-    fi
-
     echo 'export status_iredapd_config="DONE"' >> ${STATUS_FILE}
 }
 

@@ -613,10 +613,10 @@ amavisd_config()
     check_status_before_run amavisd_config_general
     check_status_before_run amavisd_import_sql
 
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        # Comment out port 10027, we don't have Amavisd listening on this port.
-        perl -pi -e 's/(.*forward_method.*10027.*)/#${1}/g' ${AMAVISD_CONF}
+    # Comment out port 10027, we don't have Amavisd listening on this port.
+    perl -pi -e 's/(.*forward_method.*10027.*)/#${1}/g' ${AMAVISD_CONF}
 
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.
         service_control enable 'amavisd_enable' 'YES'
         service_control enable 'amavisd_pidfile' '/var/amavis/amavisd.pid'

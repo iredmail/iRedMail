@@ -22,7 +22,7 @@ virtual_alias_maps =
     proxy:ldap:PH_POSTFIX_LOOKUP_DIR/virtual_alias_maps.cf
     proxy:ldap:PH_POSTFIX_LOOKUP_DIR/virtual_group_maps.cf
     proxy:ldap:PH_POSTFIX_LOOKUP_DIR/virtual_group_members_maps.cf
-    proxy:ldap:PH_POSTFIX_LOOKUP_DIR/catch_all_maps.cf
+    proxy:ldap:PH_POSTFIX_LOOKUP_DIR/catchall_maps.cf
 
 sender_bcc_maps =
     proxy:ldap:PH_POSTFIX_LOOKUP_DIR/sender_bcc_maps_user.cf
