@@ -32,9 +32,6 @@ def usage():
 
 $ python ldap_move_members_to_another_group.py [options] old_group@domain.com [new_group@domain.com new_group_2@domain.com ...]
 
-If no new group specified, this script will remove all members (just remove
-membership, not remove mail accounts) of old group.
-
 Available optional options:
 
     --copy Assign members of old group to new groups without removing
@@ -43,6 +40,19 @@ Available optional options:
 
            If no --copy specified, this script will remove membership of old
            group.
+
+Samples:
+
+*) Copy all members of old_group@domain.com to new_group@domain.com
+    python ldap_move_members_to_another_group --copy old_group@domain.com new_group@domain.com
+
+*) Copy all members of old_group@domain.com to new_group@domain.com, and remove
+   ALL members of old_group@domain.com.
+    python ldap_move_members_to_another_group old_group@domain.com new_group@domain.com
+
+*) Remove all members (just remove membership, not remove mail accounts) of
+   old_group@domain.com.
+    python ldap_move_members_to_another_group old_group@domain.com
 """
 
 if len(sys.argv) < 3:

@@ -37,6 +37,17 @@ Optional arguments:
 
     --remove Remove memberships. If no mailing list specified, it will remove
              ALL assigned mailing lists.
+
+Samples:
+
+*) Remove all memberships:
+    python ldap_assign_user_to_groups.py --remove user@domain.com
+
+*) Remove memberships of specified mailing lists:
+    python ldap_assign_user_to_groups.py --remove user@domain.com group1@domain.com group2@domain.com
+
+*) Assign user to new mailing lists:
+    python ldap_assign_user_to_groups.py user@domain.com group1@domain.com group2@domain.com
 """
 
 if len(sys.argv) < 3:
