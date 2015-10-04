@@ -996,8 +996,9 @@ EOF
         ALL_PORTS="${ALL_PORTS} mail/roundcube"
     fi
 
+    # LDAP support is required, otherwise www/sogo cannot be built.
     cat > /var/db/ports/devel_sope/options <<EOF
-OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_SET+=LDAP
 OPTIONS_FILE_SET+=MEMCACHED
 OPTIONS_FILE_UNSET+=MYSQL
 OPTIONS_FILE_UNSET+=PGSQL
@@ -1007,10 +1008,7 @@ EOF
     if [ X"${USE_SOGO}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} devel/sope www/sogo"
 
-        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/devel_sope/options
-            ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/devel_sope/options
-        elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
             ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/devel_sope/options
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
             ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/devel_sope/options
