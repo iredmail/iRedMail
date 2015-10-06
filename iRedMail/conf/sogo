@@ -79,6 +79,7 @@ fi
 
 export SOGO_CONF="${SOGO_CONF_DIR}/sogo.conf"
 export SOGO_SIEVE_CREDENTIAL_FILE="${SOGO_CONF_DIR}/sieve.cred"
+export SOGO_CRON_FILE="${CRON_SPOOL_DIR}/${SOGO_DAEMON_USER}"
 
 if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
     export SOGO_DB_TYPE='mysql'
