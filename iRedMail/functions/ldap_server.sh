@@ -16,7 +16,7 @@ objectClass: top
 cn: ${VMAIL_USER_NAME}
 sn: ${VMAIL_USER_NAME}
 uid: ${VMAIL_USER_NAME}
-${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash SSHA "${LDAP_BINDPW}")
+userPassword: $(generate_password_hash SSHA "${LDAP_BINDPW}")
 
 dn: ${LDAP_ADMIN_DN}
 objectClass: person
@@ -25,7 +25,16 @@ objectClass: top
 cn: ${VMAIL_DB_ADMIN_USER}
 sn: ${VMAIL_DB_ADMIN_USER}
 uid: ${VMAIL_DB_ADMIN_USER}
-${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash SSHA "${LDAP_ADMIN_PW}")
+userPassword: $(generate_password_hash SSHA "${LDAP_ADMIN_PW}")
+
+dn: ${LDAP_REPLICATE_DN}
+objectClass: person
+objectClass: shadowAccount
+objectClass: top
+cn: ${VMAIL_DB_ADMIN_USER}
+sn: ${VMAIL_DB_ADMIN_USER}
+uid: ${VMAIL_DB_ADMIN_USER}
+userPassword: $(generate_password_hash SSHA "${LDAP_ADMIN_PW}")
 
 dn: ${LDAP_BASEDN}
 objectClass: Organization
@@ -35,80 +44,78 @@ dn: ${LDAP_ADMIN_BASEDN}
 objectClass: Organization
 o: ${LDAP_ATTR_DOMAINADMIN_DN_NAME}
 
-dn: ${LDAP_ATTR_DOMAIN_RDN}=${FIRST_DOMAIN},${LDAP_BASEDN}
-objectClass: ${LDAP_OBJECTCLASS_MAILDOMAIN}
-${LDAP_ATTR_DOMAIN_RDN}: ${FIRST_DOMAIN}
-${LDAP_ATTR_MTA_TRANSPORT}: ${TRANSPORT}
-${LDAP_ATTR_ACCOUNT_STATUS}: ${LDAP_STATUS_ACTIVE}
-${LDAP_ATTR_ACCOUNT_SETTING}: minPasswordLength:8
-${LDAP_ATTR_ACCOUNT_SETTING}: defaultQuota:1024
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_MAIL}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_SENDER_BCC}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_RECIPIENT_BCC}
+dn: domainName=${FIRST_DOMAIN},${LDAP_BASEDN}
+objectClass: mailDomain
+domainName: ${FIRST_DOMAIN}
+mtaTransport: ${TRANSPORT}
+accountStatus: active
+accountSetting: minPasswordLength:8
+accountSetting: defaultQuota:1024
+enabledService: mail
 
-dn: ${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=${FIRST_DOMAIN},${LDAP_BASEDN}
-objectClass: ${LDAP_OBJECTCLASS_OU}
+dn: ou=Users,domainName=${FIRST_DOMAIN},${LDAP_BASEDN}
+objectClass: organizationalUnit
 objectClass: top
-ou: ${LDAP_ATTR_GROUP_USERS}
+ou: Users
 
-dn: ${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_GROUPS},${LDAP_ATTR_DOMAIN_RDN}=${FIRST_DOMAIN},${LDAP_BASEDN}
-objectClass: ${LDAP_OBJECTCLASS_OU}
+dn: ou=Groups,domainName=${FIRST_DOMAIN},${LDAP_BASEDN}
+objectClass: organizationalUnit
 objectClass: top
-ou: ${LDAP_ATTR_GROUP_GROUPS}
+ou: Groups
 
-dn: ${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_ALIASES},${LDAP_ATTR_DOMAIN_RDN}=${FIRST_DOMAIN},${LDAP_BASEDN}
-objectClass: ${LDAP_OBJECTCLASS_OU}
+dn: ou=Aliases,domainName=${FIRST_DOMAIN},${LDAP_BASEDN}
+objectClass: organizationalUnit
 objectClass: top
-ou: ${LDAP_ATTR_GROUP_ALIASES}
+ou: Aliases
 
-dn: ${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_EXTERNALS},${LDAP_ATTR_DOMAIN_RDN}=${FIRST_DOMAIN},${LDAP_BASEDN}
-objectClass: ${LDAP_OBJECTCLASS_OU}
+dn: ou=Externals,domainName=${FIRST_DOMAIN},${LDAP_BASEDN}
+objectClass: organizationalUnit
 objectClass: top
-ou: ${LDAP_ATTR_GROUP_EXTERNALS}
+ou: Externals
 
-dn: ${LDAP_ATTR_USER_RDN}=${FIRST_USER}@${FIRST_DOMAIN},${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=${FIRST_DOMAIN},${LDAP_BASEDN}
+dn: mail=${FIRST_USER}@${FIRST_DOMAIN},${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=${FIRST_DOMAIN},${LDAP_BASEDN}
 objectClass: inetOrgPerson
 objectClass: shadowAccount
 objectClass: amavisAccount
-objectClass: ${LDAP_OBJECTCLASS_MAILUSER}
+objectClass: mailUser
 objectClass: top
 cn: ${FIRST_USER}
 sn: ${FIRST_USER}
 uid: ${FIRST_USER}
 givenName: ${FIRST_USER}
-${LDAP_ATTR_USER_RDN}: ${FIRST_USER}@${FIRST_DOMAIN}
-${LDAP_ATTR_ACCOUNT_STATUS}: ${LDAP_STATUS_ACTIVE}
-${LDAP_ATTR_USER_STORAGE_BASE_DIRECTORY}: ${STORAGE_BASE_DIR}
+mail: ${FIRST_USER}@${FIRST_DOMAIN}
+accountStatus: ${LDAP_STATUS_ACTIVE}
+storageBaseDirectory: ${STORAGE_BASE_DIR}
 mailMessageStore: ${STORAGE_NODE}/${FIRST_USER_MAILDIR_HASH_PART}
 homeDirectory: ${FIRST_USER_MAILDIR_FULL_PATH}
-${LDAP_ATTR_USER_QUOTA}: 104857600
-${LDAP_ATTR_USER_PASSWD}: $(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} "${FIRST_USER_PASSWD}")
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_MAIL}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_INTERNAL}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_DOVEADM}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_SMTP}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_SMTPS}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_POP3}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_POP3S}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_IMAP}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_IMAPS}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_DELIVER}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_LDA}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_LMTP}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_FORWARD}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_SENDER_BCC}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_RECIPIENT_BCC}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_MANAGESIEVE}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_MANAGESIEVES}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_SIEVE}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_SIEVES}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_SHADOW_ADDRESS}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_LIB_STORAGE}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_INDEXER_WORKER}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_DSYNC}
-${LDAP_ENABLED_SERVICE}: ${LDAP_SERVICE_DOMAIN_ADMIN}
-${LDAP_ATTR_DOMAIN_GLOBALADMIN}: yes
+mailQuota: 104857600
+userPassword: $(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} "${FIRST_USER_PASSWD}")
+enabledService: mail
+enabledService: internal
+enabledService: doveadm
+enabledService: smtp
+enabledService: smtpsecured
+enabledService: pop3
+enabledService: pop3secured
+enabledService: imap
+enabledService: imapsecured
+enabledService: deliver
+enabledService: lda
+enabledService: lmtp
+enabledService: forward
+enabledService: senderbcc
+enabledService: recipientbcc
+enabledService: managesieve
+enabledService: managesievesecured
+enabledService: sieve
+enabledService: sievesecured
+enabledService: displayedInGlobalAddressBook
+enabledService: shadowaddress
+enabledService: lib-storage
+enabledService: indexer-worker
+enabledService: dsync
+enabledService: domainadmin
+domainGlobalAdmin: yes
 EOF
 }
 
