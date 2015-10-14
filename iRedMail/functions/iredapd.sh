@@ -133,11 +133,11 @@ iredapd_config()
         perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' settings.py
 
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
-        perl -pi -e 's#^(sql_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
-        perl -pi -e 's#^(sql_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' settings.py
-        perl -pi -e 's#^(sql_db).*#${1} = "$ENV{VMAIL_DB}"#' settings.py
-        perl -pi -e 's#^(sql_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' settings.py
-        perl -pi -e 's#^(sql_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' settings.py
+        perl -pi -e 's#^(vmail_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
+        perl -pi -e 's#^(vmail_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' settings.py
+        perl -pi -e 's#^(vmail_db_name).*#${1} = "$ENV{VMAIL_DB}"#' settings.py
+        perl -pi -e 's#^(vmail_db_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' settings.py
+        perl -pi -e 's#^(vmail_db_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' settings.py
 
         perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' settings.py
     fi
@@ -162,6 +162,12 @@ iredapd_config()
     perl -pi -e 's#^(iredapd_db_name).*#${1} = "$ENV{IREDAPD_DB_NAME}"#' settings.py
     perl -pi -e 's#^(iredapd_db_user).*#${1} = "$ENV{IREDAPD_DB_USER}"#' settings.py
     perl -pi -e 's#^(iredapd_db_password).*#${1} = "$ENV{IREDAPD_DB_PASSWD}"#' settings.py
+
+    # Setup cron job to clean up expired throttle tracking records.
+    cat > ${CRON_SPOOL_DIR}/${IREDAPD_DAEMON_USER} <<EOF
+# Clean up expired throttle tracking records.
+1   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR}/tools/cleanup_db.py >/dev/null
+EOF
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.
