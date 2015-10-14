@@ -192,6 +192,9 @@ virtual_uid_maps = static:PH_VMAIL_USER_UID
 virtual_gid_maps = static:PH_VMAIL_USER_GID
 virtual_mailbox_base = PH_STORAGE_BASE_DIR
 
+# Do not set virtual_alias_domains.
+virtual_alias_domains =
+
 #
 # Enable SASL authentication
 #
@@ -210,5 +213,3 @@ smtpd_tls_cert_file = PH_SSL_CERT_FILE
 smtpd_tls_CAfile = PH_SSL_CERT_FILE
 tls_random_source = dev:/dev/urandom
 
-# Do not set virtual_alias_domains.
-virtual_alias_domains =

@@ -313,12 +313,11 @@ EOF
     done
 
     ECHO_DEBUG "Enable dovecot SASL support in postfix: ${POSTFIX_FILE_MAIN_CF}."
-    postconf -e mailbox_command="${DOVECOT_DELIVER_BIN}"
-    postconf -e virtual_transport="${TRANSPORT}"
-    postconf -e dovecot_destination_recipient_limit='1'
+    cat ${SAMPLE_DIR}/postfix/main.cf.dovecot >> ${POSTFIX_FILE_MAIN_CF}
 
-    postconf -e smtpd_sasl_type='dovecot'
-    postconf -e smtpd_sasl_path="${DOVECOT_AUTH_SOCKET_NAME}"
+    perl -pi -e 's#PH_DOVECOT_AUTH_SOCKET_NAME#$ENV{DOVECOT_AUTH_SOCKET_NAME}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_DOVECOT_DELIVER_BIN#$ENV{DOVECOT_DELIVER_BIN}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_TRANSPORT#$ENV{TRANSPORT}#g' ${POSTFIX_FILE_MAIN_CF}
 
     ECHO_DEBUG "Create directory for Dovecot plugin: Expire."
     dovecot_expire_dict_dir="$(dirname ${DOVECOT_EXPIRE_DICT_BDB})"

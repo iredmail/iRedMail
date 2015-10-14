@@ -1,0 +1,8 @@
+#
+# Dovecot SASL support.
+#
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = PH_DOVECOT_AUTH_SOCKET_NAME
+mailbox_command = PH_DOVECOT_DELIVER_BIN
+virtual_transport = PH_TRANSPORT
+dovecot_destination_recipient_limit = 1
