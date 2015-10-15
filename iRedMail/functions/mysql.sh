@@ -50,9 +50,13 @@ EOF
 
 mysql_initialize()
 {
-    ECHO_DEBUG "Starting MySQL."
+    ECHO_DEBUG "Initialize MySQL server."
 
     backup_file ${MYSQL_MY_CNF}
+
+    ECHO_DEBUG "Stop MySQL service before updating my.cnf."
+    service_control stop ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    sleep 3
 
     # Initial MySQL database first
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -74,8 +78,9 @@ mysql_initialize()
     perl -pi -e 's#^(skip-networking.*)#${1}#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
 
     # Enable innodb_file_per_table by default.
-    grep '^innodb_file_per_table' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+    grep '^innodb_file_per_table' ${MYSQL_MY_CNF} &>/dev/null
     if [ X"$?" != X'0' ]; then
+        ECHO_DEBUG "Enable innodb_file_per_table."
         perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 
