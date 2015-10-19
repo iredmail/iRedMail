@@ -140,12 +140,20 @@ CREATE TABLE msgs (
   client_addr varchar(255)  DEFAULT '', -- SMTP client IP address (IPv4 or v6)
   size        integer NOT NULL CHECK (size >= 0), -- message size in bytes
   originating char(1) DEFAULT ' ' NOT NULL,  -- sender from inside or auth'd
-  content     char(1),                   -- content type: V/B/U/S/Y/M/H/O/T/C
-    -- virus/banned/unchecked/spam(kill)/spammy(tag2)/
-    -- /bad-mime/bad-header/oversized/mta-err/clean
+  content     char(1),
+    -- V: virus
+    -- B: banned
+    -- U: unchecked
+    -- S: spam(kill)
+    -- Y: spammy(tag2)
+    -- M: bad-mime
+    -- H: bad-header
+    -- O: oversized
+    -- O: mta-err
+    -- C: clean
     -- is NULL on partially processed mail
     -- (prior to 2.7.0 the CC_SPAMMY was logged as 's', now 'Y' is used;
-    --- to avoid a need for case-insenstivity in queries)
+    -- to avoid a need for case-insenstivity in queries)
   quar_type  char(1),                   -- quarantined as: ' '/F/Z/B/Q/M/L
                                         --  none/file/zipfile/bsmtp/sql/
                                         --  /mailbox(smtp)/mailbox(lmtp)

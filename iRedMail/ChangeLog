@@ -1,4 +1,7 @@
 iRedMail-0.9.3:
+    * Works on new distribution releases:
+        - OpenBSD 5.8.
+
     * SOGo Groupware is now available on FreeBSD.
     * Cluebringer has been removed. It's not under active development and no
       new release since 2013 (the latest stable release doesn't support IPv6),

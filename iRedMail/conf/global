@@ -139,6 +139,7 @@ export DOC_FILE="${ROOTDIR}/Documentations"
 export RUNTIME_DIR="${ROOTDIR}/runtime"
 export STATUS_FILE="${RUNTIME_DIR}/install.status"
 export INSTALL_LOG="${RUNTIME_DIR}/install.log"
+export PKG_INSTALL_LOG="${RUNTIME_DIR}/pkg.install.log"
 
 # Output flag.
 export _INFO_FLAG="[ INFO ]"
@@ -326,8 +327,8 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
 
     export RANDOM_STRING='eval echo $RANDOM | md5'
 
-    # Unsupported release: 5.6 and earlier versions.
-    if echo "${DISTRO_VERSION}" | grep '^5.[123456]' &>/dev/null ; then
+    # Unsupported release: 5.7 and earlier versions.
+    if echo "${DISTRO_VERSION}" | grep '^5.[1234567]' &>/dev/null ; then
         export UNSUPPORTED_RELEASE='YES'
     fi
 

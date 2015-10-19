@@ -375,7 +375,7 @@ generate_ssl_keys()
     #   - https://weakdh.org/
     #   - https://weakdh.org/sysadmin.html
     ECHO_INFO "Generate a strong, unique Diffie Hellman Group with openssl, please wait."
-    openssl dhparam -out ${SSL_DHPARAM_FILE} 2048 5>&1 &>/dev/null | tee ${INSTALL_LOG}
+    openssl dhparam -out ${SSL_DHPARAM_FILE} 2048 5>&1 &>/dev/null
 
     cat >> ${TIP_FILE} <<EOF
 

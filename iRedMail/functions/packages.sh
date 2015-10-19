@@ -28,11 +28,12 @@ install_all()
 
     # OpenBSD only
     PKG_SCRIPTS=''
-    OB_PKG_POSTFIX_VER='-2.11.4'
-    OB_PKG_OPENLDAP_VER='-2.4.40p1'
-    OB_PKG_PHP_VER='-5.6.5'
-    OB_PKG_NGINX_VER='-1.7.10'
-    OB_PKG_MEMCACHED_VER='-1.4.21p1'
+    OB_PKG_POSTFIX_VER='-3.0.2'
+    OB_PKG_OPENLDAP_VER='-2.4.41'
+    OB_PKG_PHP_VER='-5.6.11'
+    OB_PKG_PHP_FPM_VER='-5.6.11p0'
+    OB_PKG_NGINX_VER='-1.9.3p3'
+    OB_PKG_MEMCACHED_VER='-1.4.24'
 
     # Enable syslog or rsyslog.
     if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -211,7 +212,7 @@ install_all()
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} nginx-full php5-fpm"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} nginx${OB_PKG_NGINX_VER} php-fpm${OB_PKG_PHP_VER}"
+            ALL_PKGS="${ALL_PKGS} nginx${OB_PKG_NGINX_VER} php-fpm${OB_PKG_PHP_FPM_VER}"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${NGINX_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
     fi
@@ -285,7 +286,7 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new p5-Mail-SPF p5-Mail-SpamAssassin clamav unrar"
+        ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-Mail-SpamAssassin clamav unrar"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
 
@@ -452,7 +453,7 @@ EOF
     # Install all packages.
     install_all_pkgs()
     {
-        eval ${install_pkg} ${ALL_PKGS} | tee ${INSTALL_LOG}
+        eval ${install_pkg} ${ALL_PKGS} | tee ${PKG_INSTALL_LOG}
 
         if [ -f ${RUNTIME_DIR}/.pkg_install_failed ]; then
             ECHO_ERROR "Installation failed, please check the terminal output."

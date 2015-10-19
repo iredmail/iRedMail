@@ -27,15 +27,6 @@ sn: ${VMAIL_DB_ADMIN_USER}
 uid: ${VMAIL_DB_ADMIN_USER}
 userPassword: $(generate_password_hash SSHA "${LDAP_ADMIN_PW}")
 
-dn: ${LDAP_REPLICATE_DN}
-objectClass: person
-objectClass: shadowAccount
-objectClass: top
-cn: ${VMAIL_DB_ADMIN_USER}
-sn: ${VMAIL_DB_ADMIN_USER}
-uid: ${VMAIL_DB_ADMIN_USER}
-userPassword: $(generate_password_hash SSHA "${LDAP_ADMIN_PW}")
-
 dn: ${LDAP_BASEDN}
 objectClass: Organization
 o: ${LDAP_BASEDN_NAME}
