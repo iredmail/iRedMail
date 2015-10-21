@@ -242,7 +242,6 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         ('mailMessageStore',    [mailMessageStore]),
         ('homeDirectory',       [homeDirectory]),
         ('accountStatus',       ['active']),
-        ('mtaTransport',        ['dovecot']),
         ('enabledService',      ['internal', 'doveadm', 'lib-storage', 'indexer-worker', 'dsync',
                                  'mail', 'smtp', 'smtpsecured',
                                  'pop3', 'pop3secured', 'imap', 'imapsecured',
