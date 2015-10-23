@@ -357,7 +357,7 @@ EOF
 *
 ********************* WARNING **************************************
 *
-* Rebooting your system is required to enable mail services.
+* Please reboot your system to enable all mail services.
 *
 ********************************************************************
 EOF

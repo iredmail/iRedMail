@@ -1,5 +1,6 @@
 iRedMail-0.9.3:
     * Works on new distribution releases:
+        - Ubuntu 15.10
         - OpenBSD 5.8.
 
     * SOGo Groupware is now available on FreeBSD.
