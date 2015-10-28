@@ -34,9 +34,9 @@ EOF
     cp -f ${SAMPLE_DIR}/iredmail.schema ${LDAPD_SCHEMA_DIR}
     cp -f /usr/local/share/doc/amavisd-new/LDAP.schema ${LDAPD_SCHEMA_DIR}/${AMAVISD_LDAP_SCHEMA_NAME}
 
-    ECHO_DEBUG "Copy sample config file: ${SAMPLE_DIR}/ldapd.conf -> ${LDAPD_CONF}"
+    ECHO_DEBUG "Copy sample config file: ${SAMPLE_DIR}/openbsd/ldapd.conf -> ${LDAPD_CONF}"
     backup_file ${LDAPD_CONF}
-    cp -f ${SAMPLE_DIR}/ldapd.conf ${LDAPD_CONF}
+    cp -f ${SAMPLE_DIR}/openbsd/ldapd.conf ${LDAPD_CONF}
     chmod 0600 ${LDAPD_CONF}
 
     ECHO_DEBUG "Update config file: ${LDAPD_CONF}"
