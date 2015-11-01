@@ -203,6 +203,7 @@ EOF
         # Enable managesieve support
         perl -pi -e 's#(//)(SOGoSieveServer.*)#${2}#' ${SOGO_CONF}
         perl -pi -e 's#(//)(SOGoSieveScriptsEnabled.*)#${2}#' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoSieveFolderEncoding*)#${2}#' ${SOGO_CONF}
         perl -pi -e 's#(//)(SOGoVacationEnabled.*)#${2}#' ${SOGO_CONF}
         perl -pi -e 's#(//)(SOGoForwardEnabled.*)#${2}#' ${SOGO_CONF}
 
