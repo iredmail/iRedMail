@@ -8,6 +8,9 @@ iRedMail-0.9.3:
       new release since 2013 (the latest stable release doesn't support IPv6),
       we have throttling support in iRedAPD as replacement.
     * Improvements:
+        - Enable global address book for SQL backends in SOGo by default,
+          domains are isolated. Thanks dnwahs <shawn _at_ mcsp.net> for the
+          sharing in iRedMail forum.
         - New script: tools/ldap_assign_user_to_groups.py. Used to assign user
           to specified mailing lists, or remove membership.
         - New script: tools/ldap_move_members_to_another_group.py. Used to

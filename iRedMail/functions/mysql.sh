@@ -60,7 +60,10 @@ mysql_initialize()
 
     # Initial MySQL database first
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ECHO_DEBUG "Set bind-address in my.cnf."
         perl -pi -e 's#^(\[mysqld\])#${1}\nbind-address = 127.0.0.1#' ${MYSQL_MY_CNF}
+
+        ECHO_DEBUG "Run mysql_install_db."
         /usr/local/bin/mysql_install_db >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.
@@ -74,13 +77,13 @@ mysql_initialize()
         cp ${SAMPLE_DIR}/mysql/my.cnf ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 
-    # Disable 'skip-networking' in my.cnf.
+    ECHO_DEBUG "Disable 'skip-networking' in my.cnf."
     perl -pi -e 's#^(skip-networking.*)#${1}#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
 
     # Enable innodb_file_per_table by default.
     grep '^innodb_file_per_table' ${MYSQL_MY_CNF} &>/dev/null
     if [ X"$?" != X'0' ]; then
-        ECHO_DEBUG "Enable innodb_file_per_table."
+        ECHO_DEBUG "Enable innodb_file_per_table in my.cnf."
         perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 
