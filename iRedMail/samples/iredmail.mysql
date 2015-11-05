@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS admin (
     INDEX (passwordlastchange),
     INDEX (expired),
     INDEX (active)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 --
 -- Table structure for table alias
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS alias (
     INDEX (alias_to),
     INDEX (expired),
     INDEX (active)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 --
 -- Table structure for table domain
@@ -103,7 +103,7 @@ CREATE TABLE IF NOT EXISTS domain (
     INDEX (backupmx),
     INDEX (expired),
     INDEX (active)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `alias_domain` (
     alias_domain VARCHAR(255) NOT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `alias_domain` (
     PRIMARY KEY (alias_domain),
     INDEX (target_domain),
     INDEX (active)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 --
 -- Table structure for table domain_admins
@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS domain_admins (
     INDEX (username),
     INDEX (domain),
     INDEX (active)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 --
 -- Table structure for table mailbox
@@ -216,7 +216,7 @@ CREATE TABLE IF NOT EXISTS mailbox (
     INDEX (passwordlastchange),
     INDEX (expired),
     INDEX (active)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 --
 -- Table structure for table sender_bcc_domain
@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS sender_bcc_domain (
     INDEX (bcc_address),
     INDEX (expired),
     INDEX (active)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 --
 -- Table structure for table recipient_bcc_domain
@@ -250,7 +250,7 @@ CREATE TABLE IF NOT EXISTS recipient_bcc_domain (
     INDEX (bcc_address),
     INDEX (expired),
     INDEX (active)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 --
 -- Table structure for table sender_bcc_user
@@ -269,7 +269,7 @@ CREATE TABLE IF NOT EXISTS sender_bcc_user (
     INDEX (domain),
     INDEX (expired),
     INDEX (active)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 --
 -- Table structure for table recipient_bcc_user
@@ -287,7 +287,7 @@ CREATE TABLE IF NOT EXISTS recipient_bcc_user (
     INDEX (bcc_address),
     INDEX (expired),
     INDEX (active)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 -- Used to store basic info of deleted mailboxes.
 CREATE TABLE IF NOT EXISTS deleted_mailboxes (
@@ -306,7 +306,7 @@ CREATE TABLE IF NOT EXISTS deleted_mailboxes (
     INDEX (username),
     INDEX (domain),
     INDEX (admin)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 
 --
 -- IMAP shared folders. User 'from_user' shares folders to user 'to_user'.

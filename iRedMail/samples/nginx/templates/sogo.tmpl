@@ -4,7 +4,7 @@
 location ~ ^/sogo { rewrite ^ https://$host/SOGo; }
 location ~ ^/SOGO { rewrite ^ https://$host/SOGo; }
 
-# For Mac OS X.
+# For Mac OS X and iOS devices.
 rewrite ^/.well-known/caldav    /SOGo/dav permanent;
 rewrite ^/.well-known/carddav   /SOGo/dav permanent;
 rewrite ^/principals/           /SOGo/dav permanent;
