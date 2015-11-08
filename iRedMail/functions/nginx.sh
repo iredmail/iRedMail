@@ -106,8 +106,8 @@ nginx_config()
 
         cp -f ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${IREDADMIN_UWSGI_CONF}
 
-        mkdir -p ${UWSGI_LOG_DIR} >> ${INSTALL_LOG} 2>&1
         ECHO_DEBUG "Setting logrotate for uwsgi log file: ${UWSGI_LOG_FILE}."
+        mkdir -p ${UWSGI_LOG_DIR} >> ${INSTALL_LOG} 2>&1
         cat > ${UWSGI_LOGROTATE_FILE} <<EOF
 ${CONF_MSG}
 ${UWSGI_LOG_FILE} {
@@ -128,6 +128,7 @@ ${UWSGI_LOG_FILE} {
     endscript
 }
 EOF
+
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${IREDADMIN_UWSGI_CONF}
         perl -pi -e 's/^(pidfile.*)/#${1}/' ${IREDADMIN_UWSGI_CONF}
@@ -184,13 +185,12 @@ Nginx:
         - ${HTTPD_DOCUMENTROOT}/index.html
 
 php-fpm:
-    * Configuration files:
-        - ${PHP_FPM_POOL_WWW_CONF}
+    * Configuration files: ${PHP_FPM_POOL_WWW_CONF}
     * Socket: ${PHP_FASTCGI_SOCKET}
 
 uWSGI:
-    * Configuration files:
-        - ${UWSGI_CONF_DIR}
+    * Configuration files: ${UWSGI_CONF_DIR}
+    * Logrotate config file: ${UWSGI_LOGROTATE_FILE}
     * Socket for iRedAdmin: ${UWSGI_SOCKET_IREDADMIN}
 EOF
 

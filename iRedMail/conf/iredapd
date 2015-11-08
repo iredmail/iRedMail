@@ -26,7 +26,9 @@ export IREDAPD_DAEMON_GROUP='iredapd'
 export IREDAPD_HOME_DIR='/home/iredapd'
 
 export IREDAPD_TARBALL="iRedAPD-${IREDAPD_VERSION}.tar.bz2"
-export IREDAPD_ROOT_DIR='/opt'
+export IREDAPD_PARENT_DIR='/opt'
+export IREDAPD_ROOT_DIR="${IREDAPD_PARENT_DIR}/iRedAPD-${IREDAPD_VERSION}"
+export IREDAPD_ROOT_DIR_SYMBOL_LINK="${IREDAPD_PARENT_DIR}/iredapd"
 
 # IREDAPD_BIND_HOST is configured in conf/global
 export IREDAPD_LISTEN_PORT='7777'

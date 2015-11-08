@@ -42,7 +42,9 @@ export MAILBOX_FORMAT='Maildir'
 # Maildir style: hashed, normal.
 export MAILDIR_STYLE='hashed'
 
-# Current storage node.
+# Mailboxes will be stored under sub-directory ${STORAGE_NODE} of vmail user's
+# home directory. e.g. home directory is /var/vmail, the mailboxes will be
+# /var/vmail/vmail1.
 export STORAGE_NODE='vmail1'
 
 # Enabled backends.
@@ -368,6 +370,9 @@ fi
 export SYS_ROOT_USER='root'
 export SYS_ROOT_GROUP='root'
 
+# postrotate command.
+export SYSLOG_POSTROTATE_CMD=''
+
 # Use systemd
 export USE_SYSTEMD='NO'
 
@@ -452,7 +457,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
         export SYSLOG_CONF='/etc/rsyslog.conf'
-        export SYSLOG_POSTROTATE_CMD='invoke-rc.d rsyslog reload > /dev/null'
+        export SYSLOG_POSTROTATE_CMD='invoke-rc.d rsyslog rotate > /dev/null'
 
         if [ X"${DISTRO_CODENAME}" == X'jessie' ]; then
             export USE_SYSTEMD='YES'
@@ -513,7 +518,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
     # Syslog config: rsyslog.
     export SYSLOG_CONF='/etc/syslog.conf'
-    export SYSLOG_POSTROTATE_CMD=''
 
     # SSHD log file
     export SSHD_LOGFILE='/var/log/auth.log'
@@ -554,7 +558,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
     # Syslog config: rsyslog.
     export SYSLOG_CONF='/etc/syslog.conf'
-    export SYSLOG_POSTROTATE_CMD=''
 
     # SSHD log file
     export SSHD_LOGFILE='/var/log/authlog'

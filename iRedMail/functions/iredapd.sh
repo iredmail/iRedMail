@@ -28,24 +28,24 @@ iredapd_install()
 
     # Extract source tarball.
     cd ${PKG_MISC_DIR}
-    [ -d ${IREDAPD_ROOT_DIR} ] || mkdir -p ${IREDAPD_ROOT_DIR}
-    extract_pkg ${IREDAPD_TARBALL} ${IREDAPD_ROOT_DIR}
+    [ -d ${IREDAPD_PARENT_DIR} ] || mkdir -p ${IREDAPD_PARENT_DIR}
+    extract_pkg ${IREDAPD_TARBALL} ${IREDAPD_PARENT_DIR}
 
     ECHO_DEBUG "Configure iRedAPD."
     # Create symbol link.
-    ln -s ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION} ${IREDAPD_ROOT_DIR}/iredapd >> ${INSTALL_LOG} 2>&1
+    ln -s ${IREDAPD_ROOT_DIR} ${IREDAPD_ROOT_DIR_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
 
     # Copy init rc script.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
+        cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd
+        cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-        cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
+        cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd
+        cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd
     else
-        cp ${IREDAPD_ROOT_DIR}/iredapd/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
+        cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
     fi
 
     chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
@@ -57,11 +57,11 @@ iredapd_install()
     fi
 
     # Set file permission.
-    chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
-    chmod -R 0500 ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}
+    chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${IREDAPD_ROOT_DIR}
+    chmod -R 0500 ${IREDAPD_ROOT_DIR}
 
     # Copy sample config file.
-    cd ${IREDAPD_ROOT_DIR}/iredapd/
+    cd ${IREDAPD_ROOT_DIR}
     cp settings.py.sample settings.py
     chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} settings.py
     chmod -R 0400 settings.py
@@ -80,12 +80,12 @@ CREATE DATABASE IF NOT EXISTS ${IREDAPD_DB_NAME} DEFAULT CHARACTER SET utf8 COLL
 
 -- Import SQL template.
 USE ${IREDAPD_DB_NAME};
-SOURCE ${IREDAPD_ROOT_DIR}/iredapd/SQL/iredapd.mysql;
+SOURCE ${IREDAPD_ROOT_DIR}/SQL/iredapd.mysql;
 GRANT ALL ON ${IREDAPD_DB_NAME}.* TO "${IREDAPD_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDAPD_DB_PASSWD}";
 FLUSH PRIVILEGES;
 EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp ${IREDAPD_ROOT_DIR}/iredapd/SQL/iredapd.pgsql ${PGSQL_DATA_DIR}/iredapd.pgsql >> ${INSTALL_LOG} 2>&1
+        cp ${IREDAPD_ROOT_DIR}/SQL/iredapd.pgsql ${PGSQL_DATA_DIR}/iredapd.pgsql >> ${INSTALL_LOG} 2>&1
         chmod 0555 ${PGSQL_DATA_DIR}/iredapd.pgsql
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create database
@@ -130,7 +130,7 @@ iredapd_config()
         perl -pi -e 's#^(ldap_bindpw).*#${1} = "$ENV{LDAP_BINDPW}"#' settings.py
         perl -pi -e 's#^(ldap_basedn).*#${1} = "$ENV{LDAP_BASEDN}"#' settings.py
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' settings.py
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "greylisting", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' settings.py
 
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#^(vmail_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
@@ -139,7 +139,7 @@ iredapd_config()
         perl -pi -e 's#^(vmail_db_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' settings.py
         perl -pi -e 's#^(vmail_db_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' settings.py
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' settings.py
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' settings.py
     fi
 
     # Amavisd database
@@ -164,9 +164,11 @@ iredapd_config()
     perl -pi -e 's#^(iredapd_db_password).*#${1} = "$ENV{IREDAPD_DB_PASSWD}"#' settings.py
 
     # Setup cron job to clean up expired throttle tracking records.
+    # Note: use ${IREDAPD_ROOT_DIR_SYMBOL_LINK} instead of ${IREDAPD_ROOT_DIR}
+    # here, so that we don't need to change cron job after upgraded iRedAPD.
     cat > ${CRON_SPOOL_DIR}/${IREDAPD_DAEMON_USER} <<EOF
-# Clean up expired throttle tracking records.
-1   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR}/tools/cleanup_db.py >/dev/null
+# Clean up expired tracking records every hour.
+1   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null
 EOF
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -191,10 +193,11 @@ iRedAPD - Postfix Policy Daemon:
         - Database name: ${IREDAPD_DB_NAME}
         - Username: ${IREDAPD_DB_USER}
         - Password: ${IREDAPD_DB_PASSWD}
+    * Configuration file:
+        - ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/settings.py
     * Related files:
-        - ${IREDAPD_ROOT_DIR}/iRedAPD-${IREDAPD_VERSION}/
-        - ${IREDAPD_ROOT_DIR}/iredapd/
-        - ${IREDAPD_ROOT_DIR}/iredapd/etc/settings.py
+        - ${IREDAPD_ROOT_DIR}
+        - ${IREDAPD_ROOT_DIR_SYMBOL_LINK}
 
 EOF
 

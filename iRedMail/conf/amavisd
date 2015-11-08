@@ -101,9 +101,6 @@ fi
 export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.mysql"
 export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.pgsql"
 
-# Syslog setting, 'YES' or 'NO'
-export AMAVISD_SEPERATE_LOG='NO'
-
 # mynetworks
 export AMAVISD_MYNETWORKS='127.0.0.0/8'
 if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then

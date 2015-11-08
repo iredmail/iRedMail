@@ -492,35 +492,6 @@ EOF
     # Concurrency per recipient limit.
     postconf -e smtp-amavis_destination_recipient_limit='1'
 
-    # ---- Make amavisd log to standalone file: ${AMAVISD_LOGROTATE_FILE} ----
-    if [ X"${AMAVISD_SEPERATE_LOG}" == X"YES" ]; then
-        ECHO_DEBUG "Make Amavisd log to file: ${AMAVISD_LOGFILE}."
-        perl -pi -e 's#(.*syslog_facility.*)(mail)(.*)#${1}local0${3}#' ${AMAVISD_CONF}
-        echo -e "local0.*\t\t\t\t\t\t-${AMAVISD_LOGFILE}" >> ${SYSLOG_CONF}
-
-        ECHO_DEBUG "Setting logrotate for amavisd log file: ${AMAVISD_LOGFILE}."
-        cat > ${AMAVISD_LOGROTATE_FILE} <<EOF
-${CONF_MSG}
-${AMAVISD_LOGFILE} {
-    compress
-    weekly
-    rotate 10
-    create 0600 amavis amavis
-    missingok
-
-    # Use bzip2 for compress.
-    compresscmd $(which bzip2)
-    uncompresscmd $(which bunzip2)
-    compressoptions -9
-    compressext .bz2
-
-    postrotate
-        ${SYSLOG_POSTROTATE_CMD}
-    endscript
-}
-EOF
-    fi
-
     # Add crontab job to delete virus mail.
     ECHO_DEBUG "Setting cron job for vmail user to delete virus mail per month."
     cat > ${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER} <<EOF

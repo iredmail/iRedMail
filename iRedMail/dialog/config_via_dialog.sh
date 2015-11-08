@@ -66,7 +66,7 @@ NOTES:
 * Maildir path will be converted to lowercases, so please create this
   directory in lowcases.
 * It cannot be /var/mail (used to store mails sent to system accounts).
-* Mailboxes will be stored under its sub-directory: /var/vmail/vmail1.
+* Mailboxes will be stored under its sub-directory: ${VMAIL_USER_HOME_DIR}/${STORAGE_NODE}/
 * Daily backup of SQL/LDAP databases will be stored under another sub-directory: /var/vmail/backup.
 " 20 76 "${VMAIL_USER_HOME_DIR}" 2>/tmp/vmail_user_home_dir
 
