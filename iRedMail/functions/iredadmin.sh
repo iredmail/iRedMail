@@ -210,6 +210,9 @@ EOF
 
     echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
 
+    # Add postfix alias for user: iredapd
+    add_postfix_alias ${IREDAPD_DAEMON_USER} ${SYS_ROOT_USER}
+
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
 # ${PROG_NAME}: Cleanup Amavisd database
 1   2   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py >/dev/null

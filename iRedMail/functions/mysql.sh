@@ -83,7 +83,7 @@ mysql_initialize()
     # Enable innodb_file_per_table by default.
     grep '^innodb_file_per_table' ${MYSQL_MY_CNF} &>/dev/null
     if [ X"$?" != X'0' ]; then
-        ECHO_DEBUG "Enable innodb_file_per_table in my.cnf."
+        ECHO_DEBUG "Enable 'innodb_file_per_table' in my.cnf."
         perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 

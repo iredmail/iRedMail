@@ -34,7 +34,8 @@ export IREDAPD_ROOT_DIR_SYMBOL_LINK="${IREDAPD_PARENT_DIR}/iredapd"
 export IREDAPD_LISTEN_PORT='7777'
 
 export IREDAPD_PID_FILE='/var/run/iredapd.pid'
-export IREDAPD_LOG_FILE='/var/log/iredapd.log'
+export IREDAPD_LOG_DIR='/var/log/iredapd'
+export IREDAPD_LOG_FILE="${IREDAPD_LOG_DIR}/iredapd.log"
 export IREDAPD_LOGROTATE_FILE="${LOGROTATE_DIR}/iredapd"
 
 # Database

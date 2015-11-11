@@ -83,6 +83,9 @@ USE ${IREDAPD_DB_NAME};
 SOURCE ${IREDAPD_ROOT_DIR}/SQL/iredapd.mysql;
 GRANT ALL ON ${IREDAPD_DB_NAME}.* TO "${IREDAPD_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDAPD_DB_PASSWD}";
 FLUSH PRIVILEGES;
+
+-- Enable greylisting by default.
+INSERT INTO greylisting (account, priority, sender, sender_priority, active) VALUES ('@.', 0, '@.', 0, 1);
 EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp ${IREDAPD_ROOT_DIR}/SQL/iredapd.pgsql ${PGSQL_DATA_DIR}/iredapd.pgsql >> ${INSTALL_LOG} 2>&1
@@ -102,6 +105,9 @@ ALTER DATABASE ${IREDAPD_DB_NAME} OWNER TO ${IREDAPD_DB_USER};
 -- Grant permissions
 GRANT ALL ON throttle,throttle_tracking TO ${IREDAPD_DB_USER};
 GRANT ALL ON throttle_id_seq,throttle_tracking_id_seq TO ${IREDAPD_DB_USER};
+
+-- Enable greylisting by default.
+INSERT INTO greylisting (account, priority, sender, sender_priority, active) VALUES ('@.', 0, '@.', 0, 1);
 EOF
 
         rm -f ${PGSQL_DATA_DIR}/iredapd.pgsql
@@ -116,6 +122,10 @@ iredapd_config()
     perl -pi -e 's#^(listen_address).*#${1} = "$ENV{IREDAPD_BIND_HOST}"#' settings.py
     perl -pi -e 's#^(listen_port).*#${1} = "$ENV{IREDAPD_LISTEN_PORT}"#' settings.py
     perl -pi -e 's#^(run_as_user).*#${1} = "$ENV{IREDAPD_DAEMON_USER}"#' settings.py
+
+    [ -d ${IREDAPD_LOG_DIR} ] || mkdir -p ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+    chown -R ${IREDAPD_DB_USER}:${IREDAPD_DAEMON_GROUP} ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+    perl -pi -e 's#^(log_file).*#${1} = "$ENV{IREDAPD_LOG_FILE}"#' settings.py
     perl -pi -e 's#^(log_level).*#${1} = "info"#' settings.py
 
     # Backend.
@@ -168,7 +178,7 @@ iredapd_config()
     # here, so that we don't need to change cron job after upgraded iRedAPD.
     cat > ${CRON_SPOOL_DIR}/${IREDAPD_DAEMON_USER} <<EOF
 # Clean up expired tracking records every hour.
-1   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null
+1   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py &>/dev/null
 EOF
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then

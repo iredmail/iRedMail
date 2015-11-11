@@ -231,7 +231,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     mailMessageStore = STORAGE_NODE + '/' + mailMessageStore
 
     ldif = [
-        ('objectClass',         ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount',]),
+        ('objectClass',         ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount']),
         ('mail',                [mail]),
         ('userPassword',        generate_password_hash(passwd)),
         ('mailQuota',           [quota]),
@@ -249,7 +249,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
                                  'managesieve', 'managesievesecured',
                                  'sieve', 'sievesecured', 'lmtp',
                                  'shadowaddress',
-                                'displayedInGlobalAddressBook', ]),
+                                'displayedInGlobalAddressBook']),
         ('memberOfGroup',       groups),
         # shadowAccount integration.
         ('shadowLastChange', ['0']),

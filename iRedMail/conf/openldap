@@ -124,69 +124,11 @@ export LDAP_INIT_LDIF="${RUNTIME_DIR}/ldap_init.ldif"
 ##################################################
 # iRedMail LDAP schema related
 #
-# objectClass
-export LDAP_OBJECTCLASS_OU='organizationalUnit'
-export LDAP_OBJECTCLASS_MAILDOMAIN='mailDomain'
-export LDAP_OBJECTCLASS_MAILUSER='mailUser'
-export LDAP_OBJECTCLASS_MAILALIAS='mailAlias'
-export LDAP_OBJECTCLASS_MAILGROUP='mailList'
-export LDAP_OBJECTCLASS_MAILADMIN='mailAdmin'
-export LDAP_OBJECTCLASS_MAIL_EXTERNAL_USER='mailExternalUser'
-
-# Common attribute.
-export LDAP_ENABLED_SERVICE='enabledService'
-
-# Values of service name.
-export LDAP_SERVICE_DOMAIN_ALIAS='domainalias'
-export LDAP_SERVICE_MAIL='mail'
-export LDAP_SERVICE_INTERNAL='internal'
-export LDAP_SERVICE_DOVEADM='doveadm'
-export LDAP_SERVICE_SMTP='smtp'
-export LDAP_SERVICE_SMTPS='smtpsecured'
-export LDAP_SERVICE_POP3='pop3'
-export LDAP_SERVICE_POP3S='pop3secured'
-export LDAP_SERVICE_IMAP='imap'
-export LDAP_SERVICE_IMAPS='imapsecured'
-export LDAP_SERVICE_DELIVER='deliver'
-export LDAP_SERVICE_LDA='lda'
-export LDAP_SERVICE_LMTP='lmtp'
-export LDAP_SERVICE_FORWARD='forward'
-export LDAP_SERVICE_SENDER_BCC='senderbcc'
-export LDAP_SERVICE_RECIPIENT_BCC='recipientbcc'
-export LDAP_SERVICE_MANAGESIEVE='managesieve'
-export LDAP_SERVICE_MANAGESIEVES='managesievesecured'
-export LDAP_SERVICE_SIEVE='sieve'
-export LDAP_SERVICE_SIEVES='sievesecured'
-export LDAP_SERVICE_WEBMAIL='webmail'
-export LDAP_SERVICE_AWSTATS='awstats'
-export LDAP_SERVICE_SHADOW_ADDRESS='shadowaddress'
-export LDAP_SERVICE_DISPLAYED_IN_ADDRBOOK='displayedInGlobalAddressBook'
-export LDAP_SERVICE_LIB_STORAGE='lib-storage'
-export LDAP_SERVICE_INDEXER_WORKER='indexer-worker'
-export LDAP_SERVICE_DSYNC='dsync'
-export LDAP_SERVICE_DOMAIN_ADMIN='domainadmin'
-
-# Shared attributes.
-export LDAP_ATTR_ACCOUNT_STATUS='accountStatus'
-export LDAP_ATTR_ACCOUNT_SETTING='accountSetting'
-export LDAP_ATTR_MTA_TRANSPORT='mtaTransport'
-
 # Domain admin related.
 export LDAP_ATTR_DOMAINADMIN_DN_NAME='domainAdmins'
 
 # Domain related attributes.
 export LDAP_ATTR_DOMAIN_RDN='domainName'
-export LDAP_ATTR_DOMAIN_ALIAS_NAME='domainAliasName'
-export LDAP_ATTR_DOMAIN_ADMIN='domainAdmin'
-export LDAP_ATTR_DOMAIN_GLOBALADMIN='domainGlobalAdmin'
-export LDAP_ATTR_DOMAIN_BACKUPMX='domainBackupMX'
-export LDAP_ATTR_DOMAIN_MAX_QUOTA_SIZE='domainMaxQuotaSize'
-export LDAP_ATTR_DOMAIN_MAX_USER_NUMBER='domainMaxUserNumber'
-export LDAP_ATTR_DOMAIN_SENDER_BCC_ADDRESS='domainSenderBccAddress'
-export LDAP_ATTR_DOMAIN_RECIPIENT_BCC_ADDRESS='domainRecipientBccAddress'
-# Values of domain related attributes.
-export LDAP_VALUE_DOMAIN_GLOBALADMIN='yes'
-export LDAP_VALUE_DOMAIN_BACKUPMX='yes'
 
 # Group related.
 export LDAP_ATTR_GROUP_RDN='ou'
@@ -195,29 +137,5 @@ export LDAP_ATTR_GROUP_GROUPS='Groups'
 export LDAP_ATTR_GROUP_ALIASES='Aliases'
 export LDAP_ATTR_GROUP_EXTERNALS='Externals'
 
-# Attributes of group object.
-export LDAP_ATTR_GROUP_ACCESSPOLICY='accessPolicy'
-export LDAP_ATTR_GROUP_HASMEMBER='hasMember'
-export LDAP_ATTR_GROUP_MEMBER='mailForwardingAddress'
-export LDAP_ATTR_GROUP_ALLOWED_USER='listAllowedUser'
-# Values of group related attributes.
-export LDAP_VALUE_GROUP_HASMEMBER='yes'
-
 # Attributes of user object.
 export LDAP_ATTR_USER_RDN='mail'
-export LDAP_ATTR_USER_PASSWD='userPassword'
-export LDAP_ATTR_USER_HOME_DIRECTORY='homeDirectory'
-export LDAP_ATTR_USER_STORAGE_BASE_DIRECTORY='storageBaseDirectory'
-export LDAP_ATTR_USER_SENDER_BCC_ADDRESS='userSenderBccAddress'
-export LDAP_ATTR_USER_RECIPIENT_BCC_ADDRESS='userRecipientBccAddress'
-export LDAP_ATTR_USER_BACKUP_MAIL_ADDRESS='backupMailAddress'
-export LDAP_ATTR_USER_QUOTA='mailQuota'
-export LDAP_ATTR_USER_FORWARD='mailForwardingAddress'
-export LDAP_ATTR_USER_RESTRICTION_CLASS='restrictionClass'
-export LDAP_ATTR_USER_RESTRICTED_DOMAIN='restrictedDomain'
-export LDAP_ATTR_USER_MEMBER_OF_GROUP='memberOfGroup'
-export LDAP_ATTR_USER_SHADOW_ADDRESS='shadowAddress'
-# Values of user related attributes.
-export LDAP_STATUS_ACTIVE='active'
-
-#### END LDAP schema ####

@@ -75,7 +75,7 @@ sn: ${FIRST_USER}
 uid: ${FIRST_USER}
 givenName: ${FIRST_USER}
 mail: ${FIRST_USER}@${FIRST_DOMAIN}
-accountStatus: ${LDAP_STATUS_ACTIVE}
+accountStatus: active
 storageBaseDirectory: ${STORAGE_BASE_DIR}
 mailMessageStore: ${STORAGE_NODE}/${FIRST_USER_MAILDIR_HASH_PART}
 homeDirectory: ${FIRST_USER_MAILDIR_FULL_PATH}

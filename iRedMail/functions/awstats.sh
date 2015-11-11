@@ -65,7 +65,7 @@ EOF
         fi
 
         cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthLDAPUrl   ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}/${LDAP_BASEDN}?${LDAP_ATTR_USER_RDN}?sub?(&(objectclass=${LDAP_OBJECTCLASS_MAILUSER})(${LDAP_ATTR_ACCOUNT_STATUS}=${LDAP_STATUS_ACTIVE})(${LDAP_ATTR_DOMAIN_GLOBALADMIN}=${LDAP_VALUE_DOMAIN_GLOBALADMIN}))
+    AuthLDAPUrl   ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}/${LDAP_BASEDN}?${LDAP_ATTR_USER_RDN}?sub?(&(objectclass=mailUser)(accountStatus=active)(domainGlobalAdmin=yes))
 
     AuthLDAPBindDN "${LDAP_BINDDN}"
     AuthLDAPBindPassword "${LDAP_BINDPW}"
