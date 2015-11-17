@@ -90,15 +90,22 @@ EOF
 CREATE DATABASE ${RCM_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE ROLE ${RCM_DB_USER} WITH LOGIN ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 
+-- Grant privilege
+ALTER DATABASE ${RCM_DB} OWNER TO ${RCM_DB_USER};
+EOF
+
+        # Import sql templte as roundcube user.
+        su - ${PGSQL_SYS_USER} -c "psql -U ${RCM_DB_USER} -d ${RCM_DB}" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Import Roundcubemail SQL template
-\c ${RCM_DB};
 \i ${PGSQL_SYS_USER_HOME}/rcm.sql;
 
 -- Grant privileges
-GRANT SELECT,INSERT,UPDATE,DELETE ON cache,cache_index,cache_messages,cache_shared,cache_thread,contactgroupmembers,contactgroups,contacts,dictionary,identities,searches,session,system,users TO ${RCM_DB_USER};
-GRANT SELECT,UPDATE,USAGE ON contacts_seq,contactgroups_seq,identities_seq,searches_seq,users_seq TO ${RCM_DB_USER};
+-- GRANT SELECT,INSERT,UPDATE,DELETE ON cache,cache_index,cache_messages,cache_shared,cache_thread,contactgroupmembers,contactgroups,contacts,dictionary,identities,searches,session,system,users TO ${RCM_DB_USER};
+-- GRANT SELECT,UPDATE,USAGE ON contacts_seq,contactgroups_seq,identities_seq,searches_seq,users_seq TO ${RCM_DB_USER};
+EOF
 
--- Grant privilege to update password through roundcube webmail
+        # Grant privilege to update password (vmail.mailbox) through roundcube webmail
+        su - ${PGSQL_SYS_USER} -c "psql -d ${VMAIL_DB} >/dev/null" >> ${INSTALL_LOG} 2>&1 <<EOF
 \c ${VMAIL_DB};
 GRANT UPDATE,SELECT ON mailbox TO ${RCM_DB_USER};
 EOF

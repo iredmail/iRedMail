@@ -91,20 +91,18 @@ EOF
         cp ${IREDAPD_ROOT_DIR}/SQL/iredapd.pgsql ${PGSQL_DATA_DIR}/iredapd.pgsql >> ${INSTALL_LOG} 2>&1
         chmod 0555 ${PGSQL_DATA_DIR}/iredapd.pgsql
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
+-- Create user
+CREATE USER ${IREDAPD_DB_USER} WITH ENCRYPTED PASSWORD '${IREDAPD_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+
 -- Create database
 CREATE DATABASE ${IREDAPD_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 
--- Create user
-CREATE USER ${IREDAPD_DB_USER} WITH ENCRYPTED PASSWORD '${IREDAPD_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 ALTER DATABASE ${IREDAPD_DB_NAME} OWNER TO ${IREDAPD_DB_USER};
+EOF
 
+        su - ${PGSQL_SYS_USER} -c "psql -U ${IREDAPD_DB_USER} -d ${IREDAPD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Import SQL template
-\c ${IREDAPD_DB_NAME};
 \i ${PGSQL_DATA_DIR}/iredapd.pgsql;
-
--- Grant permissions
-GRANT ALL ON throttle,throttle_tracking TO ${IREDAPD_DB_USER};
-GRANT ALL ON throttle_id_seq,throttle_tracking_id_seq TO ${IREDAPD_DB_USER};
 
 -- Enable greylisting by default.
 INSERT INTO greylisting (account, priority, sender, sender_priority, active) VALUES ('@.', 0, '@.', 0, 1);

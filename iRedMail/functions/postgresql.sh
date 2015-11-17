@@ -56,6 +56,9 @@ pgsql_initialize()
     ECHO_DEBUG "Update config file to listen on address: ${LOCAL_ADDRESS}"
     perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}$ENV{LOCAL_ADDRESS}${2}#' ${PGSQL_CONF_POSTGRESQL}
 
+    ECHO_DEBUG "Update pg_hba.conf to force local users to authenticate with md5."
+    perl -pi -e 's#^(local.*all.*all.*)(peer)$#${1}md5#g' ${PGSQL_CONF_PG_HBA}
+
     if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
         # Allow remote access
         echo "host   all all ${LOCAL_ADDRESS}/32 md5" >> ${PGSQL_CONF_PG_HBA}
@@ -99,6 +102,13 @@ EOF
     ECHO_DEBUG "Generate ${PGSQL_DOT_PGPASS}."
     cat > ${PGSQL_DOT_PGPASS} <<EOF
 localhost:*:*:${PGSQL_ROOT_USER}:${PGSQL_ROOT_PASSWD}
+localhost:*:*:${VMAIL_DB_BIND_USER}:${VMAIL_DB_BIND_PASSWD}
+localhost:*:*:${VMAIL_DB_ADMIN_USER}:${VMAIL_DB_ADMIN_PASSWD}
+localhost:*:*:${IREDAPD_DB_USER}:${IREDAPD_DB_PASSWD}
+localhost:*:*:${IREDADMIN_DB_USER}:${IREDADMIN_DB_PASSWD}
+localhost:*:*:${SOGO_DB_USER}:${SOGO_DB_PASSWD}
+localhost:*:*:${RCM_DB_USER}:${RCM_DB_PASSWD}
+localhost:*:*:${AMAVISD_DB_USER}:${AMAVISD_DB_PASSWD}
 EOF
 
     chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_DOT_PGPASS}
@@ -135,29 +145,37 @@ pgsql_import_vmail_users()
 
     ECHO_DEBUG "Generating SQL template for postfix virtual hosts: ${PGSQL_INIT_SQL_SAMPLE}."
 
+    # Create roles
     cat > ${PGSQL_INIT_SQL_SAMPLE} <<EOF
+-- Crete role: vmail, read-only.
+CREATE USER ${VMAIL_DB_BIND_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_BIND_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+
+-- Create role: vmailadmin, read + write.
+CREATE USER ${VMAIL_DB_ADMIN_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_ADMIN_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+
 -- Create database to store mail accounts
 CREATE DATABASE ${VMAIL_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
-\c ${VMAIL_DB};
+
+-- Grant privilege
+ALTER DATABASE ${VMAIL_DB} OWNER TO ${VMAIL_DB_ADMIN_USER};
+
+-- Create sql tables as vmailadmin
+\c ${VMAIL_DB} ${VMAIL_DB_ADMIN_USER};
 EOF
 
     cat ${PGSQL_VMAIL_STRUCTURE_SAMPLE} >> ${PGSQL_INIT_SQL_SAMPLE}
 
     cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
--- Crete roles:
--- + vmail: read-only
--- + vmailadmin: read, write
-CREATE USER ${VMAIL_DB_BIND_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_BIND_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-CREATE USER ${VMAIL_DB_ADMIN_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_ADMIN_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+\c ${VMAIL_DB};
 
 -- Set correct privilege for ROLE: vmail
 GRANT SELECT ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user TO ${VMAIL_DB_BIND_USER};
 GRANT SELECT,UPDATE,INSERT,DELETE ON used_quota TO ${VMAIL_DB_BIND_USER};
 
 -- Set correct privilege for ROLE: vmailadmin
-GRANT SELECT,UPDATE,INSERT,DELETE ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user,share_folder,anyone_shares,used_quota TO ${VMAIL_DB_ADMIN_USER};
-GRANT SELECT,UPDATE,INSERT,DELETE ON deleted_mailboxes TO ${VMAIL_DB_ADMIN_USER};
-GRANT USAGE,SELECT,UPDATE ON deleted_mailboxes_id_seq TO ${VMAIL_DB_ADMIN_USER};
+-- GRANT SELECT,UPDATE,INSERT,DELETE ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user,share_folder,anyone_shares,used_quota TO ${VMAIL_DB_ADMIN_USER};
+-- GRANT SELECT,UPDATE,INSERT,DELETE ON deleted_mailboxes TO ${VMAIL_DB_ADMIN_USER};
+-- GRANT USAGE,SELECT,UPDATE ON deleted_mailboxes_id_seq TO ${VMAIL_DB_ADMIN_USER};
 
 -- Add first mail domain
 INSERT INTO domain (domain,transport,settings,created) VALUES ('${FIRST_DOMAIN}', '${TRANSPORT}', 'default_user_quota:1024;', NOW());

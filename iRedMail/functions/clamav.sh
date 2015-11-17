@@ -80,6 +80,7 @@ clamav_config()
 
     # Add user alias in Postfix
     add_postfix_alias ${CLAMAV_USER} ${SYS_ROOT_USER}
+    add_postfix_alias virusalert ${SYS_ROOT_USER}
 
     cat >> ${TIP_FILE} <<EOF
 ClamAV:

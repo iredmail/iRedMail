@@ -75,10 +75,13 @@ export pkg_counter=1
 # Misc file (source tarball) list.
 if [ X"${DISTRO}" == X"FREEBSD" ]; then
     MD5_FILE='SHASUM.freebsd.misc'
+    SHASUM_CMD='shasum'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     MD5_FILE='MD5.openbsd'
+    MD5_CMD='md5'
 else
     MD5_FILE='MD5.misc'
+    MD5_CMD='md5sum'
 fi
 
 MISCLIST="$(cat ${_ROOTDIR}/${MD5_FILE} | awk -F'misc/' '{print $2}')"
@@ -122,7 +125,7 @@ check_md5()
         shasum -c ${MD5_FILE} | grep 'FAILED' &>/dev/null
         RETVAL="$?"
     else
-        md5 -c ${MD5_FILE} |grep 'FAILED' &>/dev/null
+        md5sum -c ${MD5_FILE} | grep 'FAILED' &>/dev/null
         RETVAL="$?"
     fi
 
