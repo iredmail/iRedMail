@@ -91,9 +91,9 @@ INSERT INTO greylisting (account, priority, sender, sender_priority, active) VAL
 SOURCE ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelists.sql;
 EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp ${IREDAPD_ROOT_DIR}/SQL/{iredapd.pgsql, greylisting_whitelists.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
+        cp ${IREDAPD_ROOT_DIR}/SQL/{iredapd.pgsql,greylisting_whitelists.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
 
-        chmod 0555 ${PGSQL_DATA_DIR}/{iredapd.pgsql, greylisting_whitelists.sql}
+        chmod 0555 ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelists.sql}
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create user
 CREATE USER ${IREDAPD_DB_USER} WITH ENCRYPTED PASSWORD '${IREDAPD_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
@@ -115,7 +115,7 @@ INSERT INTO greylisting (account, priority, sender, sender_priority, active) VAL
 \i ${PGSQL_DATA_DIR}/greylisting_whitelists.sql;
 EOF
 
-        rm -f ${PGSQL_DATA_DIR}/{iredapd.pgsql, greylisting_whitelists.sql}
+        rm -f ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelists.sql}
     fi
 
     echo 'export status_iredapd_import_sql="DONE"' >> ${STATUS_FILE}
