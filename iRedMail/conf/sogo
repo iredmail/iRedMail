@@ -20,6 +20,13 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
+# Define SOGo yum/apt mirror sites.
+#   - CentOS 6: ${SOGO_PKG_MIRROR}/RHEL6/$basearch
+#   - CentOS 7: ${SOGO_PKG_MIRROR}/RHEL7/$basearch
+#   - Debian: ${SOGO_PKG_MIRROR}/debian
+#   - Ubuntu: ${SOGO_PKG_MIRROR}/ubuntu
+export SOGO_PKG_MIRROR="${SOGO_PKG_MIRROR:=http://inverse.ca/downloads/SOGo}"
+export SOGO_PKG_MIRROR="${SOGO_PKG_MIRROR:=http://inverse.ca}"
 
 export SOGO_DAEMON_USER='sogo'
 export SOGO_DAEMON_GROUP='sogo'

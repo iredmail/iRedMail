@@ -8,6 +8,7 @@ iRedMail-0.9.3:
       new release since 2013 (the latest stable release doesn't support IPv6),
       we have throttling support in iRedAPD as replacement.
     * Improvements:
+        - Update Fail2ban filter to catch postscreen log.
         - Enable global address book for SQL backends in SOGo by default,
           domains are isolated. Thanks dnwahs <shawn _at_ mcsp.net> for the
           sharing in iRedMail forum.
@@ -25,6 +26,7 @@ iRedMail-0.9.3:
           plugin 'amavisd_wblist'.
 
     * Fixed issues:
+        - Not add 'virusalert' in Postfix alias file.
         - Not use correct postrotate command to rotate log file on Debian.
         - Incorrectly set default fireewall zone on RHEL/CentOS 7 if you
           didn't choose to restart firewall immediately.

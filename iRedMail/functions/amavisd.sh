@@ -549,20 +549,19 @@ CREATE DATABASE ${AMAVISD_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 -- Create user
 CREATE USER ${AMAVISD_DB_USER} WITH ENCRYPTED PASSWORD '${AMAVISD_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 
--- Import Amavisd SQL template
-\c ${AMAVISD_DB_NAME};
-\i ${PGSQL_SYS_USER_HOME}/amavisd.sql;
+ALTER DATABASE ${AMAVISD_DB_NAME} OWNER TO ${AMAVISD_DB_USER};
+EOF
 
--- Grant privileges
-GRANT SELECT,INSERT,UPDATE,DELETE ON maddr,mailaddr,msgrcpt,msgs,policy,quarantine,users,wblist TO ${AMAVISD_DB_USER};
-GRANT SELECT,UPDATE,USAGE ON maddr_id_seq,mailaddr_id_seq,policy_id_seq,users_id_seq TO ${AMAVISD_DB_USER};
+        # Import Amavisd SQL template
+        su - ${PGSQL_SYS_USER} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
+\i ${PGSQL_SYS_USER_HOME}/amavisd.sql;
 EOF
         rm -f ${PGSQL_SYS_USER_HOME}/amavisd.sql >> ${INSTALL_LOG}
 
         if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
             :
         else
-            su - ${PGSQL_SYS_USER} -c "psql -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG}  <<EOF
+            su - ${PGSQL_SYS_USER} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
 ALTER DATABASE ${AMAVISD_DB_NAME} SET bytea_output TO 'escape';
 EOF
         fi

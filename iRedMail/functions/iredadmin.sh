@@ -133,19 +133,19 @@ EOF
         cp -f ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/docs/samples/iredadmin.pgsql ${PGSQL_DATA_DIR}/ >/dev/null
         chmod 0777 ${PGSQL_DATA_DIR}/iredadmin.pgsql >/dev/null
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
--- Create database
-CREATE DATABASE ${IREDADMIN_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
-
 -- Create user
 CREATE USER ${IREDADMIN_DB_USER} WITH ENCRYPTED PASSWORD '${IREDADMIN_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 
--- Import SQL template
-\c ${IREDADMIN_DB_NAME};
-\i ${PGSQL_DATA_DIR}/iredadmin.pgsql;
+-- Create database
+CREATE DATABASE ${IREDADMIN_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 
--- Grant permissions
-GRANT ALL on sessions,log,updatelog,deleted_mailboxes to ${IREDADMIN_DB_USER};
-GRANT ALL ON log_id_seq,deleted_mailboxes_id_seq TO ${IREDADMIN_DB_USER};
+-- Grant privilege
+ALTER DATABASE ${IREDADMIN_DB_NAME} OWNER TO ${IREDADMIN_DB_USER};
+EOF
+
+        su - ${PGSQL_SYS_USER} -c "psql -U ${IREDADMIN_DB_USER} -d ${IREDADMIN_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
+-- Import SQL template
+\i ${PGSQL_DATA_DIR}/iredadmin.pgsql;
 EOF
         rm -f ${PGSQL_DATA_DIR}/iredadmin.pgsql
     fi

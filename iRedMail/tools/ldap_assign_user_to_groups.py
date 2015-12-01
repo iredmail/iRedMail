@@ -101,13 +101,14 @@ if not is_remove:
 print "* Get user's dn and membership of mailing list(s)."
 (user_name, domain) = user.split('@', 1)
 user_dn = 'mail=%s,ou=Users,domainName=%s,%s' % (user, domain, BASEDN)
-qr = conn.search_s(user_dn,
-                   ldap.SCOPE_BASE,
-                   '(mail=%s)' % user,
-                   ['mail', 'memberOfGroup'])
-
-if not qr:
-    print "<<< ERROR >>> No such user."
+try:
+    qr = conn.search_s(user_dn,
+                       ldap.SCOPE_BASE,
+                       '(mail=%s)' % user,
+                       ['mail', 'memberOfGroup'])
+except ldap.NO_SUCH_OBJECT:
+    print "* <<< ERROR >>> User doesn't exist: %s" % user
+    sys.exit()
 
 (dn, entry) = qr[0]
 
