@@ -249,6 +249,7 @@ cleanup_pgsql_force_connect_with_password()
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
         perl -pi -e 's#^(local.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
+        perl -pi -e 's#^(local.*all.*all.*)peer#${1}md5#' ${PGSQL_CONF_PG_HBA}
         perl -pi -e 's#^(host.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         perl -pi -e 's#^(local.*)peer#${1}md5#' ${PGSQL_CONF_PG_HBA}
