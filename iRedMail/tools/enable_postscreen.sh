@@ -2,6 +2,7 @@
 
 # Author: Zhang Huangbin <zhb@iredmail.org>
 # Purpose: Enable Postfix postscreen.
+# Last update: Dec 1, 2015
 
 export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
