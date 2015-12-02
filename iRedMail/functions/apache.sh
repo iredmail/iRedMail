@@ -63,13 +63,14 @@ apache_config()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         perl -pi -e 's#^(SSLCipherSuite).*#${1} $ENV{SSL_CIPHERS}#g' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(SSLCipherSuite.*)#${1}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
-    elif [ X"${DISTRO}" == X'DEBIAN' ]; then
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'FREEBSD' ]; then
         perl -pi -e 's#(SSLEngine on)$#${1}\nSSLCipherSuite $ENV{SSL_CIPHERS}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
-    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-        perl -pi -e 's#(SSLEngine on)$#${1}\nSSLCipherSuite $ENV{SSL_CIPHERS}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
-    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-        perl -pi -e 's#(SSLEngine on)$#${1}\nSSLCipherSuite $ENV{SSL_CIPHERS}\nSSLHonorCipherOrder on#g' ${HTTPD_SSL_CONF}
+
     fi
+
+    # HSTS support
+    perl -pi -e 's#(SSLEngine on)$#${1}\nHeader always set Strict-Transport-Security "max-age=15768000"#g' ${HTTPD_SSL_CONF}
+    perl -pi -e 's/(SSLEngine on)$/${1}\n# HSTS (mod_headers is required) (15768000 seconds = 6 months)/g' ${HTTPD_SSL_CONF}
 
     ECHO_DEBUG "Set correct SSL Cert/Key file location."
     if [ X"${DISTRO}" == X'RHEL' \
