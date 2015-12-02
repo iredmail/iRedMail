@@ -26,7 +26,6 @@
 #   - Debian: ${SOGO_PKG_MIRROR}/debian
 #   - Ubuntu: ${SOGO_PKG_MIRROR}/ubuntu
 export SOGO_PKG_MIRROR="${SOGO_PKG_MIRROR:=http://inverse.ca/downloads/SOGo}"
-export SOGO_PKG_MIRROR="${SOGO_PKG_MIRROR:=http://inverse.ca}"
 
 export SOGO_DAEMON_USER='sogo'
 export SOGO_DAEMON_GROUP='sogo'
