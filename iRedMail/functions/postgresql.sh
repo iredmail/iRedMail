@@ -56,9 +56,6 @@ pgsql_initialize()
     ECHO_DEBUG "Update config file to listen on address: ${LOCAL_ADDRESS}"
     perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}$ENV{LOCAL_ADDRESS}${2}#' ${PGSQL_CONF_POSTGRESQL}
 
-    ECHO_DEBUG "Update pg_hba.conf to force local users to authenticate with md5."
-    perl -pi -e 's#^(local.*all.*all.*)(peer)$#${1}md5#g' ${PGSQL_CONF_PG_HBA}
-
     if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
         # Allow remote access
         echo "host   all all ${LOCAL_ADDRESS}/32 md5" >> ${PGSQL_CONF_PG_HBA}
@@ -98,6 +95,16 @@ pgsql_initialize()
     su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 ALTER USER ${PGSQL_ROOT_USER} WITH ENCRYPTED PASSWORD '${PGSQL_ROOT_PASSWD}';
 EOF
+
+    # Note: we must reset `postgres` password first, otherwise all connection
+    # will fail, because we cannot set/change passwords at all, so we're trying
+    # to connect with a wrong password.
+    ECHO_DEBUG "Update pg_hba.conf to force local users to authenticate with md5."
+    perl -pi -e 's#^(local.*all.*all.*)(peer)$#${1}md5#g' ${PGSQL_CONF_PG_HBA}
+
+    ECHO_DEBUG "Restart PostgreSQL server and sleeping for 5 seconds."
+    service_control restart ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    sleep 5
 
     ECHO_DEBUG "Generate ${PGSQL_DOT_PGPASS}."
     cat > ${PGSQL_DOT_PGPASS} <<EOF

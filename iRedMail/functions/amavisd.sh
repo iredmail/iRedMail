@@ -481,6 +481,14 @@ EOF
 # Listen on specified addresses.
 \$inet_socket_bind = ['127.0.0.1'];
 
+# Selectively disable some of the header checks
+#
+# Duplicate or multiple occurrence of a header field
+\$allowed_header_tests{'multiple'} = 0;
+
+# Missing some headers. e.g. `Date:`
+\$allowed_header_tests{'missing'} = 0;
+
 EOF
 
     cat >> ${AMAVISD_CONF} <<EOF
