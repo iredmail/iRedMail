@@ -486,7 +486,7 @@ EOF
 # Duplicate or multiple occurrence of a header field
 \$allowed_header_tests{'multiple'} = 0;
 
-# Missing some headers. e.g. `Date:`
+# Missing some headers. e.g. 'Date:'
 \$allowed_header_tests{'missing'} = 0;
 
 EOF
