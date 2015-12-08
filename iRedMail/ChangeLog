@@ -45,6 +45,8 @@ iRedMail-0.9.3:
     * Updated packages:
         + Roundcube webmail -> 1.1.3.
         + uwsgi -> 2.0.11.2 (OpenBSD only)
+        + iRedAPD -> 1.7.0
+        + iRedAdmin -> 0.4.3
         + FreeBSD:
             - php-5.6
 
