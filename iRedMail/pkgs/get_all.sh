@@ -73,15 +73,12 @@ export pkg_total=$(echo ${PKGLIST} | wc -w | awk '{print $1}')
 export pkg_counter=1
 
 # Misc file (source tarball) list.
-if [ X"${DISTRO}" == X"FREEBSD" ]; then
-    MD5_FILE='SHASUM.freebsd.misc'
-    SHASUM_CMD='shasum'
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    MD5_FILE='MD5.freebsd'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     MD5_FILE='MD5.openbsd'
-    MD5_CMD='md5'
 else
     MD5_FILE='MD5.misc'
-    MD5_CMD='md5sum'
 fi
 
 MISCLIST="$(cat ${_ROOTDIR}/${MD5_FILE} | awk -F'misc/' '{print $2}')"
@@ -122,21 +119,29 @@ check_md5()
     ECHO_INFO -n "Validate packages ..."
 
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        shasum -c ${MD5_FILE} | grep 'FAILED' &>/dev/null
+        # Get package names.
+        pkg_names="$(cat ${MD5_FILE} | awk -F'(' '{print $2}' | awk -F')' '{print $1}')"
+
+        # Create a temp file to store shasum
+        md5 ${pkg_names} > _tmp_pkg_names
+
+        # Compare the shasum
+        diff _tmp_pkg_names ${MD5_FILE} &>/dev/null
         RETVAL="$?"
+        rm -f _tmp_pkg_names &>/dev/null
     else
-        md5sum -c ${MD5_FILE} | grep 'FAILED' &>/dev/null
+        md5sum -c ${MD5_FILE} &>/dev/null
         RETVAL="$?"
     fi
 
     if [ X"${RETVAL}" == X"0" ]; then
-        echo -e "\t[ FAILED ]"
-        ECHO_ERROR "MD5 check failed. Script exit ...\n"
-        exit 255
-    else
         echo -e "\t[ OK ]"
         echo 'export status_fetch_misc="DONE"' >> ${STATUS_FILE}
         echo 'export status_check_md5="DONE"' >> ${STATUS_FILE}
+    else
+        echo -e "\t[ FAILED ]"
+        ECHO_ERROR "MD5 check failed. Script exit ...\n"
+        exit 255
     fi
 }
 

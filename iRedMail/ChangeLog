@@ -1,22 +1,21 @@
 iRedMail-0.9.3:
     * Works on new distribution releases:
-        - Ubuntu 15.10
-        - OpenBSD 5.8.
+        - Ubuntu 15.10. [Note: old 15.04 is not supported.]
+        - OpenBSD 5.8. [Note: 5.7 and earlier releases are not supported.]
 
-    * SOGo Groupware is now available on FreeBSD.
-    * Cluebringer has been removed. It's not under active development and no
-      new release since 2013 (the latest stable release doesn't support IPv6),
-      we have throttling support in iRedAPD as replacement.
+    * Remove components:
+        - Cluebringer has been removed. It's not under active development and
+          no new release since 2013 (the latest stable release doesn't support
+          IPv6), we have greylisting and throttling support in iRedAPD as
+          replacement.
+
     * Improvements:
+        - SOGo Groupware is now available on FreeBSD.
         - Enable HSTS (HTTP Strict Transport Security) in both Apache and Nginx.
         - Update Fail2ban filter to catch postscreen log.
         - Enable global address book for SQL backends in SOGo by default,
           domains are isolated. Thanks dnwahs <shawn _at_ mcsp.net> for the
           sharing in iRedMail forum.
-        - New script: tools/ldap_assign_user_to_groups.py. Used to assign user
-          to specified mailing lists, or remove membership.
-        - New script: tools/ldap_move_members_to_another_group.py. Used to
-          move or copy ALL members of specified mailing list to another.
         - Supports per-user alias address in SQL backends. 2 new sql columns
           are required: `alias.is_alias`, `alias.alias_to`.
         - Enable postscreen service in Postfix by default.
@@ -25,6 +24,12 @@ iRedMail-0.9.3:
         - New SQL table `amavisd.outbound_wblist`, used to store whitelists
           and blacklists for outbound messages. It's required by iRedAPD
           plugin 'amavisd_wblist'.
+
+    * New scripts:
+        - tools/ldap_assign_user_to_groups.py. Used to assign user to specified
+          mailing lists, or remove membership.
+        - tools/ldap_move_members_to_another_group.py. Used to move or copy ALL
+          members of specified mailing list to another.
 
     * Fixed issues:
         - Not add 'virusalert' in Postfix alias file.
