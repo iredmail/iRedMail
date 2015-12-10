@@ -92,8 +92,8 @@ SOURCE ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelists.sql;
 EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp ${IREDAPD_ROOT_DIR}/SQL/{iredapd.pgsql,greylisting_whitelists.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
-
         chmod 0555 ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelists.sql}
+
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create user
 CREATE USER ${IREDAPD_DB_USER} WITH ENCRYPTED PASSWORD '${IREDAPD_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
