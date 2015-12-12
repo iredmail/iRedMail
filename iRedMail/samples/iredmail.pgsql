@@ -269,20 +269,29 @@ CREATE INDEX idx_recipient_bcc_user_active ON recipient_bcc_user (active);
 CREATE TABLE deleted_mailboxes (
     id SERIAL PRIMARY KEY,
     timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     -- Email address of deleted user
     username VARCHAR(255) NOT NULL DEFAULT '',
+
     -- Domain part of username
     domain VARCHAR(255) NOT NULL DEFAULT '',
+
     -- Absolute path of user's mailbox
     maildir VARCHAR(255) NOT NULL DEFAULT '',
+
     -- Deleted by which domain admin
-    admin VARCHAR(255) NOT NULL DEFAULT ''
+    admin VARCHAR(255) NOT NULL DEFAULT '',
+
+    -- The time scheduled to delete this mailbox.
+    -- NOTE: it requires cron job + script to actually delete the mailbox.
+    delete_date DATE DEFAULT NULL
 );
 
 CREATE INDEX idx_deleted_mailboxes_timestamp ON deleted_mailboxes (timestamp);
 CREATE INDEX idx_deleted_mailboxes_username ON deleted_mailboxes (username);
 CREATE INDEX idx_deleted_mailboxes_domain ON deleted_mailboxes (domain);
 CREATE INDEX idx_deleted_mailboxes_admin ON deleted_mailboxes (admin);
+CREATE INDEX idx_delete_date ON deleted_mailboxes (delete_date);
 
 --
 -- IMAP shared folders. User 'from_user' shares folders to user 'to_user'.

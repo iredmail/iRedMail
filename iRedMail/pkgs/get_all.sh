@@ -35,8 +35,6 @@ check_user root
 check_hostname
 check_runtime_dir
 
-# Where to fetch/store binary packages and source tarball.
-export IREDMAIL_MIRROR="${IREDMAIL_MIRROR:=http://iredmail.org}"
 export PKG_DIR="${_ROOTDIR}/pkgs"
 export PKG_MISC_DIR="${_ROOTDIR}/misc"
 

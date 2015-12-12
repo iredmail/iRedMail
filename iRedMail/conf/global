@@ -620,5 +620,8 @@ if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
 else
     # -c: Continue getting a partially-downloaded file.
     # -q: Turn off Wget's output.
-    FETCH_CMD="wget -cq"
+    FETCH_CMD="wget -cq --timeout=30"
 fi
+
+# Where to fetch/store binary packages and source tarball.
+export IREDMAIL_MIRROR="${IREDMAIL_MIRROR:=http://iredmail.org}"

@@ -267,12 +267,43 @@ cleanup_pgsql_force_connect_with_password()
     echo 'export status_cleanup_pgsql_force_connect_with_password="DONE"' >> ${STATUS_FILE}
 }
 
+cleanup_feedback()
+{
+    # Send names of chosen package to iRedMail project to help developers
+    # understand which packages are most important to users.
+    url="${BACKEND_ORIG}=YES"
+    url="${url}&NGINX=${WEB_SERVER_IS_NGINX}&APACHE=${WEB_SERVER_IS_APACHE}"
+    url="${url}&ROUNDCUBE=${USE_RCM}"
+    url="${url}&SOGO=${USE_SOGO}"
+    url="${url}&AWSTATS=${USE_AWSTATS}"
+    url="${url}&FAIL2BAN=${USE_FAIL2BAN}"
+    url="${url}&IREDADMIN=${USE_IREDADMIN}"
+
+    ECHO_DEBUG "Send info of chosed packages to iRedMail team to help improve iRedMail:"
+    ECHO_DEBUG ""
+    ECHO_DEBUG "\tBACKEND=${BACKEND_ORIG}"
+    ECHO_DEBUG "\tNGINX=${WEB_SERVER_IS_NGINX}"
+    ECHO_DEBUG "\tAPACHE=${WEB_SERVER_IS_APACHE}"
+    ECHO_DEBUG "\tROUNDCUBE=${USE_RCM}"
+    ECHO_DEBUG "\tSOGO=${USE_SOGO}"
+    ECHO_DEBUG "\tAWSTATS=${USE_AWSTATS}"
+    ECHO_DEBUG "\tFAIL2BAN=${USE_FAIL2BAN}"
+    ECHO_DEBUG "\tIREDADMIN=${USE_IREDADMIN}"
+    ECHO_DEBUG ""
+
+    ${FETCH_CMD} "${IREDMAIL_MIRROR}/version/check.py/iredmail_pkgs?${url}" &>/dev/null
+
+    echo 'export status_cleanup_feedback="DONE"' >> ${STATUS_FILE}
+}
+
 cleanup()
 {
+    # Store iRedMail version number in /etc/iredmail-release
     cat > /etc/${PROG_NAME_LOWERCASE}-release <<EOF
 ${PROG_VERSION}
 EOF
 
+    # Remove temporary file used with 'mysql --defaults-file'
     rm -f ${MYSQL_DEFAULTS_FILE_ROOT} &>/dev/null
 
     cat <<EOF
@@ -283,6 +314,7 @@ EOF
 
 EOF
 
+    # Mail installation related info to postmaster@
     ECHO_DEBUG "Mail sensitive administration info to ${tip_recipient}."
     tip_recipient="${FIRST_USER}@${FIRST_DOMAIN}"
     FILE_IREDMAIL_INSTALLATION_DETAILS="${FIRST_USER_MAILDIR_INBOX}/details.eml"
@@ -324,6 +356,7 @@ EOF
     fi
 
     check_status_before_run cleanup_update_clamav_signatures
+    check_status_before_run cleanup_feedback
 
     cat <<EOF
 ********************************************************************
