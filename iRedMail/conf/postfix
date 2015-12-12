@@ -56,8 +56,11 @@ export POSTFIX_CHROOT_DIR='/var/spool/postfix'
 export POSTFIX_FILE_MAIN_CF="${POSTFIX_ROOTDIR}/main.cf"
 export POSTFIX_FILE_MASTER_CF="${POSTFIX_ROOTDIR}/master.cf"
 export POSTFIX_FILE_ALIASES="${POSTFIX_ROOTDIR}/aliases"
-export POSTFIX_FILE_HEADER_CHECKS="${POSTFIX_ROOTDIR}/header_checks.pcre"
 export POSTFIX_FILE_HELO_ACCESS="${POSTFIX_ROOTDIR}/helo_access.pcre"
+export POSTFIX_FILE_HEADER_CHECKS="${POSTFIX_ROOTDIR}/header_checks.pcre"
+export POSTFIX_FILE_BODY_CHECKS="${POSTFIX_ROOTDIR}/body_checks.pcre"
+# used for sender white/blacklist with pcre support
+export POSTFIX_FILE_SENDER_ACCESS="${POSTFIX_ROOTDIR}/sender_access.pcre"
 
 # Default transport or LDA (local deliver agent).
 # We use dovecot deliver program as default transport.

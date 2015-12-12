@@ -135,6 +135,10 @@ mydestination = $myhostname, localhost, localhost.localdomain
 smtpd_reject_unlisted_recipient = yes
 smtpd_reject_unlisted_sender = yes
 
+# Header and body checks with PCRE table
+header_checks = pcre:${PH_POSTFIX_FILE_HEADER_CHECKS}
+body_checks = pcre:${PH_POSTFIX_FILE_BODY_CHECKS}
+
 # HELO restriction
 smtpd_helo_required = yes
 smtpd_helo_restrictions =
@@ -149,6 +153,7 @@ smtpd_sender_restrictions =
     reject_unknown_sender_domain
     reject_non_fqdn_sender
     reject_unlisted_sender
+    check_sender_access pcre:${POSTFIX_FILE_SENDER_ACCESS}
     permit_mynetworks
     reject_sender_login_mismatch
     permit_sasl_authenticated
@@ -212,4 +217,3 @@ smtpd_tls_key_file = PH_SSL_KEY_FILE
 smtpd_tls_cert_file = PH_SSL_CERT_FILE
 smtpd_tls_CAfile = PH_SSL_CERT_FILE
 tls_random_source = dev:/dev/urandom
-
