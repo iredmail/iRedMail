@@ -1,7 +1,11 @@
 iRedMail-0.9.3:
     * Works on new distribution releases:
         - Ubuntu 15.10. [Note: old 15.04 is not supported.]
-        - OpenBSD 5.8. [Note: 5.7 and earlier releases are not supported.]
+        - OpenBSD 5.8. Notes:
+            + 5.7 and earlier releases are not supported.
+            + spamd(8) is not enabled and replaced by postscreen, because
+              postscreen is better to reduce spam (e.g. with help of DNSBL
+              services).
 
     * Remove components:
         - Cluebringer has been removed. It's not under active development and

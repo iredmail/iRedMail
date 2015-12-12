@@ -160,6 +160,12 @@ cleanup_replace_firewall_rules()
                     service_control enable iptables >> ${INSTALL_LOG} 2>&1
                 fi
             elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+                # Enable pf
+                echo 'pf=YES' >> ${RC_CONF_LOCAL}
+
+                # Whitelist file required by spamd(8)
+                touch /etc/mail/nospamd
+
                 ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
                 cp -f ${SAMPLE_DIR}/openbsd/pf.conf ${FIREWALL_RULE_CONF}
             fi

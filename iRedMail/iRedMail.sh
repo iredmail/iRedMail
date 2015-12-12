@@ -147,9 +147,6 @@ check_status_before_run backend_install
 # Postfix.
 check_status_before_run postfix_config
 
-# Postfix Policy Server
-check_status_before_run policy_server_config
-
 # Dovecot.
 check_status_before_run enable_dovecot
 
