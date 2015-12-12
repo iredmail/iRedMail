@@ -32,6 +32,8 @@ iRedMail-0.9.3:
           members of specified mailing list to another.
 
     * Fixed issues:
+        - Key length 2048 of DKIM key is too long, too many complains because 
+          many DNS vendors don't support it. So we generate with 1024 instead.
         - Not add 'virusalert' in Postfix alias file.
         - Not use correct postrotate command to rotate log file on Debian.
         - Incorrectly set default fireewall zone on RHEL/CentOS 7 if you
