@@ -153,10 +153,10 @@ smtpd_sender_restrictions =
     reject_unknown_sender_domain
     reject_non_fqdn_sender
     reject_unlisted_sender
-    check_sender_access pcre:PH_POSTFIX_FILE_SENDER_ACCESS
     permit_mynetworks
     reject_sender_login_mismatch
     permit_sasl_authenticated
+    check_sender_access pcre:PH_POSTFIX_FILE_SENDER_ACCESS
 
 # Recipient restrictions
 smtpd_recipient_restrictions =
