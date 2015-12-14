@@ -79,7 +79,11 @@ else
     MD5_FILE='MD5.misc'
 fi
 
-MISCLIST="$(cat ${_ROOTDIR}/${MD5_FILE} | awk -F'misc/' '{print $2}')"
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    MISCLIST="$(cat ${_ROOTDIR}/${MD5_FILE} | awk -F'[(/)]' '{print $3}')"
+else
+    MISCLIST="$(cat ${_ROOTDIR}/${MD5_FILE} | awk -F'misc/' '{print $2}')"
+fi
 
 prepare_dirs()
 {
