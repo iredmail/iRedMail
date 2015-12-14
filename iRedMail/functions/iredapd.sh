@@ -180,9 +180,9 @@ iredapd_config()
 
     # Setup cron job to clean up expired throttle tracking records.
     # Note: use ${IREDAPD_ROOT_DIR_SYMBOL_LINK} instead of ${IREDAPD_ROOT_DIR}
-    # here, so that we don't need to change cron job after upgraded iRedAPD.
-    cat > ${CRON_SPOOL_DIR}/${IREDAPD_DAEMON_USER} <<EOF
-# Clean up expired tracking records every hour.
+    # here, so that we don't need to change cron job after upgrading iRedAPD.
+    cat > ${CRON_SPOOL_DIR}/${SYS_ROOT_USER} <<EOF
+# iRedAPD: Clean up expired tracking records hourly.
 1   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py &>/dev/null
 EOF
 

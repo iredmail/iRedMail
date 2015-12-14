@@ -174,15 +174,13 @@ if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
     export BACKEND='OPENLDAP'
 elif [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
     export BACKEND='OPENLDAP'
-elif [ X"${BACKEND_ORIG}" == X'MYSQL' ]; then
+elif [ X"${BACKEND_ORIG}" == X'MYSQL' -o X"${BACKEND_ORIG}" == X'MARIADB' ]; then
     export BACKEND='MYSQL'
-elif [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-    export BACKEND='MYSQL'
-    export BACKEND_ORIG='MARIADB'
 elif [ X"${BACKEND_ORIG}" == X'POSTGRESQL' ]; then
     export BACKEND='PGSQL'
     export BACKEND_ORIG='PGSQL'
 fi
+
 echo "export BACKEND_ORIG='${BACKEND_ORIG}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export BACKEND='${BACKEND}'" >> ${IREDMAIL_CONFIG_FILE}
 

@@ -281,7 +281,7 @@ cleanup_feedback()
 
     ECHO_DEBUG "Send info of chosed packages to iRedMail team to help improve iRedMail:"
     ECHO_DEBUG ""
-    ECHO_DEBUG "\tBACKEND=${BACKEND_ORIG}"
+    ECHO_DEBUG "\t${BACKEND_ORIG}=YES"
     ECHO_DEBUG "\tNGINX=${WEB_SERVER_IS_NGINX}"
     ECHO_DEBUG "\tAPACHE=${WEB_SERVER_IS_APACHE}"
     ECHO_DEBUG "\tROUNDCUBE=${USE_RCM}"
