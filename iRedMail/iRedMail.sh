@@ -73,7 +73,6 @@ check_env
 . ${CONF_DIR}/mysql
 . ${CONF_DIR}/postgresql
 . ${CONF_DIR}/postfix
-. ${CONF_DIR}/policy_server
 . ${CONF_DIR}/dovecot
 . ${CONF_DIR}/amavisd
 . ${CONF_DIR}/iredapd
@@ -103,7 +102,6 @@ fi
 . ${FUNCTIONS_DIR}/backend.sh
 
 . ${FUNCTIONS_DIR}/postfix.sh
-. ${FUNCTIONS_DIR}/policy_server.sh
 . ${FUNCTIONS_DIR}/dovecot.sh
 . ${FUNCTIONS_DIR}/amavisd.sh
 . ${FUNCTIONS_DIR}/iredapd.sh
