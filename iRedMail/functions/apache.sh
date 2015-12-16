@@ -89,7 +89,7 @@ apache_config()
     ECHO_DEBUG "Enable Apache modules."
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         a2ensite default-ssl >> ${INSTALL_LOG} 2>&1
-        a2enmod ssl deflate >> ${INSTALL_LOG} 2>&1
+        a2enmod ssl deflate headers >> ${INSTALL_LOG} 2>&1
 
         # SOGo
         [ X"${USE_SOGO}" == X'YES' ] && a2enmod proxy proxy_http headers rewrite version >> ${INSTALL_LOG} 2>&1

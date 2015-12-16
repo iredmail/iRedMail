@@ -84,9 +84,6 @@ SOURCE ${IREDAPD_ROOT_DIR}/SQL/iredapd.mysql;
 GRANT ALL ON ${IREDAPD_DB_NAME}.* TO "${IREDAPD_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDAPD_DB_PASSWD}";
 FLUSH PRIVILEGES;
 
--- Enable greylisting by default.
-INSERT INTO greylisting (account, priority, sender, sender_priority, active) VALUES ('@.', 0, '@.', 0, 1);
-
 -- Import greylisting whitelists.
 SOURCE ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelists.sql;
 EOF

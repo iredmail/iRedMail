@@ -126,13 +126,14 @@ check_md5()
 
         # Create a temp file to store shasum
         md5 ${pkg_names} > _tmp_pkg_names
+        cat _tmp_pkg_names
 
         # Compare the shasum
         diff _tmp_pkg_names ${MD5_FILE} &>/dev/null
         RETVAL="$?"
         rm -f _tmp_pkg_names &>/dev/null
     else
-        md5sum -c ${MD5_FILE} &>/dev/null
+        md5sum -c ${MD5_FILE}
         RETVAL="$?"
     fi
 
