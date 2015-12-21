@@ -37,6 +37,7 @@ check_runtime_dir
 
 export PKG_DIR="${_ROOTDIR}/pkgs"
 export PKG_MISC_DIR="${_ROOTDIR}/misc"
+export BIN_MD5="md5sum"
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     # Special package.
@@ -72,8 +73,10 @@ export pkg_counter=1
 
 # Misc file (source tarball) list.
 if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export BIN_MD5="md5"
     MD5_FILE='MD5.freebsd'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export BIN_MD5="md5"
     MD5_FILE='MD5.openbsd'
 else
     MD5_FILE='MD5.misc'
@@ -125,7 +128,7 @@ check_md5()
         pkg_names="$(cat ${MD5_FILE} | awk -F'(' '{print $2}' | awk -F')' '{print $1}')"
 
         # Create a temp file to store shasum
-        md5 ${pkg_names} > _tmp_pkg_names
+        ${BIN_MD5} ${pkg_names} > _tmp_pkg_names
         cat _tmp_pkg_names
 
         # Compare the shasum
@@ -133,7 +136,7 @@ check_md5()
         RETVAL="$?"
         rm -f _tmp_pkg_names &>/dev/null
     else
-        md5sum -c ${MD5_FILE}
+        ${BIN_MD5} -c ${MD5_FILE}
         RETVAL="$?"
     fi
 

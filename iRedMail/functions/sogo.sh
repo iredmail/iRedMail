@@ -237,13 +237,15 @@ EOF
         service_control enable 'memcached_enable' 'YES'
         service_control enable 'sogod_enable' 'YES'
 
-        # Enable required modules
-        perl -pi -e 's/^#(LoadModule proxy_module.*)/${1}/' ${HTTPD_CONF}
-        perl -pi -e 's/^#(LoadModule proxy_http_module.*)/${1}/' ${HTTPD_CONF}
+        if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+            # Enable required Apache modules
+            perl -pi -e 's/^#(LoadModule proxy_module.*)/${1}/' ${HTTPD_CONF}
+            perl -pi -e 's/^#(LoadModule proxy_http_module.*)/${1}/' ${HTTPD_CONF}
 
-        # Copy sample apache config file
-        cp ${SAMPLE_DIR}/sogo/sogo-apache.conf ${HTTPD_CONF_DIR}/SOGo.conf
-        perl -pi -e 's#PH_SOGO_GNUSTEP_DIR#$ENV{SOGO_GNUSTEP_DIR}#g' ${HTTPD_CONF_DIR}/SOGo.conf
+            # Copy sample apache config file
+            cp ${SAMPLE_DIR}/sogo/sogo-apache.conf ${HTTPD_CONF_DIR}/SOGo.conf
+            perl -pi -e 's#PH_SOGO_GNUSTEP_DIR#$ENV{SOGO_GNUSTEP_DIR}#g' ${HTTPD_CONF_DIR}/SOGo.conf
+        fi
     fi
 
     cat >> ${TIP_FILE} <<EOF
