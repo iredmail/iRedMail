@@ -74,6 +74,7 @@ mysql_initialize()
 
     if [ ! -f ${MYSQL_MY_CNF} ]; then
         ECHO_DEBUG "Copy sample MySQL config file: ${SAMPLE_DIR}/mysql/my.cnf -> ${MYSQL_MY_CNF}."
+        mkdir -p $(dirname ${MYSQL_MY_CNF}) &>/dev/null >> ${INSTALL_LOG} 2>&1
         cp ${SAMPLE_DIR}/mysql/my.cnf ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 
@@ -106,9 +107,11 @@ USE mysql;
 -- Allow access from MYSQL_GRANT_HOST with password
 GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${MYSQL_GRANT_HOST}' IDENTIFIED BY '${MYSQL_ROOT_PASSWD}';
 GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'127.0.0.1' IDENTIFIED BY '${MYSQL_ROOT_PASSWD}';
+
 -- Allow GRANT privilege
 UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='${MYSQL_GRANT_HOST}';
 UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='127.0.0.1';
+
 -- Set root password
 UPDATE user SET Password = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User = 'root';
 EOF
