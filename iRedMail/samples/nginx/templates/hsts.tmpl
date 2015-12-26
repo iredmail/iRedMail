@@ -1,4 +1,17 @@
 # Use HTTP Strict Transport Security to force client to use secure
-# connections only. Reference:
-# https://developer.mozilla.org/en-US/docs/Web/Security/HTTP_strict_transport_security
-add_header Strict-Transport-Security "max-age=63072000; includeSubdomains";
+# connections only. References:
+#
+# * RFC Document (6797): HTTP Strict Transport Security (HSTS)
+#   https://tools.ietf.org/html/rfc6797#section-6.1.2
+#
+# * Short tutorial from Mozilla:
+#   https://developer.mozilla.org/en-US/docs/Web/Security/HTTP_strict_transport_security
+#
+# WARNING: According to RFC document, HSTS may fail with self-signed SSL
+#          certificate.
+#          https://tools.ietf.org/html/rfc6797#page-27
+#
+# Syntax:
+#
+#   Strict-Transport-Security: max-age=expireTime [; includeSubDomains] [; preload]
+add_header Strict-Transport-Security "max-age=63072000"
