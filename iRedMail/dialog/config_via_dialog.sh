@@ -206,9 +206,11 @@ echo "export LDAP_ROOTPW='${LDAP_ROOTPW}'" >> ${IREDMAIL_CONFIG_FILE}
 
 # MySQL root password
 # MYSQL_ROOT_USER is defined in conf/global
-export MYSQL_ROOT_PASSWD="$(${RANDOM_STRING})"
+export random_root_pw="$(${RANDOM_STRING})"
+export MYSQL_ROOT_PASSWD="${MYSQL_ROOT_PASSWD:=${random_root_pw}}"
 echo "export MYSQL_ROOT_USER='${MYSQL_ROOT_USER}'" >>${IREDMAIL_CONFIG_FILE}
 echo "export MYSQL_ROOT_PASSWD='${MYSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
+unset random_root_pw
 
 # PostgreSQL root password.
 # PGSQL_ROOT_USER is defined in conf/global

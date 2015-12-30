@@ -1,4 +1,12 @@
 iRedMail-0.9.3.1:
+    * New scripts:
+        - tools/fail2ban_unban_ip.sh. Used to unban specified IP addresses
+          from ALL fail2ban jails.
+
+    * Fixed issues:
+        - Cannot use specified MySQL root password on command line while
+          installing with remote MySQL server.
+
     * Updated packages:
         + Roundcube webmail -> 1.1.4
 
