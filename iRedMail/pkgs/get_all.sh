@@ -121,7 +121,7 @@ check_md5()
 {
     cd ${_ROOTDIR}
 
-    ECHO_INFO -n "Validate packages ..."
+    ECHO_INFO "Validate packages ..."
 
     if [ X"${DISTRO}" == X"FREEBSD" ]; then
         # Get package names.

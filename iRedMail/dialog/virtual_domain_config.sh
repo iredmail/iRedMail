@@ -33,8 +33,7 @@ EXAMPLE:
 
 WARNING:
 
-It cannot be the same as server hostname: ${HOSTNAME}, please either
-change your server hostname or use another mail domain name.
+It can *NOT* be the same as server hostname: ${HOSTNAME}, please either change your server hostname or use another mail domain name.
 " 20 76 2>/tmp/first_domain
 
     FIRST_DOMAIN="$(cat /tmp/first_domain)"
