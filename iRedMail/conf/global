@@ -545,10 +545,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export ENABLE_BACKEND_MYSQL='NO'
 
     # Package management.
-    if [ X"${PKG_PATH}" == X"" ]; then
-        # Reference: http://www.openbsd.org/faq/faq15.html#Easy
-        export PKG_PATH="ftp://ftp.openbsd.org/pub/OpenBSD/$(uname -r)/packages/$(machine -a)/"
-    fi
+    export ob_pkg_path="http://ftp.openbsd.org/pub/OpenBSD/$(uname -r)/packages/$(machine -a)/"
+    export PKG_PATH="${PKG_PATH:=${ob_pkg_path}}"
 
     # Package management.
     export install_pkg='install_pkg_openbsd'
