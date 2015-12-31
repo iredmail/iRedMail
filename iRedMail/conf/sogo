@@ -39,7 +39,7 @@ export SOGO_RC_SCRIPT_NAME='sogod'
 export MEMCACHED_RC_SCRIPT_NAME='memcached'
 
 # SOGo deamon listens on port 127.0.0.1:20000 by default.
-export SOGO_BIND_ADDRESS='127.0.0.1'
+export SOGO_BIND_ADDRESS="${LOCAL_ADDRESS:=127.0.0.1}"
 export SOGO_BIND_PORT='20000'
 
 export SOGO_DB_NAME='sogo'
