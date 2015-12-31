@@ -32,6 +32,12 @@ pgsql_initialize()
 {
     ECHO_INFO "Configure PostgreSQL database server." 
 
+    ECHO_DEBUG "Make sure PostgreSQL binds to local address: ${SQL_SERVER_ADDRESS}."
+    if [ -f ${PGSQL_CONF_POSTGRESQL} ]; then
+        # Note: we're using double-quotes instead of single-quote here.
+        perl -pi -e "s#^(listen_addresses).*#\$1 = '${SQL_SERVER_ADDRESS}'#g" ${PGSQL_CONF_POSTGRESQL}
+    fi
+
     # Init db
     if [ X"${DISTRO}" == X'RHEL' ]; then
         if [ X"${DISTRO_VERSION}"  == X'6' ]; then

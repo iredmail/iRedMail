@@ -54,6 +54,12 @@ mysql_initialize()
 
     backup_file ${MYSQL_MY_CNF}
 
+    ECHO_DEBUG "Make sure MySQL server binds to local address: ${SQL_SERVER_ADDRESS}."
+    if [ -f ${MYSQL_MY_CNF} ]; then
+        # Note: we're using double-quotes instead of single-quote here.
+        perl -pi -e "s#^(bind-address).*#\$1 = ${SQL_SERVER_ADDRESS}#g" ${MYSQL_MY_CNF}
+    fi
+
     ECHO_DEBUG "Stop MySQL service before updating my.cnf."
     service_control stop ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     sleep 3

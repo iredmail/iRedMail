@@ -4,7 +4,8 @@ iRedMail-0.9.4:
           from ALL fail2ban jails.
 
     * Fixed issues:
-        - Not correctly set SOGo bind address for FreeBSD jail.
+        - Not correctly set MySQL/PostgreSQL bind address, and SOGo bind
+          address inside FreeBSD jail.
         - Use only 2 DNSBL services in postscreen service:
           zen.spamhaus.org, b.barracudacentral.org.
         - Cannot use specified MySQL root password on command line while
