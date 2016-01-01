@@ -13,6 +13,7 @@ iRedMail-0.9.4:
 
     * Updated packages:
         + Roundcube webmail -> 1.1.4
+        + uwsgi -> 2.0.12 (OpenBSD only)
 
 iRedMail-0.9.3:
     * Works on new distribution releases:
