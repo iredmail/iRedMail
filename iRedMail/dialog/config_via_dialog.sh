@@ -41,7 +41,7 @@ DIALOG="dialog --colors --no-collapse --insecure --ok-label Next \
 ${DIALOG} \
     --title "Welcome and thanks for your use" \
     --yesno "\
-Welcome to the iRedMail setup wizard, we will ask you some simple questions required to setup a mail server. If you encouraged any trouble or issue, please report to our support forum: http://www.iredmail.org/forum/
+Welcome to the iRedMail setup wizard, we will ask you some simple questions required to setup a mail server. If you encounter any trouble or issues, please report to our support forum: http://www.iredmail.org/forum/
 
 NOTE: You can abort this installation wizard by pressing key Ctrl-C.
 " 20 76
