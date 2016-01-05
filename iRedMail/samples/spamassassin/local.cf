@@ -36,7 +36,9 @@ rewrite_header      subject [ SPAM ]
 report_safe         0
 lock_method         flock
 
+#
 # Bayesian support
+#
 # References:
 # - http://wiki.apache.org/spamassassin/BayesInSpamAssassin
 # - http://svn.apache.org/repos/asf/spamassassin/branches/3.3/sql/README.bayes
@@ -47,23 +49,25 @@ use_bayes          1
 bayes_auto_learn   1
 bayes_auto_expire  1
 
-# Store bayesian data in MySQL
+# Store bayesian data in MySQL.
+# Please make sure you have correct server address, port and database name.
 #bayes_store_module Mail::SpamAssassin::BayesStore::MySQL
-#bayes_sql_dsn      DBI:mysql:database:sql_server:sql_port
+#bayes_sql_dsn      DBI:mysql:sa_bayes:127.0.0.1:3306
 
-# Store bayesian data in MySQL
+# Store bayesian data in PostgreSQL.
+# Please make sure you have correct server address, port and database name.
 #bayes_store_module Mail::SpamAssassin::BayesStore::PgSQL
-#bayes_sql_dsn      DBI:Pg:database:sql_server:sql_port
-#
+#bayes_sql_dsn      DBI:Pg:sa_bayes:127.0.0.1:5432
+
+# SQL username and password.
 #bayes_sql_username db_username
 #bayes_sql_password db_password
-#
-# Override the username used for storing
-# data in the database. This could be used to group users together to
-# share bayesian filter data. You can also use this config option to
-# trick sa-learn to learn data as a specific user.
-#
+
+# Override the username used for storing data in the database.
+# This could be used to group users together to share bayesian filter data.
+# You can also use this config option to trick sa-learn to learn data as a specific user.
 #bayes_sql_override_username vmail
+
 
 # Turn off ALL DNSBL (DNS Blocklists)
 #skip_rbl_checks  1

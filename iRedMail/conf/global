@@ -455,6 +455,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export LIST_ALL_PKGS="dpkg -l |awk '{print $2}'"
     export LIST_FILES_IN_PKG='dpkg -L'
 
+    export SYSLOG_CONF_DIR='/etc/rsyslog.d'
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
         export SYSLOG_CONF='/etc/rsyslog.conf'
         export SYSLOG_POSTROTATE_CMD='invoke-rc.d rsyslog rotate > /dev/null'
