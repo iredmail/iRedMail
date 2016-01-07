@@ -137,7 +137,7 @@ postfix_config_basic()
                 perl -pi -e 's/^(mail.warn.*mail.warn)$/#${1}/' ${f}
                 perl -pi -e 's/^(mail.err.*mail.err)$/#${1}/' ${f}
             fi
-        fi
+        done
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         # FreeBSD: Start postfix when system start up.
         backup_file /etc/mail/mailer.conf
