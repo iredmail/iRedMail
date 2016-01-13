@@ -4,6 +4,9 @@ iRedMail-0.9.4:
           from ALL fail2ban jails.
 
     * Fixed issues:
+        - Not updating Postfix `mynetworks=` to use specified local address
+          while installing inside FreeBSD Jail.
+          Thanks Peter2121 <peter _at_ flytrace.com> for the report in forum.
         - Not correctly set MySQL/PostgreSQL bind address, and SOGo bind
           address inside FreeBSD jail.
         - Use only 2 DNSBL services in postscreen service:

@@ -62,6 +62,11 @@ postfix_config_basic()
     unset queue_directory command_directory daemon_directory data_directory
     unset mail_owner sendmail_path newaliases_path mailq_path setgid_group
 
+    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+        # Append LOCAL_ADDRESS in `mynetworks`
+        perl -pi -e 's#^(mynetworks = 127.0.0.1).*#${1} $ENV{LOCAL_ADDRESS}#g' ${POSTFIX_FILE_MAIN_CF}
+    fi
+
     # Update normal settings.
     perl -pi -e 's#PH_SSL_DHPARAM_FILE#$ENV{SSL_DHPARAM_FILE}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${POSTFIX_FILE_MAIN_CF}
