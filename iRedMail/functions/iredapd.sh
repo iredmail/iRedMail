@@ -84,8 +84,8 @@ SOURCE ${IREDAPD_ROOT_DIR}/SQL/iredapd.mysql;
 GRANT ALL ON ${IREDAPD_DB_NAME}.* TO "${IREDAPD_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDAPD_DB_PASSWD}";
 FLUSH PRIVILEGES;
 
--- Import greylisting whitelists.
-SOURCE ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelists.sql;
+-- Import greylisting whitelist domains.
+SOURCE ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelist_domains.sql;
 EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp ${IREDAPD_ROOT_DIR}/SQL/{iredapd.pgsql,greylisting_whitelists.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
@@ -108,12 +108,15 @@ EOF
 -- Enable greylisting by default.
 INSERT INTO greylisting (account, priority, sender, sender_priority, active) VALUES ('@.', 0, '@.', 0, 1);
 
--- Import greylisting whitelists.
-\i ${PGSQL_DATA_DIR}/greylisting_whitelists.sql;
+-- Import greylisting whitelist domains.
+\i ${PGSQL_DATA_DIR}/greylisting_whitelist_domains.sql;
 EOF
 
         rm -f ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelists.sql}
     fi
+
+    ECHO_DEBUG "Updating greylisting whitelists based on whitelist domain names."
+    ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py &>/dev/null
 
     echo 'export status_iredapd_import_sql="DONE"' >> ${STATUS_FILE}
 }
