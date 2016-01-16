@@ -45,6 +45,11 @@ dovecot_config()
     fi
     chmod 0664 ${DOVECOT_CONF}
 
+    # Listen address
+    if [ X"${IREDMAIL_HAS_IPV6}" == X'NO' ]; then
+        perl -pi -e 's#^(listen.*=).*#${1} \*#g' ${DOVECOT_CONF}
+    fi
+
     # Base directory.
     perl -pi -e 's#PH_BASE_DIR#$ENV{DOVECOT_BASE_DIR}#' ${DOVECOT_CONF}
     # base_dir is required on OpenBSD

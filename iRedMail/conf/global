@@ -623,3 +623,10 @@ fi
 
 # Where to fetch/store binary packages and source tarball.
 export IREDMAIL_MIRROR="${IREDMAIL_MIRROR:=http://iredmail.org}"
+
+# Detect IPv6 support with `ping6`.
+export IREDMAIL_HAS_IPV6='NO'
+ping6 -c 1 ::1 &>/dev/null
+if [ X"$?" == X'0' ]; then
+    IREDMAIL_HAS_IPV6='YES'
+fi

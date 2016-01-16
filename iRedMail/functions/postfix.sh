@@ -67,6 +67,12 @@ postfix_config_basic()
         perl -pi -e 's#^(mynetworks = 127.0.0.1).*#${1} $ENV{LOCAL_ADDRESS}#g' ${POSTFIX_FILE_MAIN_CF}
     fi
 
+    if [ X"${IREDMAIL_HAS_IPV6}" == X'NO' ]; then
+        perl -pi -e 's#^(inet_protocols.*=).*#${1} ipv4#g' ${POSTFIX_FILE_MAIN_CF}
+    fi
+
+    perl -pi -e 's#PH_SSL_DHPARAM_FILE#$ENV{SSL_DHPARAM_FILE}#g' ${POSTFIX_FILE_MAIN_CF}
+
     # Update normal settings.
     perl -pi -e 's#PH_SSL_DHPARAM_FILE#$ENV{SSL_DHPARAM_FILE}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${POSTFIX_FILE_MAIN_CF}
@@ -147,6 +153,7 @@ postfix_config_basic()
         # FreeBSD: Start postfix when system start up.
         backup_file /etc/mail/mailer.conf
         cp -f ${SAMPLE_DIR}/postfix/freebsd/mailer.conf /etc/mail/mailer.conf
+        chmod +r /etc/mail/mailer.conf
 
         # Start service when system start up.
         service_control enable 'postfix_enable' 'YES'
