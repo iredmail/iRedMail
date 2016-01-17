@@ -50,6 +50,13 @@ dovecot_config()
         perl -pi -e 's#^(listen.*=).*#${1} \*#g' ${DOVECOT_CONF}
     fi
 
+    # Service listen addresses and ports.
+    perl -pi -e 's#PH_LMTP_SERVER#$ENV{LMTP_SERVER}#g' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_LMTP_PORT#$ENV{LMTP_PORT}#g' ${DOVECOT_CONF}
+
+    perl -pi -e 's#PH_MANAGESIEVE_SERVER#$ENV{MANAGESIEVE_SERVER}#g' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_MANAGESIEVE_PORT#$ENV{MANAGESIEVE_PORT}#g' ${DOVECOT_CONF}
+
     # Base directory.
     perl -pi -e 's#PH_BASE_DIR#$ENV{DOVECOT_BASE_DIR}#' ${DOVECOT_CONF}
     # base_dir is required on OpenBSD

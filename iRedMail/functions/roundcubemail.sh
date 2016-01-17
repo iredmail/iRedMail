@@ -203,11 +203,11 @@ rcm_plugin_managesieve()
     ECHO_DEBUG "Config plugin: managesieve."
     cd ${RCM_CONF_DIR}
 
-    export MANAGESIEVE_BIND_HOST MANAGESIEVE_PORT RCM_SIEVE_SAMPLE_FILE
+    export MANAGESIEVE_SERVER MANAGESIEVE_PORT RCM_SIEVE_SAMPLE_FILE
     cd ${RCM_HTTPD_ROOT}/plugins/managesieve/ && \
     cp config.inc.php.dist config.inc.php && \
     perl -pi -e 's#(.*managesieve_port.*=).*#${1} $ENV{MANAGESIEVE_PORT};#' config.inc.php
-    perl -pi -e 's#(.*managesieve_host.*=).*#${1} "$ENV{MANAGESIEVE_BIND_HOST}";#' config.inc.php
+    perl -pi -e 's#(.*managesieve_host.*=).*#${1} "$ENV{MANAGESIEVE_SERVER}";#' config.inc.php
     perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} false;#' config.inc.php
     perl -pi -e 's#(.*managesieve_default.*=).*#${1} "$ENV{RCM_SIEVE_SAMPLE_FILE}";#' config.inc.php
     perl -pi -e 's#(.*managesieve_vacation.*=).*#${1} 1;#' config.inc.php
