@@ -234,7 +234,7 @@ pgsql_cron_backup()
 
     # Add cron job
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
-# Backup on 03:01 AM
+# ${PROG_NAME}: Backup PostgreSQL databases on 03:01 AM
 1   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_PGSQL}
 
 EOF
