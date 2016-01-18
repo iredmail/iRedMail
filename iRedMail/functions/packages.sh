@@ -274,6 +274,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} clamd clamav-db"
         else
             ALL_PKGS="${ALL_PKGS} clamav clamav-update clamav-server clamav-server-systemd"
+            DISABLED_SERVICES="${DISABLED_SERVICES} clamd"
         fi
 
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
