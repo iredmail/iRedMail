@@ -88,7 +88,7 @@ ClamAV:
         - ${FRESHCLAM_CONF}
         - /etc/logrotate.d/clamav
     * RC scripts:
-            + ${DIR_RC_SCRIPTS}/${CLAMAV_CLAMD_RC_SCRIPT_NAME}
+            + ${DIR_RC_SCRIPTS}/${CLAMAV_CLAMD_SERVICE_NAME}
             + ${DIR_RC_SCRIPTS}/${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}
     * Log files:
         - ${CLAMD_LOGFILE}

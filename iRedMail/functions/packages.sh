@@ -266,7 +266,7 @@ install_all()
     fi
 
     # Amavisd-new & ClamAV & Altermime.
-    ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_SERVICE_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF unrar"
 
@@ -274,7 +274,6 @@ install_all()
             ALL_PKGS="${ALL_PKGS} clamd clamav-db"
         else
             ALL_PKGS="${ALL_PKGS} clamav clamav-update clamav-server clamav-server-systemd"
-            ENABLED_SERVICES="${ENABLED_SERVICES} clamd@amavisd"
         fi
 
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
@@ -287,7 +286,7 @@ install_all()
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-Mail-SpamAssassin clamav unrar"
-        PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_RC_SCRIPT_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
+        PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_SERVICE_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
 
     # Roundcube
