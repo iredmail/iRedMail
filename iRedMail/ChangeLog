@@ -4,6 +4,7 @@ iRedMail-0.9.4:
           from ALL fail2ban jails.
 
     * Fixed issues:
+        - Not enable port 25 in OpenBSD PF rule.
         - Not detect IPv6 support on server.
         - Not correct set file permission of /etc/mail/mailer.conf on FreeBSD.
         - Not install port 'www/sogo-activesync' on FreeBSD.
