@@ -56,8 +56,7 @@ mysql_initialize()
 
     ECHO_DEBUG "Make sure MySQL server binds to local address: ${SQL_SERVER_ADDRESS}."
     if [ -f ${MYSQL_MY_CNF} ]; then
-        # Note: we're using double-quotes instead of single-quote here.
-        perl -pi -e "s#^(bind-address).*#\$1 = ${SQL_SERVER_ADDRESS}#g" ${MYSQL_MY_CNF}
+        perl -pi -e 's#^(bind-address).*#$1 = $ENV{LOCAL_ADDRESS}#g' ${MYSQL_MY_CNF}
     fi
 
     ECHO_DEBUG "Stop MySQL service before updating my.cnf."
@@ -67,7 +66,7 @@ mysql_initialize()
     # Initial MySQL database first
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         ECHO_DEBUG "Set bind-address in my.cnf."
-        perl -pi -e 's#^(\[mysqld\])#${1}\nbind-address = 127.0.0.1#' ${MYSQL_MY_CNF}
+        perl -pi -e 's#^(\[mysqld\])#${1}\nbind-address = $ENV{LOCAL_ADDRESS}#' ${MYSQL_MY_CNF}
 
         ECHO_DEBUG "Run mysql_install_db."
         /usr/local/bin/mysql_install_db >> ${INSTALL_LOG} 2>&1
@@ -103,8 +102,11 @@ mysql_initialize()
         # Try to access without password, set a password if it's empty.
         mysql -u${MYSQL_ROOT_USER} -e "show databases" >> ${INSTALL_LOG} 2>&1
         if [ X"$?" == X'0' ]; then
+            ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
+            mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
+
             ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
-            mysqladmin --user=root password "${MYSQL_ROOT_PASSWD}"
+            mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET Password=password('${MYSQL_ROOT_PASSWD}') WHERE User='root'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
         fi
     else
         ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${LOCAL_ADDRESS} ..."
