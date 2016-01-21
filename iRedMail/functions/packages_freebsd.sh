@@ -73,6 +73,7 @@ install_all()
         devel_py-babel \
         devel_sope \
         dns_p5-Net-DNS \
+        dns_py-dnspython \
         ftp_curl \
         mail_spamassassin \
         lang_perl5.18 \
@@ -387,6 +388,12 @@ OPTIONS_FILE_UNSET+=GOST
 OPTIONS_FILE_SET+=IDN
 OPTIONS_FILE_SET+=IPV6
 OPTIONS_FILE_UNSET+=SSHFP
+EOF
+
+    cat > /var/db/ports/dns_py-dnspython/options <<EOF
+OPTIONS_FILE_UNSET+=DOCS
+OPTIONS_FILE_UNSET+=EXAMPLES
+OPTIONS_FILE_SET+=PYCRYPTO
 EOF
 
     # SpamAssassin. REQUIRED.
@@ -1049,6 +1056,9 @@ EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/databases_py-sqlalchemy/options
     fi
+
+    # iRedAPD
+    ALL_PORTS="${ALL_PORTS} dns/py-dnspython"
 
     # iRedAdmin: dependencies. webpy, Jinja2, bcrypt, beautifulsoup, lxml.
     ALL_PORTS="${ALL_PORTS} www/webpy"
