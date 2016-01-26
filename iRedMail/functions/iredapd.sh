@@ -88,8 +88,8 @@ FLUSH PRIVILEGES;
 SOURCE ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelist_domains.sql;
 EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp ${IREDAPD_ROOT_DIR}/SQL/{iredapd.pgsql,greylisting_whitelists.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
-        chmod 0555 ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelists.sql}
+        cp ${IREDAPD_ROOT_DIR}/SQL/iredapd.pgsql ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
+        chmod 0555 ${PGSQL_DATA_DIR}/iredapd.pgsql
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create user
@@ -112,7 +112,7 @@ INSERT INTO greylisting (account, priority, sender, sender_priority, active) VAL
 \i ${PGSQL_DATA_DIR}/greylisting_whitelist_domains.sql;
 EOF
 
-        rm -f ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelists.sql}
+        rm -f ${PGSQL_DATA_DIR}/iredapd.pgsql
     fi
 
     ECHO_DEBUG "Updating greylisting whitelists based on whitelist domain names."
