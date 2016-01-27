@@ -461,8 +461,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export SYSLOG_CONF='/etc/rsyslog.conf'
         export SYSLOG_POSTROTATE_CMD='invoke-rc.d rsyslog rotate > /dev/null'
 
-        if [ X"${DISTRO_CODENAME}" == X'jessie' ]; then
-            export USE_SYSTEMD='YES'
+        # MariaDB support requires Debian >= 8 (jessie)
+        if [ X"${DISTRO_VERSION}" != X'7' ]; then
             export ENABLE_BACKEND_MARIADB='YES'
         fi
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
@@ -472,10 +472,11 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
         # MariaDB support requires Ubuntu >= 14.04
         export ENABLE_BACKEND_MARIADB='YES'
+    fi
 
-        if [ X"${DISTRO_CODENAME}" == X'wily' ]; then
-            export USE_SYSTEMD='YES'
-        fi
+    # systemd support.
+    if which systemctl &>/dev/null; then
+        export USE_SYSTEMD='YES'
     fi
 
     # SSHD log file
