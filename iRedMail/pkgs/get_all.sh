@@ -67,10 +67,6 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export PKG_CREATEREPO="dpkg-dev"
 fi
 
-# Binary packages.
-export pkg_total=$(echo ${PKGLIST} | wc -w | awk '{print $1}')
-export pkg_counter=1
-
 # Misc file (source tarball) list.
 if [ X"${DISTRO}" == X'FREEBSD' ]; then
     export BIN_MD5="md5"
@@ -91,8 +87,7 @@ fi
 prepare_dirs()
 {
     ECHO_DEBUG "Creating necessary directories ..."
-    for i in ${PKG_DIR} ${PKG_MISC_DIR}
-    do
+    for i in ${PKG_DIR} ${PKG_MISC_DIR}; do
         [ -d "${i}" ] || mkdir -p "${i}"
     done
 }

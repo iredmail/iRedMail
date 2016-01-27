@@ -102,7 +102,7 @@ check_user()
 check_hostname()
 {
     echo ${HOSTNAME} | grep '\.' &>/dev/null
-    [ X"$?" != X"0" ] && \
+    [ X"$?" != X'0' ] && \
         ECHO_ERROR "Please configure a fully qualified domain name (FQDN) in /etc/hosts before we go further.\n\nExample:\n\n127.0.0.1   mail.iredmail.org mail localhost\n" && \
         exit 255
 }
