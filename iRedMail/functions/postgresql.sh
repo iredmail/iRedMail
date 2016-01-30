@@ -32,11 +32,7 @@ pgsql_initialize()
 {
     ECHO_INFO "Configure PostgreSQL database server." 
 
-    ECHO_DEBUG "Make sure PostgreSQL binds to local address: ${SQL_SERVER_ADDRESS}."
-    if [ -f ${PGSQL_CONF_POSTGRESQL} ]; then
-        # Note: we're using double-quotes instead of single-quote here.
-        perl -pi -e "s#^(listen_addresses).*#\$1 = '${SQL_SERVER_ADDRESS}'#g" ${PGSQL_CONF_POSTGRESQL}
-    fi
+    backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
 
     # Init db
     if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -57,18 +53,14 @@ pgsql_initialize()
         su - ${PGSQL_SYS_USER} -c "initdb -D ${PGSQL_DATA_DIR} -U ${PGSQL_SYS_USER} -A trust" >> ${INSTALL_LOG} 2>&1
     fi
 
-    backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
+    if [ -f ${PGSQL_CONF_POSTGRESQL} ]; then
+        ECHO_DEBUG "Set client_min_messages to ERROR."
+        perl -pi -e 's#.*(client_min_messages =).*#${1} error#' ${PGSQL_CONF_POSTGRESQL}
 
-    ECHO_DEBUG "Update config file to listen on address: ${LOCAL_ADDRESS}"
-    perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}$ENV{LOCAL_ADDRESS}${2}#' ${PGSQL_CONF_POSTGRESQL}
-
-    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
-        # Allow remote access
-        echo "host   all all ${LOCAL_ADDRESS}/32 md5" >> ${PGSQL_CONF_PG_HBA}
+        # SSL is enabled by default on Ubuntu.
+        [ X"${DISTRO}" == X'FREEBSD' ] && \
+            perl -pi -e 's/^#(ssl.=.)off(.*)/${1}on${2}/' ${PGSQL_CONF_POSTGRESQL}
     fi
-
-    ECHO_DEBUG "Set client_min_messages to ERROR."
-    perl -pi -e 's#.*(client_min_messages =).*#${1} error#' ${PGSQL_CONF_POSTGRESQL}
 
     ECHO_DEBUG "Copy iRedMail SSL cert/key with strict permission."
     backup_file ${PGSQL_DATA_DIR}/server.{crt,key}
@@ -80,19 +72,8 @@ pgsql_initialize()
     ln -s ${PGSQL_SSL_CERT} ${PGSQL_DATA_DIR}/server.crt >> ${INSTALL_LOG} 2>&1
     ln -s ${PGSQL_SSL_KEY} ${PGSQL_DATA_DIR}/server.key >> ${INSTALL_LOG} 2>&1
 
-    ECHO_DEBUG "Copy iRedMail SSL cert/key with strict permission."
-    # SSL is enabled by default on Ubuntu.
-    [ X"${DISTRO}" == X'FREEBSD' ] && \
-        perl -pi -e 's/^#(ssl.=.)off(.*)/${1}on${2}/' ${PGSQL_CONF_POSTGRESQL}
-
     ECHO_DEBUG "Start PostgreSQL server"
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        ${PGSQL_RC_SCRIPT} start 
-    elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" != X'6' ]; then
-        service_control restart ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
-    else
-        ${PGSQL_RC_SCRIPT} restart >> ${INSTALL_LOG} 2>&1
-    fi
+    service_control restart ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Sleep 5 seconds for PostgreSQL daemon initialize ..."
     sleep 5
@@ -107,6 +88,16 @@ EOF
     # to connect with a wrong password.
     ECHO_DEBUG "Update pg_hba.conf to force local users to authenticate with md5."
     perl -pi -e 's#^(local.*all.*all.*)(peer)$#${1}md5#g' ${PGSQL_CONF_PG_HBA}
+
+    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+        # Allow remote access
+        echo "host   all all ${LOCAL_ADDRESS}/32 md5" >> ${PGSQL_CONF_PG_HBA}
+
+        if [ -f ${PGSQL_CONF_POSTGRESQL} ]; then
+            ECHO_DEBUG "Make sure PostgreSQL binds to local address: ${SQL_SERVER_ADDRESS}."
+            perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}$ENV{LOCAL_ADDRESS}${2}#' ${PGSQL_CONF_POSTGRESQL}
+        fi
+    fi
 
     ECHO_DEBUG "Restart PostgreSQL server and sleeping for 5 seconds."
     service_control restart ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
@@ -172,7 +163,7 @@ CREATE DATABASE ${VMAIL_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
 -- Grant privilege
 ALTER DATABASE ${VMAIL_DB} OWNER TO ${VMAIL_DB_ADMIN_USER};
 
--- Create sql tables as vmailadmin
+-- Connect as vmailadmin
 \c ${VMAIL_DB} ${VMAIL_DB_ADMIN_USER};
 EOF
 
@@ -201,7 +192,7 @@ INSERT INTO alias (address,goto,domain,created) VALUES ('${FIRST_USER}@${FIRST_D
 INSERT INTO domain_admins (username,domain,created) VALUES ('${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}','ALL', NOW());
 EOF
 
-    ECHO_DEBUG "Import postfix virtual hosts/users: ${PGSQL_INIT_SQL_SAMPLE}."
+    ECHO_DEBUG "Import virtual mail accounts: ${PGSQL_INIT_SQL_SAMPLE}."
     cp -f ${PGSQL_INIT_SQL_SAMPLE} ${PGSQL_DATA_DIR}/init.sql >> ${INSTALL_LOG} 2>&1
     chmod 0777 ${PGSQL_DATA_DIR}/init.sql >> ${INSTALL_LOG} 2>&1
     su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init.sql" >> ${INSTALL_LOG} 2>&1
