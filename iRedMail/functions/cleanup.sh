@@ -249,24 +249,6 @@ cleanup_update_clamav_signatures()
     echo 'export status_cleanup_update_clamav_signatures="DONE"' >> ${STATUS_FILE}
 }
 
-cleanup_pgsql_force_connect_with_password()
-{
-    ECHO_DEBUG "Force all users to connect PGSQL server with password."
-
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        perl -pi -e 's#^(local.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
-        perl -pi -e 's#^(host.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
-    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-        perl -pi -e 's#^(local.*)peer#${1}md5#' ${PGSQL_CONF_PG_HBA}
-    elif [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
-        # FreeBSD
-        perl -pi -e 's#^(local.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
-        perl -pi -e 's#^(host.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
-    fi
-
-    echo 'export status_cleanup_pgsql_force_connect_with_password="DONE"' >> ${STATUS_FILE}
-}
-
 cleanup_feedback()
 {
     # Send names of chosen package to iRedMail project to help developers
@@ -349,7 +331,6 @@ EOF
         check_status_before_run cleanup_replace_firewall_rules
 
     check_status_before_run cleanup_replace_mysql_config
-    [ X"${BACKEND}" == X'PGSQL' ] && check_status_before_run cleanup_pgsql_force_connect_with_password
 
     if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
         check_status_before_run cleanup_update_compile_spamassassin_rules

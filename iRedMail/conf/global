@@ -84,6 +84,11 @@ export MYSQL_ROOT_USER="${MYSQL_ROOT_USER:=root}"
 # PGSQL server
 export PGSQL_SERVER_ADDRESS="${PGSQL_SERVER_ADDRESS:=${LOCAL_ADDRESS}}"
 export PGSQL_SERVER_PORT="${PGSQL_SERVER_PORT:=5432}"
+# host address used in ~postgres/.pgpass
+export PGSQL_PGPASS_HOST='localhost'
+if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+    export PGSQL_PGPASS_HOST="${LOCAL_ADDRESS}"
+fi
 # SQL databases we should backup
 export MYSQL_BACKUP_DATABASES=''
 export PGSQL_BACKUP_DATABASES=''

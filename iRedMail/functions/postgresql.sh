@@ -32,8 +32,6 @@ pgsql_initialize()
 {
     ECHO_INFO "Configure PostgreSQL database server." 
 
-    backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
-
     # Init db
     if [ X"${DISTRO}" == X'RHEL' ]; then
         if [ X"${DISTRO_VERSION}"  == X'6' ]; then
@@ -53,7 +51,12 @@ pgsql_initialize()
         su - ${PGSQL_SYS_USER} -c "initdb -D ${PGSQL_DATA_DIR} -U ${PGSQL_SYS_USER} -A trust" >> ${INSTALL_LOG} 2>&1
     fi
 
+    backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
+
     if [ -f ${PGSQL_CONF_POSTGRESQL} ]; then
+        ECHO_DEBUG "Make sure PostgreSQL binds to local address: ${SQL_SERVER_ADDRESS}."
+        perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}$ENV{LOCAL_ADDRESS}${2}#' ${PGSQL_CONF_POSTGRESQL}
+
         ECHO_DEBUG "Set client_min_messages to ERROR."
         perl -pi -e 's#.*(client_min_messages =).*#${1} error#' ${PGSQL_CONF_POSTGRESQL}
 
@@ -78,25 +81,25 @@ pgsql_initialize()
     ECHO_DEBUG "Sleep 5 seconds for PostgreSQL daemon initialize ..."
     sleep 5
 
+    # Note: we must reset `postgres` password first, otherwise all connections
+    # will fail, because we cannot set/change passwords at all, so we're trying
+    # to connect with a wrong password.
     ECHO_DEBUG "Setting password for PostgreSQL admin: (${PGSQL_ROOT_USER})."
     su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 ALTER USER ${PGSQL_ROOT_USER} WITH ENCRYPTED PASSWORD '${PGSQL_ROOT_PASSWD}';
 EOF
 
-    # Note: we must reset `postgres` password first, otherwise all connection
-    # will fail, because we cannot set/change passwords at all, so we're trying
-    # to connect with a wrong password.
     ECHO_DEBUG "Update pg_hba.conf to force local users to authenticate with md5."
     perl -pi -e 's#^(local.*all.*all.*)(peer)$#${1}md5#g' ${PGSQL_CONF_PG_HBA}
-
-    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
-        # Allow remote access
-        echo "host   all all ${LOCAL_ADDRESS}/32 md5" >> ${PGSQL_CONF_PG_HBA}
-
-        if [ -f ${PGSQL_CONF_POSTGRESQL} ]; then
-            ECHO_DEBUG "Make sure PostgreSQL binds to local address: ${SQL_SERVER_ADDRESS}."
-            perl -pi -e 's#.*(listen_addresses.=.)(.).*#${1}${2}$ENV{LOCAL_ADDRESS}${2}#' ${PGSQL_CONF_POSTGRESQL}
-        fi
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        perl -pi -e 's#^(local.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
+        perl -pi -e 's#^(host.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
+    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+        perl -pi -e 's#^(local.*)peer#${1}md5#' ${PGSQL_CONF_PG_HBA}
+    elif [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
+        # FreeBSD
+        perl -pi -e 's#^(local.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
+        perl -pi -e 's#^(host.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
     fi
 
     ECHO_DEBUG "Restart PostgreSQL server and sleeping for 5 seconds."
@@ -105,14 +108,14 @@ EOF
 
     ECHO_DEBUG "Generate ${PGSQL_DOT_PGPASS}."
     cat > ${PGSQL_DOT_PGPASS} <<EOF
-localhost:*:*:${PGSQL_ROOT_USER}:${PGSQL_ROOT_PASSWD}
-localhost:*:*:${VMAIL_DB_BIND_USER}:${VMAIL_DB_BIND_PASSWD}
-localhost:*:*:${VMAIL_DB_ADMIN_USER}:${VMAIL_DB_ADMIN_PASSWD}
-localhost:*:*:${IREDAPD_DB_USER}:${IREDAPD_DB_PASSWD}
-localhost:*:*:${IREDADMIN_DB_USER}:${IREDADMIN_DB_PASSWD}
-localhost:*:*:${SOGO_DB_USER}:${SOGO_DB_PASSWD}
-localhost:*:*:${RCM_DB_USER}:${RCM_DB_PASSWD}
-localhost:*:*:${AMAVISD_DB_USER}:${AMAVISD_DB_PASSWD}
+*:*:*:${PGSQL_ROOT_USER}:${PGSQL_ROOT_PASSWD}
+*:*:*:${VMAIL_DB_BIND_USER}:${VMAIL_DB_BIND_PASSWD}
+*:*:*:${VMAIL_DB_ADMIN_USER}:${VMAIL_DB_ADMIN_PASSWD}
+*:*:*:${IREDAPD_DB_USER}:${IREDAPD_DB_PASSWD}
+*:*:*:${IREDADMIN_DB_USER}:${IREDADMIN_DB_PASSWD}
+*:*:*:${SOGO_DB_USER}:${SOGO_DB_PASSWD}
+*:*:*:${RCM_DB_USER}:${RCM_DB_PASSWD}
+*:*:*:${AMAVISD_DB_USER}:${AMAVISD_DB_PASSWD}
 EOF
 
     chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_DOT_PGPASS}
@@ -166,6 +169,10 @@ ALTER DATABASE ${VMAIL_DB} OWNER TO ${VMAIL_DB_ADMIN_USER};
 -- Connect as vmailadmin
 \c ${VMAIL_DB} ${VMAIL_DB_ADMIN_USER};
 EOF
+
+    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
+        echo 'CREATE LANGUAGE plpgsql;' >> ${PGSQL_INIT_SQL_SAMPLE}
+    fi
 
     cat ${PGSQL_VMAIL_STRUCTURE_SAMPLE} >> ${PGSQL_INIT_SQL_SAMPLE}
 
