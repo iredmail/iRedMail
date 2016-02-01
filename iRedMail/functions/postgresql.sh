@@ -90,17 +90,10 @@ ALTER USER ${PGSQL_ROOT_USER} WITH ENCRYPTED PASSWORD '${PGSQL_ROOT_PASSWD}';
 EOF
 
     ECHO_DEBUG "Update pg_hba.conf to force local users to authenticate with md5."
-    perl -pi -e 's#^(local.*all.*all.*)(peer)$#${1}md5#g' ${PGSQL_CONF_PG_HBA}
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        perl -pi -e 's#^(local.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
-        perl -pi -e 's#^(host.*)ident#${1}md5#' ${PGSQL_CONF_PG_HBA}
-    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-        perl -pi -e 's#^(local.*)peer#${1}md5#' ${PGSQL_CONF_PG_HBA}
-    elif [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
-        # FreeBSD
-        perl -pi -e 's#^(local.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
-        perl -pi -e 's#^(host.*)trust#${1}md5#' ${PGSQL_CONF_PG_HBA}
-    fi
+    perl -pi -e 's/^(local.*)/#${1}/g' ${PGSQL_CONF_PG_HBA}
+    perl -pi -e 's/^(host.*)/#${1}/g' ${PGSQL_CONF_PG_HBA}
+    echo 'local all     all                 md5' >> ${PGSQL_CONF_PG_HBA}
+    echo 'host  all     all     0.0.0.0/0   md5' >> ${PGSQL_CONF_PG_HBA}
 
     ECHO_DEBUG "Restart PostgreSQL server and sleeping for 5 seconds."
     service_control restart ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
