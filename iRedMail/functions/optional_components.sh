@@ -11,7 +11,7 @@ optional_components()
     check_status_before_run iredapd_setup
 
     # iRedAdmin.
-    [ X"${USE_IREDADMIN}" == X"YES" ] && \
+    [ X"${USE_IREDADMIN}" == X'YES' ] && \
         check_status_before_run iredadmin_config
 
     # Fail2ban.
@@ -22,7 +22,7 @@ optional_components()
         check_status_before_run fail2ban_config
 
     # Roundcubemail.
-    if [ X"${USE_RCM}" == X"YES" ]; then
+    if [ X"${USE_RCM}" == X'YES' ]; then
         check_status_before_run rcm_install
 
         if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
@@ -36,11 +36,11 @@ optional_components()
     fi
 
     # SOGo
-    [ X"${USE_SOGO}" == X"YES" ] && \
+    [ X"${USE_SOGO}" == X'YES' ] && \
         check_status_before_run sogo_config
 
     # Awstats.
-    [ X"${USE_AWSTATS}" == X"YES" -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && \
+    [ X"${USE_AWSTATS}" == X'YES' -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && \
         check_status_before_run awstats_config_basic && \
         check_status_before_run awstats_config_weblog && \
         check_status_before_run awstats_config_maillog && \

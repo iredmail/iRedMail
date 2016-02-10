@@ -56,7 +56,9 @@ mysql_initialize()
 
     ECHO_DEBUG "Make sure MySQL server binds to local address: ${SQL_SERVER_ADDRESS}."
     if [ -f ${MYSQL_MY_CNF} ]; then
-        perl -pi -e 's#^(bind-address).*#$1 = $ENV{LOCAL_ADDRESS}#g' ${MYSQL_MY_CNF}
+        # comment out 'bind-address' then reset
+        perl -pi -e 's/^(bind-address.*)/#$1/g' ${MYSQL_MY_CNF}
+        perl -pi -e 's#^(\[mysqld\])#${1}\nbind-address = $ENV{LOCAL_ADDRESS}#' ${MYSQL_MY_CNF}
     fi
 
     ECHO_DEBUG "Stop MySQL service before updating my.cnf."
@@ -65,9 +67,6 @@ mysql_initialize()
 
     # Initial MySQL database first
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ECHO_DEBUG "Set bind-address in my.cnf."
-        perl -pi -e 's#^(\[mysqld\])#${1}\nbind-address = $ENV{LOCAL_ADDRESS}#' ${MYSQL_MY_CNF}
-
         ECHO_DEBUG "Run mysql_install_db."
         /usr/local/bin/mysql_install_db >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -113,12 +112,16 @@ mysql_initialize()
         mysql -u${MYSQL_ROOT_USER} <<EOF
 USE mysql;
 -- Allow access from MYSQL_GRANT_HOST with password
-GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${MYSQL_GRANT_HOST}' IDENTIFIED BY '${MYSQL_ROOT_PASSWD}';
-GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'127.0.0.1' IDENTIFIED BY '${MYSQL_ROOT_PASSWD}';
+GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${MYSQL_GRANT_HOST}';
+-- GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'127.0.0.1';
+-- GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'localhost';
+-- GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'%';
 
 -- Allow GRANT privilege
 UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='${MYSQL_GRANT_HOST}';
-UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='127.0.0.1';
+-- UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='127.0.0.1';
+-- UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='localhost';
+-- UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='%';
 
 -- Set root password
 UPDATE user SET Password = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User = 'root';
