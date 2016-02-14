@@ -9,13 +9,13 @@ ignoreip    = PH_LOCAL_ADDRESS 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/
 [sshd]
 enabled     = true
 filter      = sshd
-action      = iptables-allports[name=sshd, protocol=tcp]
+action      = iptables-multiport[name=sshd, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
 logpath     = PH_SSHD_LOGFILE
 
 [sshd-ddos]
 enabled     = true
 filter      = sshd-ddos
-action      = iptables-allports[name=sshd-ddos, protocol=tcp]
+action      = iptables-multiport[name=sshd-ddos, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
 logpath     = PH_SSHD_LOGFILE
 
 [roundcube-iredmail]
