@@ -19,6 +19,9 @@ sa_config()
 
     ECHO_DEBUG "Enable crontabs for SpamAssassin update."
     if [ X"${DISTRO}" == X'RHEL' ]; then
+        [ -f ${ETC_SYSCONFIG_DIR}/sa-update ] && \
+            perl -pi -e 's/^#(SAUPDATE=yes)/${1}/' ${ETC_SYSCONFIG_DIR}/sa-update
+
         chmod 0644 /etc/cron.d/sa-update
         perl -pi -e 's/#(10.*)/${1}/' /etc/cron.d/sa-update
     elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
