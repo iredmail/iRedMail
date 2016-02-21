@@ -316,18 +316,8 @@ service_control()
         done
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
         if [ X"${action}" == X'enable' ]; then
-            [ -f /etc/rc.conf ] || touch /etc/rc.conf
             if [ X"$#" == X'2' ]; then
-                export var="${1}"
-                export value="${2}"
-                export full_setting="${var}='${value}'"
-                if grep "^${var}=" /etc/rc.conf &>/dev/null; then
-                    ECHO_DEBUG "Update ${var}= in /etc/rc.conf: ${full_setting}"
-                    perl -pi -e 's#^($ENV{var}=).*#${1}$ENV{value}#g' /etc/rc.conf
-                else
-                    echo "${full_setting}" >> /etc/rc.conf
-                fi
-                unset var value full_setting
+                ${SYSRC} ${var}="${2}"
             fi
         elif [ X"${action}" == X'disable' ]; then
             # Already handled in functions/*.sh.

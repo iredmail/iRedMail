@@ -502,6 +502,9 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SYS_ROOT_GROUP='wheel'
 
+    # sysrc: safely edit system rc files
+    export SYSRC='/usr/sbin/sysrc'
+
     # Package management.
     if [ X"${PKGADD}" != X"" ]; then
         export PKGADD="${PKGADD}"
