@@ -183,11 +183,11 @@ iredapd_config()
     # here, so that we don't need to change cron job after upgrading iRedAPD.
     cat >> ${CRON_SPOOL_DIR}/${SYS_ROOT_USER} <<EOF
 # iRedAPD: Clean up expired tracking records hourly.
-1   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py &>/dev/null
+1   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null
 
 # iRedAPD: Convert specified SPF DNS record of specified domain names to IP
 #          addresses/networks every 10 minutes.
-*/10   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py &>/dev/null
+*/10   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py >/dev/null
 EOF
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then

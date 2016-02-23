@@ -64,8 +64,8 @@ if [ X"${BACKEND}" == X"MYSQL" ]; then
     export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${VMAIL_DB}"
 fi
 
-# A temporary file to store MySQL root password to avoid MySQL client warning:
-# "Warning: Using a password on the command line interface can be insecure."
+# A temporary file which stores MySQL root password to avoid MySQL client
+# warning: "Using a password on the command line interface can be insecure."
 # File will be removed automatically after iRedMail installation.
 export MYSQL_DEFAULTS_FILE_ROOT="${ROOTDIR}/.mysql-root-defaults-file"
 export MYSQL_CLIENT_ROOT="mysql --defaults-file=${MYSQL_DEFAULTS_FILE_ROOT}"

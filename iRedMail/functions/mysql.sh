@@ -54,13 +54,6 @@ mysql_initialize()
 
     backup_file ${MYSQL_MY_CNF}
 
-    ECHO_DEBUG "Make sure MySQL server binds to local address: ${SQL_SERVER_ADDRESS}."
-    if [ -f ${MYSQL_MY_CNF} ]; then
-        # comment out 'bind-address' then reset
-        perl -pi -e 's/^(bind-address.*)/#$1/g' ${MYSQL_MY_CNF}
-        perl -pi -e 's#^(\[mysqld\])#${1}\nbind-address = $ENV{LOCAL_ADDRESS}#' ${MYSQL_MY_CNF}
-    fi
-
     ECHO_DEBUG "Stop MySQL service before updating my.cnf."
     service_control stop ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     sleep 3
@@ -83,7 +76,7 @@ mysql_initialize()
     fi
 
     ECHO_DEBUG "Disable 'skip-networking' in my.cnf."
-    perl -pi -e 's#^(skip-networking.*)#${1}#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+    perl -pi -e 's/^(skip-networking.*)/#${1}/' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
 
     # Enable innodb_file_per_table by default.
     grep '^innodb_file_per_table' ${MYSQL_MY_CNF} &>/dev/null
@@ -108,24 +101,23 @@ mysql_initialize()
             mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET Password=password('${MYSQL_ROOT_PASSWD}') WHERE User='root'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
         fi
     else
-        ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${LOCAL_ADDRESS} ..."
-        mysql -u${MYSQL_ROOT_USER} <<EOF
+        ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${MYSQL_GRANT_HOST} ..."
+        cat > ${RUNTIME_DIR}/grant_permission.sql <<EOF
 USE mysql;
+
 -- Allow access from MYSQL_GRANT_HOST with password
 GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${MYSQL_GRANT_HOST}';
--- GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'127.0.0.1';
--- GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'localhost';
--- GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'%';
 
 -- Allow GRANT privilege
 UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='${MYSQL_GRANT_HOST}';
--- UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='127.0.0.1';
--- UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='localhost';
--- UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='%';
 
 -- Set root password
-UPDATE user SET Password = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User = 'root';
+UPDATE user SET Password=PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root';
+
+FLUSH PRIVILEGES;
 EOF
+
+        mysql -u${MYSQL_ROOT_USER} -e "SOURCE ${RUNTIME_DIR}/grant_permission.sql;"
     fi
 
     echo '' > ${MYSQL_INIT_SQL}

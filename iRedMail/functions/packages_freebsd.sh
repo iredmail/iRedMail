@@ -1157,6 +1157,18 @@ EOF
             fi
         done
 
+        # Log and print used time
+        all_used_time="$(($(date +%s)-start_time))"
+        ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds, ~= $((all_used_time/60)) minute(s)"
+
+        echo "export status_install_all_ports='DONE'" >> ${STATUS_FILE}
+    }
+
+    # Install all packages.
+    post_install_cleanup()
+    {
+        ECHO_DEBUG "Post-install cleanup."
+
         # Create symbol link for Python.
         ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
         ln -sf /usr/local/bin/python2.7 /usr/local/bin/python2
@@ -1167,13 +1179,10 @@ EOF
         # Create logrotate.d
         mkdir -p ${LOGROTATE_DIR} >> ${INSTALL_LOG} 2>&1
 
-        # Log and print used time
-        all_used_time="$(($(date +%s)-start_time))"
-        ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds, ~= $((all_used_time/60)) minute(s)"
-
-        echo "export status_install_all_ports='DONE'" >> ${STATUS_FILE}
+        echo "export status_post_install_cleanup='DONE'" >> ${STATUS_FILE}
     }
 
     check_status_before_run fetch_all_src_tarballs
     check_status_before_run install_all_ports
+    check_status_before_run post_install_cleanup
 }

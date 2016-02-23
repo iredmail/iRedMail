@@ -532,7 +532,7 @@ amavisd_import_sql()
 {
     ECHO_DEBUG "Import Amavisd database and privileges."
 
-    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         ${MYSQL_CLIENT_ROOT} <<EOF
 -- Create database
 CREATE DATABASE ${AMAVISD_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
