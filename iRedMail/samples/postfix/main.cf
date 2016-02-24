@@ -115,6 +115,7 @@ smtpd_tls_dh1024_param_file = PH_SSL_DHPARAM_FILE
 #   - http://www.postfix.org/TLS_README.html#client_tls_may
 #   - http://www.postfix.org/postconf.5.html#smtp_tls_security_level
 smtp_tls_security_level = may
+
 # Use the same CA file as smtpd.
 smtp_tls_CAfile = $smtpd_tls_CAfile
 smtp_tls_loglevel = 0
