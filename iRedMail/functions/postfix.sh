@@ -26,7 +26,7 @@
 
 postfix_config_basic()
 {
-    ECHO_INFO "Configure Postfix (Message Transfer Agent)."
+    ECHO_INFO "Configure Postfix (MTA)."
 
     backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
 

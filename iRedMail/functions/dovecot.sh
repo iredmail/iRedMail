@@ -26,7 +26,7 @@
 
 dovecot_config()
 {
-    ECHO_INFO "Configure Dovecot (pop3/imap/managesieve server)."
+    ECHO_INFO "Configure Dovecot (POP3/IMAP/Managesieve/LMTP/LDA)."
 
     backup_file ${DOVECOT_CONF}
 
