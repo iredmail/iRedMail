@@ -381,9 +381,9 @@ EOF
 # Add alias entry in Postfix /etc/postfix/aliases.
 add_postfix_alias()
 {
-    # Usage: add_postfix_alias nobody root
-    # File /path/to/aliases will be created if not exist.
-    export alias_orig="${1}"
+    # Usage: add_postfix_alias [src_username] [dest_username or email address]
+    # File ${POSTFIX_FILE_ALIASES} will be created if not exist.
+    export alias_src="${1}"
     export alias_dest="${2}"
 
     if [ ! -f ${POSTFIX_FILE_ALIASES} ]; then
@@ -395,16 +395,16 @@ add_postfix_alias()
         fi
     fi
 
-    # If alias_orig exists, comment it out
-    if grep "^${alias_orig}:" ${POSTFIX_FILE_ALIASES} &>/dev/null; then
-        perl -pi -e 's/^($ENV{alias_orig}:.*)/#${1}/' ${POSTFIX_FILE_ALIASES}
+    # If alias_src exists, comment it out
+    if grep "^${alias_src}:" ${POSTFIX_FILE_ALIASES} &>/dev/null; then
+        perl -pi -e 's/^($ENV{alias_src}:.*)/#${1}/' ${POSTFIX_FILE_ALIASES}
     fi
 
     # Add new alias
-    echo "${alias_orig}: ${alias_dest}" >> ${POSTFIX_FILE_ALIASES}
+    echo "${alias_src}: ${alias_dest}" >> ${POSTFIX_FILE_ALIASES}
 
     postalias hash:${POSTFIX_FILE_ALIASES} &>/dev/null
-    unset alias_orig
+    unset alias_src
     unset alias_dest
 }
 

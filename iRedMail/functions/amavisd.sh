@@ -235,10 +235,6 @@ chomp(\$mydomain = "${HOSTNAME}");
 
 EOF
 
-    # Add postfix alias for user: amavis.
-    add_postfix_alias ${AMAVISD_SYS_USER} ${SYS_ROOT_USER}
-    add_postfix_alias 'virusalert' ${SYS_ROOT_USER}
-
     # Make sure that clamav is configured to init supplementary
     # groups when it drops priviledges, and that you add the
     # clamav user to the amavis group.
@@ -499,6 +495,10 @@ EOF
     postconf -e content_filter="smtp-amavis:[${AMAVISD_SERVER}]:10024"
     # Concurrency per recipient limit.
     postconf -e smtp-amavis_destination_recipient_limit='1'
+
+    # Add postfix alias for user: amavis.
+    add_postfix_alias 'virusalert' ${SYS_ROOT_USER}
+    add_postfix_alias ${AMAVISD_SYS_USER} ${SYS_ROOT_USER}
 
     # Add crontab job to delete virus mail.
     ECHO_DEBUG "Setting cron job for vmail user to delete virus mail per month."
