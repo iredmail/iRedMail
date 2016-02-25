@@ -83,12 +83,16 @@ nginx_config()
     perl -pi -e 's#^(group.*=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
 
     # Create directory used to store session: php_value[session.save_path]
+    # Required by php-fpm.
+    #   - RHEL/CentOS: /var/lib/php/session
+    #   - Debian/Ubuntu: /var/lib/php5/sessions (exists, no need to create)
+    #   - OpenBSD/FreeBSD: /tmp
     _dir="$(grep "php_value.*session.save_path" ${PHP_FPM_POOL_WWW_CONF} | awk -F'=' '{print $2}')"
     if [ -n ${_dir} ]; then
         if [ ! -d ${_dir} ]; then
             mkdir -p ${_dir}
             chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${_dir}
-            chmod 0733 ${_dir}
+            chmod 0773 ${_dir}
             chmod o+t ${_dir}
         fi
     fi
