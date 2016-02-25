@@ -174,7 +174,7 @@ ${CMD_DU} ${BACKUP_FILE}* >>${LOGFILE}
 echo "=================" >>${LOGFILE}
 
 # Print some message. It will cause cron generates an email to root user.
-if [ X"${BACKUP_SUCCESS}" == X"YES" ]; then
+if [ X"${BACKUP_SUCCESS}" == X'YES' ]; then
     echo "* [ OK ] Backup completes successfully." >> ${LOGFILE}
 else
     echo "* <<< ERROR >>> Backup not successfully complete." >> ${LOGFILE}

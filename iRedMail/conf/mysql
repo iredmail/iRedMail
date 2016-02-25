@@ -60,7 +60,7 @@ export MYSQL_VMAIL_SQL="${RUNTIME_DIR}/mysql_vmail.sql"
 export MYSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.mysql"
 
 export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} mysql"
-if [ X"${BACKEND}" == X"MYSQL" ]; then
+if [ X"${BACKEND}" == X'MYSQL' ]; then
     export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${VMAIL_DB}"
 fi
 

@@ -101,10 +101,10 @@ export DOVECOT_REALTIME_QUOTA_TABLE='used_quota'
 export DOVECOT_SHARE_FOLDER_DB_TABLE='share_folder'
 export DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE='anyone_shares'
 
-if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
     export DOVECOT_SHARE_FOLDER_SQLTYPE='mysql'
     export DOVECOT_REALTIME_QUOTA_SQLTYPE='mysql'
-elif [ X"${BACKEND}" == X"PGSQL" ]; then
+elif [ X"${BACKEND}" == X'PGSQL' ]; then
     export DOVECOT_SHARE_FOLDER_SQLTYPE='pgsql'
     export DOVECOT_REALTIME_QUOTA_SQLTYPE='pgsql'
 fi

@@ -75,7 +75,7 @@ backup_file()
     if [ X"$#" != X"0" ]; then
         for f in $@; do
             if [ -f ${f} ]; then
-                if [ X"${IREDMAIL_DEBUG}" == X"YES" ]; then
+                if [ X"${IREDMAIL_DEBUG}" == X'YES' ]; then
                     echo -e "${_BACKUP_FLAG} ${f} -> ${f}.${DATE}."
                 fi
                 cp -f ${f} ${f}.${DATE}

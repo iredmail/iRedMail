@@ -71,7 +71,7 @@ EOF
     AuthLDAPBindPassword "${LDAP_BINDPW}"
 EOF
 
-        [ X"${LDAP_USE_TLS}" == X"YES" ] && \
+        [ X"${LDAP_USE_TLS}" == X'YES' ] && \
             perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${AWSTATS_HTTPD_CONF}
 
         # Apache-2.4 doesn't support AuthzLDAPAuthoritative directive
@@ -148,7 +148,7 @@ Auth_MySQL_Info "${SQL_SERVER_ADDRESS}:${SQL_SERVER_PORT}" ${VMAIL_DB_BIND_USER}
 EOF
         fi
 
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     Auth_PG_authoritative on
     Auth_PG_host ${SQL_SERVER_ADDRESS}

@@ -144,7 +144,7 @@ for db in ${DATABASES}; do
     #if [ X"$?" == X"0" ]; then
     #    echo "  - ${db} [DONE]" >> ${LOGFILE}
     #else
-    #    [ X"${BACKUP_SUCCESS}" == X"YES" ] && export BACKUP_SUCCESS='NO'
+    #    [ X"${BACKUP_SUCCESS}" == X'YES' ] && export BACKUP_SUCCESS='NO'
     #fi
     output_sql="${BACKUP_DIR}/${db}-${TIMESTAMP}.sql"
 
@@ -196,7 +196,7 @@ echo "----" >>${LOGFILE}
 
 echo "* Backup completed (Success? ${BACKUP_SUCCESS})." >>${LOGFILE}
 
-if [ X"${BACKUP_SUCCESS}" == X"YES" ]; then
+if [ X"${BACKUP_SUCCESS}" == X'YES' ]; then
     echo "==> Backup completed successfully."
 else
     echo -e "==> Backup completed with !!!ERRORS!!!.\n" 1>&2

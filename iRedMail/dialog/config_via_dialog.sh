@@ -227,7 +227,7 @@ if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     . ${DIALOG_DIR}/ldap_config.sh
 fi
 
-if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X'MYSQL' ]; then
+if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
     export SQL_SERVER_ADDRESS="${MYSQL_SERVER_ADDRESS}"
     export SQL_SERVER_PORT="${MYSQL_SERVER_PORT}"
     export SQL_ROOT_USER="${MYSQL_ROOT_USER}"

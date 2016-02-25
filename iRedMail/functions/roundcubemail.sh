@@ -69,7 +69,7 @@ rcm_import_sql()
     ECHO_DEBUG "Import SQL database and privileges for Roundcubemail."
 
     # Initial roundcube db.
-    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X"MYSQL" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         ${MYSQL_CLIENT_ROOT} <<EOF
 -- Create database and grant privileges
 CREATE DATABASE ${RCM_DB} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -81,7 +81,7 @@ SOURCE ${RCM_HTTPD_ROOT}/SQL/mysql.initial.sql;
 
 FLUSH PRIVILEGES;
 EOF
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_SYS_USER_HOME}/rcm.sql >> ${INSTALL_LOG} 2>&1
         chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql 
 

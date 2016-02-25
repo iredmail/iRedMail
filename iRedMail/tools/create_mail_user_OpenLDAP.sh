@@ -186,13 +186,13 @@ add_new_user()
     maildir="${DOMAIN_NAME}/$(hash_maildir ${USERNAME})"
 
     # Generate user password.
-    if [ X"${USE_DEFAULT_PASSWD}" == X"YES" ]; then
+    if [ X"${USE_DEFAULT_PASSWD}" == X'YES' ]; then
         PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${DEFAULT_PASSWD})"
     else
         PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${USERNAME})"
     fi
 
-    if [ X"${PUREFTPD_INTEGRATION}" == X"YES" ]; then
+    if [ X"${PUREFTPD_INTEGRATION}" == X'YES' ]; then
         LDIF_PUREFTPD_USER="objectClass: PureFTPdUser
 FTPStatus: enabled
 FTPQuotaFiles: 50
@@ -290,6 +290,6 @@ else
         add_new_user ${USERNAME} ${MAIL}
 
         # Send welcome msg to new user.
-        [ X"${SEND_WELCOME_MSG}" == X"YES" ] && send_welcome_mail ${MAIL}
+        [ X"${SEND_WELCOME_MSG}" == X'YES' ] && send_welcome_mail ${MAIL}
     done
 fi

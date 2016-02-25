@@ -89,7 +89,7 @@ generate_sql()
         username="$i"
         mail="${username}@${DOMAIN}"
 
-        if [ X"${USE_DEFAULT_PASSWD}" != X"YES" ]; then
+        if [ X"${USE_DEFAULT_PASSWD}" != X'YES' ]; then
             export CRYPT_PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${username})"
         fi
 

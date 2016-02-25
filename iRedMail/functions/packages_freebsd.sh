@@ -48,6 +48,7 @@ install_all()
 
     freebsd_add_make_conf 'OPTIONS_SET' 'SASL X11'
     #freebsd_add_make_conf 'OPTIONS_UNSET' 'X11'
+    freebsd_add_make_conf 'WITH_OPENSSL_PORT' 'yes'
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
     freebsd_add_make_conf 'WANT_MYSQL_VER' "${PREFERRED_MYSQL_VER}"
     freebsd_add_make_conf 'WANT_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
@@ -998,7 +999,7 @@ EOF
 OPTIONS_FILE_UNSET+=DOCS
 EOF
     # Roundcube webmail.
-    if [ X"${USE_RCM}" == X"YES" ]; then
+    if [ X"${USE_RCM}" == X'YES' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PORTS="${ALL_PORTS} net/pear-Net_LDAP2"
         ALL_PORTS="${ALL_PORTS} mail/roundcube"
     fi
@@ -1069,7 +1070,7 @@ EOF
     fi
 
     # Fail2ban.
-    #if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
+    #if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
     #    # python-ldap.
     #    ALL_PORTS="${ALL_PORTS} security/py-fail2ban"
     #fi

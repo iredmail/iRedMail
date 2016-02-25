@@ -71,11 +71,11 @@ export TRANSPORT='dovecot'
 export MESSAGE_SIZE_LIMIT='15728640'
 
 # LDAP/MYSQL/PGSQL lookup configuration files.
-if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     export POSTFIX_LOOKUP_DB='ldap'
-elif [ X"${BACKEND}" == X"MYSQL" ]; then
+elif [ X"${BACKEND}" == X'MYSQL' ]; then
     export POSTFIX_LOOKUP_DB='mysql'
-elif [ X"${BACKEND}" == X"PGSQL" ]; then
+elif [ X"${BACKEND}" == X'PGSQL' ]; then
     export POSTFIX_LOOKUP_DB='pgsql'
 else
     export POSTFIX_LOOKUP_DIR="${POSTFIX_ROOTDIR}/lookups"

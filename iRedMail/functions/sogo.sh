@@ -199,7 +199,7 @@ EOF
     add_postfix_alias ${SOGO_DAEMON_USER} ${SYS_ROOT_USER}
 
     # if Roundcube is not installed
-    if [ X"${USE_RCM}" != X"YES" ]; then
+    if [ X"${USE_RCM}" != X'YES' ]; then
         # Enable managesieve support
         perl -pi -e 's#(//)(SOGoSieveServer.*)#${2}#' ${SOGO_CONF}
         perl -pi -e 's#(//)(SOGoSieveScriptsEnabled.*)#${2}#' ${SOGO_CONF}

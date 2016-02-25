@@ -92,6 +92,6 @@ if [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'OPENBSD' ]; then
 fi
 
 export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES}"
-if [ X"${BACKEND}" == X"PGSQL" ]; then
+if [ X"${BACKEND}" == X'PGSQL' ]; then
     export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${VMAIL_DB}"
 fi

@@ -71,7 +71,7 @@ install_all()
     fi
 
     # Backend: OpenLDAP, MySQL, PGSQL and extra packages.
-    if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # OpenLDAP server & client.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
@@ -144,7 +144,7 @@ install_all()
             fi
             ALL_PKGS="${ALL_PKGS} mariadb-client p5-DBD-mysql"
         fi
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"
 
         # PGSQL server & client.
@@ -242,11 +242,11 @@ install_all()
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} dovecot-imapd dovecot-pop3d dovecot-lmtpd dovecot-managesieved dovecot-sieve"
 
-        if [ X"${BACKEND}" == X"OPENLDAP" ]; then
+        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-ldap dovecot-mysql"
-        elif [ X"${BACKEND}" == X"MYSQL" ]; then
+        elif [ X"${BACKEND}" == X'MYSQL' ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-mysql"
-        elif [ X"${BACKEND}" == X"PGSQL" ]; then
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-pgsql"
         fi
 
@@ -291,7 +291,7 @@ install_all()
     fi
 
     # Roundcube
-    if [ X"${USE_RCM}" == X"YES" ]; then
+    if [ X"${USE_RCM}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} php-pear-Net-IDNA2"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -304,7 +304,7 @@ install_all()
     fi
 
     # SOGo
-    if [ X"${USE_SOGO}" == X"YES" ]; then
+    if [ X"${USE_SOGO}" == X'YES' ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${SOGO_RC_SCRIPT_NAME} ${MEMCACHED_RC_SCRIPT_NAME}"
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -421,7 +421,7 @@ EOF
     fi
 
     # Fail2ban
-    if [ X"${USE_FAIL2BAN}" == X"YES" ]; then
+    if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
             # No port available.
             :

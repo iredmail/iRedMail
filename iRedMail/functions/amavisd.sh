@@ -546,7 +546,7 @@ SOURCE ${AMAVISD_DB_MYSQL_TMPL};
 
 FLUSH PRIVILEGES;
 EOF
-    elif [ X"${BACKEND}" == X"PGSQL" ]; then
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_SYS_USER_HOME}/amavisd.sql >> ${INSTALL_LOG} 2>&1
         chmod 0777 ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
 

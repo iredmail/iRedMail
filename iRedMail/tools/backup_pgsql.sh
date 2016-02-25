@@ -163,7 +163,7 @@ echo "----" >>${LOGFILE}
 
 echo "* Backup completed (Success? ${BACKUP_SUCCESS})." >>${LOGFILE}
 
-if [ X"${BACKUP_SUCCESS}" == X"YES" ]; then
+if [ X"${BACKUP_SUCCESS}" == X'YES' ]; then
     echo -e "\n[OK] Backup successfully completed.\n"
 else
     echo -e "\n[ERROR] Backup completed with ERRORS.\n" 1>&2
