@@ -127,6 +127,12 @@ myorigin = PH_HOSTNAME
 mydomain = PH_HOSTNAME
 
 # trusted SMTP clients which are allowed to relay mail through Postfix.
+#
+# Note: additional IP addresses/networks listed in mynetworks should be listed
+#       in iRedAPD setting 'MYNETWORKS' too. for example:
+#
+#       MYNETWORKS = ['xx.xx.xx.xx', 'xx.xx.xx.0/24', ...]
+#
 mynetworks = 127.0.0.1
 
 # Accepted local emails
@@ -181,7 +187,7 @@ smtpd_end_of_data_restrictions = check_policy_service inet:PH_IREDAPD_BIND_HOST:
 # Postfix 2.11 and later supports multiple characters.
 recipient_delimiter = +
 
-proxy_read_maps = $canonical_maps $lmtp_generic_maps $local_recipient_maps $mydestination $mynetworks $recipient_bcc_maps $recipient_canonical_maps $relay_domains $relay_recipient_maps $relocated_maps $sender_bcc_maps $sender_canonical_maps $smtp_generic_maps $smtpd_sender_login_maps $transport_maps $virtual_alias_domains $virtual_alias_maps $virtual_mailbox_domains $virtual_mailbox_maps $smtpd_sender_restrictions
+proxy_read_maps = $canonical_maps $lmtp_generic_maps $local_recipient_maps $mydestination $mynetworks $recipient_bcc_maps $recipient_canonical_maps $relay_domains $relay_recipient_maps $relocated_maps $sender_bcc_maps $sender_canonical_maps $smtp_generic_maps $smtpd_sender_login_maps $transport_maps $virtual_alias_domains $virtual_alias_maps $virtual_mailbox_domains $virtual_mailbox_maps $smtpd_sender_restrictions $sender_dependent_relayhost_maps
 
 # Avoid duplicate recipient messages. Default is 'yes'.
 enable_original_recipient = no
