@@ -204,7 +204,7 @@ dovecot_config()
 
         perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_MYSQL_CONF}
-        perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#' ${DOVECOT_MYSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_MYSQL_CONF}
 
@@ -223,7 +223,7 @@ dovecot_config()
         perl -pi -e 's/^#(iterate_.*)/${1}/' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_SQL_DRIVER#pgsql#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_PGSQL_CONF}
-        perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#' ${DOVECOT_PGSQL_CONF}
+        perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_PGSQL_CONF}
 
@@ -237,11 +237,11 @@ dovecot_config()
         export realtime_quota_db_user="${IREDADMIN_DB_USER}"
         export realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        export realtime_quota_db_name="${VMAIL_DB}"
+        export realtime_quota_db_name="${VMAIL_DB_NAME}"
         export realtime_quota_db_user="${VMAIL_DB_ADMIN_USER}"
         export realtime_quota_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        export realtime_quota_db_name="${VMAIL_DB}"
+        export realtime_quota_db_name="${VMAIL_DB_NAME}"
         export realtime_quota_db_user="${VMAIL_DB_BIND_USER}"
         export realtime_quota_db_passwd="${VMAIL_DB_BIND_PASSWD}"
     fi
@@ -266,7 +266,7 @@ dovecot_config()
         export share_folder_db_user="${IREDADMIN_DB_USER}"
         export share_folder_db_passwd="${IREDADMIN_DB_PASSWD}"
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
-        export share_folder_db_name="${VMAIL_DB}"
+        export share_folder_db_name="${VMAIL_DB_NAME}"
         export share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
         export share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
     fi

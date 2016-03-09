@@ -2,5 +2,5 @@ hosts       = PH_SQL_SERVER_ADDRESS
 port        = PH_SQL_SERVER_PORT
 user        = PH_VMAIL_DB_BIND_USER
 password    = PH_VMAIL_DB_BIND_PASSWD
-dbname      = PH_VMAIL_DB
+dbname      = PH_VMAIL_DB_NAME
 query       = SELECT sender_bcc_user.bcc_address FROM sender_bcc_user,domain WHERE sender_bcc_user.username='%s' AND sender_bcc_user.domain='%d' AND sender_bcc_user.domain=domain.domain AND sender_bcc_user.active=1 AND domain.backupmx=0 AND domain.active=1

@@ -2,5 +2,5 @@ hosts       = PH_SQL_SERVER_ADDRESS
 port        = PH_SQL_SERVER_PORT
 user        = PH_VMAIL_DB_BIND_USER
 password    = PH_VMAIL_DB_BIND_PASSWD
-dbname      = PH_VMAIL_DB
+dbname      = PH_VMAIL_DB_NAME
 query       = SELECT (mailbox.storagenode || '/' || mailbox.maildir || '/Maildir/') FROM mailbox,domain WHERE mailbox.username='%s' AND mailbox.active=1 AND mailbox.enabledeliver=1 AND domain.domain = mailbox.domain AND domain.active=1

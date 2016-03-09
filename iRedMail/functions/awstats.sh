@@ -87,7 +87,7 @@ EOF
     AuthMySQLPort ${SQL_SERVER_PORT}
     AuthMySQLUser ${VMAIL_DB_BIND_USER}
     AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
-    AuthMySQLDB ${VMAIL_DB}
+    AuthMySQLDB ${VMAIL_DB_NAME}
     AuthMySQLUserTable mailbox
     AuthMySQLNameField username
     AuthMySQLPasswordField password
@@ -124,7 +124,7 @@ EOF
 # MySQL auth (libapache2-mod-auth-apache2).
 # Global config of MySQL server address, username, password.
 Auth_MySQL_Info ${SQL_SERVER_ADDRESS} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
-Auth_MySQL_General_DB ${VMAIL_DB}
+Auth_MySQL_General_DB ${VMAIL_DB_NAME}
 EOF
 
             # Set file permission.
@@ -133,7 +133,7 @@ EOF
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             cat >> ${AWSTATS_HTTPD_CONF} <<EOF
     Auth_MYSQL on
-    Auth_MySQL_DB ${VMAIL_DB}
+    Auth_MySQL_DB ${VMAIL_DB_NAME}
     Auth_MySQL_Password_Table mailbox
     Auth_MySQL_Username_Field username
     Auth_MySQL_Password_Field password
@@ -153,7 +153,7 @@ EOF
     Auth_PG_authoritative on
     Auth_PG_host ${SQL_SERVER_ADDRESS}
     Auth_PG_port ${SQL_SERVER_PORT}
-    Auth_PG_database ${VMAIL_DB}
+    Auth_PG_database ${VMAIL_DB_NAME}
     Auth_PG_user ${VMAIL_DB_BIND_USER}
     Auth_PG_pwd ${VMAIL_DB_BIND_PASSWD}
     Auth_PG_pwd_table mailbox
@@ -205,7 +205,7 @@ EOF
             perl -pi -e 's#PH_DIRECTORY#$ENV{AWSTATS_CGI_DIR}#' ${AWSTATS_HTTPD_CONF}
             perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${AWSTATS_HTTPD_CONF}
             perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#' ${AWSTATS_HTTPD_CONF}
-            perl -pi -e 's#PH_SQL_DB_NAME#$ENV{VMAIL_DB}#' ${AWSTATS_HTTPD_CONF}
+            perl -pi -e 's#PH_SQL_DB_NAME#$ENV{VMAIL_DB_NAME}#' ${AWSTATS_HTTPD_CONF}
             perl -pi -e 's#PH_SQL_DB_USER#$ENV{VMAIL_DB_BIND_USER}#' ${AWSTATS_HTTPD_CONF}
             perl -pi -e 's#PH_SQL_DB_PASSWORD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${AWSTATS_HTTPD_CONF}
 

@@ -179,7 +179,7 @@ EOF
         ECHO_DEBUG "Configure SQL mail accounts related settings."
         perl -pi -e 's#^(vmail_db_host =).*#${1} "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
         perl -pi -e 's#^(vmail_db_port =).*#${1} "$ENV{SQL_SERVER_PORT}"#' settings.py
-        perl -pi -e 's#^(vmail_db_name =).*#${1} "$ENV{VMAIL_DB}"#' settings.py
+        perl -pi -e 's#^(vmail_db_name =).*#${1} "$ENV{VMAIL_DB_NAME}"#' settings.py
         perl -pi -e 's#^(vmail_db_user =).*#${1} "$ENV{VMAIL_DB_ADMIN_USER}"#' settings.py
         perl -pi -e 's#^(vmail_db_password =).*#${1} "$ENV{VMAIL_DB_ADMIN_PASSWD}"#' settings.py
     fi

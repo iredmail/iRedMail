@@ -206,7 +206,7 @@ postfix_config_vhost()
         perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
-        perl -pi -e 's#PH_VMAIL_DB#$ENV{VMAIL_DB}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
     fi
 
     echo 'export status_postfix_config_vhost="DONE"' >> ${STATUS_FILE}

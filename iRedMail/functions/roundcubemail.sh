@@ -72,11 +72,11 @@ rcm_import_sql()
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         ${MYSQL_CLIENT_ROOT} <<EOF
 -- Create database and grant privileges
-CREATE DATABASE ${RCM_DB} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-GRANT CREATE,SELECT,INSERT,UPDATE,DELETE,ALTER ON ${RCM_DB}.* TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY '${RCM_DB_PASSWD}';
+CREATE DATABASE ${RCM_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+GRANT CREATE,SELECT,INSERT,UPDATE,DELETE,ALTER ON ${RCM_DB_NAME}.* TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY '${RCM_DB_PASSWD}';
 
 -- Import Roundcubemail SQL template
-USE ${RCM_DB};
+USE ${RCM_DB_NAME};
 SOURCE ${RCM_HTTPD_ROOT}/SQL/mysql.initial.sql;
 
 FLUSH PRIVILEGES;
@@ -87,15 +87,15 @@ EOF
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1 >/dev/null" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create database and role
-CREATE DATABASE ${RCM_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
+CREATE DATABASE ${RCM_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE ROLE ${RCM_DB_USER} WITH LOGIN ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 
 -- Grant privilege
-ALTER DATABASE ${RCM_DB} OWNER TO ${RCM_DB_USER};
+ALTER DATABASE ${RCM_DB_NAME} OWNER TO ${RCM_DB_USER};
 EOF
 
         # Import sql templte as roundcube user.
-        su - ${PGSQL_SYS_USER} -c "psql -U ${RCM_DB_USER} -d ${RCM_DB}" >> ${INSTALL_LOG} 2>&1 <<EOF
+        su - ${PGSQL_SYS_USER} -c "psql -U ${RCM_DB_USER} -d ${RCM_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Import Roundcubemail SQL template
 \i ${PGSQL_SYS_USER_HOME}/rcm.sql;
 
@@ -105,8 +105,8 @@ EOF
 EOF
 
         # Grant privilege to update password (vmail.mailbox) through roundcube webmail
-        su - ${PGSQL_SYS_USER} -c "psql -d ${VMAIL_DB} >/dev/null" >> ${INSTALL_LOG} 2>&1 <<EOF
-\c ${VMAIL_DB};
+        su - ${PGSQL_SYS_USER} -c "psql -d ${VMAIL_DB_NAME} >/dev/null" >> ${INSTALL_LOG} 2>&1 <<EOF
+\c ${VMAIL_DB_NAME};
 GRANT UPDATE,SELECT ON mailbox TO ${RCM_DB_USER};
 EOF
         rm -f ${PGSQL_SYS_USER_HOME}/rcm.sql >> ${INSTALL_LOG} 2>&1
@@ -118,8 +118,8 @@ EOF
         ${MYSQL_CLIENT_ROOT} <<EOF
 -- Grant privileges for Roundcubemail, so that user can change
 -- their own password and setting mail forwarding.
-GRANT UPDATE,SELECT ON ${VMAIL_DB}.mailbox TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}";
--- GRANT INSERT,UPDATE,SELECT ON ${VMAIL_DB}.alias TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}";
+GRANT UPDATE,SELECT ON ${VMAIL_DB_NAME}.mailbox TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}";
+-- GRANT INSERT,UPDATE,SELECT ON ${VMAIL_DB_NAME}.alias TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}";
 
 FLUSH PRIVILEGES;
 EOF
@@ -140,7 +140,7 @@ rcm_config()
     perl -pi -e 's#PH_PHP_CONN_TYPE#$ENV{PHP_CONN_TYPE}#g' config.inc.php
     perl -pi -e 's#PH_RCM_DB_USER#$ENV{RCM_DB_USER}#g' config.inc.php
     perl -pi -e 's#PH_RCM_DB_PASSWD#$ENV{RCM_DB_PASSWD}#g' config.inc.php
-    perl -pi -e 's#PH_RCM_DB#$ENV{RCM_DB}#g' config.inc.php
+    perl -pi -e 's#PH_RCM_DB_NAME#$ENV{RCM_DB_NAME}#g' config.inc.php
     perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' config.inc.php
 
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' config.inc.php
@@ -186,7 +186,7 @@ Roundcube webmail: ${RCM_HTTPD_ROOT}
     * Login account:
         - Username: ${FIRST_USER}@${FIRST_DOMAIN}, password: ${FIRST_USER_PASSWD_PLAIN}
     * SQL database account:
-        - Database name: ${RCM_DB}
+        - Database name: ${RCM_DB_NAME}
         - Username: ${RCM_DB_USER}
         - Password: ${RCM_DB_PASSWD}
     * See also:
@@ -249,7 +249,7 @@ rcm_plugin_password()
 
     if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
-        perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER_ADDRESS}/$ENV{VMAIL_DB}";#' config.inc.php
+        perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER_ADDRESS}/$ENV{VMAIL_DB_NAME}";#' config.inc.php
 
         perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE mailbox SET password=%D,passwordlastchange=NOW() WHERE username=%u";#' config.inc.php
 

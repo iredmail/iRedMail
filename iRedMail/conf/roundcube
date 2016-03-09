@@ -51,7 +51,7 @@ export RCM_SIEVE_SAMPLE_FILE="${RCM_CONF_DIR}/dovecot.sieve"
 export RCM_LOGFILE="${MAILLOG}"
 
 # Database setting.
-export RCM_DB="roundcubemail"
+export RCM_DB_NAME="roundcubemail"
 export RCM_DB_USER="roundcube"
 
 # this key is used to encrypt the users imap password which is stored
@@ -62,6 +62,6 @@ export RCM_DES_KEY="$(echo ${tmp_rcm_des_key} | cut -c-24)"
 
 # Backup database.
 if [ X"${USE_RCM}" == X'YES' ]; then
-    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${RCM_DB}"
-    export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${RCM_DB}"
+    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${RCM_DB_NAME}"
+    export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${RCM_DB_NAME}"
 fi

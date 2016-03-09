@@ -154,13 +154,13 @@ CREATE USER ${VMAIL_DB_BIND_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_BIND_PASSW
 CREATE USER ${VMAIL_DB_ADMIN_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_ADMIN_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 
 -- Create database to store mail accounts
-CREATE DATABASE ${VMAIL_DB} WITH TEMPLATE template0 ENCODING 'UTF8';
+CREATE DATABASE ${VMAIL_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 
 -- Grant privilege
-ALTER DATABASE ${VMAIL_DB} OWNER TO ${VMAIL_DB_ADMIN_USER};
+ALTER DATABASE ${VMAIL_DB_NAME} OWNER TO ${VMAIL_DB_ADMIN_USER};
 
 -- Connect as vmailadmin
-\c ${VMAIL_DB} ${VMAIL_DB_ADMIN_USER};
+\c ${VMAIL_DB_NAME} ${VMAIL_DB_ADMIN_USER};
 EOF
 
     if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
@@ -170,7 +170,7 @@ EOF
     cat ${PGSQL_VMAIL_STRUCTURE_SAMPLE} >> ${PGSQL_INIT_SQL_SAMPLE}
 
     cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
-\c ${VMAIL_DB};
+\c ${VMAIL_DB_NAME};
 
 -- Set correct privilege for ROLE: vmail
 GRANT SELECT ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user TO ${VMAIL_DB_BIND_USER};

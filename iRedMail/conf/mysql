@@ -61,7 +61,7 @@ export MYSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.mysql"
 
 export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} mysql"
 if [ X"${BACKEND}" == X'MYSQL' ]; then
-    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${VMAIL_DB}"
+    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${VMAIL_DB_NAME}"
 fi
 
 # A temporary file which stores MySQL root password to avoid MySQL client

@@ -132,7 +132,7 @@ export IREDAPD_DAEMON_USER_UID='2002'
 export IREDAPD_DAEMON_USER_GID='2002'
 
 # Default SQL database name used to store mail accounts.
-export VMAIL_DB='vmail'
+export VMAIL_DB_NAME='vmail'
 export VMAIL_DB_BIND_USER='vmail'
 export VMAIL_DB_ADMIN_USER='vmailadmin'
 
