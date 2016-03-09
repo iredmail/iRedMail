@@ -265,6 +265,19 @@ CREATE INDEX idx_recipient_bcc_user_bcc_address ON recipient_bcc_user (bcc_addre
 CREATE INDEX idx_recipient_bcc_user_expired ON recipient_bcc_user (expired);
 CREATE INDEX idx_recipient_bcc_user_active ON recipient_bcc_user (active);
 
+-- Sender dependent relayhost.
+--  - per-user: account='user@domain.com'
+--  - per-domain: account='@domain.com'
+-- References:
+--  - http://www.postfix.org/postconf.5.html#sender_dependent_relayhost_maps
+--  - http://www.postfix.org/transport.5.html
+CREATE TABLE sender_relayhost (
+    id SERIAL PRIMARY KEY,
+    account VARCHAR(255) NOT NULL DEFAULT '',
+    relayhost VARCHAR(255) NOT NULL DEFAULT ''
+);
+CREATE INDEX idx_sender_relayhost_account ON sender_relayhost (account);
+
 -- Used to store basic info of deleted mailboxes.
 CREATE TABLE deleted_mailboxes (
     id SERIAL PRIMARY KEY,

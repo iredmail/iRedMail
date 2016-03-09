@@ -299,6 +299,7 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.2.24 NAME 'disabledService'
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+
 # This is a comma separated list of IPs and/or networks where the user is
 # allowed to log in from. If the user tries to log in elsewhere, the
 # authentication will fail the same way as if a wrong password was given.
@@ -308,6 +309,13 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.2.25 NAME 'allowNets'
     EQUALITY caseIgnoreMatch
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{1024}
+    SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.26 NAME 'senderRelayHost'
+    DESC 'Sender dependent relayhost'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{255}
     SINGLE-VALUE )
 
 #
@@ -350,7 +358,7 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.1 NAME 'mailDomain'
         facsimileTelephoneNumber $ expiredDate $ accountSetting $
         domainWhitelistIP $ domainWhitelistSender $
         domainBlacklistIP $ domainBlacklistSender $
-        preferredLanguage ))
+        preferredLanguage $ senderRelayHost ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.2 NAME 'mailAdmin'
     DESC 'Mail Domain Admin' SUP top STRUCTURAL
     MUST ( mail )
@@ -374,7 +382,7 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
         preferredLanguage $ disclaimer $ accountSetting $
         title $ userManager $
         mailWhitelistRecipient $ mailBlacklistRecipient $
-        domainGlobalAdmin $ allowNets ))
+        domainGlobalAdmin $ allowNets $ senderRelayHost ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.4 NAME 'mailAlias'
     DESC 'Mail Alias Account' SUP top STRUCTURAL
     MUST ( mail )

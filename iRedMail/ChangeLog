@@ -1,4 +1,7 @@
 iRedMail-0.9.5:
+    * Improvements:
+        + Supports Postfix parameter `sender_dependent_relayhost_maps`.
+
     * Fixed issues:
         - Not correctly add Postfix alias 'virusalert: root' for
           non-(Debian/Ubuntu) OSes.

@@ -5,6 +5,9 @@ transport_maps =
     proxy:mysql:PH_POSTFIX_LOOKUP_DIR/transport_maps_user.cf
     proxy:mysql:PH_POSTFIX_LOOKUP_DIR/transport_maps_domain.cf
 
+sender_dependent_relayhost_maps =
+    proxy:mysql:PH_POSTFIX_LOOKUP_DIR/sender_dependent_relayhost_maps.cf
+
 smtpd_sender_login_maps =
     proxy:mysql:PH_POSTFIX_LOOKUP_DIR/sender_login_maps.cf
 

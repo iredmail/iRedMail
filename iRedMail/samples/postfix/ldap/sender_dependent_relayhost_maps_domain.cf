@@ -1,0 +1,12 @@
+server_host     = PH_LDAP_SERVER_HOST
+server_port     = PH_LDAP_SERVER_PORT
+version         = PH_LDAP_BIND_VERSION
+bind            = yes
+start_tls       = no
+bind_dn         = PH_LDAP_BINDDN
+bind_pw         = PH_LDAP_BINDPW
+search_base     = PH_LDAP_BASEDN
+scope           = one
+query_filter    = (&(objectClass=mailDomain)(accountStatus=active)(enabledService=mail)(|(domainName=%d)(domainAliasName=%d)))
+result_attribute= senderRelayHost
+debuglevel      = 0

@@ -5,6 +5,9 @@ transport_maps =
     proxy:pgsql:PH_POSTFIX_LOOKUP_DIR/transport_maps_user.cf
     proxy:pgsql:PH_POSTFIX_LOOKUP_DIR/transport_maps_domain.cf
 
+sender_dependent_relayhost_maps =
+    proxy:pgsql:PH_POSTFIX_LOOKUP_DIR/sender_dependent_relayhost_maps.cf
+
 smtpd_sender_login_maps =
     proxy:pgsql:PH_POSTFIX_LOOKUP_DIR/sender_login_maps.cf
 

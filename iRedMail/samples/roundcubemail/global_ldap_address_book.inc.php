@@ -60,7 +60,7 @@ $config['ldap_public']["global_ldap_abook"] = array(
         'departments' => array(
             'name'    => 'Mailing Lists',
             'scope'   => 'sub',
-            'base_dn' => '${LDAP_ATTR_DOMAIN_RDN}=%d,${LDAP_BASEDN}',
+            'base_dn' => 'domainName=%d,PH_LDAP_BASEDN',
             'filter'  => '(&(|(objectclass=mailList)(objectClass=mailAlias))(accountStatus=active)(enabledService=displayedInGlobalAddressBook))',
             'name_attr' => 'cn',
             'email'     => 'mail',

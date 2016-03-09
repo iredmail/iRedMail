@@ -289,6 +289,20 @@ CREATE TABLE IF NOT EXISTS recipient_bcc_user (
     INDEX (active)
 ) ENGINE=InnoDB;
 
+-- Sender dependent relayhost.
+--  - per-user: account='user@domain.com'
+--  - per-domain: account='@domain.com'
+-- References:
+--  - http://www.postfix.org/postconf.5.html#sender_dependent_relayhost_maps
+--  - http://www.postfix.org/transport.5.html
+CREATE TABLE IF NOT EXISTS sender_relayhost (
+    id BIGINT(20) UNSIGNED AUTO_INCREMENT,
+    account VARCHAR(255) NOT NULL DEFAULT '',
+    relayhost VARCHAR(255) NOT NULL DEFAULT '',
+    PRIMARY KEY (id),
+    UNIQUE INDEX (account)
+) ENGINE=InnoDB;
+
 -- Used to store basic info of deleted mailboxes.
 CREATE TABLE IF NOT EXISTS deleted_mailboxes (
     id BIGINT(20) UNSIGNED AUTO_INCREMENT,
