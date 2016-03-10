@@ -132,7 +132,7 @@ install_all()
                 fi
             fi
 
-            ALL_PKGS="${ALL_PKGS} postfix-mysql libdbd-mysql-perl"
+            ALL_PKGS="${ALL_PKGS} mariadb-client postfix-mysql libdbd-mysql-perl"
             if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
             fi
