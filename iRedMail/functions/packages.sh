@@ -126,13 +126,19 @@ install_all()
             # MySQL server and client.
             if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
                 if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-                    ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client"
+                    ALL_PKGS="${ALL_PKGS} mariadb-server"
                 else
-                    ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
+                    ALL_PKGS="${ALL_PKGS} mysql-server"
                 fi
             fi
 
-            ALL_PKGS="${ALL_PKGS} mariadb-client postfix-mysql libdbd-mysql-perl"
+            if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+                ALL_PKGS="${ALL_PKGS} mariadb-client"
+            else
+                ALL_PKGS="${ALL_PKGS} mysql-client"
+            fi
+
+            ALL_PKGS="${ALL_PKGS} postfix-mysql libdbd-mysql-perl"
             if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
             fi

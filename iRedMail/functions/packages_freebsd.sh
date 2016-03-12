@@ -271,12 +271,12 @@ EOF
             else
                 ALL_PORTS="${ALL_PORTS} databases/mysql${PREFERRED_MYSQL_VER}-server"
             fi
+        fi
+
+        if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+            ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-client"
         else
-            if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-                ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-client"
-            else
-                ALL_PORTS="${ALL_PORTS} databases/mysql${PREFERRED_MYSQL_VER}-client"
-            fi
+            ALL_PORTS="${ALL_PORTS} databases/mysql${PREFERRED_MYSQL_VER}-client"
         fi
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ALL_PORTS="${ALL_PORTS} databases/postgresql${PREFERRED_PGSQL_VER}-server databases/postgresql${PREFERRED_PGSQL_VER}-contrib"
