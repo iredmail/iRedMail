@@ -33,7 +33,9 @@ EXAMPLE:
 
 WARNING:
 
-It can *NOT* be the same as server hostname: ${HOSTNAME}, please either change your server hostname or use another mail domain name.
+It can *NOT* be the same as server hostname: ${HOSTNAME}.
+
+We need Postfix to accept emails sent to system accounts (e.g. root), if your mail domain is same as server hostname, Postfix won't accept any email sent to this mail domain.
 " 20 76 2>/tmp/first_domain
 
     FIRST_DOMAIN="$(cat /tmp/first_domain)"
