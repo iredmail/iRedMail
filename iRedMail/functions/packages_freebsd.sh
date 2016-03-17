@@ -265,6 +265,13 @@ EOF
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PORTS="${ALL_PORTS} net/openldap${PREFERRED_OPENLDAP_VER}-sasl-client net/openldap${PREFERRED_OPENLDAP_VER}-server databases/mysql${PREFERRED_MYSQL_VER}-server"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        # Install client before server.
+        if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+            ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-client"
+        else
+            ALL_PORTS="${ALL_PORTS} databases/mysql${PREFERRED_MYSQL_VER}-client"
+        fi
+
         if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
             if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
                 ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-server"
@@ -273,11 +280,6 @@ EOF
             fi
         fi
 
-        if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-            ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-client"
-        else
-            ALL_PORTS="${ALL_PORTS} databases/mysql${PREFERRED_MYSQL_VER}-client"
-        fi
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ALL_PORTS="${ALL_PORTS} databases/postgresql${PREFERRED_PGSQL_VER}-server databases/postgresql${PREFERRED_PGSQL_VER}-contrib"
     fi
