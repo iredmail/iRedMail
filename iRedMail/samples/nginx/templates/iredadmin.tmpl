@@ -9,8 +9,6 @@ location ~ ^/iredadmin/static/(.*)\.(png|jpg|gif|css|js) {
 location ~ ^/iredadmin(.*) {
     rewrite ^/iredadmin(/.*)$ $1 break;
 
-    add_header Content-Type 'text/html';
-
     include uwsgi_params;
     uwsgi_pass PH_UWSGI_SOCKET_IREDADMIN_FULL;
     uwsgi_param UWSGI_CHDIR PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK;
