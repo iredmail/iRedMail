@@ -138,6 +138,12 @@ mynetworks = 127.0.0.1
 # Accepted local emails
 mydestination = $myhostname, localhost, localhost.localdomain
 
+# Enable long, non-repeating, queue IDs (queue file names).
+# The benefit of non-repeating names is simpler logfile analysis and easier
+# queue migration (there is no need to run "postsuper" to change queue file
+# names that don't match their message file inode number).
+#enable_long_queue_ids = yes
+
 # Reject unlisted sender and recipient
 smtpd_reject_unlisted_recipient = yes
 smtpd_reject_unlisted_sender = yes
