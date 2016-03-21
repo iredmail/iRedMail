@@ -353,9 +353,14 @@ generate_ssl_keys()
     mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} &>/dev/null
 
     openssl req \
-        -x509 -nodes -days 3650 -newkey rsa:${SSL_KEY_SIZE} -sha256 \
+        -x509 \
+        -nodes \
+        -days 3650 \
+        -sha256 \
         -subj "/C=${TLS_COUNTRY}/ST=${TLS_STATE}/L=${TLS_CITY}/O=${TLS_COMPANY}/OU=${TLS_DEPARTMENT}/CN=${TLS_HOSTNAME}/emailAddress=${TLS_ADMIN}/" \
-        -out ${SSL_CERT_FILE} -keyout ${SSL_KEY_FILE} &>/dev/null
+        -newkey rsa:${SSL_KEY_SIZE} \
+        -out ${SSL_CERT_FILE} \
+        -keyout ${SSL_KEY_FILE} &>/dev/null
 
     # Set correct file permission.
     chmod +r ${SSL_CERT_FILE}
@@ -475,7 +480,7 @@ freebsd_add_make_conf()
         final_option="${1}=${2}"
         comment_mark="# ${PROG_NAME}-${var}"
         if ! grep "^${comment_mark}$" ${FREEBSD_MAKE_CONF} &>/dev/null; then
-            ECHO_DEBUG "Add make option in ${FREEBSD_MAKE_CONF}: ${final_option}"
+            ECHO_DEBUG "Update ${FREEBSD_MAKE_CONF}: ${final_option}"
             echo "${comment_mark}" >> ${FREEBSD_MAKE_CONF}
             echo "${final_option}" >> ${FREEBSD_MAKE_CONF}
         else
