@@ -69,3 +69,16 @@ fi
 # File will be removed automatically after iRedMail installation.
 export MYSQL_DEFAULTS_FILE_ROOT="${ROOTDIR}/.mysql-root-defaults-file"
 export MYSQL_CLIENT_ROOT="mysql --defaults-file=${MYSQL_DEFAULTS_FILE_ROOT}"
+
+# Hostname or IP address used in MySQL GRANT command (allow remote access from
+# this hostname/IP).
+# Usually it's 'localhost', but not in FreeBSD Jail (use ${LOCAL_ADDRESS} or
+# hostname of Jail instead).
+if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
+    # Pre-define MYSQL_GRANT_HOST while running iRedMail to use a remote MySQL
+    # server. For example:
+    # MYSQL_GRANT_HOST='192.168.1.2' bash iRedMail.sh
+    export MYSQL_GRANT_HOST="${MYSQL_GRANT_HOST:=localhost}"
+else
+    export MYSQL_GRANT_HOST="${LOCAL_ADDRESS}"
+fi

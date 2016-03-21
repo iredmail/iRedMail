@@ -61,19 +61,6 @@ export ENABLE_BACKEND_LDAPD='NO'
 # Usually it's 127.0.0.1, but not in FreeBSD Jail.
 export LOCAL_ADDRESS="${LOCAL_ADDRESS:=127.0.0.1}"
 
-# Hostname or IP address used in MySQL GRANT command (allow remote access from
-# this hostname/IP).
-# Usually it's 'localhost', but not in FreeBSD Jail (use ${LOCAL_ADDRESS} or
-# hostname of Jail instead).
-if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
-    # Pre-define MYSQL_GRANT_HOST while running iRedMail to use a remote MySQL
-    # server. For example:
-    # MYSQL_GRANT_HOST='192.168.1.2' bash iRedMail.sh
-    export MYSQL_GRANT_HOST="${MYSQL_GRANT_HOST:=localhost}"
-else
-    export MYSQL_GRANT_HOST="${LOCAL_ADDRESS}"
-fi
-
 # LDAP server
 export LDAP_SERVER_HOST="${LDAP_SERVER_HOST:=${LOCAL_ADDRESS}}"
 export LDAP_SERVER_PORT="${LDAP_SERVER_PORT:=389}"
