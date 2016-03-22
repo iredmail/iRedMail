@@ -39,7 +39,7 @@ EOF
             cat >> ${tmp_sql} <<EOF
 GRANT SELECT ON ${VMAIL_DB_NAME}.mailbox TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}";
 GRANT SELECT ON ${VMAIL_DB_NAME}.mailbox TO ${SOGO_DB_USER}@"${HOSTNAME}";
-CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_AUTH_VIEW} (c_uid, c_name, c_password, c_cn, mail, domain) AS SELECT username, username, password, name, username, domain FROM ${VMAIL_DB_NAME}.mailbox WHERE active=1;
+CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_AUTH_VIEW} (c_uid, c_name, c_password, c_cn, mail, domain) AS SELECT username, username, password, name, username, domain FROM ${VMAIL_DB_NAME}.mailbox WHERE enablesogo=1 AND active=1;
 EOF
         fi
 
@@ -69,7 +69,7 @@ EOF
 
         # Create view for user authentication
         cat >> ${tmp_sql} <<EOF
-CREATE VIEW ${SOGO_DB_AUTH_VIEW} AS SELECT * FROM dblink('host=${SQL_SERVER_ADDRESS} port=${SQL_SERVER_PORT} user=${VMAIL_DB_BIND_USER} password=${VMAIL_DB_BIND_PASSWD} dbname=${VMAIL_DB_NAME}', 'SELECT username AS c_uid, username AS c_name, password AS c_password, name AS c_cn, username AS mail, domain AS domain FROM mailbox WHERE active=1') AS ${SOGO_DB_AUTH_VIEW} (c_uid VARCHAR(255), c_name VARCHAR(255), c_password VARCHAR(255), c_cn VARCHAR(255), mail VARCHAR(255), domain VARCHAR(255));
+CREATE VIEW ${SOGO_DB_AUTH_VIEW} AS SELECT * FROM dblink('host=${SQL_SERVER_ADDRESS} port=${SQL_SERVER_PORT} user=${VMAIL_DB_BIND_USER} password=${VMAIL_DB_BIND_PASSWD} dbname=${VMAIL_DB_NAME}', 'SELECT username AS c_uid, username AS c_name, password AS c_password, name AS c_cn, username AS mail, domain AS domain FROM mailbox WHERE enablesogo=1 AND active=1') AS ${SOGO_DB_AUTH_VIEW} (c_uid VARCHAR(255), c_name VARCHAR(255), c_password VARCHAR(255), c_cn VARCHAR(255), mail VARCHAR(255), domain VARCHAR(255));
 ALTER TABLE ${SOGO_DB_AUTH_VIEW} OWNER TO ${SOGO_DB_USER};
 EOF
 

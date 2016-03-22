@@ -106,6 +106,7 @@ enabledService: lib-storage
 enabledService: indexer-worker
 enabledService: dsync
 enabledService: domainadmin
+enabledService: sogo
 domainGlobalAdmin: yes
 EOF
 }

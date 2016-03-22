@@ -169,6 +169,7 @@ CREATE TABLE IF NOT EXISTS mailbox (
     `enableindexer-worker` TINYINT(1) NOT NULL DEFAULT 1,
     enablelmtp TINYINT(1) NOT NULL DEFAULT 1,
     enabledsync TINYINT(1) NOT NULL DEFAULT 1,
+    enablesogo TINYINT(1) NOT NULL DEFAULT 1,
     -- Must be set to NULL if it's not restricted.
     allow_nets TEXT DEFAULT NULL,
     lastlogindate DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -213,6 +214,7 @@ CREATE TABLE IF NOT EXISTS mailbox (
     INDEX (`enablelib-storage`),
     INDEX (`enableindexer-worker`),
     INDEX (enabledsync),
+    INDEX (enablesogo),
     INDEX (passwordlastchange),
     INDEX (expired),
     INDEX (active)

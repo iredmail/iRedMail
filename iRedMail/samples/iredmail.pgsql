@@ -155,6 +155,7 @@ CREATE TABLE mailbox (
     "enableindexer-worker" INT2 NOT NULL DEFAULT 1,
     enablelmtp INT2 NOT NULL DEFAULT 1,
     enabledsync INT2 NOT NULL DEFAULT 1,
+    enablesogo INT2 NOT NULL DEFAULT 1,
     -- Must be set to NULL if it's not restricted.
     allow_nets TEXT DEFAULT NULL,
     lastlogindate TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
@@ -200,6 +201,7 @@ CREATE INDEX idx_mailbox_enableinternal ON mailbox (enableinternal);
 CREATE INDEX idx_mailbox_enabledoveadm ON mailbox (enabledoveadm);
 CREATE INDEX idx_mailbox_enablelib_storage ON mailbox ("enablelib-storage");
 CREATE INDEX idx_mailbox_enableindexer_worker ON mailbox ("enableindexer-worker");
+CREATE INDEX idx_mailbox_enablesogo ON mailbox (enablesogo);
 CREATE INDEX idx_mailbox_passwordlastchange ON mailbox (passwordlastchange);
 CREATE INDEX idx_mailbox_expired ON mailbox (expired);
 CREATE INDEX idx_mailbox_active ON mailbox (active);

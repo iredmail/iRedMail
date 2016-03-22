@@ -251,6 +251,7 @@ enabledService: senderbcc
 enabledService: recipientbcc
 enabledService: shadowaddress
 enabledService: displayedInGlobalAddressBook
+enabledService: sogo
 ${LDIF_PUREFTPD_USER}
 EOF
 }
