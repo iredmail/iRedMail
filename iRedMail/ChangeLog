@@ -1,5 +1,6 @@
 iRedMail-0.9.5:
     * Improvements:
+        + Switch to SOGo v3 (instead of v2).
         + Able to enable/disable sogo service for a single user with new SQL
           column `mailbox.enablesogo` and LDAP attribute/value
           `enabledService=sogo`.

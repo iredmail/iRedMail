@@ -325,9 +325,17 @@ install_all()
             cat > ${YUM_REPOS_DIR}/sogo.repo <<EOF
 [SOGo]
 name=Inverse SOGo Repository
-baseurl=${SOGO_PKG_MIRROR}/RHEL${DISTRO_VERSION}/\$basearch
 enabled=1
 gpgcheck=0
+
+# SOGo v3
+baseurl=${SOGO_PKG_MIRROR}/rhel-v3/${DISTRO_VERSION}/\$basearch
+
+# SOGo v3 nightly builds
+#baseurl=${SOGO_PKG_MIRROR}/rhel-v3-nightly/${DISTRO_VERSION}/\$basearch
+
+# SOGo v2
+#baseurl=http://inverse.ca/downloads/SOGo/RHEL${DISTRO_VERSION}/$basearch
 EOF
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -338,11 +346,17 @@ EOF
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-postgresql"
 
             ECHO_INFO "Add official apt repo for SOGo in /etc/apt/sources.list"
-            if ! grep "${SOGO_PKG_MIRROR} ${DISTRO_CODENAME}" /etc/apt/sources.list &>/dev/null; then
+            if ! grep "${SOGO_PKG_MIRROR}" /etc/apt/sources.list &>/dev/null; then
                 if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                    echo "deb ${SOGO_PKG_MIRROR}/Debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    # SOGo v3
+                    echo "deb ${SOGO_PKG_MIRROR}/debian-v3 ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    # SOGo v2
+                    #echo "deb ${SOGO_PKG_MIRROR}/Debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
                 elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                    echo "deb ${SOGO_PKG_MIRROR}/Ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    # SOGo v3
+                    echo "deb ${SOGO_PKG_MIRROR}/ubuntu-v3 ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    # SOGo v2
+                    #echo "deb ${SOGO_PKG_MIRROR}/Ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
                 fi
             fi
 
