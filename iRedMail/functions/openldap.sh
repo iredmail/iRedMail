@@ -105,6 +105,11 @@ EOF
     perl -pi -e 's#PH_LDAP_ROOTDN#$ENV{LDAP_ROOTDN}#g' ${OPENLDAP_SLAPD_CONF}
     perl -pi -e 's#PH_LDAP_ROOTPW_SSHA#$ENV{LDAP_ROOTPW_SSHA}#g' ${OPENLDAP_SLAPD_CONF}
 
+    if [ X"${OPENLDAP_DEFAULT_DBTYPE}" == X'mdb' ]; then
+        # mdb doesn't use cachesize (causes error)
+        perl -pi -e 's#^(cachesize.*)##g' ${OPENLDAP_SLAPD_CONF}
+    fi
+
     # use slapd.conf insteald of slapd.d
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         perl -pi -e 's#^(SLAPD_CONF=).*#${1}"$ENV{OPENLDAP_SLAPD_CONF}"#' ${OPENLDAP_SYSCONFIG_CONF}
@@ -174,14 +179,14 @@ EOF
 
 openldap_data_initialize()
 {
-    # Get DB_CONFIG.example.
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        export OPENLDAP_DB_CONFIG_SAMPLE="$( eval ${LIST_FILES_IN_PKG} openldap-servers | grep '/DB_CONFIG.example$')"
-    fi
-
     ECHO_DEBUG "Create instance directory for openldap tree: ${LDAP_DATA_DIR}."
     mkdir -p ${LDAP_DATA_DIR}
-    cp -f ${OPENLDAP_DB_CONFIG_SAMPLE} ${LDAP_DATA_DIR}/DB_CONFIG
+
+    # Get DB_CONFIG.example.
+    if [ X"${OPENLDAP_DEFAULT_DBTYPE}" == X'hdb' ]; then
+        cp -f ${OPENLDAP_DB_CONFIG_SAMPLE} ${LDAP_DATA_DIR}/DB_CONFIG
+    fi
+
     chown -R ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP} ${OPENLDAP_DATA_DIR}
     chmod -R 0700 ${OPENLDAP_DATA_DIR}
 
@@ -214,7 +219,7 @@ OpenLDAP:
     * Data dir and files:
         - ${OPENLDAP_DATA_DIR}
         - ${LDAP_DATA_DIR}
-        - ${LDAP_DATA_DIR}/DB_CONFIG
+        - ${LDAP_DATA_DIR}/DB_CONFIG (available if backend is bdb or hdb)
     * RC script:
         - ${OPENLDAP_RC_SCRIPT}
     * See also:

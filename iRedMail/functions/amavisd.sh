@@ -145,7 +145,6 @@ amavisd_config_rhel()
     # Enable disclaimer if available.
     perl -pi -e 's%(os_fingerprint_method => undef.*)%${1}\n  allow_disclaimers => 1, # enables disclaimer insertion if available%' ${AMAVISD_CONF}
 
-    echo '$sa_debug = 0;' >> ${AMAVISD_CONF}
     echo 'export status_amavisd_config_rhel="DONE"' >> ${STATUS_FILE}
 }
 

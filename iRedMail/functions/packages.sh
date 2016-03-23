@@ -348,15 +348,9 @@ EOF
             ECHO_INFO "Add official apt repo for SOGo in /etc/apt/sources.list"
             if ! grep "${SOGO_PKG_MIRROR}" /etc/apt/sources.list &>/dev/null; then
                 if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                    # SOGo v3
-                    echo "deb ${SOGO_PKG_MIRROR}/debian-v3 ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
-                    # SOGo v2
-                    #echo "deb ${SOGO_PKG_MIRROR}/Debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    echo "deb ${SOGO_PKG_MIRROR}/debian-v3/ ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
                 elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                    # SOGo v3
-                    echo "deb ${SOGO_PKG_MIRROR}/ubuntu-v3 ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
-                    # SOGo v2
-                    #echo "deb ${SOGO_PKG_MIRROR}/Ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    echo "deb ${SOGO_PKG_MIRROR}/ubuntu-v3/ ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
                 fi
             fi
 

@@ -41,7 +41,7 @@ export OPENLDAP_RC_SCRIPT_NAME='slapd'
 export OPENLDAP_CONF_ROOT='/etc/openldap'
 
 # Database backend type.
-export OPENLDAP_DEFAULT_DBTYPE='hdb'
+export OPENLDAP_DEFAULT_DBTYPE='mdb'
 
 # Default LDAP data directory.
 export OPENLDAP_DATA_DIR='/var/lib/ldap'    # Do *NOT* end with '/'.
@@ -51,7 +51,6 @@ export OPENLDAP_ARGS_FILE='/var/run/openldap/slapd.args'
 
 # Configure.
 if [ X"${DISTRO}" == X'RHEL' ]; then
-    export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
     if [ X"${DISTRO_VERSION}" == X'6' ]; then
         export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/ldap"
     else
@@ -71,7 +70,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
     # Configuration files.
     export OPENLDAP_CONF_ROOT="/etc/ldap"
-    export OPENLDAP_DB_CONFIG_SAMPLE="/usr/share/slapd/DB_CONFIG"
 
     export OPENLDAP_PID_FILE='/var/run/slapd/slapd.pid'
     export OPENLDAP_ARGS_FILE='/var/run/slapd/slapd.args'
@@ -84,7 +82,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Configuration files.
     export OPENLDAP_CONF_ROOT='/usr/local/etc/openldap'
-    export OPENLDAP_DB_CONFIG_SAMPLE="${OPENLDAP_CONF_ROOT}/DB_CONFIG.example"
 
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/local/libexec/openldap'
@@ -97,7 +94,10 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export OPENLDAP_DAEMON_USER='_openldap'
     export OPENLDAP_DAEMON_GROUP='_openldap'
 
-    export OPENLDAP_DB_CONFIG_SAMPLE="/usr/local/share/examples/openldap/DB_CONFIG"
+    # mdb is not available on OpenBSD.
+    export OPENLDAP_DEFAULT_DBTYPE='hdb'
+
+    export OPENLDAP_DB_CONFIG_SAMPLE='/usr/local/share/examples/openldap/DB_CONFIG'
 
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/local/libexec/openldap'
