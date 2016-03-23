@@ -69,7 +69,27 @@ EOF
 
         # Create view for user authentication
         cat >> ${tmp_sql} <<EOF
-CREATE VIEW ${SOGO_DB_AUTH_VIEW} AS SELECT * FROM dblink('host=${SQL_SERVER_ADDRESS} port=${SQL_SERVER_PORT} user=${VMAIL_DB_BIND_USER} password=${VMAIL_DB_BIND_PASSWD} dbname=${VMAIL_DB_NAME}', 'SELECT username AS c_uid, username AS c_name, password AS c_password, name AS c_cn, username AS mail, domain AS domain FROM mailbox WHERE enablesogo=1 AND active=1') AS ${SOGO_DB_AUTH_VIEW} (c_uid VARCHAR(255), c_name VARCHAR(255), c_password VARCHAR(255), c_cn VARCHAR(255), mail VARCHAR(255), domain VARCHAR(255));
+CREATE VIEW ${SOGO_DB_AUTH_VIEW} AS
+     SELECT * FROM dblink('host=${SQL_SERVER_ADDRESS}
+                           port=${SQL_SERVER_PORT}
+                           dbname=${VMAIL_DB_NAME}
+                           user=${VMAIL_DB_BIND_USER}
+                           password=${VMAIL_DB_BIND_PASSWD}',
+                          'SELECT username AS c_uid,
+                                  username AS c_name,
+                                  password AS c_password,
+                                  name AS c_cn,
+                                  username AS mail,
+                                  domain AS domain
+                             FROM mailbox
+                            WHERE enablesogo=1 AND active=1')
+         AS ${SOGO_DB_AUTH_VIEW} (c_uid VARCHAR(255),
+                                  c_name VARCHAR(255),
+                                  c_password VARCHAR(255),
+                                  c_cn VARCHAR(255),
+                                  mail VARCHAR(255),
+                                  domain VARCHAR(255));
+
 ALTER TABLE ${SOGO_DB_AUTH_VIEW} OWNER TO ${SOGO_DB_USER};
 EOF
 

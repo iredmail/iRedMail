@@ -90,6 +90,7 @@ SOURCE ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelist_domains.sql;
 EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp ${IREDAPD_ROOT_DIR}/SQL/iredapd.pgsql ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
+        cp ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelist_domains.sql ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
         chmod 0555 ${PGSQL_DATA_DIR}/iredapd.pgsql
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
@@ -114,6 +115,7 @@ EOF
 EOF
 
         rm -f ${PGSQL_DATA_DIR}/iredapd.pgsql
+        rm -f ${PGSQL_DATA_DIR}/greylisting_whitelist_domains.sql
     fi
 
     ECHO_DEBUG "Updating greylisting whitelists based on whitelist domain names."

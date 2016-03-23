@@ -329,13 +329,10 @@ enabled=1
 gpgcheck=0
 
 # SOGo v3
-baseurl=${SOGO_PKG_MIRROR}/rhel-v3/${DISTRO_VERSION}/\$basearch
+baseurl=${SOGO_PKG_MIRROR}/rhel-v3/\$releasever/\$basearch
 
 # SOGo v3 nightly builds
-#baseurl=${SOGO_PKG_MIRROR}/rhel-v3-nightly/${DISTRO_VERSION}/\$basearch
-
-# SOGo v2
-#baseurl=http://inverse.ca/downloads/SOGo/RHEL${DISTRO_VERSION}/$basearch
+#baseurl=${SOGO_PKG_MIRROR}/rhel-v3-nightly/\$releasever/\$basearch
 EOF
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
