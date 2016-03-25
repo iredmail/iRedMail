@@ -39,8 +39,7 @@ export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 # Database used to store incoming & outgoing email related information.
 export AMAVISD_DB_NAME='amavisd'
 export AMAVISD_DB_USER='amavisd'
-export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
-export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
+export SQL_BACKUP_DATABASES="${SQL_BACKUP_DATABASES} ${AMAVISD_DB_NAME}"
 
 # Altermime.
 export ALTERMIME_BIN='/usr/bin/altermime'

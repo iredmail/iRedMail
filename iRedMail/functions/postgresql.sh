@@ -161,6 +161,7 @@ ALTER DATABASE ${VMAIL_DB_NAME} OWNER TO ${VMAIL_DB_ADMIN_USER};
 
 -- Connect as vmailadmin
 \c ${VMAIL_DB_NAME} ${VMAIL_DB_ADMIN_USER};
+
 EOF
 
     if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
@@ -173,7 +174,7 @@ EOF
 \c ${VMAIL_DB_NAME};
 
 -- Set correct privilege for ROLE: vmail
-GRANT SELECT ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user TO ${VMAIL_DB_BIND_USER};
+GRANT SELECT ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user,anyone_shares,share_folder,deleted_mailboxes,sender_relayhost TO ${VMAIL_DB_BIND_USER};
 GRANT SELECT,UPDATE,INSERT,DELETE ON used_quota TO ${VMAIL_DB_BIND_USER};
 
 -- Set correct privilege for ROLE: vmailadmin
@@ -221,7 +222,7 @@ pgsql_cron_backup()
 
     perl -pi -e 's#^(export PGSQL_SYS_USER=).*#${1}"$ENV{PGSQL_SYS_USER}"#' ${BACKUP_SCRIPT_PGSQL}
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_PGSQL}
-    perl -pi -e 's#^(export DATABASES=).*#${1}"$ENV{PGSQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_PGSQL}
+    perl -pi -e 's#^(export DATABASES=).*#${1}"$ENV{SQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_PGSQL}
 
     # Add cron job
     cat >> ${CRON_SPOOL_DIR}/root <<EOF

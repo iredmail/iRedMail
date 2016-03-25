@@ -59,9 +59,8 @@ export MYSQL_VMAIL_SQL="${RUNTIME_DIR}/mysql_vmail.sql"
 # SQL structure of MySQL vmail database.
 export MYSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail.mysql"
 
-export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} mysql"
-if [ X"${BACKEND}" == X'MYSQL' ]; then
-    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${VMAIL_DB_NAME}"
+if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'OPENLDAP' ]; then
+    export SQL_BACKUP_DATABASES="${SQL_BACKUP_DATABASES} mysql"
 fi
 
 # A temporary file which stores MySQL root password to avoid MySQL client

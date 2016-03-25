@@ -81,7 +81,7 @@ allow_min_user = no
 # harvest email addresses.
 disable_vrfy_command = yes
 
-# Enable both IPv4 and IPv6.
+# Enable both IPv4 and/or IPv6: ipv4, ipv6, all.
 inet_protocols = all
 
 # Enable all network interfaces.

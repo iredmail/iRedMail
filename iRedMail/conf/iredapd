@@ -20,7 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-export IREDAPD_VERSION='1.8.0'
+export IREDAPD_VERSION='beta'
 export IREDAPD_DAEMON_USER='iredapd'
 export IREDAPD_DAEMON_GROUP='iredapd'
 export IREDAPD_HOME_DIR='/home/iredapd'
@@ -43,5 +43,4 @@ export IREDAPD_LOGROTATE_FILE="${LOGROTATE_DIR}/iredapd"
 export IREDAPD_DB_NAME='iredapd'
 export IREDAPD_DB_USER='iredapd'
 
-export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${IREDAPD_DB_NAME}"
-export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${IREDAPD_DB_NAME}"
+export SQL_BACKUP_DATABASES="${SQL_BACKUP_DATABASES} ${IREDAPD_DB_NAME}"

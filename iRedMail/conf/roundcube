@@ -62,6 +62,5 @@ export RCM_DES_KEY="$(echo ${tmp_rcm_des_key} | cut -c-24)"
 
 # Backup database.
 if [ X"${USE_RCM}" == X'YES' ]; then
-    export MYSQL_BACKUP_DATABASES="${MYSQL_BACKUP_DATABASES} ${RCM_DB_NAME}"
-    export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${RCM_DB_NAME}"
+    export SQL_BACKUP_DATABASES="${SQL_BACKUP_DATABASES} ${RCM_DB_NAME}"
 fi

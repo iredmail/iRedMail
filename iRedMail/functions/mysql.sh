@@ -85,6 +85,15 @@ mysql_initialize()
         perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 
+    # Bind to 127.0.0.1 on OpenBSD
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        grep '^bind-address' ${MYSQL_MY_CNF} &>/dev/null
+        if [ X"$?" != X'0' ]; then
+            ECHO_DEBUG "Enable 'bind-address = 127.0.0.1' in my.cnf."
+            perl -pi -e 's#^(\[mysqld\])#${1}\nbind-address = 127.0.0.1#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+        fi
+    fi
+
     service_control restart ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
@@ -220,11 +229,11 @@ mysql_cron_backup()
     chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_MYSQL}
     chmod 0700 ${BACKUP_SCRIPT_MYSQL}
 
-    export MYSQL_ROOT_PASSWD MYSQL_BACKUP_DATABASES
+    export MYSQL_ROOT_PASSWD SQL_BACKUP_DATABASES
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_MYSQL}
     perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{MYSQL_ROOT_USER}"#' ${BACKUP_SCRIPT_MYSQL}
     perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{MYSQL_ROOT_PASSWD}"#' ${BACKUP_SCRIPT_MYSQL}
-    perl -pi -e 's#^(export DATABASES=)(.*)#${1}"$ENV{MYSQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_MYSQL}
+    perl -pi -e 's#^(export DATABASES=)(.*)#${1}"$ENV{SQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_MYSQL}
 
     # Add cron job
     cat >> ${CRON_SPOOL_DIR}/root <<EOF

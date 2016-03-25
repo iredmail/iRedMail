@@ -76,9 +76,6 @@ export PGSQL_PGPASS_HOST='localhost'
 if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
     export PGSQL_PGPASS_HOST="${LOCAL_ADDRESS}"
 fi
-# SQL databases we should backup
-export MYSQL_BACKUP_DATABASES=''
-export PGSQL_BACKUP_DATABASES=''
 
 export USE_LOCAL_MYSQL_SERVER='YES'
 if [ X"${MYSQL_SERVER_ADDRESS}" != X"${LOCAL_ADDRESS}" ]; then
@@ -122,6 +119,9 @@ export IREDAPD_DAEMON_USER_GID='2002'
 export VMAIL_DB_NAME='vmail'
 export VMAIL_DB_BIND_USER='vmail'
 export VMAIL_DB_ADMIN_USER='vmailadmin'
+
+# SQL databases we should backup
+export SQL_BACKUP_DATABASES="${VMAIL_DB_NAME}"
 
 # Default virtual domain admin name without domain name (@example.com).
 export DOMAIN_ADMIN_NAME='postmaster'

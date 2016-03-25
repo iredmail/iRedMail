@@ -1,8 +1,10 @@
 iRedMail-0.9.5:
     * Drop support for old distribution releases:
-        - Debian 7 (code name: Wheezy). Debian 8 was released on April 25,
-          2015, and Debian team will stop offer security updates for Debian 7
-          after April 25, 2016.
+        - Debian 7 (code name: Wheezy).
+
+          Debian 8 was released on April 25, 2015, and Debian team will stop
+          offer security updates for Debian 7 after April 25, 2016.
+          Reference: https://wiki.debian.org/DebianOldStable
 
     * Improvements:
         + Switch OpenLDAP backend to mdb (Memory-Mapped DB backend to slapd)

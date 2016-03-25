@@ -89,9 +89,8 @@ FLUSH PRIVILEGES;
 SOURCE ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelist_domains.sql;
 EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp ${IREDAPD_ROOT_DIR}/SQL/iredapd.pgsql ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
-        cp ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelist_domains.sql ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
-        chmod 0555 ${PGSQL_DATA_DIR}/iredapd.pgsql
+        cp ${IREDAPD_ROOT_DIR}/SQL/{iredapd.pgsql,greylisting_whitelist_domains.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
+        chmod 0555 ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelist_domains.sql}
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create user
@@ -114,12 +113,8 @@ EOF
 \i ${PGSQL_DATA_DIR}/greylisting_whitelist_domains.sql;
 EOF
 
-        rm -f ${PGSQL_DATA_DIR}/iredapd.pgsql
-        rm -f ${PGSQL_DATA_DIR}/greylisting_whitelist_domains.sql
+        rm -f ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelist_domains.sql} >> ${INSTALL_LOG} 2>&1
     fi
-
-    ECHO_DEBUG "Updating greylisting whitelists based on whitelist domain names."
-    ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py &>/dev/null
 
     echo 'export status_iredapd_import_sql="DONE"' >> ${STATUS_FILE}
 }

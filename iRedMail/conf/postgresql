@@ -89,8 +89,3 @@ if [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'OPENBSD' ]; then
     export PGSQL_BIN_PG_DUMP='/usr/local/bin/pg_dump'
     export PGSQL_BIN_PG_DUMPALL='/usr/local/bin/pg_dumpall'
 fi
-
-export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES}"
-if [ X"${BACKEND}" == X'PGSQL' ]; then
-    export PGSQL_BACKUP_DATABASES="${PGSQL_BACKUP_DATABASES} ${VMAIL_DB_NAME}"
-fi
