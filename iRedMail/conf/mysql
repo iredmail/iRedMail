@@ -39,7 +39,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
     export MYSQL_MY_CNF='/etc/mysql/my.cnf'
 
-    if [ X"${DISTRO_CODENAME}" == X'wily' ]; then
+    if [ X"${DISTRO_CODENAME}" == X'xenial' ]; then
         if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
             export MYSQL_MY_CNF='/etc/mysql/mariadb.conf.d/mysqld.cnf'
         fi

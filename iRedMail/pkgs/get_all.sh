@@ -271,7 +271,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Force update.
-    ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."
+    ECHO_INFO "apt-get update ..."
     ${APTGET} update
 fi
 

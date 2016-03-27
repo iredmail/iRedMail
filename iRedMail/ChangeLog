@@ -1,5 +1,6 @@
 iRedMail-0.9.5:
     * Drop support for old distribution releases:
+        - Ubuntu 15.10 (code name: wily).
         - Debian 7 (code name: Wheezy).
 
           Debian 8 was released on April 25, 2015, and Debian team will stop
@@ -7,6 +8,7 @@ iRedMail-0.9.5:
           Reference: https://wiki.debian.org/DebianOldStable
 
     * Improvements:
+        + SOGo is configured to store password in SSHA512 (instead of ssha) hash by default.
         + Switch OpenLDAP backend to mdb (Memory-Mapped DB backend to slapd)
           on Linux and FreeBSD (not available on OpenBSD yet).
         + Switch SOGo to 3.x from 2.x on Linux distributions. It relies on
