@@ -76,6 +76,9 @@ php_config()
 
         # `intl` is required by Roundcube.
         php5enmod intl >> ${INSTALL_LOG} 2>&1
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ECHO_DEBUG "Disable suhosin.session.encrypt -> Off."
+        echo 'suhosin.session.encrypt = Off' >> ${PHP_INI}
     fi
 
     cat >> ${TIP_FILE} <<EOF

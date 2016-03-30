@@ -28,11 +28,10 @@ install_all()
 
     # OpenBSD only
     PKG_SCRIPTS=''
-    OB_PKG_POSTFIX_VER='-3.0.2'
-    OB_PKG_OPENLDAP_VER='-2.4.41'
-    OB_PKG_PHP_VER='-5.6.11'
-    OB_PKG_PHP_FPM_VER='-5.6.11p0'
-    OB_PKG_NGINX_VER='-1.9.3p3'
+    OB_PKG_POSTFIX_VER='-3.0.3p0'
+    OB_PKG_OPENLDAP_VER='-2.4.43'
+    OB_PKG_PHP_VER='-5.6.18'
+    OB_PKG_NGINX_VER='-1.9.10'
     OB_PKG_MEMCACHED_VER='-1.4.24'
 
     # Enable syslog or rsyslog.
@@ -65,9 +64,9 @@ install_all()
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-ldap"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-mysql"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-pgsql"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-sasl2-ldap"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-sasl2-mysql"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-sasl2-pgsql"
     fi
 
     # Backend: OpenLDAP, MySQL, PGSQL and extra packages.
@@ -225,7 +224,7 @@ install_all()
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} nginx-full php5-fpm"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} nginx${OB_PKG_NGINX_VER} php-fpm${OB_PKG_PHP_FPM_VER}"
+            ALL_PKGS="${ALL_PKGS} nginx${OB_PKG_NGINX_VER}"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${NGINX_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
     fi
@@ -281,7 +280,7 @@ install_all()
     # Amavisd-new & ClamAV & Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_SERVICE_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF unrar"
+        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF unrar pax"
 
         if [ X"${DISTRO_VERSION}" == X'6' ]; then
             ALL_PKGS="${ALL_PKGS} clamd clamav-db"
@@ -293,7 +292,7 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj zoo nomarch cpio lzop cabextract p7zip rpm ripole libmail-spf-perl unrar-free"
+        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj zoo nomarch cpio lzop cabextract p7zip rpm ripole libmail-spf-perl unrar-free pax"
 
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"

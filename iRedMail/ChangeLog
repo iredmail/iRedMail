@@ -1,4 +1,7 @@
 iRedMail-0.9.5:
+    * Supports new distribution release:
+        + OpenBSD 5.9.
+
     * Drop support for old distribution releases:
         - Ubuntu 15.10 (code name: wily).
         - Debian 7 (code name: Wheezy).
