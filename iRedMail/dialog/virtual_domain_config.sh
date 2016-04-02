@@ -38,7 +38,7 @@ It can *NOT* be the same as server hostname: ${HOSTNAME}.
 We need Postfix to accept emails sent to system accounts (e.g. root), if your mail domain is same as server hostname, Postfix won't accept any email sent to this mail domain.
 " 20 76 2>/tmp/first_domain
 
-    FIRST_DOMAIN="$(cat /tmp/first_domain)"
+    FIRST_DOMAIN="$(cat /tmp/first_domain | tr [A-Z] [a-z])"
 
     echo "${FIRST_DOMAIN}" | grep '\.' &>/dev/null
     [ X"$?" == X"0" -a X"${FIRST_DOMAIN}" != X"${HOSTNAME}" ] && break
