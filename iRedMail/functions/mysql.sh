@@ -46,6 +46,8 @@ host=${MYSQL_SERVER_ADDRESS}
 port=${MYSQL_SERVER_PORT}
 EOF
     fi
+
+    echo 'export status_mysql_generate_defauts_file_root="DONE"' >> ${STATUS_FILE}
 }
 
 mysql_initialize()

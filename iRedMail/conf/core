@@ -439,7 +439,7 @@ remove_pkg_rhel()
 install_pkg_debian()
 {
     ECHO_INFO "Installing package(s): $@"
-    ${APTGET} install -y --force-yes $@
+    ${APTGET} install -y $@
 
     # Leave a mark if package installation failed.
     if [ X"$?" != X"0" ]; then
