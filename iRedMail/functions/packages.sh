@@ -514,6 +514,8 @@ EOF
 
     after_package_installation()
     {
+        export POSTFIX_VERSION="$(postconf mail_version 2>/dev/null | awk '{print $NF}')"
+
         if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO_VERSION}" == X'6' ]; then
             # Copy DNS related libs to chrooted Postfix directory, so that Postfix
             # can correctly resolve IP address under chroot.

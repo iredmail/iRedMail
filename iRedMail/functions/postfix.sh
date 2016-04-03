@@ -105,6 +105,15 @@ postfix_config_basic()
     #
     # master.cf
     #
+    if echo ${POSTFIX_VERSION} | grep '^3' &>/dev/null; then
+        postconf -e compatibility_level=2
+
+        # The master.cf chroot default value has changed from "y" (yes) to "n" (no).
+        for i in $(postconf -Mf | grep '^[0-9a-zA-Z]' | awk '{print $1"/"$2"/chroot=n"}'); do
+            postconf -F $i
+        done
+    fi
+
     ECHO_DEBUG "Enable chroot."
     perl -pi -e 's/^(smtp.*inet)(.*)(n)(.*)(n)(.*smtpd)$/${1}${2}${3}${4}-${6}/' ${POSTFIX_FILE_MASTER_CF}
 
