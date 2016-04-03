@@ -93,20 +93,40 @@ home_mailbox = Maildir/
 #
 # TLS settings.
 #
-# Disable SSLv3
+# SSL key, certificate, CA
+#
+smtpd_tls_key_file = PH_SSL_KEY_FILE
+smtpd_tls_cert_file = PH_SSL_CERT_FILE
+smtpd_tls_CAfile = PH_SSL_CERT_FILE
+
+#
+# Disable SSLv2, SSLv3
 #
 smtpd_tls_protocols = !SSLv2 !SSLv3
-smtp_tls_protocols = !SSLv2 !SSLv3
-lmtp_tls_protocols = !SSLv2 !SSLv3
 smtpd_tls_mandatory_protocols = !SSLv2 !SSLv3
+smtp_tls_protocols = !SSLv2 !SSLv3
 smtp_tls_mandatory_protocols = !SSLv2 !SSLv3
+lmtp_tls_protocols = !SSLv2 !SSLv3
 lmtp_tls_mandatory_protocols = !SSLv2 !SSLv3
 
 #
 # Fix 'The Logjam Attack'.
 #
 smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
-smtpd_tls_dh1024_param_file = PH_SSL_DHPARAM_FILE
+smtpd_tls_dh512_param_file = PH_SSL_DH512_PARAM_FILE
+smtpd_tls_dh1024_param_file = PH_SSL_DH1024_PARAM_FILE
+
+tls_random_source = dev:/dev/urandom
+smtpd_sasl_security_options = noanonymous
+smtpd_tls_security_level = may
+smtpd_tls_loglevel = 1
+
+# Log only a summary message on TLS handshake completion — no logging of client
+# certificate trust-chain verification errors if client certificate
+# verification is not required. With Postfix 2.8 and earlier, log the summary
+# message, peer certificate summary information and unconditionally log
+# trust-chain verification errors.
+smtp_tls_loglevel = 1
 
 # Opportunistic TLS, used when Postfix sends email to remote SMTP server.
 # Use TLS if this is supported by the remote SMTP server, otherwise use
@@ -118,25 +138,7 @@ smtp_tls_security_level = may
 
 # Use the same CA file as smtpd.
 smtp_tls_CAfile = $smtpd_tls_CAfile
-smtp_tls_loglevel = 0
 smtp_tls_note_starttls_offer = yes
-
-# hostname
-myhostname = PH_HOSTNAME
-myorigin = PH_HOSTNAME
-mydomain = PH_HOSTNAME
-
-# trusted SMTP clients which are allowed to relay mail through Postfix.
-#
-# Note: additional IP addresses/networks listed in mynetworks should be listed
-#       in iRedAPD setting 'MYNETWORKS' too. for example:
-#
-#       MYNETWORKS = ['xx.xx.xx.xx', 'xx.xx.xx.0/24', ...]
-#
-mynetworks = 127.0.0.1
-
-# Accepted local emails
-mydestination = $myhostname, localhost, localhost.localdomain
 
 # Enable long, non-repeating, queue IDs (queue file names).
 # The benefit of non-repeating names is simpler logfile analysis and easier
@@ -187,22 +189,10 @@ smtpd_data_restrictions = reject_unauth_pipelining
 # END-OF-MESSAGE restrictions
 smtpd_end_of_data_restrictions = check_policy_service inet:PH_IREDAPD_BIND_HOST:PH_IREDAPD_LISTEN_PORT
 
-# The set of characters that can separate a user name from its extension
-# (example: user+foo), or a .forward file name from its extension (example:
-# .forward+foo).
-# Postfix 2.11 and later supports multiple characters.
-recipient_delimiter = +
-
 proxy_read_maps = $canonical_maps $lmtp_generic_maps $local_recipient_maps $mydestination $mynetworks $recipient_bcc_maps $recipient_canonical_maps $relay_domains $relay_recipient_maps $relocated_maps $sender_bcc_maps $sender_canonical_maps $smtp_generic_maps $smtpd_sender_login_maps $transport_maps $virtual_alias_domains $virtual_alias_maps $virtual_mailbox_domains $virtual_mailbox_maps $smtpd_sender_restrictions $sender_dependent_relayhost_maps
 
 # Avoid duplicate recipient messages. Default is 'yes'.
 enable_original_recipient = no
-
-alias_maps = hash:PH_POSTFIX_FILE_ALIASES
-alias_database = hash:PH_POSTFIX_FILE_ALIASES
-
-# Default message_size_limit.
-message_size_limit = PH_MESSAGE_SIZE_LIMIT
 
 # Virtual support.
 virtual_minimum_uid = PH_VMAIL_USER_UID
@@ -214,19 +204,38 @@ virtual_mailbox_base = PH_STORAGE_BASE_DIR
 virtual_alias_domains =
 
 #
-# Enable SASL authentication
+# Enable SASL authentication on port 25 and force TLS-encrypted SASL authentication.
+# WARNING: NOT RECOMMENDED.
 #
-smtpd_sasl_auth_enable = yes
-smtpd_sasl_local_domain =
-broken_sasl_auth_clients = yes
-smtpd_sasl_security_options = noanonymous
+#smtpd_sasl_auth_enable = yes
+#smtpd_tls_auth_only = yes
 
-# Force TLS-encrypted SASL authentication.
-smtpd_tls_auth_only = yes
+# hostname
+myhostname = PH_HOSTNAME
+myorigin = PH_HOSTNAME
+mydomain = PH_HOSTNAME
 
-smtpd_tls_security_level = may
-smtpd_tls_loglevel = 0
-smtpd_tls_key_file = PH_SSL_KEY_FILE
-smtpd_tls_cert_file = PH_SSL_CERT_FILE
-smtpd_tls_CAfile = PH_SSL_CERT_FILE
-tls_random_source = dev:/dev/urandom
+# trusted SMTP clients which are allowed to relay mail through Postfix.
+#
+# Note: additional IP addresses/networks listed in mynetworks should be listed
+#       in iRedAPD setting 'MYNETWORKS' too. for example:
+#
+#       MYNETWORKS = ['xx.xx.xx.xx', 'xx.xx.xx.0/24', ...]
+#
+mynetworks = 127.0.0.1
+
+# Accepted local emails
+mydestination = $myhostname, localhost, localhost.localdomain
+
+alias_maps = hash:PH_POSTFIX_FILE_ALIASES
+alias_database = hash:PH_POSTFIX_FILE_ALIASES
+
+# Default message_size_limit.
+message_size_limit = PH_MESSAGE_SIZE_LIMIT
+
+# The set of characters that can separate a user name from its extension
+# (example: user+foo), or a .forward file name from its extension (example:
+# .forward+foo).
+# Postfix 2.11 and later supports multiple characters.
+recipient_delimiter = +
+

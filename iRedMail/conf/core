@@ -369,8 +369,9 @@ generate_ssl_keys()
     # Fix 'The Logjam Attack'. References:
     #   - https://weakdh.org/
     #   - https://weakdh.org/sysadmin.html
-    ECHO_INFO "Generate a strong, unique Diffie Hellman Group with openssl, please wait."
-    openssl dhparam -out ${SSL_DHPARAM_FILE} 2048 5>&1 &>/dev/null
+    ECHO_INFO "Generate Diffie Hellman Group with openssl, please wait."
+    openssl dhparam -out ${SSL_DH512_PARAM_FILE} 512 5>&1 &>/dev/null
+    openssl dhparam -out ${SSL_DH1024_PARAM_FILE} 2048 5>&1 &>/dev/null
 
     cat >> ${TIP_FILE} <<EOF
 
