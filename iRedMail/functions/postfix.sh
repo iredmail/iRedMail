@@ -105,6 +105,8 @@ postfix_config_basic()
     #
     # master.cf
     #
+    # Postfix v3
+    #
     if echo ${POSTFIX_VERSION} | grep '^3' &>/dev/null; then
         postconf -e compatibility_level=2
 
@@ -112,6 +114,11 @@ postfix_config_basic()
         for i in $(postconf -Mf | grep '^[0-9a-zA-Z]' | awk '{print $1"/"$2"/chroot=n"}'); do
             postconf -F $i
         done
+
+        # Disable smtputf8 if EAI support is not compiled in.
+        if postconf -m 2>&1 |grep 'warning: smtputf8_enable' &>/dev/null; then
+            postconf -e smtputf8_enable=no
+        fi
     fi
 
     ECHO_DEBUG "Enable chroot."

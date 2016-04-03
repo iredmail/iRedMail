@@ -72,8 +72,8 @@ check_env
 . ${CONF_DIR}/ldapd
 . ${CONF_DIR}/mysql
 . ${CONF_DIR}/postgresql
-. ${CONF_DIR}/postfix
 . ${CONF_DIR}/dovecot
+. ${CONF_DIR}/postfix
 . ${CONF_DIR}/amavisd
 . ${CONF_DIR}/iredapd
 . ${CONF_DIR}/sogo

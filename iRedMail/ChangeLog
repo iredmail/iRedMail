@@ -11,6 +11,7 @@ iRedMail-0.9.5:
           Reference: https://wiki.debian.org/DebianOldStable
 
     * Improvements:
+        + Use Dovecot LMTP service as default LDA for better performance.
         + SOGo is configured to store password in SSHA512 (instead of ssha) hash by default.
         + Switch OpenLDAP backend to mdb (Memory-Mapped DB backend to slapd)
           on Linux and FreeBSD (not available on OpenBSD yet).
