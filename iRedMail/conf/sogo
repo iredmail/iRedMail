@@ -51,6 +51,10 @@ export MEMCACHED_RC_SCRIPT_NAME='memcached'
 export SOGO_BIND_ADDRESS="${LOCAL_ADDRESS:=127.0.0.1}"
 export SOGO_BIND_PORT='20000'
 
+# SOGo proxy timeout (in seconds)
+export SOGO_PROXY_TIMEOUT='3540'
+
+# SOGo SQL database.
 export SOGO_DB_NAME='sogo'
 export SOGO_DB_USER='sogo'
 export SOGO_DB_AUTH_VIEW='users'

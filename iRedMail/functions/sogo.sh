@@ -120,6 +120,9 @@ EOF
     perl -pi -e 's#PH_SOGO_PID_FILE#$ENV{SOGO_PID_FILE}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_LOG_FILE#$ENV{SOGO_LOG_FILE}#g' ${SOGO_CONF}
 
+    # Proxy timeout
+    perl -pi -e 's#PH_SOGO_PROXY_TIMEOUT#$ENV{SOGO_PROXY_TIMEOUT}#g' ${SOGO_CONF}
+
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Default 'WOPort = 127.0.0.1:20000;' doesn't work on OpenBSD
         perl -pi -e 's#(.*WOPort = ).*#${1}\*:$ENV{SOGO_BIND_PORT};#' ${SOGO_CONF}

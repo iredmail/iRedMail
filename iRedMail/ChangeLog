@@ -23,6 +23,8 @@ iRedMail-0.9.5:
         + Supports Postfix parameter `sender_dependent_relayhost_maps`.
 
     * Fixed issues:
+        - Improper proxy timeout setting in SOGo and Nginx which cause SOGo
+          error 'client disconnected during delivery of response'.
         - Not correctly add Postfix alias 'virusalert: root' for
           non-(Debian/Ubuntu) OSes.
         - Not create directory used to store php session files.
