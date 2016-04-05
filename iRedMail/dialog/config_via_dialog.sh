@@ -219,11 +219,6 @@ echo "export PGSQL_ROOT_USER='${PGSQL_ROOT_USER}'" >>${IREDMAIL_CONFIG_FILE}
 echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
 
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-    if [ X"${DISTRO}" != X'OPENBSD' ]; then
-        export DEFAULT_PASSWORD_SCHEME='SSHA'
-        echo "export DEFAULT_PASSWORD_SCHEME='SSHA'" >> ${IREDMAIL_CONFIG_FILE}
-    fi
-
     . ${DIALOG_DIR}/ldap_config.sh
 fi
 

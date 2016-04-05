@@ -116,6 +116,11 @@ EOF
         perl -pi -e 's#^(SLAPD_PIDFILE=).*#${1}"$ENV{OPENLDAP_PID_FILE}"#' ${OPENLDAP_SYSCONFIG_CONF}
     fi
 
+    # Password verification with sha2.
+    if [ X"${OPENLDAP_HAS_SHA2}" == X'YES' ]; then
+        perl -pi -e 's/^#(moduleload.*)(pw_sha2)/${1}$ENV{OPENLDAP_MOD_PW_SHA2}/' ${OPENLDAP_SLAPD_CONF}
+    fi
+
     ECHO_DEBUG "Generate new client configuration file: ${OPENLDAP_LDAP_CONF}"
     cp ${SAMPLE_DIR}/openldap/ldap.conf ${OPENLDAP_LDAP_CONF}
     perl -pi -e 's#PH_LDAP_SUFFIX#$ENV{LDAP_SUFFIX}#g' ${OPENLDAP_LDAP_CONF}

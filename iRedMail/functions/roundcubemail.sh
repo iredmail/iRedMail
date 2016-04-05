@@ -236,14 +236,21 @@ rcm_plugin_password()
     perl -pi -e 's#(.*password_require_nonalpha.*=).*#${1} true;#' config.inc.php
     perl -pi -e 's#(.*password_log.*=).*#${1} true;#' config.inc.php
 
-    # lower case
+    # Roundcube uses scheme name in lower cases
     export default_password_scheme="$(echo ${DEFAULT_PASSWORD_SCHEME} | tr [A-Z] [a-z])"
-    # upper case
+
+    # Dovecot uses scheme name in upper cases
     export dovecotpw_method="${DEFAULT_PASSWORD_SCHEME}"
+
     if [ X"${dovecotpw_method}" == X'BCRYPT' ]; then
         # Password scheme name used in Dovecot (doveadm pw).
         export default_password_scheme='blf-crypt'
         export dovecotpw_method='BLF-CRYPT'
+    fi
+
+    # Roundcube supports ssha, but not ssha512.
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        export default_password_scheme='ssha'
     fi
 
     perl -pi -e 's#// (.*password_dovecotpw.*=).*#${1} "$ENV{DOVECOT_DOVEADM_BIN} pw";#' config.inc.php

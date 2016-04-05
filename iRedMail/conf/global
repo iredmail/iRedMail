@@ -435,11 +435,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${APTGET}" != X"" ]; then
         export APTGET="${APTGET}"
     else
-        if [ X"${DISTRO_CODENAME}" == X'xenial' ]; then
-            export APTGET='apt'
-        else
-            export APTGET='apt-get'
-        fi
+        export APTGET='apt-get'
     fi
 
     # Package management.

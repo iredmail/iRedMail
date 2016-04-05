@@ -25,6 +25,11 @@
 # OpenLDAP version number.
 export OPENLDAP_VERSION='2.4'
 
+# Support password verification with SSHA512. Require OpenLDAP-2.4.32 or later.
+export OPENLDAP_HAS_SHA2='YES'
+# Module name
+export OPENLDAP_MOD_PW_SHA2='pw-sha2'
+
 # LDAP service info.
 # LDAP_SERVER_HOST, LDAP_SERVER_PORT are defined in conf/global
 export LDAP_USE_TLS='NO'
@@ -53,6 +58,7 @@ export OPENLDAP_ARGS_FILE='/var/run/openldap/slapd.args'
 if [ X"${DISTRO}" == X'RHEL' ]; then
     if [ X"${DISTRO_VERSION}" == X'6' ]; then
         export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/ldap"
+        export OPENLDAP_HAS_SHA2='NO'
     else
         export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/slapd"
     fi
@@ -79,6 +85,10 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/lib/ldap'
 
+    if [ X"${DISTRO_CODENAME}" == X'trusty' ]; then
+        export OPENLDAP_HAS_SHA2='NO'
+    fi
+
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Configuration files.
     export OPENLDAP_CONF_ROOT='/usr/local/etc/openldap'
@@ -101,8 +111,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/local/libexec/openldap'
-else
-    :
 fi
 
 # RC script.
