@@ -124,26 +124,12 @@ nginx_config()
 
         ECHO_DEBUG "Setting logrotate for uwsgi log file: ${UWSGI_LOG_FILE}."
         mkdir -p ${UWSGI_LOG_DIR} >> ${INSTALL_LOG} 2>&1
-        cat > ${UWSGI_LOGROTATE_FILE} <<EOF
-${CONF_MSG}
-${UWSGI_LOG_FILE} {
-    compress
-    weekly
-    rotate 10
-    create 0600 ${SYS_ROOT_USER} ${SYS_ROOT_GROUP}
-    missingok
+        cp -f ${SAMPLE_DIR}/logrotate/uwsgi ${UWSGI_LOGROTATE_FILE}
 
-    # Use bzip2 for compress.
-    compresscmd $(which bzip2)
-    uncompresscmd $(which bunzip2)
-    compressoptions -9
-    compressext .bz2
-
-    postrotate
-        ${SYSLOG_POSTROTATE_CMD}
-    endscript
-}
-EOF
+        perl -pi -e 's#PH_UWSGI_LOG_FILE#$ENV{UWSGI_LOG_FILE}#g' ${UWSGI_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYS_ROOT_USER#$ENV{SYS_ROOT_USER}#g' ${UWSGI_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYS_ROOT_GROUP#$ENV{SYS_ROOT_GROUP}#g' ${UWSGI_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${UWSGI_LOGROTATE_FILE}
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${IREDADMIN_UWSGI_CONF}

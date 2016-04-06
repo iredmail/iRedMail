@@ -341,28 +341,14 @@ EOF
 
     ECHO_DEBUG "Setting logrotate for dovecot log file."
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-        cat > ${DOVECOT_LOGROTATE_FILE} <<EOF
-${CONF_MSG}
-${DOVECOT_LOG_FILE}
-${DOVECOT_SIEVE_LOG_FILE}
-${DOVECOT_LMTP_LOG_FILE} {
-    compress
-    weekly
-    rotate 10
-    create 0600 ${VMAIL_USER_NAME} ${VMAIL_GROUP_NAME}
-    missingok
+        cp -f ${SAMPLE_DIR}/logrotate/dovecot ${DOVECOT_LOGROTATE_FILE}
 
-    # Use bzip2 for compress.
-    compresscmd $(which bzip2)
-    uncompresscmd $(which bunzip2)
-    compressoptions -9
-    compressext .bz2
+        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}
+        perl -pi -e 's#PH_DOVECOT_SIEVE_LOG_FILE#$ENV{DOVECOT_SIEVE_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}
+        perl -pi -e 's#PH_DOVECOT_LMTP_LOG_FILE#$ENV{DOVECOT_LMTP_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}
 
-    postrotate
-        doveadm log reopen
-    endscript
-}
-EOF
+        perl -pi -e 's#PH_VMAIL_USER_NAME#$ENV{VMAIL_USER_NAME}#g' ${DOVECOT_LOGROTATE_FILE}
+        perl -pi -e 's#PH_VMAIL_GROUP_NAME#$ENV{VMAIL_GROUP_NAME}#g' ${DOVECOT_LOGROTATE_FILE}
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
         if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
