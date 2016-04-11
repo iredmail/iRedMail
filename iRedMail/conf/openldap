@@ -58,7 +58,6 @@ export OPENLDAP_ARGS_FILE='/var/run/openldap/slapd.args'
 if [ X"${DISTRO}" == X'RHEL' ]; then
     if [ X"${DISTRO_VERSION}" == X'6' ]; then
         export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/ldap"
-        export OPENLDAP_HAS_SHA2='NO'
     else
         export OPENLDAP_SYSCONFIG_CONF="${ETC_SYSCONFIG_DIR}/slapd"
     fi
@@ -68,6 +67,8 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     if [ X"${OS_ARCH}" == X'x86_64' ]; then
         export OPENLDAP_MODULE_PATH='/usr/lib64/openldap'
     fi
+
+    export OPENLDAP_HAS_SHA2='NO'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # LDAP daemon user & group.

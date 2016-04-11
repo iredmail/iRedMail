@@ -72,10 +72,10 @@ php_config()
         fi
 
         # Enable mcrypt
-        php5enmod mcrypt >> ${INSTALL_LOG} 2>&1
+        ${PHPENMOD_BIN} mcrypt >> ${INSTALL_LOG} 2>&1
 
         # `intl` is required by Roundcube.
-        php5enmod intl >> ${INSTALL_LOG} 2>&1
+        ${PHPENMOD_BIN} intl >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ECHO_DEBUG "Disable suhosin.session.encrypt -> Off."
         echo 'suhosin.session.encrypt = Off' >> ${PHP_INI}
