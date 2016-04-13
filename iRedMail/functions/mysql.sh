@@ -110,6 +110,8 @@ mysql_initialize()
 
             ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
             mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+        else
+            ECHO_DEBUG "MySQL root password is not empty, not reset."
         fi
     else
         ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${MYSQL_GRANT_HOST} ..."

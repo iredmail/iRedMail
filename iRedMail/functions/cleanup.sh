@@ -106,24 +106,20 @@ cleanup_remove_mod_python()
 cleanup_replace_firewall_rules()
 {
     # Get SSH listen port, replace default port number in iptable rule file.
-    export sshd_port="$(grep '^Port' ${SSHD_CONFIG} | awk '{print $2}' )"
-    if [ X"${sshd_port}" == X"" -o X"${sshd_port}" == X"22" ]; then
-        # No port number defined, use default (22).
-        export sshd_port='22'
-    else
+    if [ X"${SSHD_PORT}" != X'22' ]; then
         # Replace port number in iptable, pf and Fail2ban.
         [ X"${USE_FIREWALLD}" == X'YES' ] && \
-            perl -pi -e 's#(.*)22(.*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
+            perl -pi -e 's#(.*)22(.*)#${1}$ENV{SSHD_PORT}${2}#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
 
-        perl -pi -e 's#(.* )22( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/iptables.rules
-        perl -pi -e 's#(.*mail_services=.*)ssh( .*)#${1}$ENV{sshd_port}${2}#' ${SAMPLE_DIR}/openbsd/pf.conf
+        perl -pi -e 's#(.* )22( .*)#${1}$ENV{SSHD_PORT}${2}#' ${SAMPLE_DIR}/iptables.rules
+        perl -pi -e 's#(.*mail_services=.*)ssh( .*)#${1}$ENV{SSHD_PORT}${2}#' ${SAMPLE_DIR}/openbsd/pf.conf
 
         [ -f ${FAIL2BAN_JAIL_LOCAL_CONF} ] && \
-            perl -pi -e 's#(.*port=.*)ssh(.*)#${1}$ENV{sshd_port}${2}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+            perl -pi -e 's#(.*port=.*)ssh(.*)#${1}$ENV{SSHD_PORT}${2}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
     fi
 
     ECHO_QUESTION "Would you like to use firewall rules provided by iRedMail?"
-    ECHO_QUESTION -n "File: ${FIREWALL_RULE_CONF}, with SSHD port: ${sshd_port}. [Y|n]"
+    ECHO_QUESTION -n "File: ${FIREWALL_RULE_CONF}, with SSHD port: ${SSHD_PORT}. [Y|n]"
     read_setting ${AUTO_CLEANUP_REPLACE_FIREWALL_RULES}
     case ${ANSWER} in
         N|n ) ECHO_INFO "Skip firewall rules." ;;
@@ -136,7 +132,7 @@ cleanup_replace_firewall_rules()
                     cp -f ${SAMPLE_DIR}/firewalld/zones/iredmail.xml ${FIREWALL_RULE_CONF}
                     perl -pi -e 's#^(DefaultZone=).*#${1}iredmail#g' ${FIREWALLD_CONF}
 
-                    [ X"${sshd_port}" != X'22' ] && \
+                    [ X"${SSHD_PORT}" != X'22' ] && \
                         cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
 
                     cp -f ${SAMPLE_DIR}/firewalld/services/{imap,pop3,submission}.xml ${FIREWALLD_CONF_DIR}/services/
@@ -171,7 +167,7 @@ cleanup_replace_firewall_rules()
             fi
 
             # Prompt to restart iptables.
-            ECHO_QUESTION -n "Restart firewall now (with SSHD port ${sshd_port})? [y|N]"
+            ECHO_QUESTION -n "Restart firewall now (with SSHD port ${SSHD_PORT})? [y|N]"
             read_setting ${AUTO_CLEANUP_RESTART_IPTABLES}
             case ${ANSWER} in
                 Y|y )

@@ -606,6 +606,11 @@ fi
 
 # Location of sshd_config
 export SSHD_CONFIG='/etc/ssh/sshd_config'
+export SSHD_PORT="$(grep '^Port' ${SSHD_CONFIG} | awk '{print $2}' )"
+if [ X"${SSHD_PORT}" == X'' ]; then
+    # No port number defined, use default port number (22).
+    export SSHD_PORT='22'
+fi
 
 # Command use to fetch source tarballs.
 if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then

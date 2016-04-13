@@ -26,6 +26,8 @@ iRedMail-0.9.5:
         + Supports Postfix parameter `sender_dependent_relayhost_maps`.
 
     * Fixed issues:
+        - Not correctly setup Fail2ban jail `action=` setting to block bad ssh
+          client IP address.
         - Improper proxy timeout setting in SOGo and Nginx which cause SOGo
           error 'client disconnected during delivery of response'.
         - Not correctly add Postfix alias 'virusalert: root' for
