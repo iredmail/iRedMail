@@ -1,7 +1,6 @@
-    # Normal PHP scripts
-    location ~ \.php$ {
-        include fastcgi_params;
-        fastcgi_pass php_workers;
-        fastcgi_param SCRIPT_FILENAME PH_HTTPD_DOCUMENTROOT$fastcgi_script_name;
-    }
-
+# Normal PHP scripts
+location ~ \.php$ {
+    include fastcgi_params;
+    fastcgi_pass php_workers;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+}

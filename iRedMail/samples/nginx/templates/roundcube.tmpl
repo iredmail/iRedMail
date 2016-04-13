@@ -1,15 +1,14 @@
-    # Roundcube webmail
-    location ~ ^/mail(.*)\.php$ {
-        include fastcgi_params;
-        fastcgi_pass php_workers;
-        fastcgi_index index.php;
-        fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK$1.php;
-    }
+# Roundcube webmail
+location ~ ^/mail(.*)\.php$ {
+    include fastcgi_params;
+    fastcgi_pass php_workers;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK$1.php;
+}
 
-    location ~ ^/mail(.*) {
-        alias PH_RCM_HTTPD_ROOT_SYMBOL_LINK$1;
-        index index.php;
-    }
+location ~ ^/mail(.*) {
+    alias PH_RCM_HTTPD_ROOT_SYMBOL_LINK$1;
+    index index.php;
+}
 
-    location ~ ^/mail/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING)$ { deny all; }
-
+location ~ ^/mail/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING)$ { deny all; }
