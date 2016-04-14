@@ -56,6 +56,15 @@ php_config()
 
     perl -pi -e 's/^(allow_url_fopen.*=).*/${1} On;/' ${PHP_INI}
 
+    # Create directory used to store session (session.save_path)
+    perl -pi -e 's#^(session.save_path)#;${1}#g' ${PHP_INI}
+    perl -pi -e 's#^(\[PHP\])$#${1}\nsession.save_path = "$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_INI}
+    # Set correct owner and permission
+    [ -d ${PHP_SESSION_SAVE_PATH} ] || mkdir -p ${PHP_SESSION_SAVE_PATH} >> ${INSTALL_LOG} 2>&1
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${PHP_SESSION_SAVE_PATH}
+    chmod 0773 ${PHP_SESSION_SAVE_PATH}
+    chmod o+t ${PHP_SESSION_SAVE_PATH}
+
     # Set date.timezone. Required by PHP-5.3.
     grep '^date.timezone' ${PHP_INI} >/dev/null
     if [ X"$?" == X"0" ]; then

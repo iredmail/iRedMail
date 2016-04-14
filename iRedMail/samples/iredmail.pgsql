@@ -162,7 +162,8 @@ CREATE TABLE mailbox (
     lastloginipv4 INET NOT NULL DEFAULT '0.0.0.0',
     lastloginprotocol CHAR(255) NOT NULL DEFAULT '',
     disclaimer TEXT NOT NULL DEFAULT '',
-    -- Below 4 columns are deprecated, don't use them.
+    -- Below 4 columns are deprecated and will be removed in future release.
+    -- Don't use them.
     allowedsenders TEXT NOT NULL DEFAULT '',
     rejectedsenders TEXT NOT NULL DEFAULT '',
     allowedrecipients TEXT NOT NULL DEFAULT '',

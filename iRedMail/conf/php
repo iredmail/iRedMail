@@ -23,6 +23,9 @@
 # path to php program
 export PHP_BIN='/usr/bin/php'
 
+# Path used to store php sessions (session.save_path)
+export PHP_SESSION_SAVE_PATH='/var/lib/php/sessions'
+
 # php-fpm
 export PHP_FPM_RC_SCRIPT_NAME='php-fpm'
 export PHP_FASTCGI_SOCKET='/var/run/php-fpm.socket'
