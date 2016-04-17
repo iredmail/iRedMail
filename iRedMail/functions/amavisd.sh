@@ -198,9 +198,10 @@ chomp(\$mydomain = "${HOSTNAME}");
 \$defang_banned = 0;  # MIME-wrap passed mail containing banned name
 
 \$policy_bank{'MYNETS'} = {   # mail originating from @mynetworks
-  originating => 1,  # is true in MYNETS by default, but let's make it explicit
-  os_fingerprint_method => undef,  # don't query p0f for internal clients
-  allow_disclaimers => 1,  # enables disclaimer insertion if available
+    originating => 1,  # is true in MYNETS by default, but let's make it explicit
+    os_fingerprint_method => undef,  # don't query p0f for internal clients
+    allow_disclaimers => 1,  # enables disclaimer insertion if available
+    enable_dkim_signing => 1,
 };
 
 # it is up to MTA to re-route mail from authenticated roaming users or
@@ -210,6 +211,7 @@ chomp(\$mydomain = "${HOSTNAME}");
 \$policy_bank{'ORIGINATING'} = {  # mail supposedly originating from our users
     originating => 1,  # declare that mail was submitted by our smtp client
     allow_disclaimers => 1,  # enables disclaimer insertion if available
+    enable_dkim_signing => 1,
 
     # notify administrator of locally originating malware
     virus_admin_maps => ["root\@\$mydomain"],
@@ -429,7 +431,7 @@ EOF
     cat >> ${AMAVISD_CONF} <<EOF
 # Enable DKIM signing/verification
 \$enable_dkim_verification = 1;
-\$enable_dkim_signing = 1;
+#\$enable_dkim_signing = 1;     # we have dkim signing enabled in policy banks.
 
 EOF
 
