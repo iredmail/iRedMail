@@ -112,6 +112,6 @@ fi
 export DOVECOT_PROTOCOLS="pop3 imap sieve lmtp"
 
 # LDA
-export DOVECOT_LDA_SIEVE='dovecot'
+export DOVECOT_LDA_DELIVER='dovecot'
 export DOVECOT_LDA_LMTP_SOCKET='lmtp:unix:private/dovecot-lmtp'
 export DOVECOT_LDA_LMTP_INET='lmtp:inet:127.0.0.1:24'
