@@ -30,7 +30,7 @@
 #
 #   - Pure-FTPd integration:
 #       * PUREFTPD_INTEGRATION      # <- set to 'YES' if you want to integrate it.
-#       * FTP_STORAGE_BASE_DIRECTORY    # <- directory used to store FTP data.
+#       * FTP_BASE_DIRECTORY        # <- directory used to store FTP data.
 #
 #   - Optional variables:
 #       * SEND_WELCOME_MSG
@@ -103,7 +103,7 @@ USE_DEFAULT_PASSWD='NO'
 # Add objectClass and attributes for pure-ftpd integration.
 # Note: You must inlucde pureftpd.schema in OpenLDAP slapd.conf first.
 PUREFTPD_INTEGRATION='NO'
-FTP_STORAGE_BASE_DIRECTORY="${STORAGE_BASE_DIRECTORY}"
+FTP_BASE_DIRECTORY='/home/ftp'
 
 # ------------------------------------------------------------------
 # ------------------------- Welcome Msg ----------------------------
@@ -201,7 +201,7 @@ FTPDownloadBandwidth: 50
 FTPUploadBandwidth: 50
 FTPDownloadRatio: 5
 FTPUploadRatio: 1
-FTPHomeDir: ${FTP_STORAGE_BASE_DIRECTORY}/${maildir}/ftp/
+FTPHomeDir: ${FTP_BASE_DIRECTORY}/${DOMAIN_NAME}/${USERNAME}/
 "
     else
         LDIF_PUREFTPD_USER=''
