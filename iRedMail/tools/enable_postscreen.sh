@@ -86,6 +86,7 @@ cat > ${POSTSCREEN_ACCESS_CIDR} <<EOF
 #2.3.4.5 reject
 
 # Permit local clients
+127.0.0.0/8 permit
 192.168.254.0/24 permit
 EOF
 

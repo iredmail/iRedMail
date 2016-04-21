@@ -34,6 +34,9 @@ iRedMail-0.9.5:
         - Not create directory used to store php session files.
         - Not enable cron job to auto update SpamAssassin rules on RHEL/CentOS.
 
+    * Updated packages:
+        + Roundcube webmail -> 1.1.5
+
 iRedMail-0.9.4:
     * New scripts:
         - tools/fail2ban_unban_ip.sh. Used to unban specified IP addresses

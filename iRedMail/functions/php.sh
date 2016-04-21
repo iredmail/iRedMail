@@ -54,11 +54,15 @@ php_config()
     perl -pi -e 's/^(suhosin.session.encrypt.*=).*/${1} Off;/' ${PHP_INI}
     perl -pi -e 's/^;(suhosin.session.encrypt.*=).*/${1} Off;/' ${PHP_INI}
 
-    perl -pi -e 's/^(allow_url_fopen.*=).*/${1} On;/' ${PHP_INI}
+    #perl -pi -e 's/^(allow_url_fopen.*=).*/${1} On/' ${PHP_INI}
+
+    # Add setting `disable_functions`
+    perl -pi -e 's#^;(disable_functions.*)#${1}#g' ${PHP_INI}
+    perl -pi -e 's#^(disable_functions).*#${1} = $ENV{PHP_DISABLE_FUNCTIONS}#g' ${PHP_INI}
 
     # Create directory used to store session (session.save_path)
-    perl -pi -e 's#^(session.save_path)#;${1}#g' ${PHP_INI}
-    perl -pi -e 's#^(\[PHP\])$#${1}\nsession.save_path = "$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_INI}
+    perl -pi -e 's#^;(session.save_path).*#${1}#g' ${PHP_INI}
+    perl -pi -e 's#^(session.save_path).*#session.save_path = "3;$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_INI}
     # Set correct owner and permission
     [ -d ${PHP_SESSION_SAVE_PATH} ] || mkdir -p ${PHP_SESSION_SAVE_PATH} >> ${INSTALL_LOG} 2>&1
     chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${PHP_SESSION_SAVE_PATH}
@@ -94,7 +98,7 @@ php_config()
 PHP:
     * PHP config file for Apache: ${PHP_INI} (not exist if you're running Nginx)
     * PHP config file for Nginx: ${NGINX_PHP_INI} (not exist if you're running Apache)
-    * Disabled functions: ${PHP_DISABLED_FUNCTIONS}
+    * Disabled functions: ${PHP_DISABLE_FUNCTIONS}
 
 EOF
 
