@@ -1,14 +1,14 @@
 iRedMail-0.9.5:
     * Supports new distribution release:
+        + Ubuntu 16.04 LTS (code name: xenial).
         + OpenBSD 5.9.
 
     * Drop support for old distribution releases:
         - Ubuntu 15.10 (code name: wily).
-        - Debian 7 (code name: Wheezy).
+        - Debian 7 (code name: Wheezy). Please use Debian 8 instead.
 
-          Debian 8 was released on April 25, 2015, and Debian team will stop
-          offer security updates for Debian 7 after April 25, 2016.
-          Reference: https://wiki.debian.org/DebianOldStable
+          Debian team will stop offer security updates for Debian 7 after
+          April 25, 2016. Reference: https://wiki.debian.org/DebianOldStable
 
     * Improvements:
         + Enable OpenLDAP overlay 'pw-sha2' to support password verification

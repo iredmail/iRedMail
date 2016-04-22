@@ -459,10 +459,12 @@ EOF
 #   - N: suggested (MIME) name. e.g. my_docum.zip.
 
 \$banned_namepath_re = new_RE(
-    # Unknown binary files.
+    # Compressed files.
     [qr'M=application/(zip|rar|arc|arj|zoo|gz|bz2)(,|\t).*T=dat(,|\t)'xmi => 'DISCARD'],
 
-    [qr'T=(exe|exe-ms|lha|cab|dll)(,|\t)'xmi => 'DISCARD'],       # banned file(1) types
+    # Dangerous file types on Windows.
+    [qr'M=(9|386|LeChiffre|aaa|abc|aepl|aru|atm|aut|bat|bhx|bin|bkd|blf|bll|bmw|boo|bps|bqf|breaking_bad|buk|bup|bxz|cc|ccc|ce0|ceo|cfxxe|chm|cih|cla|class|cmd|com|cpl|crinf|crjoker|crypt|cryptolocker|cryptowall|ctbl|cxq|cyw|dbd|delf|dev|dlb|dli|dll|dllx|dom|drv|dx|dxz|dyv|dyz|ecc|exe|exe-ms|exe1|exe_renamed|exx|ezt|ezz|fag|fjl|fnr|fuj|good|gzquar|hlp|hlw|hsq|hts|iva|iws|jar|js|kcd|keybtc@inbox_com|let|lik|lkh|lnk|locky|lok|lol!|lpaq5|magic|mfu|micro|mjg|mjz|mp3|nls|oar|ocx|osa|ozd|pcx|pgm|php2|php3|pid|pif|plc|pr|pzdc|qit|qrn|r5a|rhk|rna|rsc_tmp|s7p|scr|scr|shs|ska|smm|smtmp|sop|spam|ssy|swf|sys|tko|tps|tsa|tti|ttt|txs|upa|uzy|vb|vba|vbe|vbs|vbx|vexe|vxd|vzr|wlpginstall|wmf|ws|wsc|wsf|wsh|wss|xdu|xir|xlm|xlv|xnt|xnxx|xtbl|xxx|xyz|zix|zvz|zzz)(,|\t)'xmi => 'DISCARD'],
+
     [qr'T=(pif|scr)(,|\t)'xmi => 'DISCARD'],                      # banned extensions - rudimentary
     [qr'T=ani(,|\t)'xmi => 'DISCARD'],                            # banned animated cursor file(1) type
     [qr'T=(mim|b64|bhx|hqx|xxe|uu|uue)(,|\t)'xmi => 'DISCARD'],   # banned extension - WinZip vulnerab.
