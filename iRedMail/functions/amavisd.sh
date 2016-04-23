@@ -253,6 +253,9 @@ amavisd_config_general()
     perl -pi -e 's/^(.final_bad_header_destiny.*)/#${1}/' ${AMAVISD_CONF}
 
     cat >> ${AMAVISD_CONF} <<EOF
+
+$(cat ${SAMPLE_DIR}/amavisd/log_templ)
+
 # Set hostname.
 \$myhostname = "${HOSTNAME}";
 \$localhost_name = \$myhostname;

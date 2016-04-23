@@ -11,6 +11,8 @@ iRedMail-0.9.5:
           April 25, 2016. Reference: https://wiki.debian.org/DebianOldStable
 
     * Improvements:
+        + Add custom Amavisd log template (at log level 0) to always log
+          SpamAssassin testing result.
         + Enable OpenLDAP overlay 'pw-sha2' to support password verification
           with sha2 algorithms.
         + SOGo is configured to store password in SSHA512 (instead of ssha)

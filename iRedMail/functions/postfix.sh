@@ -108,7 +108,7 @@ postfix_config_basic()
     # Postfix v3
     #
     if echo ${POSTFIX_VERSION} | grep '^3' &>/dev/null; then
-        postconf -e compatibility_level=2
+        #postconf -e compatibility_level=2
 
         # The master.cf chroot default value has changed from "y" (yes) to "n" (no).
         for i in $(postconf -Mf | grep '^[0-9a-zA-Z]' | awk '{print $1"/"$2"/chroot=n"}'); do
