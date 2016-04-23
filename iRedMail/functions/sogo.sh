@@ -191,6 +191,7 @@ EOF
     if [ -f ${SOGO_HTTPD_CONF} ]; then
         perl -pi -e 's/^#(.*Microsoft-Server-ActiveSync.*)/${1}/g' ${SOGO_HTTPD_CONF}
         perl -pi -e 's/^#(.*retry.*connectiontimeout.*timeout.*)/${1}/g' ${SOGO_HTTPD_CONF}
+        perl -pi -e 's# timeout=360# timeout=$ENV{SOGO_PROXY_TIMEOUT}#g' ${SOGO_HTTPD_CONF}
 
         perl -pi -e 's#yourhostname#$ENV{HOSTNAME}#g' ${SOGO_HTTPD_CONF}
 

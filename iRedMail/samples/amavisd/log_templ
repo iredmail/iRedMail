@@ -21,11 +21,10 @@ UNCHECKED[?[:ccat|minor]||-ENCRYPTED|]|BANNED (%F)|INFECTED (%V)]#
 [remote_mta_smtp_response|[~%x|["queued as ([0-9A-Za-z]+)$"]|["%1"]|["%0"]]|/]#
 #, Subject: [:dquote|[:mime2utf8|[:header_field_octets|Subject]|100|1]]#
 #, From: [:uquote|[:mail_addr_decode_octets|[:rfc2822_from]]]#
-#[? %#T ||, Tests: \[[%T|,]\]]#
 [? [:dkim|sig_sd]    ||, dkim_sd=[:dkim|sig_sd]]#
 [? [:dkim|newsig_sd] ||, dkim_new=[:dkim|newsig_sd]]#
-[? %#T ||, Tests: \[[%T|,]\]]#
 , %y ms#
+[? %#T ||, Tests: \[[%T|,]\]]#
 ]
 [?%#O|#|Blocked #
 [? [:ccat|major|blocking] |#
@@ -43,9 +42,8 @@ UNCHECKED[?[:ccat|minor]||-ENCRYPTED|]|BANNED (%F)|INFECTED (%V)]#
 [? [:partition_tag] ||, pt: [:partition_tag]]#
 #, Subject: [:dquote|[:mime2utf8|[:header_field_octets|Subject]|100|1]]#
 #, From: [:uquote|[:mail_addr_decode_octets|[:rfc2822_from]]]#
-#[? %#T ||, Tests: \[[%T|,]\]]#
 [? [:dkim|sig_sd]    ||, dkim_sd=[:dkim|sig_sd]]#
 [? [:dkim|newsig_sd] ||, dkim_new=[:dkim|newsig_sd]]#
-[? %#T ||, Tests: \[[%T|,]\]]#
 , %y ms#
+[? %#T ||, Tests: \[[%T|,]\]]#
 ]';
