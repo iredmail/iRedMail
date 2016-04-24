@@ -601,6 +601,9 @@ amavisd_config()
     # Comment out port 10027, we don't have Amavisd listening on this port.
     perl -pi -e 's/(.*forward_method.*10027.*)/#${1}/g' ${AMAVISD_CONF}
 
+    # Do NOT disable banned checking
+    perl -pi -e 's/(.*bypass_banned_checks_maps.*=>.*allow sending any file names and types)/#${1}/g' ${AMAVISD_CONF}
+
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.
         service_control enable 'amavisd_enable' 'YES'

@@ -75,10 +75,10 @@ pgsql_initialize()
     ln -s ${PGSQL_SSL_CERT} ${PGSQL_DATA_DIR}/server.crt >> ${INSTALL_LOG} 2>&1
     ln -s ${PGSQL_SSL_KEY} ${PGSQL_DATA_DIR}/server.key >> ${INSTALL_LOG} 2>&1
 
-    ECHO_DEBUG "Start PostgreSQL server"
-    service_control restart ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
-
-    ECHO_DEBUG "Sleep 5 seconds for PostgreSQL daemon initialize ..."
+    ECHO_DEBUG "Start PostgreSQL server and sleep 5 seconds for initialization"
+    service_control stop ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    sleep 5
+    service_control start ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     sleep 5
 
     # Note: we must reset `postgres` password first, otherwise all connections
@@ -96,7 +96,9 @@ EOF
     echo 'host  all     all     0.0.0.0/0   md5' >> ${PGSQL_CONF_PG_HBA}
 
     ECHO_DEBUG "Restart PostgreSQL server and sleeping for 5 seconds."
-    service_control restart ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    service_control stop ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    sleep 5
+    service_control start ${PGSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     sleep 5
 
     ECHO_DEBUG "Generate ${PGSQL_DOT_PGPASS}."
