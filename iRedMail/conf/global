@@ -349,10 +349,15 @@ EOF
 fi
 
 # Hostname.
-if [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export HOSTNAME="$(hostname)"
+if [ X"${IREDMAIL_HOSTNAME}" != X'' ]; then
+    # Read from 'IREDMAIL_HOSTNAME'
+    export HOSTNAME="${IREDMAIL_HOSTNAME}"
 else
-    export HOSTNAME="$(hostname -f)"
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        export HOSTNAME="$(hostname)"
+    else
+        export HOSTNAME="$(hostname -f)"
+    fi
 fi
 
 # root user/group name. Note: not all OSes have group 'root'.
