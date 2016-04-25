@@ -102,7 +102,8 @@ install_all()
         security_p5-Authen-SASL \
         security_p5-IO-Socket-SSL \
         www_apache${PREFERRED_APACHE_VER} \
-        www_nginx; do
+        www_nginx \
+        www_sogo; do
         mkdir -p /var/db/ports/${p} >> ${INSTALL_LOG} 2>&1
     done
 
@@ -1022,9 +1023,13 @@ OPTIONS_FILE_UNSET+=MYSQL
 OPTIONS_FILE_UNSET+=PGSQL
 EOF
 
+    cat > /var/db/ports/www_sogo/options <<EOF
+OPTIONS_FILE_SET+=ACTIVESYNC
+EOF
+
     # SOGo groupware.
     if [ X"${USE_SOGO}" == X'YES' ]; then
-        ALL_PORTS="${ALL_PORTS} devel/sope www/sogo-activesync"
+        ALL_PORTS="${ALL_PORTS} devel/sope www/sogo"
 
         if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
             ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/devel_sope/options
