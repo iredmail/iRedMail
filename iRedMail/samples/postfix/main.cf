@@ -117,8 +117,6 @@ smtpd_tls_dh512_param_file = PH_SSL_DH512_PARAM_FILE
 smtpd_tls_dh1024_param_file = PH_SSL_DH1024_PARAM_FILE
 
 tls_random_source = dev:/dev/urandom
-smtpd_sasl_security_options = noanonymous
-smtpd_tls_security_level = may
 
 # Log only a summary message on TLS handshake completion — no logging of client
 # certificate trust-chain verification errors if client certificate
@@ -218,6 +216,8 @@ virtual_alias_domains =
 #
 #smtpd_sasl_auth_enable = yes
 #smtpd_tls_auth_only = yes
+#smtpd_sasl_security_options = noanonymous
+#smtpd_tls_security_level = may
 
 # hostname
 myhostname = PH_HOSTNAME

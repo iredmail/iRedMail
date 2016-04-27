@@ -11,6 +11,7 @@ iRedMail-0.9.5:
           April 25, 2016. Reference: https://wiki.debian.org/DebianOldStable
 
     * Improvements:
+        + SMTP SASL AUTH is disabled on port 25. Please use port 587 instead.
         + Add custom Amavisd log template (at log level 0) to always log
           SpamAssassin testing result.
         + Enable OpenLDAP overlay 'pw-sha2' to support password verification

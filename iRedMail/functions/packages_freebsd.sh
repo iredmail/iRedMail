@@ -35,13 +35,13 @@ install_all()
 
     # Preferred package versions. Don't forget to update DEFAULT_VERSIONS below.
     export PREFERRED_OPENLDAP_VER='24'
+    export PREFERRED_MYSQL_VER='56'
     export PREFERRED_MARIADB_VER='55'
-    export PREFERRED_PGSQL_VER='94'
+    export PREFERRED_PGSQL_VER='95'
     export PREFERRED_BDB_VER='5'
     export PREFERRED_APACHE_VER='24'
     export PREFERRED_PHP_VER='56'
 
-    export PREFERRED_MYSQL_VER='56'
     if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
         export PREFERRED_MYSQL_VER='55m'
     fi
@@ -50,12 +50,12 @@ install_all()
     #freebsd_add_make_conf 'OPTIONS_UNSET' 'X11'
     freebsd_add_make_conf 'WITH_OPENSSL_PORT' 'yes'
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
-    freebsd_add_make_conf 'WANT_MYSQL_VER' "${PREFERRED_MYSQL_VER}"
-    freebsd_add_make_conf 'WANT_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
+    freebsd_add_make_conf 'WANT_MYSQL' "${PREFERRED_MYSQL_VER}"
+    #freebsd_add_make_conf 'WANT_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
     freebsd_add_make_conf 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
     freebsd_add_make_conf 'APACHE_PORT' "www/apache${PREFERRED_APACHE_VER}"
     freebsd_add_make_conf 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7 apache=2.4 pgsql=9.4'
+    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7 apache=2.4 pgsql=9.5'
 
     for p in \
         archivers_p5-Archive-Tar \
@@ -103,7 +103,7 @@ install_all()
         security_p5-IO-Socket-SSL \
         www_apache${PREFERRED_APACHE_VER} \
         www_nginx \
-        www_sogo; do
+        www_sogo3; do
         mkdir -p /var/db/ports/${p} >> ${INSTALL_LOG} 2>&1
     done
 
@@ -1015,7 +1015,7 @@ EOF
         ALL_PORTS="${ALL_PORTS} mail/roundcube"
     fi
 
-    # LDAP support is required, otherwise www/sogo cannot be built.
+    # LDAP support is required, otherwise www/sogo3 cannot be built.
     cat > /var/db/ports/devel_sope/options <<EOF
 OPTIONS_FILE_SET+=LDAP
 OPTIONS_FILE_SET+=MEMCACHED
@@ -1023,13 +1023,13 @@ OPTIONS_FILE_UNSET+=MYSQL
 OPTIONS_FILE_UNSET+=PGSQL
 EOF
 
-    cat > /var/db/ports/www_sogo/options <<EOF
+    cat > /var/db/ports/www_sogo3/options <<EOF
 OPTIONS_FILE_SET+=ACTIVESYNC
 EOF
 
     # SOGo groupware.
     if [ X"${USE_SOGO}" == X'YES' ]; then
-        ALL_PORTS="${ALL_PORTS} devel/sope www/sogo"
+        ALL_PORTS="${ALL_PORTS} devel/sope www/sogo3"
 
         if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
             ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/devel_sope/options

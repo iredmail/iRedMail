@@ -65,5 +65,27 @@ EOF
         -D "${LDAP_ROOTDN}" -w "${LDAP_ROOTPW}" \
         -f ${LDAP_INIT_LDIF} >> ${INSTALL_LOG} 2>&1
 
+    cat >> ${TIP_FILE} <<EOF
+ldapd:
+    * LDAP suffix: ${LDAP_SUFFIX}
+    * LDAP root dn: ${LDAP_ROOTDN}, password: ${LDAP_ROOTPW}
+    * LDAP bind dn (read-only): ${LDAP_BINDDN}, password: ${LDAP_BINDPW}
+    * LDAP admin dn (read-write): ${LDAP_ADMIN_DN}, password: ${LDAP_ADMIN_PW}
+    * LDAP base dn: ${LDAP_BASEDN}
+    * LDAP admin base dn: ${LDAP_ADMIN_BASEDN}
+    * Configuration files:
+        - ${LDAPD_CONF}
+        - ${LDAPD_SCHEMA_DIR}/${PROG_NAME_LOWERCASE}.schema
+    * Log file related:
+        - ${SYSLOG_CONF}
+    * Data dir and files:
+        - ${LDAPD_DATA_DIR}
+    * RC script name:
+        - ${LDAPD_RC_SCRIPT_NAME}
+    * See also:
+        - ${LDAP_INIT_LDIF}
+
+EOF
+
     echo 'export status_ldapd_config="DONE"' >> ${STATUS_FILE}
 }
