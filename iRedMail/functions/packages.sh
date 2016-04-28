@@ -547,7 +547,7 @@ EOF
             ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
             ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
 
-            ECHO_INFO "Installing uWSGI from source tarball, depends on your hardware, it may take 1 to 5 minutes, please be patient."
+            ECHO_INFO "Installing uWSGI from source tarball, please wait."
             cd ${PKG_MISC_DIR}
             tar zxf uwsgi-*.tar.gz
             cd uwsgi-*/

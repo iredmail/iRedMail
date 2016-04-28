@@ -7,7 +7,7 @@ iRedMail-0.9.5:
         - Ubuntu 15.10 (code name: wily).
         - Debian 7 (code name: Wheezy). Please use Debian 8 instead.
 
-          Debian team will stop offer security updates for Debian 7 after
+          Debian team stops offering security updates for Debian 7 after
           April 25, 2016. Reference: https://wiki.debian.org/DebianOldStable
 
     * Improvements:
