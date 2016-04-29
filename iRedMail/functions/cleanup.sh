@@ -179,7 +179,7 @@ cleanup_replace_firewall_rules()
                         if [ X"${USE_FIREWALLD}" == X'YES' ]; then
                             firewall-cmd --complete-reload >> ${INSTALL_LOG} 2>&1
                         else
-                            ${DIR_RC_SCRIPTS}/iptables restart >> ${INSTALL_LOG} 2>&1
+                            service_control restart iptables >> ${INSTALL_LOG} 2>&1
                         fi
                     fi
                     ;;
@@ -190,8 +190,8 @@ cleanup_replace_firewall_rules()
             ;;
     esac
 
-    # Restarting iptables before restarting fail2ban.
-    ENABLED_SERVICES="iptables ${ENABLED_SERVICES}"
+    # Enable iptables
+    service_control enable iptables >> ${INSTALL_LOG} 2>&1
 
     echo 'export status_cleanup_replace_firewall_rules="DONE"' >> ${STATUS_FILE}
 }
