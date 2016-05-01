@@ -133,29 +133,37 @@ ldap_server_config()
 
 ldap_server_cron_backup()
 {
-    ECHO_INFO "Setup daily cron job to backup LDAP data with ${BACKUP_SCRIPT_OPENLDAP}"
+    ECHO_INFO "Setup daily cron job to backup LDAP data with ${BACKUP_SCRIPT_LDAP}"
 
     [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
 
-    backup_file ${BACKUP_SCRIPT_OPENLDAP}
-    cp ${TOOLS_DIR}/backup_openldap.sh ${BACKUP_SCRIPT_OPENLDAP}
-    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_OPENLDAP}
-    chmod 0700 ${BACKUP_SCRIPT_OPENLDAP}
+    backup_file ${BACKUP_SCRIPT_LDAP}
+    backup_script_name="$(basename ${BACKUP_SCRIPT_LDAP})"
 
-    perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_OPENLDAP}
-    perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{IREDADMIN_DB_USER}"#' ${BACKUP_SCRIPT_OPENLDAP}
-    perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{IREDADMIN_DB_PASSWD}"#' ${BACKUP_SCRIPT_OPENLDAP}
+    cp ${TOOLS_DIR}/${backup_script_name} ${BACKUP_SCRIPT_LDAP}
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_LDAP}
+    chmod 0700 ${BACKUP_SCRIPT_LDAP}
+
+    perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_LDAP}
+    perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{IREDADMIN_DB_USER}"#' ${BACKUP_SCRIPT_LDAP}
+    perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{IREDADMIN_DB_PASSWD}"#' ${BACKUP_SCRIPT_LDAP}
+
+    if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
+        perl -pi -e 's#(export LDAP_BASE_DN=).*#${1}"$ENV{LDAP_SUFFIX}"#g' ${BACKUP_SCRIPT_LDAP}
+        perl -pi -e 's#(export LDAP_BIND_DN=).*#${1}"$ENV{LDAP_ROOTDN}"#g' ${BACKUP_SCRIPT_LDAP}
+        perl -pi -e 's#(export LDAP_BIND_PASSWORD=).*#${1}"$ENV{LDAP_ROOTPW}"#g' ${BACKUP_SCRIPT_LDAP}
+    fi
 
     # Add cron job
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
 # ${PROG_NAME}: Backup OpenLDAP data (at 03:00 AM)
-0   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_OPENLDAP}
+0   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_LDAP}
 
 EOF
 
     cat >> ${TIP_FILE} <<EOF
-Backup OpenLDAP data:
-    * Script: ${BACKUP_SCRIPT_OPENLDAP}
+Backup LDAP data:
+    * Script: ${BACKUP_SCRIPT_LDAP}
     * See also:
         # crontab -l -u ${SYS_ROOT_USER}
 

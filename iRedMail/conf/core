@@ -327,10 +327,9 @@ service_control()
         fi
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if [ X"${action}" == X'enable' ]; then
-            echo "pkg_scripts='${services}'" >> ${RC_CONF_LOCAL}
+            rcctl enable ${service} >> ${INSTALL_LOG} 2>&1
         elif [ X"${action}" == X'disable' ]; then
-            # No need to touch files to disable services.
-            :
+            rcctl disable ${service} >> ${INSTALL_LOG} 2>&1
         else
             ${DIR_RC_SCRIPTS}/${service} $action
         fi

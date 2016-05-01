@@ -5,27 +5,34 @@ iRedMail-0.9.5:
 
     * Drop support for old distribution releases:
         - Ubuntu 15.10 (code name: wily).
+        - OpenBSD 5.8.
         - Debian 7 (code name: Wheezy). Please use Debian 8 instead.
 
           Debian team stops offering security updates for Debian 7 after
           April 25, 2016. Reference: https://wiki.debian.org/DebianOldStable
 
     * Improvements:
-        + SMTP SASL AUTH is disabled on port 25. Please use port 587 instead.
-        + Add custom Amavisd log template (at log level 0) to always log
-          SpamAssassin testing result.
-        + Enable OpenLDAP overlay 'pw-sha2' to support password verification
-          with sha2 algorithms.
-        + SOGo is configured to store password in SSHA512 (instead of ssha)
-          hash by default.
-        + Switch OpenLDAP backend to mdb (Memory-Mapped DB backend to slapd)
-          on Linux and FreeBSD (not available on OpenBSD yet).
-        + Switch SOGo to 3.x from 2.x on Linux distributions. It relies on
-          ports tree on BSD distributions.
-        + Able to enable/disable sogo service for a single user with new SQL
-          column `mailbox.enablesogo` and LDAP attribute/value
-          `enabledService=sogo`.
-        + Supports Postfix parameter `sender_dependent_relayhost_maps`.
+        - Postfix:
+            + Supports Postfix parameter `sender_dependent_relayhost_maps`.
+            + SMTP SASL AUTH is disabled on port 25. Please use port 587 instead.
+        - Amavisd:
+            + Add custom Amavisd log template (at log level 0) to always log
+              SpamAssassin testing result.
+        - OpenLDAP:
+            + Switch OpenLDAP backend to mdb (Memory-Mapped DB backend to slapd)
+              on Linux and FreeBSD (not available on OpenBSD yet).
+            + Enable OpenLDAP overlay 'pw-sha2' to support password verification
+              with sha2 algorithms.
+        - SOGo:
+            + SOGo is configured to store password in SSHA512 (instead of ssha)
+              hash by default.
+            + Switch SOGo to 3.x from 2.x on Linux distributions. It relies on
+              ports tree on BSD distributions.
+            + Able to enable/disable sogo service for a single user with new SQL
+              column `mailbox.enablesogo` and LDAP attribute/value
+              `enabledService=sogo`.
+        - ldapd:
+            + Add script and daily cron job to backup ldapd.
 
     * Fixed issues:
         - Not correctly setup Fail2ban jail `action=` setting to block bad ssh

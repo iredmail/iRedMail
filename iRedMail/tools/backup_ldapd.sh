@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Author:   Zhang Huangbin (zhb@iredmail.org)
-# Date:     Mar 15, 2012
-# Purpose:  Dump whole LDAP tree with command 'slapcat'.
+# Date:     April 30, 2016
+# Purpose:  Dump whole LDAP tree from OpenBSD ldapd(8) server with 'ldapsearch'.
 # License:  This shell script is part of iRedMail project, released under
 #           GPL v2.
 
@@ -11,49 +11,50 @@
 ###########################
 #
 #   * Required commands:
-#       + slapcat
+#       + ldapsearch
 #       + du
 #       + bzip2 # If bzip2 is not available, change 'CMD_COMPRESS' to use 'gzip'.
+#       + python
 #
 
 ###########################
 # USAGE
 ###########################
 #
-#   * It stores all backup copies in directory '/var/vmail/backup' by default,
-#     You can change it with variable $BACKUP_ROOTDIR below.
+#   * Update settings to match your need:
 #
-#   * Set correct values for below variables:
-#
-#       BACKUP_ROOTDIR
+#       - LDAP_BASE_DN: base dn
+#       - LDAP_BIND_DN: bind dn used to query ldap tree.
+#       - LDAP_BIND_PASSWORD: password of bind dn
+#       - BACKUP_ROOTDIR: store all backup copies
 #
 #   * Add crontab job for root user (or whatever user you want):
 #
 #       # crontab -e -u root
-#       1   4   *   *   *   bash /path/to/backup_openldap.sh
+#       1   4   *   *   *   bash /path/to/backup_ldapd.sh
 #   
 #   * Make sure 'crond' service is running, and will start automatically when
 #     system startup:
 #
-#       # ---- On RHEL/CentOS ----
-#       # chkconfig --level 345 crond on
-#       # /etc/init.d/crond status
-#
-#       # ---- On Debian/Ubuntu ----
-#       # update-rc.d cron defaults
-#       # /etc/init.d/cron status
+#       # rcctl enable cron
 #
 
 ###############################
 # How to restore backup file:
 ###############################
 # Please refer to wiki tutorial for detail steps:
-# http://www.iredmail.org/docs/backup.restore.html
+#   - http://www.iredmail.org/docs/backup.restore.html
+#
+# Note: you have to restore backup LDIF file with command 'ldapadd'.
 #
 
 #########################################################
 # Modify below variables to fit your need ----
 #########################################################
+export LDAP_BASE_DN='dc=example,dc=com'
+export LDAP_BIND_DN='cn=Manager,dc=example,dc=com'
+export LDAP_BIND_PASSWORD='password'
+
 # Where to store backup copies.
 export BACKUP_ROOTDIR='/var/vmail/backup'
 
@@ -68,6 +69,7 @@ export PATH="$PATH:/usr/sbin:/usr/local/sbin/"
 
 # Commands.
 export CMD_DATE='/bin/date'
+export CMD_LDAPSEARCH='/usr/local/bin/ldapsearch'
 export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'
 export COMPRESS_SUFFIX='bz2'
@@ -77,16 +79,6 @@ export CMD_MYSQL='mysql'
 # You can find password of SQL user 'iredadmin' in iRedAdmin config file 'settings.py'.
 export MYSQL_USER='iredadmin'
 export MYSQL_PASSWD='passwd'
-
-if [ -f /etc/ldap/slapd.conf ]; then
-    export CMD_SLAPCAT='slapcat -f /etc/ldap/slapd.conf'
-elif [ -f /etc/openldap/slapd.conf ]; then
-    export CMD_SLAPCAT='slapcat -f /etc/openldap/slapd.conf'
-elif [ -f /usr/local/etc/openldap/slapd.conf ]; then
-    export CMD_SLAPCAT='slapcat -f /usr/local/etc/openldap/slapd.conf'
-else
-    export CMD_SLAPCAT='slapcat'
-fi
 
 # Date.
 export YEAR="$(${CMD_DATE} +%Y)"
@@ -122,7 +114,7 @@ fi
 export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
 
 # Check and create directories.
-[ -d ${BACKUP_DIR} ] || mkdir -p ${BACKUP_DIR}
+[ -d ${BACKUP_DIR} ] || mkdir -p ${BACKUP_DIR} &>/dev/null
 
 # Initialize log file.
 echo "* Starting backup at ${TIMESTAMP}" >> ${LOGFILE}
@@ -130,7 +122,10 @@ echo "* Backup directory: ${BACKUP_DIR}." >> ${LOGFILE}
 
 # Backup
 echo "* Dumping LDAP data into file: ${BACKUP_FILE}..." >> ${LOGFILE}
-${CMD_SLAPCAT} > ${BACKUP_FILE}
+${CMD_LDAPSEARCH} -x \
+    -b "${LDAP_BASE_DN}" \
+    -D "${LDAP_BIND_DN}" \
+    -w"${LDAP_BIND_PASSWORD}" > ${BACKUP_FILE}
 
 if [ X"$?" == X"0" ]; then
     export BACKUP_SUCCESS='YES'

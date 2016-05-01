@@ -89,6 +89,9 @@ install_all()
             if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
                 ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_VER}"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
+            elif [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
+                ALL_PKGS="${ALL_PKGS} openldap-client${OB_PKG_OPENLDAP_VER}"
+                PKG_SCRIPTS="${PKG_SCRIPTS} ${LDAPD_RC_SCRIPT_NAME}"
             fi
 
             ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client p5-ldap p5-DBD-mysql"
@@ -510,7 +513,9 @@ EOF
 
         # Enable/Disable services.
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            service_control enable ${PKG_SCRIPTS} >> ${INSTALL_LOG} 2>&1
+            for srv in ${PKG_SCRIPTS}; do
+                service_control enable ${srv} >> ${INSTALL_LOG} 2>&1
+            done
         else
             service_control enable ${ENABLED_SERVICES} >> ${INSTALL_LOG} 2>&1
             service_control disable ${DISABLED_SERVICES} >> ${INSTALL_LOG} 2>&1

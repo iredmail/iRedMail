@@ -87,15 +87,6 @@ echo "export STORAGE_BASE_DIR='${VMAIL_USER_HOME_DIR}'" >> ${IREDMAIL_CONFIG_FIL
 echo "export STORAGE_MAILBOX_DIR='${STORAGE_MAILBOX_DIR}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${IREDMAIL_CONFIG_FILE}
 
-export BACKUP_DIR="${VMAIL_USER_HOME_DIR}/backup"
-export BACKUP_SCRIPT_OPENLDAP="${BACKUP_DIR}/backup_openldap.sh"
-export BACKUP_SCRIPT_MYSQL="${BACKUP_DIR}/backup_mysql.sh"
-export BACKUP_SCRIPT_PGSQL="${BACKUP_DIR}/backup_pgsql.sh"
-echo "export BACKUP_DIR='${BACKUP_DIR}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export BACKUP_SCRIPT_OPENLDAP='${BACKUP_SCRIPT_OPENLDAP}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export BACKUP_SCRIPT_MYSQL='${BACKUP_SCRIPT_MYSQL}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${IREDMAIL_CONFIG_FILE}
-
 # --------------------------------------------------
 # ------------ Default web server ------------------
 # --------------------------------------------------
@@ -217,6 +208,18 @@ unset random_root_pw
 export PGSQL_ROOT_PASSWD="$(${RANDOM_STRING})"
 echo "export PGSQL_ROOT_USER='${PGSQL_ROOT_USER}'" >>${IREDMAIL_CONFIG_FILE}
 echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
+
+export BACKUP_DIR="${VMAIL_USER_HOME_DIR}/backup"
+export BACKUP_SCRIPT_LDAP="${BACKUP_DIR}/backup_openldap.sh"
+export BACKUP_SCRIPT_MYSQL="${BACKUP_DIR}/backup_mysql.sh"
+export BACKUP_SCRIPT_PGSQL="${BACKUP_DIR}/backup_pgsql.sh"
+if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
+    export BACKUP_SCRIPT_LDAP="${BACKUP_DIR}/backup_ldapd.sh"
+fi
+echo "export BACKUP_DIR='${BACKUP_DIR}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export BACKUP_SCRIPT_LDAP='${BACKUP_SCRIPT_LDAP}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export BACKUP_SCRIPT_MYSQL='${BACKUP_SCRIPT_MYSQL}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${IREDMAIL_CONFIG_FILE}
 
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     . ${DIALOG_DIR}/ldap_config.sh

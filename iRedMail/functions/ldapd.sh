@@ -25,11 +25,6 @@ ldapd_config()
 {
     ECHO_INFO "Configure LDAP server shipped in OpenBSD base system: ldapd(8)."
 
-    # Enable ldapd in rc.conf.local
-    cat >> ${RC_CONF_LOCAL} <<EOF
-ldapd_flags=''
-EOF
-
     ECHO_DEBUG "Copy schema files"
     cp -f ${SAMPLE_DIR}/iredmail.schema ${LDAPD_SCHEMA_DIR}
     cp -f /usr/local/share/doc/amavisd-new/LDAP.schema ${LDAPD_SCHEMA_DIR}/${AMAVISD_LDAP_SCHEMA_NAME}
@@ -54,7 +49,7 @@ EOF
     perl -pi -e 's#PH_LDAP_ADMIN_DN#$ENV{LDAP_ADMIN_DN}#g' ${LDAPD_CONF}
 
     ECHO_DEBUG "Start ldapd"
-    ${DIR_RC_SCRIPTS}/${LDAPD_RC_SCRIPT_NAME} restart >> ${INSTALL_LOG} 2>&1
+    rcctl restart ${LDAPD_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Sleep 5 seconds for LDAP daemon initialize ..."
     sleep 5

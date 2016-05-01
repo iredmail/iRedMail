@@ -190,9 +190,6 @@ cleanup_replace_firewall_rules()
             ;;
     esac
 
-    # Enable iptables
-    service_control enable iptables >> ${INSTALL_LOG} 2>&1
-
     echo 'export status_cleanup_replace_firewall_rules="DONE"' >> ${STATUS_FILE}
 }
 
