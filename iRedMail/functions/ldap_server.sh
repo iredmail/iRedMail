@@ -138,11 +138,11 @@ ldap_server_cron_backup()
     [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
 
     backup_file ${BACKUP_SCRIPT_LDAP}
-    backup_script_name="$(basename ${BACKUP_SCRIPT_LDAP})"
 
+    backup_script_name="$(basename ${BACKUP_SCRIPT_LDAP})"
     cp ${TOOLS_DIR}/${backup_script_name} ${BACKUP_SCRIPT_LDAP}
     chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_LDAP}
-    chmod 0700 ${BACKUP_SCRIPT_LDAP}
+    chmod 0500 ${BACKUP_SCRIPT_LDAP}
 
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_LDAP}
     perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{IREDADMIN_DB_USER}"#' ${BACKUP_SCRIPT_LDAP}
@@ -156,7 +156,7 @@ ldap_server_cron_backup()
 
     # Add cron job
     cat >> ${CRON_SPOOL_DIR}/root <<EOF
-# ${PROG_NAME}: Backup OpenLDAP data (at 03:00 AM)
+# ${PROG_NAME}: Backup LDAP data (at 03:00 AM)
 0   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_LDAP}
 
 EOF

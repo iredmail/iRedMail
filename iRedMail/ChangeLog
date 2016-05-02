@@ -26,12 +26,11 @@ iRedMail-0.9.5:
         - SOGo:
             + SOGo is configured to store password in SSHA512 (instead of ssha)
               hash by default.
-            + Switch SOGo to 3.x from 2.x on Linux distributions. It relies on
-              ports tree on BSD distributions.
+            + Switch SOGo to 3.x from 2.x on Linux/FreeBSD (OpenBSD offers v2).
             + Able to enable/disable sogo service for a single user with new SQL
               column `mailbox.enablesogo` and LDAP attribute/value
               `enabledService=sogo`.
-        - ldapd:
+        - OpenBSD ldapd(8):
             + Add script and daily cron job to backup ldapd.
 
     * Fixed issues:
