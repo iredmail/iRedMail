@@ -22,7 +22,7 @@
 
 export PROG_NAME='iRedMail'
 export PROG_NAME_LOWERCASE='iredmail'
-export PROG_VERSION='0.9.5'
+export PROG_VERSION='0.9.6'
 
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
 
@@ -35,10 +35,6 @@ export IREDMAIL_DEBUG="${IREDMAIL_DEBUG:=NO}"
 # -----------------
 # ---- Generic ----
 # -----------------
-
-# Maildir format: Maildir. Mbox format was deprecated since version 0.7.3.
-export MAILBOX_FORMAT='Maildir'
-
 # Maildir style: hashed, normal.
 export MAILDIR_STYLE='hashed'
 

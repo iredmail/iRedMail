@@ -265,14 +265,11 @@ hash_maildir()
         fi
 
         # Use mbox, will be changed later.
-        maildir="${str1}/${str2}/${str3}/${username}-${DATE}"
+        maildir="${str1}/${str2}/${str3}/${username}-${DATE}/"
     else
         # Use mbox, will be changed later.
-        maildir="${username}-${DATE}"
+        maildir="${username}-${DATE}/"
     fi
-
-    # For maildir format.
-    [ X"${MAILBOX_FORMAT}" == X"Maildir" ] && maildir="${maildir}/"
 
     echo ${maildir}
 }

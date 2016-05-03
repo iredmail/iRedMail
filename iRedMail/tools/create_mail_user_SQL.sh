@@ -51,11 +51,9 @@ USE_DEFAULT_PASSWD='NO'     # If set to 'NO', password is the same as username.
 # Default mail quota.
 DEFAULT_QUOTA='1024'   # 1024 = 1024M
 
-# -------------- You may not need to change variables below -------------------
-# Mailbox format: mbox, Maildir.
-MAILBOX_FORMAT='Maildir'
-
-# ---- Maildir settings ----
+#
+# Maildir settings
+#
 # Maildir style: hashed, normal.
 # Hashed maildir style, so that there won't be many large directories
 # in your mail storage file system. Better performance in large scale
@@ -110,19 +108,10 @@ generate_sql()
             fi
 
             # Use mbox, will be changed later.
-            maildir="${DOMAIN}/${str1}/${str2}/${str3}/${username}-${DATE}"
+            maildir="${DOMAIN}/${str1}/${str2}/${str3}/${username}-${DATE}/"
         else
             # Use mbox, will be changed later.
-            maildir="${DOMAIN}/${username}-${DATE}"
-        fi
-
-        # Different maildir format: maildir, mbox.
-        if [ X"${MAILBOX_FORMAT}" == X"Maildir" ]; then
-            # Append slash to make it 'maildir' format.
-            maildir="${maildir}/"
-        else
-            # It's already mbox format.
-            :
+            maildir="${DOMAIN}/${username}-${DATE}/"
         fi
 
         cat >> ${SQL} <<EOF

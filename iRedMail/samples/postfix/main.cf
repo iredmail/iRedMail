@@ -88,7 +88,7 @@ inet_protocols = all
 inet_interfaces = all
 
 # Mailbox type
-home_mailbox = Maildir/
+home_mailbox = Mailbox
 
 #
 # TLS settings.
