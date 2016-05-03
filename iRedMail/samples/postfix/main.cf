@@ -175,7 +175,6 @@ smtpd_sender_restrictions =
     reject_non_fqdn_sender
     reject_unlisted_sender
     permit_mynetworks
-    reject_sender_login_mismatch
     permit_sasl_authenticated
     check_sender_access pcre:PH_POSTFIX_FILE_SENDER_ACCESS
 
