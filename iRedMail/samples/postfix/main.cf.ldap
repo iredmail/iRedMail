@@ -9,6 +9,7 @@ sender_dependent_relayhost_maps =
     proxy:ldap:PH_POSTFIX_LOOKUP_DIR/sender_dependent_relayhost_maps_user.cf
     proxy:ldap:PH_POSTFIX_LOOKUP_DIR/sender_dependent_relayhost_maps_domain.cf
 
+# Lookup table with the SASL login names that own the sender (MAIL FROM) addresses.
 smtpd_sender_login_maps =
     proxy:ldap:PH_POSTFIX_LOOKUP_DIR/sender_login_maps.cf
 

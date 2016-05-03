@@ -51,6 +51,7 @@
 #########################################################
 # Modify below variables to fit your need ----
 #########################################################
+# LDAP base dn, bind dn and password.
 export LDAP_BASE_DN='dc=example,dc=com'
 export LDAP_BIND_DN='cn=Manager,dc=example,dc=com'
 export LDAP_BIND_PASSWORD='password'

@@ -50,11 +50,9 @@ iredapd_install()
 
     chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
 
-    if [ X"${DISTRO}" != X'OPENBSD' ]; then
-        ECHO_DEBUG "Make iredapd start after system startup."
-        service_control enable iredapd >> ${INSTALL_LOG} 2>&1
-        export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
-    fi
+    ECHO_DEBUG "Make iredapd start after system startup."
+    service_control enable iredapd >> ${INSTALL_LOG} 2>&1
+    export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
 
     # Set file permission.
     chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${IREDAPD_ROOT_DIR}
@@ -143,7 +141,7 @@ iredapd_config()
         perl -pi -e 's#^(ldap_bindpw).*#${1} = "$ENV{LDAP_BINDPW}"#' settings.py
         perl -pi -e 's#^(ldap_basedn).*#${1} = "$ENV{LDAP_BASEDN}"#' settings.py
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "greylisting", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' settings.py
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' settings.py
 
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#^(vmail_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
@@ -152,7 +150,7 @@ iredapd_config()
         perl -pi -e 's#^(vmail_db_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' settings.py
         perl -pi -e 's#^(vmail_db_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' settings.py
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' settings.py
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' settings.py
     fi
 
     # Amavisd database

@@ -8,6 +8,7 @@ transport_maps =
 sender_dependent_relayhost_maps =
     proxy:pgsql:PH_POSTFIX_LOOKUP_DIR/sender_dependent_relayhost_maps.cf
 
+# Lookup table with the SASL login names that own the sender (MAIL FROM) addresses.
 smtpd_sender_login_maps =
     proxy:pgsql:PH_POSTFIX_LOOKUP_DIR/sender_login_maps.cf
 
