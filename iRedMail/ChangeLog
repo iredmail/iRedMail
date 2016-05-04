@@ -2,6 +2,8 @@ iRedMail-0.9.6:
     * Fixed issues:
         - Postfix:
             - Cannot deliver email to system account.
+        - Incorrect default password scheme for OpenLDAP backend if module
+          'pw-sha2' is not available.
 
 iRedMail-0.9.5:
     * Supports new distribution release:
