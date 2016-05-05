@@ -166,6 +166,10 @@ EOF
         perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#' ${SOGO_CONF}
         perl -pi -e 's#PH_LDAP_ADMIN_DN#$ENV{LDAP_ADMIN_DN}#' ${SOGO_CONF}
         perl -pi -e 's#PH_LDAP_ADMIN_PW#$ENV{LDAP_ADMIN_PW}#' ${SOGO_CONF}
+
+        if [ X"${DEFAULT_PASSWORD_SCHEME}" == X'SSHA' ]; then
+            perl -pi -e 's#ssha512#ssha#' ${SOGO_CONF}
+        fi
     else
         # Enable LDAP as SOGoUserSources
         perl -pi -e 's#/\* SQL backend##' ${SOGO_CONF}
