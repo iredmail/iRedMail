@@ -146,10 +146,10 @@ EOF
         ECHO_DEBUG "Setting logrotate for openldap log file: ${OPENLDAP_LOGFILE}."
         cp -f ${SAMPLE_DIR}/logrotate/openldap ${OPENLDAP_LOGROTATE_FILE}
 
-        perl -pi -e 's#PH_OPENLDAP_LOGFILE#$ENV${OPENLDAP_LOGFILE}#g' ${OPENLDAP_LOGROTATE_FILE}
-        perl -pi -e 's#PH_OPENLDAP_DAEMON_USER#$ENV${OPENLDAP_DAEMON_USER}#g' ${OPENLDAP_LOGROTATE_FILE}
-        perl -pi -e 's#PH_OPENLDAP_DAEMON_GROUP#$ENV${OPENLDAP_DAEMON_GROUP}#g' ${OPENLDAP_LOGROTATE_FILE}
-        perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV${SYSLOG_POSTROTATE_CMD}#g' ${OPENLDAP_LOGROTATE_FILE}
+        perl -pi -e 's#PH_OPENLDAP_LOGFILE#$ENV{OPENLDAP_LOGFILE}#g' ${OPENLDAP_LOGROTATE_FILE}
+        perl -pi -e 's#PH_OPENLDAP_DAEMON_USER#$ENV{OPENLDAP_DAEMON_USER}#g' ${OPENLDAP_LOGROTATE_FILE}
+        perl -pi -e 's#PH_OPENLDAP_DAEMON_GROUP#$ENV{OPENLDAP_DAEMON_GROUP}#g' ${OPENLDAP_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${OPENLDAP_LOGROTATE_FILE}
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' -o X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if ! grep "${OPENLDAP_LOGFILE}" /etc/newsyslog.conf &>/dev/null; then
             cat >> /etc/newsyslog.conf <<EOF
