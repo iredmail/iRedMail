@@ -2,9 +2,14 @@ iRedMail-0.9.6:
     * Fixed issues:
         - Postfix:
             - Cannot deliver email to system account.
+        - OpenLDAP:
+            - Incorrect default password scheme if module 'pw-sha2' is not
+              available.
         - Incorrect compress command used in logrotate config files.
-        - Incorrect default password scheme for OpenLDAP backend if module
-          'pw-sha2' is not available.
+
+    * Updated packages:
+        + FreeBSD:
+            - MySQL -> 5.7
 
 iRedMail-0.9.5:
     * Supports new distribution release:

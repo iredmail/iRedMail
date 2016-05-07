@@ -87,9 +87,6 @@ inet_protocols = all
 # Enable all network interfaces.
 inet_interfaces = all
 
-# Mailbox type
-home_mailbox = Mailbox
-
 #
 # TLS settings.
 #
