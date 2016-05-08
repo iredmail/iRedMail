@@ -189,13 +189,13 @@ install_all()
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
-            ALL_PKGS="${ALL_PKGS} php5-json php5-gd php5-mcrypt php5-curl mcrypt php5-intl"
+            ALL_PKGS="${ALL_PKGS} php5-cli php5-json php5-gd php5-mcrypt php5-curl mcrypt php5-intl"
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php5-ldap php5-mysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php5-pgsql"
         else
             # Ubuntu 16.04
-            ALL_PKGS="${ALL_PKGS} php-json php-gd php-mcrypt php-curl mcrypt php-intl"
+            ALL_PKGS="${ALL_PKGS} php-json php-gd php-mcrypt php-curl mcrypt php-intl php-xml"
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-mysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql"
