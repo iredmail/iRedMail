@@ -72,9 +72,9 @@ mysql_initialize()
     fi
 
     if [ ! -f ${MYSQL_MY_CNF} ]; then
-        ECHO_DEBUG "Copy sample MySQL config file: ${SAMPLE_DIR}/mysql/my.cnf -> ${MYSQL_MY_CNF}."
+        ECHO_DEBUG "Copy sample MySQL config file: ${MYSQL_MY_CNF_SAMPLE} -> ${MYSQL_MY_CNF}."
         mkdir -p $(dirname ${MYSQL_MY_CNF}) &>/dev/null >> ${INSTALL_LOG} 2>&1
-        cp ${SAMPLE_DIR}/mysql/my.cnf ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+        cp ${MYSQL_MY_CNF_SAMPLE} ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 
     ECHO_DEBUG "Disable 'skip-networking' in my.cnf."

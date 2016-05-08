@@ -25,6 +25,7 @@
 # SQL_SERVER_ADDRESS and SQL_SERVER_PORT are defined in dialog/config_via_dialog.sh.
 
 export MYSQL_MY_CNF='/etc/my.cnf'
+export MYSQL_MY_CNF_SAMPLE="${SAMPLE_DIR}/mysql/my.cnf"
 
 export MYSQL_RC_SCRIPT_NAME='mysql'
 
@@ -48,7 +49,8 @@ elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
     fi
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export MYSQL_RC_SCRIPT_NAME='mysql-server'
-    export MYSQL_MY_CNF='/usr/local/etc/my.cnf'
+    export MYSQL_MY_CNF='/usr/local/etc/mysql/my.cnf'
+    export MYSQL_MY_CNF_SAMPLE='/usr/local/etc/mysql/my.cnf.sample'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export MYSQL_RC_SCRIPT_NAME='mysqld'

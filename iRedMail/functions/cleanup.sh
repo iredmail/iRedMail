@@ -276,7 +276,7 @@ cleanup()
 {
     # Store iRedMail version number in /etc/iredmail-release
     cat > /etc/${PROG_NAME_LOWERCASE}-release <<EOF
-${PROG_VERSION}
+${PROG_VERSION}     # Get professional upgrade support from iRedMail Team: http://www.iredmail.org/support.html
 EOF
 
     # Remove temporary file used with 'mysql --defaults-file'
