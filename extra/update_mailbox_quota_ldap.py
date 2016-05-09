@@ -2,8 +2,7 @@
 # encoding: utf-8
 
 # Author:   Zhang Huangbin <michaelbibby (at) gmail.com>
-# Purpose:  Add three new services name in 'enabledService' attribute.
-#           Required in iRedMail-0.5.1.
+# Purpose:  Update all users' mailbox quota.
 
 import sys
 import ldap
@@ -11,9 +10,13 @@ import ldap
 # Note:
 #   * bind_dn must have write privilege on LDAP server.
 uri = 'ldap://127.0.0.1:389'
-basedn = 'o=domains,dc=iredmail,dc=org'
 bind_dn = 'cn=vmailadmin,dc=iredmail,dc=org'
 bind_pw = 'passwd'
+
+# Base dn used to update ALL mail users.
+basedn = 'o=domains,dc=iredmail,dc=org'
+# Base dn used to update users under domain 'example.com'.
+#basedn = 'ou=Users,domainName=example.com,o=domains,dc=iredmail,dc=org'
 
 new_quota = 2048   # quota size in MB
 
