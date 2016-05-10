@@ -1,4 +1,4 @@
-iRedMail-0.9.6:
+iRedMail-0.9.5-1:
     * Fixed issues:
         - Postfix:
             - Cannot deliver email to system account.
