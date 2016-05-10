@@ -148,8 +148,9 @@ nginx_config()
         perl -pi -e 's/^(plugins.*)/#${1}/g' ${IREDADMIN_UWSGI_CONF}
 
         # Start uWSGI
-        cp ${SAMPLE_DIR}/openbsd/rc.d/uwsgi ${DIR_RC_SCRIPTS}
-        chmod +x ${DIR_RC_SCRIPTS}/uwsgi
+        cp ${SAMPLE_DIR}/openbsd/rc.d/uwsgi ${DIR_RC_SCRIPTS}/${UWSGI_RC_SCRIPT_NAME}
+        chmod +x ${DIR_RC_SCRIPTS}/${UWSGI_RC_SCRIPT_NAME}
+        service_control enable ${UWSGI_RC_SCRIPT_NAME}
         echo "uwsgi_flags='--ini ${IREDADMIN_UWSGI_CONF} --daemonize ${UWSGI_LOG_FILE}'" >> ${RC_CONF_LOCAL}
     fi
 
