@@ -83,7 +83,6 @@ export DOVECOT_LOG_FILE='/var/log/dovecot.log'
 export DOVECOT_SIEVE_LOG_FILE='/var/log/dovecot-sieve.log'
 export DOVECOT_LMTP_LOG_FILE='/var/log/dovecot-lmtp.log'
 export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
-export SIEVE_LOGROTATE_FILE="${LOGROTATE_DIR}/sieve"
 
 # Dovecot auth socket and pid file.
 # Relative path of Dovecot auth socket under Postfix chroot directory.

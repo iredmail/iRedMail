@@ -1108,7 +1108,7 @@ OPTIONS_FILE_SET+=SASL
 EOF
 
     # Misc
-    ALL_PORTS="${ALL_PORTS} sysutils/logwatch sysutils/logrotate"
+    ALL_PORTS="${ALL_PORTS} sysutils/logwatch"
 
     fetch_all_src_tarballs()
     {

@@ -340,8 +340,12 @@ EOF
     chmod -R 0750 ${dovecot_expire_dict_dir}
 
     ECHO_DEBUG "Setting logrotate for dovecot log file."
-    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-        cp -f ${SAMPLE_DIR}/logrotate/dovecot ${DOVECOT_LOGROTATE_FILE}
+    if [ X"${KERNEL_NAME}" == X'LINUX' -o X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+            cp -f ${SAMPLE_DIR}/logrotate/dovecot ${DOVECOT_LOGROTATE_FILE}
+        elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+            cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/dovecot ${DOVECOT_LOGROTATE_FILE}
+        fi
 
         perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}
         perl -pi -e 's#PH_DOVECOT_SIEVE_LOG_FILE#$ENV{DOVECOT_SIEVE_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}
@@ -349,27 +353,7 @@ EOF
 
         perl -pi -e 's#PH_VMAIL_USER_NAME#$ENV{VMAIL_USER_NAME}#g' ${DOVECOT_LOGROTATE_FILE}
         perl -pi -e 's#PH_VMAIL_GROUP_NAME#$ENV{VMAIL_GROUP_NAME}#g' ${DOVECOT_LOGROTATE_FILE}
-    elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-        if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
-            # Define command used to reopen log service after rotated
-            cat >> /etc/newsyslog.conf <<EOF
-${DOVECOT_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z    ${DOVECOT_MASTER_PID}
-EOF
-        fi
 
-        if ! grep "${DOVECOT_SIEVE_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
-            # Define command used to reopen log service after rotated
-            cat >> /etc/newsyslog.conf <<EOF
-${DOVECOT_SIEVE_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z    ${DOVECOT_MASTER_PID}
-EOF
-        fi
-
-        if ! grep "${DOVECOT_LMTP_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
-            # Define command used to reopen log service after rotated
-            cat >> /etc/newsyslog.conf <<EOF
-${DOVECOT_LMTP_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z    ${DOVECOT_MASTER_PID}
-EOF
-        fi
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated

@@ -530,7 +530,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SSL_FILE_DIR="/etc/ssl"
 
     # Logrotate directory.
-    export LOGROTATE_DIR="/usr/local/etc/logrotate.d"
+    export LOGROTATE_DIR='/etc/newsyslog.conf.d'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SYS_ROOT_GROUP='wheel'

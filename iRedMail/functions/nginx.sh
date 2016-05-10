@@ -128,6 +128,11 @@ nginx_config()
 
         perl -pi -e 's/^(plugins.*)/#${1}/' ${IREDADMIN_UWSGI_CONF}
 
+        # Rotate log file with newsyslog
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/uwsgi ${UWSGI_LOGROTATE_FILE}
+        perl -pi -e 's#PH_UWSGI_LOG_FILE#$ENV{UWSGI_LOG_FILE}#g' ${IREDADMIN_UWSGI_CONF}
+        perl -pi -e 's#PH_UWSGI_PID_IREDADMIN#$ENV{UWSGI_PID_IREDADMIN}#g' ${IREDADMIN_UWSGI_CONF}
+
         service_control enable 'nginx_enable' 'YES'
         service_control enable 'php_fpm_enable' 'YES'
         service_control enable 'uwsgi_enable' 'YES'
