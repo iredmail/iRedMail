@@ -11,8 +11,7 @@ iRedMail-0.9.6:
         - Add missing package 'mcrypt' on RHEL/CentOS 6.
 
     * Updated packages:
-        + FreeBSD:
-            - MySQL -> 5.7
+        + iRedAPD -> 1.9.1
 
 iRedMail-0.9.5:
     * Supports new distribution release:
