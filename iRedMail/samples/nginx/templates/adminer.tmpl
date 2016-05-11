@@ -1,0 +1,18 @@
+# Sample setting for Adminer: http://adminer.org/
+
+# How to get it working:
+#
+#   mkdir PH_HTTPD_SERVERROOT/adminer
+#   cd PH_HTTPD_SERVERROOT/adminer
+#   wget http://www.adminer.org/latest.php
+#   chmod +x latest.php
+
+# Warning: for security concern, it's recommended to change the URL '/adminer'
+#          to another random string to avoid login attempts from bad guys.
+#          for example, change the url to '^/HIoWCwogSHukIbGL'.
+location ~ ^/adminer {
+    include fastcgi_params;
+    fastcgi_pass php_workers;
+    fastcgi_index latest.php;
+    fastcgi_param SCRIPT_FILENAME PH_HTTPD_SERVERROOT/adminer/latest.php;
+}

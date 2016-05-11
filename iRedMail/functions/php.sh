@@ -62,7 +62,7 @@ php_config()
 
     # Create directory used to store session (session.save_path)
     perl -pi -e 's#^;(session.save_path).*#${1}#g' ${PHP_INI}
-    perl -pi -e 's#^(session.save_path).*#session.save_path = "3;$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_INI}
+    perl -pi -e 's#^(session.save_path).*#session.save_path = "$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_INI}
     # Set correct owner and permission
     [ -d ${PHP_SESSION_SAVE_PATH} ] || mkdir -p ${PHP_SESSION_SAVE_PATH} >> ${INSTALL_LOG} 2>&1
     chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${PHP_SESSION_SAVE_PATH}
