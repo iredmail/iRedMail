@@ -33,7 +33,7 @@ nginx_config()
     # Copy sample config files
     [ ! -d ${NGINX_CONF_DIR} ] && mkdir -p ${NGINX_CONF_DIR}
     cp ${SAMPLE_DIR}/nginx/nginx.conf ${NGINX_CONF}
-    cp ${SAMPLE_DIR}/nginx/default.conf ${NGINX_CONF_DEFAULT}
+    cp ${SAMPLE_DIR}/nginx/00-default.conf ${NGINX_CONF_DEFAULT}
 
     # Template configuration snippets.
     [ ! -d ${NGINX_CONF_TMPL_DIR} ] && mkdir -p ${NGINX_CONF_TMPL_DIR}

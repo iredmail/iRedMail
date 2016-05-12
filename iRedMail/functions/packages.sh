@@ -551,10 +551,16 @@ EOF
             done
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # Create symbol links for Python.
-            ln -sf /usr/local/bin/python2.7 /usr/local/bin/python
-            ln -sf /usr/local/bin/python2.7-2to3 /usr/local/bin/2to3
-            ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
-            ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc
+            ln -sf /usr/local/bin/python2.7 /usr/local/bin/python >> ${INSTALL_LOG} 2>&1
+            ln -sf /usr/local/bin/python2.7-2to3 /usr/local/bin/2to3 >> ${INSTALL_LOG} 2>&1
+            ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1
+            ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc >> ${INSTALL_LOG} 2>&1
+
+            # Create symbol links for php.
+            ln -sf /usr/local/bin/php-5.? /usr/local/bin/php >> ${INSTALL_LOG} 2>&1
+            ln -sf /usr/local/bin/php-config-5.? /usr/local/bin/php-config >> ${INSTALL_LOG} 2>&1
+            ln -sf /usr/local/bin/phpize-5.? /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1
+            ln -sf /usr/local/bin/php-fpm-5.? /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1
 
             ECHO_INFO "Installing uWSGI from source tarball, please wait."
             cd ${PKG_MISC_DIR}

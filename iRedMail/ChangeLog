@@ -1,6 +1,13 @@
 iRedMail-0.9.6:
     * Fixed issues:
-        - OpenBSD: not enable uwsgi service.
+        - Nginx:
+            - Config file for catch-all virtual host (`default.conf` has been
+              renamed to `00-default.conf`, to make sure it will be loaded
+              befire other virtual host config files.
+
+        - OpenBSD:
+            - not enable uwsgi service.
+            - not create symbol links for PHP programs.
 
 iRedMail-0.9.5-1:
     * Fixed issues:
