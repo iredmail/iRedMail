@@ -9,6 +9,8 @@ location ~ ^/iredadmin/static/(.*)\.(png|jpg|gif|css|js) {
 location ~ ^/iredadmin(.*) {
     rewrite ^/iredadmin(/.*)$ $1 break;
 
+    include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
+
     include uwsgi_params;
     uwsgi_pass PH_UWSGI_SOCKET_IREDADMIN_FULL;
     uwsgi_param UWSGI_CHDIR PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK;

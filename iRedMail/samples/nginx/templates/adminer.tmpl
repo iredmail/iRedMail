@@ -11,8 +11,16 @@
 #          to another random string to avoid login attempts from bad guys.
 #          for example, change the url to '^/HIoWCwogSHukIbGL'.
 location ~ ^/adminer {
+    include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
+
     include fastcgi_params;
     fastcgi_pass php_workers;
     fastcgi_index latest.php;
     fastcgi_param SCRIPT_FILENAME PH_HTTPD_SERVERROOT/adminer/latest.php;
+
+    # Access control
+    #allow 127.0.0.1;
+    #allow 192.168.1.10;
+    #allow 192.168.1.0/24;
+    #deny all;
 }

@@ -1,4 +1,8 @@
 iRedMail-0.9.6:
+    * Improvements:
+        - Nginx:
+            - Add HSTS header for Roundcube, iRedAdmin.
+
     * Fixed issues:
         - Nginx:
             - Config file for catch-all virtual host (`default.conf` has been

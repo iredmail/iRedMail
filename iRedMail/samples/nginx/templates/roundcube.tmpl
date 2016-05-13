@@ -1,5 +1,7 @@
 # Roundcube webmail
 location ~ ^/mail(.*)\.php$ {
+    include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
+
     include fastcgi_params;
     fastcgi_pass php_workers;
     fastcgi_index index.php;
