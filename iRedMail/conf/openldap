@@ -111,6 +111,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export OPENLDAP_DB_CONFIG_SAMPLE='/usr/local/share/examples/openldap/DB_CONFIG'
 
     # Module related.
+    export OPENLDAP_HAS_SHA2='NO'
     export OPENLDAP_MODULE_PATH='/usr/local/libexec/openldap'
 fi
 

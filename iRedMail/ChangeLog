@@ -1,7 +1,7 @@
 iRedMail-0.9.6:
     * Improvements:
         - Nginx:
-            - Add HSTS header for Roundcube, iRedAdmin.
+            - Add HSTS header for Roundcube, iRedAdmin, SOGo.
 
     * Fixed issues:
         - Nginx:
