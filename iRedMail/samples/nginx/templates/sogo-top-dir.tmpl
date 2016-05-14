@@ -1,17 +1,21 @@
-# Settings for SOGo Groupware
+#
+# Run SOGo as a sub-domain virtual host.
+#
 
-# SOGo
-location ~ ^/sogo { rewrite ^ https://$host/SOGo; }
-location ~ ^/SOGO { rewrite ^ https://$host/SOGo; }
+root PH_SOGO_GNUSTEP_DIR/WebServerResources;
+
+location / {
+    rewrite ^ $scheme://$host/SOGo;
+}
 
 # For Mac OS X and iOS devices.
 rewrite ^/.well-known/caldav    /SOGo/dav permanent;
 rewrite ^/.well-known/carddav   /SOGo/dav permanent;
 rewrite ^/principals           /SOGo/dav permanent;
 
-location ^~ /SOGo {
-    include /etc/nginx/templates/hsts.tmpl;
+include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
 
+location ^~ /SOGo {
     proxy_pass http://PH_SOGO_BIND_ADDRESS:PH_SOGO_BIND_PORT;
 
     # forward user's IP address

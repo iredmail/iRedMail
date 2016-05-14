@@ -1,0 +1,16 @@
+#
+# Run iRedAdmin as a sub-domain virtual host.
+#
+include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
+
+location / {
+    root PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK;
+    uwsgi_pass PH_UWSGI_SOCKET_IREDADMIN_FULL;
+    uwsgi_param UWSGI_CHDIR PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK;
+    uwsgi_param UWSGI_SCRIPT iredadmin;
+    include uwsgi_params;
+}
+
+location /static {
+    alias PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK/static;
+}
