@@ -13,6 +13,9 @@ iRedMail-0.9.6:
             - not enable uwsgi service.
             - not create symbol links for PHP programs.
 
+    * Updated packages:
+        + iRedAdmin -> 0.6.1
+
 iRedMail-0.9.5-1:
     * Fixed issues:
         - Postfix:
