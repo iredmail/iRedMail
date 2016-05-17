@@ -66,7 +66,7 @@ export KEEP_DAYS='90'
 # You do *NOT* need to modify below lines.
 #########################################################
 
-export PATH="$PATH:/usr/sbin:/usr/local/sbin/"
+export PATH="$PATH:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin/"
 
 # Commands.
 export CMD_DATE='/bin/date'
@@ -79,7 +79,7 @@ export CMD_MYSQL='mysql'
 # MySQL user and password, used to log backup status to sql table `iredadmin.log`.
 # You can find password of SQL user 'iredadmin' in iRedAdmin config file 'settings.py'.
 export MYSQL_USER='iredadmin'
-export MYSQL_PASSWD='passwd'
+export MYSQL_PASSWD=''
 
 # Date.
 export YEAR="$(${CMD_DATE} +%Y)"
@@ -102,11 +102,13 @@ export BACKUP_FILE="${BACKUP_DIR}/${TIMESTAMP}.ldif"
 export REMOVE_OLD_BACKUP='NO'
 if which python &>/dev/null; then
     export REMOVE_OLD_BACKUP='YES'
+
     py_cmd="import time; import datetime; t=time.localtime(); print datetime.date(t.tm_year, t.tm_mon, t.tm_mday) - datetime.timedelta(days=${KEEP_DAYS})"
     shift_date=$(python -c "${py_cmd}")
     shift_year="$(echo ${shift_date} | awk -F'-' '{print $1}')"
     shift_month="$(echo ${shift_date} | awk -F'-' '{print $2}')"
     shift_day="$(echo ${shift_date} | awk -F'-' '{print $3}')"
+
     export REMOVED_BACKUP_DIR="${BACKUP_ROOTDIR}/ldap/${shift_year}/${shift_month}"
     export REMOVED_BACKUPS="${BACKUP_ROOTDIR}/ldap/${shift_year}/${shift_month}/${shift_date}*"
 fi
@@ -156,7 +158,9 @@ fi
 
 # Log to SQL table `iredadmin.log`, so that global domain admins can
 # check backup status (System -> Admin Log)
-${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}" >>${LOGFILE} 2>&1
+if [ -n ${MYSQL_USER} ] && [ -n ${MYSQL_PASSWD} ]; then
+    ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}" >>${LOGFILE} 2>&1
+fi
 
 # Append file size of backup files to log file.
 echo "* File size:" >>${LOGFILE}
@@ -171,13 +175,15 @@ else
     echo "* <<< ERROR >>> Backup not successfully complete." >> ${LOGFILE}
 fi
 
-if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
+if [ X"${REMOVE_OLD_BACKUP}" == X'YES' ] && [ -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Delete old backup under ${REMOVED_BACKUP_DIR}." >> ${LOGFILE}
     echo -e "* Suppose to delete: ${REMOVED_BACKUPS}" >> ${LOGFILE}
     rm -rf ${REMOVED_BACKUPS} >> ${LOGFILE} 2>&1
 
-    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUPS}.', 'cron_backup_sql', '127.0.0.1', NOW());"
-    ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
+    if [ -n ${MYSQL_USER} ] && [ -n ${MYSQL_PASSWD} ]; then
+        sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUPS}.', 'cron_backup_sql', '127.0.0.1', NOW());"
+        ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
+    fi
 fi
 
 cat ${LOGFILE}

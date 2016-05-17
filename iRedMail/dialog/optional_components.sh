@@ -81,9 +81,6 @@ ${LIST_OF_OPTIONAL_COMPONENTS} \
 OPTIONAL_COMPONENTS="$(cat ${tmp_config_optional_components})"
 rm -f ${tmp_config_optional_components} &>/dev/null
 
-echo ${OPTIONAL_COMPONENTS} | grep -i '\<SPF\>' &>/dev/null
-[ X"$?" == X"0" ] && export ENABLE_SPF='YES' && echo "export ENABLE_SPF='YES'" >>${IREDMAIL_CONFIG_FILE}
-
 echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' &>/dev/null
 [ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}
 

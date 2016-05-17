@@ -184,6 +184,7 @@ iredapd_config()
 # iRedAPD: Convert SPF DNS record of specified domain names to IP
 #          addresses/networks every 30 minutes.
 */30   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py >/dev/null
+
 EOF
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
