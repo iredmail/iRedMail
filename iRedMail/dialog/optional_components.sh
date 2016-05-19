@@ -28,10 +28,7 @@ export DIALOG_SELECTABLE_AWSTATS='YES'
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
 export DIALOG_SELECTABLE_SOGO='YES'
 
-if [ X"${DISTRO}" == X'UBUNTU' ]; then
-    # SOGo is not yet available for Ubuntu 16.04
-    [ X"${DISTRO_CODENAME}" != X'trusty' ] && export DIALOG_SELECTABLE_SOGO='NO'
-elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
 
     # SOGo is not available due to dependent port 'textproc/wbxml2' cannot be compiled
