@@ -152,7 +152,7 @@ if [ X"$?" == X"0" ]; then
     rm -f ${BACKUP_FILE} >> ${LOGFILE} 2>&1
     [ X"$?" == X"0" ] && echo -e "\t[DONE]" >>${LOGFILE}
 
-    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Backup LDAP data. Original file size: ${original_size}, compressed: ${compressed_size}, backup file: ${compressed_file_name}', 'cron_backup_ldap', '127.0.0.1', NOW());"
+    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Backup LDAP data, size: ${original_size}, compressed: ${compressed_size}', 'cron_backup_ldap', '127.0.0.1', NOW());"
 else
     # Log failure
     sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Backup LDAP data failed, check log file ${LOGFILE} for more details.', 'cron_backup_ldap', '127.0.0.1', NOW());"

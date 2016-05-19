@@ -175,7 +175,7 @@ for db in ${DATABASES}; do
             compressed_file_name="${output_sql}.${COMPRESS_SUFFIX}"
             compressed_size="$(${CMD_DU} ${compressed_file_name} | awk '{print $1}')"
 
-            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup: ${db}. Original file size: ${original_size}, compressed: ${compressed_size}, backup file: ${compressed_file_name}', 'cron_backup_sql', '127.0.0.1', NOW());"
+            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database: ${db}, size: ${original_size}, compressed: ${compressed_size}', 'cron_backup_sql', '127.0.0.1', NOW());"
         else
             # backup failed
             export BACKUP_SUCCESS='NO'
