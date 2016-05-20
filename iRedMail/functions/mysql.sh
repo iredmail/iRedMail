@@ -126,13 +126,21 @@ GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${HOSTNAME}';
 UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='${MYSQL_GRANT_HOST}';
 UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='${HOSTNAME}';
 
--- Set root password
-UPDATE user SET Password=PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root';
-
 FLUSH PRIVILEGES;
 EOF
 
-        mysql -u${MYSQL_ROOT_USER} -e "SOURCE ${RUNTIME_DIR}/grant_permission.sql;"
+#        mysql -u${MYSQL_ROOT_USER} -e "SOURCE ${RUNTIME_DIR}/grant_permission.sql;"
+#
+#        cat > ${RUNTIME_DIR}/reset_password.sql <<EOF
+#USE mysql;
+#
+#-- Set root password
+#UPDATE user SET Password=PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root';
+#
+#FLUSH PRIVILEGES;
+#EOF
+#
+#        mysql -u${MYSQL_ROOT_USER} -e "SOURCE ${RUNTIME_DIR}/reset_password.sql;"
     fi
 
     echo '' > ${MYSQL_INIT_SQL}
