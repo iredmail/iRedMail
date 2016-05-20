@@ -111,7 +111,7 @@ cleanup_replace_firewall_rules()
         [ X"${USE_FIREWALLD}" == X'YES' ] && \
             perl -pi -e 's#(.*)22(.*)#${1}$ENV{SSHD_PORT}${2}#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
 
-        perl -pi -e 's#(.* )22( .*)#${1}$ENV{SSHD_PORT}${2}#' ${SAMPLE_DIR}/iptables.rules
+        perl -pi -e 's#(.* )22( .*)#${1}$ENV{SSHD_PORT}${2}#' ${SAMPLE_DIR}/iptables/iptables.rules
         perl -pi -e 's#(.*mail_services=.*)ssh( .*)#${1}$ENV{SSHD_PORT}${2}#' ${SAMPLE_DIR}/openbsd/pf.conf
 
         [ -f ${FAIL2BAN_JAIL_LOCAL_CONF} ] && \
@@ -137,7 +137,7 @@ cleanup_replace_firewall_rules()
 
                     cp -f ${SAMPLE_DIR}/firewalld/services/{imap,pop3,submission}.xml ${FIREWALLD_CONF_DIR}/services/
                 else
-                    cp -f ${SAMPLE_DIR}/iptables.rules ${FIREWALL_RULE_CONF}
+                    cp -f ${SAMPLE_DIR}/iptables/iptables.rules ${FIREWALL_RULE_CONF}
                 fi
 
                 # Replace HTTP port.
@@ -149,7 +149,7 @@ cleanup_replace_firewall_rules()
                 else
                     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
                         # Copy sample rc script for Debian.
-                        cp -f ${SAMPLE_DIR}/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
+                        cp -f ${SAMPLE_DIR}/iptables/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
                         chmod +x ${DIR_RC_SCRIPTS}/iptables
                     fi
 

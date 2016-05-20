@@ -26,7 +26,7 @@ ldapd_config()
     ECHO_INFO "Configure LDAP server shipped in OpenBSD base system: ldapd(8)."
 
     ECHO_DEBUG "Copy schema files"
-    cp -f ${SAMPLE_DIR}/iredmail.schema ${LDAPD_SCHEMA_DIR}
+    cp -f ${LDAP_IREDMAIL_SCHEMA} ${LDAPD_SCHEMA_DIR}
     cp -f /usr/local/share/doc/amavisd-new/LDAP.schema ${LDAPD_SCHEMA_DIR}/${AMAVISD_LDAP_SCHEMA_NAME}
 
     ECHO_DEBUG "Copy sample config file: ${SAMPLE_DIR}/openbsd/ldapd.conf -> ${LDAPD_CONF}"

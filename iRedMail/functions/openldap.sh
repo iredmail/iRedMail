@@ -64,7 +64,7 @@ EOF
     fi
 
     # Copy iRedMail LDAP schema file
-    cp -f ${SAMPLE_DIR}/iredmail.schema ${OPENLDAP_SCHEMA_DIR}
+    cp -f ${LDAP_IREDMAIL_SCHEMA} ${OPENLDAP_SCHEMA_DIR}
 
     # Copy amavisd schema.
     # - On OpenBSD: package amavisd-new will copy schema file to /etc/openldap/schema

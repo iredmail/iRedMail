@@ -12,7 +12,7 @@ $config['default_host'] = '127.0.0.1';
 $config['default_port'] = 143;
 $config['imap_auth_type'] = 'LOGIN';
 $config['imap_delimiter'] = '/';
-// Required if you're running PHP 5.6
+// Required if you're running PHP 5.6 or later
 $config['imap_conn_options'] = array(
     'ssl' => array(
         'verify_peer'  => false,
@@ -26,7 +26,7 @@ $config['smtp_port'] = 587;
 $config['smtp_user'] = '%u';
 $config['smtp_pass'] = '%p';
 $config['smtp_auth_type'] = 'LOGIN';
-// Required if you're running PHP 5.6
+// Required if you're running PHP 5.6 or later
 $config['smtp_conn_options'] = array(
     'ssl' => array(
         'verify_peer'      => false,
