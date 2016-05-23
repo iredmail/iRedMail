@@ -32,12 +32,6 @@ rcm_install()
     chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
     chmod 0600 config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
 
-    # Fix PHP 7.0 compatibility on Ubuntu 16.04
-    if [ X"${PHP_7}" == X'YES' ]; then
-        cd ${RCM_HTTPD_ROOT}
-        perl -pi -e 's#(.*session_regenerate_id*)#//${1}#g' program/lib/Roundcube/rcube_session.php >> ${INSTALL_LOG} 2>&1
-    fi
-
     echo 'export status_rcm_install="DONE"' >> ${STATUS_FILE}
 }
 
