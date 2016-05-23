@@ -106,6 +106,9 @@ EOF
     perl -pi -e 's#PH_LDAP_ROOTPW_SSHA#$ENV{LDAP_ROOTPW_SSHA}#g' ${OPENLDAP_SLAPD_CONF}
 
     if [ X"${OPENLDAP_DEFAULT_DBTYPE}" == X'mdb' ]; then
+        # Set maxsize
+        perl -pi -e 's/^#(maxsize.*)/${1}/g' ${OPENLDAP_SLAPD_CONF}
+
         # mdb doesn't use cachesize (causes error)
         perl -pi -e 's#^(cachesize.*)##g' ${OPENLDAP_SLAPD_CONF}
     fi
