@@ -1,0 +1,49 @@
+# Custom short log template (at log_level 0), add SpamAssassin testing result (Tests: [xxx])
+#
+# Note: You can find the original log template at the bottom of
+#       /usr/sbin/amavisd-new.
+$log_templ = '
+[?%#D|#|Passed #
+[? [:ccat|major] |#
+OTHER|CLEAN|MTA-BLOCKED|OVERSIZED|BAD-HEADER-[:ccat|minor]|SPAMMY|SPAM|\
+UNCHECKED[?[:ccat|minor]||-ENCRYPTED|]|BANNED (%F)|INFECTED (%V)]#
+ {[:actions_performed]}#
+,[?%p|| %p][?%a||[?%l|| LOCAL] [:client_addr_port]][?%e|| \[%e\]] [:mail_addr_decode_octets|%s] -> [%D|[:mail_addr_decode_octets|%D]|,]#
+[? %q ||, quarantine: %q]#
+[? %Q ||, Queue-ID: %Q]#
+[? %m ||, Message-ID: [:mail_addr_decode_octets|%m]]#
+[? %r ||, Resent-Message-ID: [:mail_addr_decode_octets|%r]]#
+[? %i ||, mail_id: %i]#
+, Hits: [:SCORE]#
+, size: %z#
+[? [:partition_tag] ||, pt: [:partition_tag]]#
+[~[:remote_mta_smtp_response]|["^$"]||[", queued_as: "]]\
+[remote_mta_smtp_response|[~%x|["queued as ([0-9A-Za-z]+)$"]|["%1"]|["%0"]]|/]#
+#, Subject: [:dquote|[:mime2utf8|[:header_field_octets|Subject]|100|1]]#
+#, From: [:uquote|[:mail_addr_decode_octets|[:rfc2822_from]]]#
+[? [:dkim|sig_sd]    ||, dkim_sd=[:dkim|sig_sd]]#
+[? [:dkim|newsig_sd] ||, dkim_new=[:dkim|newsig_sd]]#
+, %y ms#
+[? %#T ||, Tests: \[[%T|,]\]]#
+]
+[?%#O|#|Blocked #
+[? [:ccat|major|blocking] |#
+OTHER|CLEAN|MTA-BLOCKED|OVERSIZED|BAD-HEADER-[:ccat|minor]|SPAMMY|SPAM|\
+UNCHECKED[?[:ccat|minor]||-ENCRYPTED|]|BANNED (%F)|INFECTED (%V)]#
+ {[:actions_performed]}#
+,[?%p|| %p][?%a||[?%l|| LOCAL] [:client_addr_port]][?%e|| \[%e\]] [:mail_addr_decode_octets|%s] -> [%O|[:mail_addr_decode_octets|%O]|,]#
+[? %q ||, quarantine: %q]#
+[? %Q ||, Queue-ID: %Q]#
+[? %m ||, Message-ID: [:mail_addr_decode_octets|%m]]#
+[? %r ||, Resent-Message-ID: [:mail_addr_decode_octets|%r]]#
+[? %i ||, mail_id: %i]#
+, Hits: [:SCORE]#
+, size: %z#
+[? [:partition_tag] ||, pt: [:partition_tag]]#
+#, Subject: [:dquote|[:mime2utf8|[:header_field_octets|Subject]|100|1]]#
+#, From: [:uquote|[:mail_addr_decode_octets|[:rfc2822_from]]]#
+[? [:dkim|sig_sd]    ||, dkim_sd=[:dkim|sig_sd]]#
+[? [:dkim|newsig_sd] ||, dkim_new=[:dkim|newsig_sd]]#
+, %y ms#
+[? %#T ||, Tests: \[[%T|,]\]]#
+]';

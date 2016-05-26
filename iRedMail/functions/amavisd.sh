@@ -254,8 +254,7 @@ amavisd_config_general()
 
     cat >> ${AMAVISD_CONF} <<EOF
 
-# Log verbose info of processed email.
-\$log_templ = \$log_verbose_templ;
+$(cat ${SAMPLE_DIR}/amavisd/log_templ)
 
 # Set hostname.
 \$myhostname = "${HOSTNAME}";
