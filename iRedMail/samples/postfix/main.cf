@@ -123,6 +123,10 @@ tls_random_source = dev:/dev/urandom
 smtp_tls_loglevel = 1
 smtpd_tls_loglevel = 1
 
+# Opportunistic TLS: announce STARTTLS support to remote SMTP clients, but do
+# not require that clients use TLS encryption.
+smtpd_tls_security_level = may
+
 # Produce `Received:` message headers that include information about the
 # protocol and cipher used, as well as the remote SMTP client CommonName and
 # client certificate issuer CommonName.
@@ -211,9 +215,8 @@ virtual_alias_domains =
 #          be forced to submit email through port 587 instead.
 #
 #smtpd_sasl_auth_enable = yes
-#smtpd_tls_auth_only = yes
 #smtpd_sasl_security_options = noanonymous
-#smtpd_tls_security_level = may
+#smtpd_tls_auth_only = yes
 
 # hostname
 myhostname = PH_HOSTNAME

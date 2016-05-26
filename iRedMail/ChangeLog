@@ -4,6 +4,9 @@ iRedMail-0.9.6:
             - Add HSTS header for Roundcube, iRedAdmin, SOGo.
 
     * Fixed issues:
+        - Postfix:
+            - Not enable opportunistic TLS support for remote smtp clients.
+
         - Nginx:
             - Config file for catch-all virtual host (`default.conf` has been
               renamed to `00-default.conf`, to make sure it will be loaded

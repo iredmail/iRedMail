@@ -1,4 +1,10 @@
-# Custom short log template (at log_level 0), add SpamAssassin testing result (Tests: [xxx])
+# Custom Amavisd log template to always log SpamAssassin testing results,
+# useful for troubleshooting. if you want more verbose log, replace it by:
+#
+#   $log_templ = $log_verbose_templ;
+#
+# WARNING: $log_verbose_templ will log mail subject, this may be illegal
+#          according to the laws in some countries.
 #
 # Note: You can find the original log template at the bottom of
 #       /usr/sbin/amavisd-new.
