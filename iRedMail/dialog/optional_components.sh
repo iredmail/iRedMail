@@ -31,7 +31,7 @@ export DIALOG_SELECTABLE_SOGO='YES'
 if [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
 
-    # SOGo is not available due to dependent port 'textproc/wbxml2' cannot be compiled
+    # SOGo v2/v3 are not available due to broken ports: devel/sope2, devel/sope3.
     export DIALOG_SELECTABLE_SOGO='NO'
 fi
 

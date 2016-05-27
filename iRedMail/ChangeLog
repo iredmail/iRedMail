@@ -4,6 +4,9 @@ iRedMail-0.9.6:
             - Add HSTS header for Roundcube, iRedAdmin, SOGo.
 
     * Fixed issues:
+        - SOGo:
+            - Not correctly redirect access to https.
+
         - Postfix:
             - Not enable opportunistic TLS support for remote smtp clients.
 

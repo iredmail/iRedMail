@@ -52,6 +52,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
     export APACHE_VERSION='2.4'
     export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf-available"
+    export HTTPD_SITES_DIR="${HTTPD_CONF_ROOT}/sites-available"
+    export HTTPD_HTTP_CONF="${HTTPD_CONF_ROOT}/sites-available/000-default.conf"
     export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/sites-available/default-ssl.conf"
     export HTTPD_MOD_CONF_SECURITY="${HTTPD_CONF_DIR}/security.conf"
     export HTTPD_DOCUMENTROOT="/var/www/html"
