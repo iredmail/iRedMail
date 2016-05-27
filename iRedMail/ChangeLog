@@ -5,7 +5,7 @@ iRedMail-0.9.6:
 
     * Fixed issues:
         - SOGo:
-            - Not correctly redirect access to https.
+            - Not correctly redirect access to https in Apache.
 
         - Postfix:
             - Not enable opportunistic TLS support for remote smtp clients.
