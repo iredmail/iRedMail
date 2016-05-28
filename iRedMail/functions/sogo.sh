@@ -228,7 +228,6 @@ EOF
         perl -pi -e 's#(//)(SOGoForwardEnabled.*)#${2}#' ${SOGO_CONF}
     fi
 
-    set -x
     if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         backup_file ${SOGO_HTTPD_CONF}
         cp -f ${SAMPLE_DIR}/sogo/sogo-apache.conf ${SOGO_HTTPD_CONF}
@@ -254,7 +253,6 @@ EOF
             perl -pi -e 's/^#(LoadModule proxy_http_module.*)/${1}/' ${HTTPD_CONF}
         fi
     fi
-    set +x
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.
