@@ -1,15 +1,33 @@
 # Sample setting for Adminer: http://adminer.org/
 
+# -----------------------------------------
 # How to get it working:
 #
 #   mkdir PH_HTTPD_SERVERROOT/adminer
 #   cd PH_HTTPD_SERVERROOT/adminer
 #   wget http://www.adminer.org/latest.php
 #   chmod +x latest.php
-
+#
 # Warning: for security concern, it's recommended to change the URL '/adminer'
 #          to another random string to avoid login attempts from bad guys.
 #          for example, change the url to '^/HIoWCwogSHukIbGL'.
+#
+# -----------------------------------------
+# If you cannot login to MySQL server as root user:
+#
+# New MySQL or MariaDB support plugin authentication, by default, the root
+# account has setting `user.plugin=unix_socket` (in `mysql` database). The
+# `auth_socket` authentication plugin authenticates clients that connect from
+# the local host through the Unix socket file, this prevents access via network
+# connection, including Adminer. To make it working, please disable this
+# authentication plugin with sql commands below:
+#
+#   sql> USE mysql;
+#   sql> UPDATE user SET plugin='' where user='root';
+#
+# Refer to MySQL document for more details:
+# https://dev.mysql.com/doc/refman/5.7/en/socket-authentication-plugin.html
+
 location ~ ^/adminer {
     include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
 
