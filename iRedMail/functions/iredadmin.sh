@@ -212,6 +212,10 @@ EOF
 
     echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
 
+    if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
+        echo "LDAP_SERVER_NAME = 'LDAPD'" >> settings.py
+    fi
+
     # Add postfix alias for user: iredapd
     add_postfix_alias ${IREDAPD_DAEMON_USER} ${SYS_ROOT_USER}
 
