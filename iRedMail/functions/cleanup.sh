@@ -268,6 +268,7 @@ cleanup_feedback()
 
     cd /tmp
     ${FETCH_CMD} "${IREDMAIL_MIRROR}/version/check.py/iredmail_pkgs?${url}" &>/dev/null
+    rm -f iredmail_pkgs* &>/dev/null
 
     echo 'export status_cleanup_feedback="DONE"' >> ${STATUS_FILE}
 }
