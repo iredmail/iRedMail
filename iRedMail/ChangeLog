@@ -15,6 +15,10 @@ iRedMail-0.9.6:
               renamed to `00-default.conf`, to make sure it will be loaded
               befire other virtual host config files.
 
+        - Roundcube webmail:
+            - Not set proper file owner (apache/nginx) and permission (0600)
+              for config file of password plugin.
+
         - OpenBSD:
             - not enable uwsgi service.
             - not create symbol links for PHP programs.

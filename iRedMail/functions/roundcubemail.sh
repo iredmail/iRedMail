@@ -225,6 +225,8 @@ rcm_plugin_password()
 
     cd ${RCM_HTTPD_ROOT}/plugins/password/
     cp config.inc.php.dist config.inc.php
+    chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php
+    chmod 0600 config.inc.php
 
     # Determine whether current password is required to change password
     perl -pi -e 's#(.*password_confirm_current.*=).*#${1} true;#' config.inc.php
@@ -253,7 +255,9 @@ rcm_plugin_password()
         export default_password_scheme='ssha'
     fi
 
-    perl -pi -e 's#// (.*password_dovecotpw.*=).*#${1} "$ENV{DOVECOT_DOVEADM_BIN} pw";#' config.inc.php
+    perl -pi -e 's#(.*password_dovecotpw.*=.*for dovecot-1.*)#//${1}#' config.inc.php
+    perl -pi -e 's#// (.*password_dovecotpw.*=).*for dovecot-2.*#${1} "$ENV{DOVECOT_DOVEADM_BIN} pw";#' config.inc.php
+
     perl -pi -e 's#(.*password_dovecotpw_method.*=).*#${1} "$ENV{dovecotpw_method}";#' config.inc.php
     perl -pi -e 's#(.*password_dovecotpw_with_method.*=).*#${1} true;#' config.inc.php
 
