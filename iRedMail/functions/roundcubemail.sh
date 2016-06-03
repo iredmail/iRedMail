@@ -28,9 +28,8 @@ rcm_install()
     # Copy sample config files.
     cd ${RCM_CONF_DIR}
     cp -f ${SAMPLE_DIR}/roundcubemail/config.inc.php .
-    cp -f ${SAMPLE_DIR}/dovecot/dovecot.sieve.roundcube ${RCM_SIEVE_SAMPLE_FILE}
-    chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
-    chmod 0600 config.inc.php ${RCM_SIEVE_SAMPLE_FILE}
+    chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php
+    chmod 0600 config.inc.php
 
     echo 'export status_rcm_install="DONE"' >> ${STATUS_FILE}
 }
@@ -206,13 +205,13 @@ rcm_plugin_managesieve()
     ECHO_DEBUG "Config plugin: managesieve."
     cd ${RCM_CONF_DIR}
 
-    export MANAGESIEVE_SERVER MANAGESIEVE_PORT RCM_SIEVE_SAMPLE_FILE
+    export MANAGESIEVE_SERVER MANAGESIEVE_PORT
     cd ${RCM_HTTPD_ROOT}/plugins/managesieve/ && \
     cp config.inc.php.dist config.inc.php && \
     perl -pi -e 's#(.*managesieve_port.*=).*#${1} $ENV{MANAGESIEVE_PORT};#' config.inc.php
     perl -pi -e 's#(.*managesieve_host.*=).*#${1} "$ENV{MANAGESIEVE_SERVER}";#' config.inc.php
     perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} false;#' config.inc.php
-    perl -pi -e 's#(.*managesieve_default.*=).*#${1} "$ENV{RCM_SIEVE_SAMPLE_FILE}";#' config.inc.php
+    perl -pi -e 's#(.*managesieve_default.*=).*#${1} "";#' config.inc.php
     perl -pi -e 's#(.*managesieve_vacation.*=).*#${1} 1;#' config.inc.php
 
     echo 'export status_rcm_plugin_managesieve="DONE"' >> ${STATUS_FILE}
