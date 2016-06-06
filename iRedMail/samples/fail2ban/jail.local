@@ -35,7 +35,12 @@ logpath     = PH_DOVECOT_LOG_FILE
 enabled     = true
 filter      = postfix.iredmail
 action      = PH_FAIL2BAN_ACTION[name=postfix, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
-#              sendmail[name=Postfix, dest=root, sender=fail2ban@localhost]
+logpath     = PH_MAILLOG
+
+[postfix-sasl]
+enabled     = true
+filter      = postfix-sasl
+action      = PH_FAIL2BAN_ACTION[name=postfix, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
 logpath     = PH_MAILLOG
 
 [sogo-iredmail]
