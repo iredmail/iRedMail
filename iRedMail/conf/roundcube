@@ -44,9 +44,6 @@ fi
 
 export RCM_CONF_DIR="${RCM_HTTPD_ROOT}/config"
 
-# Sample sieve filter template
-export RCM_SIEVE_SAMPLE_FILE="${RCM_CONF_DIR}/dovecot.sieve"
-
 # Syslog log file.
 export RCM_LOGFILE="${MAILLOG}"
 

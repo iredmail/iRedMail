@@ -225,7 +225,7 @@ rcm_plugin_password()
     cd ${RCM_HTTPD_ROOT}/plugins/password/
     cp config.inc.php.dist config.inc.php
     chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php
-    chmod 0600 config.inc.php
+    chmod 0400 config.inc.php
 
     # Determine whether current password is required to change password
     perl -pi -e 's#(.*password_confirm_current.*=).*#${1} true;#' config.inc.php

@@ -9,6 +9,8 @@ iRedMail-0.9.6:
 
         - Postfix:
             - Not enable opportunistic TLS support for remote smtp clients.
+            - Incorrect HELO restriction rule which causes Postfix rejects smtp
+              session with HELO "[IP_ADDRESS]" (with squared brackets).
 
         - Nginx:
             - Config file for catch-all virtual host (`default.conf` has been
