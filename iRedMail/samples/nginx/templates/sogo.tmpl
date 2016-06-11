@@ -10,7 +10,7 @@ rewrite ^/.well-known/carddav   /SOGo/dav permanent;
 rewrite ^/principals           /SOGo/dav permanent;
 
 location ^~ /SOGo {
-    include /etc/nginx/templates/hsts.tmpl;
+    include PH_PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
 
     proxy_pass http://PH_SOGO_BIND_ADDRESS:PH_SOGO_BIND_PORT;
 
