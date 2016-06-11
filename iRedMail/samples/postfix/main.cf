@@ -189,11 +189,12 @@ smtpd_recipient_restrictions =
     permit_sasl_authenticated
     reject_unauth_destination
 
+# END-OF-MESSAGE restrictions
+smtpd_end_of_data_restrictions =
+    check_policy_service inet:PH_IREDAPD_BIND_HOST:PH_IREDAPD_LISTEN_PORT
+
 # Data restrictions
 smtpd_data_restrictions = reject_unauth_pipelining
-
-# END-OF-MESSAGE restrictions
-smtpd_end_of_data_restrictions = check_policy_service inet:PH_IREDAPD_BIND_HOST:PH_IREDAPD_LISTEN_PORT
 
 proxy_read_maps = $canonical_maps $lmtp_generic_maps $local_recipient_maps $mydestination $mynetworks $recipient_bcc_maps $recipient_canonical_maps $relay_domains $relay_recipient_maps $relocated_maps $sender_bcc_maps $sender_canonical_maps $smtp_generic_maps $smtpd_sender_login_maps $transport_maps $virtual_alias_domains $virtual_alias_maps $virtual_mailbox_domains $virtual_mailbox_maps $smtpd_sender_restrictions $sender_dependent_relayhost_maps
 
