@@ -30,9 +30,6 @@ export DIALOG_SELECTABLE_SOGO='YES'
 
 if [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
-
-    # SOGo v2/v3 are not available due to broken ports: devel/sope2, devel/sope3.
-    export DIALOG_SELECTABLE_SOGO='NO'
 fi
 
 if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
