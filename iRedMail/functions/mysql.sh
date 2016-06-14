@@ -166,6 +166,7 @@ MySQL:
         - Username: ${VMAIL_DB_BIND_USER}, Password: ${VMAIL_DB_BIND_PASSWD}
     * Vmail admin account (read-write):
         - Username: ${VMAIL_DB_ADMIN_USER}, Password: ${VMAIL_DB_ADMIN_PASSWD}
+    * Config file: ${MYSQL_MY_CNF}
     * RC script: ${MYSQLD_RC_SCRIPT}
     * See also:
         - ${MYSQL_INIT_SQL}

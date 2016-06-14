@@ -474,13 +474,13 @@ EOF
             ALL_PKGS="${ALL_PKGS} mcrypt"
         fi
 
-        ALL_PKGS="${ALL_PKGS} unzip bzip2 acl patch tmpwatch crontabs dos2unix logwatch"
+        ALL_PKGS="${ALL_PKGS} unzip bzip2 acl patch tmpwatch crontabs dos2unix logwatch lz4"
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch unzip bsdutils"
+        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch unzip bsdutils liblz4-tool"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} bzip2"
+        ALL_PKGS="${ALL_PKGS} bzip2 lz4"
     fi
 
     # Disable Ubuntu firewall rules, we have iptables init script and rule file.
