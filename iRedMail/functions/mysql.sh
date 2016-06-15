@@ -101,17 +101,19 @@ mysql_initialize()
     ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
     sleep 10
 
-    if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
-        # Try to access without password, set a password if it's empty.
-        mysql -u${MYSQL_ROOT_USER} -e "show databases" >> ${INSTALL_LOG} 2>&1
-        if [ X"$?" == X'0' ]; then
-            #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
-            #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
+    if [ X"${MYSQL_SERVER_ADDRESS}" == X'127.0.0.1' ]; then
+        if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
+            # Try to access without password, set a password if it's empty.
+            mysql -u${MYSQL_ROOT_USER} -e "show databases" >> ${INSTALL_LOG} 2>&1
+            if [ X"$?" == X'0' ]; then
+                #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
+                #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
 
-            ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
-            mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
-        else
-            ECHO_DEBUG "MySQL root password is not empty, not reset."
+                ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
+                mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+            else
+                ECHO_DEBUG "MySQL root password is not empty, not reset."
+            fi
         fi
     else
         ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${MYSQL_GRANT_HOST} ..."

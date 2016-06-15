@@ -273,7 +273,7 @@ EOF
             ALL_PORTS="${ALL_PORTS} databases/mysql${PREFERRED_MYSQL_VER}-client"
         fi
 
-        if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
+        if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
             if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
                 ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-server"
             else

@@ -102,7 +102,7 @@ install_all()
         # MySQL server & client.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
+            if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
                 [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-server"
                 [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-server"
             fi
@@ -126,7 +126,7 @@ install_all()
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # MySQL server and client.
-            if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
+            if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
                 if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
                     ALL_PKGS="${ALL_PKGS} mariadb-server"
                 else
@@ -146,7 +146,7 @@ install_all()
             fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            if [ X"${USE_LOCAL_MYSQL_SERVER}" == X'YES' ]; then
+            if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
                 ALL_PKGS="${ALL_PKGS} mariadb-server"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
             fi
