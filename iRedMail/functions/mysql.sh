@@ -101,65 +101,34 @@ mysql_initialize()
     ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
     sleep 10
 
-    if [ X"${MYSQL_SERVER_ADDRESS}" == X'127.0.0.1' ]; then
-        if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-            # Try to access without password, set a password if it's empty.
-            mysql -u${MYSQL_ROOT_USER} -e "show databases" >> ${INSTALL_LOG} 2>&1
-            if [ X"$?" == X'0' ]; then
-                #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
-                #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
+    if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
+        # Try to access without password, set a password if it's empty.
+        mysql -u${MYSQL_ROOT_USER} -e "show databases" >> ${INSTALL_LOG} 2>&1
+        if [ X"$?" == X'0' ]; then
+            #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
+            #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
 
-                ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
-                mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
-            else
-                ECHO_DEBUG "MySQL root password is not empty, not reset."
-            fi
+            ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
+            mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+        else
+            ECHO_DEBUG "MySQL root password is not empty, not reset."
         fi
-    else
-        ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${MYSQL_GRANT_HOST} ..."
-        cat > ${RUNTIME_DIR}/grant_permission.sql <<EOF
-USE mysql;
-
--- Allow access from MYSQL_GRANT_HOST with password
-GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${MYSQL_GRANT_HOST}';
-GRANT ALL PRIVILEGES ON *.* TO '${MYSQL_ROOT_USER}'@'${HOSTNAME}';
-
--- Allow GRANT privilege
-UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='${MYSQL_GRANT_HOST}';
-UPDATE user SET Grant_priv='Y' WHERE User='${MYSQL_ROOT_USER}' AND Host='${HOSTNAME}';
-
-FLUSH PRIVILEGES;
-EOF
-
-#        mysql -u${MYSQL_ROOT_USER} -e "SOURCE ${RUNTIME_DIR}/grant_permission.sql;"
-#
-#        cat > ${RUNTIME_DIR}/reset_password.sql <<EOF
-#USE mysql;
-#
-#-- Set root password
-#UPDATE user SET Password=PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root';
-#
-#FLUSH PRIVILEGES;
-#EOF
-#
-#        mysql -u${MYSQL_ROOT_USER} -e "SOURCE ${RUNTIME_DIR}/reset_password.sql;"
     fi
 
-    echo '' > ${MYSQL_INIT_SQL}
+    # If we're using a remote mysql server: grant access privilege first.
+    if [ X"${USE_EXISTING_MYSQL}" == X'YES' -a X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
+        ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${MYSQL_GRANT_HOST} ..."
 
-    cat >> ${MYSQL_INIT_SQL} <<EOF
--- Delete anonymouse user.
-USE mysql;
+        cp -f ${SAMPLE_DIR}/mysql/sql/remote_grant_permission.sql ${RUNTIME_DIR}/
+        perl -pi -e 's#PH_MYSQL_ROOT_USER#$ENV{MYSQL_ROOT_USER}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
+        perl -pi -e 's#PH_MYSQL_GRANT_HOST#$ENV{MYSQL_GRANT_HOST}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
+        perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
 
-DELETE FROM user WHERE User='';
-DELETE FROM db WHERE User='';
-EOF
+        ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/remote_grant_permission.sql;"
+    fi
 
-    ECHO_DEBUG "Initialize MySQL database."
-    ${MYSQL_CLIENT_ROOT} <<EOF
-SOURCE ${MYSQL_INIT_SQL};
-FLUSH PRIVILEGES;
-EOF
+    ECHO_DEBUG "Delete anonymous database user."
+    ${MYSQL_CLIENT_ROOT} -e "SOURCE ${SAMPLE_DIR}/mysql/sql/delete_anonymous_user.sql;"
 
     cat >> ${TIP_FILE} <<EOF
 MySQL:
@@ -170,8 +139,6 @@ MySQL:
         - Username: ${VMAIL_DB_ADMIN_USER}, Password: ${VMAIL_DB_ADMIN_PASSWD}
     * Config file: ${MYSQL_MY_CNF}
     * RC script: ${MYSQLD_RC_SCRIPT}
-    * See also:
-        - ${MYSQL_INIT_SQL}
 
 EOF
 
@@ -190,43 +157,37 @@ mysql_import_vmail_users()
     perl -pi -e 's#(.*storagebasedirectory.*DEFAULT).*#${1} "$ENV{STORAGE_BASE_DIR}",#' ${MYSQL_VMAIL_STRUCTURE_SAMPLE}
     perl -pi -e 's#(.*storagenode.*DEFAULT).*#${1} "$ENV{STORAGE_NODE}",#' ${MYSQL_VMAIL_STRUCTURE_SAMPLE}
 
-    # Mailbox format is 'Maildir/' by default.
-    cat >> ${MYSQL_VMAIL_SQL} <<EOF
-/* Create database for virtual hosts. */
-CREATE DATABASE IF NOT EXISTS ${VMAIL_DB_NAME} CHARACTER SET utf8;
+    ECHO_DEBUG "Initialize vmail database: ${VMAIL_DB_NAME}."
+    cp -f ${SAMPLE_DIR}/mysql/sql/init_vmail_db.sql ${RUNTIME_DIR}/
 
-/* Permissions. */
-GRANT SELECT ON ${VMAIL_DB_NAME}.* TO "${VMAIL_DB_BIND_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${VMAIL_DB_BIND_PASSWD}";
-GRANT SELECT ON ${VMAIL_DB_NAME}.* TO "${VMAIL_DB_BIND_USER}"@"${HOSTNAME}" IDENTIFIED BY "${VMAIL_DB_BIND_PASSWD}";
-GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB_NAME}.* TO "${VMAIL_DB_ADMIN_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${VMAIL_DB_ADMIN_PASSWD}";
-GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB_NAME}.* TO "${VMAIL_DB_ADMIN_USER}"@"${HOSTNAME}" IDENTIFIED BY "${VMAIL_DB_ADMIN_PASSWD}";
+    perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#g' ${RUNTIME_DIR}/init_vmail_db.sql
+    perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#g' ${RUNTIME_DIR}/init_vmail_db.sql
+    perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#g' ${RUNTIME_DIR}/init_vmail_db.sql
+    perl -pi -e 's#PH_VMAIL_DB_ADMIN_USER#$ENV{VMAIL_DB_ADMIN_USER}#g' ${RUNTIME_DIR}/init_vmail_db.sql
+    perl -pi -e 's#PH_VMAIL_DB_ADMIN_PASSWD#$ENV{VMAIL_DB_ADMIN_PASSWD}#g' ${RUNTIME_DIR}/init_vmail_db.sql
+    perl -pi -e 's#PH_MYSQL_GRANT_HOST#$ENV{MYSQL_GRANT_HOST}#g' ${RUNTIME_DIR}/init_vmail_db.sql
+    perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${RUNTIME_DIR}/init_vmail_db.sql
+    perl -pi -e 's#PH_MYSQL_VMAIL_STRUCTURE_SAMPLE#$ENV{MYSQL_VMAIL_STRUCTURE_SAMPLE}#g' ${RUNTIME_DIR}/init_vmail_db.sql
 
-/* Initialize the database. */
-USE ${VMAIL_DB_NAME};
-SOURCE ${MYSQL_VMAIL_STRUCTURE_SAMPLE};
+    ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/init_vmail_db.sql;"
 
-/* Add your first domain. */
-INSERT INTO domain (domain,transport,settings,created) VALUES ("${FIRST_DOMAIN}", "${TRANSPORT}", "default_user_quota:1024;", NOW());
+    ECHO_DEBUG "Add first domain and postmaster@ user."
+    cp -f ${SAMPLE_DIR}/mysql/sql/add_first_domain_and_user.sql ${RUNTIME_DIR}/
 
-/* Add your first normal user. */
-INSERT INTO mailbox (username,password,name,maildir,quota,domain,isadmin,isglobaladmin,created) VALUES ("${FIRST_USER}@${FIRST_DOMAIN}","${FIRST_USER_PASSWD}","${FIRST_USER}","${FIRST_USER_MAILDIR_HASH_PART}",1024, "${FIRST_DOMAIN}", 1, 1, NOW());
-INSERT INTO alias (address,goto,domain,created) VALUES ("${FIRST_USER}@${FIRST_DOMAIN}", "${FIRST_USER}@${FIRST_DOMAIN}", "${FIRST_DOMAIN}", NOW());
+    perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
+    perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
+    perl -pi -e 's#PH_TRANSPORT#$ENV{TRANSPORT}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
+    perl -pi -e 's#PH_FIRST_USER_PASSWD#$ENV{FIRST_USER_PASSWD}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
+    perl -pi -e 's#PH_FIRST_USER_MAILDIR_HASH_PART#$ENV{FIRST_USER_MAILDIR_HASH_PART}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
+    perl -pi -e 's#PH_FIRST_USER#$ENV{FIRST_USER}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
+    perl -pi -e 's#PH_DOMAIN_ADMIN_NAME#$ENV{DOMAIN_ADMIN_NAME}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
 
-/* Mark first mail user as global admin */
-INSERT INTO domain_admins (username,domain,created) VALUES ("${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}","ALL", NOW());
-
-EOF
-
-    ECHO_DEBUG "Import postfix virtual hosts/users: ${MYSQL_VMAIL_SQL}."
-    ${MYSQL_CLIENT_ROOT} <<EOF
-SOURCE ${MYSQL_VMAIL_SQL};
-FLUSH PRIVILEGES;
-EOF
+    ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/add_first_domain_and_user.sql;"
 
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:
     - ${MYSQL_VMAIL_STRUCTURE_SAMPLE}
-    - ${MYSQL_VMAIL_SQL}
+    - ${RUNTIME_DIR}/*.sql
 
 EOF
 
