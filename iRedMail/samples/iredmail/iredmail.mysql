@@ -21,6 +21,8 @@
 -- http://postfixadmin.sf.net
 --
 
+-- USE PH_VMAIL_DB_NAME;
+
 --
 -- Table structure for table admin
 --

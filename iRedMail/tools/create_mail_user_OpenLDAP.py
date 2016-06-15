@@ -52,7 +52,7 @@ HASHED_MAILDIR = True
 # Default password schemes.
 # Multiple passwords are supported if you separate schemes with '+'.
 # For example: 'SSHA+NTLM', 'CRAM-MD5+SSHA', 'CRAM-MD5+SSHA+MD5'.
-DEFAULT_PASSWORD_SCHEME = 'SSHA512'
+DEFAULT_PASSWORD_SCHEME = 'SSHA'
 
 # Do not prefix password scheme name in password hash.
 HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME = ['NTLM']
@@ -71,7 +71,7 @@ try:
 except ImportError:
     print '''
     Error: You don't have python-ldap installed, Please install it first.
-    
+
     You can install it like this:
 
     - On RHEL/CentOS 5.x:
@@ -97,7 +97,7 @@ Example #2:
     iredmail.org, zhang, plain_password, Zhang Huangbin, ,
 Example #3:
     iredmail.org, zhang, plain_password, , 104857600, group1:group2
-     
+
 Note:
     - Domain name, username and password are REQUIRED, others are optional:
         + common name.
@@ -116,7 +116,8 @@ Note:
 
 def convEmailToUserDN(email):
     """Convert email address to ldap dn of normail mail user."""
-    if email.count('@') != 1: return ''
+    if email.count('@') != 1:
+        return ''
 
     user, domain = email.split('@')
 
@@ -201,7 +202,9 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     # Remove SPACE in username.
     username = str(username).strip().replace(' ', '')
 
-    if cn == '': cn = username
+    if cn == '':
+        cn = username
+
     mail = username.lower() + '@' + domain
     dn = convEmailToUserDN(mail)
 
@@ -213,8 +216,6 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
 
     maildir_domain = str(domain).lower()
     if HASHED_MAILDIR is True:
-        # Hashed. Length of domain name are always >= 2.
-        #maildir_domain = "%s/%s/%s/" % (domain[:1], domain[:2], domain)
         str1 = str2 = str3 = username[0]
         if len(username) >= 3:
             str2 = username[1]
@@ -254,13 +255,12 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         # shadowAccount integration.
         ('shadowLastChange', ['0']),
         # Amavisd integration.
-        ('amavisLocal', ['TRUE']),
-        ]
+        ('amavisLocal', ['TRUE'])]
 
     return dn, ldif
 
 if len(sys.argv) != 2 or len(sys.argv) > 2:
-    print """Usage: $ python %s users.csv""" % ( sys.argv[0] )
+    print """Usage: $ python %s users.csv""" % sys.argv[0]
     usage()
     sys.exit()
 else:

@@ -156,6 +156,6 @@ export LDAP_ATTR_USER_RDN='mail'
 # Password scheme
 #
 # If no pw-sha2 support, use SSHA instead.
-if [ X"${OPENLDAP_HAS_SHA2}" != X'YES' -a X"${DEFAULT_PASSWORD_SCHEME}" == X'SSHA512' ]; then
+if [ X"${BACKEND}" == X'OPENLDAP' -a X"${OPENLDAP_HAS_SHA2}" != X'YES' ]; then
     export DEFAULT_PASSWORD_SCHEME='SSHA'
 fi

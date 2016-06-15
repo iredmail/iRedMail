@@ -148,40 +148,40 @@ EOF
 # It's used only when backend is MySQL.
 mysql_import_vmail_users()
 {
-    ECHO_DEBUG "Generating SQL template for postfix virtual hosts: ${MYSQL_VMAIL_SQL}."
-    export DOMAIN_ADMIN_PASSWD="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${DOMAIN_ADMIN_PASSWD})"
-    export FIRST_USER_PASSWD="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${FIRST_USER_PASSWD})"
+    export FIRST_USER_PASSWD_HASHED="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${FIRST_USER_PASSWD})"
 
-    # Generate SQL.
-    # Modify default SQL template, set storagebasedirectory.
-    perl -pi -e 's#(.*storagebasedirectory.*DEFAULT).*#${1} "$ENV{STORAGE_BASE_DIR}",#' ${MYSQL_VMAIL_STRUCTURE_SAMPLE}
-    perl -pi -e 's#(.*storagenode.*DEFAULT).*#${1} "$ENV{STORAGE_NODE}",#' ${MYSQL_VMAIL_STRUCTURE_SAMPLE}
-
-    ECHO_DEBUG "Initialize vmail database: ${VMAIL_DB_NAME}."
+    ECHO_DEBUG "Generate sample SQL templates."
     cp -f ${SAMPLE_DIR}/mysql/sql/init_vmail_db.sql ${RUNTIME_DIR}/
-
-    perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#g' ${RUNTIME_DIR}/init_vmail_db.sql
-    perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#g' ${RUNTIME_DIR}/init_vmail_db.sql
-    perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#g' ${RUNTIME_DIR}/init_vmail_db.sql
-    perl -pi -e 's#PH_VMAIL_DB_ADMIN_USER#$ENV{VMAIL_DB_ADMIN_USER}#g' ${RUNTIME_DIR}/init_vmail_db.sql
-    perl -pi -e 's#PH_VMAIL_DB_ADMIN_PASSWD#$ENV{VMAIL_DB_ADMIN_PASSWD}#g' ${RUNTIME_DIR}/init_vmail_db.sql
-    perl -pi -e 's#PH_MYSQL_GRANT_HOST#$ENV{MYSQL_GRANT_HOST}#g' ${RUNTIME_DIR}/init_vmail_db.sql
-    perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${RUNTIME_DIR}/init_vmail_db.sql
-    perl -pi -e 's#PH_MYSQL_VMAIL_STRUCTURE_SAMPLE#$ENV{MYSQL_VMAIL_STRUCTURE_SAMPLE}#g' ${RUNTIME_DIR}/init_vmail_db.sql
-
-    ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/init_vmail_db.sql;"
-
-    ECHO_DEBUG "Add first domain and postmaster@ user."
+    cp -f ${SAMPLE_DIR}/iredmail/iredmail.mysql ${RUNTIME_DIR}/iredmail.sql
     cp -f ${SAMPLE_DIR}/mysql/sql/add_first_domain_and_user.sql ${RUNTIME_DIR}/
 
-    perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
-    perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
-    perl -pi -e 's#PH_TRANSPORT#$ENV{TRANSPORT}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
-    perl -pi -e 's#PH_FIRST_USER_PASSWD#$ENV{FIRST_USER_PASSWD}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
-    perl -pi -e 's#PH_FIRST_USER_MAILDIR_HASH_PART#$ENV{FIRST_USER_MAILDIR_HASH_PART}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
-    perl -pi -e 's#PH_FIRST_USER#$ENV{FIRST_USER}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
-    perl -pi -e 's#PH_DOMAIN_ADMIN_NAME#$ENV{DOMAIN_ADMIN_NAME}#g' ${RUNTIME_DIR}/add_first_domain_and_user.sql
+    perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_VMAIL_DB_ADMIN_USER#$ENV{VMAIL_DB_ADMIN_USER}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_VMAIL_DB_ADMIN_PASSWD#$ENV{VMAIL_DB_ADMIN_PASSWD}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_MYSQL_GRANT_HOST#$ENV{MYSQL_GRANT_HOST}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${RUNTIME_DIR}/*.sql
 
+    perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_TRANSPORT#$ENV{TRANSPORT}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_FIRST_USER_PASSWD#$ENV{FIRST_USER_PASSWD_HASHED}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_FIRST_USER_MAILDIR_HASH_PART#$ENV{FIRST_USER_MAILDIR_HASH_PART}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_FIRST_USER#$ENV{FIRST_USER}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_DOMAIN_ADMIN_NAME#$ENV{DOMAIN_ADMIN_NAME}#g' ${RUNTIME_DIR}/*.sql
+
+    # Modify default SQL template
+    perl -pi -e 's#^-- (USE.*)#${1}#g' ${RUNTIME_DIR}/iredmail.sql
+    perl -pi -e 's#(.*storagebasedirectory.*DEFAULT).*#${1} "$ENV{STORAGE_BASE_DIR}",#' ${RUNTIME_DIR}/iredmail.sql
+    perl -pi -e 's#(.*storagenode.*DEFAULT).*#${1} "$ENV{STORAGE_NODE}",#' ${RUNTIME_DIR}/iredmail.sql
+
+    ECHO_DEBUG "Create database: ${VMAIL_DB_NAME}."
+    ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/init_vmail_db.sql;"
+
+    ECHO_DEBUG "Initialize database: ${VMAIL_DB_NAME}."
+    ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/iredmail.sql;"
+
+    ECHO_DEBUG "Add first domain and postmaster@ user."
     ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/add_first_domain_and_user.sql;"
 
     cat >> ${TIP_FILE} <<EOF

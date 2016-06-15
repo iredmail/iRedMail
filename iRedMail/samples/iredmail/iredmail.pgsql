@@ -16,6 +16,9 @@
 -- along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 -- ---------------------------------------------------------------------
 
+-- Connect as vmailadmin
+-- \c PH_VMAIL_DB_NAME PH_VMAIL_DB_ADMIN_USER;
+
 -- Used to store domain admin accounts
 CREATE TABLE admin (
     username VARCHAR(255) NOT NULL DEFAULT '',

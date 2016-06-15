@@ -137,74 +137,59 @@ EOF
 
 pgsql_import_vmail_users()
 {
-    export DOMAIN_ADMIN_PASSWD="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${DOMAIN_ADMIN_PASSWD})"
-    export FIRST_USER_PASSWD="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${FIRST_USER_PASSWD})"
+    set -x
+    export FIRST_USER_PASSWD_HASHED="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${FIRST_USER_PASSWD})"
+    set +x
 
-    # Generate SQL.
-    # Modify default SQL template, set storagebasedirectory, storagenode.
-    perl -pi -e 's#(.*storagebasedirectory.*DEFAULT..)(.*)#${1}$ENV{STORAGE_BASE_DIR}${2}#' ${PGSQL_VMAIL_STRUCTURE_SAMPLE}
-    perl -pi -e 's#(.*storagenode.*DEFAULT..)(.*)#${1}$ENV{STORAGE_NODE}${2}#' ${PGSQL_VMAIL_STRUCTURE_SAMPLE}
+    ECHO_DEBUG "Generate sample SQL templates."
+    cp -f ${SAMPLE_DIR}/postgresql/sql/init_vmail_db.sql ${PGSQL_DATA_DIR}/
+    cp -f ${SAMPLE_DIR}/iredmail/iredmail.pgsql ${PGSQL_DATA_DIR}/iredmail.sql
+    cp -f ${SAMPLE_DIR}/postgresql/sql/add_first_domain_and_user.sql ${PGSQL_DATA_DIR}/
+    cp -f ${SAMPLE_DIR}/postgresql/sql/grant_permissions.sql ${PGSQL_DATA_DIR}/
 
-    ECHO_DEBUG "Generating SQL template for postfix virtual hosts: ${PGSQL_INIT_SQL_SAMPLE}."
+    perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_VMAIL_DB_ADMIN_USER#$ENV{VMAIL_DB_ADMIN_USER}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_VMAIL_DB_ADMIN_PASSWD#$ENV{VMAIL_DB_ADMIN_PASSWD}#g' ${PGSQL_DATA_DIR}/*.sql
 
-    # Create roles
-    cat > ${PGSQL_INIT_SQL_SAMPLE} <<EOF
--- Crete role: vmail, read-only.
-CREATE USER ${VMAIL_DB_BIND_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_BIND_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-
--- Create role: vmailadmin, read + write.
-CREATE USER ${VMAIL_DB_ADMIN_USER} WITH ENCRYPTED PASSWORD '${VMAIL_DB_ADMIN_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
-
--- Create database to store mail accounts
-CREATE DATABASE ${VMAIL_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
-
--- Grant privilege
-ALTER DATABASE ${VMAIL_DB_NAME} OWNER TO ${VMAIL_DB_ADMIN_USER};
-
--- Connect as vmailadmin
-\c ${VMAIL_DB_NAME} ${VMAIL_DB_ADMIN_USER};
-
-EOF
+    perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_TRANSPORT#$ENV{TRANSPORT}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_FIRST_USER_PASSWD#$ENV{FIRST_USER_PASSWD_HASHED}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_FIRST_USER_MAILDIR_HASH_PART#$ENV{FIRST_USER_MAILDIR_HASH_PART}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_FIRST_USER#$ENV{FIRST_USER}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_DOMAIN_ADMIN_NAME#$ENV{DOMAIN_ADMIN_NAME}#g' ${PGSQL_DATA_DIR}/*.sql
 
     if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
-        echo 'CREATE LANGUAGE plpgsql;' >> ${PGSQL_INIT_SQL_SAMPLE}
+        perl -pi -e 's#^(--)(CREATE LANGUAGE.*)#${2}#g' ${PGSQL_DATA_DIR}/init_vmail_db.sql
     fi
 
-    cat ${PGSQL_VMAIL_STRUCTURE_SAMPLE} >> ${PGSQL_INIT_SQL_SAMPLE}
+    perl -pi -e 's#^-- \\c#\\c#g' ${PGSQL_DATA_DIR}/iredmail.sql
 
-    cat >> ${PGSQL_INIT_SQL_SAMPLE} <<EOF
-\c ${VMAIL_DB_NAME};
+    # Modify default SQL template, set storagebasedirectory, storagenode.
+    perl -pi -e 's#(.*storagebasedirectory.*DEFAULT..)(.*)#${1}$ENV{STORAGE_BASE_DIR}${2}#' ${PGSQL_DATA_DIR}/iredmail.sql
+    perl -pi -e 's#(.*storagenode.*DEFAULT..)(.*)#${1}$ENV{STORAGE_NODE}${2}#' ${PGSQL_DATA_DIR}/iredmail.sql
 
--- Set correct privilege for ROLE: vmail
-GRANT SELECT ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user,anyone_shares,share_folder,deleted_mailboxes,sender_relayhost TO ${VMAIL_DB_BIND_USER};
-GRANT SELECT,UPDATE,INSERT,DELETE ON used_quota TO ${VMAIL_DB_BIND_USER};
+    chmod 0755 ${PGSQL_DATA_DIR}/*sql
 
--- Set correct privilege for ROLE: vmailadmin
--- GRANT SELECT,UPDATE,INSERT,DELETE ON admin,alias,alias_domain,domain,domain_admins,mailbox,mailbox,recipient_bcc_domain,recipient_bcc_user,sender_bcc_domain,sender_bcc_user,share_folder,anyone_shares,used_quota TO ${VMAIL_DB_ADMIN_USER};
--- GRANT SELECT,UPDATE,INSERT,DELETE ON deleted_mailboxes TO ${VMAIL_DB_ADMIN_USER};
--- GRANT USAGE,SELECT,UPDATE ON deleted_mailboxes_id_seq TO ${VMAIL_DB_ADMIN_USER};
+    ECHO_DEBUG "Create roles (${VMAIL_DB_BIND_USER}, ${VMAIL_DB_ADMIN_USER}) and database: ${VMAIL_DB_NAME}."
+    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init_vmail_db.sql" >> ${INSTALL_LOG} 2>&1
 
--- Add first mail domain
-INSERT INTO domain (domain,transport,settings,created) VALUES ('${FIRST_DOMAIN}', '${TRANSPORT}', 'default_user_quota:1024;', NOW());
+    ECHO_DEBUG "Create tables in ${VMAIL_DB_NAME} database."
+    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/iredmail.sql" >> ${INSTALL_LOG} 2>&1
 
--- Add first mail user
-INSERT INTO mailbox (username,password,name,maildir,quota,domain,isadmin,isglobaladmin,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}','${FIRST_USER_PASSWD}','${FIRST_USER}','${FIRST_USER_MAILDIR_HASH_PART}',1024, '${FIRST_DOMAIN}', 1, 1, NOW());
-INSERT INTO alias (address,goto,domain,created) VALUES ('${FIRST_USER}@${FIRST_DOMAIN}', '${FIRST_USER}@${FIRST_DOMAIN}', '${FIRST_DOMAIN}', NOW());
+    ECHO_DEBUG "Grant permissions."
+    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/grant_permissions.sql" >> ${INSTALL_LOG} 2>&1
 
--- Mark first mail user as global admin
-INSERT INTO domain_admins (username,domain,created) VALUES ('${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}','ALL', NOW());
-EOF
+    ECHO_DEBUG "Add first domain and postmaster@ user."
+    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/add_first_domain_and_user.sql" >> ${INSTALL_LOG} 2>&1
 
-    ECHO_DEBUG "Import virtual mail accounts: ${PGSQL_INIT_SQL_SAMPLE}."
-    cp -f ${PGSQL_INIT_SQL_SAMPLE} ${PGSQL_DATA_DIR}/init.sql >> ${INSTALL_LOG} 2>&1
-    chmod 0777 ${PGSQL_DATA_DIR}/init.sql >> ${INSTALL_LOG} 2>&1
-    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init.sql" >> ${INSTALL_LOG} 2>&1
-    rm -f ${PGSQL_DATA_DIR}/init.sql >> ${INSTALL_LOG} 2>&1
+    mv ${PGSQL_DATA_DIR}/*sql ${RUNTIME_DIR}
+    chmod 0700 ${RUNTIME_DIR}/*sql
 
     cat >> ${TIP_FILE} <<EOF
-Virtual Users:
-    - ${PGSQL_VMAIL_STRUCTURE_SAMPLE}
-    - ${PGSQL_INIT_SQL_SAMPLE}
+SQL commands used to initialize database and import mail accounts:
+    - ${RUNTIME_DIR}/*.sql
 
 EOF
 
