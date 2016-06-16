@@ -14,9 +14,9 @@ iRedMail-0.9.6:
 
         - Nginx:
             - Not forward real client IP address to SOGo.
-            - Config file for catch-all virtual host (`default.conf` has been
+            - Config file for catch-all virtual host `default.conf` has been
               renamed to `00-default.conf`, to make sure it will be loaded
-              befire other virtual host config files.
+              before other virtual host config files.
 
         - Roundcube webmail:
             - Not set proper file owner (apache/nginx) and permission (0600)

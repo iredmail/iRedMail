@@ -46,16 +46,15 @@ install_all()
         export PREFERRED_MYSQL_VER='55m'
     fi
 
-    freebsd_add_make_conf 'OPTIONS_SET' 'SASL X11'
+    freebsd_add_make_conf 'OPTIONS_SET' 'SASL'
     #freebsd_add_make_conf 'OPTIONS_UNSET' 'X11'
-    freebsd_add_make_conf 'WITH_OPENSSL_PORT' 'yes'
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
     freebsd_add_make_conf 'WANT_MYSQL' "${PREFERRED_MYSQL_VER}"
     #freebsd_add_make_conf 'WANT_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
     freebsd_add_make_conf 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
     freebsd_add_make_conf 'APACHE_PORT' "www/apache${PREFERRED_APACHE_VER}"
     freebsd_add_make_conf 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'python=2.7 python2=2.7 apache=2.4 pgsql=9.5'
+    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'ssl=openssl python=2.7 python2=2.7 apache=2.4 pgsql=9.5'
 
     for p in \
         archivers_p5-Archive-Tar \
