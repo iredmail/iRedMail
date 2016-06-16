@@ -92,6 +92,7 @@ EOF
     ECHO_DEBUG "Update pg_hba.conf to force local users to authenticate with md5."
     perl -pi -e 's/^(local.*)/#${1}/g' ${PGSQL_CONF_PG_HBA}
     perl -pi -e 's/^(host.*)/#${1}/g' ${PGSQL_CONF_PG_HBA}
+    echo "local all     ${PGSQL_SYS_USER}   peer" >> ${PGSQL_CONF_PG_HBA}
     echo 'local all     all                 md5' >> ${PGSQL_CONF_PG_HBA}
     echo 'host  all     all     0.0.0.0/0   md5' >> ${PGSQL_CONF_PG_HBA}
 

@@ -375,6 +375,11 @@ EOF
             ECHO_INFO "Add SOGo GPG public key into apt keyring."
             apt-key adv --keyserver keys.gnupg.net --recv-key 0x810273C4
 
+            # Try another PGP key server if `keys.gnupg.net` is not available
+            if [ X"$?" != X'0' ]; then
+                apt-key adv --keyserver pgp.mit.edu --recv-key 0x810273C4
+            fi
+
             ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."
             apt-get update
 
