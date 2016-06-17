@@ -114,7 +114,7 @@ Note:
     - Leading and trailing Space will be ignored.
 '''
 
-def convEmailToUserDN(email):
+def conv_mail_to_user_dn(email):
     """Convert email address to ldap dn of normail mail user."""
     if email.count('@') != 1:
         return ''
@@ -200,13 +200,13 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         quota = '0'
 
     # Remove SPACE in username.
-    username = str(username).strip().replace(' ', '')
+    username = str(username).lower().strip().replace(' ', '')
 
     if cn == '':
         cn = username
 
-    mail = username.lower() + '@' + domain
-    dn = convEmailToUserDN(mail)
+    mail = username + '@' + domain
+    dn = conv_mail_to_user_dn(mail)
 
     # Get group list.
     if groups.strip() != '':

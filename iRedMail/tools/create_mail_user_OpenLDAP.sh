@@ -278,13 +278,12 @@ else
     [ X"${LDAP_SUFFIX}" == X"dc=example,dc=com" ] && echo "You should change 'LDAP_SUFFIX' in $0."
 
     # Get domain name.
-    DOMAIN_NAME="$1"
+    DOMAIN_NAME="$(echo $1 | tr '[A-Z]' '[a-z]')"
     shift 1
 
     add_new_domain ${DOMAIN_NAME}
-    for i in $@
-    do
-        USERNAME="$i"
+    for i in $@; do
+        USERNAME="$(echo $i | tr '[A-Z]' '[a-z]')"
         MAIL="${USERNAME}@${DOMAIN_NAME}"
 
         # Add new user in LDAP.

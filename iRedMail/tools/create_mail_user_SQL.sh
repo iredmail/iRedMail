@@ -80,11 +80,11 @@ export CRYPT_PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${D
 generate_sql()
 {
     # Get domain name.
-    DOMAIN="$1"
+    DOMAIN="$(echo $1 | tr '[A-Z]' '[a-z]')"
     shift 1
 
     for i in $@; do
-        username="$i"
+        username="$(echo $i | tr '[A-Z]' '[a-z]')"
         mail="${username}@${DOMAIN}"
 
         if [ X"${USE_DEFAULT_PASSWD}" != X'YES' ]; then

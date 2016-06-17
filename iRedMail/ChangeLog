@@ -4,6 +4,10 @@ iRedMail-0.9.6:
             - Add HSTS header for Roundcube, iRedAdmin, SOGo.
 
     * Fixed issues:
+        - Not convert domain name and email address to lower cases while
+          creating mail accounts with scripts tools/create_mail_user_*.
+          Thanks Santosh Gupta <head.it _at_ satmatechnologies.com> for the
+          report.
         - SOGo:
             - Not correctly redirect access to https in Apache.
 
