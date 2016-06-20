@@ -226,6 +226,12 @@ EOF
         perl -pi -e 's#(//)(SOGoSieveFolderEncoding*)#${2}#' ${SOGO_CONF}
         perl -pi -e 's#(//)(SOGoVacationEnabled.*)#${2}#' ${SOGO_CONF}
         perl -pi -e 's#(//)(SOGoForwardEnabled.*)#${2}#' ${SOGO_CONF}
+
+        # Disable Roundcube in Nginx, redirect '/mail' to SOGo.
+        if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
+            perl -pi -e 's/(include.*roundcube.tmpl)/#${1}/g' ${NGINX_CONF_DEFAULT}
+            perl -pi -e 's/^#(location.*mail.*SOGo.*)/${1}/g' ${NGINX_CONF_TMPL_DIR}/sogo.tmpl
+        fi
     fi
 
     if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
