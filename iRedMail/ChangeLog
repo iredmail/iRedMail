@@ -2,6 +2,8 @@ iRedMail-0.9.6:
     * Improvements:
         - Nginx:
             - Add HSTS header for Roundcube, iRedAdmin, SOGo.
+            - Add sample config files to run Roundcube, iRedAdmin, SOGo as a
+              subdomain.
 
     * Fixed issues:
         - Not convert domain name and email address to lower cases while

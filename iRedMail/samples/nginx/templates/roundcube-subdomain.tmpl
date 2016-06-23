@@ -1,0 +1,18 @@
+#
+# Run Roundcube as a sub-domain virtual host.
+#
+location / {
+    root    PH_RCM_HTTPD_ROOT_SYMBOL_LINK;
+    index   index.php index.html;
+    include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
+}
+
+location ~ \.php$ {
+    root            PH_RCM_HTTPD_ROOT_SYMBOL_LINK;
+    include fastcgi_params;
+    fastcgi_pass php_workers;
+    fastcgi_index index.php;
+    fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK$fastcgi_script_name;
+}
+
+location ~ ^/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING)$ { deny all; }
