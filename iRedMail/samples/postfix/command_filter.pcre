@@ -1,0 +1,3 @@
+# Work around clients that send `RCPT TO:<'user@domain'>` (Outlook 2003/2007).
+# WARNING: do not lose the parameters that follow the address.
+/^(RCPT\s+TO:\s*<)'([^[:space:]]+)'(>.*)/   $1$2$3

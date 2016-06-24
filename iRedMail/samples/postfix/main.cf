@@ -161,6 +161,13 @@ smtpd_reject_unlisted_sender = yes
 header_checks = pcre:PH_POSTFIX_FILE_HEADER_CHECKS
 body_checks = pcre:PH_POSTFIX_FILE_BODY_CHECKS
 
+# A mechanism to transform commands from remote SMTP clients.
+# This is a last-resort tool to work around client commands that break
+# interoperability with the Postfix SMTP server. Other uses involve fault
+# injection to test Postfix's handling of invalid commands.
+# Requires Postfix-2.7.
+#smtpd_command_filter = pcre:PH_POSTFIX_FILE_SMTPD_COMMAND_FILTER
+
 # HELO restriction
 smtpd_helo_required = yes
 smtpd_helo_restrictions =

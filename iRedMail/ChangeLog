@@ -5,11 +5,15 @@ iRedMail-0.9.6:
             - Add sample config files to run Roundcube, iRedAdmin, SOGo as a
               subdomain.
 
+        - SOGo:
+            - List all contacts by default in SOGo global address book.
+
     * Fixed issues:
         - Not convert domain name and email address to lower cases while
           creating mail accounts with scripts tools/create_mail_user_*.
           Thanks Santosh Gupta <head.it _at_ satmatechnologies.com> for the
           report.
+
         - SOGo:
             - Not correctly redirect access to https in Apache.
 

@@ -28,8 +28,6 @@ postfix_config_basic()
 {
     ECHO_INFO "Configure Postfix (MTA)."
 
-    backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
-
     #
     # main.cf
     #
@@ -46,6 +44,7 @@ postfix_config_basic()
     export setgid_group="$(postconf setgid_group | awk '{print $NF}')"
 
     # Copy sample main.cf and update values.
+    backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
     cp ${SAMPLE_DIR}/postfix/main.cf ${POSTFIX_FILE_MAIN_CF}
 
     perl -pi -e 's#PH_QUEUE_DIRECTORY#$ENV{queue_directory}#g' ${POSTFIX_FILE_MAIN_CF}
@@ -90,6 +89,7 @@ postfix_config_basic()
     perl -pi -e 's#PH_POSTFIX_FILE_HEADER_CHECKS#$ENV{POSTFIX_FILE_HEADER_CHECKS}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_POSTFIX_FILE_BODY_CHECKS#$ENV{POSTFIX_FILE_BODY_CHECKS}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_POSTFIX_FILE_SENDER_ACCESS#$ENV{POSTFIX_FILE_SENDER_ACCESS}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_POSTFIX_FILE_SMTPD_COMMAND_FILTER#$ENV{POSTFIX_FILE_SMTPD_COMMAND_FILTER}#g' ${POSTFIX_FILE_MAIN_CF}
 
     # Create required files and set correct owner + permission
     _files="${POSTFIX_FILE_HELO_ACCESS} ${POSTFIX_FILE_HEADER_CHECKS} ${POSTFIX_FILE_BODY_CHECKS} ${POSTFIX_FILE_SENDER_ACCESS}"
@@ -105,9 +105,12 @@ postfix_config_basic()
     #
     # master.cf
     #
-    # Postfix v3
-    #
-    if postconf mail_version | grep '= 3' &>/dev/null; then
+    _postfix_version="$(postconf mail_version | awk '{print $NF}')"
+    if ! (echo ${_postfix_version} | grep '^2\.[1-6]' &>/dev/null); then
+        # Enable parameter `smtpd_command_filter`, requires Postfix-2.7.
+        perl -pi -e 's/^#(smtpd_command_filter.*)/${1}/g' ${POSTFIX_FILE_MAIN_CF}
+    elif echo ${_postfix_version} | grep '^3' &>/dev/null; then
+        # Postfix v3
         postconf -e compatibility_level=2
 
         # The master.cf chroot default value has changed from "y" (yes) to "n" (no).
@@ -147,6 +150,9 @@ postfix_config_basic()
 
     backup_file ${POSTFIX_FILE_HELO_ACCESS}
     cp -f ${SAMPLE_DIR}/postfix/helo_access.pcre ${POSTFIX_FILE_HELO_ACCESS}
+
+    backup_file ${POSTFIX_FILE_SMTPD_COMMAND_FILTER}
+    cp -f ${SAMPLE_DIR}/postfix/command_filter.pcre ${POSTFIX_FILE_SMTPD_COMMAND_FILTER}
 
     # Update Postfix aliases file.
     add_postfix_alias nobody ${SYS_ROOT_USER}
