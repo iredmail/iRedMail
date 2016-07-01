@@ -38,7 +38,7 @@ backend_install()
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         check_status_before_run mysql_generate_defauts_file_root
 
-        if [ X"${MYSQL_INITIALIZE_DB}" == X'YES' ]; then
+        if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
             check_status_before_run mysql_initialize
         fi
         check_status_before_run mysql_import_vmail_users

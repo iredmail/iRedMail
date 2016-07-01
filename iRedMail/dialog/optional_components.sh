@@ -98,20 +98,26 @@ if echo ${OPTIONAL_COMPONENTS} | grep -i 'fail2ban' &>/dev/null; then
     echo "export USE_FAIL2BAN='YES'" >>${IREDMAIL_CONFIG_FILE}
 fi
 
-export AMAVISD_DB_PASSWD="$(${RANDOM_STRING})"
+export random_pw="$(${RANDOM_STRING})"
+export AMAVISD_DB_PASSWD="${AMAVISD_DB_PASSWD:=${random_pw}}"
 echo "export AMAVISD_DB_PASSWD='${AMAVISD_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
-export IREDADMIN_DB_PASSWD="$(${RANDOM_STRING})"
+export random_pw="$(${RANDOM_STRING})"
+export IREDADMIN_DB_PASSWD="${IREDADMIN_DB_PASSWD:=${random_pw}}"
 echo "export IREDADMIN_DB_PASSWD='${IREDADMIN_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
-export RCM_DB_PASSWD="$(${RANDOM_STRING})"
+export random_pw="$(${RANDOM_STRING})"
+export RCM_DB_PASSWD="${RCM_DB_PASSWD:=${random_pw}}"
 echo "export RCM_DB_PASSWD='${RCM_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
-export SOGO_DB_PASSWD="$(${RANDOM_STRING})"
+export random_pw="$(${RANDOM_STRING})"
+export SOGO_DB_PASSWD="${SOGO_DB_PASSWD:=${random_pw}}"
 echo "export SOGO_DB_PASSWD='${SOGO_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
-export SOGO_SIEVE_MASTER_PASSWD="$(${RANDOM_STRING})"
+export random_pw="$(${RANDOM_STRING})"
+export SOGO_SIEVE_MASTER_PASSWD="${SOGO_SIEVE_MASTER_PASSWD:=${random_pw}}"
 echo "export SOGO_SIEVE_MASTER_PASSWD='${SOGO_SIEVE_MASTER_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
-export IREDAPD_DB_PASSWD="$(${RANDOM_STRING})"
+export random_pw="$(${RANDOM_STRING})"
+export IREDAPD_DB_PASSWD="${IREDAPD_DB_PASSWD:=${random_pw}}"
 echo "export IREDAPD_DB_PASSWD='${IREDAPD_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}

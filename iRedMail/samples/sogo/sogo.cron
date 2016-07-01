@@ -3,4 +3,4 @@
 
 # SOGo vacation messages expiration
 # The credentials file should contain the sieve admin credentials (username:passwd)
-0   0   *   *   *   PH_SOGO_CMD_TOOL expire-autoreply -p PH_SOGO_SIEVE_CREDENTIAL_FILE
+0   0   *   *   *   PH_SOGO_CMD_TOOL update-autoreply -p PH_SOGO_SIEVE_CREDENTIAL_FILE

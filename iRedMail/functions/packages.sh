@@ -103,13 +103,9 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
         if [ X"${DISTRO}" == X'RHEL' ]; then
             if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-                [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-server"
-                [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-server"
+                [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-server mysql"
+                [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-server mariadb"
             fi
-
-            # Client
-            [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql"
-            [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb"
 
             # Perl module
             ALL_PKGS="${ALL_PKGS} perl-DBD-MySQL"
@@ -128,16 +124,10 @@ install_all()
             # MySQL server and client.
             if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
                 if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-                    ALL_PKGS="${ALL_PKGS} mariadb-server"
+                    ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client"
                 else
-                    ALL_PKGS="${ALL_PKGS} mysql-server"
+                    ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
                 fi
-            fi
-
-            if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-                ALL_PKGS="${ALL_PKGS} mariadb-client"
-            else
-                ALL_PKGS="${ALL_PKGS} mysql-client"
             fi
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql libdbd-mysql-perl"
@@ -147,10 +137,9 @@ install_all()
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} mariadb-server"
+                ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client p5-DBD-mysql"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
             fi
-            ALL_PKGS="${ALL_PKGS} mariadb-client p5-DBD-mysql"
         fi
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${PGSQL_RC_SCRIPT_NAME}"

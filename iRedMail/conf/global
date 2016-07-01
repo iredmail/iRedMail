@@ -68,8 +68,6 @@ export MYSQL_SERVER_PORT="${MYSQL_SERVER_PORT:=3306}"
 export MYSQL_ROOT_USER="${MYSQL_ROOT_USER:=root}"
 # Use existing MySQL server, no matter it's local or remote.
 export USE_EXISTING_MYSQL="${USE_EXISTING_MYSQL:=NO}"
-# Whether or not to initialize databases.
-export MYSQL_INITIALIZE_DB="${MYSQL_INITIALIZE_DB:=YES}"
 
 # PGSQL server
 export PGSQL_SERVER_ADDRESS="${PGSQL_SERVER_ADDRESS:=${LOCAL_ADDRESS}}"
