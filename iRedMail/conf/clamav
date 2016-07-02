@@ -34,6 +34,9 @@ export FRESHCLAM_CONF='/etc/freshclam.conf'
 export FRESHCLAM_LOGFILE='/var/log/clamav/freshclam.log'
 export FRESHCLAM_PID_FILE='/var/run/clamav/freshclam.pid'
 
+# Update database immediately
+export FRESHCLAM_UPDATE_IMMEDIATELY="${FRESHCLAM_UPDATE_IMMEDIATELY:=YES}"
+
 # Clamav.
 if [ X"${DISTRO}" == X'RHEL' ]; then
     if [ X"${DISTRO_VERSION}" == X'6' ]; then

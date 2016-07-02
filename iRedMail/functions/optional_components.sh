@@ -24,7 +24,7 @@ optional_components()
     [ X"${USE_RCM}" == X'YES' ] && check_status_before_run rcm_setup
 
     # SOGo
-    [ X"${USE_SOGO}" == X'YES' ] && check_status_before_run sogo_config
+    [ X"${USE_SOGO}" == X'YES' ] && check_status_before_run sogo_setup
 
     # Awstats.
     [ X"${USE_AWSTATS}" == X'YES' -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && \
