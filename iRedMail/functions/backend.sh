@@ -36,14 +36,19 @@ backend_install()
         check_status_before_run mysql_cron_backup
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        check_status_before_run mysql_generate_defauts_file_root
+        if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
+            check_status_before_run mysql_generate_defauts_file_root
+        fi
 
         if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
             check_status_before_run mysql_initialize
         fi
-        check_status_before_run mysql_import_vmail_users
-        check_status_before_run mysql_cron_backup
 
+        if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
+            check_status_before_run mysql_import_vmail_users
+        fi
+
+        check_status_before_run mysql_cron_backup
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         check_status_before_run pgsql_initialize
         check_status_before_run pgsql_import_vmail_users

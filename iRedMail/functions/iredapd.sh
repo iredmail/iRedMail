@@ -67,7 +67,7 @@ iredapd_install()
     echo 'export status_iredapd_install="DONE"' >> ${STATUS_FILE}
 }
 
-iredapd_import_sql()
+iredapd_initialize_db()
 {
     ECHO_DEBUG "Import iRedAPD database template."
 
@@ -114,7 +114,7 @@ EOF
         rm -f ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelist_domains.sql} >> ${INSTALL_LOG} 2>&1
     fi
 
-    echo 'export status_iredapd_import_sql="DONE"' >> ${STATUS_FILE}
+    echo 'export status_iredapd_initialize_db="DONE"' >> ${STATUS_FILE}
 }
 
 iredapd_config()
@@ -198,7 +198,11 @@ EOF
 iredapd_setup()
 {
     iredapd_install
-    iredapd_import_sql
+
+    if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
+        iredapd_initialize_db
+    fi
+
     iredapd_config
 
     cat >> ${TIP_FILE} <<EOF

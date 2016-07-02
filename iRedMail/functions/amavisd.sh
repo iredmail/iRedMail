@@ -534,7 +534,7 @@ EOF
     echo 'export status_amavisd_config_general="DONE"' >> ${STATUS_FILE}
 }
 
-amavisd_import_sql()
+amavisd_initialize_db()
 {
     ECHO_DEBUG "Import Amavisd database and privileges."
 
@@ -582,7 +582,7 @@ EOF
         fi
     fi
 
-    echo 'export status_amavisd_import_sql="DONE"' >> ${STATUS_FILE}
+    echo 'export status_amavisd_initialize_db="DONE"' >> ${STATUS_FILE}
 }
 
 amavisd_config()
@@ -596,7 +596,10 @@ amavisd_config()
     fi
 
     check_status_before_run amavisd_config_general
-    check_status_before_run amavisd_import_sql
+
+    if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
+        check_status_before_run amavisd_initialize_db
+    fi
 
     # Comment out port 10027, we don't have Amavisd listening on this port.
     perl -pi -e 's/(.*forward_method.*10027.*)/#${1}/g' ${AMAVISD_CONF}
@@ -611,4 +614,6 @@ amavisd_config()
         service_control enable 'amavis_milter_enable' 'NO'
         service_control enable 'amavis_p0fanalyzer_enable' 'NO'
     fi
+
+    echo 'export status_amavisd_config="DONE"' >> ${STATUS_FILE}
 }

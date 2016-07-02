@@ -20,9 +20,9 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-sogo_config()
+sogo_initial_db()
 {
-    ECHO_INFO "Configure SOGo Groupware (Webmail, Calendar, Address Book, ActiveSync)."
+    ECHO_INFO "Initialize SOGo database."
 
     # Create log directory
     mkdir -p $(dirname ${SOGO_LOG_FILE}) >> ${INSTALL_LOG} 2>&1
@@ -98,6 +98,10 @@ EOF
 
     rm -f ${tmp_sql} &>/dev/null
 
+    echo 'export status_sogo_initial_db="DONE"' >> ${STATUS_FILE}
+}
+
+sogo_config() {
     # Configure SOGo config file
     backup_file ${SOGO_CONF}
 
@@ -286,4 +290,16 @@ SOGo Groupware:
 EOF
 
     echo 'export status_sogo_config="DONE"' >> ${STATUS_FILE}
+}
+
+sogo_setup() {
+    ECHO_INFO "Configure SOGo Groupware (Webmail, Calendar, Address Book, ActiveSync)."
+
+    if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
+        check_status_before_run sogo_initial_db
+    fi
+
+    check_status_before_run sogo_config
+
+    echo 'export status_sogo_setup="DONE"' >> ${STATUS_FILE}
 }

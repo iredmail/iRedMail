@@ -21,7 +21,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-iredadmin_config()
+iredadmin_install()
 {
     ECHO_INFO "Configure iRedAdmin (official web-based admin panel)."
 
@@ -49,6 +49,10 @@ iredadmin_config()
     chown -R ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} ${IREDADMIN_HTTPD_ROOT}
     chmod -R 0555 ${IREDADMIN_HTTPD_ROOT}
 
+    echo 'export status_iredadmin_install="DONE"' >> ${STATUS_FILE}
+}
+
+iredadmin_web_config() {
     # Copy sample configure file.
     cd ${IREDADMIN_HTTPD_ROOT}/
 
@@ -113,6 +117,10 @@ EOF
         fi
     fi
 
+    echo 'export status_iredadmin_web_config="DONE"' >> ${STATUS_FILE}
+}
+
+iredadmin_initialize_db() {
     ECHO_DEBUG "Import iRedAdmin database template."
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         # Required by MySQL-5.6: TEXT/BLOB column cannot have a default value.
@@ -151,6 +159,10 @@ EOF
         rm -f ${PGSQL_DATA_DIR}/iredadmin.pgsql
     fi
 
+    echo 'export status_iredadmin_initialize_db="DONE"' >> ${STATUS_FILE}
+}
+
+iredadmin_config() {
     ECHO_DEBUG "Configure iRedAdmin."
 
     # Modify iRedAdmin settings.
@@ -247,4 +259,17 @@ iRedAdmin - official web-based admin panel:
 EOF
 
     echo 'export status_iredadmin_config="DONE"' >> ${STATUS_FILE}
+}
+
+iredadmin_setup() {
+    check_status_before_run iredadmin_install
+    check_status_before_run iredadmin_web_config
+
+    if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
+        check_status_before_run iredadmin_initialize_db
+    fi
+
+    check_status_before_run iredadmin_config
+
+    echo 'export status_iredadmin_setup="DONE"' >> ${STATUS_FILE}
 }

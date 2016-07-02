@@ -63,7 +63,7 @@ EOF
     echo 'export status_rcm_config_httpd="DONE"' >> ${STATUS_FILE}
 }
 
-rcm_import_sql()
+rcm_initialize_db()
 {
     ECHO_DEBUG "Import SQL database and privileges for Roundcubemail."
 
@@ -127,7 +127,7 @@ FLUSH PRIVILEGES;
 EOF
     fi
 
-    echo 'export status_rcm_import_sql="DONE"' >> ${STATUS_FILE}
+    echo 'export status_rcm_initialize_db="DONE"' >> ${STATUS_FILE}
 }
 
 rcm_config()
@@ -288,4 +288,22 @@ rcm_plugin_password()
     fi
 
     echo 'export status_rcm_plugin_password="DONE"' >> ${STATUS_FILE}
+}
+
+rcm_setup() {
+    check_status_before_run rcm_install
+
+    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+        check_status_before_run rcm_config_httpd
+    fi
+
+    if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
+        check_status_before_run rcm_initialize_db
+    fi
+
+    check_status_before_run rcm_config
+    check_status_before_run rcm_plugin_managesieve
+    check_status_before_run rcm_plugin_password
+
+    echo 'export status_rcm_setup="DONE"' >> ${STATUS_FILE}
 }

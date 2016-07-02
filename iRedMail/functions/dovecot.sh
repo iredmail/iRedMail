@@ -288,32 +288,6 @@ dovecot_config()
     perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_DB_TABLE#$ENV{DOVECOT_SHARE_FOLDER_DB_TABLE}#' ${DOVECOT_SHARE_FOLDER_CONF}
     perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE#$ENV{DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE}#' ${DOVECOT_SHARE_FOLDER_CONF}
 
-    # Create MySQL database ${IREDADMIN_DB_USER} and addition tables:
-    #   - used_quota: used to store realtime quota.
-    #   - share_folder: used to store share folder settings.
-    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        # If iRedAdmin is not used, create database and import table here.
-        ${MYSQL_CLIENT_ROOT} >> ${INSTALL_LOG} 2>&1 <<EOF
--- Create databases.
-CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-
--- Import SQL template.
-USE ${IREDADMIN_DB_NAME};
-
--- used_quota
-SOURCE ${SAMPLE_DIR}/dovecot/used_quota.mysql;
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
-
--- share_folder
-SOURCE ${SAMPLE_DIR}/dovecot/imap_share_folder.sql;
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
-
-FLUSH PRIVILEGES;
-EOF
-    fi
-
     ECHO_DEBUG "Copy global sieve filter rule file: ${DOVECOT_GLOBAL_SIEVE_FILE}."
     cp -f ${SAMPLE_DIR}/dovecot/dovecot.sieve ${DOVECOT_GLOBAL_SIEVE_FILE}
     chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOVECOT_GLOBAL_SIEVE_FILE}
@@ -401,9 +375,40 @@ EOF
     echo 'export status_dovecot_config="DONE"' >> ${STATUS_FILE}
 }
 
+dovecot_initialize_db_for_ldap() {
+    # Create MySQL database ${IREDADMIN_DB_USER} and addition tables:
+    #   - used_quota: used to store realtime quota.
+    #   - share_folder: used to store share folder settings.
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        # If iRedAdmin is not used, create database and import table here.
+        ${MYSQL_CLIENT_ROOT} >> ${INSTALL_LOG} 2>&1 <<EOF
+-- Create databases.
+CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- Import SQL template.
+USE ${IREDADMIN_DB_NAME};
+
+-- used_quota
+SOURCE ${SAMPLE_DIR}/dovecot/used_quota.mysql;
+GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
+GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
+
+-- share_folder
+SOURCE ${SAMPLE_DIR}/dovecot/imap_share_folder.sql;
+GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
+GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
+
+FLUSH PRIVILEGES;
+EOF
+    fi
+
+    echo 'export status_dovecot_initialize_db_for_ldap="DONE"' >> ${STATUS_FILE}
+}
+
 enable_dovecot()
 {
     check_status_before_run dovecot_config
+    check_status_before_run dovecot_initialize_db_for_ldap
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         # It seems there's a bug in Dovecot port, it will try to invoke '/usr/lib/sendmail'

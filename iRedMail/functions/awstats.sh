@@ -344,3 +344,12 @@ EOF
 
     echo 'export status_awstats_config_crontab="DONE"' >> ${STATUS_FILE}
 }
+
+awstats_setup() {
+    check_status_before_run awstats_config_basic
+    check_status_before_run awstats_config_weblog
+    check_status_before_run awstats_config_maillog
+    check_status_before_run awstats_config_crontab
+
+    echo 'export status_awstats_setup="DONE"' >> ${STATUS_FILE}
+}
