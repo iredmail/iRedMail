@@ -294,30 +294,45 @@ EOF
 EOF
 
     # Mail installation related info to postmaster@
-    ECHO_DEBUG "Mail sensitive administration info to ${tip_recipient}."
     tip_recipient="${FIRST_USER}@${FIRST_DOMAIN}"
+    ECHO_DEBUG "Mail sensitive administration info to ${tip_recipient}."
     FILE_IREDMAIL_INSTALLATION_DETAILS="${FIRST_USER_MAILDIR_INBOX}/details.eml"
     FILE_IREDMAIL_LINKS="${FIRST_USER_MAILDIR_INBOX}/links.eml"
+    FILE_IREDMAIL_MUA_SETTINGS="${FIRST_USER_MAILDIR_INBOX}/mua.eml"
 
     cat > ${FILE_IREDMAIL_INSTALLATION_DETAILS} <<EOF
 From: root@${HOSTNAME}
 To: ${tip_recipient}
 Subject: Details of this iRedMail installation
 
+$(cat ${TIP_FILE})
 EOF
-
-    cat ${TIP_FILE} >> ${FILE_IREDMAIL_INSTALLATION_DETAILS}
 
     cat > ${FILE_IREDMAIL_LINKS} <<EOF
 From: root@${HOSTNAME}
 To: ${tip_recipient}
 Subject: Useful resources for iRedMail administrator
 
+$(cat ${DOC_FILE})
 EOF
-    cat ${DOC_FILE} >> ${FILE_IREDMAIL_LINKS}
 
-    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${FILE_IREDMAIL_INSTALLATION_DETAILS} ${FILE_IREDMAIL_LINKS}
-    chmod -R 0700 ${FILE_IREDMAIL_INSTALLATION_DETAILS} ${FILE_IREDMAIL_LINKS}
+    cat > ${FILE_IREDMAIL_MUA_SETTINGS} <<EOF
+From: root@${HOSTNAME}
+To: ${tip_recipient}
+Subject: How to configure your mail client applications (MUA)
+
+
+* POP3 service: port 110 over TLS (recommended), or port 995 with SSL.
+* IMAP service: port 143 over TLS (recommended), or port 993 with SSL.
+* SMTP service: port 587 over TLS.
+* CalDAV and CardDAV server addresses: https://<server>/SOGo/dav/<full email address>
+
+For more details, please check detailed documentations:
+http://www.iredmail.org/docs/#mua
+EOF
+
+    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${FIRST_USER_MAILDIR_INBOX}
+    chmod -R 0700 ${FIRST_USER_MAILDIR_INBOX}
 
     check_status_before_run cleanup_set_cron_file_permission
     check_status_before_run cleanup_disable_selinux
