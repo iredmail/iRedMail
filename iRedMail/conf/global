@@ -370,6 +370,7 @@ export SYSLOG_POSTROTATE_CMD=''
 
 # Use systemd
 export USE_SYSTEMD='NO'
+export SYSTEMD_SERVICE_DIR='/etc/systemd/system/multi-user.target.wants/'
 
 # install_pkg: function used to install packages without confirm.
 # remove_pkg: function used to remove packages without confirm.

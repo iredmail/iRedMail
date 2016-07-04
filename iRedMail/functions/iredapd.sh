@@ -36,19 +36,25 @@ iredapd_install()
     ln -s ${IREDAPD_ROOT_DIR} ${IREDAPD_ROOT_DIR_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
 
     # Copy init rc script.
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
-    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd
-    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-        cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd
+    if [ X"${USE_SYSTEMD}" == X'YES' ]; then
+        ECHO_DEBUG "Create symbol link: ${IREDAPD_ROOT_DIR}/rc_scripts.iredapd.service -> ${SYSTEMD_SERVICE_DIR}/iredapd.service."
+        ln -s ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.service ${SYSTEMD_SERVICE_DIR}/iredapd.service
+        systemctl daemon-reload &>/dev/null
     else
-        cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
-    fi
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd
+        elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+            cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd
+        else
+            cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
+        fi
 
-    chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
+        chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
+    fi
 
     ECHO_DEBUG "Make iredapd start after system startup."
     service_control enable iredapd >> ${INSTALL_LOG} 2>&1
