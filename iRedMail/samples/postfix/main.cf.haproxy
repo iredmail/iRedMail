@@ -1,0 +1,6 @@
+#
+# HAProxy support
+#
+smtpd_upstream_proxy_protocol = haproxy
+postscreen_upstream_proxy_protocol = haproxy
+

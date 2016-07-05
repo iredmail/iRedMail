@@ -32,7 +32,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Web data.
     export HTTPD_SERVERROOT='/opt/www'
-    export HTTPD_DOCUMENTROOT="/var/www"
+    export HTTPD_DOCUMENTROOT="/var/www/html"
 
     # Daemon user.
     export HTTPD_USER='www-data'
@@ -45,7 +45,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
     # Web data.
     export HTTPD_SERVERROOT='/usr/local/www'
-    # TODO choose a proper document root
     export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache24/data"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then

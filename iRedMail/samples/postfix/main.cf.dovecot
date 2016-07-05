@@ -5,3 +5,4 @@ smtpd_sasl_type = dovecot
 smtpd_sasl_path = PH_DOVECOT_AUTH_SOCKET_NAME
 virtual_transport = PH_TRANSPORT
 dovecot_destination_recipient_limit = 1
+

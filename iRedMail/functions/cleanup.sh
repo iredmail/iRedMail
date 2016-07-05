@@ -132,12 +132,26 @@ cleanup_replace_firewall_rules()
                     cp -f ${SAMPLE_DIR}/firewalld/zones/iredmail.xml ${FIREWALL_RULE_CONF}
                     perl -pi -e 's#^(DefaultZone=).*#${1}iredmail#g' ${FIREWALLD_CONF}
 
+                    if [ X"${WITH_MYSQL_CLUSTER}" == X'YES' ]; then
+                        firewall-cmd --permanent --zone=iredmail --add-port=3306/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=4444/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=4567/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=4568/tcp
+                    fi
+
                     [ X"${SSHD_PORT}" != X'22' ] && \
                         cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
 
                     cp -f ${SAMPLE_DIR}/firewalld/services/{imap,pop3,submission}.xml ${FIREWALLD_CONF_DIR}/services/
                 else
                     cp -f ${SAMPLE_DIR}/iptables/iptables.rules ${FIREWALL_RULE_CONF}
+
+                    if [ X"${WITH_MYSQL_CLUSTER}" == X'YES' ]; then
+                        perl -pi -e 's/#(.* 3306 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 4444 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 4567 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 4568 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                    fi
                 fi
 
                 # Replace HTTP port.

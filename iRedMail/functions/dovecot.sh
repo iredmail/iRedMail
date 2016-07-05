@@ -158,6 +158,18 @@ dovecot_config()
 
     perl -pi -e 's#PH_POSTFIX_CHROOT_DIR#$ENV{POSTFIX_CHROOT_DIR}#' ${DOVECOT_CONF}
 
+    # HAProxy support
+    if [ X"${WITH_HAPROXY_SUPPORT}" == X'YES' ]; then
+        # Enable special inet_listener for HAPorxy
+        perl -pi -e 's/#(.*inet_listener.*_haproxy)/${1}/' ${DOVECOT_CONF}
+        perl -pi -e 's/#(.*haproxy = yes)/${1}/' ${DOVECOT_CONF}
+        perl -pi -e 's/#(.*port = 101.*)/${1}/' ${DOVECOT_CONF}
+        perl -pi -e 's/#}#haproxy/}/' ${DOVECOT_CONF}
+
+        # Specify IP addresses of HAProxy servers
+        perl -pi -e 's/#(haproxy_trusted_networks =).*/${1} $ENV{HAPROXY_SERVERS}/' ${DOVECOT_CONF}
+    fi
+
     # Generate dovecot quota warning script.
     mkdir -p $(dirname ${DOVECOT_QUOTA_WARNING_SCRIPT}) >> ${INSTALL_LOG} 2>&1
 

@@ -47,6 +47,10 @@ postfix_config_basic()
     backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
     cp ${SAMPLE_DIR}/postfix/main.cf ${POSTFIX_FILE_MAIN_CF}
 
+    if [ X"${WITH_HAPROXY_SUPPORT}" == X'YES' ]; then
+        cat ${SAMPLE_DIR}/postfix/main.cf.haproxy >> ${POSTFIX_FILE_MAIN_CF}
+    fi
+
     perl -pi -e 's#PH_QUEUE_DIRECTORY#$ENV{queue_directory}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_COMMAND_DIRECTORY#$ENV{command_directory}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_DAEMON_DIRECTORY#$ENV{daemon_directory}#g' ${POSTFIX_FILE_MAIN_CF}

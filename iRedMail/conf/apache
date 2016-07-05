@@ -56,7 +56,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export HTTPD_HTTP_CONF="${HTTPD_CONF_ROOT}/sites-available/000-default.conf"
     export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/sites-available/default-ssl.conf"
     export HTTPD_MOD_CONF_SECURITY="${HTTPD_CONF_DIR}/security.conf"
-    export HTTPD_DOCUMENTROOT="/var/www/html"
 
     # Log file location.
     export HTTPD_LOG_ACCESSLOG='/var/log/apache2/access.log'
@@ -74,10 +73,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
     # Copy from example: /usr/local/share/examples/apache24/extra/httpd-ssl.conf
     export HTTPD_SSL_CONF="${HTTPD_CONF_ROOT}/extra/httpd-ssl.conf"
-
-    # Web data.
-    export HTTPD_SERVERROOT='/usr/local/www'
-    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache24/data"
 
     # Log file location.
     export HTTPD_LOG_ACCESSLOG='/var/log/httpd-access.log'
