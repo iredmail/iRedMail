@@ -159,7 +159,7 @@ dovecot_config()
     perl -pi -e 's#PH_POSTFIX_CHROOT_DIR#$ENV{POSTFIX_CHROOT_DIR}#' ${DOVECOT_CONF}
 
     # HAProxy support
-    if [ X"${WITH_HAPROXY_SUPPORT}" == X'YES' ]; then
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
         # Enable special inet_listener for HAPorxy
         perl -pi -e 's/#(.*inet_listener.*_haproxy)/${1}/' ${DOVECOT_CONF}
         perl -pi -e 's/#(.*haproxy = yes)/${1}/' ${DOVECOT_CONF}

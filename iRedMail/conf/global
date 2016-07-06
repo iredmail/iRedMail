@@ -107,7 +107,7 @@ export USE_MANAGESIEVE='YES'    # Use managesieve service.
 
 # Install iRedMail with an existing HAProxy frontend
 # Required by Postfix, Dovecot.
-export WITH_HAPROXY_SUPPORT="${WITH_HAPROXY_SUPPORT:=NO}"
+export WITH_HAPROXY="${WITH_HAPROXY:=NO}"
 # A space-separated list of HAProxy server addresses.
 # Required by Dovecot.
 export HAPROXY_SERVERS="${HAPROXY_SERVERS:=''}"
