@@ -23,9 +23,9 @@ location ^~ /SOGo {
     proxy_set_header Host $host;
 
     # always use https
-    proxy_set_header x-webobjects-server-port 443;
+    proxy_set_header x-webobjects-server-port $server_port;
     proxy_set_header x-webobjects-server-name $host;
-    proxy_set_header x-webobjects-server-url $scheme://$host;
+    proxy_set_header x-webobjects-server-url  $scheme://$host;
 
     proxy_set_header x-webobjects-server-protocol HTTP/1.0;
 }
