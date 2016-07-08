@@ -68,7 +68,7 @@ WARNING:
 
 * Do *NOT* use special characters in password right now. e.g. $, #, @.
 * EMPTY password is *NOT* permitted.
-
+* Sample password: $(${RANDOM_STRING})
 " 20 76 2>/tmp/first_domain_admin_passwd
 
     DOMAIN_ADMIN_PASSWD="$(cat /tmp/first_domain_admin_passwd)"

@@ -22,7 +22,7 @@
 
 sogo_initialize_db()
 {
-    ECHO_INFO "Initialize SOGo database."
+    ECHO_DEBUG "Initialize SOGo database."
 
     # Create log directory
     mkdir -p $(dirname ${SOGO_LOG_FILE}) >> ${INSTALL_LOG} 2>&1

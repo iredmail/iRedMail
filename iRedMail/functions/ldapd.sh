@@ -23,7 +23,7 @@
 
 ldapd_config()
 {
-    ECHO_INFO "Configure LDAP server shipped in OpenBSD base system: ldapd(8)."
+    ECHO_INFO "Configure LDAP server: ldapd(8)."
 
     ECHO_DEBUG "Copy schema files"
     cp -f ${LDAP_IREDMAIL_SCHEMA} ${LDAPD_SCHEMA_DIR}
