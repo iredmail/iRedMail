@@ -26,10 +26,9 @@ rcm_install()
     fi
 
     # Copy sample config files.
-    cd ${RCM_CONF_DIR}
-    cp -f ${SAMPLE_DIR}/roundcubemail/config.inc.php .
-    chown ${HTTPD_USER}:${HTTPD_GROUP} config.inc.php
-    chmod 0600 config.inc.php
+    cp -f ${SAMPLE_DIR}/roundcubemail/config.inc.php ${RCM_CONF}
+    chown ${HTTPD_USER}:${HTTPD_GROUP} ${RCM_CONF}
+    chmod 0600 ${RCM_CONF}
 
     echo 'export status_rcm_install="DONE"' >> ${STATUS_FILE}
 }
@@ -139,19 +138,19 @@ rcm_config()
     #export RCM_DB_USER RCM_DB_PASSWD RCMD_DB SQL_SERVER_ADDRESS FIRST_DOMAIN
     #export RCM_DES_KEY
 
-    perl -pi -e 's#PH_PHP_CONN_TYPE#$ENV{PHP_CONN_TYPE}#g' config.inc.php
-    perl -pi -e 's#PH_RCM_DB_USER#$ENV{RCM_DB_USER}#g' config.inc.php
-    perl -pi -e 's#PH_RCM_DB_PASSWD#$ENV{RCM_DB_PASSWD}#g' config.inc.php
-    perl -pi -e 's#PH_RCM_DB_NAME#$ENV{RCM_DB_NAME}#g' config.inc.php
-    perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' config.inc.php
+    perl -pi -e 's#PH_PHP_CONN_TYPE#$ENV{PHP_CONN_TYPE}#g' ${RCM_CONF}
+    perl -pi -e 's#PH_RCM_DB_USER#$ENV{RCM_DB_USER}#g' ${RCM_CONF}
+    perl -pi -e 's#PH_RCM_DB_PASSWD#$ENV{RCM_DB_PASSWD}#g' ${RCM_CONF}
+    perl -pi -e 's#PH_RCM_DB_NAME#$ENV{RCM_DB_NAME}#g' ${RCM_CONF}
+    perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' ${RCM_CONF}
 
-    perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' config.inc.php
-    perl -pi -e 's#PH_RCM_DES_KEY#$ENV{RCM_DES_KEY}#g' config.inc.php
-    perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' config.inc.php
+    perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${RCM_CONF}
+    perl -pi -e 's#PH_RCM_DES_KEY#$ENV{RCM_DES_KEY}#g' ${RCM_CONF}
+    perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' ${RCM_CONF}
 
     # Enable mime.types on Linux
     if [ X"${KERNEL_NAME}" == X"LINUX" ]; then
-        perl -pi -e 's#//(.*mime_types.*)#${1}#' config.inc.php
+        perl -pi -e 's#//(.*mime_types.*)#${1}#' ${RCM_CONF}
     fi
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
@@ -159,16 +158,25 @@ rcm_config()
         cd ${RCM_CONF_DIR}
         ECHO_DEBUG "Setting global LDAP address book in Roundcube."
 
-        cat ${SAMPLE_DIR}/roundcubemail/global_ldap_address_book.inc.php >> config.inc.php
-        perl -pi -e 's#PH_LDAP_SERVER_HOST#$ENV{LDAP_SERVER_HOST}#g' config.inc.php
-        perl -pi -e 's#PH_LDAP_SERVER_PORT#$ENV{LDAP_SERVER_PORT}#g' config.inc.php
-        perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#g' config.inc.php
+        cat ${SAMPLE_DIR}/roundcubemail/global_ldap_address_book.inc.php >> ${RCM_CONF}
+        perl -pi -e 's#PH_LDAP_SERVER_HOST#$ENV{LDAP_SERVER_HOST}#g' ${RCM_CONF}
+        perl -pi -e 's#PH_LDAP_SERVER_PORT#$ENV{LDAP_SERVER_PORT}#g' ${RCM_CONF}
+        perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#g' ${RCM_CONF}
     fi
 
     # Attachment size.
     if [ -f ${RCM_HTTPD_ROOT}/.htaccess ]; then
         perl -pi -e 's#(.*upload_max_filesize.*)5M#${1}10M#' ${RCM_HTTPD_ROOT}/.htaccess
         perl -pi -e 's#(.*post_max_size.*)6M#${1}12M#' ${RCM_HTTPD_ROOT}/.htaccess
+    fi
+
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        perl -pi -e 's#(.*force_https.* =).*#${1} false;#' ${RCM_CONF}
+
+        if [ -n "${HAPROXY_SERVERS}" ]; then
+            export _proxy_servers="$(echo ${HAPROXY_SERVERS} | sed 's/ /", "/')"
+            perl -pi -e 's#^//(.*proxy_whitelist.* =).*#${1} array("$ENV{_proxy_servers}");#' ${RCM_CONF}
+        fi
     fi
 
     ECHO_DEBUG "Setup daily cron job to keep SQL database clean."

@@ -43,6 +43,7 @@ else
 fi
 
 export RCM_CONF_DIR="${RCM_HTTPD_ROOT}/config"
+export RCM_CONF="${RCM_CONF_DIR}/config.inc.php"
 
 # Syslog log file.
 export RCM_LOGFILE="${MAILLOG}"
