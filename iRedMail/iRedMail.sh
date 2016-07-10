@@ -143,10 +143,10 @@ check_status_before_run web_server_config
 check_status_before_run backend_install
 
 # Postfix.
-check_status_before_run postfix_config
+check_status_before_run postfix_setup
 
 # Dovecot.
-check_status_before_run enable_dovecot
+check_status_before_run dovecot_setup
 
 # ClamAV.
 check_status_before_run clamav_config

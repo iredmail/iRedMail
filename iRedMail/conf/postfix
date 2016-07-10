@@ -65,7 +65,16 @@ export POSTFIX_FILE_BODY_CHECKS="${POSTFIX_ROOTDIR}/body_checks.pcre"
 export POSTFIX_FILE_SENDER_ACCESS="${POSTFIX_ROOTDIR}/sender_access.pcre"
 
 # Default transport or LDA (local deliver agent).
-export TRANSPORT="${DOVECOT_LDA_DELIVER}"
+export DEFAULT_TRANSPORT="${DEFAULT_TRANSPORT:=lda}"
+if [ X"${DEFAULT_TRANSPORT}" == X'lda' ]; then
+    export TRANSPORT="${DOVECOT_LDA_DELIVER}"
+elif [ X"${DEFAULT_TRANSPORT}" == X'lmtp-inet' ]; then
+    export TRANSPORT="${DOVECOT_LDA_LMTP_INET}"
+elif [ X"${DEFAULT_TRANSPORT}" == X'lmtp-socket' ]; then
+    export TRANSPORT="${DOVECOT_LDA_LMTP_SOCKET}"
+else
+    export TRANSPORT="${DEFAULT_TRANSPORT}"
+fi
 
 # Set 'message_size_limit', in 'byte'. Default is 10M.
 export MESSAGE_SIZE_LIMIT='15728640'

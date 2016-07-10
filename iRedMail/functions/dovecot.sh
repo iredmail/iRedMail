@@ -30,8 +30,6 @@ dovecot_config()
 
     backup_file ${DOVECOT_CONF}
 
-    ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
-
     # RHEL/CentOS 6:    Dovecot-2.1.x
     # RHEL/CentOS 7:    Dovecot-2.2.10+
     # Debian 7:         Dovecot-2.1.x
@@ -39,11 +37,15 @@ dovecot_config()
     # Ubuntu 14.04:     Dovecot-2.2.9+
     dovecot_version="$(dovecot --version | cut -c1,2,3)"
     if [ X"${dovecot_version}" == X'2.0' -o X"${dovecot_version}" == X'2.1' ]; then
+        ECHO_DEBUG "Copy sample Dovecot config file: ${SAMPLE_DIR}/dovecot/dovecot2.conf -> ${DOVECOT_CONF}"
         cp ${SAMPLE_DIR}/dovecot/dovecot2.conf ${DOVECOT_CONF}
     else
+        ECHO_DEBUG "Copy sample Dovecot config file: ${SAMPLE_DIR}/dovecot/dovecot22.conf -> ${DOVECOT_CONF}"
         cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
     fi
     chmod 0664 ${DOVECOT_CONF}
+
+    ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
 
     # Listen address
     if [ X"${IREDMAIL_HAS_IPV6}" == X'NO' ]; then
@@ -59,6 +61,7 @@ dovecot_config()
 
     # Base directory.
     perl -pi -e 's#PH_BASE_DIR#$ENV{DOVECOT_BASE_DIR}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_MAILBOX_INDEX_DIR#$ENV{MAILBOX_INDEX_DIR}#' ${DOVECOT_CONF}
     # base_dir is required on OpenBSD
     [ X"${DISTRO}" == X'OPENBSD' ] && \
         perl -pi -e 's/^#(base_dir.*)/${1}/' ${DOVECOT_CONF}
@@ -157,18 +160,6 @@ dovecot_config()
     fi
 
     perl -pi -e 's#PH_POSTFIX_CHROOT_DIR#$ENV{POSTFIX_CHROOT_DIR}#' ${DOVECOT_CONF}
-
-    # HAProxy support
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        # Enable special inet_listener for HAPorxy
-        perl -pi -e 's/#(.*inet_listener.*_haproxy)/${1}/' ${DOVECOT_CONF}
-        perl -pi -e 's/#(.*haproxy = yes)/${1}/' ${DOVECOT_CONF}
-        perl -pi -e 's/#(.*port = 101.*)/${1}/' ${DOVECOT_CONF}
-        perl -pi -e 's/#}#haproxy/}/' ${DOVECOT_CONF}
-
-        # Specify IP addresses of HAProxy servers
-        perl -pi -e 's/#(haproxy_trusted_networks =).*/${1} $ENV{HAPROXY_SERVERS}/' ${DOVECOT_CONF}
-    fi
 
     # Generate dovecot quota warning script.
     mkdir -p $(dirname ${DOVECOT_QUOTA_WARNING_SCRIPT}) >> ${INSTALL_LOG} 2>&1
@@ -364,6 +355,26 @@ EOF
         fi
     fi
 
+    # HAProxy support
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        # Enable special inet_listener for HAPorxy
+        perl -pi -e 's/#(.*inet_listener.*_haproxy)/${1}/' ${DOVECOT_CONF}
+        perl -pi -e 's/#(.*haproxy = yes)/${1}/' ${DOVECOT_CONF}
+        perl -pi -e 's/#(.*port = 101.*)/${1}/' ${DOVECOT_CONF}
+        perl -pi -e 's/#}#haproxy/}/' ${DOVECOT_CONF}
+
+        # Specify IP addresses of HAProxy servers
+        perl -pi -e 's/^#(haproxy_trusted_networks =).*/${1} $ENV{HAPROXY_SERVERS}/' ${DOVECOT_CONF}
+    fi
+
+    # NFS storage support
+    if [ X"${WITH_NFS_STORAGE}" == X'YES' ]; then
+        perl -pi -e 's/^#(mmap_disable.*)/${1}/' ${DOVECOT_CONF}
+        perl -pi -e 's/^#(mail_fsync.*)/${1}/' ${DOVECOT_CONF}
+        perl -pi -e 's/^#(mail_nfs_storage.*)/${1}/' ${DOVECOT_CONF}
+        perl -pi -e 's/^#(mail_nfs_index.*)/${1}/' ${DOVECOT_CONF}
+    fi
+
     cat >> ${TIP_FILE} <<EOF
 Dovecot:
     * Configuration files:
@@ -417,7 +428,7 @@ EOF
     echo 'export status_dovecot_initialize_db_for_ldap="DONE"' >> ${STATUS_FILE}
 }
 
-enable_dovecot()
+dovecot_setup()
 {
     check_status_before_run dovecot_config
     check_status_before_run dovecot_initialize_db_for_ldap
@@ -450,6 +461,6 @@ EOF
         fi
     fi
 
-    echo 'export status_enable_dovecot="DONE"' >> ${STATUS_FILE}
+    echo 'export status_dovecot_setup="DONE"' >> ${STATUS_FILE}
 }
 

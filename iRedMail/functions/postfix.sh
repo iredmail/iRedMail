@@ -247,7 +247,7 @@ postfix_config_postscreen()
     echo 'export status_postfix_config_postscreen="DONE"' >> ${STATUS_FILE}
 }
 
-postfix_config()
+postfix_setup()
 {
     # Include all sub-steps
     check_status_before_run postfix_config_basic && \
@@ -266,5 +266,5 @@ Postfix:
         - ${POSTFIX_LOOKUP_DIR}
 EOF
 
-    echo 'export status_postfix_config="DONE"' >> ${STATUS_FILE}
+    echo 'export status_postfix_setup="DONE"' >> ${STATUS_FILE}
 }

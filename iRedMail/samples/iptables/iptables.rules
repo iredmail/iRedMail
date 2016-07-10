@@ -52,10 +52,12 @@
 # pop3, pop3s
 -A INPUT -p tcp --dport 110 -j ACCEPT
 -A INPUT -p tcp --dport 995 -j ACCEPT
+#-A INPUT -p tcp --dport 10110 -j ACCEPT
 
 # imap, imaps
 -A INPUT -p tcp --dport 143 -j ACCEPT
 -A INPUT -p tcp --dport 993 -j ACCEPT
+#-A INPUT -p tcp --dport 10143 -j ACCEPT
 
 # ldap/ldaps
 #-A INPUT -p tcp --dport 389 -j ACCEPT

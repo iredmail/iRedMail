@@ -139,6 +139,16 @@ cleanup_replace_firewall_rules()
                         firewall-cmd --permanent --zone=iredmail --add-port=4568/tcp
                     fi
 
+                    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+                        firewall-cmd --permanent --zone=iredmail --remove-port=110/tcp
+                        firewall-cmd --permanent --zone=iredmail --remove-port=993/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=10110/tcp
+
+                        firewall-cmd --permanent --zone=iredmail --remove-port=143/tcp
+                        firewall-cmd --permanent --zone=iredmail --remove-port=995/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=10143/tcp
+                    fi
+
                     [ X"${SSHD_PORT}" != X'22' ] && \
                         cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
 
@@ -151,6 +161,18 @@ cleanup_replace_firewall_rules()
                         perl -pi -e 's/#(.* 4444 .*)/${1}/' ${FIREWALL_RULE_CONF}
                         perl -pi -e 's/#(.* 4567 .*)/${1}/' ${FIREWALL_RULE_CONF}
                         perl -pi -e 's/#(.* 4568 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                    fi
+
+                    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+                        # Disable 110, 993, enable 10110
+                        perl -pi -e 's/^(.* 110 .*)/#${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/^(.* 993 .*)/#${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 10110 .*)/${1}/' ${FIREWALL_RULE_CONF}
+
+                        # Disable 143, 995, enable 10143
+                        perl -pi -e 's/^(.* 143 .*)/#${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/^(.* 995 .*)/#${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 10143 .*)/${1}/' ${FIREWALL_RULE_CONF}
                     fi
                 fi
 

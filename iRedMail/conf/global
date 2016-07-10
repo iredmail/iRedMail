@@ -88,7 +88,8 @@ fi
 # Dovecot: POP3, IMAP, managesieve
 export IMAP_SERVER="${LOCAL_ADDRESS}"
 export LMTP_SERVER="${LOCAL_ADDRESS}"
-export LMTP_PORT='24'
+export LMTP_SERVER="${LMTP_SERVER:=${LOCAL_ADDRESS}}"
+export LMTP_PORT="${LMTP_PORT:=24}"
 export MANAGESIEVE_SERVER="${LOCAL_ADDRESS}"
 export MANAGESIEVE_PORT='4190'
 # SMTP server (Postfix)

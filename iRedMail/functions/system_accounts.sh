@@ -13,6 +13,9 @@ add_user_vmail()
     [ -d ${homedir} ] || mkdir -p ${homedir}
     [ -d ${STORAGE_MAILBOX_DIR} ] || mkdir -p ${STORAGE_MAILBOX_DIR}
 
+    export MAILBOX_INDEX_DIR="${MAILBOX_INDEX_DIR:=${VMAIL_USER_HOME_DIR}/indexes}"
+    [ -d ${MAILBOX_INDEX_DIR} ] || mkdir -p ${MAILBOX_INDEX_DIR}
+
     ECHO_DEBUG "Create system account: ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} (${VMAIL_USER_UID}:${VMAIL_USER_GID})."
 
     # vmail/vmail must has the same UID/GID on all supported Linux/BSD
@@ -54,20 +57,23 @@ add_user_vmail()
     export FIRST_USER_MAILDIR_INBOX="${FIRST_USER_MAILDIR_FULL_PATH}/Maildir/new"
     mkdir -p ${FIRST_USER_MAILDIR_INBOX} >> ${INSTALL_LOG} 2>&1
 
-    # Reset permission for home directory. Required by FIRST_USER_MAILDIR_FULL_PATH.
-    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${VMAIL_USER_HOME_DIR}
-    chmod -R 0700 ${VMAIL_USER_HOME_DIR}
+    ECHO_DEBUG "Create directory used to store global sieve filters: ${SIEVE_DIR}."
+    mkdir -p ${SIEVE_DIR}
 
-    ECHO_DEBUG "Create directory to store user sieve rule files: ${SIEVE_DIR}."
-    mkdir -p ${SIEVE_DIR} && \
-    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${SIEVE_DIR} && \
-    chmod -R 0700 ${SIEVE_DIR}
+    ECHO_DEBUG "Create directory used to store mailbox indexes: ${MAILBOX_INDEX_DIR}."
+    mkdir -p ${MAILBOX_INDEX_DIR}
+
+    # set owner/group and permission.
+    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${VMAIL_USER_HOME_DIR} ${SIEVE_DIR} ${MAILBOX_INDEX_DIR}
+    chmod -R 0700 ${VMAIL_USER_HOME_DIR} ${SIEVE_DIR} ${MAILBOX_INDEX_DIR}
 
     cat >> ${TIP_FILE} <<EOF
 Mail Storage:
     - Root directory: ${VMAIL_USER_HOME_DIR}
     - Mailboxes: ${STORAGE_MAILBOX_DIR}
-    - Backup scripts and copies: ${BACKUP_DIR}
+    - Mailbox indexes: ${MAILBOX_INDEX_DIR}
+    - Global sieve filters: ${SIEVE_DIR}
+    - Backup scripts and backup copies: ${BACKUP_DIR}
 
 EOF
 
