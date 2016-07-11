@@ -68,7 +68,7 @@ clamav_config()
             perl -pi -e 's/^(FRESHCLAM_DELAY.*)/#${1}/g' ${ETC_SYSCONFIG_DIR}/freshclam
         fi
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        perl -pi -e 's/^(AllowSupplementaryGroups).*/#${1}/g' ${CLAMD_CONF}
+        perl -pi -e 's/^(AllowSupplementaryGroups).*/${1} true/g' ${CLAMD_CONF}
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         pw usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}

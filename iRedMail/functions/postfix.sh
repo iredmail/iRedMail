@@ -47,10 +47,6 @@ postfix_config_basic()
     backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
     cp ${SAMPLE_DIR}/postfix/main.cf ${POSTFIX_FILE_MAIN_CF}
 
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        cat ${SAMPLE_DIR}/postfix/main.cf.haproxy >> ${POSTFIX_FILE_MAIN_CF}
-    fi
-
     perl -pi -e 's#PH_QUEUE_DIRECTORY#$ENV{queue_directory}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_COMMAND_DIRECTORY#$ENV{command_directory}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_DAEMON_DIRECTORY#$ENV{daemon_directory}#g' ${POSTFIX_FILE_MAIN_CF}
@@ -139,12 +135,18 @@ postfix_config_basic()
     perl -pi -e 's#PH_VMAIL_GROUP_NAME#$ENV{VMAIL_GROUP_NAME}#g' ${POSTFIX_FILE_MASTER_CF}
 
     # Amavisd integration.
-    perl -pi -e 's#PH_AMAVISD_SERVER#$ENV{AMAVISD_SERVER}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#g' ${POSTFIX_FILE_MASTER_CF}
     perl -pi -e 's#PH_AMAVISD_MAX_SERVERS#$ENV{AMAVISD_MAX_SERVERS}#g' ${POSTFIX_FILE_MASTER_CF}
     perl -pi -e 's#PH_AMAVISD_MYNETWORKS#$ENV{AMAVISD_MYNETWORKS}#g' ${POSTFIX_FILE_MASTER_CF}
 
     # Dovecot LDA
     perl -pi -e 's#PH_DOVECOT_DELIVER_BIN#$ENV{DOVECOT_DELIVER_BIN}#g' ${POSTFIX_FILE_MASTER_CF}
+
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        cat ${SAMPLE_DIR}/postfix/main.cf.haproxy >> ${POSTFIX_FILE_MAIN_CF}
+
+        perl -pi -e 's#$ENV{LOCAL_ADDRESS}:10025#10025#' ${POSTFIX_FILE_MASTER_CF}
+    fi
 
     ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
     mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ >> ${INSTALL_LOG} 2>&1

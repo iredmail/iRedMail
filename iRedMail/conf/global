@@ -86,14 +86,13 @@ if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
 fi
 
 # Dovecot: POP3, IMAP, managesieve
-export IMAP_SERVER="${LOCAL_ADDRESS}"
-export LMTP_SERVER="${LOCAL_ADDRESS}"
+export IMAP_SERVER="${IMAP_SERVER:=${LOCAL_ADDRESS}}"
 export LMTP_SERVER="${LMTP_SERVER:=${LOCAL_ADDRESS}}"
 export LMTP_PORT="${LMTP_PORT:=24}"
 export MANAGESIEVE_SERVER="${LOCAL_ADDRESS}"
 export MANAGESIEVE_PORT='4190'
 # SMTP server (Postfix)
-export SMTP_SERVER="${LOCAL_ADDRESS}"
+export SMTP_SERVER="${SMTP_SERVER:=${LOCAL_ADDRESS}}"
 # Amavisd
 export AMAVISD_SERVER="${LOCAL_ADDRESS}"
 # ClamAV
@@ -104,7 +103,7 @@ export IREDAPD_BIND_HOST="${LOCAL_ADDRESS}"
 export MEMCACHED_BIND_HOST="${LOCAL_ADDRESS}"
 
 # For managesieve service and software.
-export USE_MANAGESIEVE='YES'    # Use managesieve service.
+export USE_MANAGESIEVE='YES'
 
 # Install iRedMail with an existing HAProxy frontend
 # Required by Postfix, Dovecot.

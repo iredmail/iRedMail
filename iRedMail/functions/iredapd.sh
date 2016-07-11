@@ -126,7 +126,12 @@ EOF
 iredapd_config()
 {
     # General settings.
-    perl -pi -e 's#^(listen_address).*#${1} = "$ENV{IREDAPD_BIND_HOST}"#' settings.py
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        perl -pi -e 's#^(listen_address).*#${1} = "0.0.0.0"#' settings.py
+    else
+        perl -pi -e 's#^(listen_address).*#${1} = "$ENV{IREDAPD_BIND_HOST}"#' settings.py
+    fi
+
     perl -pi -e 's#^(listen_port).*#${1} = "$ENV{IREDAPD_LISTEN_PORT}"#' settings.py
     perl -pi -e 's#^(run_as_user).*#${1} = "$ENV{IREDAPD_DAEMON_USER}"#' settings.py
 

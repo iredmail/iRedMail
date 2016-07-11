@@ -282,7 +282,7 @@ $(cat ${SAMPLE_DIR}/amavisd/log_templ)
 \$interface_policy{'${AMAVISD_QUARANTINE_PORT}'} = 'AM.PDP-INET';
 \$policy_bank{'AM.PDP-INET'} = {
     protocol => 'AM.PDP',       # select Amavis policy delegation protocol
-    inet_acl => [qw( ${AMAVISD_SERVER} [::1] )],    # restrict access to these IP addresses
+    #inet_acl => [qw( ${AMAVISD_SERVER} [::1] )],    # restrict access to these IP addresses
     auth_required_release => 1,    # 0 - don't require secret_id for amavisd-release
     #log_level => 4,
     #always_bcc_by_ccat => {CC_CLEAN, 'admin@example.com'},
@@ -400,13 +400,6 @@ EOF
         fi
     fi
 
-    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
-        # ACL
-        cat >> ${AMAVISD_CONF} <<EOF
-@inet_acl = qw(${LOCAL_ADDRESS});
-EOF
-    fi
-
     # Comment out existing `$max_servers` setting
     perl -pi -e 's/^(\$max_servers.*)/#${1}/g' ${AMAVISD_CONF}
 
@@ -476,10 +469,19 @@ EOF
 EOF
     fi
 
-    cat >> ${AMAVISD_CONF} <<EOF
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        cat >> ${AMAVISD_CONF} <<EOF
 # Listen on specified addresses.
-\$inet_socket_bind = ['${AMAVISD_SERVER}'];
+\$inet_socket_bind = ['0.0.0.0'];
+EOF
+    else
+        cat >> ${AMAVISD_CONF} <<EOF
+# Listen on specified addresses.
+\$inet_socket_bind = ['${LOCAL_ADDRESS}'];
+EOF
+fi
 
+    cat >> ${AMAVISD_CONF} <<EOF
 # Selectively disable some of the header checks
 #
 # Duplicate or multiple occurrence of a header field
@@ -495,7 +497,7 @@ EOF
 EOF
     # End amavisd.conf
 
-    postconf -e content_filter="smtp-amavis:[${AMAVISD_SERVER}]:10024"
+    postconf -e content_filter="smtp-amavis:[${LOCAL_ADDRESS}]:10024"
     # Concurrency per recipient limit.
     postconf -e smtp-amavis_destination_recipient_limit='1'
 
