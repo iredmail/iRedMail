@@ -130,6 +130,9 @@ postfix_config_basic()
     ECHO_DEBUG "Enable submission and additional transports required by Amavisd and Dovecot."
     cat ${SAMPLE_DIR}/postfix/master.cf >> ${POSTFIX_FILE_MASTER_CF}
 
+    # set smtp server
+    perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${POSTFIX_FILE_MASTER_CF}
+
     # set mailbox owner: user/group
     perl -pi -e 's#PH_VMAIL_USER_NAME#$ENV{VMAIL_USER_NAME}#g' ${POSTFIX_FILE_MASTER_CF}
     perl -pi -e 's#PH_VMAIL_GROUP_NAME#$ENV{VMAIL_GROUP_NAME}#g' ${POSTFIX_FILE_MASTER_CF}

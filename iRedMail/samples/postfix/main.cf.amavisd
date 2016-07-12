@@ -1,0 +1,7 @@
+#
+# Amavisd + SpamAssassin + ClamAV
+#
+content_filter = smtp-amavis:[PH_SMTP_SERVER]:10024
+
+# Concurrency per recipient limit.
+smtp-amavis_destination_recipient_limit = 1

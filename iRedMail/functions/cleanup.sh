@@ -140,13 +140,15 @@ cleanup_replace_firewall_rules()
                     fi
 
                     if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-                        firewall-cmd --permanent --zone=iredmail --remove-port=110/tcp
-                        firewall-cmd --permanent --zone=iredmail --remove-port=993/tcp
-                        firewall-cmd --permanent --zone=iredmail --add-port=10110/tcp
+                        # Amavisd
+                        firewall-cmd --permanent --zone=iredmail --add-port=10024/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=10025/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=10026/tcp
 
-                        firewall-cmd --permanent --zone=iredmail --remove-port=143/tcp
-                        firewall-cmd --permanent --zone=iredmail --remove-port=995/tcp
+                        # pop3, imap, lmtp
+                        firewall-cmd --permanent --zone=iredmail --add-port=10110/tcp
                         firewall-cmd --permanent --zone=iredmail --add-port=10143/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=1024/tcp
                     fi
 
                     [ X"${SSHD_PORT}" != X'22' ] && \
@@ -164,15 +166,16 @@ cleanup_replace_firewall_rules()
                     fi
 
                     if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-                        # Disable 110, 993, enable 10110
-                        perl -pi -e 's/^(.* 110 .*)/#${1}/' ${FIREWALL_RULE_CONF}
-                        perl -pi -e 's/^(.* 993 .*)/#${1}/' ${FIREWALL_RULE_CONF}
+                        # pop3, imap, lmtp
                         perl -pi -e 's/#(.* 10110 .*)/${1}/' ${FIREWALL_RULE_CONF}
-
-                        # Disable 143, 995, enable 10143
-                        perl -pi -e 's/^(.* 143 .*)/#${1}/' ${FIREWALL_RULE_CONF}
-                        perl -pi -e 's/^(.* 995 .*)/#${1}/' ${FIREWALL_RULE_CONF}
                         perl -pi -e 's/#(.* 10143 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 1024 .*)/${1}/' ${FIREWALL_RULE_CONF}
+
+                        # Amavisd
+                        perl -pi -e 's/#(.* 10024 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 10025 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 10026 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 9998 .*)/${1}/' ${FIREWALL_RULE_CONF}
                     fi
                 fi
 

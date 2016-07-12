@@ -25,6 +25,18 @@
 # -------------------------------------------------------
 backend_install()
 {
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        export SQL_SERVER_ADDRESS="${MYSQL_SERVER_ADDRESS}"
+        export SQL_SERVER_PORT="${MYSQL_SERVER_PORT}"
+        export SQL_ROOT_USER="${MYSQL_ROOT_USER}"
+        export SQL_ROOT_PASSWD="${MYSQL_ROOT_PASSWD}"
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        export SQL_SERVER_ADDRESS="${PGSQL_SERVER_ADDRESS}"
+        export SQL_SERVER_PORT="${PGSQL_SERVER_PORT}"
+        export SQL_ROOT_USER="${PGSQL_ROOT_USER}"
+        export SQL_ROOT_PASSWD="${PGSQL_ROOT_PASSWD}"
+    fi
+
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # Install, config and initialize LDAP server
         check_status_before_run ldap_server_config
@@ -32,7 +44,7 @@ backend_install()
 
         # Initialize MySQL database server.
         check_status_before_run mysql_generate_defauts_file_root
-        check_status_before_run mysql_initialize
+        check_status_before_run mysql_initialize_db
         check_status_before_run mysql_cron_backup
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
@@ -41,7 +53,7 @@ backend_install()
         fi
 
         if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-            check_status_before_run mysql_initialize
+            check_status_before_run mysql_initialize_db
         fi
 
         if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then

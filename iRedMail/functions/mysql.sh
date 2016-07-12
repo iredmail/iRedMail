@@ -50,7 +50,7 @@ EOF
     echo 'export status_mysql_generate_defauts_file_root="DONE"' >> ${STATUS_FILE}
 }
 
-mysql_initialize()
+mysql_initialize_db()
 {
     ECHO_DEBUG "Initialize MySQL server."
 
@@ -142,7 +142,7 @@ MySQL:
 
 EOF
 
-    echo 'export status_mysql_initialize="DONE"' >> ${STATUS_FILE}
+    echo 'export status_mysql_initialize_db="DONE"' >> ${STATUS_FILE}
 }
 
 # It's used only when backend is MySQL.

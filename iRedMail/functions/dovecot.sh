@@ -54,8 +54,7 @@ dovecot_config()
     fi
 
     # Service listen addresses and ports.
-    perl -pi -e 's#PH_LMTP_SERVER#$ENV{LMTP_SERVER}#g' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_LMTP_PORT#$ENV{LMTP_PORT}#g' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#g' ${DOVECOT_CONF}
 
     perl -pi -e 's#PH_MANAGESIEVE_SERVER#$ENV{MANAGESIEVE_SERVER}#g' ${DOVECOT_CONF}
     perl -pi -e 's#PH_MANAGESIEVE_PORT#$ENV{MANAGESIEVE_PORT}#g' ${DOVECOT_CONF}
@@ -361,7 +360,10 @@ EOF
         # Enable special inet_listener for HAPorxy
         perl -pi -e 's/#(.*inet_listener.*_haproxy)/${1}/' ${DOVECOT_CONF}
         perl -pi -e 's/#(.*haproxy = yes)/${1}/' ${DOVECOT_CONF}
+        # pop3, imap
         perl -pi -e 's/#(.*port = 101.*)/${1}/' ${DOVECOT_CONF}
+        # lmtp
+        perl -pi -e 's/#(.*port = 1024)/${1}/' ${DOVECOT_CONF}
         perl -pi -e 's/#}#haproxy/}/' ${DOVECOT_CONF}
 
         # Specify IP addresses of HAProxy servers

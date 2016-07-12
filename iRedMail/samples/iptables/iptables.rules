@@ -59,6 +59,10 @@
 -A INPUT -p tcp --dport 993 -j ACCEPT
 #-A INPUT -p tcp --dport 10143 -j ACCEPT
 
+# lmtp
+#-A INPUT -p tcp --dport 24 -j ACCEPT
+#-A INPUT -p tcp --dport 1024 -j ACCEPT
+
 # ldap/ldaps
 #-A INPUT -p tcp --dport 389 -j ACCEPT
 #-A INPUT -p tcp --dport 636 -j ACCEPT
@@ -78,6 +82,12 @@
 
 # PostgreSQL service.
 #-A INPUT -p tcp --dport 5432 -j ACCEPT
+
+# Amavisd
+#-A INPUT -p tcp --dport 10024 -j ACCEPT
+#-A INPUT -p tcp --dport 10025 -j ACCEPT
+#-A INPUT -p tcp --dport 10026 -j ACCEPT
+#-A INPUT -p tcp --dport 9998 -j ACCEPT
 
 # ftp.
 #-A INPUT -p tcp --dport 20 -j ACCEPT

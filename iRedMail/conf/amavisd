@@ -100,8 +100,19 @@ fi
 export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.mysql"
 export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.pgsql"
 
-# mynetworks
+# mynetworks, inet_acl
 export AMAVISD_MYNETWORKS='127.0.0.0/8'
+export AMAVISD_INET_ACL='127.0.0.1 [::1]'
 if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
     export AMAVISD_MYNETWORKS="${AMAVISD_MYNETWORKS},${LOCAL_ADDRESS}"
+    export AMAVISD_INET_ACL="${AMAVISD_INET_ACL} ${LOCAL_ADDRESS}"
+fi
+
+if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+    if [ -n "${HAPROXY_SERVERS}" -o -n ${CLUSTER_BACKEND_NETWORKS} ]; then
+        for _host in ${HAPROXY_SERVERS} ${CLUSTER_BACKEND_NETWORKS}; do
+            export AMAVISD_MYNETWORKS="${AMAVISD_MYNETWORKS},${_host}"
+            export AMAVISD_INET_ACL="${AMAVISD_INET_ACL} ${_host}"
+        done
+    fi
 fi
