@@ -32,6 +32,11 @@ iRedMail-0.9.6:
             - Not set proper file owner (apache/nginx) and permission (0600)
               for config file of password plugin.
 
+        - iRedAPD:
+            - Not add FreeBSD Jail IP address as trusted client. This causes
+              mail delivery failure while sending to user under same domain.
+              Thanks Erez Zabusky <erez_z _at_ cre8ip.com> for the report.
+
         - OpenBSD:
             - not enable uwsgi service.
             - not create symbol links for PHP programs.

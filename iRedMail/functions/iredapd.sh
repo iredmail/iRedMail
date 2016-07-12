@@ -127,63 +127,67 @@ iredapd_config()
 {
     # General settings.
     if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        perl -pi -e 's#^(listen_address).*#${1} = "0.0.0.0"#' settings.py
+        perl -pi -e 's#^(listen_address).*#${1} = "0.0.0.0"#' ${IREDAPD_CONF}
     else
-        perl -pi -e 's#^(listen_address).*#${1} = "$ENV{IREDAPD_BIND_HOST}"#' settings.py
+        perl -pi -e 's#^(listen_address).*#${1} = "$ENV{IREDAPD_BIND_HOST}"#' ${IREDAPD_CONF}
     fi
 
-    perl -pi -e 's#^(listen_port).*#${1} = "$ENV{IREDAPD_LISTEN_PORT}"#' settings.py
-    perl -pi -e 's#^(run_as_user).*#${1} = "$ENV{IREDAPD_DAEMON_USER}"#' settings.py
+    perl -pi -e 's#^(listen_port).*#${1} = "$ENV{IREDAPD_LISTEN_PORT}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(run_as_user).*#${1} = "$ENV{IREDAPD_DAEMON_USER}"#' ${IREDAPD_CONF}
 
     [ -d ${IREDAPD_LOG_DIR} ] || mkdir -p ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
     chown -R ${IREDAPD_DB_USER}:${IREDAPD_DAEMON_GROUP} ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
-    perl -pi -e 's#^(log_file).*#${1} = "$ENV{IREDAPD_LOG_FILE}"#' settings.py
-    perl -pi -e 's#^(log_level).*#${1} = "info"#' settings.py
+    perl -pi -e 's#^(log_file).*#${1} = "$ENV{IREDAPD_LOG_FILE}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(log_level).*#${1} = "info"#' ${IREDAPD_CONF}
 
     # Backend.
-    [ X"${BACKEND}" == X'OPENLDAP' ] && perl -pi -e 's#^(backend).*#${1} = "ldap"#' settings.py
-    [ X"${BACKEND}" == X'MYSQL' ] && perl -pi -e 's#^(backend).*#${1} = "mysql"#' settings.py
-    [ X"${BACKEND}" == X'PGSQL' ] && perl -pi -e 's#^(backend).*#${1} = "pgsql"#' settings.py
+    [ X"${BACKEND}" == X'OPENLDAP' ] && perl -pi -e 's#^(backend).*#${1} = "ldap"#' ${IREDAPD_CONF}
+    [ X"${BACKEND}" == X'MYSQL' ] && perl -pi -e 's#^(backend).*#${1} = "mysql"#' ${IREDAPD_CONF}
+    [ X"${BACKEND}" == X'PGSQL' ] && perl -pi -e 's#^(backend).*#${1} = "pgsql"#' ${IREDAPD_CONF}
 
     # Backend related parameters.
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        perl -pi -e 's#^(ldap_uri).*#${1} = "ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}"#' settings.py
-        perl -pi -e 's#^(ldap_binddn).*#${1} = "$ENV{LDAP_BINDDN}"#' settings.py
-        perl -pi -e 's#^(ldap_bindpw).*#${1} = "$ENV{LDAP_BINDPW}"#' settings.py
-        perl -pi -e 's#^(ldap_basedn).*#${1} = "$ENV{LDAP_BASEDN}"#' settings.py
+        perl -pi -e 's#^(ldap_uri).*#${1} = "ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}"#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(ldap_binddn).*#${1} = "$ENV{LDAP_BINDDN}"#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(ldap_bindpw).*#${1} = "$ENV{LDAP_BINDPW}"#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(ldap_basedn).*#${1} = "$ENV{LDAP_BASEDN}"#' ${IREDAPD_CONF}
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' settings.py
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' ${IREDAPD_CONF}
 
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
-        perl -pi -e 's#^(vmail_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
-        perl -pi -e 's#^(vmail_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' settings.py
-        perl -pi -e 's#^(vmail_db_name).*#${1} = "$ENV{VMAIL_DB_NAME}"#' settings.py
-        perl -pi -e 's#^(vmail_db_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' settings.py
-        perl -pi -e 's#^(vmail_db_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' settings.py
+        perl -pi -e 's#^(vmail_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(vmail_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(vmail_db_name).*#${1} = "$ENV{VMAIL_DB_NAME}"#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(vmail_db_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(vmail_db_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' ${IREDAPD_CONF}
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' settings.py
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' ${IREDAPD_CONF}
     fi
 
     # Amavisd database
-    perl -pi -e 's#^(amavisd_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
-    perl -pi -e 's#^(amavisd_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' settings.py
-    perl -pi -e 's#^(amavisd_db_name).*#${1} = "$ENV{AMAVISD_DB_NAME}"#' settings.py
-    perl -pi -e 's#^(amavisd_db_user).*#${1} = "$ENV{AMAVISD_DB_USER}"#' settings.py
-    perl -pi -e 's#^(amavisd_db_password).*#${1} = "$ENV{AMAVISD_DB_PASSWD}"#' settings.py
+    perl -pi -e 's#^(amavisd_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(amavisd_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(amavisd_db_name).*#${1} = "$ENV{AMAVISD_DB_NAME}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(amavisd_db_user).*#${1} = "$ENV{AMAVISD_DB_USER}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(amavisd_db_password).*#${1} = "$ENV{AMAVISD_DB_PASSWD}"#' ${IREDAPD_CONF}
 
     # iRedAdmin database
-    perl -pi -e 's#^(iredadmin_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
-    perl -pi -e 's#^(iredadmin_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' settings.py
-    perl -pi -e 's#^(iredadmin_db_name).*#${1} = "$ENV{IREDADMIN_DB_NAME}"#' settings.py
-    perl -pi -e 's#^(iredadmin_db_user).*#${1} = "$ENV{IREDADMIN_DB_USER}"#' settings.py
-    perl -pi -e 's#^(iredadmin_db_password).*#${1} = "$ENV{IREDADMIN_DB_PASSWD}"#' settings.py
+    perl -pi -e 's#^(iredadmin_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(iredadmin_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(iredadmin_db_name).*#${1} = "$ENV{IREDADMIN_DB_NAME}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(iredadmin_db_user).*#${1} = "$ENV{IREDADMIN_DB_USER}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(iredadmin_db_password).*#${1} = "$ENV{IREDADMIN_DB_PASSWD}"#' ${IREDAPD_CONF}
 
     # iRedAPD database
-    perl -pi -e 's#^(iredapd_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' settings.py
-    perl -pi -e 's#^(iredapd_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' settings.py
-    perl -pi -e 's#^(iredapd_db_name).*#${1} = "$ENV{IREDAPD_DB_NAME}"#' settings.py
-    perl -pi -e 's#^(iredapd_db_user).*#${1} = "$ENV{IREDAPD_DB_USER}"#' settings.py
-    perl -pi -e 's#^(iredapd_db_password).*#${1} = "$ENV{IREDAPD_DB_PASSWD}"#' settings.py
+    perl -pi -e 's#^(iredapd_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(iredapd_db_port).*#${1} = "$ENV{SQL_SERVER_PORT}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(iredapd_db_name).*#${1} = "$ENV{IREDAPD_DB_NAME}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(iredapd_db_user).*#${1} = "$ENV{IREDAPD_DB_USER}"#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(iredapd_db_password).*#${1} = "$ENV{IREDAPD_DB_PASSWD}"#' ${IREDAPD_CONF}
+
+    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+        echo "MYNETWORKS = ['${LOCAL_ADDRESS}']" >> ${IREDAPD_CONF}
+    fi
 
     # Setup cron job to clean up expired throttle tracking records.
     # Note: use ${IREDAPD_ROOT_DIR_SYMBOL_LINK} instead of ${IREDAPD_ROOT_DIR}
@@ -225,7 +229,7 @@ iRedAPD - Postfix Policy Daemon:
         - Username: ${IREDAPD_DB_USER}
         - Password: ${IREDAPD_DB_PASSWD}
     * Configuration file:
-        - ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/settings.py
+        - ${IREDAPD_CONF}
     * Related files:
         - ${IREDAPD_ROOT_DIR}
         - ${IREDAPD_ROOT_DIR_SYMBOL_LINK}
