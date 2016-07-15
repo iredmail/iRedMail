@@ -306,7 +306,12 @@ dovecot_config()
     ECHO_DEBUG "Enable dovecot SASL support in postfix: ${POSTFIX_FILE_MAIN_CF}."
     cat ${SAMPLE_DIR}/postfix/main.cf.dovecot >> ${POSTFIX_FILE_MAIN_CF}
 
-    perl -pi -e 's#PH_DOVECOT_AUTH_SOCKET_NAME#$ENV{DOVECOT_AUTH_SOCKET_NAME}#g' ${POSTFIX_FILE_MAIN_CF}
+    export _dovecot_sasl_auth_path="${DOVECOT_SASL_AUTH_SOCKET}"
+    if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${DOVECOT_SASL_AUTH_INET_SERVER}" ]; then
+        export _dovecot_sasl_auth_path="inet:${DOVECOT_SASL_AUTH_INET_SERVER}:${DOVECOT_SASL_AUTH_INET_PORT}"
+    fi
+
+    perl -pi -e 's#PH_DOVECOT_SASL_AUTH_PATH#$ENV{_dovecot_sasl_auth_path}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_DOVECOT_DELIVER_BIN#$ENV{DOVECOT_DELIVER_BIN}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_TRANSPORT#$ENV{TRANSPORT}#g' ${POSTFIX_FILE_MAIN_CF}
 

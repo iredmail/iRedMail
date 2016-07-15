@@ -15,10 +15,12 @@
 #   * Run this script to generate SQL files used to import to MySQL
 #     database later.
 #
-#       # bash create_mail_user_MySQL.sh domain.ltd user [user1 user2 user3 ...]
+#       # bash create_mail_user_MySQL.sh domain.ltd user [user2 user3 ...]
 #
-#     It will generate file 'output.sql' in current directory, open
-#     it and confirm all records are correct.
+#     It will print SQL commands used to create mail accounts directly, you
+#     can redirect the output to a file for further use like this:
+#
+#       # bash create_mail_user_MySQL.sh domain.ltd user [user2 user3 ...] > output.sql
 #
 #   * Import output.sql into MySQL database.
 #
@@ -28,11 +30,6 @@
 #
 #   That's all.
 # -------------------------------------------------------------------
-
-# ChangeLog:
-#   - 2009.05.07 Add hashed maildir style support.
-#   - Improve file detect.
-#   - Drop output message of 'which dos2unix'.
 
 # --------- CHANGE THESE VALUES ----------
 # Storage base directory used to store users' mail.
@@ -69,10 +66,6 @@ DATE="$(date +%Y.%m.%d.%H.%M.%S)"
 
 STORAGE_BASE="$(dirname ${STORAGE_BASE_DIRECTORY})"
 STORAGE_NODE="$(basename ${STORAGE_BASE_DIRECTORY})"
-
-# Path to SQL template file.
-SQL="output.sql"
-echo '' > ${SQL}
 
 # Cyrpt default password.
 export CRYPT_PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${DEFAULT_PASSWD})"
@@ -114,7 +107,7 @@ generate_sql()
             maildir="${DOMAIN}/${username}-${DATE}/"
         fi
 
-        cat >> ${SQL} <<EOF
+        cat <<EOF
 INSERT INTO mailbox (username, password, name,
                      storagebasedirectory,storagenode, maildir,
                      quota, domain, active, local_part, created)
@@ -131,25 +124,5 @@ if [ $# -lt 2 ]; then
     echo "Usage: $0 domain_name username [user2 user3 user4 ...]"
 else
     # Generate SQL template.
-    generate_sql $@ && \
-    cat <<EOF
-
-SQL template file was generated successfully, Please import it
-*MANUALLY* after verify the records:
-
-    - ${SQL}
-
-Steps to import these users looks like below:
-
-    # mysql -uroot -p
-    mysql> USE vmail;
-    mysql> SOURCE ${SQL};
-
-Or, PostgreSQL:
-
-    # su - postgres
-    $ psql -d vmail
-    sql> \i ${SQL};
-
-EOF
+    generate_sql $@
 fi
