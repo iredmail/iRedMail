@@ -57,7 +57,7 @@ export SOGO_PROXY_TIMEOUT='3540'
 # SOGo SQL database.
 export SOGO_DB_NAME='sogo'
 export SOGO_DB_USER='sogo'
-export SOGO_DB_AUTH_VIEW='users'
+export SOGO_DB_VIEW_AUTH='users'
 export SOGO_DB_TABLE_USER_PROFILE='sogo_user_profile'
 export SOGO_DB_TABLE_FOLDER_INFO='sogo_folder_info'
 export SOGO_DB_TABLE_SESSIONS_FOLDER='sogo_sessions_folder'

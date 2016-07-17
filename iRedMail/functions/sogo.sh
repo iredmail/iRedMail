@@ -39,7 +39,7 @@ EOF
             cat >> ${tmp_sql} <<EOF
 GRANT SELECT ON ${VMAIL_DB_NAME}.mailbox TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}";
 GRANT SELECT ON ${VMAIL_DB_NAME}.mailbox TO ${SOGO_DB_USER}@"${HOSTNAME}";
-CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_AUTH_VIEW} (c_uid, c_name, c_password, c_cn, mail, domain) AS SELECT username, username, password, name, username, domain FROM ${VMAIL_DB_NAME}.mailbox WHERE enablesogo=1 AND active=1;
+CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_VIEW_AUTH} (c_uid, c_name, c_password, c_cn, mail, domain) AS SELECT username, username, password, name, username, domain FROM ${VMAIL_DB_NAME}.mailbox WHERE enablesogo=1 AND active=1;
 EOF
         fi
 
@@ -69,7 +69,7 @@ EOF
 
         # Create view for user authentication
         cat >> ${tmp_sql} <<EOF
-CREATE VIEW ${SOGO_DB_AUTH_VIEW} AS
+CREATE VIEW ${SOGO_DB_VIEW_AUTH} AS
      SELECT * FROM dblink('host=${SQL_SERVER_ADDRESS}
                            port=${SQL_SERVER_PORT}
                            dbname=${VMAIL_DB_NAME}
@@ -83,14 +83,14 @@ CREATE VIEW ${SOGO_DB_AUTH_VIEW} AS
                                   domain AS domain
                              FROM mailbox
                             WHERE enablesogo=1 AND active=1')
-         AS ${SOGO_DB_AUTH_VIEW} (c_uid VARCHAR(255),
+         AS ${SOGO_DB_VIEW_AUTH} (c_uid VARCHAR(255),
                                   c_name VARCHAR(255),
                                   c_password VARCHAR(255),
                                   c_cn VARCHAR(255),
                                   mail VARCHAR(255),
                                   domain VARCHAR(255));
 
-ALTER TABLE ${SOGO_DB_AUTH_VIEW} OWNER TO ${SOGO_DB_USER};
+ALTER TABLE ${SOGO_DB_VIEW_AUTH} OWNER TO ${SOGO_DB_USER};
 EOF
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >> ${INSTALL_LOG} 2>&1
@@ -151,7 +151,7 @@ sogo_config() {
     perl -pi -e 's#PH_SOGO_DB_USER#$ENV{SOGO_DB_USER}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_PASSWD#$ENV{SOGO_DB_PASSWD}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_NAME#$ENV{SOGO_DB_NAME}#g' ${SOGO_CONF}
-    perl -pi -e 's#PH_SOGO_DB_AUTH_VIEW#$ENV{SOGO_DB_AUTH_VIEW}#g' ${SOGO_CONF}
+    perl -pi -e 's#PH_SOGO_DB_VIEW_AUTH#$ENV{SOGO_DB_VIEW_AUTH}#g' ${SOGO_CONF}
 
     perl -pi -e 's#PH_SOGO_DB_TABLE_USER_PROFILE#$ENV{SOGO_DB_TABLE_USER_PROFILE}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_TABLE_FOLDER_INFO#$ENV{SOGO_DB_TABLE_FOLDER_INFO}#g' ${SOGO_CONF}
