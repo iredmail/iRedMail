@@ -225,17 +225,6 @@ if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     . ${DIALOG_DIR}/ldap_config.sh
 fi
 
-if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-    export SQL_SERVER_ADDRESS="${MYSQL_SERVER_ADDRESS}"
-    export SQL_SERVER_PORT="${MYSQL_SERVER_PORT}"
-elif [ X"${BACKEND}" == X'PGSQL' ]; then
-    export SQL_SERVER_ADDRESS="${PGSQL_SERVER_ADDRESS}"
-    export SQL_SERVER_PORT="${PGSQL_SERVER_PORT}"
-fi
-
-echo "export SQL_SERVER_ADDRESS='${SQL_SERVER_ADDRESS}'" >> ${IREDMAIL_CONFIG_FILE}
-echo "export SQL_SERVER_PORT='${SQL_SERVER_PORT}'" >> ${IREDMAIL_CONFIG_FILE}
-
 # Virtual domain configuration.
 . ${DIALOG_DIR}/virtual_domain_config.sh
 

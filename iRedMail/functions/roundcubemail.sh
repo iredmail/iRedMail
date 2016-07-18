@@ -80,6 +80,15 @@ SOURCE ${RCM_HTTPD_ROOT}/SQL/mysql.initial.sql;
 
 FLUSH PRIVILEGES;
 EOF
+
+        if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
+            for _host in ${HAPROXY_SERVERS}; do
+                ${MYSQL_CLIENT_ROOT} -e "GRANT ALL ON ${RCM_DB_NAME}.* TO "${RCM_DB_USER}"@"${_host}" IDENTIFIED BY '${RCM_DB_PASSWD}'"
+            done
+
+            ${MYSQL_CLIENT_ROOT} -e "FLUSH PRIVILEGES"
+        fi
+
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_SYS_USER_HOME}/rcm.sql >> ${INSTALL_LOG} 2>&1
         chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql 
@@ -134,6 +143,12 @@ rcm_config()
 
     #export RCM_DB_USER RCM_DB_PASSWD RCMD_DB SQL_SERVER_ADDRESS FIRST_DOMAIN
     #export RCM_DES_KEY
+
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        perl -pi -e 's#PH_IMAP_SERVER#tls://$ENV{IMAP_SERVER}#g' ${RCM_CONF}
+    else
+        perl -pi -e 's#PH_IMAP_SERVER#$ENV{IMAP_SERVER}#g' ${RCM_CONF}
+    fi
 
     perl -pi -e 's#PH_PHP_CONN_TYPE#$ENV{PHP_CONN_TYPE}#g' ${RCM_CONF}
     perl -pi -e 's#PH_RCM_DB_USER#$ENV{RCM_DB_USER}#g' ${RCM_CONF}

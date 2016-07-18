@@ -185,6 +185,17 @@ mysql_import_vmail_users()
     ECHO_DEBUG "Add first domain and postmaster@ user."
     ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/add_first_domain_and_user.sql;"
 
+    if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
+        echo '' > ${RUNTIME_DIR}/grant_privileges_haproxy.sql
+
+        for _host in ${HAPROXY_SERVERS}; do
+            echo "GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB_NAME}.* TO '${VMAIL_DB_ADMIN_USER}'@'${_host}' IDENTIFIED BY '${VMAIL_DB_ADMIN_PASSWD}'; FLUSH PRIVILEGES;" >> ${RUNTIME_DIR}/grant_privileges_haproxy.sql
+        done
+
+        ECHO_DEBUG "Grant privileges for HAProxy servers."
+        ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/grant_privileges_haproxy.sql;"
+    fi
+
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:
     - ${MYSQL_VMAIL_STRUCTURE_SAMPLE}

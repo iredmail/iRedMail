@@ -43,6 +43,15 @@ CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_VIEW_AUTH} (c_uid, c_name, c_password, c_c
 EOF
         fi
 
+        if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
+            for _host in ${HAPROXY_SERVERS}; do
+                cat >> ${tmp_sql} <<EOF
+GRANT ALL ON ${RCM_DB_NAME}.* TO "${RCM_DB_USER}"@"${_host}" IDENTIFIED BY '${RCM_DB_PASSWD}';
+FLUSH PRIVILEGES;
+EOF
+            done
+        fi
+
         ${MYSQL_CLIENT_ROOT} -e "SOURCE ${tmp_sql}"
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
@@ -117,7 +126,11 @@ sogo_config() {
     chown ${SOGO_DAEMON_USER}:${SOGO_DAEMON_GROUP} ${SOGO_CONF}
     chmod 0400 ${SOGO_CONF}
 
-    perl -pi -e 's#PH_SOGO_BIND_ADDRESS#$ENV{SOGO_BIND_ADDRESS}#g' ${SOGO_CONF}
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        perl -pi -e 's#PH_SOGO_BIND_ADDRESS#0.0.0.0#g' ${SOGO_CONF}
+    else
+        perl -pi -e 's#PH_SOGO_BIND_ADDRESS#$ENV{SOGO_BIND_ADDRESS}#g' ${SOGO_CONF}
+    fi
     perl -pi -e 's#PH_SOGO_BIND_PORT#$ENV{SOGO_BIND_PORT}#g' ${SOGO_CONF}
 
     # PID, log file

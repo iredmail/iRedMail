@@ -20,7 +20,7 @@ if [ ${PERCENT} -ge 95 ]; then
 From: no-reply@$(hostname -f)
 Subject: Mailbox Quota Warning: ${PERCENT}% full, ${USER}
 
-Your mailbox is now ${PERCENT}% full, please clean up some mails for
+Mailbox (${USER}) is now ${PERCENT}% full, please clean up some mails for
 further incoming mails.
 EOF
 fi

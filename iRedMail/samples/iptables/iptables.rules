@@ -63,6 +63,13 @@
 #-A INPUT -p tcp --dport 24 -j ACCEPT
 #-A INPUT -p tcp --dport 1024 -j ACCEPT
 
+# managesieve
+#-A INPUT -p tcp --dport 4190 -j ACCEPT
+#-A INPUT -p tcp --dport 10419 -j ACCEPT
+
+# Dovecot SASL AUTH service
+#-A INPUT -p tcp --dport 12345 -j ACCEPT
+
 # ldap/ldaps
 #-A INPUT -p tcp --dport 389 -j ACCEPT
 #-A INPUT -p tcp --dport 636 -j ACCEPT

@@ -145,10 +145,12 @@ cleanup_replace_firewall_rules()
                         firewall-cmd --permanent --zone=iredmail --add-port=10025/tcp
                         firewall-cmd --permanent --zone=iredmail --add-port=10026/tcp
 
-                        # pop3, imap, lmtp
+                        # pop3, imap, lmtp, managesieve, sasl auth
                         firewall-cmd --permanent --zone=iredmail --add-port=10110/tcp
                         firewall-cmd --permanent --zone=iredmail --add-port=10143/tcp
                         firewall-cmd --permanent --zone=iredmail --add-port=1024/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=10419/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=12345/tcp
                     fi
 
                     [ X"${SSHD_PORT}" != X'22' ] && \
@@ -166,10 +168,12 @@ cleanup_replace_firewall_rules()
                     fi
 
                     if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-                        # pop3, imap, lmtp
+                        # pop3, imap, lmtp, managesieve, sasl auth service
                         perl -pi -e 's/#(.* 10110 .*)/${1}/' ${FIREWALL_RULE_CONF}
                         perl -pi -e 's/#(.* 10143 .*)/${1}/' ${FIREWALL_RULE_CONF}
                         perl -pi -e 's/#(.* 1024 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 10419 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 12345 .*)/${1}/' ${FIREWALL_RULE_CONF}
 
                         # Amavisd
                         perl -pi -e 's/#(.* 10024 .*)/${1}/' ${FIREWALL_RULE_CONF}

@@ -85,13 +85,19 @@ CREATE DATABASE IF NOT EXISTS ${IREDAPD_DB_NAME} DEFAULT CHARACTER SET utf8 COLL
 -- Import SQL template.
 USE ${IREDAPD_DB_NAME};
 SOURCE ${IREDAPD_ROOT_DIR}/SQL/iredapd.mysql;
-GRANT ALL ON ${IREDAPD_DB_NAME}.* TO "${IREDAPD_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDAPD_DB_PASSWD}";
-GRANT ALL ON ${IREDAPD_DB_NAME}.* TO "${IREDAPD_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY "${IREDAPD_DB_PASSWD}";
+GRANT ALL ON ${IREDAPD_DB_NAME}.* TO '${IREDAPD_DB_USER}'@'${MYSQL_GRANT_HOST}' IDENTIFIED BY '${IREDAPD_DB_PASSWD}';
+GRANT ALL ON ${IREDAPD_DB_NAME}.* TO '${IREDAPD_DB_USER}'@'${HOSTNAME}' IDENTIFIED BY '${IREDAPD_DB_PASSWD}';
 FLUSH PRIVILEGES;
 
 -- Import greylisting whitelist domains.
 SOURCE ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelist_domains.sql;
 EOF
+
+        if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
+            for _host in ${HAPROXY_SERVERS}; do
+                ${MYSQL_CLIENT_ROOT} -e "GRANT ALL ON ${IREDAPD_DB_NAME}.* TO '${IREDAPD_DB_USER}'@'${_host}' IDENTIFIED BY '${IREDAPD_DB_PASSWD}'; FLUSH PRIVILEGES;"
+            done
+        fi
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp ${IREDAPD_ROOT_DIR}/SQL/{iredapd.pgsql,greylisting_whitelist_domains.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
         chmod 0555 ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelist_domains.sql}

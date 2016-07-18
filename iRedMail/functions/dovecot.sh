@@ -366,7 +366,7 @@ EOF
         cat ${SAMPLE_DIR}/dovecot/dovecot-haproxy.conf >> ${DOVECOT_CONF}
 
         # Specify IP addresses of HAProxy servers
-        perl -pi -e 's/^#(haproxy_trusted_networks =).*/${1} $ENV{HAPROXY_SERVERS}/' ${DOVECOT_CONF}
+        perl -pi -e "s/^(haproxy_trusted_networks =).*/\${1} ${HAPROXY_SERVERS}/" ${DOVECOT_CONF}
     fi
 
     # NFS storage support
