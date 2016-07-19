@@ -34,6 +34,7 @@ amavisd_dkim()
     chmod -R 0700 ${AMAVISD_DKIM_DIR}
     ${AMAVISD_BIN} genrsa ${pem_file} 1024 &>/dev/null
     chown -R ${AMAVISD_SYS_USER}:${AMAVISD_SYS_GROUP} ${pem_file}
+    chmod 0400 ${pem_file}
 
     cat >> ${AMAVISD_DKIM_CONF} <<EOF
 # Hope to fix 'nested MAIL command' issue on high load server.
@@ -206,7 +207,7 @@ chomp(\$mydomain = "${HOSTNAME}");
 \$interface_policy{'10026'} = 'ORIGINATING';
 
 \$policy_bank{'ORIGINATING'} = {  # mail supposedly originating from our users
-    inet_acl => [qw(${AMAVISD_INET_ACL})],   # ORIGINATING: restrict access to these IP addresses
+    #inet_acl => [qw(${AMAVISD_INET_ACL})],   # ORIGINATING: restrict access to these IP addresses
     originating => 1,  # declare that mail was submitted by our smtp client
     allow_disclaimers => 1,  # enables disclaimer insertion if available
     enable_dkim_signing => 1,
@@ -283,7 +284,7 @@ $(cat ${SAMPLE_DIR}/amavisd/log_templ)
 \$interface_policy{'${AMAVISD_QUARANTINE_PORT}'} = 'AM.PDP-INET';
 \$policy_bank{'AM.PDP-INET'} = {
     protocol => 'AM.PDP',       # select Amavis policy delegation protocol
-    inet_acl => [qw(${AMAVISD_INET_ACL})],   # QUARANTINE: restrict access to these IP addresses
+    #inet_acl => [qw(${AMAVISD_INET_ACL})],   # QUARANTINE: restrict access to these IP addresses
     auth_required_release => 1,    # 0 - don't require secret_id for amavisd-release
     #log_level => 4,
     #always_bcc_by_ccat => {CC_CLEAN, 'admin@example.com'},
@@ -475,6 +476,9 @@ EOF
         cat >> ${AMAVISD_CONF} <<EOF
 # Listen on specified addresses.
 \$inet_socket_bind = ['0.0.0.0'];
+
+# Set ACL
+@inet_acl = qw(${AMAVISD_INET_ACL});
 EOF
     else
         cat >> ${AMAVISD_CONF} <<EOF

@@ -13,6 +13,7 @@ location ~ \.php$ {
     fastcgi_pass php_workers;
     fastcgi_index index.php;
     fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK$fastcgi_script_name;
+    fastcgi_param HTTP_PROXY '';
 }
 
 location ~ ^/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING)$ { deny all; }

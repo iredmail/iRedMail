@@ -6,6 +6,7 @@ location ~ ^/mail(.*)\.php$ {
     fastcgi_pass php_workers;
     fastcgi_index index.php;
     fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK$1.php;
+    fastcgi_param HTTP_PROXY '';
 }
 
 location ~ ^/mail(.*) {

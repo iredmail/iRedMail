@@ -99,9 +99,14 @@ export DOVECOT_EXPIRE_DICT_BDB='/var/lib/dovecot/expire/expire.db'
 
 # Dovecot quota warning.
 export DOVECOT_QUOTA_WARNING_SCRIPT='/usr/local/bin/dovecot-quota-warning.sh'
-export DOVECOT_REALTIME_QUOTA_TABLE='used_quota'
 export DOVECOT_SHARE_FOLDER_DB_TABLE='share_folder'
 export DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE='anyone_shares'
+export DOVECOT_REALTIME_QUOTA_TABLE='used_quota'
+# used_quota table cannot be updated by multiple servers.
+if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+    _suffix="$(echo ${HOSTNAME} | awk -F'.' '{print $1}')"
+    export DOVECOT_REALTIME_QUOTA_TABLE="used_quota_${_suffix}"
+fi
 
 if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
     export DOVECOT_SHARE_FOLDER_SQLTYPE='mysql'

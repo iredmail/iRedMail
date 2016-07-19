@@ -232,8 +232,16 @@ postfix_config_vhost()
         perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
-        # SQL server and bind username/password
-        perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        # Postfix requires a persist SQL connection, but restarting/reloading
+        # haproxy service will redirect the mysql connection to another server,
+        # this will cause 'Temporary lookup error' while authenticating users.
+        export _sql_server="${SQL_SERVER_ADDRESS}"
+        if [ -n "${LOCAL_SQL_SERVER}" ]; then
+            export _sql_server="${LOCAL_SQL_SERVER}"
+        fi
+
+        # SQL server, port, bind username, password
+        perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{_sql_server}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#g' ${POSTFIX_LOOKUP_DIR}/*.cf

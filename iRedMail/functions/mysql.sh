@@ -175,6 +175,8 @@ mysql_import_vmail_users()
     perl -pi -e 's#^-- (USE.*)#${1}#g' ${RUNTIME_DIR}/iredmail.sql
     perl -pi -e 's#(.*storagebasedirectory.*DEFAULT).*#${1} "$ENV{STORAGE_BASE_DIR}",#' ${RUNTIME_DIR}/iredmail.sql
     perl -pi -e 's#(.*storagenode.*DEFAULT).*#${1} "$ENV{STORAGE_NODE}",#' ${RUNTIME_DIR}/iredmail.sql
+    # Rename SQL table `vmail.used_quota`
+    perl -pi -e 's#used_quota`#$ENV{DOVECOT_REALTIME_QUOTA_TABLE}`#g' ${RUNTIME_DIR}/iredmail.sql
 
     ECHO_DEBUG "Create database: ${VMAIL_DB_NAME}."
     ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/init_vmail_db.sql;"
@@ -189,8 +191,11 @@ mysql_import_vmail_users()
         echo '' > ${RUNTIME_DIR}/grant_privileges_haproxy.sql
 
         for _host in ${HAPROXY_SERVERS}; do
-            echo "GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB_NAME}.* TO '${VMAIL_DB_ADMIN_USER}'@'${_host}' IDENTIFIED BY '${VMAIL_DB_ADMIN_PASSWD}'; FLUSH PRIVILEGES;" >> ${RUNTIME_DIR}/grant_privileges_haproxy.sql
+            echo "GRANT SELECT ON ${VMAIL_DB_NAME}.* TO '${VMAIL_DB_BIND_USER}'@'${_host}' IDENTIFIED BY '${VMAIL_DB_BIND_PASSWD}';" >> ${RUNTIME_DIR}/grant_privileges_haproxy.sql
+            echo "GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB_NAME}.* TO '${VMAIL_DB_ADMIN_USER}'@'${_host}' IDENTIFIED BY '${VMAIL_DB_ADMIN_PASSWD}';" >> ${RUNTIME_DIR}/grant_privileges_haproxy.sql
         done
+
+        echo "FLUSH PRIVILEGES;" >> ${RUNTIME_DIR}/grant_privileges_haproxy.sql
 
         ECHO_DEBUG "Grant privileges for HAProxy servers."
         ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/grant_privileges_haproxy.sql;"
@@ -204,6 +209,21 @@ Virtual Users:
 EOF
 
     echo 'export status_mysql_import_vmail_users="DONE"' >> ${STATUS_FILE}
+}
+
+mysql_create_sql_table_used_quota()
+{
+    # Create `vmail.used_quota<_suffix>` for cluster nodes.
+
+    if [ X"${WITH_HAPROXY}" == X'YES' -a X"${INITIALIZE_SQL_DATA}" == X'NO' ]; then
+        cp -f ${SAMPLE_DIR}/dovecot/used_quota.mysql ${RUNTIME_DIR}/used_quota.sql
+        # Rename SQL table `vmail.used_quota`
+        perl -pi -e 's#used_quota`#$ENV{DOVECOT_REALTIME_QUOTA_TABLE}`#g' ${RUNTIME_DIR}/used_quota.sql
+
+        ${MYSQL_CLIENT_ROOT} -e "USE ${VMAIL_DB_NAME}; SOURCE ${RUNTIME_DIR}/used_quota.sql;"
+    fi
+
+    echo 'export status_mysql_create_sql_table_used_quota="DONE"' >> ${STATUS_FILE}
 }
 
 mysql_cron_backup()

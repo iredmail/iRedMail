@@ -16,6 +16,7 @@ smtp-amavis unix -  -   n   -   PH_AMAVISD_MAX_SERVERS  smtp
     -o smtp_send_xforward_command=yes
     -o disable_dns_lookups=yes
     -o max_use=20
+    #-o smtpd_upstream_proxy_protocol=haproxy
 
 PH_LOCAL_ADDRESS:10025 inet n  -   n   -   -  smtpd
     -o content_filter=

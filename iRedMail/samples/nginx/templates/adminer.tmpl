@@ -35,6 +35,7 @@ location ~ ^/adminer {
     fastcgi_pass php_workers;
     fastcgi_index latest.php;
     fastcgi_param SCRIPT_FILENAME PH_HTTPD_SERVERROOT/adminer/latest.php;
+    fastcgi_param HTTP_PROXY '';
 
     # Access control
     #allow 127.0.0.1;

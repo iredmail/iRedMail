@@ -46,7 +46,7 @@ EOF
         if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
             for _host in ${HAPROXY_SERVERS}; do
                 cat >> ${tmp_sql} <<EOF
-GRANT ALL ON ${RCM_DB_NAME}.* TO "${RCM_DB_USER}"@"${_host}" IDENTIFIED BY '${RCM_DB_PASSWD}';
+GRANT ALL ON ${SOGO_DB_NAME}.* TO "${SOGO_DB_USER}"@"${_host}" IDENTIFIED BY '${SOGO_DB_PASSWD}';
 FLUSH PRIVILEGES;
 EOF
             done

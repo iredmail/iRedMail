@@ -40,7 +40,11 @@ fail2ban_config()
     cp -f ${SAMPLE_DIR}/fail2ban/jail.local ${FAIL2BAN_JAIL_LOCAL_CONF}
 
     perl -pi -e 's#PH_FAIL2BAN_JAIL_CONF#$ENV{FAIL2BAN_JAIL_CONF}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
-    perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
+        perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS} $ENV{HAPROXY_SERVERS}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    else
+        perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    fi
 
     # Firewall command
     perl -pi -e 's#PH_FAIL2BAN_ACTION#$ENV{FAIL2BAN_ACTION}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
