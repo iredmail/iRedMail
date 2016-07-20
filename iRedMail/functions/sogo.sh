@@ -183,8 +183,8 @@ sogo_config() {
 
         perl -pi -e 's#PH_LDAP_URI#ldap://$ENV{LDAP_SERVER_HOST}:$ENV{LDAP_SERVER_PORT}#' ${SOGO_CONF}
         perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#' ${SOGO_CONF}
-        perl -pi -e 's#PH_LDAP_ADMIN_DN#$ENV{LDAP_ADMIN_DN}#' ${SOGO_CONF}
-        perl -pi -e 's#PH_LDAP_ADMIN_PW#$ENV{LDAP_ADMIN_PW}#' ${SOGO_CONF}
+        perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#' ${SOGO_CONF}
+        perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#' ${SOGO_CONF}
 
         if [ X"${DEFAULT_PASSWORD_SCHEME}" == X'SSHA' ]; then
             perl -pi -e 's#= ssha512#= ssha#' ${SOGO_CONF}

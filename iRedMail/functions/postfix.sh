@@ -106,10 +106,7 @@ postfix_config_basic()
     # master.cf
     #
     _postfix_version="$(postconf mail_version | awk '{print $NF}')"
-    if ! (echo ${_postfix_version} | grep '^2\.[1-6]' &>/dev/null); then
-        # Enable parameter `smtpd_command_filter`, requires Postfix-2.7.
-        perl -pi -e 's/^#(smtpd_command_filter.*)/${1}/g' ${POSTFIX_FILE_MAIN_CF}
-    elif echo ${_postfix_version} | grep '^3' &>/dev/null; then
+    if echo ${_postfix_version} | grep '^3' &>/dev/null; then
         # Postfix v3
         postconf -e compatibility_level=2
 

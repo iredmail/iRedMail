@@ -338,11 +338,13 @@ name=Inverse SOGo Repository
 enabled=1
 gpgcheck=0
 
-# SOGo v3
-baseurl=${SOGO_PKG_MIRROR}/rhel-v3/${DISTRO_VERSION}/\$basearch
+# SOGo v3 stable release.
+# WARNING: A proper support contract from Inverse is required:
+# https://sogo.nu/support/index.html#support-plans
+#baseurl=${SOGO_PKG_MIRROR}/SOGo/release/3/rhel/${DISTRO_VERSION}/\$basearch
 
 # SOGo v3 nightly builds
-#baseurl=${SOGO_PKG_MIRROR}/rhel-v3-nightly/${DISTRO_VERSION}/\$basearch
+baseurl=${SOGO_PKG_MIRROR}/SOGo/nightly/3/rhel/${DISTRO_VERSION}/\$basearch
 EOF
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -355,9 +357,9 @@ EOF
             ECHO_INFO "Add official apt repo for SOGo in /etc/apt/sources.list"
             if ! grep "${SOGO_PKG_MIRROR}" /etc/apt/sources.list &>/dev/null; then
                 if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                    echo "deb ${SOGO_PKG_MIRROR}/debian-v3/ ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
                 elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                    echo "deb ${SOGO_PKG_MIRROR}/ubuntu-v3/ ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
                 fi
             fi
 
