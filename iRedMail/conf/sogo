@@ -20,21 +20,11 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-# SOGo yum/apt mirror site.
-#
-#   *) SOGo v3. official mirror: http://inverse.ca/
-#
-#       - RHEL/CentOS 5/6/7: ${SOGO_PKG_MIRROR}/rhel-v3/$basearch
-#       - Debian: ${SOGO_PKG_MIRROR}/debian-v3
-#       - Ubuntu: ${SOGO_PKG_MIRROR}/ubuntu-v3
-#
-#   *) SOGo v2. official mirror: http://inverse.ca/downloads/SOGo
-#
-#       - RHEL/CentOS 5/6/7: ${SOGO_PKG_MIRROR}/RHEL${DISTRO_VERSION}/$basearch
-#       - Debian: ${SOGO_PKG_MIRROR}/debian
-#       - Ubuntu: ${SOGO_PKG_MIRROR}/ubuntu
-#
+# Official SOGo package repo.
 export SOGO_PKG_MIRROR="${SOGO_PKG_MIRROR:=http://packages.inverse.ca}"
+export SOGO_PKG_MIRROR_IS_THIRD_PARTY='NO'
+# APT key of SOGo official apt repo: 0x810273C4.
+export SOGO_PKG_MIRROR_APT_KEY="${SOGO_PKG_MIRROR_APT_KEY:=0x810273C4}"
 
 export SOGO_DAEMON_USER='sogo'
 export SOGO_DAEMON_GROUP='sogo'

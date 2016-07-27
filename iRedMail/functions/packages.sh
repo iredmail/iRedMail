@@ -354,21 +354,29 @@ EOF
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-postgresql"
 
-            ECHO_INFO "Add official apt repo for SOGo in /etc/apt/sources.list"
+            ECHO_INFO "Enable apt repo for SOGo: ${SOGO_PKG_MIRROR}"
             if ! grep "${SOGO_PKG_MIRROR}" /etc/apt/sources.list &>/dev/null; then
-                if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                    echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
-                elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                    echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                if [ X"${SOGO_PKG_MIRROR_IS_THIRD_PARTY}" == X'YES' ]; then
+                    if [ X"${DISTRO}" == X'DEBIAN' ]; then
+                        echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+                        echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                    fi
+                else
+                    if [ X"${DISTRO}" == X'DEBIAN' ]; then
+                        echo "deb ${SOGO_PKG_MIRROR}/debian ${DISTRO_CODENAME} main" >> /etc/apt/sources.list
+                    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+                        echo "deb ${SOGO_PKG_MIRROR}/ubuntu ${DISTRO_CODENAME} main" >> /etc/apt/sources.list
+                    fi
                 fi
             fi
 
-            ECHO_INFO "Add SOGo GPG public key into apt keyring."
-            apt-key adv --keyserver keys.gnupg.net --recv-key 0x810273C4
+            ECHO_INFO "Import apt key (${SOGO_PKG_MIRROR_APT_KEY}) for SOGo repo (${SOGO_PKG_MIRROR})."
+            apt-key adv --keyserver keys.gnupg.net --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
 
             # Try another PGP key server if `keys.gnupg.net` is not available
             if [ X"$?" != X'0' ]; then
-                apt-key adv --keyserver pgp.mit.edu --recv-key 0x810273C4
+                apt-key adv --keyserver pgp.mit.edu --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
             fi
 
             ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."
