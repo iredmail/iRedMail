@@ -176,6 +176,9 @@ nginx_config()
         perl -pi -e 's/(.*)#(include.*roundcube.tmpl)/${1}${2}/' ${NGINX_CONF_DEFAULT}
         perl -pi -e 's/(.*)#(include.*sogo.tmpl)/${1}${2}/' ${NGINX_CONF_DEFAULT}
         perl -pi -e 's/(.*)#(include.*iredadmin.tmpl)/${1}${2}/' ${NGINX_CONF_DEFAULT}
+
+        # Don't redirect requests to https
+        perl -pi -e 's/(.*)(include.*redirect_to_https.tmpl)/${1}#${2}/' ${NGINX_CONF_DEFAULT}
     fi
 
     cat >> ${TIP_FILE} <<EOF
