@@ -138,9 +138,7 @@ EOF
 
 pgsql_import_vmail_users()
 {
-    set -x
     export FIRST_USER_PASSWD_HASHED="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${FIRST_USER_PASSWD})"
-    set +x
 
     ECHO_DEBUG "Generate sample SQL templates."
     cp -f ${SAMPLE_DIR}/postgresql/sql/init_vmail_db.sql ${PGSQL_DATA_DIR}/

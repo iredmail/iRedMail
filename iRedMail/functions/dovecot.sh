@@ -371,10 +371,7 @@ EOF
 
     # NFS storage support
     if [ X"${WITH_NFS_STORAGE}" == X'YES' ]; then
-        perl -pi -e 's/^#(mmap_disable.*)/${1}/' ${DOVECOT_CONF}
-        perl -pi -e 's/^#(mail_fsync.*)/${1}/' ${DOVECOT_CONF}
-        perl -pi -e 's/^#(mail_nfs_storage.*)/${1}/' ${DOVECOT_CONF}
-        perl -pi -e 's/^#(mail_nfs_index.*)/${1}/' ${DOVECOT_CONF}
+        cat ${SAMPLE_DIR}/dovecot/dovecot-nfs.conf >> ${DOVECOT_CONF}
     fi
 
     cat >> ${TIP_FILE} <<EOF
