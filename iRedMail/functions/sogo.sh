@@ -128,6 +128,10 @@ sogo_config() {
 
     if [ X"${WITH_HAPROXY}" == X'YES' ]; then
         perl -pi -e 's#PH_SOGO_BIND_ADDRESS#0.0.0.0#g' ${SOGO_CONF}
+
+        # Enable imaps://, disable imap://
+        perl -pi -e 's#(.*)//(SOGoIMAPServer.*=.*imaps://.*)#${1}${2}#g' ${SOGO_CONF}
+        perl -pi -e 's|(.*)(SOGoIMAPServer.*=.*imap://.*)|${1}//${2}|g' ${SOGO_CONF}
     else
         perl -pi -e 's#PH_SOGO_BIND_ADDRESS#$ENV{SOGO_BIND_ADDRESS}#g' ${SOGO_CONF}
     fi
