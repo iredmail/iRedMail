@@ -1,6 +1,7 @@
 #
 # HAProxy support
 #
-smtpd_upstream_proxy_protocol = haproxy
 postscreen_upstream_proxy_protocol = haproxy
 
+# Required if you don't have postscreen service running.
+#smtpd_upstream_proxy_protocol = haproxy

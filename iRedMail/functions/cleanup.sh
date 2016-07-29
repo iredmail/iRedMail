@@ -338,6 +338,8 @@ EOF
 
     # Mail installation related info to postmaster@
     tip_recipient="${FIRST_USER}@${FIRST_DOMAIN}"
+    msg_date="$(date "+%a, %d %b %Y %H:%M:%S %z")"
+
     ECHO_DEBUG "Mail sensitive administration info to ${tip_recipient}."
     FILE_IREDMAIL_INSTALLATION_DETAILS="${FIRST_USER_MAILDIR_INBOX}/details.eml"
     FILE_IREDMAIL_LINKS="${FIRST_USER_MAILDIR_INBOX}/links.eml"
@@ -346,6 +348,7 @@ EOF
     cat > ${FILE_IREDMAIL_INSTALLATION_DETAILS} <<EOF
 From: root@${HOSTNAME}
 To: ${tip_recipient}
+Date: ${msg_date}
 Subject: Details of this iRedMail installation
 
 $(cat ${TIP_FILE})
@@ -354,6 +357,7 @@ EOF
     cat > ${FILE_IREDMAIL_LINKS} <<EOF
 From: root@${HOSTNAME}
 To: ${tip_recipient}
+Date: ${msg_date}
 Subject: Useful resources for iRedMail administrator
 
 $(cat ${DOC_FILE})
@@ -362,6 +366,7 @@ EOF
     cat > ${FILE_IREDMAIL_MUA_SETTINGS} <<EOF
 From: root@${HOSTNAME}
 To: ${tip_recipient}
+Date: ${msg_date}
 Subject: How to configure your mail client applications (MUA)
 
 
