@@ -87,7 +87,7 @@ export CMD_MYSQL='mysql'
 export YEAR="$(${CMD_DATE} +%Y)"
 export MONTH="$(${CMD_DATE} +%m)"
 export DAY="$(${CMD_DATE} +%d)"
-export TIME="$(${CMD_DATE} +%H:%M:%S)"
+export TIME="$(${CMD_DATE} +%H-%M-%S)"
 export TIMESTAMP="${YEAR}-${MONTH}-${DAY}-${TIME}"
 
 # Pre-defined backup status
