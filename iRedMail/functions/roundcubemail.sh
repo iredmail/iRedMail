@@ -318,8 +318,8 @@ rcm_plugin_enigma()
     cd ${RCM_HTTPD_ROOT}/plugins/enigma/
     cp -f config.inc.php.dist config.inc.php
 
-    # Make GPG home readable by php
-    #chown ${HTTPD_USER}:${HTTPD_GROUP} home/
+    # Make GPG home read/writeable by web server
+    chown ${HTTPD_USER}:${HTTPD_GROUP} home
 
     echo 'export status_rcm_plugin_enigma="DONE"' >> ${STATUS_FILE}
 }

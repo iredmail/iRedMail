@@ -5,6 +5,13 @@ iRedMail-0.9.6:
             - Add sample config files to run Roundcube, iRedAdmin, SOGo as a
               subdomain.
 
+        - Roundcube webmail:
+            - Enable plugin `enigma` by default for PGP encryption.
+              WARNING: The plugin uses gpg binary on the server and stores all
+              keys (including private keys of the users) on the server.
+              Encryption/decryption is done server-side. So, this plugin
+              is for users that trust the server.
+
         - SOGo:
             - List all contacts by default in SOGo global address book.
 
