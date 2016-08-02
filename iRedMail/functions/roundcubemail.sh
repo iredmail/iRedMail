@@ -240,7 +240,7 @@ rcm_plugin_managesieve()
 
 rcm_plugin_password()
 {
-    ECHO_DEBUG "Enable and config plugin: password."
+    ECHO_DEBUG "Config plugin: password."
     cd ${RCM_CONF_DIR}
 
     cd ${RCM_HTTPD_ROOT}/plugins/password/
@@ -311,6 +311,19 @@ rcm_plugin_password()
     echo 'export status_rcm_plugin_password="DONE"' >> ${STATUS_FILE}
 }
 
+rcm_plugin_enigma()
+{
+    ECHO_DEBUG "Config plugin: enigma."
+
+    cd ${RCM_HTTPD_ROOT}/plugins/enigma/
+    cp -f config.inc.php.dist config.inc.php
+
+    # Make GPG home readable by php
+    #chown ${HTTPD_USER}:${HTTPD_GROUP} home/
+
+    echo 'export status_rcm_plugin_enigma="DONE"' >> ${STATUS_FILE}
+}
+
 rcm_setup() {
     check_status_before_run rcm_install
 
@@ -325,6 +338,7 @@ rcm_setup() {
     check_status_before_run rcm_config
     check_status_before_run rcm_plugin_managesieve
     check_status_before_run rcm_plugin_password
+    check_status_before_run rcm_plugin_enigma
 
     echo 'export status_rcm_setup="DONE"' >> ${STATUS_FILE}
 }

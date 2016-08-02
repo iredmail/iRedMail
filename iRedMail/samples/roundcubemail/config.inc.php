@@ -65,6 +65,7 @@ $config['autoexpand_threads'] = 2;
 $config['check_all_folders'] = true;
 $config['default_font_size'] = '12pt';
 $config['message_show_email'] = true;
+//$config['skip_deleted'] = true;
 
 // PLUGINS
 $config['plugins'] = array('managesieve', 'password');

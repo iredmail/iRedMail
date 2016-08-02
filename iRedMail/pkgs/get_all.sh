@@ -103,7 +103,7 @@ fetch_misc()
     ECHO_INFO "Fetching source tarballs ..."
 
     for i in ${MISCLIST}; do
-        url="${IREDMAIL_MIRROR}/yum/misc/${i}"
+        url="${IREDMAIL_MIRROR}/misc/${i}"
         ECHO_INFO "+ ${misc_count} of ${misc_total}: ${url}"
 
         ${FETCH_CMD} "${url}"
@@ -157,7 +157,7 @@ create_repo_rhel()
     cat > ${LOCAL_REPO_FILE} <<EOF
 [${LOCAL_REPO_NAME}]
 name=${LOCAL_REPO_NAME}
-baseurl=${IREDMAIL_MIRROR}/yum/rpms/${DISTRO_VERSION}/
+baseurl=${IREDMAIL_MIRROR}/rhel/${DISTRO_VERSION}/
 enabled=1
 gpgcheck=0
 #exclude=postfix*
@@ -208,8 +208,8 @@ check_new_iredmail()
     #   - DISTRO: OS distribution
     #   - DISTRO_VERSION: distribution release number
     #   - DISTRO_CODENAME: code name
-    ECHO_INFO "Checking new version of iRedMail ..."
-    ${FETCH_CMD} "${IREDMAIL_MIRROR}/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${OS_ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
+    #ECHO_INFO "Checking new version of iRedMail ..."
+    #${FETCH_CMD} "${IREDMAIL_MIRROR}/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${OS_ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
 
     UPDATE_AVAILABLE='NO'
     if ls iredmail_os* &>/dev/null; then

@@ -230,7 +230,7 @@ iredadmin_config() {
     echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
 
     if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-        echo "LDAP_SERVER_NAME = 'LDAPD'" >> settings.py
+        echo "LDAP_SERVER_PRODUCT_NAME = 'LDAPD'" >> settings.py
     fi
 
     # Add postfix alias for user: iredapd
