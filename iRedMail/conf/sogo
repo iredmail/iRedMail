@@ -54,6 +54,7 @@ export SOGO_DB_TABLE_SESSIONS_FOLDER='sogo_sessions_folder'
 export SOGO_DB_TABLE_ALARMS='sogo_alarms_folder'
 export SOGO_DB_TABLE_STORE='sogo_store'
 export SOGO_DB_TABLE_ACL='sogo_acl'
+export SOGO_DB_TABLE_CACHE_FOLDER='sogo_cache_folder'
 
 export SOGO_HTTPD_CONF="${HTTPD_CONF_DIR}/SOGo.conf"
 
