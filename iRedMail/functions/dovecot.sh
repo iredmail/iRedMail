@@ -69,11 +69,9 @@ dovecot_config()
     perl -pi -e 's#PH_PUBLIC_MAILBOX_DIR#$ENV{PUBLIC_MAILBOX_DIR}#' ${DOVECOT_CONF}
 
     # Mailbox index directory
-    set -x
     if [ -n "${MAILBOX_INDEX_DIR}" ]; then
         perl -pi -e 's#^(mail_location.*:INDEX=)%Lh/Maildir/#${1}$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/#' ${DOVECOT_CONF}
     fi
-    set +x
 
     # Provided services.
     export DOVECOT_PROTOCOLS

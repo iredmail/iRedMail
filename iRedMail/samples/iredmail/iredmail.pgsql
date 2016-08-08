@@ -19,6 +19,9 @@
 -- Connect as vmailadmin
 -- \c PH_VMAIL_DB_NAME PH_VMAIL_DB_ADMIN_USER;
 
+-- Required by PostgreSQL 8.x (RHEL/CentOS 6)
+-- CREATE LANGUAGE plpgsql;
+
 -- Used to store domain admin accounts
 CREATE TABLE admin (
     username VARCHAR(255) NOT NULL DEFAULT '',

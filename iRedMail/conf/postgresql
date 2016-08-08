@@ -35,6 +35,10 @@ export PGSQL_INIT_SQL_SAMPLE="${RUNTIME_DIR}/pgsql_init.pgsql"
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
     # RHEL/CENTOS 6 ships PostgreSQL-8.4
+    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        export PGSQL_VERSION='8'
+    fi
+
     export PGSQL_SYS_USER_HOME='/var/lib/pgsql'
     export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
 
