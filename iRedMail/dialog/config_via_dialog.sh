@@ -68,9 +68,9 @@ NOTES:
 * Daily backup of SQL/LDAP databases will be stored under another sub-directory: /var/vmail/backup.
 " 20 76 "${VMAIL_USER_HOME_DIR}" 2>/tmp/vmail_user_home_dir
 
-    export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir)"
+    export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir | tr '[A-Z]' '[a-z]')"
     if echo ${VMAIL_USER_HOME_DIR} | grep -i '^/var/mail\>' &>/dev/null; then
-        # Cannot be /var/vmail
+        # Cannot be /var/mail
         :
     else
         break

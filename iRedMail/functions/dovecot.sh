@@ -61,10 +61,19 @@ dovecot_config()
 
     # Base directory.
     perl -pi -e 's#PH_BASE_DIR#$ENV{DOVECOT_BASE_DIR}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_MAILBOX_INDEX_DIR#$ENV{MAILBOX_INDEX_DIR}#' ${DOVECOT_CONF}
     # base_dir is required on OpenBSD
     [ X"${DISTRO}" == X'OPENBSD' ] && \
         perl -pi -e 's/^#(base_dir.*)/${1}/' ${DOVECOT_CONF}
+
+    # Public mailbox directory
+    perl -pi -e 's#PH_PUBLIC_MAILBOX_DIR#$ENV{PUBLIC_MAILBOX_DIR}#' ${DOVECOT_CONF}
+
+    # Mailbox index directory
+    set -x
+    if [ -n "${MAILBOX_INDEX_DIR}" ]; then
+        perl -pi -e 's#^(mail_location.*:INDEX=)%Lh/Maildir/#${1}$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/#' ${DOVECOT_CONF}
+    fi
+    set +x
 
     # Provided services.
     export DOVECOT_PROTOCOLS

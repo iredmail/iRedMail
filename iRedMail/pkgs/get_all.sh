@@ -62,9 +62,8 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # command: wget.
     export BIN_WGET='wget'
     export PKG_WGET="wget"
-    # command: dpkg-scanpackages.
-    export BIN_CREATEREPO="dpkg-scanpackages"
-    export PKG_CREATEREPO="dpkg-dev"
+
+    export PKG_APT_TRANSPORT_HTTPS="apt-transport-https"
 fi
 
 # Misc file (source tarball) list.
@@ -103,7 +102,7 @@ fetch_misc()
     ECHO_INFO "Fetching source tarballs ..."
 
     for i in ${MISCLIST}; do
-        url="${IREDMAIL_MIRROR}/misc/${i}"
+        url="${IREDMAIL_MIRROR}/yum/misc/${i}"
         ECHO_INFO "+ ${misc_count} of ${misc_total}: ${url}"
 
         ${FETCH_CMD} "${url}"
@@ -157,7 +156,7 @@ create_repo_rhel()
     cat > ${LOCAL_REPO_FILE} <<EOF
 [${LOCAL_REPO_NAME}]
 name=${LOCAL_REPO_NAME}
-baseurl=${IREDMAIL_MIRROR}/rhel/${DISTRO_VERSION}/
+baseurl=${IREDMAIL_MIRROR}/yum/rpms/${DISTRO_VERSION}/
 enabled=1
 gpgcheck=0
 #exclude=postfix*
@@ -270,6 +269,10 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     check_pkg ${BIN_WGET} ${PKG_WGET}
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    if [ ! -e /usr/lib/apt/methods/https ]; then
+        eval ${install_pkg} ${PKG_APT_TRANSPORT_HTTPS}
+    fi
+
     # Force update.
     ECHO_INFO "apt-get update ..."
     ${APTGET} update
