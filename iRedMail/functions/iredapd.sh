@@ -37,20 +37,20 @@ iredapd_install()
 
     # Copy init rc script.
     if [ X"${USE_SYSTEMD}" == X'YES' ]; then
-        ECHO_DEBUG "Create symbol link: ${IREDAPD_ROOT_DIR}/rc_scripts.iredapd.service -> ${SYSTEMD_SERVICE_DIR}/iredapd.service."
-        ln -s ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.service ${SYSTEMD_SERVICE_DIR}/iredapd.service
+        ECHO_DEBUG "Create symbol link: ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts.iredapd.service -> ${SYSTEMD_SERVICE_DIR}/iredapd.service."
+        ln -s ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service ${SYSTEMD_SERVICE_DIR}/iredapd.service
         systemctl daemon-reload &>/dev/null
     else
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
+            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd
+            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd
         elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-            cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
+            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd
+            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd
         else
-            cp ${IREDAPD_ROOT_DIR}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
+            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
         fi
 
         chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
@@ -65,7 +65,7 @@ iredapd_install()
     chmod -R 0500 ${IREDAPD_ROOT_DIR}
 
     # Copy sample config file.
-    cd ${IREDAPD_ROOT_DIR}
+    cd ${IREDAPD_ROOT_DIR_SYMBOL_LINK}
     cp settings.py.sample settings.py
     chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} settings.py
     chmod -R 0400 settings.py
@@ -84,13 +84,13 @@ CREATE DATABASE IF NOT EXISTS ${IREDAPD_DB_NAME} DEFAULT CHARACTER SET utf8 COLL
 
 -- Import SQL template.
 USE ${IREDAPD_DB_NAME};
-SOURCE ${IREDAPD_ROOT_DIR}/SQL/iredapd.mysql;
+SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/iredapd.mysql;
 GRANT ALL ON ${IREDAPD_DB_NAME}.* TO '${IREDAPD_DB_USER}'@'${MYSQL_GRANT_HOST}' IDENTIFIED BY '${IREDAPD_DB_PASSWD}';
 GRANT ALL ON ${IREDAPD_DB_NAME}.* TO '${IREDAPD_DB_USER}'@'${HOSTNAME}' IDENTIFIED BY '${IREDAPD_DB_PASSWD}';
 FLUSH PRIVILEGES;
 
 -- Import greylisting whitelist domains.
-SOURCE ${IREDAPD_ROOT_DIR}/SQL/greylisting_whitelist_domains.sql;
+SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/greylisting_whitelist_domains.sql;
 EOF
 
         if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
@@ -99,7 +99,7 @@ EOF
             done
         fi
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp ${IREDAPD_ROOT_DIR}/SQL/{iredapd.pgsql,greylisting_whitelist_domains.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
+        cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/{iredapd.pgsql,greylisting_whitelist_domains.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
         chmod 0555 ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelist_domains.sql}
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
