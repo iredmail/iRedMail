@@ -148,7 +148,7 @@ postfix_config_basic()
         perl -pi -e 's#$ENV{LOCAL_ADDRESS}:10025#10025#' ${POSTFIX_FILE_MASTER_CF}
 
         # Enable smtpd_upstream_proxy_protocol=haproxy for submission service
-        perl -pi -e 's/(.*)#(-o smtpd_upstream_proxy_protocol=haproxy)(.*#submission.*)/${2}/' ${POSTFIX_FILE_MASTER_CF}
+        perl -pi -e 's/(.*)#(-o smtpd_upstream_proxy_protocol=haproxy)(.*#submission.*)/${1}${2}/' ${POSTFIX_FILE_MASTER_CF}
     fi
 
     ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"

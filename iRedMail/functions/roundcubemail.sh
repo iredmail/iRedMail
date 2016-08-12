@@ -229,11 +229,14 @@ rcm_plugin_managesieve()
     export MANAGESIEVE_SERVER MANAGESIEVE_PORT
     cd ${RCM_HTTPD_ROOT}/plugins/managesieve/ && \
     cp config.inc.php.dist config.inc.php && \
-    perl -pi -e 's#(.*managesieve_port.*=).*#${1} $ENV{MANAGESIEVE_PORT};#' config.inc.php
     perl -pi -e 's#(.*managesieve_host.*=).*#${1} "$ENV{MANAGESIEVE_SERVER}";#' config.inc.php
-    perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} false;#' config.inc.php
+    perl -pi -e 's#(.*managesieve_port.*=).*#${1} $ENV{MANAGESIEVE_PORT};#' config.inc.php
+    perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} true;#' config.inc.php
     perl -pi -e 's#(.*managesieve_default.*=).*#${1} "";#' config.inc.php
     perl -pi -e 's#(.*managesieve_vacation.*=).*#${1} 1;#' config.inc.php
+
+    # Disable ssl peer verify
+    perl -pi -e 's#(.*managesieve_conn_options.*=.*)(null.*)#${1}array("ssl" => array("verify_peer" => false, "verify_peer_name" => false));#' config.inc.php
 
     echo 'export status_rcm_plugin_managesieve="DONE"' >> ${STATUS_FILE}
 }
