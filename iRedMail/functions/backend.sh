@@ -37,6 +37,8 @@ backend_install()
         export SQL_ROOT_PASSWD="${PGSQL_ROOT_PASSWD}"
     fi
 
+    export LOCAL_SQL_SERVER="${LOCAL_SQL_SERVER:=${SQL_SERVER_ADDRESS}}"
+
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # Install, config and initialize LDAP server
         check_status_before_run ldap_server_config
