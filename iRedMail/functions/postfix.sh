@@ -99,7 +99,7 @@ postfix_config_basic()
     unset _files
 
     # iRedAPD listen address/port
-    perl -pi -e 's#PH_IREDAPD_BIND_HOST#$ENV{IREDAPD_BIND_HOST}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_IREDAPD_SERVER_ADDRESS#$ENV{IREDAPD_SERVER_ADDRESS}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_IREDAPD_LISTEN_PORT#$ENV{IREDAPD_LISTEN_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
 
     #
