@@ -150,7 +150,10 @@ cleanup_replace_firewall_rules()
                         firewall-cmd --permanent --zone=iredmail --add-port=10143/tcp
                         firewall-cmd --permanent --zone=iredmail --add-port=1024/tcp
                         firewall-cmd --permanent --zone=iredmail --add-port=10419/tcp
-                        firewall-cmd --permanent --zone=iredmail --add-port=12345/tcp
+                        firewall-cmd --permanent --zone=iredmail --add-port=12346/tcp
+
+                        # iRedAPD
+                        firewall-cmd --permanent --zone=iredmail --add-port=7777/tcp
                     fi
 
                     [ X"${SSHD_PORT}" != X'22' ] && \
@@ -173,13 +176,16 @@ cleanup_replace_firewall_rules()
                         perl -pi -e 's/#(.* 10143 .*)/${1}/' ${FIREWALL_RULE_CONF}
                         perl -pi -e 's/#(.* 1024 .*)/${1}/' ${FIREWALL_RULE_CONF}
                         perl -pi -e 's/#(.* 10419 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        perl -pi -e 's/#(.* 12345 .*)/${1}/' ${FIREWALL_RULE_CONF}
+                        perl -pi -e 's/#(.* 12346 .*)/${1}/' ${FIREWALL_RULE_CONF}
 
                         # Amavisd
                         perl -pi -e 's/#(.* 10024 .*)/${1}/' ${FIREWALL_RULE_CONF}
                         perl -pi -e 's/#(.* 10025 .*)/${1}/' ${FIREWALL_RULE_CONF}
                         perl -pi -e 's/#(.* 10026 .*)/${1}/' ${FIREWALL_RULE_CONF}
                         perl -pi -e 's/#(.* 9998 .*)/${1}/' ${FIREWALL_RULE_CONF}
+
+                        # iRedAPD
+                        perl -pi -e 's/#(.* 7777 .*)/${1}/' ${FIREWALL_RULE_CONF}
                     fi
                 fi
 

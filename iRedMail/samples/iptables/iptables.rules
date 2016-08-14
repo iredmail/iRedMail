@@ -67,8 +67,8 @@
 #-A INPUT -p tcp --dport 4190 -j ACCEPT
 #-A INPUT -p tcp --dport 10419 -j ACCEPT
 
-# Dovecot SASL AUTH service
-#-A INPUT -p tcp --dport 12345 -j ACCEPT
+# Dovecot SASL AUTH service for HAProxy
+#-A INPUT -p tcp --dport 12346 -j ACCEPT
 
 # ldap/ldaps
 #-A INPUT -p tcp --dport 389 -j ACCEPT
@@ -95,6 +95,9 @@
 #-A INPUT -p tcp --dport 10025 -j ACCEPT
 #-A INPUT -p tcp --dport 10026 -j ACCEPT
 #-A INPUT -p tcp --dport 9998 -j ACCEPT
+
+# iRedAPD
+#-A INPUT -p tcp --dport 7777 -j ACCEPT
 
 # ftp.
 #-A INPUT -p tcp --dport 20 -j ACCEPT
