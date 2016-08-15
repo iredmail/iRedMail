@@ -55,8 +55,8 @@ export RCM_DB_USER="roundcube"
 # this key is used to encrypt the users imap password which is stored
 # in the session record (and the client cookie if remember password is enabled).
 # please provide a string of exactly 24 chars.
-export tmp_rcm_des_key="$(${RANDOM_STRING})"
-export RCM_DES_KEY="$(echo ${tmp_rcm_des_key} | cut -c-24)"
+export tmp_rcm_des_key="$(${RANDOM_STRING} | cut -c-24)"
+export RCM_DES_KEY="${RCM_DES_KEY:=${tmp_rcm_des_key}}"
 
 # Backup database.
 if [ X"${USE_RCM}" == X'YES' ]; then
