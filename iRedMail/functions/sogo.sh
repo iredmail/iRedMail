@@ -274,6 +274,11 @@ EOF
             perl -pi -e 's/^#(LoadModule proxy_module.*)/${1}/' ${HTTPD_CONF}
             perl -pi -e 's/^#(LoadModule proxy_http_module.*)/${1}/' ${HTTPD_CONF}
         fi
+
+        if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+            # Allow access from http:// since HAProxy handles ssl termination
+            perl -pi -e 's/^#(ProxyPass.*)/${1}/g' ${SOGO_HTTPD_CONF}
+        fi
     fi
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then

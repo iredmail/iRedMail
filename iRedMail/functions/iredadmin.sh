@@ -78,21 +78,8 @@ iredadmin_web_config() {
         ECHO_DEBUG "Create directory alias for iRedAdmin."
 
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # Create directory alias.
-            perl -pi -e 's#^(\s*</VirtualHost>)#Alias /iredadmin/static "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static"\n${1}#' ${HTTPD_SSL_CONF}
-            perl -pi -e 's#^(\s*</VirtualHost>)#ScriptAlias /iredadmin "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py"\n${1}#' ${HTTPD_SSL_CONF}
-
-            # There's no wsgi module for Apache available on OpenBSD, so
-            # iRedAdmin runs as CGI program.
-            cat > ${IREDADMIN_HTTPD_CONF} <<EOF
-AddType text/html .py
-AddHandler cgi-script .py
-
-<Directory "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}">
-    ${HTACCESS_ALLOW_ALL}
-    Options +ExecCGI
-</Directory>
-EOF
+            # iRedMail doesn't enable Apache on OpenBSD
+            :
         else
             perl -pi -e 's#^(\s*</VirtualHost>)#Alias /iredadmin/static "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static/"\n${1}#' ${HTTPD_SSL_CONF}
             perl -pi -e 's#^(\s*</VirtualHost>)#WSGIScriptAlias /iredadmin "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py/"\n${1}#' ${HTTPD_SSL_CONF}
@@ -108,7 +95,16 @@ AddType text/html .py
 <Directory ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/>
     ${HTACCESS_ALLOW_ALL}
 </Directory>
+
+#Alias /iredadmin/static "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static/"
+#WSGIScriptAlias /iredadmin "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py/"
 EOF
+
+            if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+                # Allow access from http:// since HAProxy handles ssl termination
+                perl -pi -e 's/(.*Alias.*iredadmin.*)/#${1}/g' ${HTTPD_SSL_CONF}
+                perl -pi -e 's/#(.*Alias.*iredadmin.*)/${1}/g' ${IREDADMIN_HTTPD_CONF}
+            fi
         fi
 
         # Enable Apache module config file on Ubuntu 14.04.
