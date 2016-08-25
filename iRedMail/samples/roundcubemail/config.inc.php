@@ -45,7 +45,7 @@ $config['ip_check'] = true;
 $config['des_key'] = 'PH_RCM_DES_KEY';
 $config['cipher_method'] = 'AES-256-CBC';
 $config['useragent'] = 'Roundcube Webmail'; // Hide version number
-$config['username_domain'] = 'PH_FIRST_DOMAIN';
+//$config['username_domain'] = 'PH_FIRST_DOMAIN';
 //$config['mime_types'] = '/etc/mime.types';
 
 // List of trusted proxies

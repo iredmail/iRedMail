@@ -205,6 +205,16 @@ iredapd_config()
         echo "MYNETWORKS = ['${LOCAL_ADDRESS}']" >> ${IREDAPD_CONF}
     fi
 
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # Start service when system start up.
+        service_control enable 'iredapd_enable' 'YES'
+    fi
+
+    echo 'export status_iredapd_config="DONE"' >> ${STATUS_FILE}
+}
+
+iredapd_cron_setup()
+{
     # Setup cron job to clean up expired throttle tracking records.
     # Note: use ${IREDAPD_ROOT_DIR_SYMBOL_LINK} instead of ${IREDAPD_ROOT_DIR}
     # here, so that we don't need to change cron job after upgrading iRedAPD.
@@ -218,23 +228,25 @@ iredapd_config()
 
 EOF
 
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        # Start service when system start up.
-        service_control enable 'iredapd_enable' 'YES'
+    # Disable cron jobs if we don't need to initialize database on this server.
+    if [ X"${INITIALIZE_SQL_DATA}" != X'YES' ]; then
+        perl -pi -e 's/(.*iredapd.*tools.*cleanup_db.py.*)/#${1}/g' ${CRON_SPOOL_DIR}/${SYS_ROOT_USER}
+        perl -pi -e 's/(.*iredapd.*tools.*spf_to_greylist_whitelists.py.*)/#${1}/g' ${CRON_SPOOL_DIR}/${SYS_ROOT_USER}
     fi
 
-    echo 'export status_iredapd_config="DONE"' >> ${STATUS_FILE}
+    echo 'export status_iredapd_cron_setup="DONE"' >> ${STATUS_FILE}
 }
 
 iredapd_setup()
 {
-    iredapd_install
+    check_status_before_run iredapd_install
 
     if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
-        iredapd_initialize_db
+        check_status_before_run iredapd_initialize_db
     fi
 
-    iredapd_config
+    check_status_before_run iredapd_cron_setup
+    check_status_before_run iredapd_config
 
     cat >> ${TIP_FILE} <<EOF
 iRedAPD - Postfix Policy Daemon:

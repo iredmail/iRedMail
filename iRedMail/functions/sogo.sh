@@ -231,12 +231,6 @@ EOF
     service_control restart ${SOGO_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     sleep 3
 
-    # Add cron job for email reminders
-    cp -f ${SAMPLE_DIR}/sogo/sogo.cron ${SOGO_CRON_FILE} &>/dev/null
-    perl -pi -e 's#PH_SOGO_CMD_TOOL#$ENV{SOGO_CMD_TOOL}#g' ${SOGO_CRON_FILE}
-    perl -pi -e 's#PH_SOGO_CMD_EALARMS_NOTIFY#$ENV{SOGO_CMD_EALARMS_NOTIFY}#g' ${SOGO_CRON_FILE}
-    perl -pi -e 's#PH_SOGO_SIEVE_CREDENTIAL_FILE#$ENV{SOGO_SIEVE_CREDENTIAL_FILE}#g' ${SOGO_CRON_FILE}
-
     add_postfix_alias ${SOGO_DAEMON_USER} ${SYS_ROOT_USER}
 
     # Enable sieve support if Roundcube is not installed
@@ -308,6 +302,22 @@ SOGo Groupware:
 EOF
 
     echo 'export status_sogo_config="DONE"' >> ${STATUS_FILE}
+}
+
+sogo_cron_setup()
+{
+    # Add cron job for email reminders
+    cp -f ${SAMPLE_DIR}/sogo/sogo.cron ${SOGO_CRON_FILE} &>/dev/null
+    perl -pi -e 's#PH_SOGO_CMD_TOOL#$ENV{SOGO_CMD_TOOL}#g' ${SOGO_CRON_FILE}
+    perl -pi -e 's#PH_SOGO_CMD_EALARMS_NOTIFY#$ENV{SOGO_CMD_EALARMS_NOTIFY}#g' ${SOGO_CRON_FILE}
+    perl -pi -e 's#PH_SOGO_SIEVE_CREDENTIAL_FILE#$ENV{SOGO_SIEVE_CREDENTIAL_FILE}#g' ${SOGO_CRON_FILE}
+
+    # Disable cron jobs if we don't need to initialize database on this server.
+    if [ X"${INITIALIZE_SQL_DATA}" != X'YES' ]; then
+        perl -pi -e 's/(.*sogo-tool.*)/#${1}/g' ${SOGO_CRON_FILE}
+    fi
+
+    echo 'export status_sogo_cron_setup="DONE"' >> ${STATUS_FILE}
 }
 
 sogo_setup()

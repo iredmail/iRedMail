@@ -250,6 +250,10 @@ mysql_cron_backup()
 
 EOF
 
+    if [ X"${INITIALIZE_SQL_DATA}" != X'YES' ]; then
+        perl -pi -e 's/(.*$ENV{SHELL_BASH}.*$ENV{BACKUP_SCRIPT_MYSQL}.*)/#${1}/g' ${SOGO_CRON_FILE}
+    fi
+
     cat >> ${TIP_FILE} <<EOF
 Backup MySQL database:
     * Script: ${BACKUP_SCRIPT_MYSQL}

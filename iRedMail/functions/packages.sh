@@ -36,6 +36,7 @@ install_all()
 
     # Enable syslog or rsyslog.
     if [ X"${DISTRO}" == X'RHEL' ]; then
+        ALL_PKGS="${ALL_PKGS} rsyslog"
         ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
         DISABLED_SERVICES="${DISABLED_SERVICES} exim"
     elif [ X"${DISTRO}" == X'DEBIAN' ]; then

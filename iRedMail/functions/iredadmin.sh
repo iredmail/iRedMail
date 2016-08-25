@@ -236,12 +236,6 @@ iredadmin_config() {
     # Add postfix alias for user: iredapd
     add_postfix_alias ${IREDAPD_DAEMON_USER} ${SYS_ROOT_USER}
 
-    cat >> ${CRON_SPOOL_DIR}/root <<EOF
-# ${PROG_NAME}: Cleanup Amavisd database
-1   2   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py >/dev/null
-
-EOF
-
     cat >> ${TIP_FILE} <<EOF
 iRedAdmin - official web-based admin panel:
     * Version: ${IREDADMIN_VERSION}
@@ -266,6 +260,22 @@ EOF
     echo 'export status_iredadmin_config="DONE"' >> ${STATUS_FILE}
 }
 
+iredadmin_cron_setup()
+{
+    cat >> ${CRON_SPOOL_DIR}/${SYS_ROOT_USER} <<EOF
+# ${PROG_NAME}: Cleanup Amavisd database
+1   2   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py >/dev/null
+
+EOF
+
+    # Disable cron jobs if we don't need to initialize database on this server.
+    if [ X"${INITIALIZE_SQL_DATA}" != X'YES' ]; then
+        perl -pi -e 's/(.*iredadmin.*tools.*cleanup_amavisd_db.py.*)/#${1}/g' ${CRON_SPOOL_DIR}/${SYS_ROOT_USER}
+    fi
+
+    echo 'export status_iredadmin_cron_setup="DONE"' >> ${STATUS_FILE}
+}
+
 iredadmin_setup() {
     check_status_before_run iredadmin_install
     check_status_before_run iredadmin_web_config
@@ -274,6 +284,7 @@ iredadmin_setup() {
         check_status_before_run iredadmin_initialize_db
     fi
 
+    check_status_before_run iredadmin_cron_setup
     check_status_before_run iredadmin_config
 
     echo 'export status_iredadmin_setup="DONE"' >> ${STATUS_FILE}
