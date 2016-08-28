@@ -216,7 +216,7 @@ pgsql_cron_backup()
     perl -pi -e 's#^(export DATABASES=).*#${1}"$ENV{SQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_PGSQL}
 
     # Add cron job
-    cat >> ${CRON_SPOOL_DIR}/root <<EOF
+    cat >> ${CRON_FILE_ROOT} <<EOF
 # ${PROG_NAME}: Backup PostgreSQL databases on 03:01 AM
 1   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_PGSQL}
 

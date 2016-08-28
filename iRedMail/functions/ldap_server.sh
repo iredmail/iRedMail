@@ -155,7 +155,7 @@ ldap_server_cron_backup()
     fi
 
     # Add cron job
-    cat >> ${CRON_SPOOL_DIR}/root <<EOF
+    cat >> ${CRON_FILE_ROOT} <<EOF
 # ${PROG_NAME}: Backup LDAP data (at 03:00 AM)
 0   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_LDAP}
 

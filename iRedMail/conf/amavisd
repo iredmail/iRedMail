@@ -30,6 +30,8 @@ export AMAVISD_LOGROTATE_FILE="${LOGROTATE_DIR}/amavisd"
 export AMAVISD_DKIM_SELECTOR='dkim'
 export AMAVISD_RC_SCRIPT_NAME='amavisd'
 
+export CRON_FILE_AMAVISD="${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER}"
+
 # Num of pre-forked children.
 export AMAVISD_MAX_SERVERS='2'
 

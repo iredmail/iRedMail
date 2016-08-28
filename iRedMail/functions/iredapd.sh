@@ -218,7 +218,7 @@ iredapd_cron_setup()
     # Setup cron job to clean up expired throttle tracking records.
     # Note: use ${IREDAPD_ROOT_DIR_SYMBOL_LINK} instead of ${IREDAPD_ROOT_DIR}
     # here, so that we don't need to change cron job after upgrading iRedAPD.
-    cat >> ${CRON_SPOOL_DIR}/${SYS_ROOT_USER} <<EOF
+    cat >> ${CRON_FILE_ROOT} <<EOF
 # iRedAPD: Clean up expired tracking records hourly.
 1   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null
 
@@ -230,8 +230,8 @@ EOF
 
     # Disable cron jobs if we don't need to initialize database on this server.
     if [ X"${INITIALIZE_SQL_DATA}" != X'YES' ]; then
-        perl -pi -e 's/(.*iredapd.*tools.*cleanup_db.py.*)/#${1}/g' ${CRON_SPOOL_DIR}/${SYS_ROOT_USER}
-        perl -pi -e 's/(.*iredapd.*tools.*spf_to_greylist_whitelists.py.*)/#${1}/g' ${CRON_SPOOL_DIR}/${SYS_ROOT_USER}
+        perl -pi -e 's/(.*iredapd.*tools.*cleanup_db.py.*)/#${1}/g' ${CRON_FILE_ROOT}
+        perl -pi -e 's/(.*iredapd.*tools.*spf_to_greylist_whitelists.py.*)/#${1}/g' ${CRON_FILE_ROOT}
     fi
 
     echo 'export status_iredapd_cron_setup="DONE"' >> ${STATUS_FILE}

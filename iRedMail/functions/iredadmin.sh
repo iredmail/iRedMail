@@ -258,7 +258,7 @@ EOF
 
 iredadmin_cron_setup()
 {
-    cat >> ${CRON_SPOOL_DIR}/${SYS_ROOT_USER} <<EOF
+    cat >> ${CRON_FILE_ROOT} <<EOF
 # ${PROG_NAME}: Cleanup Amavisd database
 1   2   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py >/dev/null
 
@@ -266,7 +266,7 @@ EOF
 
     # Disable cron jobs if we don't need to initialize database on this server.
     if [ X"${INITIALIZE_SQL_DATA}" != X'YES' ]; then
-        perl -pi -e 's/(.*iredadmin.*tools.*cleanup_amavisd_db.py.*)/#${1}/g' ${CRON_SPOOL_DIR}/${SYS_ROOT_USER}
+        perl -pi -e 's/(.*iredadmin.*tools.*cleanup_amavisd_db.py.*)/#${1}/g' ${CRON_FILE_ROOT}
     fi
 
     echo 'export status_iredadmin_cron_setup="DONE"' >> ${STATUS_FILE}

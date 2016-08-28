@@ -595,6 +595,9 @@ else
     export SSL_KEY_DIR="${SSL_FILE_DIR}/private"
 fi
 
+# Root's cron file
+export CRON_FILE_ROOT="${CRON_SPOOL_DIR}/${SYS_ROOT_USER}"
+
 # dhparam file required to fix 'The Logjam Attack'.
 export SSL_DH512_PARAM_FILE="${SSL_FILE_DIR}/dh512_param.pem"
 export SSL_DH1024_PARAM_FILE="${SSL_FILE_DIR}/dh2048_param.pem"

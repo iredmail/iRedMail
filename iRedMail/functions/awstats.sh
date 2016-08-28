@@ -333,7 +333,7 @@ awstats_config_crontab()
 {
     ECHO_DEBUG "Setting cronjob for awstats."
 
-    cat >> ${CRON_SPOOL_DIR}/root <<EOF
+    cat >> ${CRON_FILE_ROOT} <<EOF
 # ${PROG_NAME}: update Awstats statistics for web
 1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CGI_DIR}/awstats.pl -config=web -update >/dev/null
 

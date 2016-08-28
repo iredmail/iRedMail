@@ -192,13 +192,6 @@ rcm_config()
         fi
     fi
 
-    ECHO_DEBUG "Setup daily cron job to keep SQL database clean."
-    cat >> ${CRON_SPOOL_DIR}/root <<EOF
-# ${PROG_NAME}: Cleanup Roundcube SQL database
-2   2   *   *   *   ${PHP_BIN} ${RCM_HTTPD_ROOT_SYMBOL_LINK}/bin/cleandb.sh >/dev/null
-
-EOF
-
     cat >> ${TIP_FILE} <<EOF
 Roundcube webmail: ${RCM_HTTPD_ROOT}
     * Configuration files:
@@ -219,6 +212,23 @@ Roundcube webmail: ${RCM_HTTPD_ROOT}
 EOF
 
     echo 'export status_rcm_config="DONE"' >> ${STATUS_FILE}
+}
+
+rcm_cron_setup()
+{
+    ECHO_DEBUG "Setup daily cron job to keep SQL database clean."
+    cat >> ${CRON_FILE_ROOT} <<EOF
+# ${PROG_NAME}: Cleanup Roundcube SQL database
+2   2   *   *   *   ${PHP_BIN} ${RCM_HTTPD_ROOT_SYMBOL_LINK}/bin/cleandb.sh >/dev/null
+
+EOF
+
+    # Disable cron jobs if we don't need to initialize database on this server.
+    if [ X"${INITIALIZE_SQL_DATA}" != X'YES' ]; then
+        perl -pi -e 's\(.*roundcube.*/bin/cleandb.sh.*)\#${1}\g' ${CRON_FILE_ROOT}
+    fi
+
+    echo 'export status_rcm_cron_setup="DONE"' >> ${STATUS_FILE}
 }
 
 rcm_plugin_managesieve()
@@ -343,6 +353,7 @@ rcm_setup() {
     fi
 
     check_status_before_run rcm_config
+    check_status_before_run rcm_cron_setup
     check_status_before_run rcm_plugin_managesieve
     check_status_before_run rcm_plugin_password
     check_status_before_run rcm_plugin_enigma

@@ -244,14 +244,14 @@ mysql_cron_backup()
     perl -pi -e 's#^(export DATABASES=)(.*)#${1}"$ENV{SQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_MYSQL}
 
     # Add cron job
-    cat >> ${CRON_SPOOL_DIR}/root <<EOF
+    cat >> ${CRON_FILE_ROOT} <<EOF
 # ${PROG_NAME}: Backup MySQL databases on 03:30 AM
 30   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_MYSQL}
 
 EOF
 
     if [ X"${INITIALIZE_SQL_DATA}" != X'YES' ]; then
-        perl -pi -e 's/(.*$ENV{SHELL_BASH}.*$ENV{BACKUP_SCRIPT_MYSQL}.*)/#${1}/g' ${SOGO_CRON_FILE}
+        perl -pi -e 's/(.*bash.*backup_mysql.sh.*)/#${1}/g' ${CRON_FILE_ROOT}
     fi
 
     cat >> ${TIP_FILE} <<EOF

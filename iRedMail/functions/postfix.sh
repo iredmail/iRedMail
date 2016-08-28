@@ -204,7 +204,7 @@ postfix_config_basic()
         echo 'sendmail_flags=NO' >> ${RC_CONF_LOCAL}
         echo 'smtpd_flags=NO' >> ${RC_CONF_LOCAL}
         /usr/local/sbin/postfix-enable >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's/(.*sendmail -L sm-msp-queue.*)/#${1}/' ${CRON_SPOOL_DIR}/root 
+        perl -pi -e 's/(.*sendmail -L sm-msp-queue.*)/#${1}/' ${CRON_FILE_ROOT}
     fi
 
     echo 'export status_postfix_config_basic="DONE"' >> ${STATUS_FILE}
