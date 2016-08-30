@@ -330,9 +330,6 @@ cleanup()
 ${PROG_VERSION}     # Get professional upgrade support from iRedMail Team: http://www.iredmail.org/support.html
 EOF
 
-    # Remove temporary file used with 'mysql --defaults-file'
-    rm -f ${MYSQL_DEFAULTS_FILE_ROOT} &>/dev/null
-
     cat <<EOF
 
 *************************************************************************

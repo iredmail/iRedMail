@@ -33,7 +33,7 @@ mysql_generate_defauts_file_root()
         ECHO_INFO "Configure MySQL database server."
     fi
 
-    ECHO_DEBUG "Generate temporary defauts file for MySQL client option --defaults-file: ${MYSQL_DEFAULTS_FILE_ROOT}."
+    ECHO_DEBUG "Generate defauts file for MySQL client option --defaults-file: ${MYSQL_DEFAULTS_FILE_ROOT}."
     cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 [client]
 user=${MYSQL_ROOT_USER}

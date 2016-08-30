@@ -28,12 +28,16 @@ export DIALOG_SELECTABLE_AWSTATS='YES'
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
 export DIALOG_SELECTABLE_SOGO='YES'
 
+if [ X"${APACHE_VERSION}" == X'2.4' -o X"${WEB_SERVER_IS_NGINX}" == X'YES' ] ;then
+    # Apache 2.4 and Nginx don't have SQL/LDAP AUTH module
+    export DIALOG_SELECTABLE_AWSTATS='NO'
+fi
+
 if [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
 fi
 
 if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
-    # No sql/ldap auth module for Nginx.
     export DIALOG_SELECTABLE_AWSTATS='NO'
 fi
 

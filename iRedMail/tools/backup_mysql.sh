@@ -27,7 +27,7 @@
 #   * Set correct values for below variables:
 #
 #       BACKUP_ROOTDIR
-#       MYSQL_USER
+#       MYSQL_ROOT_USER
 #       MYSQL_PASSWD
 #       DATABASES
 #       DB_CHARACTER_SET
@@ -58,9 +58,11 @@ KEEP_DAYS='90'
 # Where to store backup copies.
 export BACKUP_ROOTDIR='/var/vmail/backup'
 
-# MySQL user and password.
-export MYSQL_USER='root'
-export MYSQL_PASSWD='passwd'
+# MySQL username. Root user is required to dump all databases.
+export MYSQL_ROOT_USER='root'
+
+# ~/.my.cnf
+export MYSQL_DOT_MY_CNF='/root/.my.cnf'
 
 # Databases we should backup.
 # Multiple databases MUST be seperated by SPACE.
@@ -80,8 +82,8 @@ export CMD_DATE='/bin/date'
 export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'
 export COMPRESS_SUFFIX='bz2'
-export CMD_MYSQLDUMP='mysqldump'
-export CMD_MYSQL='mysql'
+export CMD_MYSQL="mysql --defaults-file=${MYSQL_DOT_MY_CNF} -u${MYSQL_ROOT_USER}"
+export CMD_MYSQLDUMP="mysqldump --defaults-file=${MYSQL_DOT_MY_CNF} -u${MYSQL_ROOT_USER} --events --ignore-table=mysql.event --default-character-set=${DB_CHARACTER_SET}"
 
 # Date.
 export YEAR="$(${CMD_DATE} +%Y)"
@@ -111,17 +113,8 @@ fi
 # Log file
 export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
 
-# Check required variables.
-if [ X"${MYSQL_USER}" == X"" -o X"${MYSQL_PASSWD}" == X"" -o X"${DATABASES}" == X"" ]; then
-    echo "[ERROR] You don't have correct MySQL related configurations in file: ${0}" 1>&2
-    echo -e "\t- MYSQL_USER\n\t- DATABASES" 1>&2
-    echo "Please configure them first." 1>&2
-
-    exit 255
-fi
-
 # Verify MySQL connection.
-${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" -e "show databases" &>/dev/null
+${CMD_MYSQL} -e "show databases" &>/dev/null
 if [ X"$?" != X"0" ]; then
     echo "[ERROR] MySQL username or password is incorrect in file ${0}." 1>&2
     echo "Please fix them first." 1>&2
@@ -149,16 +142,11 @@ for db in ${DATABASES}; do
     output_sql="${BACKUP_DIR}/${db}-${TIMESTAMP}.sql"
 
     # Check database existence
-    ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" -e "use ${db}" &>/dev/null
+    ${CMD_MYSQL} -e "USE ${db}" &>/dev/null
 
     if [ X"$?" == X'0' ]; then
         # Dump
-        ${CMD_MYSQLDUMP} \
-            -u"${MYSQL_USER}" \
-            -p"${MYSQL_PASSWD}" \
-            --events --ignore-table=mysql.event \
-            --default-character-set=${DB_CHARACTER_SET} \
-            ${db} > ${output_sql}
+        ${CMD_MYSQLDUMP} ${db} > ${output_sql}
 
         if [ X"$?" == X'0' ]; then
             # Get original SQL file size
@@ -184,7 +172,7 @@ for db in ${DATABASES}; do
 
         # Log to SQL table `iredadmin.log`, so that global domain admins can
         # check backup status (System -> Admin Log)
-        ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
+        ${CMD_MYSQL} iredadmin -e "${sql_log_msg}"
     fi
 done
 
@@ -208,7 +196,7 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     rm -rf ${REMOVED_BACKUP_DIR} >> ${LOGFILE} 2>&1
 
     sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUP_DIR}.', 'cron_backup_sql', '127.0.0.1', NOW());"
-    ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
+    ${CMD_MYSQL} iredadmin -e "${sql_log_msg}"
 fi
 
 echo "==> Detailed log (${LOGFILE}):"
