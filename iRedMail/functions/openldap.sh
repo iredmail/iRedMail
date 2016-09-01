@@ -53,7 +53,7 @@ openldap_config()
         # Start service when system start up.
         # 'slapd_enable=YES' is required to start service immediately.
         service_control enable 'slapd_enable' 'YES'
-        service_control enable 'slapd_flags' '-h "ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://0.0.0.0/ ldaps://0.0.0.0/"'
+        service_control enable 'slapd_flags' "-h 'ldapi://%2fvar%2frun%2fopenldap%2fldapi/ ldap://0.0.0.0/ ldaps://0.0.0.0/'"
         service_control enable 'slapd_sockets' '/var/run/openldap/ldapi'
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then

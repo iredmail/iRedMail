@@ -47,7 +47,7 @@ port=${MYSQL_SERVER_PORT}
 EOF
     fi
 
-    chmod 0500 ${MYSQL_DEFAULTS_FILE_ROOT}
+    chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT}
 
     echo 'export status_mysql_generate_defauts_file_root="DONE"' >> ${STATUS_FILE}
 }
