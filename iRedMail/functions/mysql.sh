@@ -25,33 +25,6 @@
 # -------------------------------------------------------
 # -------------------- MySQL ----------------------------
 # -------------------------------------------------------
-mysql_generate_defauts_file_root()
-{
-    if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-        ECHO_INFO "Configure MariaDB database server."
-    else
-        ECHO_INFO "Configure MySQL database server."
-    fi
-
-    ECHO_DEBUG "Generate defauts file for MySQL client option --defaults-file: ${MYSQL_DEFAULTS_FILE_ROOT}."
-    cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
-[client]
-user=${MYSQL_ROOT_USER}
-password="${MYSQL_ROOT_PASSWD}"
-EOF
-
-    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' -o X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
-        cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
-host=${MYSQL_SERVER_ADDRESS}
-port=${MYSQL_SERVER_PORT}
-EOF
-    fi
-
-    chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT}
-
-    echo 'export status_mysql_generate_defauts_file_root="DONE"' >> ${STATUS_FILE}
-}
-
 mysql_initialize_db()
 {
     ECHO_DEBUG "Initialize MySQL server."
@@ -106,6 +79,7 @@ mysql_initialize_db()
     if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
         # Try to access without password, set a password if it's empty.
         mysql -u${MYSQL_ROOT_USER} -e "show databases" >> ${INSTALL_LOG} 2>&1
+
         if [ X"$?" == X'0' ]; then
             #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
             #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
@@ -145,6 +119,27 @@ MySQL:
 EOF
 
     echo 'export status_mysql_initialize_db="DONE"' >> ${STATUS_FILE}
+}
+
+mysql_generate_defaults_file_root()
+{
+    ECHO_DEBUG "Generate defauts file for MySQL client option --defaults-file: ${MYSQL_DEFAULTS_FILE_ROOT}."
+    cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
+[client]
+user=${MYSQL_ROOT_USER}
+password="${MYSQL_ROOT_PASSWD}"
+EOF
+
+    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' -o X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
+        cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+EOF
+    fi
+
+    chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT}
+
+    echo 'export status_mysql_generate_defaults_file_root="DONE"' >> ${STATUS_FILE}
 }
 
 # It's used only when backend is MySQL.
@@ -264,4 +259,28 @@ Backup MySQL database:
 EOF
 
     echo 'export status_mysql_cron_backup="DONE"' >> ${STATUS_FILE}
+}
+
+mysql_setup()
+{
+    if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+        ECHO_INFO "Configure MariaDB database server."
+    else
+        ECHO_INFO "Configure MySQL database server."
+    fi
+
+    check_status_before_run mysql_generate_defaults_file_root
+
+    if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
+        check_status_before_run mysql_initialize_db
+    fi
+
+    if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
+        check_status_before_run mysql_import_vmail_users
+    fi
+
+    check_status_before_run mysql_create_sql_table_used_quota
+    check_status_before_run mysql_cron_backup
+
+    echo 'export status_mysql_setup="DONE"' >> ${STATUS_FILE}
 }

@@ -34,7 +34,7 @@ php_config()
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable PHP modules
         # Get php version number.
-        PHP_VERSION="$(basename /etc/php-5.? | awk -F'-' '{print $2}')"
+        PHP_VERSION="$(basename /etc/php-${OB_PHP_VERSION} | awk -F'-' '{print $2}')"
         for i in $(ls -d /etc/php-${PHP_VERSION}.sample/*); do
             ln -sf ${i} /etc/php-${PHP_VERSION}/$(basename $i)
         done

@@ -28,11 +28,12 @@ install_all()
 
     # OpenBSD only
     PKG_SCRIPTS=''
-    OB_PKG_POSTFIX_VER='-3.0.3p0'
-    OB_PKG_OPENLDAP_VER='-2.4.43'
-    OB_PKG_PHP_VER='-5.6.18'
-    OB_PKG_NGINX_VER='-1.9.10'
-    OB_PKG_MEMCACHED_VER='-1.4.24'
+    OB_PKG_POSTFIX_VER='-3.1.1p0'
+    OB_PKG_OPENLDAP_SERVER_VER='-2.4.44p0'
+    OB_PKG_OPENLDAP_CLIENT_VER='-2.4.44'
+    OB_PKG_PHP_VER='-7.0.8p0'
+    OB_PKG_NGINX_VER='-1.10.1'
+    OB_PKG_MEMCACHED_VER='-1.4.25p0'
 
     # Enable syslog or rsyslog.
     if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -88,10 +89,10 @@ install_all()
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
-                ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_VER}"
+                ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_SERVER_VER}"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
             elif [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-                ALL_PKGS="${ALL_PKGS} openldap-client${OB_PKG_OPENLDAP_VER}"
+                ALL_PKGS="${ALL_PKGS} openldap-client${OB_PKG_OPENLDAP_CLIENT_VER}"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${LDAPD_RC_SCRIPT_NAME}"
             fi
 
@@ -301,7 +302,7 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-Mail-SpamAssassin clamav unrar"
+        ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-Mail-SpamAssassin clamav clamav-unofficial-sigs unrar"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_SERVICE_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
 
@@ -562,10 +563,10 @@ EOF
             ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc >> ${INSTALL_LOG} 2>&1
 
             # Create symbol links for php.
-            ln -sf /usr/local/bin/php-5.? /usr/local/bin/php >> ${INSTALL_LOG} 2>&1
-            ln -sf /usr/local/bin/php-config-5.? /usr/local/bin/php-config >> ${INSTALL_LOG} 2>&1
-            ln -sf /usr/local/bin/phpize-5.? /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1
-            ln -sf /usr/local/bin/php-fpm-5.? /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1
+            ln -sf /usr/local/bin/php-${OB_PHP_VERSION} /usr/local/bin/php >> ${INSTALL_LOG} 2>&1
+            ln -sf /usr/local/bin/php-config-${OB_PHP_VERSION} /usr/local/bin/php-config >> ${INSTALL_LOG} 2>&1
+            ln -sf /usr/local/bin/phpize-${OB_PHP_VERSION} /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1
+            ln -sf /usr/local/bin/php-fpm-${OB_PHP_VERSION} /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1
 
             ECHO_INFO "Installing uWSGI from source tarball, please wait."
             cd ${PKG_MISC_DIR}

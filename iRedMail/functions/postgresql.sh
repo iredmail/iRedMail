@@ -30,7 +30,7 @@
 
 pgsql_initialize()
 {
-    ECHO_INFO "Configure PostgreSQL database server." 
+    ECHO_DEBUG "Initialize PostgreSQL databases."
 
     # Init db
     if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -223,4 +223,15 @@ pgsql_cron_backup()
 EOF
 
     echo 'export status_pgsql_cron_backup="DONE"' >> ${STATUS_FILE}
+}
+
+pgsql_setup()
+{
+    ECHO_INFO "Configure PostgreSQL database server."
+
+    check_status_before_run pgsql_initialize
+    check_status_before_run pgsql_import_vmail_users
+    check_status_before_run pgsql_cron_backup
+
+    echo 'export status_pgsql_setup="DONE"' >> ${STATUS_FILE}
 }

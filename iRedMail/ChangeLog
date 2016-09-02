@@ -1,4 +1,7 @@
 iRedMail-0.9.6:
+    * Supports new distribution release:
+        + OpenBSD 6.0. OpenBSD 5.9 is not supported anymore.
+
     * Improvements:
         - Nginx:
             - Add HSTS header for Roundcube, iRedAdmin, SOGo.
