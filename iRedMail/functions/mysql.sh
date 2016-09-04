@@ -91,21 +91,6 @@ mysql_initialize_db()
         fi
     fi
 
-    # If we're using a remote mysql server: grant access privilege first.
-    if [ X"${USE_EXISTING_MYSQL}" == X'YES' -a X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
-        ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${MYSQL_GRANT_HOST} ..."
-
-        cp -f ${SAMPLE_DIR}/mysql/sql/remote_grant_permission.sql ${RUNTIME_DIR}/
-        perl -pi -e 's#PH_MYSQL_ROOT_USER#$ENV{MYSQL_ROOT_USER}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
-        perl -pi -e 's#PH_MYSQL_GRANT_HOST#$ENV{MYSQL_GRANT_HOST}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
-        perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
-
-        ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/remote_grant_permission.sql;"
-    fi
-
-    ECHO_DEBUG "Delete anonymous database user."
-    ${MYSQL_CLIENT_ROOT} -e "SOURCE ${SAMPLE_DIR}/mysql/sql/delete_anonymous_user.sql;"
-
     cat >> ${TIP_FILE} <<EOF
 MySQL:
     * Root user: ${MYSQL_ROOT_USER}, Password: "${MYSQL_ROOT_PASSWD}" (without quotes)
@@ -119,6 +104,23 @@ MySQL:
 EOF
 
     echo 'export status_mysql_initialize_db="DONE"' >> ${STATUS_FILE}
+}
+
+mysql_grant_permission_on_remote_server()
+{
+    # If we're using a remote mysql server: grant access privilege first.
+    if [ X"${USE_EXISTING_MYSQL}" == X'YES' -a X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
+        ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${MYSQL_GRANT_HOST} ..."
+
+        cp -f ${SAMPLE_DIR}/mysql/sql/remote_grant_permission.sql ${RUNTIME_DIR}/
+        perl -pi -e 's#PH_MYSQL_ROOT_USER#$ENV{MYSQL_ROOT_USER}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
+        perl -pi -e 's#PH_MYSQL_GRANT_HOST#$ENV{MYSQL_GRANT_HOST}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
+        perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
+
+        ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/remote_grant_permission.sql;"
+    fi
+
+    echo 'export status_mysql_grant_permission_on_remote_server="DONE"' >> ${STATUS_FILE}
 }
 
 mysql_generate_defaults_file_root()
@@ -140,6 +142,20 @@ EOF
     chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT}
 
     echo 'export status_mysql_generate_defaults_file_root="DONE"' >> ${STATUS_FILE}
+}
+
+mysql_remove_insecure_data()
+{
+    ECHO_DEBUG "Delete anonymous database user."
+    ${MYSQL_CLIENT_ROOT} -e "SOURCE ${SAMPLE_DIR}/mysql/sql/delete_anonymous_user.sql;"
+
+    ECHO_DEBUG "Disallow remote root login."
+    ${MYSQL_CLIENT_ROOT} -e "DELETE FROM mysql.user WHERE User='root' AND Host<>'localhost'"
+
+    ECHO_DEBUG "Remove 'test' database."
+    ${MYSQL_CLIENT_ROOT} -e "DROP DATABASE test"
+
+    echo 'export status_mysql_remove_insecure_data="DONE"' >> ${STATUS_FILE}
 }
 
 # It's used only when backend is MySQL.
@@ -269,13 +285,15 @@ mysql_setup()
         ECHO_INFO "Configure MySQL database server."
     fi
 
-    check_status_before_run mysql_generate_defaults_file_root
-
     if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
         check_status_before_run mysql_initialize_db
     fi
 
+    check_status_before_run mysql_generate_defaults_file_root
+
     if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
+        check_status_before_run mysql_grant_permission_on_remote_server
+        check_status_before_run mysql_remove_insecure_data
         check_status_before_run mysql_import_vmail_users
     fi
 

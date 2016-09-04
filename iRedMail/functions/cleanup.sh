@@ -325,13 +325,16 @@ cleanup_feedback()
 
 cleanup()
 {
-    # Copy ~/.my.cnf
-    ECHO_DEBUG "Copy file: ${MYSQL_DEFAULTS_FILE_ROOT} -> /root/.my.cnf."
-    cp -f ${MYSQL_DEFAULTS_FILE_ROOT} /root/.my.cnf >> ${INSTALL_LOG} 2>&1
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        # Copy ~/.my.cnf
+        ECHO_DEBUG "Move file: ${MYSQL_DEFAULTS_FILE_ROOT} -> /root/.my.cnf."
+        mv ${MYSQL_DEFAULTS_FILE_ROOT} /root/.my.cnf >> ${INSTALL_LOG} 2>&1
+    fi
 
     # Store iRedMail version number in /etc/iredmail-release
     cat > /etc/${PROG_NAME_LOWERCASE}-release <<EOF
-${PROG_VERSION}     # Get professional upgrade support from iRedMail Team: http://www.iredmail.org/support.html
+${PROG_VERSION} ${BACKEND_ORIG} edition.
+# Get professional upgrade support from iRedMail Team: http://www.iredmail.org/support.html
 EOF
 
     cat <<EOF

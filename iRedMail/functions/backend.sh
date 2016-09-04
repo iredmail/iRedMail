@@ -43,8 +43,9 @@ backend_install()
         check_status_before_run ldap_server_cron_backup
 
         # Initialize MySQL database server.
-        check_status_before_run mysql_generate_defaults_file_root
         check_status_before_run mysql_initialize_db
+        check_status_before_run mysql_generate_defaults_file_root
+        check_status_before_run mysql_remove_insecure_data
         check_status_before_run mysql_cron_backup
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
