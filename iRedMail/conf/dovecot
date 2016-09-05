@@ -104,8 +104,8 @@ export DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE='anyone_shares'
 export DOVECOT_REALTIME_QUOTA_TABLE='used_quota'
 # used_quota table cannot be updated by multiple servers.
 if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-    _suffix="$(echo ${HOSTNAME} | awk -F'.' '{print $1}')"
-    export DOVECOT_REALTIME_QUOTA_TABLE="used_quota_${_suffix}"
+    _hostname_suffix="$(echo ${HOSTNAME} | awk -F'.' '{print $1}')"
+    export DOVECOT_REALTIME_QUOTA_TABLE="used_quota_${_hostname_suffix}"
 fi
 
 if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then

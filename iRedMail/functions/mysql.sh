@@ -149,8 +149,8 @@ mysql_remove_insecure_data()
     ECHO_DEBUG "Delete anonymous database user."
     ${MYSQL_CLIENT_ROOT} -e "SOURCE ${SAMPLE_DIR}/mysql/sql/delete_anonymous_user.sql;"
 
-    ECHO_DEBUG "Disallow remote root login."
-    ${MYSQL_CLIENT_ROOT} -e "DELETE FROM mysql.user WHERE User='root' AND Host<>'localhost'"
+    ECHO_DEBUG "Delete root access with empty passwords."
+    ${MYSQL_CLIENT_ROOT} -e "DELETE FROM mysql.user WHERE User='root' AND Password=''"
 
     ECHO_DEBUG "Remove 'test' database."
     ${MYSQL_CLIENT_ROOT} -e "DROP DATABASE test"
@@ -230,7 +230,8 @@ mysql_create_sql_table_used_quota()
 
     if [ X"${WITH_HAPROXY}" == X'YES' -a X"${INITIALIZE_SQL_DATA}" == X'NO' ]; then
         cp -f ${SAMPLE_DIR}/dovecot/used_quota.mysql ${RUNTIME_DIR}/used_quota.sql
-        # Rename SQL table `vmail.used_quota`
+
+        # Rename SQL table `vmail.used_quota` to `vmail.used_quota_<hostname>`
         perl -pi -e 's#used_quota`#$ENV{DOVECOT_REALTIME_QUOTA_TABLE}`#g' ${RUNTIME_DIR}/used_quota.sql
 
         ${MYSQL_CLIENT_ROOT} -e "USE ${VMAIL_DB_NAME}; SOURCE ${RUNTIME_DIR}/used_quota.sql;"
