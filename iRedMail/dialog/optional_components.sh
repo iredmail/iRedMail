@@ -28,6 +28,11 @@ export DIALOG_SELECTABLE_AWSTATS='YES'
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
 export DIALOG_SELECTABLE_SOGO='YES'
 
+# SOGo team doesn't offer binary packages for arm platform.
+if [ X"${OS_ARCH}" == X'armhf' ]; then
+    export DIALOG_SELECTABLE_SOGO='NO'
+fi
+
 if [ X"${APACHE_VERSION}" == X'2.4' -o X"${WEB_SERVER_IS_NGINX}" == X'YES' ] ;then
     # Apache 2.4 and Nginx don't have SQL/LDAP AUTH module
     export DIALOG_SELECTABLE_AWSTATS='NO'
