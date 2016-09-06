@@ -380,7 +380,7 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
         mtaTransport $ memberOfGroup $ expiredDate $
         lastLoginDate $ lastLoginIP $ lastLoginProtocol $
         preferredLanguage $ disclaimer $ accountSetting $
-        title $ userManager $
+        title $ userManager $ gecos $
         mailWhitelistRecipient $ mailBlacklistRecipient $
         domainGlobalAdmin $ allowNets $ senderRelayHost ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.4 NAME 'mailAlias'
