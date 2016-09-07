@@ -5,7 +5,7 @@
 root PH_SOGO_GNUSTEP_DIR/WebServerResources;
 
 location / {
-    rewrite ^ $scheme://$host/SOGo;
+    rewrite ^ https://$host/SOGo;
 }
 
 # For Mac OS X and iOS devices.
@@ -24,9 +24,9 @@ location ^~ /SOGo {
     proxy_set_header Host $host;
 
     # always use https
-    proxy_set_header x-webobjects-server-port 443;
+    proxy_set_header x-webobjects-server-port $server_port;
     proxy_set_header x-webobjects-server-name $host;
-    proxy_set_header x-webobjects-server-url $scheme://$host;
+    proxy_set_header x-webobjects-server-url https://$host;
 
     proxy_set_header x-webobjects-server-protocol HTTP/1.0;
 }

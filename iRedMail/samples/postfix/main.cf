@@ -174,7 +174,6 @@ smtpd_helo_restrictions =
     permit_mynetworks
     permit_sasl_authenticated
     reject_non_fqdn_helo_hostname
-    reject_invalid_helo_hostname
     reject_unknown_helo_hostname
     check_helo_access pcre:PH_POSTFIX_FILE_HELO_ACCESS
 
