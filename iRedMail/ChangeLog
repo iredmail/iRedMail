@@ -15,10 +15,16 @@ iRedMail-0.9.6:
               Encryption/decryption is done server-side. So, this plugin
               is for users that trust the server.
 
+              If you get error `Identity must have a user name defined` while
+              first trying to generate gpg key, please add a name for your
+              email account in Roundcube: `Settings -> Identities`.
+
         - SOGo:
             - List all contacts by default in SOGo global address book.
 
     * Fixed issues:
+        - Fix the HTTPROXY vulnerability in Apache and Nginx.
+          Reference: https://httpoxy.org/
         - Not convert domain name and email address to lower cases while
           creating mail accounts with scripts tools/create_mail_user_*.
           Thanks Santosh Gupta <head.it _at_ satmatechnologies.com> for the

@@ -42,6 +42,9 @@ apache_config()
         perl -pi -e 's#^(ServerTokens).*#${1} ProductOnly#' ${HTTPD_MOD_CONF_SECURITY}
     fi
 
+    echo '# Block the Proxy header. Reference: https://httpoxy.org/' >> ${HTTPD_CONF}
+    echo 'RequestHeader unset Proxy early' >> ${HTTPD_CONF}
+
     ############
     # SSL
     #

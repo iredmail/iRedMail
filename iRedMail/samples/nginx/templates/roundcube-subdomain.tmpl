@@ -9,11 +9,10 @@ location / {
 
 location ~ \.php$ {
     root            PH_RCM_HTTPD_ROOT_SYMBOL_LINK;
-    include fastcgi_params;
-    fastcgi_pass php_workers;
-    fastcgi_index index.php;
+
+    include PH_NGINX_CONF_TMPL_DIR/fastcgi_php.tmpl;
+
     fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK$fastcgi_script_name;
-    fastcgi_param HTTP_PROXY '';
 }
 
 location ~ ^/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING)$ { deny all; }
