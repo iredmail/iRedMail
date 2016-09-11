@@ -432,8 +432,8 @@ EOF
 *
 * You can login to above links with below credential:
 *
-* - Username: ${SITE_ADMIN_NAME}
-* - Password: ${SITE_ADMIN_PASSWD}
+* - Username: ${FIRST_USER}@${FIRST_DOMAIN}
+* - Password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
 *
 *
 ********************************************************************

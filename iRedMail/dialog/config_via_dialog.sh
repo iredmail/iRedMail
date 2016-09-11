@@ -195,34 +195,16 @@ echo "export LDAP_BINDPW='${LDAP_BINDPW}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export LDAP_ADMIN_PW='${LDAP_ADMIN_PW}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export LDAP_ROOTPW='${LDAP_ROOTPW}'" >> ${IREDMAIL_CONFIG_FILE}
 
-# MySQL root password
-# MYSQL_ROOT_USER is defined in conf/global
-export random_root_pw="$(${RANDOM_STRING})"
-export MYSQL_ROOT_PASSWD="${MYSQL_ROOT_PASSWD:=${random_root_pw}}"
-echo "export MYSQL_ROOT_USER='${MYSQL_ROOT_USER}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export MYSQL_ROOT_PASSWD='${MYSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
-unset random_root_pw
-
-# PostgreSQL root password.
-# PGSQL_ROOT_USER is defined in conf/global
-export PGSQL_ROOT_PASSWD="$(${RANDOM_STRING})"
-echo "export PGSQL_ROOT_USER='${PGSQL_ROOT_USER}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
-
 export BACKUP_DIR="${VMAIL_USER_HOME_DIR}/backup"
-export BACKUP_SCRIPT_LDAP="${BACKUP_DIR}/backup_openldap.sh"
-export BACKUP_SCRIPT_MYSQL="${BACKUP_DIR}/backup_mysql.sh"
-export BACKUP_SCRIPT_PGSQL="${BACKUP_DIR}/backup_pgsql.sh"
-if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-    export BACKUP_SCRIPT_LDAP="${BACKUP_DIR}/backup_ldapd.sh"
-fi
 echo "export BACKUP_DIR='${BACKUP_DIR}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export BACKUP_SCRIPT_LDAP='${BACKUP_SCRIPT_LDAP}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export BACKUP_SCRIPT_MYSQL='${BACKUP_SCRIPT_MYSQL}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export BACKUP_SCRIPT_PGSQL='${BACKUP_SCRIPT_PGSQL}'" >>${IREDMAIL_CONFIG_FILE}
 
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     . ${DIALOG_DIR}/ldap_config.sh
+    . ${DIALOG_DIR}/mysql_config.sh
+elif [ X"${BACKEND}" == X'MYSQL' ]; then
+    . ${DIALOG_DIR}/mysql_config.sh
+elif [ X"${BACKEND}" == X'PGSQL' ]; then
+    . ${DIALOG_DIR}/pgsql_config.sh
 fi
 
 # Virtual domain configuration.

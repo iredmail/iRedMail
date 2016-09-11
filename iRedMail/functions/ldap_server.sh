@@ -133,37 +133,42 @@ ldap_server_config()
 
 ldap_server_cron_backup()
 {
-    ECHO_INFO "Setup daily cron job to backup LDAP data with ${BACKUP_SCRIPT_LDAP}"
+    if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
+        ldap_backup_script="${BACKUP_DIR}/${BACKUP_SCRIPT_LDAP_NAME}"
+    else
+        ldap_backup_script="${BACKUP_DIR}/${BACKUP_SCRIPT_LDAPD_NAME}"
+    fi
+
+    ECHO_INFO "Setup daily cron job to backup LDAP data with ${ldap_backup_script}"
 
     [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} &>/dev/null
 
-    backup_file ${BACKUP_SCRIPT_LDAP}
+    backup_file ${ldap_backup_script}
 
-    backup_script_name="$(basename ${BACKUP_SCRIPT_LDAP})"
-    cp ${TOOLS_DIR}/${backup_script_name} ${BACKUP_SCRIPT_LDAP}
-    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_LDAP}
-    chmod 0500 ${BACKUP_SCRIPT_LDAP}
+    cp ${TOOLS_DIR}/${BACKUP_SCRIPT_LDAP_NAME} ${ldap_backup_script}
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${ldap_backup_script}
+    chmod 0500 ${ldap_backup_script}
 
-    perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_LDAP}
-    perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{IREDADMIN_DB_USER}"#' ${BACKUP_SCRIPT_LDAP}
-    perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{IREDADMIN_DB_PASSWD}"#' ${BACKUP_SCRIPT_LDAP}
+    perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${ldap_backup_script}
+    perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{IREDADMIN_DB_USER}"#' ${ldap_backup_script}
+    perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{IREDADMIN_DB_PASSWD}"#' ${ldap_backup_script}
 
     if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-        perl -pi -e 's#(export LDAP_BASE_DN=).*#${1}"$ENV{LDAP_SUFFIX}"#g' ${BACKUP_SCRIPT_LDAP}
-        perl -pi -e 's#(export LDAP_BIND_DN=).*#${1}"$ENV{LDAP_ROOTDN}"#g' ${BACKUP_SCRIPT_LDAP}
-        perl -pi -e 's#(export LDAP_BIND_PASSWORD=).*#${1}"$ENV{LDAP_ROOTPW}"#g' ${BACKUP_SCRIPT_LDAP}
+        perl -pi -e 's#(export LDAP_BASE_DN=).*#${1}"$ENV{LDAP_SUFFIX}"#g' ${ldap_backup_script}
+        perl -pi -e 's#(export LDAP_BIND_DN=).*#${1}"$ENV{LDAP_ROOTDN}"#g' ${ldap_backup_script}
+        perl -pi -e 's#(export LDAP_BIND_PASSWORD=).*#${1}"$ENV{LDAP_ROOTPW}"#g' ${ldap_backup_script}
     fi
 
     # Add cron job
     cat >> ${CRON_FILE_ROOT} <<EOF
 # ${PROG_NAME}: Backup LDAP data (at 03:00 AM)
-0   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_LDAP}
+0   3   *   *   *   ${SHELL_BASH} ${ldap_backup_script}
 
 EOF
 
     cat >> ${TIP_FILE} <<EOF
 Backup LDAP data:
-    * Script: ${BACKUP_SCRIPT_LDAP}
+    * Script: ${ldap_backup_script}
     * See also:
         # crontab -l -u ${SYS_ROOT_USER}
 

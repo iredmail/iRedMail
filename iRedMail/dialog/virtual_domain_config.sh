@@ -49,11 +49,9 @@ rm -f /tmp/first_domain
 
 #DOMAIN_ADMIN_NAME
 export DOMAIN_ADMIN_NAME='postmaster'
-export SITE_ADMIN_NAME="${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}"
 echo "export DOMAIN_ADMIN_NAME='${DOMAIN_ADMIN_NAME}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export SITE_ADMIN_NAME='${SITE_ADMIN_NAME}'" >>${IREDMAIL_CONFIG_FILE}
 
-# DOMAIN_ADMIN_PASSWD
+# Domain admin password
 while : ; do
     ${DIALOG} \
     --title "Password for the mail domain administrator" \
@@ -71,21 +69,18 @@ WARNING:
 * Sample password: $(${RANDOM_STRING})
 " 20 76 2>/tmp/first_domain_admin_passwd
 
-    DOMAIN_ADMIN_PASSWD="$(cat /tmp/first_domain_admin_passwd)"
+    DOMAIN_ADMIN_PASSWD_PLAIN="$(cat /tmp/first_domain_admin_passwd)"
 
-    [ X"${DOMAIN_ADMIN_PASSWD}" != X"" ] && break
+    [ X"${DOMAIN_ADMIN_PASSWD_PLAIN}" != X"" ] && break
 done
 
-export DOMAIN_ADMIN_PASSWD_PLAIN="${DOMAIN_ADMIN_PASSWD}"
-export SITE_ADMIN_PASSWD="${DOMAIN_ADMIN_PASSWD_PLAIN}"
-echo "export DOMAIN_ADMIN_PASSWD_PLAIN='${DOMAIN_ADMIN_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
-echo "export DOMAIN_ADMIN_PASSWD='${DOMAIN_ADMIN_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
-echo "export SITE_ADMIN_PASSWD='${SITE_ADMIN_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
+export DOMAIN_ADMIN_PASSWD_PLAIN="${DOMAIN_ADMIN_PASSWD_PLAIN}"
+echo "export DOMAIN_ADMIN_PASSWD_PLAIN='${DOMAIN_ADMIN_PASSWD_PLAIN}'" >> ${IREDMAIL_CONFIG_FILE}
 rm -f /tmp/first_domain_admin_passwd
 
 # First mail user and password
 export FIRST_USER="${DOMAIN_ADMIN_NAME}"
-export FIRST_USER_PASSWD="${DOMAIN_ADMIN_PASSWD}"
+export FIRST_USER_PASSWD="${DOMAIN_ADMIN_PASSWD_PLAIN}"
 export FIRST_USER_PASSWD_PLAIN="${DOMAIN_ADMIN_PASSWD_PLAIN}"
 echo "export FIRST_USER='${FIRST_USER}'" >>${IREDMAIL_CONFIG_FILE}
 echo "export FIRST_USER_PASSWD='${FIRST_USER_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}

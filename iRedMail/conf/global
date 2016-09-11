@@ -653,3 +653,9 @@ ping6 -c 1 ::1 &>/dev/null
 if [ X"$?" == X'0' ]; then
     IREDMAIL_HAS_IPV6='YES'
 fi
+
+# Backup script file names.
+export BACKUP_SCRIPT_LDAP_NAME='backup_openldap.sh'
+export BACKUP_SCRIPT_LDAPD_NAME='backup_ldapd.sh'
+export BACKUP_SCRIPT_MYSQL_NAME='backup_mysql.sh'
+export BACKUP_SCRIPT_PGSQL_NAME='backup_pgsql.sh'

@@ -242,25 +242,27 @@ mysql_create_sql_table_used_quota()
 
 mysql_cron_backup()
 {
-    ECHO_INFO "Setup daily cron job to backup SQL databases with ${BACKUP_SCRIPT_MYSQL}"
+    mysql_backup_script="${BACKUP_DIR}/${BACKUP_SCRIPT_MYSQL_NAME}"
+
+    ECHO_INFO "Setup daily cron job to backup SQL databases with ${mysql_backup_script}"
 
     [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} >> ${INSTALL_LOG} 2>&1
 
-    backup_file ${BACKUP_SCRIPT_MYSQL}
-    cp ${TOOLS_DIR}/backup_mysql.sh ${BACKUP_SCRIPT_MYSQL}
-    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_SCRIPT_MYSQL}
-    chmod 0700 ${BACKUP_SCRIPT_MYSQL}
+    backup_file ${mysql_backup_script}
+    cp ${TOOLS_DIR}/${BACKUP_SCRIPT_MYSQL_NAME} ${mysql_backup_script}
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${mysql_backup_script}
+    chmod 0500 ${mysql_backup_script}
 
     export MYSQL_ROOT_PASSWD SQL_BACKUP_DATABASES
-    perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${BACKUP_SCRIPT_MYSQL}
-    perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{MYSQL_ROOT_USER}"#' ${BACKUP_SCRIPT_MYSQL}
-    perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{MYSQL_ROOT_PASSWD}"#' ${BACKUP_SCRIPT_MYSQL}
-    perl -pi -e 's#^(export DATABASES=)(.*)#${1}"$ENV{SQL_BACKUP_DATABASES}"#' ${BACKUP_SCRIPT_MYSQL}
+    perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${mysql_backup_script}
+    perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{MYSQL_ROOT_USER}"#' ${mysql_backup_script}
+    perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{MYSQL_ROOT_PASSWD}"#' ${mysql_backup_script}
+    perl -pi -e 's#^(export DATABASES=)(.*)#${1}"$ENV{SQL_BACKUP_DATABASES}"#' ${mysql_backup_script}
 
     # Add cron job
     cat >> ${CRON_FILE_ROOT} <<EOF
 # ${PROG_NAME}: Backup MySQL databases on 03:30 AM
-30   3   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_MYSQL}
+30   3   *   *   *   ${SHELL_BASH} ${mysql_backup_script}
 
 EOF
 
@@ -270,7 +272,7 @@ EOF
 
     cat >> ${TIP_FILE} <<EOF
 Backup MySQL database:
-    * Script: ${BACKUP_SCRIPT_MYSQL}
+    * Script: ${mysql_backup_script}
     * See also:
         # crontab -l -u ${SYS_ROOT_USER}
 EOF
