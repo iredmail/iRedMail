@@ -2,6 +2,9 @@
 ldap_generate_populate_ldif()
 {
     ECHO_DEBUG "Generate LDIF file used to populate LDAP tree."
+
+    export LDAP_SUFFIX_MAJOR="$(echo ${LDAP_SUFFIX} | sed -e 's/dc=//g' -e 's/,/./g' | awk -F'.' '{print $1}')"
+
     cat > ${LDAP_INIT_LDIF} <<EOF
 dn: ${LDAP_SUFFIX}
 objectclass: dcObject
@@ -134,9 +137,9 @@ ldap_server_config()
 ldap_server_cron_backup()
 {
     if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-        ldap_backup_script="${BACKUP_DIR}/${BACKUP_SCRIPT_LDAP_NAME}"
-    else
         ldap_backup_script="${BACKUP_DIR}/${BACKUP_SCRIPT_LDAPD_NAME}"
+    else
+        ldap_backup_script="${BACKUP_DIR}/${BACKUP_SCRIPT_LDAP_NAME}"
     fi
 
     ECHO_INFO "Setup daily cron job to backup LDAP data with ${ldap_backup_script}"

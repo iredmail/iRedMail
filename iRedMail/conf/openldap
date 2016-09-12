@@ -125,7 +125,8 @@ export OPENLDAP_LOGFILE='/var/log/openldap.log'
 export OPENLDAP_LOGROTATE_FILE="${LOGROTATE_DIR}/openldap"
 
 # LDAP data directory.
-export LDAP_DATA_DIR="${OPENLDAP_DATA_DIR}/${dn2dnsname}"
+export ldap_suffix_to_domain_name="$(echo ${LDAP_SUFFIX} | sed -e 's/dc=//g' -e 's/,/./g')"
+export LDAP_DATA_DIR="${OPENLDAP_DATA_DIR}/${ldap_suffix_to_domain_name}"
 
 # Setting for one instance. You can edit ${OPENLDAP_SLAPD_CONF} manually to hold
 # multi instances.
@@ -138,6 +139,9 @@ export LDAP_IREDMAIL_SCHEMA="${SAMPLE_DIR}/iredmail/iredmail.schema"
 
 # Domain admin related.
 export LDAP_ATTR_DOMAINADMIN_DN_NAME='domainAdmins'
+
+# Container which includes all mail accounts: o=domains,dc=xx,dc=xx
+export LDAP_BASEDN_NAME='domains'
 
 # Domain related attributes.
 export LDAP_ATTR_DOMAIN_RDN='domainName'
@@ -159,3 +163,9 @@ export LDAP_ATTR_USER_RDN='mail'
 if [ X"${BACKEND}" == X'OPENLDAP' -a X"${OPENLDAP_HAS_SHA2}" != X'YES' ]; then
     export DEFAULT_PASSWORD_SCHEME='SSHA'
 fi
+
+export LDAP_BINDDN="cn=${VMAIL_USER_NAME},${LDAP_SUFFIX}"
+export LDAP_ADMIN_DN="cn=${VMAIL_DB_ADMIN_USER},${LDAP_SUFFIX}"
+export LDAP_ROOTDN="cn=Manager,${LDAP_SUFFIX}"
+export LDAP_BASEDN="o=${LDAP_BASEDN_NAME},${LDAP_SUFFIX}"
+export LDAP_ADMIN_BASEDN="o=${LDAP_ATTR_DOMAINADMIN_DN_NAME},${LDAP_SUFFIX}"

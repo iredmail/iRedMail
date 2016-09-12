@@ -85,7 +85,16 @@ mysql_initialize_db()
             #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
 
             ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
-            mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+            #mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+
+            mysql -u ${MYSQL_ROOT_USER} -e "DESC mysql.user" | grep '\<Password\>' &>/dev/null
+            if [ X"$?" == X'0' ]; then
+                # MySQL 5.6 and earlier
+                mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+            else
+                # MySQL 5.7 and later.
+                mysql -u${MYSQL_ROOT_USER} -e "UPDATE mysql.user SET authentication_string = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
+            fi
         else
             ECHO_DEBUG "MySQL root password is not empty, not reset."
         fi
@@ -149,11 +158,24 @@ mysql_remove_insecure_data()
     ECHO_DEBUG "Delete anonymous database user."
     ${MYSQL_CLIENT_ROOT} -e "SOURCE ${SAMPLE_DIR}/mysql/sql/delete_anonymous_user.sql;"
 
-    ECHO_DEBUG "Delete root access with empty passwords."
-    ${MYSQL_CLIENT_ROOT} -e "DELETE FROM mysql.user WHERE User='root' AND Password=''"
+    # Delete root access with empty passwords
+    ${MYSQL_CLIENT_ROOT} -e "DESC mysql.user" | grep '\<Password\>' &>/dev/null
+    if [ X"$?" == X'0' ]; then
+        ECHO_DEBUG "Delete root access with empty passwords."
+        ${MYSQL_CLIENT_ROOT} -e "DELETE FROM mysql.user WHERE User='root' AND Password=''"
+    fi
 
-    ECHO_DEBUG "Remove 'test' database."
-    ${MYSQL_CLIENT_ROOT} -e "DROP DATABASE test"
+    ${MYSQL_CLIENT_ROOT} -e "DESC mysql.user" | grep '\<Password\>' &>/dev/null
+    if [ X"$?" == X'0' ]; then
+        ECHO_DEBUG "Delete root access with empty passwords."
+        ${MYSQL_CLIENT_ROOT} -e "DELETE FROM mysql.user WHERE User='root' AND Password=''"
+    fi
+
+    ${MYSQL_CLIENT_ROOT} -e "SHOW DATABASES" | grep '\<test\>' &>/dev/null
+    if [ X"$?" == X'0' ]; then
+        ECHO_DEBUG "Remove 'test' database."
+        ${MYSQL_CLIENT_ROOT} -e "DROP DATABASE test"
+    fi
 
     echo 'export status_mysql_remove_insecure_data="DONE"' >> ${STATUS_FILE}
 }

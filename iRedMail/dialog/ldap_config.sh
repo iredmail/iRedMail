@@ -44,26 +44,8 @@ generated randomly.
     [ X"${LDAP_SUFFIX}" != X"" ] && break
 done
 
-# Get DNS name derived from ldap suffix.
-export dn2dnsname="$(echo ${LDAP_SUFFIX} | sed -e 's/dc=//g' -e 's/,/./g')"
-
-export LDAP_SUFFIX_MAJOR="$( echo ${dn2dnsname} | awk -F'.' '{print $1}')"
-export LDAP_BINDDN="cn=${VMAIL_USER_NAME},${LDAP_SUFFIX}"
-export LDAP_ADMIN_DN="cn=${VMAIL_DB_ADMIN_USER},${LDAP_SUFFIX}"
-export LDAP_ROOTDN="cn=Manager,${LDAP_SUFFIX}"
-export LDAP_BASEDN_NAME='domains'
-export LDAP_BASEDN="o=${LDAP_BASEDN_NAME},${LDAP_SUFFIX}"
-export LDAP_ADMIN_BASEDN="o=${LDAP_ATTR_DOMAINADMIN_DN_NAME},${LDAP_SUFFIX}"
 rm -f /tmp/ldap_suffix
 
 cat >> ${IREDMAIL_CONFIG_FILE} <<EOF
-export dn2dnsname="${dn2dnsname}"
 export LDAP_SUFFIX="${LDAP_SUFFIX}"
-export LDAP_SUFFIX_MAJOR="${LDAP_SUFFIX_MAJOR}"
-export LDAP_BINDDN="cn=${VMAIL_USER_NAME},${LDAP_SUFFIX}"
-export LDAP_ADMIN_DN="${LDAP_ADMIN_DN}"
-export LDAP_ROOTDN="cn=Manager,${LDAP_SUFFIX}"
-export LDAP_BASEDN_NAME="domains"
-export LDAP_BASEDN="o=${LDAP_BASEDN_NAME},${LDAP_SUFFIX}"
-export LDAP_ADMIN_BASEDN="o=${LDAP_ATTR_DOMAINADMIN_DN_NAME},${LDAP_SUFFIX}"
 EOF

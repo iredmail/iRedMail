@@ -75,8 +75,11 @@ export CMD_MYSQL='mysql'
 
 # MySQL user and password, used to log backup status to sql table `iredadmin.log`.
 # You can find password of SQL user 'iredadmin' in iRedAdmin config file 'settings.py'.
-export MYSQL_USER='iredadmin'
+#
+# If MYSQL_PASSWD is empty, read password from /root/.my.cnf instead.
+export MYSQL_USER='root'
 export MYSQL_PASSWD=''
+export MYSQL_DOT_MY_CNF='/root/.my.cnf'
 
 if [ -f /etc/ldap/slapd.conf ]; then
     export CMD_SLAPCAT='slapcat -f /etc/ldap/slapd.conf'
@@ -160,9 +163,15 @@ fi
 
 # Log to SQL table `iredadmin.log`, so that global domain admins can
 # check backup status (System -> Admin Log)
-if [ -n ${MYSQL_USER} ] && [ -n ${MYSQL_PASSWD} ]; then
-    ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}" >>${LOGFILE} 2>&1
+if [[ -n ${MYSQL_USER} ]]; then
+    if [[ -n ${MYSQL_PASSWD} ]]; then
+        export CMD_MYSQL_ROOT="${CMD_MYSQL} -u'${MYSQL_USER}' -p'${MYSQL_PASSWD}'"
+    else
+        export CMD_MYSQL_ROOT="${CMD_MYSQL} --defaults-file=${MYSQL_DOT_MY_CNF} -u'${MYSQL_USER}'"
+    fi
 fi
+
+${CMD_MYSQL_ROOT} iredadmin -e "${sql_log_msg}" >>${LOGFILE} 2>&1
 
 # Append file size of backup files to log file.
 echo "* File size:" >>${LOGFILE}
@@ -184,7 +193,7 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
 
     if [ -n ${MYSQL_USER} ] && [ -n ${MYSQL_PASSWD} ]; then
         sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUPS}.', 'cron_backup_sql', '127.0.0.1', NOW());"
-        ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
+        ${CMD_MYSQL_ROOT} iredadmin -e "${sql_log_msg}"
     fi
 fi
 
