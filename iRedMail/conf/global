@@ -271,7 +271,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         #   - 14.04: trusty
         #   - 16.04: xenial
         export DISTRO_VERSION="$(awk -F'=' '/^DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)"
-        export DISTRO_CODENAME="$(awk -F'=' '/^DISTRIB_CODENAME {print $2}')"
+        export DISTRO_CODENAME="$(awk -F'=' '/^DISTRIB_CODENAME {print $2}' /etc/lsb-release)"
 
         # Unsupported releases: 12.x, 13.x, 14.10, 15.x
         if echo "${DISTRO_VERSION}" | grep -E '^(12|13|14\.10|15\.)' &>/dev/null ; then
