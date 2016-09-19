@@ -270,8 +270,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Ubuntu version number and code name:
         #   - 14.04: trusty
         #   - 16.04: xenial
-        export DISTRO_VERSION="$(grep 'DISTRIB_RELEASE' /etc/lsb-release | awk -F'=' '{print $2}')"
-        export DISTRO_CODENAME="$(grep 'DISTRIB_CODENAME' /etc/lsb-release | awk -F'=' '{print $2}')"
+        export DISTRO_VERSION="$(awk -F'=' '/^DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)"
+        export DISTRO_CODENAME="$(awk -F'=' '/^DISTRIB_CODENAME {print $2}')"
 
         # Unsupported releases: 12.x, 13.x, 14.10, 15.x
         if echo "${DISTRO_VERSION}" | grep -E '^(12|13|14\.10|15\.)' &>/dev/null ; then
@@ -618,7 +618,7 @@ export TLS_ADMIN="root@${HOSTNAME}"
 
 # Default SSL key size in bits
 export SSL_KEY_SIZE='2048'
-default_ssl_key_size="$(grep '^default_bits' ${OPENSSL_CONF} 2>/dev/null | awk -F'=' '{print $2}' | awk '{print $1}')"
+default_ssl_key_size="$(awk '/^default_bits/ {print $3}' ${OPENSSL_CONF})"
 if [ -z ${default_ssl_key_size} ]; then
     :
 elif [ ${default_ssl_key_size} -ge ${SSL_KEY_SIZE} ]; then
@@ -627,7 +627,7 @@ fi
 
 # Location of sshd_config
 export SSHD_CONFIG='/etc/ssh/sshd_config'
-export SSHD_PORT="$(grep '^Port' ${SSHD_CONFIG} | awk '{print $2}' )"
+export SSHD_PORT="$(awk '/^Port/ {print $2}' ${SSHD_CONFIG})"
 if [ X"${SSHD_PORT}" == X'' ]; then
     # No port number defined, use default port number (22).
     export SSHD_PORT='22'
