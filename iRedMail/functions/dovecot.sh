@@ -212,8 +212,15 @@ dovecot_config()
         perl -pi -e 's/^#(iterate_.*)/${1}/' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#(.*mailbox.)(enable.*Lc)(=1)#${1}`${2}`${3}#' ${DOVECOT_MYSQL_CONF}
 
+        if [ X"${WITH_HAPROXY}" == X'YES' \
+            -a X"${WITH_MYSQL_CLUSTER}" == X'YES' \
+            -a X"${SQL_SERVER_ADDRESS}" != '127.0.0.1' ]; then
+            # Use both local (first) and cluster as failover
+            perl -pi -e 's#PH_SQL_SERVER_ADDRESS#127.0.0.1 host=$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_MYSQL_CONF}
+        else
+            perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_MYSQL_CONF}
+        fi
         perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
-        perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_MYSQL_CONF}

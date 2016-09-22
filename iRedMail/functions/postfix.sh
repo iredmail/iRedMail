@@ -235,7 +235,14 @@ postfix_config_vhost()
         perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         # SQL server, port, bind username, password
-        perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        if [ X"${WITH_HAPROXY}" == X'YES' \
+            -a X"${WITH_MYSQL_CLUSTER}" == X'YES' \
+            -a X"${SQL_SERVER_ADDRESS}" != '127.0.0.1' ]; then
+            # Use both local (first) and cluster as failover
+            perl -pi -e 's#PH_SQL_SERVER_ADDRESS#127.0.0.1 $ENV{SQL_SERVER_ADDRESS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        else
+            perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        fi
         perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#g' ${POSTFIX_LOOKUP_DIR}/*.cf

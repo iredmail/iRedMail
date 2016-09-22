@@ -14,7 +14,7 @@ $log_templ = '
 OTHER|CLEAN|MTA-BLOCKED|OVERSIZED|BAD-HEADER-[:ccat|minor]|SPAMMY|SPAM|\
 UNCHECKED[?[:ccat|minor]||-ENCRYPTED|]|BANNED (%F)|INFECTED (%V)]#
  {[:actions_performed]}#
-,[?%p|| %p][?%a||[?%l|| LOCAL] [:client_addr_port]][?%e|| \[%e\]] [:mail_addr_decode_octets|%s] -> [%D|[:mail_addr_decode_octets|%D]|,]#
+,[?%p|| %p][?%a||[?%l|| LOCAL] [:client_addr_port]][?%e|| \[%e\]] %s -> [%D|,]#
 [? %q ||, quarantine: %q]#
 [? %Q ||, Queue-ID: %Q]#
 [? %m ||, Message-ID: [:mail_addr_decode_octets|%m]]#
@@ -37,7 +37,7 @@ UNCHECKED[?[:ccat|minor]||-ENCRYPTED|]|BANNED (%F)|INFECTED (%V)]#
 OTHER|CLEAN|MTA-BLOCKED|OVERSIZED|BAD-HEADER-[:ccat|minor]|SPAMMY|SPAM|\
 UNCHECKED[?[:ccat|minor]||-ENCRYPTED|]|BANNED (%F)|INFECTED (%V)]#
  {[:actions_performed]}#
-,[?%p|| %p][?%a||[?%l|| LOCAL] [:client_addr_port]][?%e|| \[%e\]] [:mail_addr_decode_octets|%s] -> [%O|[:mail_addr_decode_octets|%O]|,]#
+,[?%p|| %p][?%a||[?%l|| LOCAL] [:client_addr_port]][?%e|| \[%e\]] %s -> [%D|,]#
 [? %q ||, quarantine: %q]#
 [? %Q ||, Queue-ID: %Q]#
 [? %m ||, Message-ID: [:mail_addr_decode_octets|%m]]#
