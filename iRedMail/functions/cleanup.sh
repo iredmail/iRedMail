@@ -334,7 +334,7 @@ cleanup()
     # Store iRedMail version number in /etc/iredmail-release
     cat > /etc/${PROG_NAME_LOWERCASE}-release <<EOF
 ${PROG_VERSION} ${BACKEND_ORIG} edition.
-# Get professional upgrade support from iRedMail Team: http://www.iredmail.org/support.html
+# Get professional support from iRedMail Team: http://www.iredmail.org/support.html
 EOF
 
     cat <<EOF

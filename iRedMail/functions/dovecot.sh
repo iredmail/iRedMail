@@ -212,29 +212,7 @@ dovecot_config()
         perl -pi -e 's/^#(iterate_.*)/${1}/' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#(.*mailbox.)(enable.*Lc)(=1)#${1}`${2}`${3}#' ${DOVECOT_MYSQL_CONF}
 
-        if [ X"${WITH_MYSQL_CLUSTER}" == X'YES' -a X"${SQL_SERVER_ADDRESS}" != '127.0.0.1' ]; then
-            #
-            # Use all mysql cluster members for fail-over
-            #
-            # Make sure it contains valid hostnames or IP addresses.
-            if echo "${MYSQL_CLUSTER_MEMBERS}" | grep -i '[a-z0-9]' &>/dev/null; then
-                export _servers=''
-
-                # List all servers.
-                for host in ${MYSQL_CLUSTER_MEMBERS}; do
-                    _servers="${_servers} host=${host}"
-                done
-
-                perl -pi -e 's#PH_SQL_SERVER_ADDRESS#127.0.0.1 host=$ENV{SQL_SERVER_ADDRESS} $ENV{_servers}#' ${DOVECOT_MYSQL_CONF}
-
-                unset _servers
-            else
-                # simply use the non-local sql server address
-                perl -pi -e 's#PH_SQL_SERVER_ADDRESS#127.0.0.1 host=$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_MYSQL_CONF}
-            fi
-        else
-            perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_MYSQL_CONF}
-        fi
+        perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_MYSQL_CONF}

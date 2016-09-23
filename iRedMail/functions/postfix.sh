@@ -235,30 +235,7 @@ postfix_config_vhost()
         perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         # SQL server, port, bind username, password
-        if [ X"${WITH_MYSQL_CLUSTER}" == X'YES' -a X"${SQL_SERVER_ADDRESS}" != '127.0.0.1' ]; then
-            # Use both local (first) and cluster as failover
-            #
-            # Use all mysql cluster members for fail-over
-            #
-            # Make sure it contains valid hostnames or IP addresses.
-            if echo "${MYSQL_CLUSTER_MEMBERS}" | grep -i '[a-z0-9]' &>/dev/null; then
-                export _servers=''
-
-                # List all servers.
-                for host in ${MYSQL_CLUSTER_MEMBERS}; do
-                    _servers="${_servers} ${host}"
-                done
-
-                perl -pi -e 's#PH_SQL_SERVER_ADDRESS#127.0.0.1 $ENV{SQL_SERVER_ADDRESS} $ENV{_servers}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
-
-                unset _servers
-            else
-                # simply use the non-local sql server address
-                perl -pi -e 's#PH_SQL_SERVER_ADDRESS#127.0.0.1 $ENV{SQL_SERVER_ADDRESS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
-            fi
-        else
-            perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
-        fi
+        perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
