@@ -180,7 +180,11 @@ export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 
 # Command used to genrate a random string.
 # Usage: str="$(${RANDOM_STRING})"
-export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 30)'
+if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+    export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 30)'
+else
+    export RANDOM_STRING='eval echo $RANDOM | md5'
+fi
 
 # command: dialog.
 export BIN_DIALOG="dialog"
@@ -327,8 +331,6 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export RC_CONF_LOCAL='/etc/rc.conf.local'
     export SHELL_BASH='/usr/local/bin/bash'
     export PYTHON_BIN='/usr/local/bin/python'
-
-    export RANDOM_STRING='eval echo $RANDOM | md5'
 
     # Unsupported release: 5.7 and earlier versions.
     if echo "${DISTRO_VERSION}" | grep '^5.[1234567]' &>/dev/null ; then
