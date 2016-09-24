@@ -188,11 +188,11 @@ EOF
                     ;;
             esac
         else
-            ECHO_INFO "Found, but not finished."
+            ECHO_INFO "Found, but not finished. Launching installation wizard to generate one."
             . ${CONFIG_VIA_DIALOG}
         fi
     else
-        ECHO_INFO "[NOT FOUND]"
+        ECHO_INFO "NOT FOUND. Launching installation wizard to generate one."
         . ${CONFIG_VIA_DIALOG}
     fi
 }
