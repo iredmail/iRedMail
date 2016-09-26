@@ -2,7 +2,7 @@
 [DEFAULT]
 # time is in seconds. 3600 = 1 hour, 86400 = 24 hours (1 day)
 findtime    = 3600
-bantime     = 86400
+bantime     = 3600
 maxretry    = 5
 ignoreip    = PH_LOCAL_ADDRESS 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
 
