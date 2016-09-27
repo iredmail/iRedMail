@@ -58,7 +58,7 @@ dovecot_config()
 
     if [ X"${WITH_HAPROXY}" == X'YES' ]; then
         # Listen on all local addresses
-        perl -pi -e 's/address = PH_MANAGESIEVE_BIND_HOST/#address = $ENV{MANAGESIEVE_BIND_HOST}#g' ${DOVECOT_CONF}
+        perl -pi -e 's/address = PH_MANAGESIEVE_BIND_HOST/#address = $ENV{MANAGESIEVE_BIND_HOST}/g' ${DOVECOT_CONF}
     else
         perl -pi -e 's#PH_MANAGESIEVE_BIND_HOST#$ENV{MANAGESIEVE_BIND_HOST}#g' ${DOVECOT_CONF}
     fi
