@@ -146,6 +146,12 @@ dovecot_config()
 
     # LMTP
     perl -pi -e 's#PH_DOVECOT_LMTP_LOG_FILE#$ENV{DOVECOT_LMTP_LOG_FILE}#' ${DOVECOT_CONF}
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        # Listen on all local addresses
+        perl -pi -e 's/address = PH_LMTP_BIND_ADDRESS/#address = $ENV{LMTP_BIND_ADDRESS}/g' ${DOVECOT_CONF}
+    else
+        perl -pi -e 's#PH_LMTP_BIND_ADDRESS#$ENV{LMTP_BIND_ADDRESS}#g' ${DOVECOT_CONF}
+    fi
 
     # SSL.
     perl -pi -e 's#PH_SSL_CERT#$ENV{SSL_CERT_FILE}#' ${DOVECOT_CONF}
