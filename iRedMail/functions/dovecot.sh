@@ -368,13 +368,12 @@ EOF
     fi
 
     # HAProxy support
-    if [ X"${WITH_HAPROXY}" == X'YES' -a -n X"${HAPROXY_SERVERS}" ]; then
-        # Additional settings for HAProxy support
-        #cat ${SAMPLE_DIR}/dovecot/dovecot-haproxy.conf >> ${DOVECOT_CONF}
-
-        # Specify IP addresses of HAProxy servers
-        perl -pi -e "s/^(haproxy_trusted_networks =).*/\${1} ${HAPROXY_SERVERS}/" ${DOVECOT_CONF}
-    fi
+    #if [ X"${WITH_HAPROXY}" == X'YES' -a -n X"${HAPROXY_SERVERS}" ]; then
+    #    # Additional settings for HAProxy support
+    #    cat ${SAMPLE_DIR}/dovecot/dovecot-haproxy.conf >> ${DOVECOT_CONF}
+    #    # Specify IP addresses of HAProxy servers
+    #    perl -pi -e "s/^(haproxy_trusted_networks =).*/\${1} ${HAPROXY_SERVERS}/" ${DOVECOT_CONF}
+    #fi
 
     # NFS storage support
     if [ X"${WITH_NFS_STORAGE}" == X'YES' ]; then
