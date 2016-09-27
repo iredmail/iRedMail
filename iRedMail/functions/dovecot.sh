@@ -56,8 +56,13 @@ dovecot_config()
     # Service listen addresses and ports.
     perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#g' ${DOVECOT_CONF}
 
-    perl -pi -e 's#PH_MANAGESIEVE_BIND_HOST#$ENV{MANAGESIEVE_BIND_HOST}#g' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_MANAGESIEVE_PORT#$ENV{MANAGESIEVE_PORT}#g' ${DOVECOT_CONF}
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        # Listen on all local addresses
+        perl -pi -e 's/address = PH_MANAGESIEVE_BIND_HOST/#address = $ENV{MANAGESIEVE_BIND_HOST}#g' ${DOVECOT_CONF}
+    else
+        perl -pi -e 's#PH_MANAGESIEVE_BIND_HOST#$ENV{MANAGESIEVE_BIND_HOST}#g' ${DOVECOT_CONF}
+    fi
+    perl -pi -e 's#PH_MANAGESIEVE_BIND_PORT#$ENV{MANAGESIEVE_BIND_PORT}#g' ${DOVECOT_CONF}
 
     # Base directory.
     perl -pi -e 's#PH_BASE_DIR#$ENV{DOVECOT_BASE_DIR}#' ${DOVECOT_CONF}
