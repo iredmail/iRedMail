@@ -157,6 +157,7 @@ dovecot_config()
     else
         perl -pi -e 's#PH_LMTP_BIND_ADDRESS#$ENV{LMTP_BIND_ADDRESS}#g' ${DOVECOT_CONF}
     fi
+    perl -pi -e 's#PH_LMTP_BIND_PORT#$ENV{LMTP_BIND_PORT}#g' ${DOVECOT_CONF}
 
     # SSL.
     perl -pi -e 's#PH_SSL_CERT#$ENV{SSL_CERT_FILE}#' ${DOVECOT_CONF}
