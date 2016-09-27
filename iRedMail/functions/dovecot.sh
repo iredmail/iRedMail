@@ -380,6 +380,19 @@ EOF
     fi
 
     # HAProxy support
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        grep '^service auth' ${DOVECOT_CONF} &>/dev/null
+        if [ X"$?" != X'0' ]; then
+            cat >> ${DOVECOT_CONF} << EOF
+# SASL AUTH service
+service auth {
+    inet_listener {
+        port = 12345
+    }
+}
+EOF
+        fi
+    fi
     #if [ X"${WITH_HAPROXY}" == X'YES' -a -n X"${HAPROXY_SERVERS}" ]; then
     #    # Additional settings for HAProxy support
     #    cat ${SAMPLE_DIR}/dovecot/dovecot-haproxy.conf >> ${DOVECOT_CONF}
