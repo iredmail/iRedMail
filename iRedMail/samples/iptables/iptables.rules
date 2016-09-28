@@ -52,40 +52,23 @@
 # pop3, pop3s
 -A INPUT -p tcp --dport 110 -j ACCEPT
 -A INPUT -p tcp --dport 995 -j ACCEPT
-#-A INPUT -p tcp --dport 10110 -j ACCEPT
 
 # imap, imaps
 -A INPUT -p tcp --dport 143 -j ACCEPT
 -A INPUT -p tcp --dport 993 -j ACCEPT
-#-A INPUT -p tcp --dport 10143 -j ACCEPT
 
 # lmtp
 #-A INPUT -p tcp --dport 24 -j ACCEPT
-#-A INPUT -p tcp --dport 1024 -j ACCEPT
 
 # managesieve
 #-A INPUT -p tcp --dport 4190 -j ACCEPT
-#-A INPUT -p tcp --dport 10419 -j ACCEPT
 
-# Dovecot SASL AUTH service for HAProxy
-#-A INPUT -p tcp --dport 12346 -j ACCEPT
+# Dovecot SASL AUTH service
+#-A INPUT -p tcp --dport 12345 -j ACCEPT
 
 # ldap/ldaps
 #-A INPUT -p tcp --dport 389 -j ACCEPT
 #-A INPUT -p tcp --dport 636 -j ACCEPT
-
-# MySQL service and cluster.
-#   - the regular MySQL port (default 3306)
-#   - port for group (Galera) communication (default 4567)
-#   - port for State Transfer (default 4444)
-#   - port for Incremental State Transfer (default is: port for group communication (4567) + 1 = 4568)
-#
-# Note: Please make sure MySQL service is not binding to localhost with
-#       'bind-address=127.0.0.1'.
-#-A INPUT -p tcp --dport 3306 -j ACCEPT
-#-A INPUT -p tcp --dport 4444 -j ACCEPT
-#-A INPUT -p tcp --dport 4567 -j ACCEPT
-#-A INPUT -p tcp --dport 4568 -j ACCEPT
 
 # PostgreSQL service.
 #-A INPUT -p tcp --dport 5432 -j ACCEPT
@@ -98,14 +81,5 @@
 
 # iRedAPD
 #-A INPUT -p tcp --dport 7777 -j ACCEPT
-
-# ftp.
-#-A INPUT -p tcp --dport 20 -j ACCEPT
-#-A INPUT -p tcp --dport 21 -j ACCEPT
-
-# ejabberd
-#-A INPUT -p tcp --dport 5222 -j ACCEPT
-#-A INPUT -p tcp --dport 5223 -j ACCEPT
-#-A INPUT -p tcp --dport 5280 -j ACCEPT
 
 COMMIT
