@@ -380,7 +380,10 @@ EOF
     fi
 
     # HAProxy support
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+    if [ X"${WITH_HAPROXY}" == X'YES' -a -n X"${HAPROXY_SERVERS}" ]; then
+        perl -pi -e 's/^#(login_trusted_networks =).*/${1} $ENV{HAPROXY_SERVERS}/' ${DOVECOT_CONF}
+        perl -pi -e 's/^#(haproxy_trusted_networks =).*/${1} $ENV{HAPROXY_SERVERS}/' ${DOVECOT_CONF}
+
         grep '^service auth' ${DOVECOT_CONF} &>/dev/null
         if [ X"$?" != X'0' ]; then
             cat >> ${DOVECOT_CONF} << EOF
@@ -393,12 +396,6 @@ service auth {
 EOF
         fi
     fi
-    #if [ X"${WITH_HAPROXY}" == X'YES' -a -n X"${HAPROXY_SERVERS}" ]; then
-    #    # Additional settings for HAProxy support
-    #    cat ${SAMPLE_DIR}/dovecot/dovecot-haproxy.conf >> ${DOVECOT_CONF}
-    #    # Specify IP addresses of HAProxy servers
-    #    perl -pi -e "s/^(haproxy_trusted_networks =).*/\${1} ${HAPROXY_SERVERS}/" ${DOVECOT_CONF}
-    #fi
 
     # NFS storage support
     if [ X"${WITH_NFS_STORAGE}" == X'YES' ]; then

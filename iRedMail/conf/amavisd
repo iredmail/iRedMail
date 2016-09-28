@@ -32,9 +32,6 @@ export AMAVISD_RC_SCRIPT_NAME='amavisd'
 
 export CRON_FILE_AMAVISD="${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER}"
 
-# Num of pre-forked children.
-export AMAVISD_MAX_SERVERS='2'
-
 export AMAVISD_DKIM_DIR="${AMAVISD_DKIM_DIR:=/var/lib/dkim}"
 export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
@@ -117,4 +114,18 @@ if [ X"${WITH_HAPROXY}" == X'YES' ]; then
             export AMAVISD_INET_ACL="${AMAVISD_INET_ACL} ${_host}"
         done
     fi
+fi
+
+# Num of pre-forked children.
+# Try to set it to memory size (in GB)
+export AMAVISD_MAX_SERVERS='2'
+if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+    _mem_size_gb="$(free -g | grep '^Mem:' | awk '{print $2}')"
+    export AMAVISD_MAX_SERVERS="$((${_mem_size_gb} + 1))"
+elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+    _mem_size="$(sysctl hw.realmem | awk '{print $2}')"
+    export AMAVISD_MAX_SERVERS="$((${_mem_size} / 1024 / 1024 / 1024 + 1))"
+elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+    _mem_size="$(sysctl hw.physmem | awk -F'=' '{print $2}')"
+    export AMAVISD_MAX_SERVERS="$((${_mem_size} / 1024 / 1024 / 1024 + 1))"
 fi
