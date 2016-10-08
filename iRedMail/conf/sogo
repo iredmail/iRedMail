@@ -41,6 +41,12 @@ export MEMCACHED_RC_SCRIPT_NAME='memcached'
 export SOGO_BIND_ADDRESS="${LOCAL_ADDRESS:=127.0.0.1}"
 export SOGO_BIND_PORT='20000'
 
+# SMTP port used by SOGo for smtp auth without SSL/TLS support.
+#
+# SOGo doesn't support SMTP auth over TLS or SSL, so if SOGo and Postfix are
+# running on different servers, SOGo needs another smtp port to send email.
+export SOGO_SMTP_PORT="${SOGO_SMTP_PORT:=1025}"
+
 # SOGo proxy timeout (in seconds)
 export SOGO_PROXY_TIMEOUT='3540'
 

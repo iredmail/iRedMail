@@ -159,7 +159,13 @@ sogo_config() {
     perl -pi -e 's#PH_MANAGESIEVE_PORT#$ENV{MANAGESIEVE_PORT}#g' ${SOGO_CONF}
 
     # SMTP server
-    perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${SOGO_CONF}
+    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
+        # SOGo and Postfix are running on different servers.
+        perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}:$ENV{SOGO_SMTP_PORT}#g' ${SOGO_CONF}
+        perl -pi -e 's#(//)(SOGoSMTPAuthenticationType = PLAIN;)#${2}#' ${SOGO_CONF}
+    else
+        perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${SOGO_CONF}
+    fi
 
     # Memcached server
     perl -pi -e 's#PH_MEMCACHED_BIND_HOST#$ENV{MEMCACHED_BIND_HOST}#g' ${SOGO_CONF}
