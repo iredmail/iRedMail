@@ -39,6 +39,11 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
     . ${DIALOG_DIR}/web_applications.sh
 fi
 
+# iRedAdmin. Although it's a web application, but it's also able to run with
+# WSGI server instead of web server.
+LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} iRedAdmin Official_web-based_Admin_Panel on"
+
+# Fail2ban.
 if [ X"${DIALOG_SELECTABLE_FAIL2BAN}" == X'YES' ]; then
     LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Fail2ban Ban_IP_with_too_many_password_failures on"
 fi

@@ -24,7 +24,6 @@
 # Optional web applications: Awstats, Roundcube, SOGo, iRedAdmin
 # ---------------------------------------------------------------
 if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
-    export DIALOG_SELECTABLE_IREDADMIN='YES'
     export DIALOG_SELECTABLE_ROUNDCUBE='YES'
     export DIALOG_SELECTABLE_AWSTATS='YES'
     export DIALOG_SELECTABLE_SOGO='YES'
