@@ -90,8 +90,10 @@ echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${IREDMAIL_CONFIG_FILE}
 # --------------------------------------------------
 # ------------ Default web server ------------------
 # --------------------------------------------------
+export DISABLE_WEB_SERVER='NO'
 export WEB_SERVER_IS_APACHE='NO'
 export WEB_SERVER_IS_NGINX='NO'
+
 if [ X"${DISTRO}" == X'OPENBSD' ]; then
     export WEB_SERVER_IS_NGINX='YES'
 else
@@ -101,9 +103,10 @@ else
         --radiolist "Choose a web server you want to run.
 
 TIP: Use SPACE key to select item." \
-20 76 2 \
+20 76 3 \
 "Nginx" "The fastest web server" "on" \
 "Apache" "The most popular web server" "off" \
+"No web server" "I don't run any web applications" "off" \
 2>/tmp/web_server
 
         web_server_case_sensitive="$(cat /tmp/web_server)"
@@ -111,14 +114,18 @@ TIP: Use SPACE key to select item." \
         [ X"${web_server}" != X"" ] && break
     done
 
-    if [ X"${web_server}" == X'APACHE' ]; then
-        export WEB_SERVER_IS_APACHE='YES'
-    else
-        export WEB_SERVER_IS_NGINX='YES'
-    fi
     rm -f /tmp/web_server
 fi
 
+if [ X"${web_server}" == X'APACHE' ]; then
+    export WEB_SERVER_IS_APACHE='YES'
+elif [ X"${web_server}" == X'APACHE' ]; then
+    export WEB_SERVER_IS_NGINX='YES'
+else
+    export DISABLE_WEB_SERVER='YES'
+fi
+
+echo "export DISABLE_WEB_SERVER='${DISABLE_WEB_SERVER}'" >>${IREDMAIL_CONFIG_FILE}
 echo "export WEB_SERVER_IS_NGINX='${WEB_SERVER_IS_NGINX}'" >>${IREDMAIL_CONFIG_FILE}
 echo "export WEB_SERVER_IS_APACHE='${WEB_SERVER_IS_APACHE}'" >>${IREDMAIL_CONFIG_FILE}
 

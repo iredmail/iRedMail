@@ -3,6 +3,9 @@ iRedMail-0.9.6:
         + OpenBSD 6.0. OpenBSD 5.9 is not supported anymore.
 
     * Improvements:
+        - Installer:
+            + Able to choose not to install web server and web applications.
+
         - Nginx:
             - Add HSTS header for Roundcube, iRedAdmin, SOGo.
             - Add sample config files to run Roundcube, iRedAdmin, SOGo as a

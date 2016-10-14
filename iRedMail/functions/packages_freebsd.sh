@@ -46,6 +46,10 @@ install_all()
         export PREFERRED_MYSQL_VER='55m'
     fi
 
+    if [ X"${USE_RCM}" == X'YES' ]; then
+        export USE_PHP='YES'
+    fi
+
     freebsd_add_make_conf 'OPTIONS_SET' 'SASL'
     #freebsd_add_make_conf 'OPTIONS_UNSET' 'X11'
     freebsd_add_make_conf 'WANT_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
@@ -836,11 +840,6 @@ OPTIONS_FILE_SET+=LINKTHR
 OPTIONS_FILE_UNSET+=ZTS
 EOF
 
-    ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER}"
-    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
-        ALL_PORTS="${ALL_PORTS} www/mod_php${PREFERRED_PHP_VER}"
-    fi
-
     cat > /var/db/ports/lang_php${PREFERRED_PHP_VER}-extensions/options <<EOF
 OPTIONS_FILE_UNSET+=BCMATH
 OPTIONS_FILE_SET+=BZ2
@@ -931,15 +930,23 @@ OPTIONS_FILE_SET+=X11
 OPTIONS_FILE_UNSET+=VPX
 EOF
 
-    # PHP extensions
-    ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext converters/php${PREFERRED_PHP_VER}-mbstring security/php${PREFERRED_PHP_VER}-mcrypt security/php${PREFERRED_PHP_VER}-openssl www/php${PREFERRED_PHP_VER}-session textproc/php${PREFERRED_PHP_VER}-ctype security/php${PREFERRED_PHP_VER}-hash converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom textproc/php${PREFERRED_PHP_VER}-xml"
+    # PHP and extensions
+    if [ X"${USE_PHP}" == X'YES' ]; then
+        ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER}"
 
-    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ALL_PORTS="${ALL_PORTS} net/php${PREFERRED_PHP_VER}-ldap databases/php${PREFERRED_PHP_VER}-mysql databases/php${PREFERRED_PHP_VER}-mysqli"
-    elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        ALL_PORTS="${ALL_PORTS} databases/php${PREFERRED_PHP_VER}-mysql databases/php${PREFERRED_PHP_VER}-mysqli"
-    elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ALL_PORTS="${ALL_PORTS} databases/php${PREFERRED_PHP_VER}-pgsql"
+        ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext converters/php${PREFERRED_PHP_VER}-mbstring security/php${PREFERRED_PHP_VER}-mcrypt security/php${PREFERRED_PHP_VER}-openssl www/php${PREFERRED_PHP_VER}-session textproc/php${PREFERRED_PHP_VER}-ctype security/php${PREFERRED_PHP_VER}-hash converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom textproc/php${PREFERRED_PHP_VER}-xml"
+
+        if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+            ALL_PORTS="${ALL_PORTS} www/mod_php${PREFERRED_PHP_VER}"
+        fi
+
+        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+            ALL_PORTS="${ALL_PORTS} net/php${PREFERRED_PHP_VER}-ldap databases/php${PREFERRED_PHP_VER}-mysql databases/php${PREFERRED_PHP_VER}-mysqli"
+        elif [ X"${BACKEND}" == X'MYSQL' ]; then
+            ALL_PORTS="${ALL_PORTS} databases/php${PREFERRED_PHP_VER}-mysql databases/php${PREFERRED_PHP_VER}-mysqli"
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            ALL_PORTS="${ALL_PORTS} databases/php${PREFERRED_PHP_VER}-pgsql"
+        fi
     fi
 
     cat > /var/db/ports/www_mod_php${PREFERRED_PHP_VER}/options <<EOF

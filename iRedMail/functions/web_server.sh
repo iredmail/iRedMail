@@ -65,10 +65,12 @@ web_server_config()
         check_status_before_run nginx_config
     fi
 
-    . ${FUNCTIONS_DIR}/php.sh
-    check_status_before_run php_config
+    if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
+        . ${FUNCTIONS_DIR}/php.sh
+        check_status_before_run php_config
 
-    check_status_before_run web_server_extra
+        check_status_before_run web_server_extra
+    fi
 
     echo 'export status_web_server_config="DONE"' >> ${STATUS_FILE}
 }

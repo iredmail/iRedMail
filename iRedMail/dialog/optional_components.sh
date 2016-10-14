@@ -23,52 +23,32 @@
 # ----------------------------------------
 # Optional components for special backend.
 # ----------------------------------------
-# Enabled components.
-export DIALOG_SELECTABLE_AWSTATS='YES'
-export DIALOG_SELECTABLE_FAIL2BAN='YES'
-export DIALOG_SELECTABLE_SOGO='YES'
-
-# SOGo team doesn't offer binary packages for arm platform.
-if [ X"${OS_ARCH}" == X'armhf' ]; then
-    export DIALOG_SELECTABLE_SOGO='NO'
-fi
-
-if [ X"${APACHE_VERSION}" == X'2.4' -o X"${WEB_SERVER_IS_NGINX}" == X'YES' ] ;then
-    # Apache 2.4 and Nginx don't have SQL/LDAP AUTH module
-    export DIALOG_SELECTABLE_AWSTATS='NO'
-fi
-
-if [ X"${DISTRO}" == X'FREEBSD' ]; then
-    export DIALOG_SELECTABLE_FAIL2BAN='NO'
-fi
-
-if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
-    export DIALOG_SELECTABLE_AWSTATS='NO'
-fi
-
 # Construct dialog menu list
 # Format: item_name item_descrition on/off
 # Note: item_descrition must be concatenated by '_'.
 export LIST_OF_OPTIONAL_COMPONENTS=''
 
-if [ X"${DIALOG_SELECTABLE_SOGO}" == X'YES' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} SOGo Webmail,_Calendar,_Address_book off"
-fi
-
-if [ X"${DIALOG_SELECTABLE_AWSTATS}" == X'YES' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Awstats Advanced_web_and_mail_log_analyzer on"
-fi
-
 # Fail2ban
+export DIALOG_SELECTABLE_FAIL2BAN='YES'
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export DIALOG_SELECTABLE_FAIL2BAN='NO'
+fi
+
+# Web applications
+if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
+    . ${DIALOG_DIR}/web_applications.sh
+fi
+
 if [ X"${DIALOG_SELECTABLE_FAIL2BAN}" == X'YES' ]; then
     LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Fail2ban Ban_IP_with_too_many_password_failures on"
 fi
 
 export tmp_config_optional_components="${ROOTDIR}/.optional_components"
 
-${DIALOG} \
---title "Optional components" \
---checklist "\
+if echo ${LIST_OF_OPTIONAL_COMPONENTS} | grep 'o' &>/dev/null; then
+    ${DIALOG} \
+    --title "Optional components" \
+    --checklist "\
 * DKIM signing/verification and SPF validation are enabled by default.
 * DNS records for SPF and DKIM are required after installation.
 
@@ -76,13 +56,12 @@ Refer to below file for more detail after installation:
 
 * ${TIP_FILE}
 " 20 76 6 \
-"iRedAdmin" "Official web-based Admin Panel" "on" \
-"Roundcubemail" "WebMail program (PHP, AJAX)" "on" \
 ${LIST_OF_OPTIONAL_COMPONENTS} \
 2>${tmp_config_optional_components}
 
-OPTIONAL_COMPONENTS="$(cat ${tmp_config_optional_components})"
-rm -f ${tmp_config_optional_components} &>/dev/null
+    OPTIONAL_COMPONENTS="$(cat ${tmp_config_optional_components})"
+    rm -f ${tmp_config_optional_components} &>/dev/null
+fi
 
 echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' &>/dev/null
 [ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}
