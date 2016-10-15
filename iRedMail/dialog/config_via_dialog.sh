@@ -106,7 +106,7 @@ TIP: Use SPACE key to select item." \
 20 76 3 \
 "Nginx" "The fastest web server" "on" \
 "Apache" "The most popular web server" "off" \
-"No web server" "I don't run any web applications" "off" \
+"No web server" "I don't need any web applications on this server" "off" \
 2>/tmp/web_server
 
         web_server_case_sensitive="$(cat /tmp/web_server)"
