@@ -35,19 +35,19 @@ install_all()
 
     # Preferred package versions. Don't forget to update DEFAULT_VERSIONS below.
     export PREFERRED_OPENLDAP_VER='24'
-    export PREFERRED_MYSQL_VER='56'
+    export PREFERRED_MYSQL_VER='57'
     export PREFERRED_MARIADB_VER='55'
     export PREFERRED_PGSQL_VER='95'
     export PREFERRED_BDB_VER='5'
     export PREFERRED_APACHE_VER='24'
-    export PREFERRED_PHP_VER='56'
+    export PREFERRED_PHP_VER='70'
 
     if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
         export PREFERRED_MYSQL_VER='55m'
     fi
 
     if [ X"${USE_RCM}" == X'YES' ]; then
-        export USE_PHP='YES'
+        export IREDMAIL_USE_PHP='YES'
     fi
 
     freebsd_add_make_conf 'OPTIONS_SET' 'SASL'
@@ -58,7 +58,7 @@ install_all()
     freebsd_add_make_conf 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
     freebsd_add_make_conf 'APACHE_PORT' "www/apache${PREFERRED_APACHE_VER}"
     freebsd_add_make_conf 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'ssl=openssl python=2.7 python2=2.7 apache=2.4 pgsql=9.5'
+    freebsd_add_make_conf 'DEFAULT_VERSIONS' 'ssl=libressl python=2.7 python2=2.7 apache=2.4 pgsql=9.5 php=7.0'
 
     for p in \
         archivers_p5-Archive-Tar \
@@ -80,7 +80,6 @@ install_all()
         dns_py-dnspython \
         ftp_curl \
         mail_spamassassin \
-        lang_perl5.18 \
         lang_perl5.20 \
         lang_php${PREFERRED_PHP_VER} \
         lang_php${PREFERRED_PHP_VER}-extensions \
@@ -151,19 +150,16 @@ OPTIONS_FILE_SET+=SCRAM
 EOF
 
     # Perl. REQUIRED.
-    cat > /var/db/ports/lang_perl5.18/options <<EOF
+    cat > /var/db/ports/lang_perl5.20/options <<EOF
 OPTIONS_FILE_UNSET+=DEBUG
-OPTIONS_FILE_SET+=GDBM
+OPTIONS_FILE_UNSET+=GDBM
 OPTIONS_FILE_SET+=MULTIPLICITY
 OPTIONS_FILE_SET+=PERL_64BITINT
 OPTIONS_FILE_SET+=PTHREAD
 OPTIONS_FILE_SET+=SITECUSTOMIZE
-OPTIONS_FILE_SET+=USE_PERL
 OPTIONS_FILE_SET+=THREADS
 OPTIONS_FILE_UNSET+=PERL_MALLOC
 EOF
-
-    cp -f /var/db/ports/lang_perl5.18/options /var/db/ports/lang_perl5.20/options
 
     # OpenSLP. DEPENDENCE.
     cat > /var/db/ports/net_openslp/options <<EOF
@@ -354,7 +350,7 @@ OPTIONS_FILE_UNSET+=LDAPS
 OPTIONS_FILE_SET+=LIBSSH2
 OPTIONS_FILE_SET+=PROXY
 OPTIONS_FILE_UNSET+=RTMP
-OPTIONS_FILE_SET+=TLS_SRP
+OPTIONS_FILE_UNSET+=TLS_SRP
 OPTIONS_FILE_UNSET+=GSSAPI_BASE
 OPTIONS_FILE_UNSET+=GSSAPI_HEIMDAL
 OPTIONS_FILE_UNSET+=GSSAPI_MIT
@@ -539,7 +535,7 @@ OPTIONS_FILE_UNSET+=NSS
 OPTIONS_FILE_SET+=IPV6
 OPTIONS_FILE_SET+=DEVRANDOM
 OPTIONS_FILE_SET+=BDB
-OPTIONS_FILE_SET+=GDBM
+OPTIONS_FILE_UNSET+=GDBM
 OPTIONS_FILE_UNSET+=LDAP
 OPTIONS_FILE_UNSET+=MYSQL
 OPTIONS_FILE_UNSET+=NDBM
@@ -835,7 +831,6 @@ OPTIONS_FILE_UNSET+=PHPDBG
 OPTIONS_FILE_UNSET+=DEBUG
 OPTIONS_FILE_UNSET+=DTRACE
 OPTIONS_FILE_SET+=IPV6
-OPTIONS_FILE_UNSET+=MAILHEAD
 OPTIONS_FILE_SET+=LINKTHR
 OPTIONS_FILE_UNSET+=ZTS
 EOF
@@ -931,19 +926,19 @@ OPTIONS_FILE_UNSET+=VPX
 EOF
 
     # PHP and extensions
-    if [ X"${USE_PHP}" == X'YES' ]; then
+    if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER}"
 
-        ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext converters/php${PREFERRED_PHP_VER}-mbstring security/php${PREFERRED_PHP_VER}-mcrypt security/php${PREFERRED_PHP_VER}-openssl www/php${PREFERRED_PHP_VER}-session textproc/php${PREFERRED_PHP_VER}-ctype security/php${PREFERRED_PHP_VER}-hash converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom textproc/php${PREFERRED_PHP_VER}-xml"
+        ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext converters/php${PREFERRED_PHP_VER}-mbstring security/php${PREFERRED_PHP_VER}-mcrypt security/php${PREFERRED_PHP_VER}-openssl www/php${PREFERRED_PHP_VER}-session textproc/php${PREFERRED_PHP_VER}-ctype security/php${PREFERRED_PHP_VER}-hash converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom"
 
         if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
             ALL_PORTS="${ALL_PORTS} www/mod_php${PREFERRED_PHP_VER}"
         fi
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ALL_PORTS="${ALL_PORTS} net/php${PREFERRED_PHP_VER}-ldap databases/php${PREFERRED_PHP_VER}-mysql databases/php${PREFERRED_PHP_VER}-mysqli"
+            ALL_PORTS="${ALL_PORTS} net/php${PREFERRED_PHP_VER}-ldap databases/php${PREFERRED_PHP_VER}-mysqli"
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
-            ALL_PORTS="${ALL_PORTS} databases/php${PREFERRED_PHP_VER}-mysql databases/php${PREFERRED_PHP_VER}-mysqli"
+            ALL_PORTS="${ALL_PORTS} databases/php${PREFERRED_PHP_VER}-mysqli"
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
             ALL_PORTS="${ALL_PORTS} databases/php${PREFERRED_PHP_VER}-pgsql"
         fi

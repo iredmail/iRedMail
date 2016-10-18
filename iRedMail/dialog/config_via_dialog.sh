@@ -66,9 +66,9 @@ NOTES:
 * It cannot be /var/mail (used to store mails sent to system accounts).
 * Mailboxes will be stored under its sub-directory: ${VMAIL_USER_HOME_DIR}/${STORAGE_NODE}/
 * Daily backup of SQL/LDAP databases will be stored under another sub-directory: /var/vmail/backup.
-" 20 76 "${VMAIL_USER_HOME_DIR}" 2>/tmp/vmail_user_home_dir
+" 20 76 "${VMAIL_USER_HOME_DIR}" 2>${RUNTIME_DIR}/.vmail_user_home_dir
 
-    export VMAIL_USER_HOME_DIR="$(cat /tmp/vmail_user_home_dir | tr '[A-Z]' '[a-z]')"
+    export VMAIL_USER_HOME_DIR="$(cat ${RUNTIME_DIR}/.vmail_user_home_dir | tr '[A-Z]' '[a-z]')"
     if echo ${VMAIL_USER_HOME_DIR} | grep -i '^/var/mail\>' &>/dev/null; then
         # Cannot be /var/mail
         :
@@ -77,7 +77,7 @@ NOTES:
     fi
 done
 
-rm -f /tmp/vmail_user_home_dir &>/dev/null
+rm -f ${RUNTIME_DIR}/.vmail_user_home_dir &>/dev/null
 
 export STORAGE_BASE_DIR="${VMAIL_USER_HOME_DIR}"
 export STORAGE_MAILBOX_DIR="${STORAGE_BASE_DIR}/${STORAGE_NODE}"
@@ -107,14 +107,14 @@ TIP: Use SPACE key to select item." \
 "Nginx" "The fastest web server" "on" \
 "Apache" "The most popular web server" "off" \
 "No web server" "I don't need any web applications on this server" "off" \
-2>/tmp/web_server
+2>${RUNTIME_DIR}/.web_server
 
-        web_server_case_sensitive="$(cat /tmp/web_server)"
+        web_server_case_sensitive="$(cat ${RUNTIME_DIR}/.web_server)"
         web_server="$(echo ${web_server_case_sensitive} | tr '[a-z]' '[A-Z]')"
         [ X"${web_server}" != X"" ] && break
     done
 
-    rm -f /tmp/web_server
+    rm -f ${RUNTIME_DIR}/.web_server
 fi
 
 if [ X"${web_server}" == X'APACHE' ]; then
@@ -158,14 +158,14 @@ while : ; do
     --radiolist "It's strongly recommended to choose the one you're farmliar with for easy maintenance. They all use the same webmail (Roundcube) and admin panel (iRedAdmin), and no big feature differences between them.
 
 TIP: Use SPACE key to select item.
-" 20 76 4 ${DIALOG_AVAILABLE_BACKENDS} 2>/tmp/backend
+" 20 76 4 ${DIALOG_AVAILABLE_BACKENDS} 2>${RUNTIME_DIR}/.backend
 
-    BACKEND_ORIG_CASE_SENSITIVE="$(cat /tmp/backend)"
+    BACKEND_ORIG_CASE_SENSITIVE="$(cat ${RUNTIME_DIR}/.backend)"
     BACKEND_ORIG="$(echo ${BACKEND_ORIG_CASE_SENSITIVE} | tr '[a-z]' '[A-Z]')"
     [ X"${BACKEND_ORIG}" != X"" ] && break
 done
 
-rm -f /tmp/backend &>/dev/null
+rm -f ${RUNTIME_DIR}/.backend &>/dev/null
 if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
     export BACKEND='OPENLDAP'
 elif [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then

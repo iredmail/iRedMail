@@ -39,12 +39,12 @@ WARNING:
 * Do *NOT* use double quote (\") in password.
 * EMPTY password is *NOT* permitted.
 * Sample password: $(${RANDOM_STRING})
-" 20 76 2>/tmp/mysql_rootpw
+" 20 76 2>${RUNTIME_DIR}/.mysql_rootpw
 
-    MYSQL_ROOT_PASSWD="$(cat /tmp/mysql_rootpw)"
+    MYSQL_ROOT_PASSWD="$(cat ${RUNTIME_DIR}/.mysql_rootpw)"
 
     [ X"${MYSQL_ROOT_PASSWD}" != X'' ] && break
 done
 
 echo "export MYSQL_ROOT_PASSWD='${MYSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
-rm -f /tmp/mysql_rootpw &>/dev/null
+rm -f ${RUNTIME_DIR}/.mysql_rootpw &>/dev/null

@@ -1,6 +1,7 @@
 iRedMail-0.9.6:
     * Supports new distribution release:
         + OpenBSD 6.0. OpenBSD 5.9 is not supported anymore.
+        + FreeBSD 11.0.
 
     * Improvements:
         - Installer:
@@ -24,6 +25,9 @@ iRedMail-0.9.6:
 
         - SOGo:
             - List all contacts by default in SOGo global address book.
+
+        - FreeBSD:
+            - Switch from OpenSSL to LibreSSL by default.
 
     * Fixed issues:
         - Fix the HTTPROXY vulnerability in Apache and Nginx.
@@ -64,6 +68,9 @@ iRedMail-0.9.6:
         + Roundcube -> 1.2.2
         + iRedAdmin -> 0.6.3
         + uwsgi -> 2.0.14 (OpenBSD only)
+        + FreeBSD:
+            - php-7.0
+            - mysql-5.7
 
 iRedMail-0.9.5-1:
     * Fixed issues:

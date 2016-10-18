@@ -38,9 +38,9 @@ WARNING:
 * Do *NOT* use special characters in password right now. e.g. $, #, @, space.
 * EMPTY password is *NOT* permitted.
 * Sample password: $(${RANDOM_STRING})
-" 20 76 2>/tmp/pgsql_rootpw
+" 20 76 2>${RUNTIME_DIR}/.pgsql_rootpw
 
-    PGSQL_ROOT_PASSWD="$(cat /tmp/pgsql_rootpw)"
+    PGSQL_ROOT_PASSWD="$(cat ${RUNTIME_DIR}/.pgsql_rootpw)"
 
     # Check $, #, space
     echo ${PGSQL_ROOT_PASSWD} | grep '[\$\#\ ]' &>/dev/null
@@ -48,4 +48,4 @@ WARNING:
 done
 
 echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
-rm -f /tmp/pgsql_rootpw
+rm -f ${RUNTIME_DIR}/.pgsql_rootpw

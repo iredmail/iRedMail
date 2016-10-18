@@ -36,16 +36,16 @@ WARNING:
 It can *NOT* be the same as server hostname: ${HOSTNAME}.
 
 We need Postfix to accept emails sent to system accounts (e.g. root), if your mail domain is same as server hostname, Postfix won't accept any email sent to this mail domain.
-" 20 76 2>/tmp/first_domain
+" 20 76 2>${RUNTIME_DIR}/.first_domain
 
-    FIRST_DOMAIN="$(cat /tmp/first_domain | tr [A-Z] [a-z])"
+    FIRST_DOMAIN="$(cat ${RUNTIME_DIR}/.first_domain | tr [A-Z] [a-z])"
 
     echo "${FIRST_DOMAIN}" | grep '\.' &>/dev/null
     [ X"$?" == X"0" -a X"${FIRST_DOMAIN}" != X"${HOSTNAME}" ] && break
 done
 
 echo "export FIRST_DOMAIN='${FIRST_DOMAIN}'" >> ${IREDMAIL_CONFIG_FILE}
-rm -f /tmp/first_domain
+rm -f ${RUNTIME_DIR}/.first_domain
 
 #DOMAIN_ADMIN_NAME
 export DOMAIN_ADMIN_NAME='postmaster'
@@ -67,16 +67,16 @@ WARNING:
 * Do *NOT* use special characters in password right now. e.g. $, #, @.
 * EMPTY password is *NOT* permitted.
 * Sample password: $(${RANDOM_STRING})
-" 20 76 2>/tmp/first_domain_admin_passwd
+" 20 76 2>${RUNTIME_DIR}/.first_domain_admin_passwd
 
-    DOMAIN_ADMIN_PASSWD_PLAIN="$(cat /tmp/first_domain_admin_passwd)"
+    DOMAIN_ADMIN_PASSWD_PLAIN="$(cat ${RUNTIME_DIR}/.first_domain_admin_passwd)"
 
     [ X"${DOMAIN_ADMIN_PASSWD_PLAIN}" != X"" ] && break
 done
 
 export DOMAIN_ADMIN_PASSWD_PLAIN="${DOMAIN_ADMIN_PASSWD_PLAIN}"
 echo "export DOMAIN_ADMIN_PASSWD_PLAIN='${DOMAIN_ADMIN_PASSWD_PLAIN}'" >> ${IREDMAIL_CONFIG_FILE}
-rm -f /tmp/first_domain_admin_passwd
+rm -f ${RUNTIME_DIR}/.first_domain_admin_passwd
 
 # First mail user and password
 export FIRST_USER="${DOMAIN_ADMIN_NAME}"

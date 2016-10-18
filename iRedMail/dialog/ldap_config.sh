@@ -38,13 +38,13 @@ EXAMPLE:
 
 Note: Password for LDAP rootdn (cn=Manager,dc=xx,dc=xx) will be
 generated randomly.
-" 20 76 "dc=example,dc=com" 2>/tmp/ldap_suffix
+" 20 76 "dc=example,dc=com" 2>${RUNTIME_DIR}/.ldap_suffix
 
-    LDAP_SUFFIX="$(cat /tmp/ldap_suffix)"
+    LDAP_SUFFIX="$(cat ${RUNTIME_DIR}/.ldap_suffix)"
     [ X"${LDAP_SUFFIX}" != X"" ] && break
 done
 
-rm -f /tmp/ldap_suffix
+rm -f ${RUNTIME_DIR}/.ldap_suffix
 
 cat >> ${IREDMAIL_CONFIG_FILE} <<EOF
 export LDAP_SUFFIX="${LDAP_SUFFIX}"

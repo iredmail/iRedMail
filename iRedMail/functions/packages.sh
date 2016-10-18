@@ -36,7 +36,7 @@ install_all()
     OB_PKG_MEMCACHED_VER='-1.4.25p0'
 
     if [ X"${USE_RCM}" == X'YES' ]; then
-        export USE_PHP='YES'
+        export IREDMAIL_USE_PHP='YES'
     fi
 
     # Enable syslog or rsyslog.
@@ -177,7 +177,7 @@ install_all()
     fi
 
     # PHP
-    if [ X"${USE_PHP}" == X'YES' ]; then
+    if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} php-common php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
 
@@ -569,7 +569,7 @@ EOF
             ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc >> ${INSTALL_LOG} 2>&1
 
             # Create symbol links for php.
-            if [ X"${USE_PHP}" == X'YES' ]; then
+            if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
                 ln -sf /usr/local/bin/php-${OB_PHP_VERSION} /usr/local/bin/php >> ${INSTALL_LOG} 2>&1
                 ln -sf /usr/local/bin/php-config-${OB_PHP_VERSION} /usr/local/bin/php-config >> ${INSTALL_LOG} 2>&1
                 ln -sf /usr/local/bin/phpize-${OB_PHP_VERSION} /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1

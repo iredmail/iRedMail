@@ -87,13 +87,19 @@ mysql_initialize_db()
             ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
             #mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
 
-            mysql -u ${MYSQL_ROOT_USER} -e "DESC mysql.user" | grep '\<Password\>' &>/dev/null
-            if [ X"$?" == X'0' ]; then
-                # MySQL 5.6 and earlier
-                mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+            if [ X"${DISTRO}" == X'FREEBSD' ]; then
+                # Get initial random root password from /root/.mysql-secret
+                export _mysql_root_pw="$(cat /root/.mysql_secret)"
+                mysqladmin -u${MYSQL_ROOT_USER} -p${_mysql_root_pw} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
             else
-                # MySQL 5.7 and later.
-                mysql -u${MYSQL_ROOT_USER} -e "UPDATE mysql.user SET authentication_string = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
+                mysql -u ${MYSQL_ROOT_USER} -e "DESC mysql.user" | grep '\<Password\>' &>/dev/null
+                if [ X"$?" == X'0' ]; then
+                    # MySQL 5.6 and earlier
+                    mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+                else
+                    # MySQL 5.7 and later.
+                    mysql -u${MYSQL_ROOT_USER} -e "UPDATE mysql.user SET authentication_string = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
+                fi
             fi
         else
             ECHO_DEBUG "MySQL root password is not empty, not reset."
