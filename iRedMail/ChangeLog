@@ -2,6 +2,8 @@ iRedMail-0.9.6:
     * Supports new distribution release:
         + OpenBSD 6.0. OpenBSD 5.9 is not supported anymore.
         + FreeBSD 11.0.
+        + Ubuntu 16.10. WARNING: Ubuntu 16.10 will end of life in July 2017,
+          Ubuntu 16.04 LTS edition is recommended for a production server.
 
     * Improvements:
         - Installer:

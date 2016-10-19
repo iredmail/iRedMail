@@ -77,21 +77,21 @@ mysql_initialize_db()
     sleep 10
 
     if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-        # Try to access without password, set a password if it's empty.
-        mysql -u${MYSQL_ROOT_USER} -e "show databases" >> ${INSTALL_LOG} 2>&1
+        if [ X"${DISTRO}" == X'FREEBSD' ]; then
+            # Get initial random root password from /root/.mysql-secret
+            export _mysql_root_pw="$(tail -1 /root/.mysql_secret)"
+            mysqladmin -u${MYSQL_ROOT_USER} -p${_mysql_root_pw} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+        else
+            # Try to access without password, set a password if it's empty.
+            mysql -u${MYSQL_ROOT_USER} -e "show databases" >> ${INSTALL_LOG} 2>&1
 
-        if [ X"$?" == X'0' ]; then
-            #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
-            #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
+            if [ X"$?" == X'0' ]; then
+                #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
+                #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
 
-            ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
-            #mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+                ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
+                #mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
 
-            if [ X"${DISTRO}" == X'FREEBSD' ]; then
-                # Get initial random root password from /root/.mysql-secret
-                export _mysql_root_pw="$(cat /root/.mysql_secret)"
-                mysqladmin -u${MYSQL_ROOT_USER} -p${_mysql_root_pw} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
-            else
                 mysql -u ${MYSQL_ROOT_USER} -e "DESC mysql.user" | grep '\<Password\>' &>/dev/null
                 if [ X"$?" == X'0' ]; then
                     # MySQL 5.6 and earlier
@@ -100,9 +100,9 @@ mysql_initialize_db()
                     # MySQL 5.7 and later.
                     mysql -u${MYSQL_ROOT_USER} -e "UPDATE mysql.user SET authentication_string = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
                 fi
+            else
+                ECHO_DEBUG "MySQL root password is not empty, not reset."
             fi
-        else
-            ECHO_DEBUG "MySQL root password is not empty, not reset."
         fi
     fi
 

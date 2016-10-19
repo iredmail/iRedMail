@@ -431,6 +431,9 @@ EOF
 EOF
 
     # Logging.
+    perl -pi -e 's/^(\$log_level.*)/#${1}/g' ${AMAVISD_CONF}
+    perl -pi -e 's/^(\$sa_debug.*)/#${1}/g' ${AMAVISD_CONF}
+
     cat >> ${AMAVISD_CONF} <<EOF
 # Amavisd log level. Verbosity: 0, 1, 2, 3, 4, 5, -d.
 \$log_level = 0;
