@@ -69,7 +69,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
     # Copy from example: /usr/local/etc/php.ini-production
     export PHP_INI='/usr/local/etc/php.ini'
-    export PHP_FPM_POOL_WWW_CONF='/usr/local/etc/php-fpm.conf'
+    export PHP_FPM_POOL_WWW_CONF='/usr/local/etc/php-fpm.d/www.conf'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export OB_PHP_VERSION='7.0'
