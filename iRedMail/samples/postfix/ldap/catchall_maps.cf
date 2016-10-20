@@ -7,6 +7,6 @@ bind_dn         = PH_LDAP_BINDDN
 bind_pw         = PH_LDAP_BINDPW
 search_base     = PH_LDAP_BASEDN
 scope           = sub
-query_filter    = (&(objectClass=mailUser)(accountStatus=active)(|(mail=%s)(shadowAddress=%s)))
+query_filter    = (&(objectClass=mailUser)(accountStatus=active)(!(domainStatus=disabled))(|(mail=%s)(shadowAddress=%s)))
 result_attribute= mailForwardingAddress
 debuglevel      = 0

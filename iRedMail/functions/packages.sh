@@ -416,8 +416,10 @@ EOF
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
 
-        if [ X"${DISTRO_CODENAME}" != X'trusty' ]; then
-            ALL_PKGS="${ALL_PKGS} python-pymysql"
+        if [ X"${DISTRO}" == X'UBUNTU' ]; then
+            if [ X"${DISTRO_CODENAME}" != X'trusty' ]; then
+                ALL_PKGS="${ALL_PKGS} python-pymysql"
+            fi
         fi
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then

@@ -56,8 +56,10 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.1.2 NAME 'mtaTransport'
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
     SINGLE-VALUE )
+# When updating 'accountStatus=' for mail domain, must update 'domainStatus'
+# for all mail user/alias/list accounts.
 attributetype ( 1.3.6.1.4.1.32349.1.2.1.3 NAME 'domainStatus'
-    DESC 'Deprecated since iRedMail-0.4.1, use accountStatus instead'
+    DESC 'Domain status, used by mail user/alias/list, not by mail domain itself.'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
@@ -347,7 +349,7 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.1 NAME 'mailDomain'
     MUST ( domainName )
     MAY ( cn $ mtaTransport $ domainAdmin $
         enabledService $ disabledService $
-        domainBackupMX $ domainStatus $ accountStatus $ mailHost $
+        domainBackupMX $ accountStatus $ mailHost $
         domainSenderBccAddress $ domainRecipientBccAddress $
         domainMaxQuotaSize $ domainCurrentQuotaSize $
         domainMaxUserNumber $ domainCurrentUserNumber $
@@ -382,23 +384,25 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
         preferredLanguage $ disclaimer $ accountSetting $
         title $ userManager $
         mailWhitelistRecipient $ mailBlacklistRecipient $
-        domainGlobalAdmin $ allowNets $ senderRelayHost ))
+        domainGlobalAdmin $ allowNets $ senderRelayHost $
+        domainStatus ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.4 NAME 'mailAlias'
     DESC 'Mail Alias Account' SUP top STRUCTURAL
     MUST ( mail )
     MAY ( accountStatus $ description $ cn $ memberOfGroup $
         enabledService $ disabledService $
         mailForwardingAddress $ shadowAddress $ expiredDate $
-        accountSetting $ mailHost ))
+        accountSetting $ mailHost $ domainStatus ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.5 NAME 'mailList'
     DESC 'Mailing List Account' SUP top STRUCTURAL
     MUST ( mail )
     MAY ( cn $ accountStatus $ description $ accessPolicy $ shadowAddress $
         enabledService $ disabledService $ memberOfGroup $ hasMember $
         listAllowedUser $ expiredDate $ accountSetting $ mailHost $
-        memberUid $ gidNumber ))
+        memberUid $ gidNumber $ domainStatus ))
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.6 NAME 'mailExternalUser'
     DESC 'Mail External User' SUP top STRUCTURAL
     MUST ( memberOfGroup )
     MAY ( cn $ accountStatus $ mail $ enabledService $ disabledService $
-        description $ mailHost $ accountSetting $ shadowAddress ))
+        description $ mailHost $ accountSetting $ shadowAddress $
+        domainStatus ))

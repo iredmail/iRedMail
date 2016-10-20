@@ -7,7 +7,7 @@ bind_dn         = PH_LDAP_BINDDN
 bind_pw         = PH_LDAP_BINDPW
 search_base     = PH_LDAP_BASEDN
 scope           = sub
-query_filter    = (&(objectClass=mailUser)(|(mail=%s)(&(enabledService=shadowaddress)(shadowAddress=%s)))(accountStatus=active)(enabledService=mail)(enabledService=deliver))
+query_filter    = (&(objectClass=mailUser)(|(mail=%s)(&(enabledService=shadowaddress)(shadowAddress=%s)))(accountStatus=active)(!(domainStatus=disabled))(enabledService=mail)(enabledService=deliver))
 result_attribute= mailMessageStore
 result_format   = %s/Maildir/
 debuglevel      = 0

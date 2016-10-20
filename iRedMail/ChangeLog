@@ -32,6 +32,8 @@ iRedMail-0.9.6:
             - Switch from OpenSSL to LibreSSL by default.
 
     * Fixed issues:
+        - LDAP backends: mail accounts (user, alias, list) are still active
+          when domain is disabled.
         - Fix the HTTPROXY vulnerability in Apache and Nginx.
           Reference: https://httpoxy.org/
         - Not convert domain name and email address to lower cases while

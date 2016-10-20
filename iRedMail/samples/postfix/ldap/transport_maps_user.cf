@@ -7,6 +7,6 @@ bind_dn         = PH_LDAP_BINDDN
 bind_pw         = PH_LDAP_BINDPW
 search_base     = ou=Users,domainName=%d,PH_LDAP_BASEDN
 scope           = one
-query_filter    = (&(objectClass=mailUser)(mail=%s)(accountStatus=active)(enabledService=mail))
+query_filter    = (&(objectClass=mailUser)(mail=%s)(accountStatus=active)(!(domainStatus=disabled))(enabledService=mail))
 result_attribute= mtaTransport
 debuglevel      = 0
