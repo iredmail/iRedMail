@@ -71,7 +71,7 @@ fi
 # "Using a password on the command line interface can be insecure."
 # File will be copied to /root/.my.cnf after iRedMail installation.
 # WARNING: Do NOT set it to /root/.my.cnf here.
-export MYSQL_DEFAULTS_FILE_ROOT="${ROOTDIR}/.my.cnf-iredmail"
+export MYSQL_DEFAULTS_FILE_ROOT="/root/.my.cnf"
 export MYSQL_CLIENT_ROOT="mysql --defaults-file=${MYSQL_DEFAULTS_FILE_ROOT}"
 
 # Hostname or IP address used in MySQL GRANT command (allow remote access from
