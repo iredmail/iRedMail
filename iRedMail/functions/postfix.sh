@@ -126,12 +126,6 @@ postfix_config_basic()
 
     ECHO_DEBUG "Enable submission and additional transports required by Amavisd and Dovecot."
     cat ${SAMPLE_DIR}/postfix/master.cf >> ${POSTFIX_FILE_MASTER_CF}
-    if [ X"${WITH_HAPROXY}" == X'YES' -a X"${USE_SOGO}" == X'YES' ]; then
-        # Remove the comment marks to enable the transport
-        perl -pi -e 's/^(#1025 1025)(.*)/$ENV{SOGO_SMTP_PORT}${2}/' ${POSTFIX_FILE_MASTER_CF}
-        perl -pi -e 's/^(#1025 )(.*syslog.*postfix/)1025$/$2$ENV{SOGO_SMTP_PORT}/' ${POSTFIX_FILE_MASTER_CF}
-        perl -pi -e 's/^(#1025 )(.*)/$2/g' ${POSTFIX_FILE_MASTER_CF}
-    fi
 
     # set smtp server
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${POSTFIX_FILE_MASTER_CF}

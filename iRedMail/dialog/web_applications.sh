@@ -37,15 +37,6 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
     if [ X"${DISTRO_CODENAME}" == X'yakkety' ]; then
         export DIALOG_SELECTABLE_SOGO='NO'
     fi
-
-    if [ X"${APACHE_VERSION}" == X'2.4' -o X"${WEB_SERVER_IS_NGINX}" == X'YES' ] ;then
-        # Apache 2.4 and Nginx don't have SQL/LDAP AUTH module
-        export DIALOG_SELECTABLE_AWSTATS='NO'
-    fi
-
-    if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
-        export DIALOG_SELECTABLE_AWSTATS='NO'
-    fi
 fi
 
 # iRedAdmin

@@ -27,6 +27,5 @@ optional_components()
     [ X"${USE_SOGO}" == X'YES' ] && check_status_before_run sogo_setup
 
     # Awstats.
-    [ X"${USE_AWSTATS}" == X'YES' -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && \
-        check_status_before_run awstats_setup
+    [ X"${USE_AWSTATS}" == X'YES' ] && check_status_before_run awstats_setup
 }

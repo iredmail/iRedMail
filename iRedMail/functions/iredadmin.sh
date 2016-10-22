@@ -25,7 +25,7 @@ iredadmin_install()
 {
     ECHO_INFO "Configure iRedAdmin (official web-based admin panel)."
 
-    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
         if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ECHO_DEBUG "Enable apache module: wsgi."
             a2enmod wsgi >> ${INSTALL_LOG} 2>&1
@@ -73,7 +73,7 @@ iredadmin_web_config() {
         chown -R ${HTTPD_USER}:${HTTPD_GROUP} settings.py
     fi
 
-    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
         backup_file ${IREDADMIN_HTTPD_CONF}
         ECHO_DEBUG "Create directory alias for iRedAdmin."
 

@@ -708,7 +708,7 @@ EOF
     fi
     rm -f /var/db/ports/www_apache${PREFERRED_APACHE_VER}/options${SED_EXTENSION} &>/dev/null
 
-    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
         ALL_PORTS="${ALL_PORTS} www/apache${PREFERRED_APACHE_VER}"
     fi
 
@@ -817,7 +817,7 @@ OPTIONS_FILE_UNSET+=XRID_HEADER
 OPTIONS_FILE_UNSET+=XSS
 EOF
 
-    if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
+    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         ALL_PORTS="${ALL_PORTS} www/nginx www/uwsgi"
     fi
 
@@ -931,7 +931,7 @@ EOF
 
         ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext converters/php${PREFERRED_PHP_VER}-mbstring security/php${PREFERRED_PHP_VER}-mcrypt security/php${PREFERRED_PHP_VER}-openssl www/php${PREFERRED_PHP_VER}-session textproc/php${PREFERRED_PHP_VER}-ctype security/php${PREFERRED_PHP_VER}-hash converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom"
 
-        if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+        if [ X"${WEB_SERVER}" == X'APACHE' ]; then
             ALL_PORTS="${ALL_PORTS} www/mod_php${PREFERRED_PHP_VER}"
         fi
 
@@ -1055,7 +1055,7 @@ EOF
     fi
 
     # Awstats.
-    if [ X"${USE_AWSTATS}" == X'YES' -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+    if [ X"${USE_AWSTATS}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} www/awstats"
     fi
 
@@ -1094,7 +1094,7 @@ EOF
     ALL_PORTS="${ALL_PORTS} www/webpy"
 
     # iRedAdmin: mod_wsgi
-    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
         ALL_PORTS="${ALL_PORTS} www/mod_wsgi4"
     fi
 

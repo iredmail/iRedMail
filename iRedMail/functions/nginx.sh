@@ -31,7 +31,7 @@ nginx_config()
     backup_file ${NGINX_CONF} ${NGINX_CONF_DEFAULT} ${PHP_FPM_POOL_WWW_CONF}
 
     # Copy sample config files
-    [ ! -d ${NGINX_CONF_DIR} ] && mkdir -p ${NGINX_CONF_DIR}
+    [ ! -d ${HTTPD_CONF_DIR} ] && mkdir -p ${HTTPD_CONF_DIR}
     cp ${SAMPLE_DIR}/nginx/nginx.conf ${NGINX_CONF}
     cp ${SAMPLE_DIR}/nginx/00-default.conf ${NGINX_CONF_DEFAULT}
 
@@ -42,12 +42,12 @@ nginx_config()
 
     # nginx.conf
     perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${NGINX_CONF}
-    perl -pi -e 's#PH_NGINX_LOG_ERRORLOG#$ENV{NGINX_LOG_ERRORLOG}#g' ${NGINX_CONF}
-    perl -pi -e 's#PH_NGINX_LOG_ACCESSLOG#$ENV{NGINX_LOG_ACCESSLOG}#g' ${NGINX_CONF}
+    perl -pi -e 's#PH_HTTPD_LOG_ERRORLOG#$ENV{HTTPD_LOG_ERRORLOG}#g' ${NGINX_CONF}
+    perl -pi -e 's#PH_HTTPD_LOG_ACCESSLOG#$ENV{HTTPD_LOG_ACCESSLOG}#g' ${NGINX_CONF}
     perl -pi -e 's#PH_NGINX_PID#$ENV{NGINX_PID}#g' ${NGINX_CONF}
 
     perl -pi -e 's#PH_NGINX_MIME_TYPES#$ENV{NGINX_MIME_TYPES}#g' ${NGINX_CONF}
-    perl -pi -e 's#PH_NGINX_CONF_DIR#$ENV{NGINX_CONF_DIR}#g' ${NGINX_CONF} ${NGINX_CONF_DEFAULT}
+    perl -pi -e 's#PH_HTTPD_CONF_DIR#$ENV{HTTPD_CONF_DIR}#g' ${NGINX_CONF} ${NGINX_CONF_DEFAULT}
 
     perl -pi -e 's#PH_PHP_FASTCGI_SOCKET_FULL#$ENV{PHP_FASTCGI_SOCKET_FULL}#g' ${NGINX_CONF}
 
@@ -85,6 +85,11 @@ nginx_config()
     perl -pi -e 's#^;(listen.mode *=).*#${1} 0660#g' ${PHP_FPM_POOL_WWW_CONF}
     perl -pi -e 's#^(user.*=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
     perl -pi -e 's#^(group.*=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
+
+    # Awstats
+    perl -pi -e 's#PH_AWSTATS_STATIC_PAGES_DIR#$ENV{AWSTATS_STATIC_PAGES_DIR}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
+    perl -pi -e 's#PH_AWSTATS_HTTPD_AUTH_FILE#$ENV{AWSTATS_HTTPD_AUTH_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
+    perl -pi -e 's#PH_AWSTATS_ICON_DIR#$ENV{AWSTATS_ICON_DIR}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         perl -pi -e 's#^(\[www\])$#${1}\nuser = $ENV{HTTPD_USER}\ngroup = $ENV{HTTPD_GROUP}\n#' ${PHP_FPM_POOL_WWW_CONF}
@@ -187,7 +192,7 @@ Nginx:
         - ${NGINX_CONF}
         - ${NGINX_CONF_DEFAULT}
     * Directories:
-        - ${NGINX_CONF_ROOT}
+        - ${HTTPD_CONF_ROOT}
         - ${HTTPD_DOCUMENTROOT}
     * See also:
         - ${HTTPD_DOCUMENTROOT}/index.html

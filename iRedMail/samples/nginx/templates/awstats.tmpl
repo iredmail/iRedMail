@@ -1,0 +1,23 @@
+location ~ ^/awstats/icon/(.*) {
+    alias PH_AWSTATS_ICON_DIR/$1;
+    access_log off;
+}
+
+location ~ ^/awstats/(.*) {
+    alias PH_AWSTATS_STATIC_PAGES_DIR/$1;
+    autoindex on;
+
+    auth_basic "Authentication Required";
+    auth_basic_user_file PH_AWSTATS_HTTPD_AUTH_FILE;
+}
+
+# http://awstats.master-domain.com/cgi-bin/awstats.pl?config=alpha.com
+# http://awstats.master-domain.com/cgi-bin/awstats.pl?config=beta.com
+# We could make them easier to share, by transforming them into :
+# http://awstats.master-domain.com/alpha.com
+# http://awstats.master-domain.com/beta.com
+# In the awstats conf for your vhost, add :
+
+#location ~ ^/awstats/([a-z0-9-_\.]+)$ {
+#    return 301 $scheme://$host/cgi-bin/awstats.pl?config=$1;
+#}

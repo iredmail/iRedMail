@@ -297,18 +297,18 @@ cleanup_feedback()
     # Send names of chosen package to iRedMail project to help developers
     # understand which packages are most important to users.
     url="${BACKEND_ORIG}=YES"
-    url="${url}&NGINX=${WEB_SERVER_IS_NGINX}&APACHE=${WEB_SERVER_IS_APACHE}"
     url="${url}&ROUNDCUBE=${USE_RCM}"
     url="${url}&SOGO=${USE_SOGO}"
     url="${url}&AWSTATS=${USE_AWSTATS}"
     url="${url}&FAIL2BAN=${USE_FAIL2BAN}"
     url="${url}&IREDADMIN=${USE_IREDADMIN}"
+    [ X"${WEB_SERVER}" == X'APACHE' ] && url="${url}&APACHE=YES"
+    [ X"${WEB_SERVER}" == X'NGINX' ] && url="${url}&NGINX=YES"
 
     ECHO_DEBUG "Send info of chosed packages to iRedMail team to help improve iRedMail:"
     ECHO_DEBUG ""
     ECHO_DEBUG "\t${BACKEND_ORIG}=YES"
-    ECHO_DEBUG "\tNGINX=${WEB_SERVER_IS_NGINX}"
-    ECHO_DEBUG "\tAPACHE=${WEB_SERVER_IS_APACHE}"
+    ECHO_DEBUG "\tWEB_SERVER=${WEB_SERVER}"
     ECHO_DEBUG "\tROUNDCUBE=${USE_RCM}"
     ECHO_DEBUG "\tSOGO=${USE_SOGO}"
     ECHO_DEBUG "\tAWSTATS=${USE_AWSTATS}"

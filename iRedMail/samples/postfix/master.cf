@@ -41,13 +41,3 @@ PH_LOCAL_ADDRESS:10025 inet n  -   n   -   -  smtpd
     -o smtpd_client_connection_rate_limit=0
     -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_address_mappings
     #-o smtpd_upstream_proxy_protocol=haproxy
-
-# Allow SMTP AUTH without TLS/SSL
-#1025 1025 inet n  -   n   -   -  smtpd
-#1025     -o syslog_name=postfix/1025
-#1025     -o smtpd_tls_security_level=may
-#1025     -o smtpd_sasl_auth_enable=yes
-#1025     -o mynetworks=127.0.0.1
-#1025     -o smtpd_client_restrictions=permit_sasl_authenticated,reject
-#1025     -o content_filter=smtp-amavis:[PH_SMTP_SERVER]:10026
-#1025     -o smtpd_upstream_proxy_protocol=haproxy

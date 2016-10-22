@@ -30,157 +30,23 @@ awstats_config_basic()
 
     # Assign Apache daemon user to group 'adm', so that Awstats cron job can read log files.
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        usermod -G adm ${HTTPD_USER} >> ${INSTALL_LOG}
+        usermod -G adm ${HTTPD_USER} >> ${INSTALL_LOG} 2>&1
     fi
 
-    cat > ${AWSTATS_HTTPD_CONF} <<EOF
-${CONF_MSG}
-# Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
-#Alias /awstats/icon "${AWSTATS_ICON_DIR}/"
-#Alias /awstats/css "${AWSTATS_CSS_DIR}/"
-#Alias /awstats/js "${AWSTATS_JS_DIR}/"
-#ScriptAlias /awstats "${AWSTATS_CGI_DIR}/"
+    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
+        cp -f ${SAMPLE_DIR}/awstats/apache.conf ${AWSTATS_HTTPD_CONF}
 
-<Directory ${AWSTATS_CGI_DIR}/>
-    DirectoryIndex awstats.pl
-    Options ExecCGI
+        perl -pi -e 's#PH_AWSTATS_ICON_DIR#$ENV{AWSTATS_ICON_DIR}#g' ${AWSTATS_HTTPD_CONF}
+        perl -pi -e 's#PH_AWSTATS_CSS_DIR#$ENV{AWSTATS_CSS_DIR}#g' ${AWSTATS_HTTPD_CONF}
+        perl -pi -e 's#PH_AWSTATS_JS_DIR#$ENV{AWSTATS_JS_DIR}#g' ${AWSTATS_HTTPD_CONF}
+        perl -pi -e 's#PH_AWSTATS_CGI_DIR#$ENV{AWSTATS_CGI_DIR}#g' ${AWSTATS_HTTPD_CONF}
+        perl -pi -e 's#PH_AWSTATS_HTTPD_AUTH_FILE#$ENV{AWSTATS_HTTPD_AUTH_FILE}#g' ${AWSTATS_HTTPD_CONF}
 
-    AuthName "Authorization Required"
-    AuthType Basic
-EOF
-
-    ECHO_DEBUG "Setup user auth for awstats: ${AWSTATS_HTTPD_CONF}."
-    if [ X"${BACKEND}" == X'OPENLDAP'  -o X"${BACKEND}" == X'LDAPD' ]; then
-        # Use LDAP auth.
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthLDAPEnabled on
-    AuthLDAPAuthoritative Off
-EOF
-        else
-            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthBasicProvider ldap
-    AuthzLDAPAuthoritative   Off
-EOF
-        fi
-
-        cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthLDAPUrl   ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}/${LDAP_BASEDN}?${LDAP_ATTR_USER_RDN}?sub?(&(objectclass=mailUser)(accountStatus=active)(domainGlobalAdmin=yes))
-
-    AuthLDAPBindDN "${LDAP_BINDDN}"
-    AuthLDAPBindPassword "${LDAP_BINDPW}"
-EOF
-
-        [ X"${LDAP_USE_TLS}" == X'YES' ] && \
-            perl -pi -e 's#(AuthLDAPUrl.*)(ldap://)(.*)#${1}ldaps://${3}#' ${AWSTATS_HTTPD_CONF}
-
-        # Apache-2.4 doesn't support AuthzLDAPAuthoritative directive
-        [ X"${APACHE_VERSION}" == X'2.4' ] && \
-            perl -pi -e 's/(.*)(AuthzLDAPAuthoritative.*)//g' ${AWSTATS_HTTPD_CONF}
-
-    elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        # Use mod_auth_mysql.
-        if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO}" == X'FREEBSD' ]; then
-            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthMYSQLEnable On
-    AuthMySQLHost ${SQL_SERVER_ADDRESS}
-    AuthMySQLPort ${SQL_SERVER_PORT}
-    AuthMySQLUser ${VMAIL_DB_BIND_USER}
-    AuthMySQLPassword ${VMAIL_DB_BIND_PASSWD}
-    AuthMySQLDB ${VMAIL_DB_NAME}
-    AuthMySQLUserTable mailbox
-    AuthMySQLNameField username
-    AuthMySQLPasswordField password
-    AuthMySQLUserCondition "isglobaladmin=1"
-EOF
-
-            # FreeBSD special.
-            if [ X"${DISTRO}" == X'FREEBSD' ]; then
-                # Enable mod_auth_mysql module in httpd.conf.
-                perl -pi -e 's/^#(LoadModule.*mod_auth_mysql.*)/${1}/' ${HTTPD_CONF}
-
-                echo "    AuthBasicAuthoritative Off" >> ${AWSTATS_HTTPD_CONF}
-            fi
-
-
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    AuthMYSQL on
-    AuthBasicAuthoritative Off
-    AuthUserFile /dev/null
-
-    # Database related.
-    AuthMySQL_Password_Table mailbox
-    Auth_MySQL_Username_Field username
-    Auth_MySQL_Password_Field password
-
-    # Password related.
-    AuthMySQL_Empty_Passwords off
-    AuthMySQL_Encryption_Types Crypt_MD5
-    Auth_MySQL_Authoritative On
-EOF
-
-            cat >> ${HTTPD_CONF} <<EOF
-# MySQL auth (libapache2-mod-auth-apache2).
-# Global config of MySQL server address, username, password.
-Auth_MySQL_Info ${SQL_SERVER_ADDRESS} ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
-Auth_MySQL_General_DB ${VMAIL_DB_NAME}
-EOF
-
-            # Set file permission.
-            chmod 0600 ${AWSTATS_HTTPD_CONF}
-
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    Auth_MYSQL on
-    Auth_MySQL_DB ${VMAIL_DB_NAME}
-    Auth_MySQL_Password_Table mailbox
-    Auth_MySQL_Username_Field username
-    Auth_MySQL_Password_Field password
-    Auth_MySQL_Empty_Passwords off
-    Auth_MySQL_Where "isglobaladmin=1"
-EOF
-
-            cat >> ${HTTPD_CONF} <<EOF
-# MySQL auth (mod_auth_mysql)
-# Global config of MySQL server address, port number, username, password.
-Auth_MySQL_Info "${SQL_SERVER_ADDRESS}:${SQL_SERVER_PORT}" ${VMAIL_DB_BIND_USER} ${VMAIL_DB_BIND_PASSWD}
-EOF
-        fi
-
-    elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    Auth_PG_authoritative on
-    Auth_PG_host ${SQL_SERVER_ADDRESS}
-    Auth_PG_port ${SQL_SERVER_PORT}
-    Auth_PG_database ${VMAIL_DB_NAME}
-    Auth_PG_user ${VMAIL_DB_BIND_USER}
-    Auth_PG_pwd ${VMAIL_DB_BIND_PASSWD}
-    Auth_PG_pwd_table mailbox
-    Auth_PG_pwd_whereclause 'AND isglobaladmin=1'
-    Auth_PG_uid_field username
-    Auth_PG_pwd_field password
-    Auth_PG_lowercase_uid on
-    Auth_PG_encrypted on
-    Auth_PG_hash_type CRYPT
-EOF
-    fi
-
-    # Close <Directory> container.
-    cat >> ${AWSTATS_HTTPD_CONF} <<EOF
-    ${HTACCESS_ALLOW_ALL}
-    Require valid-user
-</Directory>
-EOF
-
-    # Make Awstats accessible via HTTPS.
-    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+        # Make Awstats accessible via HTTPS.
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
         perl -pi -e 's#^(\s*</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-    fi
 
-    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             a2enmod cgi >> ${INSTALL_LOG} 2>&1
 
@@ -190,32 +56,27 @@ EOF
         fi
     fi
 
-    # Enable authn_dbd under Apache 2.4
-    if [ X"${APACHE_VERSION}" == X'2.4' -o X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
-            cp ${SAMPLE_DIR}/apache/awstats.conf ${AWSTATS_HTTPD_CONF}
+    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
+        ECHO_DEBUG "Create directory used to store static pages: ${AWSTATS_STATIC_PAGES_DIR}"
+        [ -d ${AWSTATS_STATIC_PAGES_DIR} ] || mkdir -p ${AWSTATS_STATIC_PAGES_DIR} >> ${INSTALL_LOG} 2>&1
+    fi
 
-            if [ X"${BACKEND}" == X'MYSQL' ]; then
-                perl -pi -e 's#PH_DB_DRIVER#mysql#' ${AWSTATS_HTTPD_CONF}
-            elif [ X"${BACKEND}" == X'PGSQL' ]; then
-                perl -pi -e 's#PH_DB_DRIVER#pgsql#' ${AWSTATS_HTTPD_CONF}
-                perl -pi -e 's#pass=#password=#' ${AWSTATS_HTTPD_CONF}
-            fi
 
-            perl -pi -e 's#PH_DIRECTORY#$ENV{AWSTATS_CGI_DIR}#' ${AWSTATS_HTTPD_CONF}
-            perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${AWSTATS_HTTPD_CONF}
-            perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#' ${AWSTATS_HTTPD_CONF}
-            perl -pi -e 's#PH_SQL_DB_NAME#$ENV{VMAIL_DB_NAME}#' ${AWSTATS_HTTPD_CONF}
-            perl -pi -e 's#PH_SQL_DB_USER#$ENV{VMAIL_DB_BIND_USER}#' ${AWSTATS_HTTPD_CONF}
-            perl -pi -e 's#PH_SQL_DB_PASSWORD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${AWSTATS_HTTPD_CONF}
+    ECHO_DEBUG "Generate htpasswd file: ${AWSTATS_HTTPD_AUTH_FILE}."
+    touch ${AWSTATS_HTTPD_AUTH_FILE}
+    chown ${HTTPD_USER}:${HTTPD_GROUP} ${AWSTATS_HTTPD_AUTH_FILE}
+    chmod 0400 ${AWSTATS_HTTPD_AUTH_FILE}
 
-            perl -pi -e 's/^(Auth_MySQL_.*)//g' ${HTTPD_CONF}
-        fi
-
-        if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
-            if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-                a2enmod authn_dbd >> ${INSTALL_LOG} 2>&1
-            fi
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # htpasswd in OpenBSD base system is not same as Apache htpasswd
+        echo "${FIRST_USER}@${FIRST_DOMAIN}:${FIRST_USER_PASSWD}" | htpasswd -I ${AWSTATS_HTTPD_AUTH_FILE}
+    else
+        if [ X"${APACHE_VERSION}" == X'2.4' -o X"${DISTRO}" == X'FREEBSD' ]; then
+            # Use BCRYPT (the '-B' flag)
+            htpasswd -b -B -c ${AWSTATS_HTTPD_AUTH_FILE} ${FIRST_USER}@${FIRST_DOMAIN} ${FIRST_USER_PASSWD} >> ${INSTALL_LOG} 2>&1
+        else
+            # Use MD5
+            htpasswd -b -c ${AWSTATS_HTTPD_AUTH_FILE} ${FIRST_USER}@${FIRST_DOMAIN} ${FIRST_USER_PASSWD} >> ${INSTALL_LOG} 2>&1
         fi
     fi
 
@@ -225,15 +86,17 @@ Awstats:
         - ${AWSTATS_CONF_DIR}
         - ${AWSTATS_CONF_WEB}
         - ${AWSTATS_CONF_MAIL}
-        - ${AWSTATS_HTTPD_CONF}
+        - ${AWSTATS_HTTPD_AUTH_FILE}
+        - ${AWSTATS_HTTPD_CONF} - Available if you're running Apache
     * Login account:
         - Username: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}, password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
     * URL:
-        - https://${HOSTNAME}/awstats/awstats.pl
         - https://${HOSTNAME}/awstats/awstats.pl?config=web
         - https://${HOSTNAME}/awstats/awstats.pl?config=smtp
     * Crontab job:
         shell> crontab -l root
+    * Command used to add a new user, or reset password for an existing user:
+        htpasswd PH_AWSTATS_HTTPD_AUTH_FILE username
 
 EOF
 
@@ -255,6 +118,7 @@ awstats_config_weblog()
     # LogFormat
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         perl -pi -e 's#^(LogFormat).*#${1}="%host %other %logname %time1 %methodurl %code %bytesd"#' ${AWSTATS_CONF_WEB}
+        perl -pi -e 's#^(LogFile=)(.*)#${1}"$ENV{HTTPD_SERVERROOT}/$ENV{HTTPD_LOG_ACCESSLOG}"#' ${AWSTATS_CONF_WEB}
     fi
     # On RHEL/CentOS/Debian, ${AWSTATS_CONF_SAMPLE} is default config file. Overrided here.
     backup_file ${AWSTATS_CONF_SAMPLE}
@@ -333,14 +197,25 @@ awstats_config_crontab()
 {
     ECHO_DEBUG "Setting cronjob for awstats."
 
-    cat >> ${CRON_FILE_ROOT} <<EOF
+    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
+        cat >> ${CRON_FILE_ROOT} <<EOF
 # ${PROG_NAME}: update Awstats statistics for web
-1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CGI_DIR}/awstats.pl -config=web -update >/dev/null
+1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CGI_DIR}/awstats.pl -update -config=web >/dev/null
 
 # ${PROG_NAME}: update Awstats statistics for smtp
-1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CGI_DIR}/awstats.pl -config=smtp -update >/dev/null
+1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CGI_DIR}/awstats.pl -update -config=smtp >/dev/null
 
 EOF
+    elif [ X"${WEB_SERVER}" == X'NGINX' ]; then
+        cat >> ${CRON_FILE_ROOT} <<EOF
+# ${PROG_NAME}: update Awstats statistics for web
+1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_BUILDSTATICPAGE} -update -config=web -dir=${AWSTATS_STATIC_PAGES_DIR} -configdir=${AWSTATS_CONF_DIR} >/dev/null
+
+# ${PROG_NAME}: update Awstats statistics for smtp
+1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_BUILDSTATICPAGE} -update -config=smtp -dir=${AWSTATS_STATIC_PAGES_DIR} -configdir=${AWSTATS_CONF_DIR} >/dev/null
+
+EOF
+    fi
 
     echo 'export status_awstats_config_crontab="DONE"' >> ${STATUS_FILE}
 }

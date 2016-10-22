@@ -25,11 +25,11 @@ export NGINX_RC_SCRIPT_NAME='nginx'
 export UWSGI_RC_SCRIPT_NAME='uwsgi'
 
 # Configuration files
-export NGINX_CONF_ROOT='/etc/nginx'
+export HTTPD_CONF_ROOT='/etc/nginx'
 
 # Log files
-export NGINX_LOG_ACCESSLOG='/var/log/nginx/access.log'
-export NGINX_LOG_ERRORLOG='/var/log/nginx/error.log'
+export HTTPD_LOG_ACCESSLOG='/var/log/nginx/access.log'
+export HTTPD_LOG_ERRORLOG='/var/log/nginx/error.log'
 
 # PID file
 export NGINX_PID='/var/run/nginx.pid'
@@ -69,13 +69,13 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export UWSGI_CONF_DIR='/usr/local/etc/uwsgi'
-    export NGINX_CONF_ROOT="/usr/local/etc/nginx"
+    export HTTPD_CONF_ROOT="/usr/local/etc/nginx"
 
     export UWSGI_LOG_FILE="/var/log/uwsgi-iredadmin.log"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export NGINX_LOG_ACCESSLOG='logs/access.log'
-    export NGINX_LOG_ERRORLOG='logs/error.log'
+    export HTTPD_LOG_ACCESSLOG='logs/access.log'
+    export HTTPD_LOG_ERRORLOG='logs/error.log'
 
     export UWSGI_CONF_DIR='/etc/uwsgi'
     export UWSGI_SOCKET_IREDADMIN="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.socket"
@@ -83,11 +83,11 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export UWSGI_LOG_FILE='/var/www/logs/uwsgi.log'
 fi
 
-export NGINX_CONF="${NGINX_CONF_ROOT}/nginx.conf"
-export NGINX_CONF_DIR="${NGINX_CONF_ROOT}/conf.d"
-export NGINX_CONF_DEFAULT="${NGINX_CONF_DIR}/00-default.conf"
-export NGINX_CONF_TMPL_DIR="${NGINX_CONF_ROOT}/templates"
+export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
+export NGINX_CONF="${HTTPD_CONF_ROOT}/nginx.conf"
+export NGINX_CONF_DEFAULT="${HTTPD_CONF_DIR}/00-default.conf"
+export NGINX_CONF_TMPL_DIR="${HTTPD_CONF_ROOT}/templates"
 
-export NGINX_MIME_TYPES="${NGINX_CONF_ROOT}/mime.types"
+export NGINX_MIME_TYPES="${HTTPD_CONF_ROOT}/mime.types"
 
 export UWSGI_SOCKET_IREDADMIN_FULL="unix:${UWSGI_SOCKET_IREDADMIN}"

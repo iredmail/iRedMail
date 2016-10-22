@@ -91,11 +91,10 @@ echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${IREDMAIL_CONFIG_FILE}
 # ------------ Default web server ------------------
 # --------------------------------------------------
 export DISABLE_WEB_SERVER='NO'
-export WEB_SERVER_IS_APACHE='NO'
-export WEB_SERVER_IS_NGINX='NO'
+export WEB_SERVER=''
 
 if [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export WEB_SERVER_IS_NGINX='YES'
+    export WEB_SERVER='NGINX'
 else
     while : ; do
         ${DIALOG} \
@@ -118,16 +117,15 @@ TIP: Use SPACE key to select item." \
 fi
 
 if [ X"${web_server}" == X'APACHE' ]; then
-    export WEB_SERVER_IS_APACHE='YES'
-elif [ X"${web_server}" == X'APACHE' ]; then
-    export WEB_SERVER_IS_NGINX='YES'
+    export WEB_SERVER='APACHE'
+elif [ X"${web_server}" == X'NGINX' ]; then
+    export WEB_SERVER='NGINX'
 else
     export DISABLE_WEB_SERVER='YES'
 fi
 
 echo "export DISABLE_WEB_SERVER='${DISABLE_WEB_SERVER}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export WEB_SERVER_IS_NGINX='${WEB_SERVER_IS_NGINX}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export WEB_SERVER_IS_APACHE='${WEB_SERVER_IS_APACHE}'" >>${IREDMAIL_CONFIG_FILE}
+echo "export WEB_SERVER='${WEB_SERVER}'" >>${IREDMAIL_CONFIG_FILE}
 
 # --------------------------------------------------
 # --------------------- Backends --------------------

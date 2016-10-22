@@ -117,7 +117,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} perl-DBD-MySQL"
 
             if [ X"${USE_AWSTATS}" == X'YES' ]; then
-                if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+                if [ X"${WEB_SERVER}" == X'APACHE' ]; then
                     if [ X"${DISTRO_VERSION}" == X'6' ]; then
                         ALL_PKGS="${ALL_PKGS} mod_auth_mysql"
                     else
@@ -137,7 +137,7 @@ install_all()
             fi
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql libdbd-mysql-perl"
-            if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+            if [ X"${WEB_SERVER}" == X'APACHE' ]; then
                 ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
             fi
 
@@ -166,7 +166,7 @@ install_all()
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql libdbd-pg-perl"
 
-            if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+            if [ X"${WEB_SERVER}" == X'APACHE' ]; then
                 ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
             fi
 
@@ -181,7 +181,7 @@ install_all()
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} php-common php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
 
-            [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} php"
+            [ X"${WEB_SERVER}" == X'APACHE' ] && ALL_PKGS="${ALL_PKGS} php"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
@@ -205,8 +205,8 @@ install_all()
         fi
     fi
 
-    # Apache. Always install Apache.
-    if [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+    # Apache
+    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -223,7 +223,7 @@ install_all()
     fi
 
     # Nginx
-    if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
+    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} nginx php-fpm"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -239,7 +239,7 @@ install_all()
         fi
     fi
 
-    if [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ]; then
+    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} ${APACHE_RC_SCRIPT_NAME}"
     else
@@ -439,14 +439,14 @@ EOF
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces python-beautifulsoup4 python-lxml"
         [ X"${DISTRO_VERSION}" == X'7' ] && ALL_PKGS="${ALL_PKGS} py-bcrypt"
 
-        [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
-        [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
+        [ X"${WEB_SERVER}" == X'APACHE' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
+        [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy python-beautifulsoup python-lxml"
 
-        [ X"${WEB_SERVER_IS_APACHE}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
-        [ X"${WEB_SERVER_IS_NGINX}" == X'YES' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
+        [ X"${WEB_SERVER}" == X'APACHE' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
+        [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
         # Debian
         [ X"${DISTRO_CODENAME}" == X'jessie' ] && ALL_PKGS="${ALL_PKGS} python-bcrypt"
@@ -460,10 +460,12 @@ EOF
     fi
 
     # Awstats.
-    if [ X"${USE_AWSTATS}" == X'YES' -a X"${WEB_SERVER_IS_APACHE}" == X'YES' ]; then
+    if [ X"${USE_AWSTATS}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            ALL_PKGS="${ALL_PKGS} awstats"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} awstats"
         fi
     fi
