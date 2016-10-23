@@ -6,6 +6,8 @@ iRedMail-0.9.6:
           Ubuntu 16.04 LTS edition is recommended for a production server.
 
     * Improvements:
+        - Switch Awstats user authentication from SQL/LDAP to basic auth based
+          on file, Awstats is now available for both Apache and Nginx.
         - Installer:
             + Able to choose not to install web server and web applications.
 

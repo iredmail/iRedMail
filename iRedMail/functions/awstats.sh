@@ -57,10 +57,9 @@ awstats_config_basic()
     fi
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
-        ECHO_DEBUG "Create directory used to store static pages: ${AWSTATS_STATIC_PAGES_DIR}"
+        ECHO_DEBUG "Create directory used to store static statistics web pages: ${AWSTATS_STATIC_PAGES_DIR}"
         [ -d ${AWSTATS_STATIC_PAGES_DIR} ] || mkdir -p ${AWSTATS_STATIC_PAGES_DIR} >> ${INSTALL_LOG} 2>&1
     fi
-
 
     ECHO_DEBUG "Generate htpasswd file: ${AWSTATS_HTTPD_AUTH_FILE}."
     touch ${AWSTATS_HTTPD_AUTH_FILE}
@@ -68,15 +67,15 @@ awstats_config_basic()
     chmod 0400 ${AWSTATS_HTTPD_AUTH_FILE}
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # htpasswd in OpenBSD base system is not same as Apache htpasswd
+        # Use htpasswd in OpenBSD base system (it's not same as Apache htpasswd)
         echo "${FIRST_USER}@${FIRST_DOMAIN}:${FIRST_USER_PASSWD}" | htpasswd -I ${AWSTATS_HTTPD_AUTH_FILE}
     else
-        if [ X"${APACHE_VERSION}" == X'2.4' -o X"${DISTRO}" == X'FREEBSD' ]; then
+        if [ X"${WEB_SERVER}" == X'APACHE' -a X"${APACHE_VERSION}" == X'2.4' ]; then
             # Use BCRYPT (the '-B' flag)
             htpasswd -b -B -c ${AWSTATS_HTTPD_AUTH_FILE} ${FIRST_USER}@${FIRST_DOMAIN} ${FIRST_USER_PASSWD} >> ${INSTALL_LOG} 2>&1
         else
-            # Use MD5
-            htpasswd -b -c ${AWSTATS_HTTPD_AUTH_FILE} ${FIRST_USER}@${FIRST_DOMAIN} ${FIRST_USER_PASSWD} >> ${INSTALL_LOG} 2>&1
+            _pw="$(generate_password_hash MD5 ${FIRST_USER_PASSWD})"
+            echo "${FIRST_USER}@${FIRST_DOMAIN}:${_pw}" >> ${AWSTATS_HTTPD_AUTH_FILE}
         fi
     fi
 
@@ -91,8 +90,11 @@ Awstats:
     * Login account:
         - Username: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}, password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
     * URL:
-        - https://${HOSTNAME}/awstats/awstats.pl?config=web
-        - https://${HOSTNAME}/awstats/awstats.pl?config=smtp
+        - Apache:
+            - https://${HOSTNAME}/awstats/awstats.pl?config=web
+            - https://${HOSTNAME}/awstats/awstats.pl?config=smtp
+        - Nginx:
+            - https://${HOSTNAME}/awstats/
     * Crontab job:
         shell> crontab -l root
     * Command used to add a new user, or reset password for an existing user:
@@ -195,24 +197,24 @@ awstats_config_maillog()
 
 awstats_config_crontab()
 {
-    ECHO_DEBUG "Setting cronjob for awstats."
+    ECHO_DEBUG "Setup crontab jobs for awstats."
 
     if [ X"${WEB_SERVER}" == X'APACHE' ]; then
         cat >> ${CRON_FILE_ROOT} <<EOF
-# ${PROG_NAME}: update Awstats statistics for web
-1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CGI_DIR}/awstats.pl -update -config=web >/dev/null
+# ${PROG_NAME}: update Awstats statistics for web hourly
+1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_AWSTATS_PL} -update -config=web >/dev/null
 
-# ${PROG_NAME}: update Awstats statistics for smtp
-1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CGI_DIR}/awstats.pl -update -config=smtp >/dev/null
+# ${PROG_NAME}: update Awstats statistics for smtp hourly
+1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_AWSTATS_PL} -update -config=smtp >/dev/null
 
 EOF
     elif [ X"${WEB_SERVER}" == X'NGINX' ]; then
         cat >> ${CRON_FILE_ROOT} <<EOF
-# ${PROG_NAME}: update Awstats statistics for web
-1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_BUILDSTATICPAGE} -update -config=web -dir=${AWSTATS_STATIC_PAGES_DIR} -configdir=${AWSTATS_CONF_DIR} >/dev/null
+# ${PROG_NAME}: update Awstats statistics for web hourly
+1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_BUILDSTATICPAGE} -update -dir=${AWSTATS_STATIC_PAGES_DIR} -configdir=${AWSTATS_CONF_DIR} -awstatsprog=${AWSTATS_CMD_AWSTATS_PL} -config=web >/dev/null
 
-# ${PROG_NAME}: update Awstats statistics for smtp
-1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_BUILDSTATICPAGE} -update -config=smtp -dir=${AWSTATS_STATIC_PAGES_DIR} -configdir=${AWSTATS_CONF_DIR} >/dev/null
+# ${PROG_NAME}: update Awstats statistics for smtp hourly
+1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_BUILDSTATICPAGE} -update -dir=${AWSTATS_STATIC_PAGES_DIR} -configdir=${AWSTATS_CONF_DIR} -awstatsprog=${AWSTATS_CMD_AWSTATS_PL} -config=smtp >/dev/null
 
 EOF
     fi

@@ -32,6 +32,10 @@ export AWSTATS_CONF_MAIL="${AWSTATS_CONF_DIR}/awstats.smtp.conf"
 # htpasswd file used for http basic auth
 export AWSTATS_HTTPD_AUTH_FILE="${HTTPD_CONF_ROOT}/awstats.users"
 
+# Required for setup with Nginx
+export AWSTATS_CMD_BUILDSTATICPAGE='/usr/share/awstats/tools/awstats_buildstaticpages.pl'
+export AWSTATS_STATIC_PAGES_DIR="${HTTPD_SERVERROOT}/statistics"
+
 # Config files.
 if [ X"${DISTRO}" == X'RHEL' ]; then
     export AWSTATS_CONF_SAMPLE="${AWSTATS_CONF_DIR}/awstats.localhost.localdomain.conf"
@@ -64,6 +68,9 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export AWSTATS_CONF_WEB="${AWSTATS_CONF_DIR}/awstats.web.conf"
     export AWSTATS_CONF_MAIL="${AWSTATS_CONF_DIR}/awstats.smtp.conf"
 
+    # Required for setup with Nginx
+    export AWSTATS_CMD_BUILDSTATICPAGE="${AWSTATS_HTTPD_ROOT}/tools/awstats_buildstaticpages.pl"
+
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export AWSTATS_HTTPD_ROOT="${HTTPD_SERVERROOT}/awstats/wwwroot"
     export AWSTATS_ICON_DIR="${AWSTATS_HTTPD_ROOT}/icon"
@@ -79,8 +86,11 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
     # Required for setup with Nginx
     export AWSTATS_CMD_BUILDSTATICPAGE='/var/www/awstats/tools/awstats_buildstaticpages.pl'
-    export AWSTATS_STATIC_PAGES_DIR="${AWSTATS_CGI_DIR}/statistics"
+    export AWSTATS_STATIC_PAGES_DIR='/var/www/awstats/statistics'
 fi
+
+# Path to awstats.pl
+export AWSTATS_CMD_AWSTATS_PL="${AWSTATS_CGI_DIR}/awstats.pl"
 
 # Default language.
 #   English:        en

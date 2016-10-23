@@ -76,6 +76,8 @@ clamav_config()
         # Start service when system start up.
         service_control enable 'clamav_clamd_enable' 'YES'
         service_control enable 'clamav_freshclam_enable' 'YES'
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        perl -pi -e 's/^#(AllowSupplementaryGroups).*/${1} yes/g' ${CLAMD_CONF}
     fi
 
     # Add user alias in Postfix
