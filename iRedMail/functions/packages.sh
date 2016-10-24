@@ -364,18 +364,10 @@ EOF
 
             ECHO_INFO "Enable apt repo for SOGo: ${SOGO_PKG_MIRROR}"
             if ! grep "${SOGO_PKG_MIRROR}" /etc/apt/sources.list &>/dev/null; then
-                if [ X"${SOGO_PKG_MIRROR_IS_THIRD_PARTY}" != X'YES' ]; then
-                    if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                        echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
-                    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                        echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
-                    fi
-                else
-                    if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                        echo "deb ${SOGO_PKG_MIRROR}/debian ${DISTRO_CODENAME} main" >> /etc/apt/sources.list
-                    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                        echo "deb ${SOGO_PKG_MIRROR}/ubuntu ${DISTRO_CODENAME} main" >> /etc/apt/sources.list
-                    fi
+                if [ X"${DISTRO}" == X'DEBIAN' ]; then
+                    echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
+                elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+                    echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
                 fi
             fi
 

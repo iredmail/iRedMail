@@ -22,7 +22,6 @@
 
 # Official SOGo package repo.
 export SOGO_PKG_MIRROR="${SOGO_PKG_MIRROR:=https://packages.inverse.ca}"
-export SOGO_PKG_MIRROR_IS_THIRD_PARTY='NO'
 # APT key of SOGo official apt repo: 0x810273C4.
 export SOGO_PKG_MIRROR_APT_KEY="${SOGO_PKG_MIRROR_APT_KEY:=0x810273C4}"
 
