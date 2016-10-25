@@ -77,6 +77,7 @@ clamav_config()
         service_control enable 'clamav_clamd_enable' 'YES'
         service_control enable 'clamav_freshclam_enable' 'YES'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER}
         perl -pi -e 's/^#(AllowSupplementaryGroups).*/${1} yes/g' ${CLAMD_CONF}
     fi
 
