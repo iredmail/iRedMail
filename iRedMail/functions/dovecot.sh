@@ -83,6 +83,13 @@ dovecot_config()
     # Mailbox index directory
     if [ -n "${MAILBOX_INDEX_DIR}" ]; then
         perl -pi -e 's#^(mail_location.*:INDEX=)%Lh/Maildir/#${1}$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/#' ${DOVECOT_CONF}
+
+        # Per-user seen flags. Maildir indexes are not shared. INDEXPVT requires v2.2+.
+        if [ X"${dovecot_version}" == X'2.0' -o X"${dovecot_version}" == X'2.1' ]; then
+            perl -pi -e 's#(location.*:INDEX=)(.*/Shared/.*)#${1}$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/Shared/%%Ld/%%Ln#g' ${DOVECOT_CONF}
+        else
+            perl -pi -e 's#(location.*:INDEX=)(.*/Shared/.*)#${1}$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/Shared/%%Ld/%%Ln:INDEXPVT=$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/Shared/%%Ld/%%Ln#g' ${DOVECOT_CONF}
+        fi
     fi
 
     # Provided services.
