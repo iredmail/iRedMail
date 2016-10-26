@@ -17,7 +17,7 @@
 #---------------------------------------------------------------------
 
 #
-# Sample Postfix check_helo_access rule. It should be localted at:
+# Sample Postfix check_helo_access rule. It should be located at:
 #   /etc/postfix/check_helo_access.pcre
 #
 # Shipped within iRedMail project:

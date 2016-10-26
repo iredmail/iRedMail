@@ -17,7 +17,7 @@
 #---------------------------------------------------------------------
 
 #
-# Sample iptables rules. It should be localted at:
+# Sample iptables rules. It should be located at:
 #   /etc/sysconfig/iptables
 #
 # Shipped within iRedMail project:

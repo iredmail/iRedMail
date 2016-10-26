@@ -17,7 +17,7 @@
 #---------------------------------------------------------------------
 
 #
-# Sample SpamAssassin rules. It should be localted at:
+# Sample SpamAssassin rules. It should be located at:
 #   /etc/mail/spamassassin/local.cf
 #
 # Shipped within iRedMail project:
