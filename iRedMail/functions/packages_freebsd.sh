@@ -1190,8 +1190,6 @@ EOF
         # Log and print used time
         all_used_time="$(($(date +%s)-start_time))"
         ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds, ~= $((all_used_time/60)) minute(s)"
-
-        echo "export status_install_all_ports='DONE'" >> ${STATUS_FILE}
     }
 
     # Install all packages.
@@ -1213,6 +1211,11 @@ EOF
     }
 
     check_status_before_run fetch_all_src_tarballs
-    check_status_before_run install_all_ports
+
+    # Do not run it with 'check_status_before_run', so that we can always
+    # install missed packages and enable/disable new services while re-run
+    # iRedMail installer.
+    install_all_ports
+
     check_status_before_run post_install_cleanup
 }

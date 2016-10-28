@@ -508,8 +508,6 @@ EOF
             ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
             ECHO_ERROR "forum: http://www.iredmail.org/forum/"
             exit 255
-        else
-            echo 'export status_install_all_pkgs="DONE"' >> ${STATUS_FILE}
         fi
     }
 
@@ -539,8 +537,6 @@ EOF
 * Enabled services: ${ENABLED_SERVICES}
 
 EOF
-
-        echo 'export status_enable_all_services="DONE"' >> ${STATUS_FILE}
     }
 
     after_package_installation()
@@ -585,9 +581,11 @@ EOF
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}
     }
 
-    check_status_before_run install_all_pkgs
-    check_status_before_run enable_all_services
-    check_status_before_run after_package_installation
+    # Do not run them with 'check_status_before_run', so that we can always
+    # install missed packages and enable/disable new services while re-run
+    # iRedMail installer.
+    install_all_pkgs
+    enable_all_services
 
-    echo 'export status_install_all="DONE"' >> ${STATUS_FILE}
+    check_status_before_run after_package_installation
 }
