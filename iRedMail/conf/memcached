@@ -27,4 +27,6 @@ export MEMCACHED_RC_SCRIPT_NAME='memcached'
 
 if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export MEMCACHED_CONF='/etc/memcached.conf'
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export MEMCACHED_DAEMIN_USER='_memcached'
 fi

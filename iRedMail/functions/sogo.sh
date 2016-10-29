@@ -111,6 +111,13 @@ EOF
 }
 
 sogo_config() {
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # Start services when system start up.
+        service_control enable 'memcached_enable' 'YES'
+        service_control enable 'memcached_flags' "-l ${MEMCACHED_BIND_ADDRESS}"
+        service_control enable 'sogod_enable' 'YES'
+    fi
+
     # Configure SOGo config file
     backup_file ${SOGO_CONF}
 
@@ -287,13 +294,6 @@ EOF
         fi
     fi
 
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        # Start services when system start up.
-        service_control enable 'memcached_enable' 'YES'
-        service_control enable 'memcached_flags' "-l ${MEMCACHED_BIND_ADDRESS}"
-        service_control enable 'sogod_enable' 'YES'
-    fi
-
     cat >> ${TIP_FILE} <<EOF
 SOGo Groupware:
     * Web access: httpS://${HOSTNAME}/SOGo/
@@ -340,15 +340,13 @@ memcached_setup()
             perl -pi -e 's#^(OPTIONS=).*#${1}"-l $ENV{MEMCACHED_BIND_ADDRESS}"#g' ${ETC_SYSCONFIG_DIR}/memcached
         fi
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        if grep -- '-l.*127.0.0.1' ${MEMCACHED_CONF} &>/dev/null; then
-            :
+        if grep -- '^-l' ${MEMCACHED_CONF} &>/dev/null; then
+            perl -pi -e 's#^(-l).*#${1} ${MEMCACHED_BIND_ADDRESS}#g' ${MEMCACHED_CONF}
         else
-            if grep -- '^-l' ${MEMCACHED_CONF} &>/dev/null; then
-                perl -pi -e 's#^(-l).*#${1} ${MEMCACHED_BIND_ADDRESS}#g' ${MEMCACHED_CONF}
-            else
-                echo "-l ${MEMCACHED_BIND_ADDRESS}" >> ${MEMCACHED_CONF}
-            fi
+            echo "-l ${MEMCACHED_BIND_ADDRESS}" >> ${MEMCACHED_CONF}
         fi
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        echo 'memcached_flags="-u ${MEMCACHED_DAEMIN_USER} -l ${MEMCACHED_BIND_ADDRESS}"' >> ${RC_CONF_LOCAL}
     fi
 
     echo 'export status_memcached_setup="DONE"' >> ${STATUS_FILE}
