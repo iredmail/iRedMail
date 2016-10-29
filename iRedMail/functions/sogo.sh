@@ -168,7 +168,7 @@ sogo_config() {
     fi
 
     # Memcached server
-    perl -pi -e 's#PH_MEMCACHED_BIND_HOST#$ENV{MEMCACHED_BIND_HOST}#g' ${SOGO_CONF}
+    perl -pi -e 's#PH_MEMCACHED_BIND_ADDRESS#$ENV{MEMCACHED_BIND_ADDRESS}#g' ${SOGO_CONF}
 
     perl -pi -e 's#PH_SOGO_DB_TYPE#$ENV{SOGO_DB_TYPE}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_USER#$ENV{SOGO_DB_USER}#g' ${SOGO_CONF}
@@ -288,8 +288,9 @@ EOF
     fi
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        # Start service when system start up.
+        # Start services when system start up.
         service_control enable 'memcached_enable' 'YES'
+        service_control enable 'memcached_flags' "-l ${MEMCACHED_BIND_ADDRESS}"
         service_control enable 'sogod_enable' 'YES'
     fi
 
@@ -331,6 +332,28 @@ sogo_cron_setup()
     echo 'export status_sogo_cron_setup="DONE"' >> ${STATUS_FILE}
 }
 
+memcached_setup()
+{
+    # Listen on localhost by default
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        if [ -f ${ETC_SYSCONFIG_DIR}/memcached ]; then
+            perl -pi -e 's#^(OPTIONS=).*#${1}"-l $ENV{MEMCACHED_BIND_ADDRESS}"#g' ${ETC_SYSCONFIG_DIR}/memcached
+        fi
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        if grep -- '-l.*127.0.0.1' ${MEMCACHED_CONF} &>/dev/null; then
+            :
+        else
+            if grep -- '^-l' ${MEMCACHED_CONF} &>/dev/null; then
+                perl -pi -e 's#^(-l).*#${1} ${MEMCACHED_BIND_ADDRESS}#g' ${MEMCACHED_CONF}
+            else
+                echo "-l ${MEMCACHED_BIND_ADDRESS}" >> ${MEMCACHED_CONF}
+            fi
+        fi
+    fi
+
+    echo 'export status_memcached_setup="DONE"' >> ${STATUS_FILE}
+}
+
 sogo_setup()
 {
     ECHO_INFO "Configure SOGo Groupware (Webmail, Calendar, Address Book, ActiveSync)."
@@ -340,6 +363,7 @@ sogo_setup()
     fi
 
     check_status_before_run sogo_config
+    check_status_before_run memcached_setup
 
     echo 'export status_sogo_setup="DONE"' >> ${STATUS_FILE}
 }

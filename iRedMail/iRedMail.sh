@@ -76,6 +76,7 @@ check_env
 . ${CONF_DIR}/postfix
 . ${CONF_DIR}/amavisd
 . ${CONF_DIR}/iredapd
+. ${CONF_DIR}/memcached
 . ${CONF_DIR}/sogo
 . ${CONF_DIR}/clamav
 . ${CONF_DIR}/spamassassin
