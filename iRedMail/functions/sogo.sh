@@ -346,7 +346,7 @@ memcached_setup()
             echo "-l ${MEMCACHED_BIND_ADDRESS}" >> ${MEMCACHED_CONF}
         fi
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        echo 'memcached_flags="-u ${MEMCACHED_DAEMIN_USER} -l ${MEMCACHED_BIND_ADDRESS}"' >> ${RC_CONF_LOCAL}
+        echo "memcached_flags='-u ${MEMCACHED_DAEMIN_USER} -l ${MEMCACHED_BIND_ADDRESS}'" >> ${RC_CONF_LOCAL}
     fi
 
     echo 'export status_memcached_setup="DONE"' >> ${STATUS_FILE}
