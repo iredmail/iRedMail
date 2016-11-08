@@ -141,7 +141,7 @@ for db in ${DATABASES}; do
 
             # Log to SQL table `iredadmin.log`, so that global domain admins
             # can check backup status
-            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database: ${db}, size: ${original_size}, compressed: ${compressed_size}', 'cron_backup_sql', '127.0.0.1', NOW());"
+            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database: ${db}, size: ${compressed_size} (original: ${original_size})', 'cron_backup_sql', '127.0.0.1', NOW());"
         else
             export BACKUP_SUCCESS='NO'
             sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup failed: ${db}, check log file ${LOGFILE} for more details.', 'cron_backup_sql', '127.0.0.1', NOW());"
