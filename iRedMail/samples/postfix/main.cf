@@ -255,3 +255,6 @@ message_size_limit = PH_MESSAGE_SIZE_LIMIT
 # Postfix 2.11 and later supports multiple characters.
 recipient_delimiter = +
 
+# The time after which the sender receives a copy of the message headers of
+# mail that is still queued. Default setting is disabled (0h) by Postfix.
+delay_warning_time = 1h
