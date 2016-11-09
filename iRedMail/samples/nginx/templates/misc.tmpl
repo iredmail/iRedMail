@@ -1,3 +1,12 @@
+# Allow access to '^/.well-known/'
+location ~ ^/.well-known/ {
+    allow all;
+    access_log off;
+    log_not_found off;
+    autoindex off;
+    #alias /var/www/html;
+}
+
 # Deny all attempts to access hidden files such as .htaccess.
 location ~ /\. { deny all; }
 

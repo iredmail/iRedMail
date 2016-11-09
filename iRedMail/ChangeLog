@@ -52,6 +52,7 @@ iRedMail-0.9.6:
               session with HELO "[IP_ADDRESS]" (with squared brackets).
 
         - Nginx:
+            - Not allow access to '/.well-known/'.
             - Not forward real client IP address to SOGo.
             - Config file for catch-all virtual host `default.conf` has been
               renamed to `00-default.conf`, to make sure it will be loaded
