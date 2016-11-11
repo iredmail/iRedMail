@@ -72,7 +72,7 @@ perl -pi -e 's/^#(dnsblog.*unix.*dnsblog)$/${1}/g' ${MASTER_CF}
 
 echo "* Update ${MAIN_CF} to enable postscreen."
 postconf -e postscreen_dnsbl_threshold=2
-postconf -e postscreen_dnsbl_sites='zen.spamhaus.org*3 b.barracudacentral.org*2'
+postconf -e postscreen_dnsbl_sites='zen.spamhaus.org=127.0.0.[2..11]*3 b.barracudacentral.org*2'
 
 postconf -e postscreen_dnsbl_reply_map="texthash:${POSTSCREEN_DNSBL_REPLY}"
 cat > ${POSTSCREEN_DNSBL_REPLY} <<EOF
