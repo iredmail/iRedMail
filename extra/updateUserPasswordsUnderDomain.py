@@ -35,12 +35,10 @@ conn = ldap.initialize(uri=uri, trace_level=0,)
 conn.bind_s(bind_dn, bind_pw)
 
 # Get all mail users.
-allUsers = conn.search_s(
-        basedn,
-        ldap.SCOPE_SUBTREE,
-        "(objectClass=mailUser)",
-        ['mail', 'userPassword',],
-        )
+allUsers = conn.search_s(basedn,
+                         ldap.SCOPE_SUBTREE,
+                         "(objectClass=mailUser)",
+                         ['mail', 'userPassword'])
 
 # Debug.
 #print >> sys.stderr, allUsers
