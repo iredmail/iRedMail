@@ -234,7 +234,8 @@ mydomain = PH_HOSTNAME
 # trusted SMTP clients which are allowed to relay mail through Postfix.
 #
 # Note: additional IP addresses/networks listed in mynetworks should be listed
-#       in iRedAPD setting 'MYNETWORKS' too. for example:
+#       in iRedAPD setting 'MYNETWORKS' (in `/opt/iredapd/settings.py`) too.
+#       for example:
 #
 #       MYNETWORKS = ['xx.xx.xx.xx', 'xx.xx.xx.0/24', ...]
 #
