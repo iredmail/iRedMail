@@ -362,6 +362,7 @@ sogo_setup()
 
     check_status_before_run sogo_config
     check_status_before_run memcached_setup
+    check_status_before_run sogo_cron_setup
 
     echo 'export status_sogo_setup="DONE"' >> ${STATUS_FILE}
 }
