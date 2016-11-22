@@ -131,61 +131,12 @@ cleanup_replace_firewall_rules()
                     cp -f ${SAMPLE_DIR}/firewalld/zones/iredmail.xml ${FIREWALL_RULE_CONF}
                     perl -pi -e 's#^(DefaultZone=).*#${1}iredmail#g' ${FIREWALLD_CONF}
 
-                    if [ X"${WITH_MYSQL_CLUSTER}" == X'YES' ]; then
-                        firewall-cmd --permanent --zone=iredmail --add-port=3306/tcp
-                        firewall-cmd --permanent --zone=iredmail --add-port=4444/tcp
-                        firewall-cmd --permanent --zone=iredmail --add-port=4567/tcp
-                        firewall-cmd --permanent --zone=iredmail --add-port=4568/tcp
-                    fi
-
-                    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-                        # Amavisd
-                        firewall-cmd --permanent --zone=iredmail --add-port=10024/tcp
-                        firewall-cmd --permanent --zone=iredmail --add-port=10025/tcp
-                        firewall-cmd --permanent --zone=iredmail --add-port=10026/tcp
-
-                        # pop3, imap, lmtp, managesieve, sasl auth
-                        #firewall-cmd --permanent --zone=iredmail --add-port=10110/tcp
-                        #firewall-cmd --permanent --zone=iredmail --add-port=10143/tcp
-                        #firewall-cmd --permanent --zone=iredmail --add-port=1024/tcp
-                        #firewall-cmd --permanent --zone=iredmail --add-port=10419/tcp
-                        #firewall-cmd --permanent --zone=iredmail --add-port=12346/tcp
-
-                        # iRedAPD
-                        firewall-cmd --permanent --zone=iredmail --add-port=7777/tcp
-                    fi
-
                     [ X"${SSHD_PORT}" != X'22' ] && \
                         cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
 
                     cp -f ${SAMPLE_DIR}/firewalld/services/{imap,pop3,submission}.xml ${FIREWALLD_CONF_DIR}/services/
                 else
                     cp -f ${SAMPLE_DIR}/iptables/iptables.rules ${FIREWALL_RULE_CONF}
-
-                    if [ X"${WITH_MYSQL_CLUSTER}" == X'YES' ]; then
-                        perl -pi -e 's/#(.* 3306 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        perl -pi -e 's/#(.* 4444 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        perl -pi -e 's/#(.* 4567 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        perl -pi -e 's/#(.* 4568 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                    fi
-
-                    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-                        # pop3, imap, lmtp, managesieve, sasl auth service
-                        #perl -pi -e 's/#(.* 10110 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        #perl -pi -e 's/#(.* 10143 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        #perl -pi -e 's/#(.* 1024 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        #perl -pi -e 's/#(.* 10419 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        #perl -pi -e 's/#(.* 12346 .*)/${1}/' ${FIREWALL_RULE_CONF}
-
-                        # Amavisd
-                        perl -pi -e 's/#(.* 10024 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        perl -pi -e 's/#(.* 10025 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        perl -pi -e 's/#(.* 10026 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                        perl -pi -e 's/#(.* 9998 .*)/${1}/' ${FIREWALL_RULE_CONF}
-
-                        # iRedAPD
-                        perl -pi -e 's/#(.* 7777 .*)/${1}/' ${FIREWALL_RULE_CONF}
-                    fi
                 fi
 
                 # Replace HTTP port.
