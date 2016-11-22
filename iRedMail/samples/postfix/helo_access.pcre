@@ -22,10 +22,6 @@
 #
 # Shipped within iRedMail project:
 #   * http://www.iredmail.org/
-#
-# Thanks all contributer(s):
-#   * muniao <at> gamil.
-#
 
 # Prepend HELO hostname of sender server
 #/(.*)/ PREPEND X-Original-Helo: $1 (iRedMail: http://www.iredmail.org/)

@@ -474,22 +474,6 @@ EOF
 EOF
     fi
 
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        # Bind address
-        cat >> ${AMAVISD_CONF} <<EOF
-# Listen on specified addresses.
-\$inet_socket_bind = ['0.0.0.0'];
-
-# Set ACL
-@inet_acl = qw(${AMAVISD_INET_ACL});
-EOF
-    else
-        cat >> ${AMAVISD_CONF} <<EOF
-# Listen on specified addresses.
-\$inet_socket_bind = ['${LOCAL_ADDRESS}'];
-EOF
-fi
-
     cat >> ${AMAVISD_CONF} <<EOF
 # Selectively disable some of the header checks
 #
@@ -499,9 +483,12 @@ fi
 # Missing some headers. e.g. 'Date:'
 \$allowed_header_tests{'missing'} = 0;
 
-EOF
+# Listen on specified addresses.
+\$inet_socket_bind = ['${LOCAL_ADDRESS}'];
 
-    cat >> ${AMAVISD_CONF} <<EOF
+# Set ACL
+@inet_acl = qw(${AMAVISD_INET_ACL});
+
 1;  # insure a defined return
 EOF
     # End amavisd.conf

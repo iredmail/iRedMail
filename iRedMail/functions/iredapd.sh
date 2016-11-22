@@ -131,23 +131,7 @@ EOF
 
 iredapd_config()
 {
-    # General settings.
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        # Listen on all available NICs.
-        perl -pi -e 's#^(listen_address).*#${1} = "0.0.0.0"#' ${IREDAPD_CONF}
-
-        # List backend servers as trusted network.
-        if [ -n "${CLUSTER_BACKEND_NETWORKS}" ]; then
-            echo -n "MYNETWORKS = [" >> ${IREDAPD_CONF}
-            for _host in ${CLUSTER_BACKEND_NETWORKS}; do
-                echo -n "'${_host}', " >> ${IREDAPD_CONF}
-            done
-            echo ']' >> ${IREDAPD_CONF}
-        fi
-    else
-        perl -pi -e 's#^(listen_address).*#${1} = "$ENV{IREDAPD_BIND_HOST}"#' ${IREDAPD_CONF}
-    fi
-
+    perl -pi -e 's#^(listen_address).*#${1} = "$ENV{IREDAPD_BIND_HOST}"#' ${IREDAPD_CONF}
     perl -pi -e 's#^(listen_port).*#${1} = "$ENV{IREDAPD_LISTEN_PORT}"#' ${IREDAPD_CONF}
     perl -pi -e 's#^(run_as_user).*#${1} = "$ENV{IREDAPD_DAEMON_USER}"#' ${IREDAPD_CONF}
 

@@ -107,15 +107,6 @@ if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
     export AMAVISD_INET_ACL="${AMAVISD_INET_ACL} ${LOCAL_ADDRESS}"
 fi
 
-if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-    if [ -n "${HAPROXY_SERVERS}" -o -n "${CLUSTER_BACKEND_NETWORKS}" ]; then
-        for _host in ${HAPROXY_SERVERS} ${CLUSTER_BACKEND_NETWORKS}; do
-            export AMAVISD_MYNETWORKS="${AMAVISD_MYNETWORKS},${_host}"
-            export AMAVISD_INET_ACL="${AMAVISD_INET_ACL} ${_host}"
-        done
-    fi
-fi
-
 # Num of pre-forked children.
 # Try to set it to memory size (in GB)
 export AMAVISD_MAX_SERVERS='2'

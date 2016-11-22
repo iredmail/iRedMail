@@ -87,20 +87,7 @@ cat > ${POSTSCREEN_ACCESS_CIDR} <<EOF
 
 # Permit local clients
 127.0.0.0/8 permit
-192.168.254.0/24 permit
 EOF
-
-if [ -n "${HAPROXY_SERVERS}" ]; then
-    for _host in ${HAPROXY_SERVERS}; do
-        echo "${_host} permit" >> ${POSTSCREEN_ACCESS_CIDR}
-    done
-fi
-
-if [ -n "${CLUSTER_BACKEND_NETWORKS}" ]; then
-    for _host in ${CLUSTER_BACKEND_NETWORKS}; do
-        echo "${_host} permit" >> ${POSTSCREEN_ACCESS_CIDR}
-    done
-fi
 
 postconf -e postscreen_greet_action='enforce'
 postconf -e postscreen_dnsbl_action='enforce'
