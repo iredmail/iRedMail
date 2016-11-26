@@ -184,8 +184,6 @@ rcm_config()
     fi
 
     if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        perl -pi -e 's#(.*force_https.* =).*#${1} false;#' ${RCM_CONF}
-
         if [ -n "${HAPROXY_SERVERS}" ]; then
             export _proxy_servers="$(echo ${HAPROXY_SERVERS} | sed 's/ /", "/')"
             perl -pi -e 's#^//(.*proxy_whitelist.* =).*#${1} array("$ENV{_proxy_servers}");#' ${RCM_CONF}

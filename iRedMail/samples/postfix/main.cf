@@ -258,4 +258,4 @@ recipient_delimiter = +
 
 # The time after which the sender receives a copy of the message headers of
 # mail that is still queued. Default setting is disabled (0h) by Postfix.
-delay_warning_time = 1h
+#delay_warning_time = 1h
