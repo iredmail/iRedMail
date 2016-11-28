@@ -270,7 +270,7 @@ rcm_plugin_password()
     perl -pi -e 's#(.*password_log.*=).*#${1} true;#' config.inc.php
 
     # Roundcube uses scheme name in lower cases
-    export default_password_scheme="$(echo ${DEFAULT_PASSWORD_SCHEME} | tr [A-Z] [a-z])"
+    export default_password_scheme="$(echo ${DEFAULT_PASSWORD_SCHEME} | tr '[A-Z]' '[a-z]')"
 
     # Dovecot uses scheme name in upper cases
     export dovecotpw_method="${DEFAULT_PASSWORD_SCHEME}"

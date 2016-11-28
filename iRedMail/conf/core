@@ -246,7 +246,7 @@ check_status_before_run()
 hash_maildir()
 {
     # Usage: hash_maildir username
-    username="$( echo $1 | tr [A-Z] [a-z] )"
+    username="$( echo $1 | tr '[A-Z]' '[a-z]' )"
 
     # Different maildir style: hashed, normal.
     if [ X"${MAILDIR_STYLE}" == X"hashed" ]; then

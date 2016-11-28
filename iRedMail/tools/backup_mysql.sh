@@ -28,7 +28,6 @@
 #
 #       BACKUP_ROOTDIR
 #       MYSQL_ROOT_USER
-#       MYSQL_PASSWD
 #       DATABASES
 #       DB_CHARACTER_SET
 #
