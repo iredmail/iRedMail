@@ -35,7 +35,7 @@ install_all()
     OB_PKG_NGINX_VER='-1.10.1'
     OB_PKG_MEMCACHED_VER='-1.4.25p0'
 
-    if [ X"${USE_RCM}" == X'YES' ]; then
+    if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         export IREDMAIL_USE_PHP='YES'
     fi
 
@@ -313,7 +313,7 @@ install_all()
     fi
 
     # Roundcube
-    if [ X"${USE_RCM}" == X'YES' ]; then
+    if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} php-pear-Net-IDNA2"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then

@@ -72,8 +72,8 @@ echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' &>/dev/null
 [ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'roundcubemail' &>/dev/null; then
-    export USE_RCM='YES'
-    echo "export USE_RCM='YES'" >> ${IREDMAIL_CONFIG_FILE}
+    export USE_ROUNDCUBE='YES'
+    echo "export USE_ROUNDCUBE='YES'" >> ${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'sogo' &>/dev/null; then

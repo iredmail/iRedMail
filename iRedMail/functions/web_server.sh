@@ -32,7 +32,7 @@ EOF
     # Redirect home page to webmail by default
     backup_file ${HTTPD_DOCUMENTROOT}/index.html
 
-    if [ X"${USE_RCM}" == X'YES' ]; then
+    if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         echo '<html><head><meta HTTP-EQUIV="REFRESH" content="0; url=/mail/"></head></html>' > ${HTTPD_DOCUMENTROOT}/index.html
     elif [ X"${USE_SOGO}" == X'YES' ]; then
         echo '<html><head><meta HTTP-EQUIV="REFRESH" content="0; url=/SOGo/"></head></html>' > ${HTTPD_DOCUMENTROOT}/index.html

@@ -248,7 +248,7 @@ cleanup_feedback()
     # Send names of chosen package to iRedMail project to help developers
     # understand which packages are most important to users.
     url="${BACKEND_ORIG}=YES"
-    url="${url}&ROUNDCUBE=${USE_RCM}"
+    url="${url}&ROUNDCUBE=${USE_ROUNDCUBE}"
     url="${url}&SOGO=${USE_SOGO}"
     url="${url}&AWSTATS=${USE_AWSTATS}"
     url="${url}&FAIL2BAN=${USE_FAIL2BAN}"
@@ -260,7 +260,7 @@ cleanup_feedback()
     ECHO_DEBUG ""
     ECHO_DEBUG "\t${BACKEND_ORIG}=YES"
     ECHO_DEBUG "\tWEB_SERVER=${WEB_SERVER}"
-    ECHO_DEBUG "\tROUNDCUBE=${USE_RCM}"
+    ECHO_DEBUG "\tROUNDCUBE=${USE_ROUNDCUBE}"
     ECHO_DEBUG "\tSOGO=${USE_SOGO}"
     ECHO_DEBUG "\tAWSTATS=${USE_AWSTATS}"
     ECHO_DEBUG "\tFAIL2BAN=${USE_FAIL2BAN}"
@@ -359,7 +359,7 @@ EOF
 *
 EOF
 
-    if [ X"${USE_RCM}" == X'YES' ]; then
+    if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
 cat <<EOF
 * - Roundcube webmail: httpS://${HOSTNAME}/mail/
 EOF

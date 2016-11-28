@@ -21,7 +21,7 @@ optional_components()
         check_status_before_run fail2ban_config
 
     # Roundcubemail.
-    [ X"${USE_RCM}" == X'YES' ] && check_status_before_run rcm_setup
+    [ X"${USE_ROUNDCUBE}" == X'YES' ] && check_status_before_run rcm_setup
 
     # SOGo
     [ X"${USE_SOGO}" == X'YES' ] && check_status_before_run sogo_setup

@@ -46,7 +46,7 @@ install_all()
         export PREFERRED_MYSQL_VER='55m'
     fi
 
-    if [ X"${USE_RCM}" == X'YES' ]; then
+    if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         export IREDMAIL_USE_PHP='YES'
     fi
 
@@ -1024,7 +1024,7 @@ EOF
 OPTIONS_FILE_UNSET+=DOCS
 EOF
     # Roundcube webmail.
-    if [ X"${USE_RCM}" == X'YES' ]; then
+    if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PORTS="${ALL_PORTS} net/pear-Net_LDAP2"
         ALL_PORTS="${ALL_PORTS} mail/roundcube"
     fi
