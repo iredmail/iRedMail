@@ -72,7 +72,7 @@ iRedMail-0.9.6:
             - not create symbol links for PHP programs.
 
     * Updated packages:
-        + Roundcube -> 1.2.2
+        + Roundcube -> 1.2.3
         + iRedAdmin -> 0.6.3
         + uwsgi -> 2.0.14 (OpenBSD only)
         + FreeBSD:
