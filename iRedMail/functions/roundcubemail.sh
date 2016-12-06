@@ -81,14 +81,6 @@ SOURCE ${RCM_HTTPD_ROOT}/SQL/mysql.initial.sql;
 FLUSH PRIVILEGES;
 EOF
 
-        if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
-            for _host in ${HAPROXY_SERVERS}; do
-                ${MYSQL_CLIENT_ROOT} -e "GRANT ALL ON ${RCM_DB_NAME}.* TO "${RCM_DB_USER}"@"${_host}" IDENTIFIED BY '${RCM_DB_PASSWD}'"
-            done
-
-            ${MYSQL_CLIENT_ROOT} -e "FLUSH PRIVILEGES"
-        fi
-
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_SYS_USER_HOME}/rcm.sql >> ${INSTALL_LOG} 2>&1
         chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql 

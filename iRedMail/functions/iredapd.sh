@@ -93,11 +93,6 @@ FLUSH PRIVILEGES;
 SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/greylisting_whitelist_domains.sql;
 EOF
 
-        if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
-            for _host in ${HAPROXY_SERVERS}; do
-                ${MYSQL_CLIENT_ROOT} -e "GRANT ALL ON ${IREDAPD_DB_NAME}.* TO '${IREDAPD_DB_USER}'@'${_host}' IDENTIFIED BY '${IREDAPD_DB_PASSWD}'; FLUSH PRIVILEGES;"
-            done
-        fi
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/{iredapd.pgsql,greylisting_whitelist_domains.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
         chmod 0555 ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelist_domains.sql}

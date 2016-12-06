@@ -134,11 +134,6 @@ GRANT ALL ON ${IREDADMIN_DB_NAME}.* TO '${IREDADMIN_DB_USER}'@'${HOSTNAME}' IDEN
 FLUSH PRIVILEGES;
 EOF
 
-        if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
-            for _host in ${HAPROXY_SERVERS}; do
-                ${MYSQL_CLIENT_ROOT} -e "GRANT ALL ON ${IREDADMIN_DB_NAME}.* TO '${IREDADMIN_DB_USER}'@'${_host}' IDENTIFIED BY '${IREDADMIN_DB_PASSWD}'; FLUSH PRIVILEGES;"
-            done
-        fi
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/docs/samples/iredadmin.pgsql ${PGSQL_DATA_DIR}/ >/dev/null
         chmod 0777 ${PGSQL_DATA_DIR}/iredadmin.pgsql >/dev/null

@@ -43,15 +43,6 @@ CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_VIEW_AUTH} (c_uid, c_name, c_password, c_c
 EOF
         fi
 
-        if [ X"${WITH_HAPROXY}" == X'YES' -a -n "${HAPROXY_SERVERS}" ]; then
-            for _host in ${HAPROXY_SERVERS}; do
-                cat >> ${tmp_sql} <<EOF
-GRANT ALL ON ${SOGO_DB_NAME}.* TO "${SOGO_DB_USER}"@"${_host}" IDENTIFIED BY '${SOGO_DB_PASSWD}';
-FLUSH PRIVILEGES;
-EOF
-            done
-        fi
-
         ${MYSQL_CLIENT_ROOT} -e "SOURCE ${tmp_sql}"
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
