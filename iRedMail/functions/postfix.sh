@@ -28,6 +28,10 @@ postfix_config_basic()
 {
     ECHO_INFO "Configure Postfix (MTA)."
 
+    # Reset `inet_interfaces` to avoid invalid value which may cause fatal
+    # error while getting value with command `postconf <var>`.
+    postconf -e inet_interfaces='all'
+
     #
     # main.cf
     #
@@ -249,7 +253,77 @@ postfix_config_postscreen()
 {
     ECHO_DEBUG "Enable postscreen service."
 
-    bash ${TOOLS_DIR}/enable_postscreen.sh >> ${INSTALL_LOG} 2>&1
+    backup_file ${POSTSCREEN_FILE_ACCESS_CIDR} ${POSTSCREEN_FILE_DNSBL_REPLY}
+
+    export POSTFIX_VERSION="$(postconf mail_version 2>/dev/null | awk '{print $NF}')"
+    if echo ${POSTFIX_VERSION} | grep '^2\.[01234567]\.' &>/dev/null; then
+        ECHO_ERROR "postscreen requires Postfix 2.8 or later, you're running ${POSTFIX_VERSION}."
+        ECHO_ERROR "postscreen service not enabled."
+    else
+        ECHO_DEBUG "Comment out 'smtp inet ... smtpd' service in ${POSTFIX_FILE_MASTER_CF}."
+        perl -pi -e 's/^(smtp .*inet.*smtpd)$/#${1}/g' ${POSTFIX_FILE_MASTER_CF}
+
+        ECHO_DEBUG "Uncomment the new 'smtpd pass ... smtpd' service in ${POSTFIX_FILE_MASTER_CF}."
+        perl -pi -e 's/^#(smtpd.*pass.*smtpd)$/${1}/g' ${POSTFIX_FILE_MASTER_CF}
+
+        ECHO_DEBUG "Uncomment the new "smtp inet ... postscreen" service in ${POSTFIX_FILE_MASTER_CF}."
+        perl -pi -e 's/^#(smtp *.*inet.*postscreen)$/${1}/g' ${POSTFIX_FILE_MASTER_CF}
+
+        ECHO_DEBUG "Uncomment the new 'tlsproxy unix ... tlsproxy' service in ${POSTFIX_FILE_MASTER_CF}."
+        perl -pi -e 's/^#(tlsproxy.*unix.*tlsproxy)$/${1}/g' ${POSTFIX_FILE_MASTER_CF}
+
+        ECHO_DEBUG "Uncomment the new 'dnsblog unix ... dnsblog' service in ${POSTFIX_FILE_MASTER_CF}."
+        perl -pi -e 's/^#(dnsblog.*unix.*dnsblog)$/${1}/g' ${POSTFIX_FILE_MASTER_CF}
+
+        ECHO_DEBUG "Update ${POSTFIX_FILE_MAIN_CF} to enable postscreen."
+        postconf -e postscreen_greet_action='enforce'
+        postconf -e postscreen_blacklist_action='enforce'
+        postconf -e postscreen_dnsbl_action='enforce'
+        postconf -e postscreen_dnsbl_threshold=2
+        postconf -e postscreen_dnsbl_sites='zen.spamhaus.org=127.0.0.[2..11]*3 b.barracudacentral.org*2'
+
+        postconf -e postscreen_dnsbl_reply_map="texthash:${POSTSCREEN_FILE_DNSBL_REPLY}"
+        touch ${POSTSCREEN_FILE_DNSBL_REPLY}
+
+        postconf -e postscreen_access_list="permit_mynetworks, cidr:${POSTSCREEN_FILE_ACCESS_CIDR}"
+        cat > ${POSTSCREEN_FILE_ACCESS_CIDR} <<EOF
+# Rules are evaluated in the order as specified.
+#1.2.3.4 permit
+#2.3.4.5 reject
+
+# Permit local clients
+127.0.0.0/8 permit
+EOF
+
+        # Require Postfix-2.11+
+        if echo ${POSTFIX_VERSION} | egrep '(^3|^2\.[123456789][123456789])' &>/dev/null; then
+            postconf -e postscreen_dnsbl_whitelist_threshold='-2'
+        fi
+
+        # Set a not existing directory as default value, if we cannot get
+        # ${queue_directory} for some reason, it won't mistakenly reset owner
+        # and permission on '/'
+        export queue_directory="$(postconf queue_directory | awk '{print $NF}')"
+        export data_directory="$(postconf data_directory | awk '{print $NF}')"
+        _chrooted_data_directory="${queue_directory:=/tmp/not-exist}/${data_directory}"
+
+        unset queue_directory data_directory
+
+        ECHO_DEBUG "Create ${_chrooted_data_directory}/postscreen_cache.db."
+        if [ ! -d ${_chrooted_data_directory} ]; then
+            mkdir -p ${_chrooted_data_directory}
+            chown ${POSTFIX_DAEMON_USER}:${SYS_ROOT_GROUP} ${_chrooted_data_directory}
+            chmod 0700 ${_chrooted_data_directory}
+        fi
+
+        # Create db file.
+        cd ${_chrooted_data_directory}
+        touch postscreen_cache
+        postmap btree:postscreen_cache
+        rm postscreen_cache
+        chown ${POSTFIX_DAEMON_USER}:${POSTFIX_DAEMON_GROUP} postscreen_cache.db
+        chmod 0700 postscreen_cache.db
+    fi
 
     echo 'export status_postfix_config_postscreen="DONE"' >> ${STATUS_FILE}
 }

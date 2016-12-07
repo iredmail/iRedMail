@@ -35,7 +35,6 @@ export POSTFIX_RC_SCRIPT_NAME='postfix'
 # Log file
 export MAILLOG='/var/log/maillog'
 
-# Mail log files.
 if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export MAILLOG='/var/log/mail.log'
     export MAILLOG_INFO='/var/log/mail.info'
@@ -63,6 +62,9 @@ export POSTFIX_FILE_HEADER_CHECKS="${POSTFIX_ROOTDIR}/header_checks"
 export POSTFIX_FILE_BODY_CHECKS="${POSTFIX_ROOTDIR}/body_checks.pcre"
 # used for sender white/blacklist with pcre support
 export POSTFIX_FILE_SENDER_ACCESS="${POSTFIX_ROOTDIR}/sender_access.pcre"
+
+export POSTSCREEN_FILE_DNSBL_REPLY="${POSTFIX_ROOTDIR}/postscreen_dnsbl_reply"
+export POSTSCREEN_FILE_ACCESS_CIDR="${POSTFIX_ROOTDIR}/postscreen_access.cidr"
 
 # Default transport or LDA (local deliver agent).
 export DEFAULT_TRANSPORT="${DEFAULT_TRANSPORT:=lda}"
