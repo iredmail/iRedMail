@@ -42,7 +42,10 @@ install_all()
     # Enable syslog or rsyslog.
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} rsyslog"
-        ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
+
+        [ X"${DISTRO_VERSION}" == X'7' ] && ALL_PKGS="${ALL_PKGS} firewalld"
+
+        ENABLED_SERVICES="${ENABLED_SERVICES} rsyslog firewalld"
         DISABLED_SERVICES="${DISABLED_SERVICES} exim"
     elif [ X"${DISTRO}" == X'DEBIAN' ]; then
         # Debian.
