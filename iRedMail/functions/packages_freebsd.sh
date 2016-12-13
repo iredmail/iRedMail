@@ -1091,7 +1091,7 @@ EOF
     ALL_PORTS="${ALL_PORTS} dns/py-dnspython"
 
     # iRedAdmin: dependencies. webpy, Jinja2, bcrypt, beautifulsoup, lxml.
-    ALL_PORTS="${ALL_PORTS} www/webpy"
+    ALL_PORTS="${ALL_PORTS} www/webpy ftp/py-pycurl"
 
     # iRedAdmin: mod_wsgi
     if [ X"${WEB_SERVER}" == X'APACHE' ]; then
