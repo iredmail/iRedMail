@@ -228,20 +228,6 @@ mysql_import_vmail_users()
     ECHO_DEBUG "Add first domain and postmaster@ user."
     ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/add_first_domain_and_user.sql;"
 
-    if [ X"${WITH_MYSQL_CLUSTER}" == X'YES' -a -n "${MYSQL_CLUSTER_MEMBERS}" ]; then
-        echo '' > ${RUNTIME_DIR}/grant_privileges_cluster.sql
-
-        for _host in ${MYSQL_CLUSTER_MEMBERS}; do
-            echo "GRANT SELECT ON ${VMAIL_DB_NAME}.* TO '${VMAIL_DB_BIND_USER}'@'${_host}' IDENTIFIED BY '${VMAIL_DB_BIND_PASSWD}';" >> ${RUNTIME_DIR}/grant_privileges_cluster.sql
-            echo "GRANT SELECT,INSERT,DELETE,UPDATE ON ${VMAIL_DB_NAME}.* TO '${VMAIL_DB_ADMIN_USER}'@'${_host}' IDENTIFIED BY '${VMAIL_DB_ADMIN_PASSWD}';" >> ${RUNTIME_DIR}/grant_privileges_cluster.sql
-        done
-
-        echo "FLUSH PRIVILEGES;" >> ${RUNTIME_DIR}/grant_privileges_cluster.sql
-
-        ECHO_DEBUG "Grant privileges for MySQL cluster members."
-        ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/grant_privileges_cluster.sql;"
-    fi
-
     cat >> ${TIP_FILE} <<EOF
 Virtual Users:
     - ${MYSQL_VMAIL_STRUCTURE_SAMPLE}

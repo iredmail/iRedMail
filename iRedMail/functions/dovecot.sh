@@ -386,24 +386,6 @@ EOF
         fi
     fi
 
-    # HAProxy support
-    if [ X"${WITH_HAPROXY}" == X'YES' -a -n X"${HAPROXY_SERVERS}" ]; then
-        perl -pi -e 's/^#(login_trusted_networks =).*/${1} $ENV{HAPROXY_SERVERS}/' ${DOVECOT_CONF}
-        perl -pi -e 's/^#(haproxy_trusted_networks =).*/${1} $ENV{HAPROXY_SERVERS}/' ${DOVECOT_CONF}
-
-        grep '^service auth' ${DOVECOT_CONF} &>/dev/null
-        if [ X"$?" != X'0' ]; then
-            cat >> ${DOVECOT_CONF} << EOF
-# SASL AUTH service
-service auth {
-    inet_listener {
-        port = 12345
-    }
-}
-EOF
-        fi
-    fi
-
     # NFS storage support
     if [ X"${WITH_NFS_STORAGE}" == X'YES' ]; then
         cat ${SAMPLE_DIR}/dovecot/dovecot-nfs.conf >> ${DOVECOT_CONF}

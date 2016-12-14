@@ -175,13 +175,6 @@ rcm_config()
         perl -pi -e 's#(.*post_max_size.*)6M#${1}12M#' ${RCM_HTTPD_ROOT}/.htaccess
     fi
 
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        if [ -n "${HAPROXY_SERVERS}" ]; then
-            export _proxy_servers="$(echo ${HAPROXY_SERVERS} | sed 's/ /", "/')"
-            perl -pi -e 's#^//(.*proxy_whitelist.* =).*#${1} array("$ENV{_proxy_servers}");#' ${RCM_CONF}
-        fi
-    fi
-
     cat >> ${TIP_FILE} <<EOF
 Roundcube webmail: ${RCM_HTTPD_ROOT}
     * Configuration files:

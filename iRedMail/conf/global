@@ -69,8 +69,6 @@ export MYSQL_ROOT_USER="${MYSQL_ROOT_USER:=root}"
 
 # Use existing MySQL server, no matter it's local or remote.
 export USE_EXISTING_MYSQL="${USE_EXISTING_MYSQL:=NO}"
-# Install iRedMail with a MySQL cluster
-export WITH_MYSQL_CLUSTER="${WITH_MYSQL_CLUSTER:=NO}"
 # Create required SQL databases and records for applications
 # Should be set to NO if you're installing iRedMail with a MySQL cluster, and
 # you're installing on second or later nodes.
@@ -111,9 +109,6 @@ export USE_MANAGESIEVE='YES'
 # Install iRedMail with an existing HAProxy frontend
 # Required by Postfix, Dovecot.
 export WITH_HAPROXY="${WITH_HAPROXY:=NO}"
-# A space-separated list of HAProxy server addresses.
-# Required by Dovecot.
-export HAPROXY_SERVERS="${HAPROXY_SERVERS:=''}"
 
 # vmail user/group name, uid and gid.
 export VMAIL_USER_NAME='vmail'
