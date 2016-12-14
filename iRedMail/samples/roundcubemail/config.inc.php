@@ -48,10 +48,6 @@ $config['useragent'] = 'Roundcube Webmail'; // Hide version number
 //$config['username_domain'] = 'PH_FIRST_DOMAIN';
 //$config['mime_types'] = '/etc/mime.types';
 
-// List of trusted proxies
-// X_FORWARDED_* and X_REAL_IP headers are only accepted from these IPs
-//$config['proxy_whitelist'] = array();
-
 // USER INTERFACE
 $config['create_default_folders'] = true;
 $config['quota_zero_as_unlimited'] = true;
