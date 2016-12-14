@@ -223,7 +223,6 @@ iredadmin_config() {
     fi
 
     echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
-    echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
 
     if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
         echo "LDAP_SERVER_PRODUCT_NAME = 'LDAPD'" >> settings.py
