@@ -275,29 +275,21 @@ postfix_config_postscreen()
         ECHO_DEBUG "Uncomment the new 'dnsblog unix ... dnsblog' service in ${POSTFIX_FILE_MASTER_CF}."
         perl -pi -e 's/^#(dnsblog.*unix.*dnsblog)$/${1}/g' ${POSTFIX_FILE_MASTER_CF}
 
+        #
+        # main.cf
+        #
         ECHO_DEBUG "Update ${POSTFIX_FILE_MAIN_CF} to enable postscreen."
-        postconf -e postscreen_greet_action='enforce'
-        postconf -e postscreen_blacklist_action='enforce'
-        postconf -e postscreen_dnsbl_action='enforce'
-        postconf -e postscreen_dnsbl_threshold=2
-        postconf -e postscreen_dnsbl_sites='zen.spamhaus.org=127.0.0.[2..11]*3 b.barracudacentral.org*2'
+        cat ${SAMPLE_DIR}/postfix/main.cf.postscreen >> ${POSTFIX_FILE_MAIN_CF}
 
-        postconf -e postscreen_dnsbl_reply_map="texthash:${POSTSCREEN_FILE_DNSBL_REPLY}"
+        perl -pi -e 's#PH_POSTSCREEN_FILE_DNSBL_REPLY#$ENV{POSTSCREEN_FILE_DNSBL_REPLY}#g' ${POSTFIX_FILE_MAIN_CF}
         touch ${POSTSCREEN_FILE_DNSBL_REPLY}
 
-        postconf -e postscreen_access_list="permit_mynetworks, cidr:${POSTSCREEN_FILE_ACCESS_CIDR}"
-        cat > ${POSTSCREEN_FILE_ACCESS_CIDR} <<EOF
-# Rules are evaluated in the order as specified.
-#1.2.3.4 permit
-#2.3.4.5 reject
-
-# Permit local clients
-127.0.0.0/8 permit
-EOF
+        perl -pi -e 's#PH_POSTSCREEN_FILE_ACCESS_CIDR#$ENV{POSTSCREEN_FILE_ACCESS_CIDR}#g' ${POSTFIX_FILE_MAIN_CF}
+        cp -f ${SAMPLE_DIR}/postfix/postscreen_access.cidr ${POSTSCREEN_FILE_ACCESS_CIDR}
 
         # Require Postfix-2.11+
         if echo ${POSTFIX_VERSION} | egrep '(^3|^2\.[123456789][123456789])' &>/dev/null; then
-            postconf -e postscreen_dnsbl_whitelist_threshold='-2'
+            perl -pi -e 's/^#(postscreen_dnsbl_whitelist_threshold.*)/${1}/g' ${POSTFIX_FILE_MAIN_CF}
         fi
 
         # Set a not existing directory as default value, if we cannot get

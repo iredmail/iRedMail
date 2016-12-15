@@ -1,0 +1,6 @@
+# Rules are evaluated in the order as specified.
+#1.2.3.4 permit
+#2.3.4.5 reject
+
+# Permit local clients
+127.0.0.0/8 permit
