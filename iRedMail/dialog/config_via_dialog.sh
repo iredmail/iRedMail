@@ -94,7 +94,23 @@ export DISABLE_WEB_SERVER='NO'
 export WEB_SERVER=''
 
 if [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export WEB_SERVER='NGINX'
+    while : ; do
+        ${DIALOG} \
+        --title "Preferred web server" \
+        --radiolist "Choose a web server you want to run.
+
+TIP: Use SPACE key to select item." \
+20 76 3 \
+"Nginx" "The fastest web server" "on" \
+"No web server" "I don't need any web applications on this server" "off" \
+2>${RUNTIME_DIR}/.web_server
+
+        web_server_case_sensitive="$(cat ${RUNTIME_DIR}/.web_server)"
+        web_server="$(echo ${web_server_case_sensitive} | tr '[a-z]' '[A-Z]')"
+        [ X"${web_server}" != X"" ] && break
+    done
+
+    rm -f ${RUNTIME_DIR}/.web_server
 else
     while : ; do
         ${DIALOG} \

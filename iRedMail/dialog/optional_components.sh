@@ -30,7 +30,7 @@ export LIST_OF_OPTIONAL_COMPONENTS=''
 
 # Fail2ban
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
-if [ X"${DISTRO}" == X'FREEBSD' ]; then
+if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
 fi
 

@@ -261,6 +261,8 @@ iredadmin_cron_setup()
 # ${PROG_NAME}: Cleanup Amavisd database
 1   2   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py >/dev/null
 
+# iRedAdmin: Clean up sql database.
+1   *   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null 2>&1
 EOF
 
     # Disable cron jobs if we don't need to initialize database on this server.
