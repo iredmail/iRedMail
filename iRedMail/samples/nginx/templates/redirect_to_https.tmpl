@@ -1,4 +1,5 @@
 # Redirect webmail/SOGo/iredadmin to HTTPS
 location ~ ^/mail { rewrite ^ https://$host$request_uri?; }
+location ~ ^/mail/index.php$ { rewrite ^ https://$host/mail/; }
 location ~* ^/sogo { rewrite ^ https://$host/SOGo; }
 location ~ ^/iredadmin { rewrite ^ https://$host$request_uri?; }
