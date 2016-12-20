@@ -219,6 +219,11 @@ EOF
 EOF
     fi
 
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        [ -f ${ETC_SYSCONFIG_DIR}/awstats ] && \
+            perl -pi -e 's#^(AWSTATS_ENABLE_CRONTABS=).*#${1}"no"#g' ${ETC_SYSCONFIG_DIR}/awstats
+    fi
+
     echo 'export status_awstats_config_crontab="DONE"' >> ${STATUS_FILE}
 }
 
