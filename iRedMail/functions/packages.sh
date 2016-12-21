@@ -39,7 +39,7 @@ install_all()
         export IREDMAIL_USE_PHP='YES'
     fi
 
-    # Enable syslog or rsyslog.
+    # Enable syslog service (rsyslog).
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} rsyslog"
 

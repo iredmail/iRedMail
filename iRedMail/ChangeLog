@@ -6,6 +6,16 @@ iRedMail-0.9.6:
           Ubuntu 16.04 LTS edition is recommended for a production server.
 
     * Improvements:
+        - Use rsyslog (requires version 8.x) instead of internal logging system
+          for Dovecot on CentOS 7 and Ubuntu 16.04, 16.10.
+
+          rsyslog is default syslog program on CentOS, Debian and Ubuntu.
+          With rsyslog, we're able to discard log messages which matches
+          given regular expressions if it produces too fast. for example,
+          HAProxy performs health check every few seconds for POP3/IMAP (and
+          other) services, we can easily discard those health check related
+          logs to save disk space.
+
         - Switch Awstats user authentication from SQL/LDAP to basic auth based
           on file, Awstats is now available for both Apache and Nginx.
         - Installer:

@@ -32,7 +32,6 @@ dovecot_config()
 
     # RHEL/CentOS 6:    Dovecot-2.1.x
     # RHEL/CentOS 7:    Dovecot-2.2.10+
-    # Debian 7:         Dovecot-2.1.x
     # Debian 8:         Dovecot-2.2.13+
     # Ubuntu 14.04:     Dovecot-2.2.9
     # Ubuntu 16.04:     Dovecot-2.2.22
@@ -197,6 +196,11 @@ dovecot_config()
         perl -pi -e 's#(.*)(-o.*plugin.*)#${1}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
     fi
 
+    # on OpenBSD: get FQDN with command 'hostname', not 'hostname -f'.
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        perl -pi -e 's#hostname -f#hostname#g' ${DOVECOT_QUOTA_WARNING_SCRIPT}
+    fi
+
     export DOVECOT_DELIVER_BIN HOSTNAME
     perl -pi -e 's#PH_DOVECOT_DELIVER_BIN#$ENV{DOVECOT_DELIVER_BIN}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
     perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
@@ -322,13 +326,6 @@ dovecot_config()
     chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOVECOT_GLOBAL_SIEVE_FILE}
     chmod 0500 ${DOVECOT_GLOBAL_SIEVE_FILE}
 
-    for f in ${DOVECOT_LOG_FILE} ${DOVECOT_SIEVE_LOG_FILE} ${DOVECOT_LMTP_LOG_FILE}; do
-        ECHO_DEBUG "Create dovecot log file: ${f}."
-        touch ${f}
-        chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${f}
-        chmod 0600 ${f}
-    done
-
     ECHO_DEBUG "Enable dovecot SASL support in postfix: ${POSTFIX_FILE_MAIN_CF}."
     cat ${SAMPLE_DIR}/postfix/main.cf.dovecot >> ${POSTFIX_FILE_MAIN_CF}
 
@@ -342,6 +339,69 @@ dovecot_config()
     mkdir -p ${dovecot_expire_dict_dir} && \
     chown -R ${DOVECOT_USER}:${DOVECOT_GROUP} ${dovecot_expire_dict_dir} && \
     chmod -R 0750 ${dovecot_expire_dict_dir}
+
+    # NFS storage support
+    if [ X"${WITH_NFS_STORAGE}" == X'YES' ]; then
+        cat ${SAMPLE_DIR}/dovecot/dovecot-nfs.conf >> ${DOVECOT_CONF}
+    fi
+
+    cat >> ${TIP_FILE} <<EOF
+Dovecot:
+    * Configuration files:
+        - ${DOVECOT_CONF}
+        - ${DOVECOT_LDAP_CONF} (For OpenLDAP backend)
+        - ${DOVECOT_MYSQL_CONF} (For MySQL backend)
+        - ${DOVECOT_PGSQL_CONF} (For PostgreSQL backend)
+        - ${DOVECOT_REALTIME_QUOTA_CONF} (For real-time quota usage)
+        - ${DOVECOT_SHARE_FOLDER_CONF} (For IMAP sharing folder)
+    * RC script: ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME}
+    * Log files:
+        - ${DOVECOT_LOG_FILE}
+        - ${DOVECOT_SIEVE_LOG_FILE}
+        - ${DOVECOT_LMTP_LOG_FILE}
+    * See also:
+        - ${DOVECOT_GLOBAL_SIEVE_FILE}
+        - Logrotate config file: ${DOVECOT_LOGROTATE_FILE}
+
+EOF
+
+    echo 'export status_dovecot_config="DONE"' >> ${STATUS_FILE}
+}
+
+dovecot_log() {
+    ECHO_DEBUG "Configure Dovecot logging."
+
+    if [ X"${DOVECOT_USE_SYSLOG}" == X'YES' ]; then
+        # Use rsyslog.
+        # Copy rsyslog config file used to filter Dovecot log
+        cp ${SAMPLE_DIR}/rsyslog.d/0-dovecot.conf ${SYSLOG_CONF_DIR}
+
+        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_LDA#$ENV{DOVECOT_SYSLOG_FILE_LDA}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_IMAP#$ENV{DOVECOT_SYSLOG_FILE_IMAP}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_POP3#$ENV{DOVECOT_SYSLOG_FILE_POP3}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
+
+        # Although no need to create log files manually, but fail2ban will skip
+        # the log file which doesn't exist while fail2ban starts up, so we
+        # create it manually to avoid this.
+        for f in ${DOVECOT_LOG_FILE} ${DOVECOT_SYSLOG_FILE_LDA} ${DOVECOT_SYSLOG_FILE_IMAP} ${DOVECOT_SYSLOG_FILE_POP3}; do
+            ECHO_DEBUG "Create dovecot log file: ${f}."
+            touch ${f}
+        done
+
+    else
+        # Disable syslog and use Dovecot internal log system
+        perl -pi -e 's/^(syslog_facility.*)/#${1}/' ${DOVECOT_CONF}
+        perl -pi -e 's/#(log_path =.*)/${1}/' ${DOVECOT_CONF}
+
+        # Create log files manually
+        for f in ${DOVECOT_LOG_FILE} ${DOVECOT_SIEVE_LOG_FILE} ${DOVECOT_LMTP_LOG_FILE}; do
+            ECHO_DEBUG "Create dovecot log file: ${f}."
+            touch ${f}
+            chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${f}
+            chmod 0600 ${f}
+        done
+    fi
 
     ECHO_DEBUG "Setting logrotate for dovecot log file."
     if [ X"${KERNEL_NAME}" == X'LINUX' -o X"${KERNEL_NAME}" == X'FREEBSD' ]; then
@@ -382,32 +442,7 @@ EOF
         fi
     fi
 
-    # NFS storage support
-    if [ X"${WITH_NFS_STORAGE}" == X'YES' ]; then
-        cat ${SAMPLE_DIR}/dovecot/dovecot-nfs.conf >> ${DOVECOT_CONF}
-    fi
-
-    cat >> ${TIP_FILE} <<EOF
-Dovecot:
-    * Configuration files:
-        - ${DOVECOT_CONF}
-        - ${DOVECOT_LDAP_CONF} (For OpenLDAP backend)
-        - ${DOVECOT_MYSQL_CONF} (For MySQL backend)
-        - ${DOVECOT_PGSQL_CONF} (For PostgreSQL backend)
-        - ${DOVECOT_REALTIME_QUOTA_CONF} (For real-time quota usage)
-        - ${DOVECOT_SHARE_FOLDER_CONF} (For IMAP sharing folder)
-    * RC script: ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME}
-    * Log files:
-        - ${DOVECOT_LOG_FILE}
-        - ${DOVECOT_SIEVE_LOG_FILE}
-        - ${DOVECOT_LMTP_LOG_FILE}
-    * See also:
-        - ${DOVECOT_GLOBAL_SIEVE_FILE}
-        - Logrotate config file: ${DOVECOT_LOGROTATE_FILE}
-
-EOF
-
-    echo 'export status_dovecot_config="DONE"' >> ${STATUS_FILE}
+    echo 'export status_dovecot_log="DONE"' >> ${STATUS_FILE}
 }
 
 dovecot_initialize_db_for_ldap() {
@@ -443,6 +478,7 @@ EOF
 dovecot_setup()
 {
     check_status_before_run dovecot_config
+    check_status_before_run dovecot_log
     check_status_before_run dovecot_initialize_db_for_ldap
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then

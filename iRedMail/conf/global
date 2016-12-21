@@ -422,7 +422,9 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
         export FIREWALL_RULE_CONF="${FIREWALLD_CONF_DIR}/zones/iredmail.xml"
     fi
 
-    # Syslog config file: rsyslog.
+    # Syslog (rsyslog)
+    export SYSLOG_CONF_DIR='/etc/rsyslog.d'
+    # main config file
     export SYSLOG_CONF='/etc/rsyslog.conf'
     export SYSLOG_POSTROTATE_CMD='/bin/kill -HUP $(cat /var/run/syslogd.pid 2>/dev/null) 2>/dev/null || true'
 

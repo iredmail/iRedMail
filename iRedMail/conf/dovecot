@@ -53,15 +53,37 @@ export DOVECOT_CONF_DIR='/etc/dovecot'
 # Path to Dovecot deliver agant
 export DOVECOT_DELIVER_BIN='/usr/libexec/dovecot/deliver'
 
-if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+# Logging with syslog (Require rsyslog-8.x)
+export DOVECOT_USE_SYSLOG='YES'
+# main log file
+export DOVECOT_LOG_FILE='/var/log/dovecot.log'
+# Log files when we use Dovecot internal log system
+export DOVECOT_SIEVE_LOG_FILE='/var/log/dovecot-sieve.log'
+export DOVECOT_LMTP_LOG_FILE='/var/log/dovecot-lmtp.log'
+# Log files when we use syslog
+export DOVECOT_SYSLOG_FILE_LDA='/var/log/dovecot-lda.log'
+export DOVECOT_SYSLOG_FILE_IMAP='/var/log/dovecot-imap.log'
+export DOVECOT_SYSLOG_FILE_POP3='/var/log/dovecot-pop3.log'
+
+# Log rotate config file
+export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
+
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    [ X"${DISTRO_VERSION}" == X'6' ] && export DOVECOT_USE_SYSLOG='NO'
+
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER_BIN='/usr/lib/dovecot/deliver'
 
+    [ X"${DISTRO_CODENAME}" == X'trusty' ] && export DOVECOT_USE_SYSLOG='NO'
+
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export DOVECOT_USE_SYSLOG='NO'
     export DOVECOT_CONF_DIR='/usr/local/etc/dovecot'
     export DOVECOT_DELIVER_BIN='/usr/local/libexec/dovecot/deliver'
     export DOVECOT_DOVEADM_BIN='/usr/local/bin/doveadm'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export DOVECOT_USE_SYSLOG='NO'
     export DOVECOT_USER='_dovecot'
     export DOVECOT_GROUP='_dovecot'
     export DOVECOT_DELIVER_BIN='/usr/local/libexec/dovecot/deliver'
@@ -77,12 +99,6 @@ export DOVECOT_REALTIME_QUOTA_CONF="${DOVECOT_CONF_DIR}/dovecot-used-quota.conf"
 export DOVECOT_SHARE_FOLDER_CONF="${DOVECOT_CONF_DIR}/dovecot-share-folder.conf"
 export DOVECOT_MASTER_USER_PASSWORD_FILE="${DOVECOT_CONF_DIR}/dovecot-master-users"
 export DOVECOT_MASTER_USER_DOMAIN='not-exist.com'
-
-# Log & logrotate files.
-export DOVECOT_LOG_FILE='/var/log/dovecot.log'
-export DOVECOT_SIEVE_LOG_FILE='/var/log/dovecot-sieve.log'
-export DOVECOT_LMTP_LOG_FILE='/var/log/dovecot-lmtp.log'
-export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
 
 # Dovecot auth socket and pid file.
 # Relative path of Dovecot auth socket under Postfix chroot directory.

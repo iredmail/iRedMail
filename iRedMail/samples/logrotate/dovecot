@@ -1,6 +1,4 @@
-PH_DOVECOT_LOG_FILE
-PH_DOVECOT_SIEVE_LOG_FILE
-PH_DOVECOT_LMTP_LOG_FILE {
+/var/log/dovecot*.log {
     compress
     weekly
     rotate 10
