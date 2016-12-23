@@ -340,11 +340,6 @@ dovecot_config()
     chown -R ${DOVECOT_USER}:${DOVECOT_GROUP} ${dovecot_expire_dict_dir} && \
     chmod -R 0750 ${dovecot_expire_dict_dir}
 
-    # NFS storage support
-    if [ X"${WITH_NFS_STORAGE}" == X'YES' ]; then
-        cat ${SAMPLE_DIR}/dovecot/dovecot-nfs.conf >> ${DOVECOT_CONF}
-    fi
-
     cat >> ${TIP_FILE} <<EOF
 Dovecot:
     * Configuration files:

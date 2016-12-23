@@ -133,9 +133,6 @@ rcm_config()
 
     cd ${RCM_CONF_DIR}
 
-    #export RCM_DB_USER RCM_DB_PASSWD RCMD_DB SQL_SERVER_ADDRESS FIRST_DOMAIN
-    #export RCM_DES_KEY
-
     if [ X"${WITH_HAPROXY}" == X'YES' ]; then
         # PLAIN POP3/IMAP access are disabled, TLS is required.
         perl -pi -e 's#PH_IMAP_SERVER#tls://$ENV{IMAP_SERVER}#g' ${RCM_CONF}

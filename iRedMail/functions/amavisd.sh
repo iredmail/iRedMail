@@ -227,10 +227,10 @@ chomp(\$mydomain = "${HOSTNAME}");
     terminate_dsn_on_notify_success => 0,
 
     # don't perform spam/virus/header check.
-    #bypass_spam_checks_maps => [1],    # spam
-    #bypass_header_checks_maps => [1],  # bad header
-    #bypass_virus_checks_maps => [1],   # virus
-    #bypass_banned_checks_maps => [1],  # banned file names and types
+    #bypass_spam_checks_maps => [1],    # ORIGINATING spam
+    #bypass_header_checks_maps => [1],  # ORIGINATING bad-header
+    #bypass_virus_checks_maps => [1],   # ORIGINATING virus
+    #bypass_banned_checks_maps => [1],  # ORIGINATING banned file types
 };
 
 EOF
