@@ -133,10 +133,11 @@ fi
 
 export DOVECOT_PROTOCOLS="pop3 imap sieve lmtp"
 
-# LDA
+# Local (Mail) Delivery Agent
+#   - dovecot
+#   - lmtp:unix:private/dovecot-lmtp
+#   - lmtp:inet:<ip>:<port>
 export DOVECOT_LDA_DELIVER='dovecot'
-export DOVECOT_LDA_LMTP_SOCKET='lmtp:unix:private/dovecot-lmtp'
-export DOVECOT_LDA_LMTP_INET="lmtp:inet:${LMTP_SERVER}:${LMTP_PORT}"
 
 # Directory used to store mailbox INDEX files
 # - '' (empty value): use mailbox as index directory.
