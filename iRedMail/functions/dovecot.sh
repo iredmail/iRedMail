@@ -55,20 +55,10 @@ dovecot_config()
     # Service listen addresses and ports.
     perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#g' ${DOVECOT_CONF}
 
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        # Managesieve, LMTP, SASL AUTH: Listen on all available addresses
-        perl -pi -e 's/address = PH_MANAGESIEVE_BIND_HOST/#address = $ENV{MANAGESIEVE_BIND_HOST}/g' ${DOVECOT_CONF}
-        perl -pi -e 's/address = PH_LMTP_BIND_ADDRESS/#address = $ENV{LMTP_BIND_ADDRESS}/g' ${DOVECOT_CONF}
-        perl -pi -e 's/address = PH_DOVECOT_SASL_AUTH_BIND_ADDRESS/#address = $ENV{DOVECOT_SASL_AUTH_BIND_ADDRESS}/g' ${DOVECOT_CONF}
-    else
-        # Listen on localhost
-        perl -pi -e 's#PH_MANAGESIEVE_BIND_HOST#$ENV{MANAGESIEVE_BIND_HOST}#g' ${DOVECOT_CONF}
-        perl -pi -e 's#PH_LMTP_BIND_ADDRESS#$ENV{LMTP_BIND_ADDRESS}#g' ${DOVECOT_CONF}
-        perl -pi -e 's#PH_DOVECOT_SASL_AUTH_BIND_ADDRESS#$ENV{DOVECOT_SASL_AUTH_BIND_ADDRESS}#g' ${DOVECOT_CONF}
-    fi
-    perl -pi -e 's#PH_MANAGESIEVE_BIND_PORT#$ENV{MANAGESIEVE_BIND_PORT}#g' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_DOVECOT_SASL_AUTH_BIND_PORT#$ENV{DOVECOT_SASL_AUTH_BIND_PORT}#g' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_LMTP_BIND_PORT#$ENV{LMTP_BIND_PORT}#g' ${DOVECOT_CONF}
+    # Listen on localhost
+    perl -pi -e 's#PH_MANAGESIEVE_BIND_HOST#$ENV{MANAGESIEVE_BIND_HOST}#g' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_LMTP_BIND_ADDRESS#$ENV{LMTP_BIND_ADDRESS}#g' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_SASL_AUTH_BIND_ADDRESS#$ENV{DOVECOT_SASL_AUTH_BIND_ADDRESS}#g' ${DOVECOT_CONF}
 
     # Base directory.
     perl -pi -e 's#PH_BASE_DIR#$ENV{DOVECOT_BASE_DIR}#' ${DOVECOT_CONF}

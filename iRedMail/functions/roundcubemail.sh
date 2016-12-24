@@ -133,12 +133,7 @@ rcm_config()
 
     cd ${RCM_CONF_DIR}
 
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        # PLAIN POP3/IMAP access are disabled, TLS is required.
-        perl -pi -e 's#PH_IMAP_SERVER#tls://$ENV{IMAP_SERVER}#g' ${RCM_CONF}
-    else
-        perl -pi -e 's#PH_IMAP_SERVER#$ENV{IMAP_SERVER}#g' ${RCM_CONF}
-    fi
+    perl -pi -e 's#PH_IMAP_SERVER#$ENV{IMAP_SERVER}#g' ${RCM_CONF}
 
     perl -pi -e 's#PH_PHP_CONN_TYPE#$ENV{PHP_CONN_TYPE}#g' ${RCM_CONF}
     perl -pi -e 's#PH_RCM_DB_USER#$ENV{RCM_DB_USER}#g' ${RCM_CONF}

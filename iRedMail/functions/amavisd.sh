@@ -245,7 +245,7 @@ EOF
 
 amavisd_config_general()
 {
-    # Disable $final_xxx_destiny to avoid duplicate
+    # Comment out existing $final_xxx_destiny to avoid duplicate
     perl -pi -e 's/^(.final_virus_destiny.*)/#${1}/' ${AMAVISD_CONF}
     perl -pi -e 's/^(.final_banned_destiny.*)/#${1}/' ${AMAVISD_CONF}
     perl -pi -e 's/^(.final_spam_destiny.*)/#${1}/' ${AMAVISD_CONF}
@@ -290,40 +290,67 @@ $(cat ${SAMPLE_DIR}/amavisd/log_templ)
     #always_bcc_by_ccat => {CC_CLEAN, 'admin@example.com'},
 };
 
-# Set default action.
-# Available actions: D_PASS, D_BOUNCE, D_REJECT, D_DISCARD.
-\$final_virus_destiny      = D_DISCARD;
-\$final_banned_destiny     = D_BOUNCE;
-\$final_spam_destiny       = D_PASS;
-\$final_bad_header_destiny = D_PASS;
-
 #########################
-# Quarantine mails.
+# Default action applied to detected spam/virus/banned/bad-header, and how to
+# quarantine them
 #
-
+# Available actions:
+#   - D_PASS: Mail will pass to recipients, regardless of bad contents.
+#             If a quarantine is configured, a copy of the mail will go there.
+#             Note that including a recipient in a @*_lovers_maps is
+#             functionally equivalent to setting '$final_*_destiny = D_PASS;'
+#             for that recipient.
+#
+#   - D_BOUNCE: Mail will not be delivered to its recipients. A non-delivery
+#               notification (bounce) will be created and sent to the sender.
+#
+#   - D_REJECT: Mail will not be delivered to its recipients. Amavisd will
+#               send the typical 55x reject response to the upstream MTA and
+#               that MTA may create a reject notice (bounce) and return it to
+#               the sender.
+#               This notice is not as informative as the one created using
+#               D_BOUNCE, so usually D_BOUNCE is preferred over D_REJECT.
+#               If a quarantine is configured, a copy of the mail will go
+#               there, if not mail message will be lost, but the sender should
+#               be notified their message was rejected.
+#
+#   - D_DISCARD: Mail will not be delivered to its recipients and the sender
+#                normally will NOT be notified.
+#                If a quarantine is configured, a copy of the mail will go
+#                there, if not mail message will be lost. Note that there are
+#                additional settings available that can send notifications to
+#                persons that normally may not be notified when an undesirable
+#                message is found, so it is possible to notify the sender even
+#                when using D_DISCARD.
+#
 # Where to store quarantined mail message:
+#
 #   - 'local:spam-%i-%m', quarantine mail on local file system.
 #   - 'sql:', quarantine mail in SQL server specified in @storage_sql_dsn. 
 #   - undef, do not quarantine mail.
 
-# Bad header.
-\$bad_header_quarantine_method = undef;
-#\$bad_header_quarantine_method = 'sql:';
-#\$bad_header_quarantine_to = 'bad-header-quarantine';
-
 # SPAM.
+\$final_spam_destiny = D_PASS;
 \$spam_quarantine_method = undef;
 #\$spam_quarantine_method = 'sql:';
 #\$spam_quarantine_to = 'spam-quarantine';
 
 # Virus
-\$virus_quarantine_to     = 'virus-quarantine';
+\$final_virus_destiny = D_DISCARD;
 \$virus_quarantine_method = 'sql:';
+\$virus_quarantine_to     = 'virus-quarantine';
 
 # Banned
+\$final_banned_destiny = D_BOUNCE;
 \$banned_files_quarantine_method = undef;
 #\$banned_files_quarantine_method = 'sql:';
 #\$banned_quarantine_to = 'banned-quarantine';
+
+# Bad header.
+\$final_bad_header_destiny = D_PASS;
+\$bad_header_quarantine_method = undef;
+#\$bad_header_quarantine_method = 'sql:';
+#\$bad_header_quarantine_to = 'bad-header-quarantine';
 
 #########################
 # Quarantine CLEAN mails.

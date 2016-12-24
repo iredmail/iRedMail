@@ -218,10 +218,6 @@ iredadmin_config() {
     perl -pi -e 's#^(iredapd_db_user =).*#${1} "$ENV{IREDAPD_DB_USER}"#' settings.py
     perl -pi -e 's#^(iredapd_db_password =).*#${1} "$ENV{IREDAPD_DB_PASSWD}"#' settings.py
 
-    if [ X"${DOVECOT_REALTIME_QUOTA_TABLE}" != X'used_quota' ]; then
-        echo "SQL_TBL_USED_QUOTA = '${DOVECOT_REALTIME_QUOTA_TABLE}'" >> settings.py
-    fi
-
     echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
 
     if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then

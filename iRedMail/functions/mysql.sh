@@ -238,22 +238,6 @@ EOF
     echo 'export status_mysql_import_vmail_users="DONE"' >> ${STATUS_FILE}
 }
 
-mysql_create_sql_table_used_quota()
-{
-    # Create `vmail.used_quota<_suffix>` for cluster nodes.
-
-    if [ X"${WITH_HAPROXY}" == X'YES' -a X"${INITIALIZE_SQL_DATA}" == X'NO' ]; then
-        cp -f ${SAMPLE_DIR}/dovecot/used_quota.mysql ${RUNTIME_DIR}/used_quota.sql
-
-        # Rename SQL table `vmail.used_quota` to `vmail.used_quota_<hostname>`
-        perl -pi -e 's#used_quota`#$ENV{DOVECOT_REALTIME_QUOTA_TABLE}`#g' ${RUNTIME_DIR}/used_quota.sql
-
-        ${MYSQL_CLIENT_ROOT} -e "USE ${VMAIL_DB_NAME}; SOURCE ${RUNTIME_DIR}/used_quota.sql;"
-    fi
-
-    echo 'export status_mysql_create_sql_table_used_quota="DONE"' >> ${STATUS_FILE}
-}
-
 mysql_cron_backup()
 {
     mysql_backup_script="${BACKUP_DIR}/${BACKUP_SCRIPT_MYSQL_NAME}"
@@ -314,7 +298,6 @@ mysql_setup()
         check_status_before_run mysql_import_vmail_users
     fi
 
-    check_status_before_run mysql_create_sql_table_used_quota
     check_status_before_run mysql_cron_backup
 
     echo 'export status_mysql_setup="DONE"' >> ${STATUS_FILE}
