@@ -55,10 +55,16 @@ dovecot_config()
     # Service listen addresses and ports.
     perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#g' ${DOVECOT_CONF}
 
+    #
     # Listen on localhost
+    #
+    # Managesieve
     perl -pi -e 's#PH_MANAGESIEVE_BIND_HOST#$ENV{MANAGESIEVE_BIND_HOST}#g' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_MANAGESIEVE_BIND_PORT#$ENV{MANAGESIEVE_BIND_PORT}#g' ${DOVECOT_CONF}
+
+    # LMTP
     perl -pi -e 's#PH_LMTP_BIND_ADDRESS#$ENV{LMTP_BIND_ADDRESS}#g' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_DOVECOT_SASL_AUTH_BIND_ADDRESS#$ENV{DOVECOT_SASL_AUTH_BIND_ADDRESS}#g' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_LMTP_BIND_PORT#$ENV{LMTP_BIND_PORT}#' ${DOVECOT_CONF}
 
     # Base directory.
     perl -pi -e 's#PH_BASE_DIR#$ENV{DOVECOT_BASE_DIR}#' ${DOVECOT_CONF}

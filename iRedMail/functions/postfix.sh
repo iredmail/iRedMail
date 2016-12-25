@@ -146,17 +146,6 @@ postfix_config_basic()
     # Dovecot LDA
     perl -pi -e 's#PH_DOVECOT_DELIVER_BIN#$ENV{DOVECOT_DELIVER_BIN}#g' ${POSTFIX_FILE_MASTER_CF}
 
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        cat ${SAMPLE_DIR}/postfix/main.cf.haproxy >> ${POSTFIX_FILE_MAIN_CF}
-
-        perl -pi -e 's#$ENV{LOCAL_ADDRESS}:10025#10025#' ${POSTFIX_FILE_MASTER_CF}
-
-        # Enable smtpd_upstream_proxy_protocol=haproxy for submission service
-        perl -pi -e 's/(.*)#(-o smtpd_upstream_proxy_protocol=haproxy).*/${1}${2}/' ${POSTFIX_FILE_MASTER_CF}
-        #perl -pi -e 's/(.*)#(-o smtpd_upstream_proxy_protocol=haproxy)(.*#submission.*)/${1}${2}/' ${POSTFIX_FILE_MASTER_CF}
-        #perl -pi -e 's/(.*)#(-o smtpd_upstream_proxy_protocol=haproxy)(.*#10025.*)/${1}${2}/' ${POSTFIX_FILE_MASTER_CF}
-    fi
-
     ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
     mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ >> ${INSTALL_LOG} 2>&1
     for i in /etc/hosts /etc/resolv.conf /etc/localtime /etc/services; do

@@ -124,15 +124,7 @@ sogo_config() {
     chown ${SOGO_DAEMON_USER}:${SOGO_DAEMON_GROUP} ${SOGO_CONF}
     chmod 0400 ${SOGO_CONF}
 
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        perl -pi -e 's#PH_SOGO_BIND_ADDRESS#0.0.0.0#g' ${SOGO_CONF}
-
-        # Enable imaps://, disable imap://
-        perl -pi -e 's#(.*)//(SOGoIMAPServer.*=.*imaps://.*)#${1}${2}#g' ${SOGO_CONF}
-        perl -pi -e 's|(.*)(SOGoIMAPServer.*=.*imap://.*)|${1}//${2}|g' ${SOGO_CONF}
-    else
-        perl -pi -e 's#PH_SOGO_BIND_ADDRESS#$ENV{SOGO_BIND_ADDRESS}#g' ${SOGO_CONF}
-    fi
+    perl -pi -e 's#PH_SOGO_BIND_ADDRESS#$ENV{SOGO_BIND_ADDRESS}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_BIND_PORT#$ENV{SOGO_BIND_PORT}#g' ${SOGO_CONF}
 
     # PID, log file
@@ -157,13 +149,7 @@ sogo_config() {
     perl -pi -e 's#PH_MANAGESIEVE_PORT#$ENV{MANAGESIEVE_PORT}#g' ${SOGO_CONF}
 
     # SMTP server
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        # SOGo and Postfix are running on different servers.
-        perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}:$ENV{SOGO_SMTP_PORT}#g' ${SOGO_CONF}
-        perl -pi -e 's#(//)(SOGoSMTPAuthenticationType = PLAIN;)#${2}#' ${SOGO_CONF}
-    else
-        perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${SOGO_CONF}
-    fi
+    perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${SOGO_CONF}
 
     # Memcached server
     perl -pi -e 's#PH_MEMCACHED_BIND_ADDRESS#$ENV{MEMCACHED_BIND_ADDRESS}#g' ${SOGO_CONF}
@@ -280,7 +266,7 @@ EOF
         fi
 
         if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-            # Allow access from http:// since HAProxy handles ssl termination
+            # Apache: Allow access from http:// since HAProxy handles ssl termination
             perl -pi -e 's/^#(ProxyPass.*)/${1}/g' ${SOGO_HTTPD_CONF}
         fi
     fi

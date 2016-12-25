@@ -175,17 +175,6 @@ nginx_config()
         perl -pi -e 's#PH_UWSGI_PID_IREDADMIN#$ENV{UWSGI_PID_IREDADMIN}#g' ${IREDADMIN_UWSGI_CONF}
     fi
 
-    if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-        # Enable Roundcube, SOGo, iRedAdmin in http mode since we have ssl
-        # termination with HAProxy
-        perl -pi -e 's/(.*)#(include.*roundcube.tmpl)/${1}${2}/' ${NGINX_CONF_DEFAULT}
-        perl -pi -e 's/(.*)#(include.*sogo.tmpl)/${1}${2}/' ${NGINX_CONF_DEFAULT}
-        perl -pi -e 's/(.*)#(include.*iredadmin.tmpl)/${1}${2}/' ${NGINX_CONF_DEFAULT}
-
-        # Don't redirect requests to https
-        perl -pi -e 's/(.*)(include.*redirect_to_https.tmpl)/${1}#${2}/' ${NGINX_CONF_DEFAULT}
-    fi
-
     cat >> ${TIP_FILE} <<EOF
 Nginx:
     * Configuration files:
