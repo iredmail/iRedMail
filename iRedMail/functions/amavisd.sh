@@ -467,14 +467,14 @@ EOF
 
 EOF
 
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        cat >> ${AMAVISD_CONF} <<EOF
+    cat >> ${AMAVISD_CONF} <<EOF
 # Amavisd on some Linux/BSD distribution use \$banned_namepath_re instead of
 # \$banned_filename_re, so we define some blocked file types here.
 #
 # Sample input for \$banned_namepath_re:
 #
 #   P=p003\tL=1\tM=multipart/mixed\nP=p002\tL=1/2\tM=application/octet-stream\tT=dat\tN=my_docum.zip
+#   P=p003,L=1,M=multipart/mixed | P=p002,L=1/2,M=application/zip,T=zip,N=FedEx_00628727.zip | P=p005,L=1/2/2,T=asc,N=FedEx_00628727.doc.wsf
 #
 # What it means:
 #   - T: type. e.g. zip archive.
@@ -482,22 +482,17 @@ EOF
 #   - N: suggested (MIME) name. e.g. my_docum.zip.
 
 \$banned_namepath_re = new_RE(
-    # Compressed files.
-    [qr'M=application/(zip|rar|arc|arj|zoo|gz|bz2)(,|\t).*T=dat(,|\t)'xmi => 'DISCARD'],
+    [qr'T=(zip|rar|arc|arj|zoo|gz|bz2)(,|\t)'xmi => 'DISCARD'],     # Compressed file types
+    [qr'T=x-(msdownload|msdos-program|msmetafile|wmf)(,|\t)'xmi => 'DISCARD'],
+    [qr'T=(hta)(,|\t)'xmi => 'DISCARD'],
 
-    # Dangerous file types on Windows.
-    [qr'M=(9|386|LeChiffre|aaa|abc|aepl|aru|atm|aut|bat|bhx|bin|bkd|blf|bll|bmw|boo|bps|bqf|breaking_bad|buk|bup|bxz|cc|ccc|ce0|ceo|cfxxe|chm|cih|cla|class|cmd|com|cpl|crinf|crjoker|crypt|cryptolocker|cryptowall|ctbl|cxq|cyw|dbd|delf|dev|dlb|dli|dll|dllx|dom|drv|dx|dxz|dyv|dyz|ecc|exe|exe-ms|exe1|exe_renamed|exx|ezt|ezz|fag|fjl|fnr|fuj|good|gzquar|hlp|hlw|hsq|hts|iva|iws|jar|js|kcd|keybtc@inbox_com|let|lik|lkh|lnk|locky|lok|lol!|lpaq5|magic|mfu|micro|mjg|mjz|mp3|nls|oar|ocx|osa|ozd|pcx|pgm|php2|php3|pid|pif|plc|pr|pzdc|qit|qrn|r5a|rhk|rna|rsc_tmp|s7p|scr|scr|shs|ska|smm|smtmp|sop|spam|ssy|swf|sys|tko|tps|tsa|tti|ttt|txs|upa|uzy|vb|vba|vbe|vbs|vbx|vexe|vxd|vzr|wlpginstall|wmf|ws|wsc|wsf|wsh|wss|xdu|xir|xlm|xlv|xnt|xnxx|xtbl|xxx|xyz|zix|zvz|zzz)(,|\t)'xmi => 'DISCARD'],
+    # Dangerous mime types
+    [qr'T=(9|386|LeChiffre|aaa|abc|aepl|ani|aru|atm|aut|b64|bat|bhx|bin|bkd|blf|bll|bmw|boo|bps|bqf|breaking_bad|buk|bup|bxz|cc|ccc|ce0|ceo|cfxxe|chm|cih|cla|class|cmd|com|cpl|crinf|crjoker|crypt|cryptolocker|cryptowall|ctbl|cxq|cyw|dbd|delf|dev|dlb|dli|dll|dllx|dom|drv|dx|dxz|dyv|dyz|ecc|exe|exe-ms|exe1|exe_renamed|exx|ezt|ezz|fag|fjl|fnr|fuj|good|gzquar|hlp|hlw|hqx|hsq|hts|iva|iws|jar|js|kcd|keybtc@inbox_com|let|lik|lkh|lnk|locky|lok|lol!|lpaq5|magic|mfu|micro|mim|mjg|mjz|mp3|nls|oar|ocx|osa|ozd|pcx|pgm|php2|php3|pid|pif|plc|pr|pzdc|qit|qrn|r5a|rhk|rna|rsc_tmp|s7p|scr|shs|ska|smm|smtmp|sop|spam|ssy|swf|sys|tko|tps|tsa|tti|ttt|txs|upa|uu|uue|uzy|vb|vba|vbe|vbs|vbx|vexe|vxd|vzr|wlpginstall|wmf|ws|wsc|wsf|wsh|wss|xdu|xir|xlm|xlv|xnt|xnxx|xtbl|xxe|xxx|xyz|zix|zvz|zzz)(,|\t)'xmi => 'DISCARD'],
 
-    [qr'T=(pif|scr)(,|\t)'xmi => 'DISCARD'],                      # banned extensions - rudimentary
-    [qr'T=ani(,|\t)'xmi => 'DISCARD'],                            # banned animated cursor file(1) type
-    [qr'T=(mim|b64|bhx|hqx|xxe|uu|uue)(,|\t)'xmi => 'DISCARD'],   # banned extension - WinZip vulnerab.
-    [qr'M=application/x-msdownload(,|\t)'xmi => 'DISCARD'],       # block these MIME types
-    [qr'M=application/x-msdos-program(,|\t)'xmi => 'DISCARD'],
-    [qr'M=application/hta(,|\t)'xmi => 'DISCARD'],
-    [qr'M=(application/x-msmetafile|image/x-wmf)(,|\t)'xmi => 'DISCARD'],  # Windows Metafile MIME type
+    # Dangerous file name extensions
+    [qr'N=.*\.(9|386|LeChiffre|aaa|abc|aepl|ani|aru|atm|aut|b64|bat|bhx|bin|bkd|blf|bll|bmw|boo|bps|bqf|breaking_bad|buk|bup|bxz|cc|ccc|ce0|ceo|cfxxe|chm|cih|cla|class|cmd|com|cpl|crinf|crjoker|crypt|cryptolocker|cryptowall|ctbl|cxq|cyw|dbd|delf|dev|dlb|dli|dll|dllx|dom|drv|dx|dxz|dyv|dyz|ecc|exe|exe-ms|exe1|exe_renamed|exx|ezt|ezz|fag|fjl|fnr|fuj|good|gzquar|hlp|hlw|hqx|hsq|hts|iva|iws|jar|js|kcd|keybtc@inbox_com|let|lik|lkh|lnk|locky|lok|lol!|lpaq5|magic|mfu|micro|mim|mjg|mjz|mp3|nls|oar|ocx|osa|ozd|pcx|pgm|php2|php3|pid|pif|plc|pr|pzdc|qit|qrn|r5a|rhk|rna|rsc_tmp|s7p|scr|shs|ska|smm|smtmp|sop|spam|ssy|swf|sys|tko|tps|tsa|tti|ttt|txs|upa|uu|uue|uzy|vb|vba|vbe|vbs|vbx|vexe|vxd|vzr|wlpginstall|wmf|ws|wsc|wsf|wsh|wss|xdu|xir|xlm|xlv|xnt|xnxx|xtbl|xxe|xxx|xyz|zix|zvz|zzz)$'xmi => 'DISCARD'],
 );
 EOF
-    fi
 
     cat >> ${AMAVISD_CONF} <<EOF
 # Selectively disable some of the header checks

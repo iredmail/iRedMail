@@ -67,7 +67,7 @@ export POSTSCREEN_FILE_DNSBL_REPLY="${POSTFIX_ROOTDIR}/postscreen_dnsbl_reply"
 export POSTSCREEN_FILE_ACCESS_CIDR="${POSTFIX_ROOTDIR}/postscreen_access.cidr"
 
 # Default transport or LDA (local deliver agent).
-export TRANSPORT="${TRANSPORT:=DOVECOT_LDA_DELIVER}"
+export TRANSPORT="${TRANSPORT:=${DOVECOT_LDA_DELIVER}}"
 
 # Set 'message_size_limit', in 'byte'. Default is 10M.
 export MESSAGE_SIZE_LIMIT='15728640'
