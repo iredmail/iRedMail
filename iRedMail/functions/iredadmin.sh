@@ -99,12 +99,6 @@ AddType text/html .py
 #Alias /iredadmin/static "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static/"
 #WSGIScriptAlias /iredadmin "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py/"
 EOF
-
-            if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-                # Allow access from http:// since HAProxy handles ssl termination
-                perl -pi -e 's/(.*Alias.*iredadmin.*)/#${1}/g' ${HTTPD_SSL_CONF}
-                perl -pi -e 's/#(.*Alias.*iredadmin.*)/${1}/g' ${IREDADMIN_HTTPD_CONF}
-            fi
         fi
 
         # Enable Apache module config file on Ubuntu 14.04.

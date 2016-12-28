@@ -104,10 +104,6 @@ export IREDAPD_SERVER_ADDRESS="${IREDAPD_SERVER_ADDRESS:=${IREDAPD_BIND_HOST}}"
 # For managesieve service and software.
 export USE_MANAGESIEVE='YES'
 
-# Install iRedMail with an existing HAProxy frontend
-# Required by Postfix, Dovecot.
-export WITH_HAPROXY="${WITH_HAPROXY:=NO}"
-
 # vmail user/group name, uid and gid.
 export VMAIL_USER_NAME='vmail'
 export VMAIL_GROUP_NAME='vmail'

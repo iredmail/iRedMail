@@ -243,6 +243,7 @@ EOF
     if [ X"${WEB_SERVER}" == X'APACHE' ]; then
         backup_file ${SOGO_HTTPD_CONF}
         cp -f ${SAMPLE_DIR}/sogo/sogo-apache.conf ${SOGO_HTTPD_CONF}
+        perl -pi -e 's#(.*timeout=)360#${1}$ENV{SOGO_PROXY_TIMEOUT}#' ${HTTPD_CONF}
 
         perl -pi -e 's#PH_SOGO_GNUSTEP_DIR#$ENV{SOGO_GNUSTEP_DIR}#g' ${SOGO_HTTPD_CONF}
 
@@ -263,11 +264,6 @@ EOF
             # Enable required Apache modules
             perl -pi -e 's/^#(LoadModule proxy_module.*)/${1}/' ${HTTPD_CONF}
             perl -pi -e 's/^#(LoadModule proxy_http_module.*)/${1}/' ${HTTPD_CONF}
-        fi
-
-        if [ X"${WITH_HAPROXY}" == X'YES' ]; then
-            # Apache: Allow access from http:// since HAProxy handles ssl termination
-            perl -pi -e 's/^#(ProxyPass.*)/${1}/g' ${SOGO_HTTPD_CONF}
         fi
     fi
 
