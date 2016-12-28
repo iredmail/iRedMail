@@ -120,7 +120,7 @@ iredadmin_initialize_db() {
     ECHO_DEBUG "Import iRedAdmin database template."
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         # Required by MySQL-5.6: TEXT/BLOB column cannot have a default value.
-        perl -pi -e 's#(.*maildir.*)TEXT(.*)#${1}VARCHAR\(255\)${2}#g' ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql;
+        perl -pi -e 's#(.*maildir.*)TEXT(.*)#${1}VARCHAR\(255\)${2}#g' ${IREDADMIN_HTTPD_ROOT}/SQL/iredadmin.mysql;
 
         ${MYSQL_CLIENT_ROOT} <<EOF
 # Create databases.
@@ -128,14 +128,14 @@ CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 CO
 
 # Import SQL template.
 USE ${IREDADMIN_DB_NAME};
-SOURCE ${IREDADMIN_HTTPD_ROOT}/docs/samples/iredadmin.sql;
+SOURCE ${IREDADMIN_HTTPD_ROOT}/SQL/iredadmin.mysql;
 GRANT ALL ON ${IREDADMIN_DB_NAME}.* TO '${IREDADMIN_DB_USER}'@'${MYSQL_GRANT_HOST}' IDENTIFIED BY '${IREDADMIN_DB_PASSWD}';
 GRANT ALL ON ${IREDADMIN_DB_NAME}.* TO '${IREDADMIN_DB_USER}'@'${HOSTNAME}' IDENTIFIED BY '${IREDADMIN_DB_PASSWD}';
 FLUSH PRIVILEGES;
 EOF
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp -f ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/docs/samples/iredadmin.pgsql ${PGSQL_DATA_DIR}/ >/dev/null
+        cp -f ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/SQL/iredadmin.pgsql ${PGSQL_DATA_DIR}/ >/dev/null
         chmod 0777 ${PGSQL_DATA_DIR}/iredadmin.pgsql >/dev/null
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create user
