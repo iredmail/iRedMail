@@ -6,14 +6,13 @@
 
 add_user_vmail()
 {
-
-    ECHO_DEBUG "Create HOME folder for vmail user."
-    homedir="$(dirname $(echo ${VMAIL_USER_HOME_DIR} | sed 's#/$##'))"
-    [ -L ${homedir} ] && rm -f ${homedir} >> ${INSTALL_LOG} 2>&1
-    [ -d ${homedir} ] || mkdir -p ${homedir} >> ${INSTALL_LOG} 2>&1
-    [ -d ${STORAGE_MAILBOX_DIR} ] || mkdir -p ${STORAGE_MAILBOX_DIR} >> ${INSTALL_LOG} 2>&1
-
     ECHO_DEBUG "Create system account: ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} (${VMAIL_USER_UID}:${VMAIL_USER_GID})."
+
+    [ -d ${STORAGE_BASE_DIR} ] || mkdir -p ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${STORAGE_MAILBOX_DIR}
+
+    [ -d ${STORAGE_MAILBOX_DIR} ] || mkdir -p ${STORAGE_MAILBOX_DIR} >> ${INSTALL_LOG} 2>&1
+    [ -d ${PUBLIC_MAILBOX_DIR} ] || mkdir -p ${PUBLIC_MAILBOX_DIR} >> ${INSTALL_LOG} 2>&1
 
     # vmail/vmail must has the same UID/GID on all supported Linux/BSD
     # distributions, required by cluster environment. e.g. GlusterFS.
@@ -23,7 +22,6 @@ add_user_vmail()
             -u ${VMAIL_USER_UID} \
             -g ${VMAIL_GROUP_NAME} \
             -s ${SHELL_NOLOGIN} \
-            -d ${VMAIL_USER_HOME_DIR} \
             -n ${VMAIL_USER_NAME} >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME} >> ${INSTALL_LOG} 2>&1
@@ -32,7 +30,6 @@ add_user_vmail()
             -u ${VMAIL_USER_UID} \
             -g ${VMAIL_GROUP_NAME} \
             -s ${SHELL_NOLOGIN} \
-            -d ${VMAIL_USER_HOME_DIR} \
             ${VMAIL_USER_NAME} >> ${INSTALL_LOG} 2>&1
     else
         groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME} >> ${INSTALL_LOG} 2>&1
@@ -40,13 +37,8 @@ add_user_vmail()
             -u ${VMAIL_USER_UID} \
             -g ${VMAIL_GROUP_NAME} \
             -s ${SHELL_NOLOGIN} \
-            -d ${VMAIL_USER_HOME_DIR} \
             ${VMAIL_USER_NAME} >> ${INSTALL_LOG} 2>&1
     fi
-    rm -f ${VMAIL_USER_HOME_DIR}/.* >> ${INSTALL_LOG} 2>&1
-
-    export PUBLIC_MAILBOX_DIR="${PUBLIC_MAILBOX_DIR:=${VMAIL_USER_HOME_DIR}/public}"
-    [ -d ${PUBLIC_MAILBOX_DIR} ] || mkdir -p ${PUBLIC_MAILBOX_DIR} >> ${INSTALL_LOG} 2>&1
 
     if [ -n "${MAILBOX_INDEX_DIR}" ]; then
         if [ ! -d ${MAILBOX_INDEX_DIR} ]; then
@@ -58,7 +50,7 @@ add_user_vmail()
     fi
 
     ECHO_DEBUG "Create directory used to store global sieve filters: ${SIEVE_DIR}."
-    mkdir -p ${SIEVE_DIR}
+    mkdir -p ${SIEVE_DIR} &>/dev/null
 
     export FIRST_USER_MAILDIR_HASH_PART="${FIRST_DOMAIN}/$(hash_maildir ${FIRST_USER})"
     export FIRST_USER_MAILDIR_FULL_PATH="${STORAGE_MAILBOX_DIR}/${FIRST_USER_MAILDIR_HASH_PART}"
@@ -71,12 +63,13 @@ add_user_vmail()
     mkdir -p ${FIRST_USER_MAILDIR_INBOX} >> ${INSTALL_LOG} 2>&1
 
     # set owner/group and permission.
-    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${VMAIL_USER_HOME_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
-    chmod -R 0700 ${VMAIL_USER_HOME_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
+    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${STORAGE_BASE_DIR} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
+    chmod -R 0700 ${STORAGE_BASE_DIR} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
+
+    # Create BACKUP_DIR
 
     cat >> ${TIP_FILE} <<EOF
 Mail Storage:
-    - Root directory: ${VMAIL_USER_HOME_DIR}
     - Mailboxes: ${STORAGE_MAILBOX_DIR}
     - Mailbox indexes: ${MAILBOX_INDEX_DIR}
     - Global sieve filters: ${SIEVE_DIR}

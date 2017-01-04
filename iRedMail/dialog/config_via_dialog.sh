@@ -49,14 +49,13 @@ NOTE: You can abort this installation wizard by pressing key Ctrl-C.
 # Exit when user choose 'exit'.
 [ X"$?" != X"0" ] && ECHO_INFO "Exit." && exit 0
 
-# VMAIL_USER_HOME_DIR
+# Storage base directory
 while :; do
-    VMAIL_USER_HOME_DIR="/var/vmail"
     ${DIALOG} \
         --title "Default mail storage path" \
         --inputbox "\
 Please specify a directory (in lowercase) used to store user mailboxes.
-Default is: ${VMAIL_USER_HOME_DIR}
+Default is: ${STORAGE_BASE_DIR}
 
 NOTES:
 
@@ -64,13 +63,14 @@ NOTES:
 * Maildir path will be converted to lowercases, so please create this
   directory in lowcases.
 * It cannot be /var/mail (used to store mails sent to system accounts).
-* Mailboxes will be stored under its sub-directory: ${VMAIL_USER_HOME_DIR}/${STORAGE_NODE}/
+* Mailboxes will be stored under its sub-directory: ${STORAGE_BASE_DIR}/${STORAGE_NODE}/
 * Daily backup of SQL/LDAP databases will be stored under another sub-directory: /var/vmail/backup.
-" 20 76 "${VMAIL_USER_HOME_DIR}" 2>${RUNTIME_DIR}/.vmail_user_home_dir
+" 20 76 "${STORAGE_BASE_DIR}" 2>${RUNTIME_DIR}/.vmail_user_home_dir
 
-    export VMAIL_USER_HOME_DIR="$(cat ${RUNTIME_DIR}/.vmail_user_home_dir | tr '[A-Z]' '[a-z]')"
-    if echo ${VMAIL_USER_HOME_DIR} | grep -i '^/var/mail\>' &>/dev/null; then
-        # Cannot be /var/mail
+    export STORAGE_BASE_DIR="$(cat ${RUNTIME_DIR}/.vmail_user_home_dir | tr '[A-Z]' '[a-z]')"
+
+    if echo ${STORAGE_BASE_DIR} | grep -i '^/var/mail\>' &>/dev/null; then
+        # Cannot be /var/mail -- it's used to store mails for system accounts
         :
     else
         break
@@ -79,11 +79,8 @@ done
 
 rm -f ${RUNTIME_DIR}/.vmail_user_home_dir &>/dev/null
 
-export STORAGE_BASE_DIR="${VMAIL_USER_HOME_DIR}"
-export STORAGE_MAILBOX_DIR="${STORAGE_BASE_DIR}/${STORAGE_NODE}"
-export SIEVE_DIR="${VMAIL_USER_HOME_DIR}/sieve"
-echo "export VMAIL_USER_HOME_DIR='${VMAIL_USER_HOME_DIR}'" >> ${IREDMAIL_CONFIG_FILE}
-echo "export STORAGE_BASE_DIR='${VMAIL_USER_HOME_DIR}'" >> ${IREDMAIL_CONFIG_FILE}
+export STORAGE_BASE_DIR="${STORAGE_BASE_DIR}"
+echo "export STORAGE_BASE_DIR='${STORAGE_BASE_DIR}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export STORAGE_MAILBOX_DIR='${STORAGE_MAILBOX_DIR}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${IREDMAIL_CONFIG_FILE}
 
@@ -215,9 +212,6 @@ export LDAP_ROOTPW="$(${RANDOM_STRING})"
 echo "export LDAP_BINDPW='${LDAP_BINDPW}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export LDAP_ADMIN_PW='${LDAP_ADMIN_PW}'" >> ${IREDMAIL_CONFIG_FILE}
 echo "export LDAP_ROOTPW='${LDAP_ROOTPW}'" >> ${IREDMAIL_CONFIG_FILE}
-
-export BACKUP_DIR="${VMAIL_USER_HOME_DIR}/backup"
-echo "export BACKUP_DIR='${BACKUP_DIR}'" >>${IREDMAIL_CONFIG_FILE}
 
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     . ${DIALOG_DIR}/ldap_config.sh

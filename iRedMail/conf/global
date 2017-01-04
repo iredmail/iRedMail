@@ -128,6 +128,9 @@ export SQL_BACKUP_DATABASES="${VMAIL_DB_NAME}"
 # Default virtual domain admin name without domain name (@example.com).
 export DOMAIN_ADMIN_NAME='postmaster'
 
+# Directory used to store mailboxes
+export STORAGE_BASE_DIR="${STORAGE_BASE_DIR:=/var/vmail}"
+
 # Tools.
 export CONFIG_VIA_DIALOG="${DIALOG_DIR}/config_via_dialog.sh"
 # Note: config file will be sourced in file 'conf/core', function 'check_env()'.

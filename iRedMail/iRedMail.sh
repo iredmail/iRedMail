@@ -66,6 +66,16 @@ chmod go+rx /dev/null /dev/*random &>/dev/null
 
 check_env
 
+# Define paths of some directories
+# Directory used to store mailboxes
+export STORAGE_MAILBOX_DIR="${STORAGE_MAILBOX_DIR:=${STORAGE_BASE_DIR}/${STORAGE_NODE}}"
+# Directory used to store sieve filters
+export SIEVE_DIR="${SIEVE_DIR:=${STORAGE_BASE_DIR}/sieve}"
+# Directory used to store daily SQL/LDAP backup files
+export BACKUP_DIR="${BACKUP_DIR:=${STORAGE_BASE_DIR}/backup}"
+# Directory used to store public IMAP folders
+export PUBLIC_MAILBOX_DIR="${PUBLIC_MAILBOX_DIR:=${STORAGE_BASE_DIR}/public}"
+
 # Import global variables in specified order.
 . ${CONF_DIR}/web_server
 . ${CONF_DIR}/openldap
