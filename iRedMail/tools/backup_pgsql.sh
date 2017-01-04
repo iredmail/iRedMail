@@ -100,6 +100,8 @@ export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
 
 # Check and create directories.
 [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} 2>/dev/null
+chown root ${BACKUP_DIR}
+chmod 0700 ${BACKUP_DIR}
 
 # Get HOME directory of PGSQL_SYS_USER
 export PGSQL_SYS_USER_HOME="$(su - ${PGSQL_SYS_USER} -c 'echo $HOME')"

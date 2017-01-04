@@ -66,7 +66,10 @@ add_user_vmail()
     chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${STORAGE_BASE_DIR} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
     chmod -R 0700 ${STORAGE_BASE_DIR} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
 
-    # Create BACKUP_DIR
+    # backup directory
+    [ -d ${BACKUP_DIR} ] || mkdir -p ${BACKUP_DIR} &>/dev/null
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_DIR}
+    chmod 0700 ${BACKUP_DIR}
 
     cat >> ${TIP_FILE} <<EOF
 Mail Storage:

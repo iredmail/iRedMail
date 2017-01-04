@@ -126,6 +126,8 @@ export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
 
 # Check and create directories.
 [ -d ${BACKUP_DIR} ] || mkdir -p ${BACKUP_DIR}
+chown root ${BACKUP_DIR}
+chmod 0700 ${BACKUP_DIR}
 
 # Initialize log file.
 echo "* Starting backup at ${TIMESTAMP}" >> ${LOGFILE}

@@ -123,6 +123,8 @@ fi
 
 # Check and create directories.
 [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} 2>/dev/null
+chown root ${BACKUP_DIR}
+chmod 0700 ${BACKUP_DIR}
 
 # Initialize log file.
 echo "* Starting backup: ${TIMESTAMP}." >${LOGFILE}
