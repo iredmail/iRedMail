@@ -155,7 +155,7 @@ pgsql_import_vmail_users()
     perl -pi -e 's#PH_VMAIL_DB_ADMIN_USER#$ENV{VMAIL_DB_ADMIN_USER}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_VMAIL_DB_ADMIN_PASSWD#$ENV{VMAIL_DB_ADMIN_PASSWD}#g' ${PGSQL_DATA_DIR}/*.sql
 
-    perl -pi -e 's#PH_DOMAIN_ADMIN_EMAIL#$ENV{DOMAIN_ADMIN_EMAIL}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_DOMAIN_ADMIN_EMAIL#$ENV{DOMAIN_ADMIN_EMAIL}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_TRANSPORT#$ENV{TRANSPORT}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_DOMAIN_ADMIN_PASSWD_HASH#$ENV{DOMAIN_ADMIN_PASSWD_HASH}#g' ${PGSQL_DATA_DIR}/*.sql
