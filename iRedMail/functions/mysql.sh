@@ -189,8 +189,6 @@ mysql_remove_insecure_data()
 # It's used only when backend is MySQL.
 mysql_import_vmail_users()
 {
-    export FIRST_USER_PASSWD_HASHED="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${FIRST_USER_PASSWD})"
-
     ECHO_DEBUG "Generate sample SQL templates."
     cp -f ${SAMPLE_DIR}/mysql/sql/init_vmail_db.sql ${RUNTIME_DIR}/
     cp -f ${SAMPLE_DIR}/iredmail/iredmail.mysql ${RUNTIME_DIR}/iredmail.sql
@@ -204,12 +202,11 @@ mysql_import_vmail_users()
     perl -pi -e 's#PH_MYSQL_GRANT_HOST#$ENV{MYSQL_GRANT_HOST}#g' ${RUNTIME_DIR}/*.sql
     perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${RUNTIME_DIR}/*.sql
 
-    export FIRST_DOMAIN
+    perl -pi -e 's#PH_DOMAIN_ADMIN_EMAIL#$ENV{DOMAIN_ADMIN_EMAIL}#g' ${RUNTIME_DIR}/*.sql
     perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' ${RUNTIME_DIR}/*.sql
     perl -pi -e 's#PH_TRANSPORT#$ENV{TRANSPORT}#g' ${RUNTIME_DIR}/*.sql
-    perl -pi -e 's#PH_FIRST_USER_PASSWD#$ENV{FIRST_USER_PASSWD_HASHED}#g' ${RUNTIME_DIR}/*.sql
-    perl -pi -e 's#PH_FIRST_USER_MAILDIR_HASH_PART#$ENV{FIRST_USER_MAILDIR_HASH_PART}#g' ${RUNTIME_DIR}/*.sql
-    perl -pi -e 's#PH_FIRST_USER#$ENV{FIRST_USER}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_DOMAIN_ADMIN_PASSWD_HASH#$ENV{DOMAIN_ADMIN_PASSWD_HASH}#g' ${RUNTIME_DIR}/*.sql
+    perl -pi -e 's#PH_DOMAIN_ADMIN_MAILDIR_HASH_PART#$ENV{DOMAIN_ADMIN_MAILDIR_HASH_PART}#g' ${RUNTIME_DIR}/*.sql
     perl -pi -e 's#PH_DOMAIN_ADMIN_NAME#$ENV{DOMAIN_ADMIN_NAME}#g' ${RUNTIME_DIR}/*.sql
 
     # Modify default SQL template

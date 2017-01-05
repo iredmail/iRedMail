@@ -161,7 +161,7 @@ postfix_config_basic()
     # Update Postfix aliases file.
     add_postfix_alias nobody ${SYS_ROOT_USER}
     add_postfix_alias ${VMAIL_USER_NAME} ${SYS_ROOT_USER}
-    add_postfix_alias ${SYS_ROOT_USER} ${FIRST_USER}@${FIRST_DOMAIN}
+    add_postfix_alias ${SYS_ROOT_USER} ${DOMAIN_ADMIN_EMAIL}
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Since `mail.*` is logged to /var/log/mail.log, no need to log

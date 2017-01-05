@@ -47,10 +47,6 @@ done
 echo "export FIRST_DOMAIN='${FIRST_DOMAIN}'" >> ${IREDMAIL_CONFIG_FILE}
 rm -f ${RUNTIME_DIR}/.first_domain
 
-#DOMAIN_ADMIN_NAME
-export DOMAIN_ADMIN_NAME='postmaster'
-echo "export DOMAIN_ADMIN_NAME='${DOMAIN_ADMIN_NAME}'" >>${IREDMAIL_CONFIG_FILE}
-
 # Domain admin password
 while : ; do
     ${DIALOG} \
@@ -78,14 +74,6 @@ export DOMAIN_ADMIN_PASSWD_PLAIN="${DOMAIN_ADMIN_PASSWD_PLAIN}"
 echo "export DOMAIN_ADMIN_PASSWD_PLAIN='${DOMAIN_ADMIN_PASSWD_PLAIN}'" >> ${IREDMAIL_CONFIG_FILE}
 rm -f ${RUNTIME_DIR}/.first_domain_admin_passwd
 
-# First mail user and password
-export FIRST_USER="${DOMAIN_ADMIN_NAME}"
-export FIRST_USER_PASSWD="${DOMAIN_ADMIN_PASSWD_PLAIN}"
-export FIRST_USER_PASSWD_PLAIN="${DOMAIN_ADMIN_PASSWD_PLAIN}"
-echo "export FIRST_USER='${FIRST_USER}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export FIRST_USER_PASSWD='${FIRST_USER_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
-echo "export FIRST_USER_PASSWD_PLAIN='${FIRST_USER_PASSWD_PLAIN}'" >>${IREDMAIL_CONFIG_FILE}
-
 cat >> ${TIP_FILE} <<EOF
 Admin of domain ${FIRST_DOMAIN}:
 
@@ -95,8 +83,8 @@ Admin of domain ${FIRST_DOMAIN}:
     You can login to iRedAdmin with this account, login name is full email address.
 
 First mail user:
-    * Username: ${FIRST_USER}@${FIRST_DOMAIN}
-    * Password: ${FIRST_USER_PASSWD}
+    * Username: ${DOMAIN_ADMIN_EMAIL}
+    * Password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
     * SMTP/IMAP auth type: login
     * Connection security: STARTTLS or SSL/TLS
 

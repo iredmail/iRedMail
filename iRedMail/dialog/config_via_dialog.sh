@@ -65,9 +65,9 @@ NOTES:
 * It cannot be /var/mail (used to store mails sent to system accounts).
 * Mailboxes will be stored under its sub-directory: ${STORAGE_BASE_DIR}/${STORAGE_NODE}/
 * Daily backup of SQL/LDAP databases will be stored under another sub-directory: /var/vmail/backup.
-" 20 76 "${STORAGE_BASE_DIR}" 2>${RUNTIME_DIR}/.vmail_user_home_dir
+" 20 76 "${STORAGE_BASE_DIR}" 2>${RUNTIME_DIR}/.storage_base_dir
 
-    export STORAGE_BASE_DIR="$(cat ${RUNTIME_DIR}/.vmail_user_home_dir | tr '[A-Z]' '[a-z]')"
+    export STORAGE_BASE_DIR="$(cat ${RUNTIME_DIR}/.storage_base_dir | tr '[A-Z]' '[a-z]')"
 
     if echo ${STORAGE_BASE_DIR} | grep -i '^/var/mail\>' &>/dev/null; then
         # Cannot be /var/mail -- it's used to store mails for system accounts
@@ -77,12 +77,10 @@ NOTES:
     fi
 done
 
-rm -f ${RUNTIME_DIR}/.vmail_user_home_dir &>/dev/null
+rm -f ${RUNTIME_DIR}/.storage_base_dir &>/dev/null
 
 export STORAGE_BASE_DIR="${STORAGE_BASE_DIR}"
 echo "export STORAGE_BASE_DIR='${STORAGE_BASE_DIR}'" >> ${IREDMAIL_CONFIG_FILE}
-echo "export STORAGE_MAILBOX_DIR='${STORAGE_MAILBOX_DIR}'" >> ${IREDMAIL_CONFIG_FILE}
-echo "export SIEVE_DIR='${SIEVE_DIR}'" >>${IREDMAIL_CONFIG_FILE}
 
 # --------------------------------------------------
 # ------------ Default web server ------------------
@@ -135,9 +133,9 @@ elif [ X"${web_server}" == X'NGINX' ]; then
     export WEB_SERVER='NGINX'
 else
     export DISABLE_WEB_SERVER='YES'
+    echo "export DISABLE_WEB_SERVER='YES'" >>${IREDMAIL_CONFIG_FILE}
 fi
 
-echo "export DISABLE_WEB_SERVER='${DISABLE_WEB_SERVER}'" >>${IREDMAIL_CONFIG_FILE}
 echo "export WEB_SERVER='${WEB_SERVER}'" >>${IREDMAIL_CONFIG_FILE}
 
 # --------------------------------------------------

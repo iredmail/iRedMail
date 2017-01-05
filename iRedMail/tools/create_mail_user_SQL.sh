@@ -96,8 +96,6 @@ generate_sql()
                 str3="${str1}"
             elif [ X"${length}" == X"2" ]; then
                 str3="${str2}"
-            else
-                :
             fi
 
             # Use mbox, will be changed later.

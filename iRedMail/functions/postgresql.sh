@@ -143,8 +143,6 @@ EOF
 
 pgsql_import_vmail_users()
 {
-    export FIRST_USER_PASSWD_HASHED="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${FIRST_USER_PASSWD})"
-
     ECHO_DEBUG "Generate sample SQL templates."
     cp -f ${SAMPLE_DIR}/postgresql/sql/init_vmail_db.sql ${PGSQL_DATA_DIR}/
     cp -f ${SAMPLE_DIR}/iredmail/iredmail.pgsql ${PGSQL_DATA_DIR}/iredmail.sql
@@ -157,11 +155,11 @@ pgsql_import_vmail_users()
     perl -pi -e 's#PH_VMAIL_DB_ADMIN_USER#$ENV{VMAIL_DB_ADMIN_USER}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_VMAIL_DB_ADMIN_PASSWD#$ENV{VMAIL_DB_ADMIN_PASSWD}#g' ${PGSQL_DATA_DIR}/*.sql
 
+    perl -pi -e 's#PH_DOMAIN_ADMIN_EMAIL#$ENV{DOMAIN_ADMIN_EMAIL}#g' ${RUNTIME_DIR}/*.sql
     perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_TRANSPORT#$ENV{TRANSPORT}#g' ${PGSQL_DATA_DIR}/*.sql
-    perl -pi -e 's#PH_FIRST_USER_PASSWD#$ENV{FIRST_USER_PASSWD_HASHED}#g' ${PGSQL_DATA_DIR}/*.sql
-    perl -pi -e 's#PH_FIRST_USER_MAILDIR_HASH_PART#$ENV{FIRST_USER_MAILDIR_HASH_PART}#g' ${PGSQL_DATA_DIR}/*.sql
-    perl -pi -e 's#PH_FIRST_USER#$ENV{FIRST_USER}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_DOMAIN_ADMIN_PASSWD_HASH#$ENV{DOMAIN_ADMIN_PASSWD_HASH}#g' ${PGSQL_DATA_DIR}/*.sql
+    perl -pi -e 's#PH_DOMAIN_ADMIN_MAILDIR_HASH_PART#$ENV{DOMAIN_ADMIN_MAILDIR_HASH_PART}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_DOMAIN_ADMIN_NAME#$ENV{DOMAIN_ADMIN_NAME}#g' ${PGSQL_DATA_DIR}/*.sql
 
     if [ X"${PGSQL_VERSION}" == X'8' ]; then

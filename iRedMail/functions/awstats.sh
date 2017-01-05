@@ -68,14 +68,14 @@ awstats_config_basic()
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Use htpasswd in OpenBSD base system (it's not same as Apache htpasswd)
-        echo "${FIRST_USER}@${FIRST_DOMAIN}:${FIRST_USER_PASSWD}" | htpasswd -I ${AWSTATS_HTTPD_AUTH_FILE}
+        echo "${DOMAIN_ADMIN_EMAIL}:${DOMAIN_ADMIN_PASSWD_PLAIN}" | htpasswd -I ${AWSTATS_HTTPD_AUTH_FILE}
     else
         if [ X"${WEB_SERVER}" == X'APACHE' -a X"${APACHE_VERSION}" == X'2.4' ]; then
             # Use BCRYPT (the '-B' flag)
-            htpasswd -b -B -c ${AWSTATS_HTTPD_AUTH_FILE} ${FIRST_USER}@${FIRST_DOMAIN} ${FIRST_USER_PASSWD} >> ${INSTALL_LOG} 2>&1
+            htpasswd -b -B -c ${AWSTATS_HTTPD_AUTH_FILE} ${DOMAIN_ADMIN_EMAIL} ${DOMAIN_ADMIN_PASSWD_PLAIN} >> ${INSTALL_LOG} 2>&1
         else
-            _pw="$(generate_password_hash MD5 ${FIRST_USER_PASSWD})"
-            echo "${FIRST_USER}@${FIRST_DOMAIN}:${_pw}" >> ${AWSTATS_HTTPD_AUTH_FILE}
+            _pw="$(generate_password_hash MD5 ${DOMAIN_ADMIN_PASSWD_PLAIN})"
+            echo "${DOMAIN_ADMIN_EMAIL}:${_pw}" >> ${AWSTATS_HTTPD_AUTH_FILE}
         fi
     fi
 

@@ -9,7 +9,7 @@ add_user_vmail()
     ECHO_DEBUG "Create system account: ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} (${VMAIL_USER_UID}:${VMAIL_USER_GID})."
 
     [ -d ${STORAGE_BASE_DIR} ] || mkdir -p ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
-    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${STORAGE_MAILBOX_DIR}
+    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${STORAGE_BASE_DIR}
 
     [ -d ${STORAGE_MAILBOX_DIR} ] || mkdir -p ${STORAGE_MAILBOX_DIR} >> ${INSTALL_LOG} 2>&1
     [ -d ${PUBLIC_MAILBOX_DIR} ] || mkdir -p ${PUBLIC_MAILBOX_DIR} >> ${INSTALL_LOG} 2>&1
@@ -52,15 +52,15 @@ add_user_vmail()
     ECHO_DEBUG "Create directory used to store global sieve filters: ${SIEVE_DIR}."
     mkdir -p ${SIEVE_DIR} &>/dev/null
 
-    export FIRST_USER_MAILDIR_HASH_PART="${FIRST_DOMAIN}/$(hash_maildir ${FIRST_USER})"
-    export FIRST_USER_MAILDIR_FULL_PATH="${STORAGE_MAILBOX_DIR}/${FIRST_USER_MAILDIR_HASH_PART}"
+    export DOMAIN_ADMIN_MAILDIR_HASH_PART="${FIRST_DOMAIN}/$(hash_maildir ${DOMAIN_ADMIN_NAME})"
+    export DOMAIN_ADMIN_MAILDIR_FULL_PATH="${STORAGE_MAILBOX_DIR}/${DOMAIN_ADMIN_MAILDIR_HASH_PART}"
 
     # Create maildir.
     # We will deliver emails with sensitive info of iRedMail installation
     # to postmaster immediately after installation completed.
     # NOTE: 'Maildir/' is appended by Dovecot (defined in dovecot.conf).
-    export FIRST_USER_MAILDIR_INBOX="${FIRST_USER_MAILDIR_FULL_PATH}/Maildir/new"
-    mkdir -p ${FIRST_USER_MAILDIR_INBOX} >> ${INSTALL_LOG} 2>&1
+    export DOMAIN_ADMIN_MAILDIR_INBOX="${DOMAIN_ADMIN_MAILDIR_FULL_PATH}/Maildir/new"
+    mkdir -p ${DOMAIN_ADMIN_MAILDIR_INBOX} >> ${INSTALL_LOG} 2>&1
 
     # set owner/group and permission.
     chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${STORAGE_BASE_DIR} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}

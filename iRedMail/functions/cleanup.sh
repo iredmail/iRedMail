@@ -291,17 +291,16 @@ EOF
 EOF
 
     # Mail installation related info to postmaster@
-    tip_recipient="${FIRST_USER}@${FIRST_DOMAIN}"
     msg_date="$(date "+%a, %d %b %Y %H:%M:%S %z")"
 
-    ECHO_DEBUG "Mail sensitive administration info to ${tip_recipient}."
-    FILE_IREDMAIL_INSTALLATION_DETAILS="${FIRST_USER_MAILDIR_INBOX}/details.eml"
-    FILE_IREDMAIL_LINKS="${FIRST_USER_MAILDIR_INBOX}/links.eml"
-    FILE_IREDMAIL_MUA_SETTINGS="${FIRST_USER_MAILDIR_INBOX}/mua.eml"
+    ECHO_DEBUG "Mail sensitive administration info to ${DOMAIN_ADMIN_EMAIL}."
+    FILE_IREDMAIL_INSTALLATION_DETAILS="${DOMAIN_ADMIN_MAILDIR_INBOX}/details.eml"
+    FILE_IREDMAIL_LINKS="${DOMAIN_ADMIN_MAILDIR_INBOX}/links.eml"
+    FILE_IREDMAIL_MUA_SETTINGS="${DOMAIN_ADMIN_MAILDIR_INBOX}/mua.eml"
 
     cat > ${FILE_IREDMAIL_INSTALLATION_DETAILS} <<EOF
 From: root@${HOSTNAME}
-To: ${tip_recipient}
+To: ${DOMAIN_ADMIN_EMAIL}
 Date: ${msg_date}
 Subject: Details of this iRedMail installation
 
@@ -310,7 +309,7 @@ EOF
 
     cat > ${FILE_IREDMAIL_LINKS} <<EOF
 From: root@${HOSTNAME}
-To: ${tip_recipient}
+To: ${DOMAIN_ADMIN_EMAIL}
 Date: ${msg_date}
 Subject: Useful resources for iRedMail administrator
 
@@ -319,7 +318,7 @@ EOF
 
     cat > ${FILE_IREDMAIL_MUA_SETTINGS} <<EOF
 From: root@${HOSTNAME}
-To: ${tip_recipient}
+To: ${DOMAIN_ADMIN_EMAIL}
 Date: ${msg_date}
 Subject: How to configure your mail client applications (MUA)
 
@@ -333,8 +332,8 @@ For more details, please check detailed documentations:
 http://www.iredmail.org/docs/#mua
 EOF
 
-    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${FIRST_USER_MAILDIR_INBOX}
-    chmod -R 0700 ${FIRST_USER_MAILDIR_INBOX}
+    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOMAIN_ADMIN_MAILDIR_INBOX}
+    chmod -R 0700 ${DOMAIN_ADMIN_MAILDIR_INBOX}
 
     check_status_before_run cleanup_set_cron_file_permission
     check_status_before_run cleanup_disable_selinux
@@ -377,7 +376,7 @@ EOF
 *
 * You can login to above links with below credential:
 *
-* - Username: ${FIRST_USER}@${FIRST_DOMAIN}
+* - Username: ${DOMAIN_ADMIN_EMAIL}
 * - Password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
 *
 *
@@ -387,7 +386,7 @@ EOF
 *
 *   - ${TIP_FILE}
 *
-* And it's sent to your mail account ${tip_recipient}.
+* And it's sent to your mail account ${DOMAIN_ADMIN_EMAIL}.
 *
 ********************* WARNING **************************************
 *

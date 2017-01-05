@@ -175,7 +175,7 @@ Roundcube webmail: ${RCM_HTTPD_ROOT}
         - http://${HOSTNAME}/mail/
         - https://${HOSTNAME}/mail/ (Over SSL/TLS)
     * Login account:
-        - Username: ${FIRST_USER}@${FIRST_DOMAIN}, password: ${FIRST_USER_PASSWD_PLAIN}
+        - Username: ${DOMAIN_ADMIN_EMAIL}, password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
     * SQL database account:
         - Database name: ${RCM_DB_NAME}
         - Username: ${RCM_DB_USER}

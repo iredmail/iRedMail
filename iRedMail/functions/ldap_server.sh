@@ -67,23 +67,23 @@ objectClass: organizationalUnit
 objectClass: top
 ou: Externals
 
-dn: mail=${FIRST_USER}@${FIRST_DOMAIN},${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=${FIRST_DOMAIN},${LDAP_BASEDN}
+dn: mail=${DOMAIN_ADMIN_EMAIL},${LDAP_ATTR_GROUP_RDN}=${LDAP_ATTR_GROUP_USERS},${LDAP_ATTR_DOMAIN_RDN}=${FIRST_DOMAIN},${LDAP_BASEDN}
 objectClass: inetOrgPerson
 objectClass: shadowAccount
 objectClass: amavisAccount
 objectClass: mailUser
 objectClass: top
-cn: ${FIRST_USER}
-sn: ${FIRST_USER}
-uid: ${FIRST_USER}
-givenName: ${FIRST_USER}
-mail: ${FIRST_USER}@${FIRST_DOMAIN}
+cn: ${DOMAIN_ADMIN_NAME}
+sn: ${DOMAIN_ADMIN_NAME}
+uid: ${DOMAIN_ADMIN_NAME}
+givenName: ${DOMAIN_ADMIN_NAME}
+mail: ${DOMAIN_ADMIN_EMAIL}
 accountStatus: active
 storageBaseDirectory: ${STORAGE_BASE_DIR}
-mailMessageStore: ${STORAGE_NODE}/${FIRST_USER_MAILDIR_HASH_PART}
-homeDirectory: ${FIRST_USER_MAILDIR_FULL_PATH}
+mailMessageStore: ${STORAGE_NODE}/${DOMAIN_ADMIN_MAILDIR_HASH_PART}
+homeDirectory: ${DOMAIN_ADMIN_MAILDIR_FULL_PATH}
 mailQuota: 104857600
-userPassword: $(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} "${FIRST_USER_PASSWD}")
+userPassword: ${DOMAIN_ADMIN_PASSWD_HASH}
 enabledService: mail
 enabledService: internal
 enabledService: doveadm

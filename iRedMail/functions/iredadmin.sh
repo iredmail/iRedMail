@@ -157,7 +157,7 @@ iredadmin_config() {
 
     # Update iRedAdmin config file.
     ECHO_DEBUG "Configure general settings."
-    perl -pi -e 's#^(webmaster =).*#${1} "$ENV{FIRST_USER}\@$ENV{FIRST_DOMAIN}"#' settings.py
+    perl -pi -e 's#^(webmaster =).*#${1} "$ENV{DOMAIN_ADMIN_EMAIL}"#' settings.py
     perl -pi -e 's#^(storage_base_directory =).*#${1} "$ENV{STORAGE_MAILBOX_DIR}"#' settings.py
     perl -pi -e 's#^(default_mta_transport =).*#${1} "$ENV{TRANSPORT}"#' settings.py
 
