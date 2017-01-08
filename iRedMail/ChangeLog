@@ -69,6 +69,8 @@ iRedMail-0.9.6:
               before other virtual host config files.
 
         - Roundcube webmail:
+            - Missing cron job used to clean up old Roundcube temporary files
+              (bin/gc.sh).
             - Not set proper file owner (apache/nginx) and permission (0600)
               for config file of password plugin.
 

@@ -196,12 +196,9 @@ rcm_cron_setup()
 # ${PROG_NAME}: Cleanup Roundcube SQL database
 2   2   *   *   *   ${PHP_BIN} ${RCM_HTTPD_ROOT_SYMBOL_LINK}/bin/cleandb.sh >/dev/null
 
+# ${PROG_NAME}: Cleanup Roundcube temporary files under `temp` directory
+2   2   *   *   *   ${PHP_BIN} ${RCM_HTTPD_ROOT_SYMBOL_LINK}/bin/gc.sh >/dev/null
 EOF
-
-    # Disable cron jobs if we don't need to initialize database on this server.
-    if [ X"${INITIALIZE_SQL_DATA}" != X'YES' ]; then
-        perl -pi -e 's\(.*roundcube.*/bin/cleandb.sh.*)\#${1}\g' ${CRON_FILE_ROOT}
-    fi
 
     echo 'export status_rcm_cron_setup="DONE"' >> ${STATUS_FILE}
 }
