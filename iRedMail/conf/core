@@ -245,7 +245,19 @@ check_status_before_run()
 # Hash maildir string.
 hash_maildir()
 {
-    # Usage: hash_maildir username
+    # Usage:
+    #
+    #   hash_maildir username
+    #   hash_maildir --no-timestamp username
+    #
+    # With '--no-timestamp', the maildir path will not contain timestamp string
+    if [ X"$1" == X'--no-timestamp' ]; then
+        _timestamp=''
+        shift 1
+    else
+        _timestamp="-${DATE}"
+    fi
+
     username="$( echo $1 | tr '[A-Z]' '[a-z]' )"
 
     # Different maildir style: hashed, normal.
@@ -264,11 +276,9 @@ hash_maildir()
             :
         fi
 
-        # Use mbox, will be changed later.
-        maildir="${str1}/${str2}/${str3}/${username}-${DATE}/"
+        maildir="${str1}/${str2}/${str3}/${username}${_timestamp}/"
     else
-        # Use mbox, will be changed later.
-        maildir="${username}-${DATE}/"
+        maildir="${username}${_timestamp}/"
     fi
 
     echo ${maildir}

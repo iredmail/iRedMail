@@ -52,7 +52,7 @@ add_user_vmail()
     ECHO_DEBUG "Create directory used to store global sieve filters: ${SIEVE_DIR}."
     mkdir -p ${SIEVE_DIR} &>/dev/null
 
-    export DOMAIN_ADMIN_MAILDIR_HASH_PART="${FIRST_DOMAIN}/$(hash_maildir ${DOMAIN_ADMIN_NAME})"
+    export DOMAIN_ADMIN_MAILDIR_HASH_PART="${FIRST_DOMAIN}/$(hash_maildir --no-timestamp ${DOMAIN_ADMIN_NAME})"
     export DOMAIN_ADMIN_MAILDIR_FULL_PATH="${STORAGE_MAILBOX_DIR}/${DOMAIN_ADMIN_MAILDIR_HASH_PART}"
 
     # Create maildir.
