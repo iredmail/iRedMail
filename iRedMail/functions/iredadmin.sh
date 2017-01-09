@@ -93,7 +93,13 @@ WSGIProcessGroup ${IREDADMIN_GROUP_NAME}
 AddType text/html .py
 
 <Directory ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/>
-    ${HTACCESS_ALLOW_ALL}
+    <IfVersion < 2.4>
+        Order deny,allow
+        Allow from all
+    </IfVersion>
+    <IfVersion >= 2.4>
+        Require all granted
+    </IfVersion>
 </Directory>
 
 #Alias /iredadmin/static "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static/"

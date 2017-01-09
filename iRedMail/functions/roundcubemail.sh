@@ -41,8 +41,15 @@ ${CONF_MSG}
 # Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
 Alias /mail "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
 <Directory "${RCM_HTTPD_ROOT_SYMBOL_LINK}/">
-    ${HTACCESS_ALLOW_ALL}
     Options -Indexes
+
+    <IfVersion < 2.4>
+        Order deny,allow
+        Allow from all
+    </IfVersion>
+    <IfVersion >= 2.4>
+        Require all granted
+    </IfVersion>
 </Directory>
 EOF
 

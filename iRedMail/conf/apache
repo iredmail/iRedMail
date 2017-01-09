@@ -94,10 +94,3 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 fi
 
 export HTTPD_CGIBIN_DIR="${HTTPD_SERVERROOT}/cgi-bin"
-
-if [[ X"${APACHE_VERSION}" == X'2.4' ]]; then
-    export HTACCESS_ALLOW_ALL='Require all granted'
-else
-    export HTACCESS_ALLOW_ALL='Order allow,deny
-Allow from all'
-fi
