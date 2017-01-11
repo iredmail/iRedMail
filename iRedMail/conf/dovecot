@@ -53,7 +53,7 @@ export DOVECOT_CONF_DIR='/etc/dovecot'
 # Path to Dovecot deliver agant
 export DOVECOT_DELIVER_BIN='/usr/libexec/dovecot/deliver'
 
-# Logging with syslog (Require rsyslog-8.x)
+# Logging with syslog (Require rsyslog-8.x+)
 export DOVECOT_USE_SYSLOG='YES'
 # main log file
 export DOVECOT_LOG_FILE='/var/log/dovecot.log'
