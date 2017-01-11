@@ -131,6 +131,8 @@ sogo_config() {
     perl -pi -e 's#PH_SOGO_PID_FILE#$ENV{SOGO_PID_FILE}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_LOG_FILE#$ENV{SOGO_LOG_FILE}#g' ${SOGO_CONF}
 
+    perl -pi -e 's#PH_MESSAGE_SIZE_LIMIT_KB#$ENV{MESSAGE_SIZE_LIMIT_KB}#g' ${SOGO_CONF}
+
     # Proxy timeout
     perl -pi -e 's#PH_SOGO_PROXY_TIMEOUT#$ENV{SOGO_PROXY_TIMEOUT}#g' ${SOGO_CONF}
 

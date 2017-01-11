@@ -248,7 +248,7 @@ alias_maps = hash:PH_POSTFIX_FILE_ALIASES
 alias_database = hash:PH_POSTFIX_FILE_ALIASES
 
 # Default message_size_limit.
-message_size_limit = PH_MESSAGE_SIZE_LIMIT
+message_size_limit = PH_MESSAGE_SIZE_LIMIT_BYTES
 
 # The set of characters that can separate a user name from its extension
 # (example: user+foo), or a .forward file name from its extension (example:

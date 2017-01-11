@@ -76,7 +76,7 @@ postfix_config_basic()
 
     # Update normal settings.
     perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${POSTFIX_FILE_MAIN_CF}
-    perl -pi -e 's#PH_MESSAGE_SIZE_LIMIT#$ENV{MESSAGE_SIZE_LIMIT}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_MESSAGE_SIZE_LIMIT_BYTES#$ENV{MESSAGE_SIZE_LIMIT_BYTES}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_STORAGE_BASE_DIR#$ENV{STORAGE_BASE_DIR}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_VMAIL_USER_UID#$ENV{VMAIL_USER_UID}#g' ${POSTFIX_FILE_MAIN_CF}
 
