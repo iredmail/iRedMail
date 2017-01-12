@@ -371,11 +371,16 @@ dovecot_log() {
         perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_LDA#$ENV{DOVECOT_SYSLOG_FILE_LDA}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
         perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_IMAP#$ENV{DOVECOT_SYSLOG_FILE_IMAP}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
         perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_POP3#$ENV{DOVECOT_SYSLOG_FILE_POP3}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_SIEVE#$ENV{DOVECOT_SYSLOG_FILE_SIEVE}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
 
         # Although no need to create log files manually, but fail2ban will skip
         # the log file which doesn't exist while fail2ban starts up, so we
         # create it manually to avoid this.
-        for f in ${DOVECOT_LOG_FILE} ${DOVECOT_SYSLOG_FILE_LDA} ${DOVECOT_SYSLOG_FILE_IMAP} ${DOVECOT_SYSLOG_FILE_POP3}; do
+        for f in ${DOVECOT_LOG_FILE} \
+            ${DOVECOT_SYSLOG_FILE_LDA} \
+            ${DOVECOT_SYSLOG_FILE_IMAP} \
+            ${DOVECOT_SYSLOG_FILE_POP3} \
+            ${DOVECOT_SYSLOG_FILE_SIEVE}; do
             ECHO_DEBUG "Create dovecot log file: ${f}."
             touch ${f}
             chown ${SYSLOG_DAEMON_USER}:${SYSLOG_DAEMON_GROUP} ${f}

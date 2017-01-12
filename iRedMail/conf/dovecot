@@ -64,6 +64,7 @@ export DOVECOT_LMTP_LOG_FILE='/var/log/dovecot-lmtp.log'
 export DOVECOT_SYSLOG_FILE_LDA='/var/log/dovecot-lda.log'
 export DOVECOT_SYSLOG_FILE_IMAP='/var/log/dovecot-imap.log'
 export DOVECOT_SYSLOG_FILE_POP3='/var/log/dovecot-pop3.log'
+export DOVECOT_SYSLOG_FILE_SIEVE='/var/log/dovecot-sieve.log'
 
 # Log rotate config file
 export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
