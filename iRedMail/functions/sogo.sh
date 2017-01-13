@@ -316,7 +316,7 @@ memcached_setup()
         fi
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         if grep -- '^-l' ${MEMCACHED_CONF} &>/dev/null; then
-            perl -pi -e 's#^(-l).*#${1} ${MEMCACHED_BIND_ADDRESS}#g' ${MEMCACHED_CONF}
+            perl -pi -e 's#^(-l).*#${1} $ENV{MEMCACHED_BIND_ADDRESS}#g' ${MEMCACHED_CONF}
         else
             echo "-l ${MEMCACHED_BIND_ADDRESS}" >> ${MEMCACHED_CONF}
         fi
