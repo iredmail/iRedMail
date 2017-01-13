@@ -202,6 +202,7 @@ mysql_import_vmail_users()
     perl -pi -e 's#PH_MYSQL_GRANT_HOST#$ENV{MYSQL_GRANT_HOST}#g' ${RUNTIME_DIR}/*.sql
     perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${RUNTIME_DIR}/*.sql
 
+    export FIRST_DOMAIN
     perl -pi -e 's#PH_DOMAIN_ADMIN_EMAIL#$ENV{DOMAIN_ADMIN_EMAIL}#g' ${RUNTIME_DIR}/*.sql
     perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' ${RUNTIME_DIR}/*.sql
     perl -pi -e 's#PH_TRANSPORT#$ENV{TRANSPORT}#g' ${RUNTIME_DIR}/*.sql

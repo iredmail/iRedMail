@@ -47,6 +47,8 @@ dovecot_config()
 
     ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
 
+    perl -pi -e 's#PH_DOVECOT_CONF_INCLUDE_DIR#DOVECOT_CONF_INCLUDE_DIR#g' ${DOVECOT_CONF}
+
     # Listen address
     if [ X"${IREDMAIL_HAS_IPV6}" == X'NO' ]; then
         perl -pi -e 's#^(listen.*=).*#${1} \*#g' ${DOVECOT_CONF}

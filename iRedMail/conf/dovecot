@@ -49,6 +49,7 @@ export DOVECOT_GLOBAL_SIEVE_FILE="${SIEVE_DIR}/${SIEVE_RULE_FILENAME}"
 
 # Directory used to store Dovecot config files
 export DOVECOT_CONF_DIR='/etc/dovecot'
+export DOVECOT_CONF_INCLUDE_DIR='/etc/dovecot/iredmail'
 
 # Path to Dovecot deliver agant
 export DOVECOT_DELIVER_BIN='/usr/libexec/dovecot/deliver'
