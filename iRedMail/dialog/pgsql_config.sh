@@ -47,5 +47,6 @@ WARNING:
     [ X"$?" != X'0' -a X"${PGSQL_ROOT_PASSWD}" != X'' ] && break
 done
 
+export PGSQL_ROOT_PASSWD="${PGSQL_ROOT_PASSWD}"
 echo "export PGSQL_ROOT_PASSWD='${PGSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
 rm -f ${RUNTIME_DIR}/.pgsql_rootpw

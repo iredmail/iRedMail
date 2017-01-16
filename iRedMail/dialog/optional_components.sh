@@ -68,8 +68,10 @@ ${LIST_OF_OPTIONAL_COMPONENTS} \
     rm -f ${tmp_config_optional_components} &>/dev/null
 fi
 
-echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' &>/dev/null
-[ X"$?" == X"0" ] && export USE_IREDADMIN='YES' && echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}
+if echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' &>/dev/null; then
+    export USE_IREDADMIN='YES'
+    echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}
+fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'roundcubemail' &>/dev/null; then
     export USE_ROUNDCUBE='YES'

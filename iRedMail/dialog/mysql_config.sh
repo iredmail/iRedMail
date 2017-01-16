@@ -46,5 +46,6 @@ WARNING:
     [ X"${MYSQL_ROOT_PASSWD}" != X'' ] && break
 done
 
+export MYSQL_ROOT_PASSWD="${MYSQL_ROOT_PASSWD}"
 echo "export MYSQL_ROOT_PASSWD='${MYSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
 rm -f ${RUNTIME_DIR}/.mysql_rootpw &>/dev/null

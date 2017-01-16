@@ -46,6 +46,5 @@ done
 
 rm -f ${RUNTIME_DIR}/.ldap_suffix
 
-cat >> ${IREDMAIL_CONFIG_FILE} <<EOF
 export LDAP_SUFFIX="${LDAP_SUFFIX}"
-EOF
+echo "export LDAP_SUFFIX='${LDAP_SUFFIX}'" >> ${IREDMAIL_CONFIG_FILE}

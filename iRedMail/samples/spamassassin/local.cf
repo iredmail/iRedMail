@@ -144,3 +144,8 @@ ok_locales          all
 #header AUTHENTICATED_SENDER Received =~ /Authenticated\ sender\:.*by\ your\.server\.com/
 #describe AUTHENTICATED_SENDER Header 'Received:' contains 'Authenticated sender:'
 #score AUTHENTICATED_SENDER -3
+
+# Checks if domain name of an envelope sender address matches the domain name
+# of the first untrusted relay (if any), or any trusted relay otherwise.
+# https://wiki.apache.org/spamassassin/Rules/RP_MATCHES_RCVD
+score RP_MATCHES_RCVD 0

@@ -44,6 +44,7 @@ We need Postfix to accept emails sent to system accounts (e.g. root), if your ma
     [ X"$?" == X"0" -a X"${FIRST_DOMAIN}" != X"${HOSTNAME}" ] && break
 done
 
+export FIRST_DOMAIN="${FIRST_DOMAIN}"
 echo "export FIRST_DOMAIN='${FIRST_DOMAIN}'" >> ${IREDMAIL_CONFIG_FILE}
 rm -f ${RUNTIME_DIR}/.first_domain
 

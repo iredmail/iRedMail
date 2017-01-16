@@ -200,6 +200,14 @@ postfix_config_basic()
         perl -pi -e 's/(.*sendmail -L sm-msp-queue.*)/#${1}/' ${CRON_FILE_ROOT}
     fi
 
+    # Update /etc/host.conf to solve warning message in Postfix like this:
+    # "warning: hostname xxx does not resolve to address 127.0.0.1"
+    if [ -f /etc/host.conf ]; then
+        if ! grep '^multi on$' /etc/host.conf &>/dev/null; then
+            echo 'multi on' >> /etc/host.conf
+        fi
+    fi
+
     echo 'export status_postfix_config_basic="DONE"' >> ${STATUS_FILE}
 }
 
