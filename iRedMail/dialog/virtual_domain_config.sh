@@ -84,7 +84,7 @@ Admin of domain ${FIRST_DOMAIN}:
     You can login to iRedAdmin with this account, login name is full email address.
 
 First mail user:
-    * Username: ${DOMAIN_ADMIN_EMAIL}
+    * Username: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
     * Password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
     * SMTP/IMAP auth type: login
     * Connection security: STARTTLS or SSL/TLS
