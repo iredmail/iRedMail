@@ -203,7 +203,7 @@ rcm_cron_setup()
 # ${PROG_NAME}: Cleanup Roundcube SQL database
 2   2   *   *   *   ${PHP_BIN} ${RCM_HTTPD_ROOT_SYMBOL_LINK}/bin/cleandb.sh >/dev/null
 
-# ${PROG_NAME}: Cleanup Roundcube temporary files under `temp` directory
+# ${PROG_NAME}: Cleanup Roundcube temporary files under 'temp/' directory
 2   2   *   *   *   ${PHP_BIN} ${RCM_HTTPD_ROOT_SYMBOL_LINK}/bin/gc.sh >/dev/null
 EOF
 
