@@ -71,6 +71,7 @@ ldapd:
     * Configuration files:
         - ${LDAPD_CONF}
         - ${LDAPD_SCHEMA_DIR}/${PROG_NAME_LOWERCASE}.schema
+        - ${LDAPD_SCHEMA_DIR}/${AMAVISD_LDAP_SCHEMA_NAME}
     * Log file related:
         - ${SYSLOG_CONF}
     * Data dir and files:

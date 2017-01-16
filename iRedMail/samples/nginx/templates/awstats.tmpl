@@ -16,7 +16,7 @@ location ~ ^/awstats/(.*) {
 # We could make them easier to share, by transforming them into :
 # http://awstats.master-domain.com/alpha.com
 # http://awstats.master-domain.com/beta.com
-# In the awstats conf for your vhost, add :
+# In the awstats conf for your vhost, add:
 
 #location ~ ^/awstats/([a-z0-9-_\.]+)$ {
 #    return 301 $scheme://$host/cgi-bin/awstats.pl?config=$1;

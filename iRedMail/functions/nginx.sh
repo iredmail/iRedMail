@@ -194,6 +194,7 @@ uWSGI:
     * Configuration files: ${UWSGI_CONF_DIR}
     * Logrotate config file: ${UWSGI_LOGROTATE_FILE}
     * Socket for iRedAdmin: ${UWSGI_SOCKET_IREDADMIN}
+
 EOF
 
     echo 'export status_nginx_config="DONE"' >> ${STATUS_FILE}

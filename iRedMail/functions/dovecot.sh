@@ -347,11 +347,17 @@ Dovecot:
         - ${DOVECOT_PGSQL_CONF} (For PostgreSQL backend)
         - ${DOVECOT_REALTIME_QUOTA_CONF} (For real-time quota usage)
         - ${DOVECOT_SHARE_FOLDER_CONF} (For IMAP sharing folder)
+    * Syslog config file:
+        - ${SYSLOG_CONF_DIR}/0-dovecot.conf (present if rsyslog >= 8.x)
     * RC script: ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME}
     * Log files:
         - ${DOVECOT_LOG_FILE}
         - ${DOVECOT_SIEVE_LOG_FILE}
         - ${DOVECOT_LMTP_LOG_FILE}
+        - ${DOVECOT_SYSLOG_FILE_LDA} (present if rsyslog >= 8.x)
+        - ${DOVECOT_SYSLOG_FILE_IMAP} (present if rsyslog >= 8.x)
+        - ${DOVECOT_SYSLOG_FILE_POP3} (present if rsyslog >= 8.x)
+        - ${DOVECOT_SYSLOG_FILE_SIEVE} (present if rsyslog >= 8.x)
     * See also:
         - ${DOVECOT_GLOBAL_SIEVE_FILE}
         - Logrotate config file: ${DOVECOT_LOGROTATE_FILE}
