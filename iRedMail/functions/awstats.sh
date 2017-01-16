@@ -98,7 +98,7 @@ Awstats:
     * Crontab job:
         shell> crontab -l root
     * Command used to add a new user, or reset password for an existing user:
-        htpasswd PH_AWSTATS_HTTPD_AUTH_FILE username
+        htpasswd ${AWSTATS_HTTPD_AUTH_FILE} username
 
 EOF
 
