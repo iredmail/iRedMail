@@ -203,14 +203,6 @@ echo "export VMAIL_DB_BIND_PASSWD='${VMAIL_DB_BIND_PASSWD}'" >> ${IREDMAIL_CONFI
 export VMAIL_DB_ADMIN_PASSWD="$(${RANDOM_STRING})"
 echo "export VMAIL_DB_ADMIN_PASSWD='${VMAIL_DB_ADMIN_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
-# LDAP bind dn, passwords.
-export LDAP_BINDPW="$(${RANDOM_STRING})"
-export LDAP_ADMIN_PW="$(${RANDOM_STRING})"
-export LDAP_ROOTPW="$(${RANDOM_STRING})"
-echo "export LDAP_BINDPW='${LDAP_BINDPW}'" >> ${IREDMAIL_CONFIG_FILE}
-echo "export LDAP_ADMIN_PW='${LDAP_ADMIN_PW}'" >> ${IREDMAIL_CONFIG_FILE}
-echo "export LDAP_ROOTPW='${LDAP_ROOTPW}'" >> ${IREDMAIL_CONFIG_FILE}
-
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     . ${DIALOG_DIR}/ldap_config.sh
     . ${DIALOG_DIR}/mysql_config.sh

@@ -48,3 +48,11 @@ rm -f ${RUNTIME_DIR}/.ldap_suffix
 
 export LDAP_SUFFIX="${LDAP_SUFFIX}"
 echo "export LDAP_SUFFIX='${LDAP_SUFFIX}'" >> ${IREDMAIL_CONFIG_FILE}
+
+# LDAP bind dn, passwords.
+export LDAP_BINDPW="$(${RANDOM_STRING})"
+export LDAP_ADMIN_PW="$(${RANDOM_STRING})"
+export LDAP_ROOTPW="$(${RANDOM_STRING})"
+echo "export LDAP_BINDPW='${LDAP_BINDPW}'" >> ${IREDMAIL_CONFIG_FILE}
+echo "export LDAP_ADMIN_PW='${LDAP_ADMIN_PW}'" >> ${IREDMAIL_CONFIG_FILE}
+echo "export LDAP_ROOTPW='${LDAP_ROOTPW}'" >> ${IREDMAIL_CONFIG_FILE}
