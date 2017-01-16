@@ -37,6 +37,9 @@ backend_install()
         export SQL_ROOT_PASSWD="${PGSQL_ROOT_PASSWD}"
     fi
 
+    # Hashed admin password. It requies Python.
+    export DOMAIN_ADMIN_PASSWD_HASH="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${DOMAIN_ADMIN_PASSWD_PLAIN})"
+
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         # Install, config and initialize LDAP server
         check_status_before_run ldap_server_config

@@ -78,8 +78,6 @@ export PUBLIC_MAILBOX_DIR="${PUBLIC_MAILBOX_DIR:=${STORAGE_BASE_DIR}/public}"
 
 # Domain admin email address
 export DOMAIN_ADMIN_EMAIL="${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}"
-# Hashed admin password.
-export DOMAIN_ADMIN_PASSWD_HASH="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${DOMAIN_ADMIN_PASSWD_PLAIN})"
 
 # Import global variables in specified order.
 . ${CONF_DIR}/web_server
