@@ -30,8 +30,11 @@ nginx_config()
 
     backup_file ${NGINX_CONF} ${NGINX_CONF_DEFAULT} ${PHP_FPM_POOL_WWW_CONF}
 
-    # Copy sample config files
+    # Make sure we have an empty directory
+    [ -d ${HTTPD_CONF_DIR} ] && mv ${HTTPD_CONF_DIR}.bak
     [ ! -d ${HTTPD_CONF_DIR} ] && mkdir -p ${HTTPD_CONF_DIR}
+
+    # Copy sample config files
     cp ${SAMPLE_DIR}/nginx/nginx.conf ${NGINX_CONF}
     cp ${SAMPLE_DIR}/nginx/00-default.conf ${NGINX_CONF_DEFAULT}
 

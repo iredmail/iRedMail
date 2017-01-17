@@ -477,15 +477,34 @@ install_pkg_openbsd()
     fi
 }
 
-freebsd_add_make_conf()
+freebsd_make_conf_add()
 {
-    # USAGE: freebsd_add_make_conf VAR VALUE
+    # USAGE: freebsd_make_conf_add VAR VALUE
     [ -f ${FREEBSD_MAKE_CONF} ] || touch ${FREEBSD_MAKE_CONF}
     if [ X"$#" == X'2' ]; then
         var="${1}"
         value="${2}"
         final_option="${1}=${2}"
         comment_mark="# ${PROG_NAME}-${var}"
+        if ! grep "^${comment_mark}$" ${FREEBSD_MAKE_CONF} &>/dev/null; then
+            ECHO_DEBUG "Update ${FREEBSD_MAKE_CONF}: ${final_option}"
+            echo "${comment_mark}" >> ${FREEBSD_MAKE_CONF}
+            echo "${final_option}" >> ${FREEBSD_MAKE_CONF}
+        else
+            ECHO_DEBUG "Skip adding option in ${FREEBSD_MAKE_CONF}: ${final_option}"
+        fi
+    fi
+}
+
+freebsd_make_conf_plus_option()
+{
+    # USAGE: freebsd_make_conf_plus_option VAR VALUE
+    [ -f ${FREEBSD_MAKE_CONF} ] || touch ${FREEBSD_MAKE_CONF}
+    if [ X"$#" == X'2' ]; then
+        var="${1}"
+        value="${2}"
+        final_option="${1}+=${2}"
+        comment_mark="# ${PROG_NAME}-${var}-${value}"
         if ! grep "^${comment_mark}$" ${FREEBSD_MAKE_CONF} &>/dev/null; then
             ECHO_DEBUG "Update ${FREEBSD_MAKE_CONF}: ${final_option}"
             echo "${comment_mark}" >> ${FREEBSD_MAKE_CONF}
