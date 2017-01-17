@@ -228,19 +228,16 @@ iredadmin_config() {
     cat >> ${TIP_FILE} <<EOF
 iRedAdmin - official web-based admin panel:
     * Version: ${IREDADMIN_VERSION}
-    * Configuration files:
-        - ${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}/
-        - ${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}/settings.py*
-    * URL:
-        - https://${HOSTNAME}/iredadmin/
-    * Login account:
-        - Username: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}, password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
-    * SQL database account:
+    * Root directory: ${IREDADMIN_HTTPD_ROOT}
+    * Config file: ${IREDADMIN_HTTPD_ROOT}/settings.py
+    * Web access:
+        - URL: https://${HOSTNAME}/iredadmin/
+        - Username: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}
+        - Password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
+    * SQL database:
         - Database name: ${IREDADMIN_DB_NAME}
         - Username: ${IREDADMIN_DB_USER}
         - Password: ${IREDADMIN_DB_PASSWD}
-    * Settings:
-        - ${IREDADMIN_HTTPD_ROOT}/settings.py
     * See also:
         - ${IREDADMIN_HTTPD_CONF}
 

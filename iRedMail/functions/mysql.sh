@@ -270,6 +270,7 @@ Backup MySQL database:
     * Script: ${mysql_backup_script}
     * See also:
         # crontab -l -u ${SYS_ROOT_USER}
+
 EOF
 
     echo 'export status_mysql_cron_backup="DONE"' >> ${STATUS_FILE}

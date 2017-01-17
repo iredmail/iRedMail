@@ -95,6 +95,8 @@ Awstats:
             - https://${HOSTNAME}/awstats/awstats.pl?config=smtp
         - Nginx:
             - https://${HOSTNAME}/awstats/
+            - https://${HOSTNAME}/awstats/awstats.smtp.html
+            - https://${HOSTNAME}/awstats/awstats.web.html
     * Crontab job:
         shell> crontab -l root
     * Command used to add a new user, or reset password for an existing user:

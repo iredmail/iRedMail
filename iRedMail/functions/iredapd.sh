@@ -228,7 +228,7 @@ iredapd_setup()
     check_status_before_run iredapd_config
 
     cat >> ${TIP_FILE} <<EOF
-iRedAPD - Postfix Policy Daemon:
+iRedAPD - Postfix Policy Server:
     * Version: ${IREDAPD_VERSION}
     * Listen address: ${IREDAPD_BIND_HOST}, port: ${IREDAPD_LISTEN_PORT}
     * SQL database account:
@@ -239,7 +239,7 @@ iRedAPD - Postfix Policy Daemon:
         - ${IREDAPD_CONF}
     * Related files:
         - ${IREDAPD_ROOT_DIR}
-        - ${IREDAPD_ROOT_DIR_SYMBOL_LINK}
+        - ${IREDAPD_ROOT_DIR_SYMBOL_LINK} (symbol link to ${IREDAPD_ROOT_DIR}
 
 EOF
 

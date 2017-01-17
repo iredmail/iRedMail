@@ -334,6 +334,7 @@ Postfix:
 
     * SQL/LDAP lookup config files:
         - ${POSTFIX_LOOKUP_DIR}
+
 EOF
 
     echo 'export status_postfix_setup="DONE"' >> ${STATUS_FILE}

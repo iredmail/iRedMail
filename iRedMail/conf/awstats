@@ -34,7 +34,7 @@ export AWSTATS_HTTPD_AUTH_FILE="${HTTPD_CONF_ROOT}/awstats.users"
 
 # Required for setup with Nginx
 export AWSTATS_CMD_BUILDSTATICPAGE='/usr/share/awstats/tools/awstats_buildstaticpages.pl'
-export AWSTATS_STATIC_PAGES_DIR="${HTTPD_SERVERROOT}/statistics"
+export AWSTATS_STATIC_PAGES_DIR="${HTTPD_SERVERROOT}/awstats-statistics"
 
 # Config files.
 if [ X"${DISTRO}" == X'RHEL' ]; then

@@ -176,13 +176,12 @@ rcm_config()
 
     cat >> ${TIP_FILE} <<EOF
 Roundcube webmail: ${RCM_HTTPD_ROOT}
-    * Configuration files:
-        - ${RCM_CONF_DIR}
-    * URL:
-        - http://${HOSTNAME}/mail/
-        - https://${HOSTNAME}/mail/ (Over SSL/TLS)
-    * Login account:
-        - Username: ${DOMAIN_ADMIN_EMAIL}, password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
+    * Config file: ${RCM_CONF_DIR}
+    * Web access:
+        - URL: http://${HOSTNAME}/mail/ (will be redirected to https:// site)
+        - URL: https://${HOSTNAME}/mail/ (secure connection)
+        - Username: ${DOMAIN_ADMIN_EMAIL}
+        - Password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
     * SQL database account:
         - Database name: ${RCM_DB_NAME}
         - Username: ${RCM_DB_USER}
