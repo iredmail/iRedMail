@@ -170,6 +170,11 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.1.23 NAME 'domainBlacklistSender'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+attributetype ( 1.3.6.1.4.1.32349.1.2.1.24 NAME 'domainPendingAliasName'
+    DESC 'Pending alias domain name'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{255} )
 
 #
 # Mail Service: User related attributes.
@@ -355,8 +360,8 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.1 NAME 'mailDomain'
         domainMaxUserNumber $ domainCurrentUserNumber $
         domainMaxAliasNumber $ domainCurrentAliasNumber $
         domainMaxListNumber $ domainCurrentListNumber $
-        domainDefaultUserQuota $ domainAliasName $ disclaimer $
-        description $ street $ telephoneNumber $
+        domainDefaultUserQuota $ domainAliasName $ domainPendingAliasName $
+        disclaimer $ description $ street $ telephoneNumber $
         facsimileTelephoneNumber $ expiredDate $ accountSetting $
         domainWhitelistIP $ domainWhitelistSender $
         domainBlacklistIP $ domainBlacklistSender $
