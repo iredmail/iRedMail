@@ -69,7 +69,7 @@ export KEEP_DAYS='90'
 export PATH="$PATH:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin/"
 
 # Commands.
-export CMD_DATE='/bin/date'
+export CMD_DATE='/bin/date -u'      # Use UTC time with '-u' option
 export CMD_LDAPSEARCH='/usr/local/bin/ldapsearch'
 export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'

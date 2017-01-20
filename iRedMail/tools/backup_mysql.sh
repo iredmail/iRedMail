@@ -77,7 +77,7 @@ export DB_CHARACTER_SET="utf8"
 export PATH='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin'
 
 # Commands.
-export CMD_DATE='/bin/date'
+export CMD_DATE='/bin/date -u'      # Use UTC time with '-u' option
 export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'
 export COMPRESS_SUFFIX='bz2'
