@@ -8,26 +8,25 @@
 # Usage:
 #   * Edit these variables:
 #       STORAGE_BASE_DIRECTORY
-#       DEFAULT_PASSWD='888888'
-#       USE_DEFAULT_PASSWD='NO'
-#       DEFAULT_QUOTA='100'   # 100 -> 100M
+#       DEFAULT_QUOTA='1024'   # 1024 is 1GB
 #
-#   * Run this script to generate SQL files used to import to MySQL
-#     database later.
+#   * Run this script to generate SQL command used to create new user.
 #
 #       # bash create_mail_user_MySQL.sh user@domain.ltd plain_password
 #
-#     It will print SQL commands used to create mail accounts directly, you
-#     can redirect the output to a file for further use like this:
+#     It will print SQL commands on console directly, you can redirect the
+#     output to a file for further use like this:
 #
 #       # bash create_mail_user_MySQL.sh user@domain.ltd plain_password > output.sql
 #
-#   * Import output.sql into MySQL database.
+#   * Import output.sql into SQL database like below:
 #
 #       # mysql -uroot -p
 #       mysql> USE vmail;
 #       mysql> SOURCE /path/to/output.sql;
 #
+#       # psql -d vmail
+#       sql> \i /path/to/output.sql;
 
 # --------- CHANGE THESE VALUES ----------
 # Storage base directory used to store users' mail.
@@ -40,8 +39,8 @@ STORAGE_BASE_DIRECTORY="/var/vmail/vmail1"
 # Check file Available
 PASSWORD_SCHEME='SSHA512'
 
-# Default mail quota.
-DEFAULT_QUOTA='1024'   # 1024 = 1024M
+# Default mail quota (in MB).
+DEFAULT_QUOTA='1024'
 
 #
 # Maildir settings
