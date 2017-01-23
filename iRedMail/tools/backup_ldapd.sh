@@ -69,7 +69,7 @@ export KEEP_DAYS='90'
 export PATH="$PATH:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin/"
 
 # Commands.
-export CMD_DATE='/bin/date -u'      # Use UTC time with '-u' option
+export CMD_DATE='/bin/date'
 export CMD_LDAPSEARCH='/usr/local/bin/ldapsearch'
 export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'
@@ -152,10 +152,10 @@ if [ X"$?" == X"0" ]; then
     rm -f ${BACKUP_FILE} >> ${LOGFILE} 2>&1
     [ X"$?" == X"0" ] && echo -e "\t[DONE]" >>${LOGFILE}
 
-    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Backup LDAP data, size: ${original_size}, compressed: ${compressed_size}', 'cron_backup_ldap', '127.0.0.1', NOW());"
+    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Backup LDAP data, size: ${original_size}, compressed: ${compressed_size}', 'cron_backup_ldap', '127.0.0.1', UTC_TIMESTAMP());"
 else
     # Log failure
-    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Backup LDAP data failed, check log file ${LOGFILE} for more details.', 'cron_backup_ldap', '127.0.0.1', NOW());"
+    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Backup LDAP data failed, check log file ${LOGFILE} for more details.', 'cron_backup_ldap', '127.0.0.1', UTC_TIMESTAMP());"
 fi
 
 # Log to SQL table `iredadmin.log`, so that global domain admins can
@@ -183,7 +183,7 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' ] && [ -d ${REMOVED_BACKUP_DIR} ]; then
     rm -rf ${REMOVED_BACKUPS} >> ${LOGFILE} 2>&1
 
     if [ -n ${MYSQL_USER} ] && [ -n ${MYSQL_PASSWD} ]; then
-        sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUPS}.', 'cron_backup_sql', '127.0.0.1', NOW());"
+        sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUPS}.', 'cron_backup_sql', '127.0.0.1', UTC_TIMESTAMP());"
         ${CMD_MYSQL} -u"${MYSQL_USER}" -p"${MYSQL_PASSWD}" iredadmin -e "${sql_log_msg}"
     fi
 fi

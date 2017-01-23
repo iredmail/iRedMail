@@ -77,7 +77,7 @@ export DB_CHARACTER_SET="utf8"
 export PATH='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin'
 
 # Commands.
-export CMD_DATE='/bin/date -u'      # Use UTC time with '-u' option
+export CMD_DATE='/bin/date'
 export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'
 export COMPRESS_SUFFIX='bz2'
@@ -164,11 +164,11 @@ for db in ${DATABASES}; do
             compressed_file_name="${output_sql}.${COMPRESS_SUFFIX}"
             compressed_size="$(${CMD_DU} ${compressed_file_name} | awk '{print $1}')"
 
-            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database: ${db}, size: ${compressed_size} (original: ${original_size})', 'cron_backup_sql', '127.0.0.1', NOW());"
+            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database: ${db}, size: ${compressed_size} (original: ${original_size})', 'cron_backup_sql', '127.0.0.1', UTC_TIMESTAMP());"
         else
             # backup failed
             export BACKUP_SUCCESS='NO'
-            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup failed: ${db}. Log: $(cat ${LOGFILE})', 'cron_backup_sql', '127.0.0.1', NOW());"
+            sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup failed: ${db}. Log: $(cat ${LOGFILE})', 'cron_backup_sql', '127.0.0.1', UTC_TIMESTAMP());"
         fi
 
         # Log to SQL table `iredadmin.log`, so that global domain admins can
@@ -196,7 +196,7 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Suppose to delete: ${REMOVED_BACKUP_DIR}" >> ${LOGFILE}
     rm -rf ${REMOVED_BACKUP_DIR} >> ${LOGFILE} 2>&1
 
-    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUP_DIR}.', 'cron_backup_sql', '127.0.0.1', NOW());"
+    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUP_DIR}.', 'cron_backup_sql', '127.0.0.1', UTC_TIMESTAMP());"
     ${CMD_MYSQL} iredadmin -e "${sql_log_msg}"
 fi
 
