@@ -49,10 +49,10 @@ for (dn, _ldif) in qr_domains:
     domain = _ldif['domainName'][0]
 
     # Get all mail accounts which don't have required mod_attr.
-    qr_accounts = conn.search_s(basedn,
+    qr_accounts = conn.search_s(dn,
                                 ldap.SCOPE_SUBTREE,
                                 qf,
-                                ['mail', 'domainStatus'])
+                                ['objectClass', 'mail', 'domainStatus'])
 
     total = len(qr_accounts)
     if total:
@@ -63,7 +63,7 @@ for (dn, _ldif) in qr_domains:
     # Counter.
     count = 1
 
-    for (dn, _ldif2) in qr_accounts:
+    for (_dn, _ldif2) in qr_accounts:
         if 'mail' not in _ldif2:
             continue
 
@@ -71,7 +71,7 @@ for (dn, _ldif) in qr_domains:
 
         try:
             print "* (%d of %d) Updating user: %s" % (count, total, mail)
-            conn.modify_s(dn, mod_attr)
+            conn.modify_s(_dn, mod_attr)
         except Exception, e:
             print "* (%d of %d) <<< ERROR >>> %s: %s" % (count, total, mail, repr(e))
 
