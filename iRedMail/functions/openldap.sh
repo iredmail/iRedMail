@@ -77,6 +77,8 @@ EOF
 
     ECHO_DEBUG "Generate new server configuration file: ${OPENLDAP_SLAPD_CONF}."
     cp -f ${SAMPLE_DIR}/openldap/slapd.conf ${OPENLDAP_SLAPD_CONF}
+    chown ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP} ${OPENLDAP_SLAPD_CONF}
+    chmod 0640 ${OPENLDAP_SLAPD_CONF}
 
     export LDAP_SUFFIX
     perl -pi -e 's#PH_OPENLDAP_SCHEMA_DIR#$ENV{OPENLDAP_SCHEMA_DIR}#g' ${OPENLDAP_SLAPD_CONF}
