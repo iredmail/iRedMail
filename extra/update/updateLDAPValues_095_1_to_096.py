@@ -64,6 +64,9 @@ for (dn, _ldif) in qr_domains:
     count = 1
 
     for (dn, _ldif2) in qr_accounts:
+        if 'mail' not in _ldif2:
+            continue
+
         mail = _ldif2['mail'][0]
 
         try:
