@@ -371,13 +371,11 @@ EOF
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-postgresql"
 
-            ECHO_INFO "Enable apt repo for SOGo: ${SOGO_PKG_MIRROR}"
-            if ! grep "${SOGO_PKG_MIRROR}" /etc/apt/sources.list &>/dev/null; then
-                if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                    echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
-                elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                    echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" >> /etc/apt/sources.list
-                fi
+            ECHO_INFO "Add apt repo for SOGo: ${SOGO_PKG_MIRROR}"
+            if [ X"${DISTRO}" == X'DEBIAN' ]; then
+                echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
+            elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+                echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
             fi
 
             ECHO_INFO "Import apt key (${SOGO_PKG_MIRROR_APT_KEY}) for SOGo repo (${SOGO_PKG_MIRROR})."
