@@ -64,6 +64,7 @@ install_all()
     freebsd_make_conf_plus_option 'LICENSES_ACCEPTED' 'NONE'
 
     for p in \
+        archivers_arj \
         archivers_p5-Archive-Tar \
         archivers_p7zip \
         archivers_rar \
@@ -129,6 +130,10 @@ EOF
 OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_SET+=ENCODINGS
 OPTIONS_FILE_SET+=PATCHES
+EOF
+
+    cat > /var/db/ports/archivers_arj/options <<EOF
+OPTIONS_FILE_UNSET+=DOCS
 EOF
 
     # Cyrus-SASL2. DEPENDENCE.
