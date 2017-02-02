@@ -11,7 +11,7 @@ location / {
 # For Mac OS X and iOS devices.
 rewrite ^/.well-known/caldav    /SOGo/dav permanent;
 rewrite ^/.well-known/carddav   /SOGo/dav permanent;
-rewrite ^/principals           /SOGo/dav permanent;
+rewrite ^/principals            /SOGo/dav permanent;
 
 include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
 
