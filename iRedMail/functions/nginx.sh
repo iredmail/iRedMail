@@ -66,7 +66,7 @@ nginx_config()
     # conf.d/*.conf
     perl -pi -e 's#PH_HTTPD_LOG_ERRORLOG#$ENV{HTTPD_LOG_ERRORLOG}#g' ${HTTPD_CONF_DIR}/log.conf
     perl -pi -e 's#PH_HTTPD_LOG_ACCESSLOG#$ENV{HTTPD_LOG_ACCESSLOG}#g' ${HTTPD_CONF_DIR}/log.conf
-    perl -pi -e 's#PH_PHP_FASTCGI_SOCKET_FULL#$ENV{PHP_FASTCGI_SOCKET_FULL}#g' ${HTTPD_CONF_DIR}/php-fpm.conf
+    perl -pi -e 's#PH_PHP_FPM_SOCKET#$ENV{PHP_FPM_SOCKET}#g' ${HTTPD_CONF_DIR}/php-fpm.conf
 
     # default web sites
     perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${NGINX_CONF_SITE_DEFAULT}
@@ -96,7 +96,7 @@ nginx_config()
     perl -pi -e 's#PH_HTTPD_SERVERROOT#$ENV{HTTPD_SERVERROOT}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
 
     # php-fpm
-    perl -pi -e 's#^(listen *=).*#${1} $ENV{PHP_FASTCGI_SOCKET}#g' ${PHP_FPM_POOL_WWW_CONF}
+    perl -pi -e 's#^(listen *=).*#${1} $ENV{PHP_FPM_SOCKET}#g' ${PHP_FPM_POOL_WWW_CONF}
     perl -pi -e 's#^;(listen.owner *=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
     perl -pi -e 's#^;(listen.group *=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
     perl -pi -e 's#^;(listen.mode *=).*#${1} 0660#g' ${PHP_FPM_POOL_WWW_CONF}
@@ -206,7 +206,7 @@ Nginx:
 
 php-fpm:
     * Configuration files: ${PHP_FPM_POOL_WWW_CONF}
-    * Socket: ${PHP_FASTCGI_SOCKET}
+    * Socket: ${PHP_FPM_SOCKET}
 
 uWSGI:
     * Configuration files: ${UWSGI_CONF_DIR}

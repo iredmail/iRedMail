@@ -28,7 +28,7 @@ export PHP_SESSION_SAVE_PATH='/var/lib/php/sessions'
 
 # php-fpm
 export PHP_FPM_RC_SCRIPT_NAME='php-fpm'
-export PHP_FASTCGI_SOCKET='/var/run/php-fpm.socket'
+export PHP_FPM_SOCKET='/var/run/php-fpm.socket'
 export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
 
 # Disabled PHP functions.
@@ -40,7 +40,6 @@ export PHP_7='NO'
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
     export PHP_INI='/etc/php.ini'
-    export PHP_FASTCGI_SOCKET='/var/run/php-fpm/php-fpm.socket'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
@@ -78,10 +77,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export PHP_INI="/etc/php-${OB_PHP_VERSION}.ini"
     export PHP_FPM_RC_SCRIPT_NAME='php70_fpm'
     export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.conf'
-    export PHP_FASTCGI_SOCKET="${HTTPD_SERVERROOT}/run/php-fpm.socket"
+    export PHP_FPM_SOCKET="${HTTPD_SERVERROOT}/run/php-fpm.socket"
 fi
-
-export PHP_FASTCGI_SOCKET_FULL="unix:${PHP_FASTCGI_SOCKET}"
 
 # connection type: mysql, mysqli (recommended for MySQL/MariaDB), pgsql.
 export PHP_CONN_TYPE='mysqli'
