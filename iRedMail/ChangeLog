@@ -1,3 +1,13 @@
+iRedMail-0.9.6-1:
+    * Improvements:
+        - Nginx: Use different directories to store different type of config
+          files for easier customization.
+            - /etc/nginx/conf.d/ - store configurations used inside 'http {}'
+            - /etc/nginx/sites-available/ - store virtual hosts config files.
+              Note: all files under this directory are not loaded by Nginx
+              directly. To enable a host, please create a symbol link to
+              /etc/nginx/sites-enabled/.
+
 iRedMail-0.9.6:
     * Supports new distribution release:
         + OpenBSD 6.0. OpenBSD 5.9 is not supported anymore.

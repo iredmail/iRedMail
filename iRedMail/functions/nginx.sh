@@ -28,42 +28,56 @@ nginx_config()
 {
     ECHO_INFO "Configure Nginx web server and uWSGI."
 
-    backup_file ${NGINX_CONF} ${NGINX_CONF_DEFAULT} ${PHP_FPM_POOL_WWW_CONF}
+    backup_file ${NGINX_CONF} ${NGINX_CONF_SITE_DEFAULT} ${PHP_FPM_POOL_WWW_CONF}
 
     # Make sure we have an empty directory
     [ -d ${HTTPD_CONF_DIR} ] && mv ${HTTPD_CONF_DIR} ${HTTPD_CONF_DIR}.bak
     [ ! -d ${HTTPD_CONF_DIR} ] && mkdir -p ${HTTPD_CONF_DIR}
 
+    # Directory used to store virtual web hosts config files
+    [ -d ${HTTPD_CONF_DIR_AVAILABLE_VHOSTS} ] && mv ${HTTPD_CONF_DIR_AVAILABLE_VHOSTS} ${HTTPD_CONF_DIR_AVAILABLE_VHOSTS}.bak
+    [ ! -d ${HTTPD_CONF_DIR_AVAILABLE_VHOSTS} ] && mkdir -p ${HTTPD_CONF_DIR_AVAILABLE_VHOSTS}
+
+    [ -d ${HTTPD_CONF_DIR_ENABLED_VHOSTS} ] && mv ${HTTPD_CONF_DIR_ENABLED_VHOSTS} ${HTTPD_CONF_DIR_ENABLED_VHOSTS}.bak
+    [ ! -d ${HTTPD_CONF_DIR_ENABLED_VHOSTS} ] && mkdir -p ${HTTPD_CONF_DIR_ENABLED_VHOSTS}
+
     # Copy sample config files
     cp ${SAMPLE_DIR}/nginx/nginx.conf ${NGINX_CONF}
-    cp ${SAMPLE_DIR}/nginx/00-default.conf ${NGINX_CONF_DEFAULT}
+    cp ${SAMPLE_DIR}/nginx/conf.d/*.conf ${HTTPD_CONF_DIR}
+    cp ${SAMPLE_DIR}/nginx/sites-available/00-default.conf ${NGINX_CONF_SITE_DEFAULT}
+    cp ${SAMPLE_DIR}/nginx/sites-available/00-default-ssl.conf ${NGINX_CONF_SITE_DEFAULT_SSL}
+
+    # Enable default sites
+    ln -s ${NGINX_CONF_SITE_DEFAULT} ${HTTPD_CONF_DIR_ENABLED_VHOSTS} >> ${INSTALL_LOG} 2>&1
+    ln -s ${NGINX_CONF_SITE_DEFAULT_SSL} ${HTTPD_CONF_DIR_ENABLED_VHOSTS} >> ${INSTALL_LOG} 2>&1
 
     # Template configuration snippets.
     [ ! -d ${NGINX_CONF_TMPL_DIR} ] && mkdir -p ${NGINX_CONF_TMPL_DIR}
     cp ${SAMPLE_DIR}/nginx/templates/*.tmpl ${NGINX_CONF_TMPL_DIR}
-    perl -pi -e 's#PH_NGINX_CONF_TMPL_DIR#$ENV{NGINX_CONF_TMPL_DIR}#g' ${NGINX_CONF_DEFAULT} ${NGINX_CONF_TMPL_DIR}/*tmpl
+    perl -pi -e 's#PH_NGINX_CONF_TMPL_DIR#$ENV{NGINX_CONF_TMPL_DIR}#g' ${NGINX_CONF_SITE_DEFAULT} ${NGINX_CONF_SITE_DEFAULT_SSL} ${NGINX_CONF_TMPL_DIR}/*tmpl
 
     # nginx.conf
     perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${NGINX_CONF}
-    perl -pi -e 's#PH_HTTPD_LOG_ERRORLOG#$ENV{HTTPD_LOG_ERRORLOG}#g' ${NGINX_CONF}
-    perl -pi -e 's#PH_HTTPD_LOG_ACCESSLOG#$ENV{HTTPD_LOG_ACCESSLOG}#g' ${NGINX_CONF}
     perl -pi -e 's#PH_NGINX_PID#$ENV{NGINX_PID}#g' ${NGINX_CONF}
-
     perl -pi -e 's#PH_NGINX_MIME_TYPES#$ENV{NGINX_MIME_TYPES}#g' ${NGINX_CONF}
-    perl -pi -e 's#PH_HTTPD_CONF_DIR#$ENV{HTTPD_CONF_DIR}#g' ${NGINX_CONF} ${NGINX_CONF_DEFAULT}
+    perl -pi -e 's#PH_HTTPD_CONF_DIR_ENABLED_VHOSTS#$ENV{HTTPD_CONF_DIR_ENABLED_VHOSTS}#g' ${NGINX_CONF}
+    perl -pi -e 's#PH_HTTPD_CONF_DIR#$ENV{HTTPD_CONF_DIR}#g' ${NGINX_CONF}
 
-    perl -pi -e 's#PH_PHP_FASTCGI_SOCKET_FULL#$ENV{PHP_FASTCGI_SOCKET_FULL}#g' ${NGINX_CONF}
+    # conf.d/*.conf
+    perl -pi -e 's#PH_HTTPD_LOG_ERRORLOG#$ENV{HTTPD_LOG_ERRORLOG}#g' ${HTTPD_CONF_DIR}/log.conf
+    perl -pi -e 's#PH_HTTPD_LOG_ACCESSLOG#$ENV{HTTPD_LOG_ACCESSLOG}#g' ${HTTPD_CONF_DIR}/log.conf
+    perl -pi -e 's#PH_PHP_FASTCGI_SOCKET_FULL#$ENV{PHP_FASTCGI_SOCKET_FULL}#g' ${HTTPD_CONF_DIR}/php-fpm.conf
 
-    # default server
-    perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${NGINX_CONF_DEFAULT}
-    perl -pi -e 's#PH_HTTPD_DOCUMENTROOT#$ENV{HTTPD_DOCUMENTROOT}#g' ${NGINX_CONF_DEFAULT} ${NGINX_CONF_TMPL_DIR}/*.tmpl
+    # default web sites
+    perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${NGINX_CONF_SITE_DEFAULT}
+    perl -pi -e 's#PH_HTTPD_DOCUMENTROOT#$ENV{HTTPD_DOCUMENTROOT}#g' ${NGINX_CONF_SITE_DEFAULT} ${NGINX_CONF_SITE_DEFAULT_SSL}
 
     # ssl
-    perl -pi -e 's#PH_HTTPS_PORT#$ENV{HTTPS_PORT}#g' ${NGINX_CONF_DEFAULT}
-    perl -pi -e 's#PH_SSL_CERT_FILE#$ENV{SSL_CERT_FILE}#g' ${NGINX_CONF_DEFAULT}
-    perl -pi -e 's#PH_SSL_KEY_FILE#$ENV{SSL_KEY_FILE}#g' ${NGINX_CONF_DEFAULT}
-    perl -pi -e 's#PH_SSL_CIPHERS#$ENV{SSL_CIPHERS}#g' ${NGINX_CONF_DEFAULT}
-    perl -pi -e 's#PH_SSL_DH1024_PARAM_FILE#$ENV{SSL_DH1024_PARAM_FILE}#g' ${NGINX_CONF_DEFAULT}
+    perl -pi -e 's#PH_HTTPS_PORT#$ENV{HTTPS_PORT}#g' ${NGINX_CONF_SITE_DEFAULT_SSL}
+    perl -pi -e 's#PH_SSL_CERT_FILE#$ENV{SSL_CERT_FILE}#g' ${NGINX_CONF_SITE_DEFAULT_SSL}
+    perl -pi -e 's#PH_SSL_KEY_FILE#$ENV{SSL_KEY_FILE}#g' ${NGINX_CONF_SITE_DEFAULT_SSL}
+    perl -pi -e 's#PH_SSL_CIPHERS#$ENV{SSL_CIPHERS}#g' ${NGINX_CONF_SITE_DEFAULT_SSL}
+    perl -pi -e 's#PH_SSL_DH1024_PARAM_FILE#$ENV{SSL_DH1024_PARAM_FILE}#g' ${NGINX_CONF_SITE_DEFAULT_SSL}
 
     # Roundcube
     perl -pi -e 's#PH_RCM_HTTPD_ROOT_SYMBOL_LINK#$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
@@ -182,7 +196,8 @@ nginx_config()
 Nginx:
     * Configuration files:
         - ${NGINX_CONF}
-        - ${NGINX_CONF_DEFAULT}
+        - ${NGINX_CONF_SITE_DEFAULT}
+        - ${NGINX_CONF_SITE_DEFAULT_SSL}
     * Directories:
         - ${HTTPD_CONF_ROOT}
         - ${HTTPD_DOCUMENTROOT}
