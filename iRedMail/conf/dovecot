@@ -100,7 +100,7 @@ export DOVECOT_PGSQL_CONF="${DOVECOT_CONF_DIR}/dovecot-pgsql.conf"
 export DOVECOT_REALTIME_QUOTA_CONF="${DOVECOT_CONF_DIR}/dovecot-used-quota.conf"
 export DOVECOT_SHARE_FOLDER_CONF="${DOVECOT_CONF_DIR}/dovecot-share-folder.conf"
 export DOVECOT_MASTER_USER_PASSWORD_FILE="${DOVECOT_CONF_DIR}/dovecot-master-users"
-export DOVECOT_MASTER_USER_DOMAIN='not-exist.com'
+export DOVECOT_MASTER_USER_DOMAIN="${DOVECOT_MASTER_USER_DOMAIN:=not-exist.com}"
 
 # Dovecot auth socket and pid file.
 # Relative path of Dovecot auth socket under Postfix chroot directory.
