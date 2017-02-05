@@ -77,7 +77,8 @@ mysql_initialize_db()
     sleep 10
 
     if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-        if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        if [ X"${DISTRO}" == X'FREEBSD' -a X"${BACKEND_ORIG}" == X'MYSQL' ]; then
+            # MySQL 5.7
             # Get initial random root password from /root/.mysql-secret
             export _mysql_root_pw="$(tail -1 /root/.mysql_secret)"
             mysqladmin -u${MYSQL_ROOT_USER} -p${_mysql_root_pw} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
