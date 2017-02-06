@@ -3,10 +3,34 @@ iRedMail-0.9.6-1:
         - Nginx: Use different directories to store different type of config
           files for easier customization.
             - /etc/nginx/conf.d/ - store configurations used inside 'http {}'
-            - /etc/nginx/sites-available/ - store virtual hosts config files.
-              Note: all files under this directory are not loaded by Nginx
-              directly. To enable a host, please create a symbol link to
-              /etc/nginx/sites-enabled/.
+            - /etc/nginx/sites-available/ - store config files for web sites.
+              All files under this directory are NOT loaded by default.
+            - /etc/nginx/sites-enabled/ - store config files for web sites.
+              All files under this directory will be loaded by default.
+              Usually file under this directory is a symbol link to file under
+              /etc/nginx/sites-enabled/. This way we can easily enable or
+              disable a site without renaming or moving its config file.
+            - /etc/nginx/sites-conf.d/ - store per-site modular config files.
+              for example, for web domain 'iredmail.org', we use directory
+              '/etc/nginx/sites-conf.d/iredmail.org/' to store all its http
+              settings, and '/etc/nginx/sites-conf.d/iredmail.org-ssl/' for
+              all https settings. You can use a prefixed digital number or
+              letter to define the order loaded by Nginx. For example,
+              '00-listen.conf' will be loaded before other files.
+
+              NOTE: of course you're not forced to use this directory, and
+              you're free to write all settings in one file like
+              '/etc/nginx/sites-available/<site>.conf'. it's just a different
+              way (which we think it's better) to manage per-site settings.
+
+              Examples:
+
+              - sites-conf.d/iredmail.org/server_name.conf: define the server
+                name ('server_name iredmail.org;')
+              - sites-conf.d/iredmail.org/listen.conf: define the listen port
+                ('port 80;').
+              - sites-conf.d/iredmail.org/root.conf: define the document root
+                directory ('root /var/www/vhosts/iredmail.org;')
 
 iRedMail-0.9.6:
     * Supports new distribution release:
