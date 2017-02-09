@@ -21,7 +21,7 @@
 #---------------------------------------------------------------------
 
 # Memcached
-export MEMCACHED_BIND_ADDRESS="${MEMCACHED_BIND_ADDRESS:=127.0.0.1}"
+export MEMCACHED_BIND_ADDRESS="${MEMCACHED_BIND_ADDRESS:=${LOCAL_ADDRESS}}"
 
 export MEMCACHED_RC_SCRIPT_NAME='memcached'
 

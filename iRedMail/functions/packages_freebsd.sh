@@ -76,6 +76,7 @@ install_all()
         databases_py-sqlalchemy10 \
         devel_cmake \
         devel_apr1 \
+        devel_dbus \
         devel_m4 \
         devel_py-Jinja2 \
         devel_py-babel \
@@ -89,6 +90,7 @@ install_all()
         lang_php${PREFERRED_PHP_VER}-extensions \
         www_mod_php${PREFERRED_PHP_VER} \
         graphics_php${PREFERRED_PHP_VER}-gd \
+        graphics_cairo \
         www_pecl-APC \
         lang_python27 \
         mail_dovecot2 \
@@ -117,6 +119,12 @@ install_all()
     cat > /var/db/ports/devel_cmake/options <<EOF
 OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_UNSET+=MANPAGES
+EOF
+
+    cat > /var/db/ports/devel_dbus/options <<EOF
+OPTIONS_FILE_UNSET+=EXAMPLES
+OPTIONS_FILE_UNSET+=MANPAGES
+OPTIONS_FILE_UNSET+=X11
 EOF
 
     # m4. DEPENDENCE.
@@ -929,8 +937,15 @@ EOF
 OPTIONS_FILE_SET+=T1LIB
 OPTIONS_FILE_SET+=TRUETYPE
 OPTIONS_FILE_UNSET+=JIS
-OPTIONS_FILE_SET+=X11
+OPTIONS_FILE_UNSET+=X11
 OPTIONS_FILE_UNSET+=VPX
+EOF
+
+    cat > /var/db/ports/graphics_cairo/options <<EOF
+OPTIONS_FILE_UNSET+=GLIB
+OPTIONS_FILE_UNSET+=OPENGL
+OPTIONS_FILE_UNSET+=X11
+OPTIONS_FILE_UNSET+=XCB
 EOF
 
     # PHP and extensions
