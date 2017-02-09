@@ -50,7 +50,12 @@ elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export MYSQL_RC_SCRIPT_NAME='mysql-server'
     export MYSQL_MY_CNF='/usr/local/etc/mysql/my.cnf'
-    export MYSQL_MY_CNF_SAMPLE='/usr/local/share/mysql/my-large.cnf'
+
+    if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+        export MYSQL_MY_CNF_SAMPLE='/usr/local/share/mysql/my-large.cnf'
+    else
+        export MYSQL_MY_CNF_SAMPLE='/usr/local/share/mysql/my-default.cnf'
+    fi
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export MYSQL_RC_SCRIPT_NAME='mysqld'
