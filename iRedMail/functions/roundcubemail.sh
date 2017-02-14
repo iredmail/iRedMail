@@ -90,7 +90,7 @@ EOF
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_SYS_USER_HOME}/rcm.sql >> ${INSTALL_LOG} 2>&1
-        chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql 
+        chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1 >/dev/null" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create database and role

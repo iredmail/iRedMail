@@ -255,7 +255,7 @@ iRedMail-0.9.3:
           members of specified mailing list to another.
 
     * Fixed issues:
-        - Key length 2048 of DKIM key is too long, too many complains because 
+        - Key length 2048 of DKIM key is too long, too many complains because
           many DNS vendors don't support it. So we generate with 1024 instead.
         - Not add 'virusalert' in Postfix alias file.
         - Not use correct postrotate command to rotate log file on Debian.
@@ -1363,7 +1363,7 @@ iRedMail-0.2:
     * Sync LDAP schema.
     * Fix postfix sender_access ldap lookup.
     * Add pcre rule in header_checks(5) for postfix to replace
-      internal IP address by external IP address or whatever you 
+      internal IP address by external IP address or whatever you
       want. Disabled default. Thanks muniao. :)
     * Change 'virus_admin_maps' and 'spam_admin_maps' to
       'root@mydomain' in amavisd.conf. Thanks hihihihi <at>

@@ -35,7 +35,7 @@
 #
 #       # crontab -e -u root
 #       1   4   *   *   *   bash /path/to/backup_mysql.sh
-#   
+#
 #   * Make sure 'crond' service is running, and will start automatically when
 #     system startup:
 #

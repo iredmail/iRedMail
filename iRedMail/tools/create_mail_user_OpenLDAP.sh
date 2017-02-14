@@ -84,7 +84,7 @@ BINDDN="cn=Manager,${LDAP_SUFFIX}"
 
 # Setting rootpw of LDAP.
 BINDPW='passwd'
- 
+
 # ---------- Virtual Domains & Users --------------
 # Set default quota for LDAP users: 104857600 = 100M
 QUOTA='1048576000'
@@ -180,7 +180,7 @@ add_new_user()
     MAIL="$( echo $2 | tr [A-Z] [a-z])"
 
     # Create template LDIF file for this new user and add it.
-    # If you do *NOT* want to keep rootpw in script, use '-W' instead of 
+    # If you do *NOT* want to keep rootpw in script, use '-W' instead of
     # '-w "${BINDPW}".
 
     maildir="${DOMAIN_NAME}/$(hash_maildir ${USERNAME})"

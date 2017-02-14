@@ -122,7 +122,7 @@ cleanup_replace_firewall_rules()
     read_setting ${AUTO_CLEANUP_REPLACE_FIREWALL_RULES}
     case ${ANSWER} in
         N|n ) ECHO_INFO "Skip firewall rules." ;;
-        Y|y|* ) 
+        Y|y|* )
             backup_file ${FIREWALL_RULE_CONF}
             if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
                 ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."

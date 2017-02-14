@@ -28,7 +28,7 @@ amavisd_dkim()
 {
     pem_file="${AMAVISD_DKIM_DIR}/${FIRST_DOMAIN}.pem"
 
-    ECHO_DEBUG "Generate DKIM pem files: ${pem_file}." 
+    ECHO_DEBUG "Generate DKIM pem files: ${pem_file}."
     mkdir -p ${AMAVISD_DKIM_DIR} &>/dev/null && \
     chown -R ${AMAVISD_SYS_USER}:${AMAVISD_SYS_GROUP} ${AMAVISD_DKIM_DIR}
     chmod -R 0700 ${AMAVISD_DKIM_DIR}
@@ -73,7 +73,7 @@ dkim_key("${FIRST_DOMAIN}", "${AMAVISD_DKIM_SELECTOR}", "${pem_file}");
     # For domain: ${FIRST_DOMAIN}.
     # ------------------------------------
     # 'd' defaults to a domain of an author/sender address,
-    # 's' defaults to whatever selector is offered by a matching key 
+    # 's' defaults to whatever selector is offered by a matching key
 
     #'${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}'    => { d => "${FIRST_DOMAIN}", a => 'rsa-sha256', ttl =>  7*24*3600 },
     #"spam-reporter@${FIRST_DOMAIN}"    => { d => "${FIRST_DOMAIN}", a => 'rsa-sha256', ttl =>  7*24*3600 },
@@ -326,7 +326,7 @@ $(cat ${SAMPLE_DIR}/amavisd/log_templ)
 # Where to store quarantined mail message:
 #
 #   - 'local:spam-%i-%m', quarantine mail on local file system.
-#   - 'sql:', quarantine mail in SQL server specified in @storage_sql_dsn. 
+#   - 'sql:', quarantine mail in SQL server specified in @storage_sql_dsn.
 #   - undef, do not quarantine mail.
 
 # SPAM.

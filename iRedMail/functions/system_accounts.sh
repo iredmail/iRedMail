@@ -17,7 +17,7 @@ add_user_vmail()
     # vmail/vmail must has the same UID/GID on all supported Linux/BSD
     # distributions, required by cluster environment. e.g. GlusterFS.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${VMAIL_USER_GID} -n ${VMAIL_GROUP_NAME} 
+        pw groupadd -g ${VMAIL_USER_GID} -n ${VMAIL_GROUP_NAME}
         pw useradd -m \
             -u ${VMAIL_USER_UID} \
             -g ${VMAIL_GROUP_NAME} \

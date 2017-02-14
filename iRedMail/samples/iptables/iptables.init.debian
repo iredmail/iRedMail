@@ -206,7 +206,7 @@ start() {
     else
         log_end_msg 1; return 1
     fi
-    
+
     # Load additional modules (helpers)
     if [ -n "$IPTABLES_MODULES" ]; then
 	echo -n "Loading additional $IPTABLES modules"
@@ -218,7 +218,7 @@ start() {
 	done
 	[ $ret -eq 0 ] && log_end_msg 0 || log_end_msg 1
     fi
-    
+
     touch $VAR_SUBSYS_IPTABLES
     return $ret
 }
@@ -229,7 +229,7 @@ stop() {
 
     flush_n_delete
     set_policy ACCEPT
-    
+
     if [ "x$IPTABLES_MODULES_UNLOAD" = "xyes" ]; then
 	echo -n "Unloading $IPTABLES modules"
 	ret=0
@@ -239,7 +239,7 @@ stop() {
 	let ret+=$?;
 	[ $ret -eq 0 ] && log_end_msg 0 || log_end_msg 1
     fi
-    
+
     rm -f $VAR_SUBSYS_IPTABLES
     return $ret
 }
@@ -284,7 +284,7 @@ save() {
 status() {
     tables=`cat $PROC_IPTABLES_NAMES 2>/dev/null`
 
-    # Do not print status if lockfile is missing and iptables modules are not 
+    # Do not print status if lockfile is missing and iptables modules are not
     # loaded.
     # Check if iptable module is loaded
     if [ ! -f "$VAR_SUBSYS_IPTABLES" -a -z "$tables" ]; then
@@ -304,7 +304,7 @@ status() {
 
     NUM=
     [ "x$IPTABLES_STATUS_NUMERIC" = "xyes" ] && NUM="-n"
-    VERBOSE= 
+    VERBOSE=
     [ "x$IPTABLES_STATUS_VERBOSE" = "xyes" ] && VERBOSE="--verbose"
     COUNT=
     [ "x$IPTABLES_STATUS_LINENUMBERS" = "xyes" ] && COUNT="--line-numbers"

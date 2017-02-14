@@ -25,10 +25,10 @@ data_directory = PH_DATA_DIRECTORY
 mail_owner = PH_MAIL_OWNER
 
 # The following parameters are used when installing a new Postfix version.
-# 
+#
 # sendmail_path: The full pathname of the Postfix sendmail command.
 # This is the Sendmail-compatible mail posting interface.
-# 
+#
 sendmail_path = PH_SENDMAIL_PATH
 
 # newaliases_path: The full pathname of the Postfix newaliases command.
