@@ -45,7 +45,7 @@ fail2ban_config()
     perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
 
     ECHO_DEBUG "Copy modular Fail2ban jail config files to ${FAIL2BAN_JAIL_CONF_DIR}."
-    cp -f ${SAMPLE_DIR}/fail2ban/*.local ${FAIL2BAN_JAIL_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+    cp -f ${SAMPLE_DIR}/fail2ban/jail.d/*.local ${FAIL2BAN_JAIL_CONF_DIR} >> ${INSTALL_LOG} 2>&1
 
     # Firewall command
     perl -pi -e 's#PH_FAIL2BAN_ACTION#$ENV{FAIL2BAN_ACTION}#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
