@@ -1,50 +1,6 @@
-# Refer to PH_FAIL2BAN_JAIL_CONF for more examples.
 [DEFAULT]
 # time is in seconds. 3600 = 1 hour, 86400 = 24 hours (1 day)
 findtime    = 3600
 bantime     = 3600
 maxretry    = 5
 ignoreip    = PH_LOCAL_ADDRESS 127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16
-
-[sshd]
-enabled     = true
-filter      = sshd
-action      = PH_FAIL2BAN_ACTION[name=sshd, port="PH_SSHD_PORT", protocol=tcp]
-logpath     = PH_SSHD_LOGFILE
-
-[sshd-ddos]
-enabled     = true
-filter      = sshd-ddos
-action      = PH_FAIL2BAN_ACTION[name=sshd-ddos, port="PH_SSHD_PORT", protocol=tcp]
-logpath     = PH_SSHD_LOGFILE
-
-[roundcube-iredmail]
-enabled     = true
-filter      = roundcube.iredmail
-action      = PH_FAIL2BAN_ACTION[name=roundcube, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
-logpath     = PH_RCM_LOGFILE
-findtime    = 3600
-
-[dovecot-iredmail]
-enabled     = true
-filter      = dovecot.iredmail
-action      = PH_FAIL2BAN_ACTION[name=dovecot, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
-logpath     = PH_DOVECOT_LOG_FILE
-
-[postfix-iredmail]
-enabled     = true
-filter      = postfix.iredmail
-action      = PH_FAIL2BAN_ACTION[name=postfix, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
-logpath     = PH_MAILLOG
-
-[postfix-sasl]
-enabled     = true
-filter      = postfix-sasl
-action      = PH_FAIL2BAN_ACTION[name=postfix, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
-logpath     = PH_MAILLOG
-
-[sogo-iredmail]
-enabled     = false
-filter      = sogo-auth
-action      = PH_FAIL2BAN_ACTION[name=sogo, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
-logpath     = PH_SOGO_LOG_FILE

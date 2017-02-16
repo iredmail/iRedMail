@@ -1,0 +1,5 @@
+[postfix-iredmail]
+enabled     = true
+filter      = postfix.iredmail
+action      = PH_FAIL2BAN_ACTION[name=postfix, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
+logpath     = PH_MAILLOG

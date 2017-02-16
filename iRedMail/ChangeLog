@@ -1,5 +1,8 @@
 iRedMail-0.9.6-1:
     * Improvements:
+        - Fail2ban: Split jail.local to multiple modular jail config files
+                    under /etc/fail2ban/jail.d.
+
         - Nginx: Use different directories to store different type of config
           files for easier customization.
             - /etc/nginx/conf.d/ - store configurations used inside 'http {}'

@@ -37,34 +37,39 @@ fail2ban_config()
 
     ECHO_DEBUG "Create Fail2ban config file: ${FAIL2BAN_JAIL_LOCAL_CONF}."
     backup_file ${FAIL2BAN_JAIL_LOCAL_CONF}
-    cp -f ${SAMPLE_DIR}/fail2ban/jail.local ${FAIL2BAN_JAIL_LOCAL_CONF}
+    cp -f ${SAMPLE_DIR}/fail2ban/jail.local ${FAIL2BAN_JAIL_LOCAL_CONF} >> ${INSTALL_LOG} 2>&1
 
-    perl -pi -e 's#PH_FAIL2BAN_JAIL_CONF#$ENV{FAIL2BAN_JAIL_CONF}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    ECHO_DEBUG "Create Fail2ban directory: ${FAIL2BAN_JAIL_CONF_DIR}."
+    mkdir -p ${FAIL2BAN_JAIL_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+
     perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
 
-    # Firewall command
-    perl -pi -e 's#PH_FAIL2BAN_ACTION#$ENV{FAIL2BAN_ACTION}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    ECHO_DEBUG "Copy modular Fail2ban jail config files to ${FAIL2BAN_JAIL_CONF_DIR}."
+    cp -f ${SAMPLE_DIR}/fail2ban/*.local ${FAIL2BAN_JAIL_CONF_DIR} >> ${INSTALL_LOG} 2>&1
 
-    perl -pi -e 's#PH_SSHD_LOGFILE#$ENV{SSHD_LOGFILE}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
-    perl -pi -e 's#PH_RCM_LOGFILE#$ENV{RCM_LOGFILE}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
-    perl -pi -e 's#PH_MAILLOG#$ENV{MAILLOG}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
-    perl -pi -e 's#PH_SOGO_LOG_FILE#$ENV{SOGO_LOG_FILE}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    # Firewall command
+    perl -pi -e 's#PH_FAIL2BAN_ACTION#$ENV{FAIL2BAN_ACTION}#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
+
+    perl -pi -e 's#PH_SSHD_LOGFILE#$ENV{SSHD_LOGFILE}#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
+    perl -pi -e 's#PH_RCM_LOGFILE#$ENV{RCM_LOGFILE}#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
+    perl -pi -e 's#PH_MAILLOG#$ENV{MAILLOG}#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
+    perl -pi -e 's#PH_SOGO_LOG_FILE#$ENV{SOGO_LOG_FILE}#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
 
     if [ X"${DOVECOT_USE_SYSLOG}" == X'YES' ]; then
-        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}\n\t\t$ENV{DOVECOT_SYSLOG_FILE_IMAP}\n\t\t$ENV{DOVECOT_SYSLOG_FILE_POP3}\n\t\t$ENV{DOVECOT_SYSLOG_FILE_SIEVE}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}\n\t\t$ENV{DOVECOT_SYSLOG_FILE_IMAP}\n\t\t$ENV{DOVECOT_SYSLOG_FILE_POP3}\n\t\t$ENV{DOVECOT_SYSLOG_FILE_SIEVE}#' ${FAIL2BAN_JAIL_CONF_DIR}/dovecot.local
     else
-        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#' ${FAIL2BAN_JAIL_CONF_DIR}/dovecot.local
     fi
 
-    perl -pi -e 's#PH_FAIL2BAN_DISABLED_SERVICES#$ENV{FAIL2BAN_DISABLED_SERVICES}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
-    perl -pi -e 's#PH_SSHD_PORT#$ENV{SSHD_PORT}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+    perl -pi -e 's#PH_FAIL2BAN_DISABLED_SERVICES#$ENV{FAIL2BAN_DISABLED_SERVICES}#' ${FAIL2BAN_JAIL_CONF_DIR}/dovecot.local
+    perl -pi -e 's#PH_SSHD_PORT#$ENV{SSHD_PORT}#' ${FAIL2BAN_JAIL_CONF_DIR}/sshd*.local
 
     ECHO_DEBUG "Copy sample Fail2ban filter config files."
     cp -f ${SAMPLE_DIR}/fail2ban/filter.d/*.conf ${FAIL2BAN_FILTER_DIR}
 
     # Enable SOGo.
     if [ X"${USE_SOGO}" == X'YES' ]; then
-        perl -pi -e 's#(enabled.*=.*)false#${1}true#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+        perl -pi -e 's#(enabled.*=.*)false#${1}true#' ${FAIL2BAN_JAIL_CONF_DIR}/sogo.local
     fi
 
     echo 'export status_fail2ban_config="DONE"' >> ${STATUS_FILE}

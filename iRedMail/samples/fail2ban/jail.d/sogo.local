@@ -1,0 +1,5 @@
+[sogo-iredmail]
+enabled     = false
+filter      = sogo-auth
+action      = PH_FAIL2BAN_ACTION[name=sogo, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
+logpath     = PH_SOGO_LOG_FILE
