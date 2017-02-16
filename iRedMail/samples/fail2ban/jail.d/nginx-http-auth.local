@@ -1,0 +1,5 @@
+[nginx-http-auth]
+enabled     = false
+filter      = nginx-http-auth
+action      = PH_FAIL2BAN_ACTION[name=nginx, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
+logpath     = PH_HTTPD_LOG_ERRORLOG
