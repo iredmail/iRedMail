@@ -88,16 +88,16 @@ export HTTPD_CONF_DIR_ENABLED_CONF="${HTTPD_CONF_ROOT}/conf-enabled"
 export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
 
 # Directory used to store all sites. Note: not loaded by default.
-export HTTPD_CONF_DIR_AVAILABLE_VHOSTS="${HTTPD_CONF_ROOT}/sites-available"
+export HTTPD_CONF_DIR_AVAILABLE_SITES="${HTTPD_CONF_ROOT}/sites-available"
 # Directory used to store site config files which will be loaded by default.
-# Usually we just create a symbol link to file under ${HTTPD_CONF_DIR_AVAILABLE_VHOSTS}
-export HTTPD_CONF_DIR_ENABLED_VHOSTS="${HTTPD_CONF_ROOT}/sites-enabled"
+# Usually we just create a symbol link to file under ${HTTPD_CONF_DIR_AVAILABLE_SITES}
+export HTTPD_CONF_DIR_ENABLED_SITES="${HTTPD_CONF_ROOT}/sites-enabled"
 # Directory used to store per-site config files
 export HTTPD_CONF_DIR_VHOST_CONF_DIR="${HTTPD_CONF_ROOT}/sites-conf.d"
 
 export NGINX_CONF="${HTTPD_CONF_ROOT}/nginx.conf"
-export NGINX_CONF_SITE_DEFAULT="${HTTPD_CONF_DIR_AVAILABLE_VHOSTS}/00-default.conf"
-export NGINX_CONF_SITE_DEFAULT_SSL="${HTTPD_CONF_DIR_AVAILABLE_VHOSTS}/00-default-ssl.conf"
+export NGINX_CONF_SITE_DEFAULT="${HTTPD_CONF_DIR_AVAILABLE_SITES}/00-default.conf"
+export NGINX_CONF_SITE_DEFAULT_SSL="${HTTPD_CONF_DIR_AVAILABLE_SITES}/00-default-ssl.conf"
 export NGINX_CONF_TMPL_DIR="${HTTPD_CONF_ROOT}/templates"
 
 export NGINX_MIME_TYPES="${HTTPD_CONF_ROOT}/mime.types"
