@@ -83,6 +83,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export UWSGI_LOG_FILE='/var/www/logs/uwsgi.log'
 fi
 
+export HTTPD_CONF_DIR_AVAILABLE_CONF="${HTTPD_CONF_ROOT}/conf-available"
+export HTTPD_CONF_DIR_ENABLED_CONF="${HTTPD_CONF_ROOT}/conf-enabled"
 export HTTPD_CONF_DIR="${HTTPD_CONF_ROOT}/conf.d"
 
 # Directory used to store all sites. Note: not loaded by default.

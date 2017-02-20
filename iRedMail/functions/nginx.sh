@@ -31,8 +31,11 @@ nginx_config()
     backup_file ${NGINX_CONF} ${NGINX_CONF_SITE_DEFAULT} ${PHP_FPM_POOL_WWW_CONF}
 
     # Make sure we have an empty directory
-    [ -d ${HTTPD_CONF_DIR} ] && mv ${HTTPD_CONF_DIR} ${HTTPD_CONF_DIR}.bak
-    [ ! -d ${HTTPD_CONF_DIR} ] && mkdir -p ${HTTPD_CONF_DIR}
+    [ -d ${HTTPD_CONF_DIR_AVAILABLE_CONF} ] && mv ${HTTPD_CONF_DIR_AVAILABLE_CONF} ${HTTPD_CONF_DIR_AVAILABLE_CONF}.bak
+    [ ! -d ${HTTPD_CONF_DIR_AVAILABLE_CONF} ] && mkdir -p ${HTTPD_CONF_DIR_AVAILABLE_CONF}
+
+    [ -d ${HTTPD_CONF_DIR_ENABLED_CONF} ] && mv ${HTTPD_CONF_DIR_ENABLED_CONF} ${HTTPD_CONF_DIR_ENABLED_CONF}.bak
+    [ ! -d ${HTTPD_CONF_DIR_ENABLED_CONF} ] && mkdir -p ${HTTPD_CONF_DIR_ENABLED_CONF}
 
     # Directory used to store virtual web hosts config files
     [ -d ${HTTPD_CONF_DIR_AVAILABLE_VHOSTS} ] && mv ${HTTPD_CONF_DIR_AVAILABLE_VHOSTS} ${HTTPD_CONF_DIR_AVAILABLE_VHOSTS}.bak
@@ -46,10 +49,23 @@ nginx_config()
 
     # Copy sample config files
     cp ${SAMPLE_DIR}/nginx/nginx.conf ${NGINX_CONF}
-    cp ${SAMPLE_DIR}/nginx/conf.d/*.conf ${HTTPD_CONF_DIR}
+    cp ${SAMPLE_DIR}/nginx/conf-available/*.conf ${HTTPD_CONF_DIR_AVAILABLE_CONF}
     cp ${SAMPLE_DIR}/nginx/sites-available/00-default.conf ${NGINX_CONF_SITE_DEFAULT}
     cp ${SAMPLE_DIR}/nginx/sites-available/00-default-ssl.conf ${NGINX_CONF_SITE_DEFAULT_SSL}
     cp -rf ${SAMPLE_DIR}/nginx/sites-conf.d/* ${HTTPD_CONF_DIR_VHOST_CONF_DIR}
+
+    # Enable basic config files
+    for cf in client_max_body_size.conf \
+        default_type.conf \
+        gzip.conf \
+        log.conf \
+        mime_types.conf \
+        php-fpm.conf \
+        sendfile.conf \
+        server_tokens.conf \
+        types_hash_max_size.conf; do
+        ln -s ${HTTPD_CONF_DIR_AVAILABLE_CONF}/${cf} ${HTTPD_CONF_DIR_ENABLED_CONF}/${cf} >> ${INSTALL_LOG} 2>&1
+    done
 
     # Enable default sites
     ln -s ${NGINX_CONF_SITE_DEFAULT} ${HTTPD_CONF_DIR_ENABLED_VHOSTS} >> ${INSTALL_LOG} 2>&1
@@ -67,13 +83,13 @@ nginx_config()
     perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${NGINX_CONF}
     perl -pi -e 's#PH_NGINX_PID#$ENV{NGINX_PID}#g' ${NGINX_CONF}
     perl -pi -e 's#PH_HTTPD_CONF_DIR_ENABLED_VHOSTS#$ENV{HTTPD_CONF_DIR_ENABLED_VHOSTS}#g' ${NGINX_CONF}
-    perl -pi -e 's#PH_HTTPD_CONF_DIR#$ENV{HTTPD_CONF_DIR}#g' ${NGINX_CONF}
+    perl -pi -e 's#PH_HTTPD_CONF_DIR_ENABLED_CONF#$ENV{HTTPD_CONF_DIR_ENABLED_CONF}#g' ${NGINX_CONF}
 
-    # conf.d/*.conf
-    perl -pi -e 's#PH_HTTPD_LOG_ERRORLOG#$ENV{HTTPD_LOG_ERRORLOG}#g' ${HTTPD_CONF_DIR}/log.conf
-    perl -pi -e 's#PH_HTTPD_LOG_ACCESSLOG#$ENV{HTTPD_LOG_ACCESSLOG}#g' ${HTTPD_CONF_DIR}/log.conf
-    perl -pi -e 's#PH_NGINX_MIME_TYPES#$ENV{NGINX_MIME_TYPES}#g' ${HTTPD_CONF_DIR}/mime_types.conf
-    perl -pi -e 's#PH_PHP_FPM_SOCKET#$ENV{PHP_FPM_SOCKET}#g' ${HTTPD_CONF_DIR}/php-fpm.conf
+    # conf-available.d/*.conf
+    perl -pi -e 's#PH_HTTPD_LOG_ERRORLOG#$ENV{HTTPD_LOG_ERRORLOG}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/log.conf
+    perl -pi -e 's#PH_HTTPD_LOG_ACCESSLOG#$ENV{HTTPD_LOG_ACCESSLOG}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/log.conf
+    perl -pi -e 's#PH_NGINX_MIME_TYPES#$ENV{NGINX_MIME_TYPES}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/mime_types.conf
+    perl -pi -e 's#PH_PHP_FPM_SOCKET#$ENV{PHP_FPM_SOCKET}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php-fpm.conf
 
     # default web sites
     perl -pi -e 's#PH_HTTPD_CONF_DIR_VHOST_CONF_DIR#$ENV{HTTPD_CONF_DIR_VHOST_CONF_DIR}#g' \

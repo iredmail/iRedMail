@@ -33,7 +33,7 @@ rcm_install()
     echo 'export status_rcm_install="DONE"' >> ${STATUS_FILE}
 }
 
-rcm_config_httpd()
+rcm_config_apache()
 {
     ECHO_DEBUG "Create directory alias for Roundcubemail."
     cat > ${HTTPD_CONF_DIR}/roundcubemail.conf <<EOF
@@ -66,7 +66,7 @@ EOF
         perl -pi -e 's#^(\s*</VirtualHost>)#Alias /mail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
     fi
 
-    echo 'export status_rcm_config_httpd="DONE"' >> ${STATUS_FILE}
+    echo 'export status_rcm_config_apache="DONE"' >> ${STATUS_FILE}
 }
 
 rcm_initialize_db()
@@ -187,7 +187,7 @@ Roundcube webmail: ${RCM_HTTPD_ROOT}
         - Username: ${RCM_DB_USER}
         - Password: ${RCM_DB_PASSWD}
     * See also:
-        - ${HTTPD_CONF_DIR}/roundcubemail.conf
+        - ${HTTPD_CONF_DIR}/roundcubemail.conf (Apache)
         - Cron job: crontab -l -u ${SYS_ROOT_USER}
 
 EOF
@@ -323,7 +323,7 @@ rcm_setup() {
     check_status_before_run rcm_install
 
     if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        check_status_before_run rcm_config_httpd
+        check_status_before_run rcm_config_apache
     fi
 
     if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
