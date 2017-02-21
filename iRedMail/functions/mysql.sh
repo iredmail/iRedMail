@@ -71,6 +71,7 @@ mysql_initialize_db()
         fi
     fi
 
+    ECHO_DEBUG "Restart service: ${MYSQL_RC_SCRIPT_NAME}."
     service_control restart ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
