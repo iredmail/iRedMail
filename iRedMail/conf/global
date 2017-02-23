@@ -56,7 +56,7 @@ export MAILDIR_STYLE='hashed'
 # Mailboxes will be stored under sub-directory ${STORAGE_NODE} of vmail user's
 # home directory. e.g. home directory is /var/vmail, the mailboxes will be
 # /var/vmail/vmail1.
-export STORAGE_NODE='vmail1'
+export STORAGE_NODE="${STORAGE_NODE:=vmail1}"
 
 # Enabled backends.
 export ENABLE_BACKEND_OPENLDAP='YES'
