@@ -139,8 +139,8 @@ install_all()
             [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-client"
 
             if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-                [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-server"
                 [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-server"
+                [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-server"
             fi
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql libdbd-mysql-perl"

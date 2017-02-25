@@ -31,7 +31,7 @@ mysql_initialize_db()
 
     backup_file ${MYSQL_MY_CNF}
 
-    ECHO_DEBUG "Stop MySQL service before updating my.cnf."
+    ECHO_DEBUG "Stop MySQL service before initializing database or updating my.cnf."
     service_control stop ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     sleep 3
 
@@ -40,13 +40,13 @@ mysql_initialize_db()
         ECHO_DEBUG "Run mysql_install_db."
         /usr/local/bin/mysql_install_db >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-        # Start service when system start up.
         # 'mysql_enable=YES' is required to start service immediately.
+        ECHO_DEBUG "Enable mysql service when system start up."
         service_control enable 'mysql_enable' 'YES'
         service_control enable 'mysql_optfile' "${MYSQL_MY_CNF}"
     fi
 
-    if [ ! -f ${MYSQL_MY_CNF} ]; then
+    if [ ! -e ${MYSQL_MY_CNF} ]; then
         ECHO_DEBUG "Copy sample MySQL config file: ${MYSQL_MY_CNF_SAMPLE} -> ${MYSQL_MY_CNF}."
         mkdir -p $(dirname ${MYSQL_MY_CNF}) &>/dev/null >> ${INSTALL_LOG} 2>&1
         cp ${MYSQL_MY_CNF_SAMPLE} ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
@@ -85,8 +85,16 @@ mysql_initialize_db()
             mysqladmin -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} -p${_mysql_root_pw} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
         else
             # Try to access without password, set a password if it's empty.
-            mysql -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} -e "show databases" >> ${INSTALL_LOG} 2>&1
+            if [ X"${MYSQL_SERVER_ADDRESS}" == X'127.0.0.1' ]; then
+                # Use local socket
+                _mysql_cmd="mysql -u${MYSQL_ROOT_USER}"
+                _mysqladmin_cmd="mysqladmin -u${MYSQL_ROOT_USER}"
+            else
+                _mysql_cmd="mysql -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER}"
+                _mysqladmin_cmd="mysqladmin -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER}"
+            fi
 
+            ${_mysql_cmd} -e "show databases" >> ${INSTALL_LOG} 2>&1
             if [ X"$?" == X'0' ]; then
                 #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
                 #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
@@ -94,13 +102,13 @@ mysql_initialize_db()
                 ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
                 #mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
 
-                mysql -h ${MYSQL_SERVER_ADDRESS} -u ${MYSQL_ROOT_USER} -e "DESC mysql.user" | grep '\<Password\>' >> ${INSTALL_LOG} 2>&1
+                ${_mysql_cmd} -e "DESC mysql.user" | grep '\<Password\>' >> ${INSTALL_LOG} 2>&1
                 if [ X"$?" == X'0' ]; then
                     # MySQL 5.6 and earlier
-                    mysqladmin -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+                    ${_mysqladmin_cmd} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
                 else
                     # MySQL 5.7 and later.
-                    mysql -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} -e "UPDATE mysql.user SET authentication_string = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
+                    ${_mysql_cmd} -e "UPDATE mysql.user SET authentication_string = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
                 fi
             else
                 ECHO_DEBUG "MySQL root password is not empty, not reset."
