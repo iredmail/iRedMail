@@ -130,6 +130,7 @@ nginx_config()
     perl -pi -e 's#^;(listen.mode *=).*#${1} 0660#g' ${PHP_FPM_POOL_WWW_CONF}
     perl -pi -e 's#^(user.*=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
     perl -pi -e 's#^(group.*=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
+    perl -pi -e 's#^(php_value.*session.save_path.).*#${1} = "$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_FPM_POOL_WWW_CONF}
 
     # Awstats
     perl -pi -e 's#PH_AWSTATS_STATIC_PAGES_DIR#$ENV{AWSTATS_STATIC_PAGES_DIR}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl

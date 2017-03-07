@@ -140,7 +140,7 @@ add_required_users()
     ECHO_INFO "Create required system account: ${VMAIL_USER_NAME}, ${IREDADMIN_USER_NAME}, ${IREDAPD_DAEMON_USER}."
 
     check_status_before_run add_user_vmail
-    check_status_before_run add_user_iredadmin
+    [ X"${USE_IREDADMIN}" == X'YES' ] && check_status_before_run add_user_iredadmin
     check_status_before_run add_user_iredapd
 
     echo 'export status_add_required_users="DONE"' >> ${STATUS_FILE}
