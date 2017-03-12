@@ -56,6 +56,10 @@ clamav_config()
     # Official database only
     perl -pi -e 's/^#(OfficialDatabaseOnly ).*/${1} yes/' ${CLAMD_CONF}
 
+    # Enable AllowSupplementaryGroups
+    perl -pi -e 's/^(AllowSupplementaryGroups.*)/#${1}/' ${CLAMD_CONF}
+    echo 'AllowSupplementaryGroups true' >> ${CLAMD_CONF}
+
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
@@ -67,8 +71,6 @@ clamav_config()
             # Enable freshclam
             perl -pi -e 's/^(FRESHCLAM_DELAY.*)/#${1}/g' ${ETC_SYSCONFIG_DIR}/freshclam
         fi
-    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        perl -pi -e 's/^(AllowSupplementaryGroups).*/${1} true/g' ${CLAMD_CONF}
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         pw usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
@@ -78,7 +80,9 @@ clamav_config()
         service_control enable 'clamav_freshclam_enable' 'YES'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER}
-        perl -pi -e 's/^#(AllowSupplementaryGroups).*/${1} yes/g' ${CLAMD_CONF}
+
+        # OpenBSD use 'yes' instead of 'true'
+        perl -pi -e 's/^(AllowSupplementaryGroups).*/${1} yes/g' ${CLAMD_CONF}
     fi
 
     # Add user alias in Postfix

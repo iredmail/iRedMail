@@ -482,7 +482,7 @@ EOF
 #   - N: suggested (MIME) name. e.g. my_docum.zip.
 
 \$banned_namepath_re = new_RE(
-    [qr'T=(rar|arc|arj|zoo|gz|bz2)(,|\t)'xmi => 'DISCARD'],     # Compressed file types
+    #[qr'T=(rar|arc|arj|zoo|gz|bz2)(,|\t)'xmi => 'DISCARD'],     # Compressed file types
     [qr'T=x-(msdownload|msdos-program|msmetafile)(,|\t)'xmi => 'DISCARD'],
     [qr'T=(hta)(,|\t)'xmi => 'DISCARD'],
 

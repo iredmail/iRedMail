@@ -134,7 +134,7 @@ EOF
 mysql_grant_permission_on_remote_server()
 {
     # If we're using a remote mysql server: grant access privilege first.
-    if [ X"${USE_EXISTING_MYSQL}" == X'YES' -a X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
+    if [ X"${USE_EXISTING_MYSQL}" == X'YES' -o X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
         ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${MYSQL_GRANT_HOST} ..."
 
         cp -f ${SAMPLE_DIR}/mysql/sql/remote_grant_permission.sql ${RUNTIME_DIR}/
