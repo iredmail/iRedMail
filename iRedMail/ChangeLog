@@ -38,6 +38,9 @@ iRedMail-0.9.6-1:
                 directory ('root /var/www/vhosts/iredmail.org;')
 
     * Fixed issues:
+        - tools/backup_mysql.sh: Backup sql databases with mysqldump option
+          '--skip-comments' to avoid possible backdooring hack.
+          FYI: https://blog.tarq.io/cve-2016-5483-backdooring-mysqldump-backups/
         - FreeBSD:
             - installing port 'archives/arj' interrupts iRedMail installation.
               This is caused by global variable 'LANGUAGE=C'.
