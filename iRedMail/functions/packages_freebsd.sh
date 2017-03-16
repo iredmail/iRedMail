@@ -837,7 +837,7 @@ EOF
         ALL_PORTS="${ALL_PORTS} www/nginx www/uwsgi"
     fi
 
-    # PHP5. REQUIRED.
+    # PHP. REQUIRED.
     cat > /var/db/ports/lang_php${PREFERRED_PHP_VER}/options <<EOF
 OPTIONS_FILE_SET+=CLI
 OPTIONS_FILE_SET+=CGI

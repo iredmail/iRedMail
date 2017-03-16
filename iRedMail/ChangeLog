@@ -37,6 +37,12 @@ iRedMail-0.9.6-1:
               - sites-conf.d/iredmail.org/root.conf: define the document root
                 directory ('root /var/www/vhosts/iredmail.org;')
 
+    * Fixed issues:
+        - FreeBSD:
+            - installing port 'archives/arj' interrupts iRedMail installation.
+              This is caused by global variable 'LANGUAGE=C'.
+            - Cannot reset MySQL (5.7) password.
+
 iRedMail-0.9.6:
     * Supports new distribution release:
         + OpenBSD 6.0. OpenBSD 5.9 is not supported anymore.

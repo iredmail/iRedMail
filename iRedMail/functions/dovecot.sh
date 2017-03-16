@@ -502,8 +502,8 @@ dovecot_setup()
             if ! grep '^dovecot:' /etc/login.conf &>/dev/null; then
                 cat >> /etc/login.conf <<EOF
 dovecot:\\
-        :openfiles-cur=512:\\
-        :openfiles-max=2048:\\
+        :openfiles-cur=1024:\\
+        :openfiles-max=4096:\\
         :tc=daemon:
 EOF
             fi

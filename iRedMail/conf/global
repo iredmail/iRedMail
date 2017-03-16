@@ -30,19 +30,6 @@ export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
 export LC_ALL=C
 export LC_CTYPE=C
 export LANG=C
-export LANGUAGE=C
-export LC_CTYPE=C
-export LC_NUMERIC=C
-export LC_TIME=C
-export LC_COLLATE=C
-export LC_MONETARY=C
-export LC_MESSAGES=C
-export LC_PAPER=C
-export LC_NAME=C
-export LC_ADDRESS=C
-export LC_TELEPHONE=C
-export LC_MEASUREMENT=C
-export LC_IDENTIFICATION=C
 
 # Debug mode: YES, NO.
 export IREDMAIL_DEBUG="${IREDMAIL_DEBUG:=NO}"

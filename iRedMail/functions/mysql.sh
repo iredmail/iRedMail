@@ -62,8 +62,19 @@ mysql_initialize_db()
         perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 
-    # Bind to 127.0.0.1 on OpenBSD
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        if [ X"${BACKEND_ORIG}" == X'MYSQL' ]; then
+            ECHO_DEBUG "Enable 'skip_grant_tables' option, so that we can reset password."
+            perl -pi -e 's#^(\[mysqld\])#${1}\nskip_grant_tables#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+
+            if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+                # inside Jail: listen on Jail IP address
+                ECHO_DEBUG "Enable 'bind-address = ${LOCAL_ADDRESS}' in my.cnf."
+                perl -pi -e 's#^(bind-address).*#${1} = $ENV{LOCAL_ADDRESS}#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+            fi
+        fi
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Bind to 127.0.0.1 on OpenBSD
         grep '^bind-address' ${MYSQL_MY_CNF} &>/dev/null
         if [ X"$?" != X'0' ]; then
             ECHO_DEBUG "Enable 'bind-address = 127.0.0.1' in my.cnf."
@@ -80,9 +91,21 @@ mysql_initialize_db()
     if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
         if [ X"${DISTRO}" == X'FREEBSD' -a X"${BACKEND_ORIG}" == X'MYSQL' ]; then
             # MySQL 5.7
-            # Get initial random root password from /root/.mysql-secret
-            export _mysql_root_pw="$(tail -1 /root/.mysql_secret)"
-            mysqladmin -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} -p${_mysql_root_pw} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+            ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
+            if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
+                mysqladmin -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+            else
+                mysql -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} --connect-expired-password mysql -e "UPDATE user SET host='${LOCAL_ADDRESS}',authentication_string=PASSWORD('${MYSQL_ROOT_PASSWD}'),password_expired='N' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
+
+                ECHO_DEBUG "Remove 'skip_grant_tables'."
+                perl -pi -e 's#^(skip_grant_tables.*)##g' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+
+                ECHO_DEBUG "Restart service: ${MYSQL_RC_SCRIPT_NAME}."
+                service_control restart ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+
+                ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
+                sleep 10
+            fi
         else
             # Try to access without password, set a password if it's empty.
             if [ X"${MYSQL_SERVER_ADDRESS}" == X'127.0.0.1' ]; then
@@ -99,7 +122,7 @@ mysql_initialize_db()
                 #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
                 #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
 
-                ECHO_DEBUG "Setting password for MySQL admin (${MYSQL_ROOT_USER})."
+                ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
                 #mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
 
                 ${_mysql_cmd} -e "DESC mysql.user" | grep '\<Password\>' >> ${INSTALL_LOG} 2>&1
@@ -131,23 +154,6 @@ EOF
     echo 'export status_mysql_initialize_db="DONE"' >> ${STATUS_FILE}
 }
 
-mysql_grant_permission_on_remote_server()
-{
-    # If we're using a remote mysql server: grant access privilege first.
-    if [ X"${USE_EXISTING_MYSQL}" == X'YES' -o X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
-        ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${MYSQL_GRANT_HOST} ..."
-
-        cp -f ${SAMPLE_DIR}/mysql/sql/remote_grant_permission.sql ${RUNTIME_DIR}/
-        perl -pi -e 's#PH_MYSQL_ROOT_USER#$ENV{MYSQL_ROOT_USER}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
-        perl -pi -e 's#PH_MYSQL_GRANT_HOST#$ENV{MYSQL_GRANT_HOST}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
-        perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
-
-        ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/remote_grant_permission.sql;"
-    fi
-
-    echo 'export status_mysql_grant_permission_on_remote_server="DONE"' >> ${STATUS_FILE}
-}
-
 mysql_generate_defaults_file_root()
 {
     ECHO_DEBUG "Generate defauts file for MySQL client option --defaults-file: ${MYSQL_DEFAULTS_FILE_ROOT}."
@@ -171,6 +177,23 @@ EOF
     chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT}
 
     echo 'export status_mysql_generate_defaults_file_root="DONE"' >> ${STATUS_FILE}
+}
+
+mysql_grant_permission_on_remote_server()
+{
+    # If we're using a remote mysql server: grant access privilege first.
+    if [ X"${USE_EXISTING_MYSQL}" == X'YES' -a X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
+        ECHO_DEBUG "Grant access privilege to ${MYSQL_ROOT_USER}@${MYSQL_GRANT_HOST} ..."
+
+        cp -f ${SAMPLE_DIR}/mysql/sql/remote_grant_permission.sql ${RUNTIME_DIR}/
+        perl -pi -e 's#PH_MYSQL_ROOT_USER#$ENV{MYSQL_ROOT_USER}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
+        perl -pi -e 's#PH_MYSQL_GRANT_HOST#$ENV{MYSQL_GRANT_HOST}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
+        perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${RUNTIME_DIR}/remote_grant_permission.sql
+
+        ${MYSQL_CLIENT_ROOT} -e "SOURCE ${RUNTIME_DIR}/remote_grant_permission.sql;"
+    fi
+
+    echo 'export status_mysql_grant_permission_on_remote_server="DONE"' >> ${STATUS_FILE}
 }
 
 mysql_remove_insecure_data()

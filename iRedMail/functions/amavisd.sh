@@ -341,7 +341,7 @@ $(cat ${SAMPLE_DIR}/amavisd/log_templ)
 \$virus_quarantine_to     = 'virus-quarantine';
 
 # Banned
-\$final_banned_destiny = D_BOUNCE;
+\$final_banned_destiny = D_DISCARD;
 \$banned_files_quarantine_method = undef;
 #\$banned_files_quarantine_method = 'sql:';
 #\$banned_quarantine_to = 'banned-quarantine';
