@@ -79,7 +79,7 @@ rcm_initialize_db()
 -- Create database and grant privileges
 CREATE DATABASE ${RCM_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 GRANT ALL ON ${RCM_DB_NAME}.* TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY '${RCM_DB_PASSWD}';
-GRANT ALL ON ${RCM_DB_NAME}.* TO "${RCM_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY '${RCM_DB_PASSWD}';
+-- GRANT ALL ON ${RCM_DB_NAME}.* TO "${RCM_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY '${RCM_DB_PASSWD}';
 
 -- Import Roundcubemail SQL template
 USE ${RCM_DB_NAME};

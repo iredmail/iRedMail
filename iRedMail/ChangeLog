@@ -46,6 +46,9 @@ iRedMail-0.9.6-1:
               This is caused by global variable 'LANGUAGE=C'.
             - Cannot reset MySQL (5.7) password.
 
+    * Updated packages:
+        + Roundcube -> 1.2.4
+
 iRedMail-0.9.6:
     * Supports new distribution release:
         + OpenBSD 6.0. OpenBSD 5.9 is not supported anymore.
