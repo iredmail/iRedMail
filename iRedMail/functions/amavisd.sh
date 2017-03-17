@@ -162,8 +162,7 @@ ${CONF}
 
 chomp(\$mydomain = "${HOSTNAME}");
 @local_domains_maps = 1;
-@mynetworks = qw( 127.0.0.0/8 [::1] [FE80::]/10 [FEC0::]/10
-                  10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 );
+@mynetworks = qw( 127.0.0.0/8 [::1] );
 
 # listen on multiple TCP ports. ${AMAVISD_QUARANTINE_PORT} is used for releasing quarantined mails.
 \$inet_socket_port = [10024, 10026, ${AMAVISD_QUARANTINE_PORT}];

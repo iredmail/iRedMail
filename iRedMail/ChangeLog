@@ -1,4 +1,4 @@
-iRedMail-0.9.6-1:
+iRedMail-0.9.7:
     * Improvements:
         - Fail2ban:
             + Enable 2 new jails: apache-auth, nginx-http-auth.

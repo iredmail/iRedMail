@@ -63,7 +63,7 @@ mysql_initialize_db()
     fi
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        if [ X"${BACKEND_ORIG}" == X'MYSQL' ]; then
+        if [ X"${BACKEND_ORIG}" == X'MYSQL' -o X"${BACKEND}" == X'OPENLDAP' ]; then
             ECHO_DEBUG "Enable 'skip_grant_tables' option, so that we can reset password."
             perl -pi -e 's#^(\[mysqld\])#${1}\nskip_grant_tables#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
 
@@ -89,7 +89,7 @@ mysql_initialize_db()
     sleep 10
 
     if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-        if [ X"${DISTRO}" == X'FREEBSD' -a X"${BACKEND_ORIG}" == X'MYSQL' ]; then
+        if [ X"${DISTRO}" == X'FREEBSD' ] && [ X"${BACKEND_ORIG}" == X'MYSQL' -o X"${BACKEND}" == X'OPENLDAP' ]; then
             # MySQL 5.7
             ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
             if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then

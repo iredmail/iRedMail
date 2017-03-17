@@ -329,7 +329,7 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.2.26 NAME 'senderRelayHost'
 # Mail Service: Mail List related attributes.
 #
 attributetype ( 1.3.6.1.4.1.32349.1.2.3.1 NAME 'accessPolicy'
-    DESC 'Mail list access policy: open, domain, allowedOnly, memberOnly'
+    DESC 'Mail list access policy: open, domain, subdomain, moedratorsonly, memberOnly'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
@@ -341,7 +341,12 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.3.2 NAME 'hasMember'
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
     SINGLE-VALUE )
 attributetype ( 1.3.6.1.4.1.32349.1.2.3.3 NAME 'listAllowedUser'
-    DESC 'User allowed to mail to list: must be a valid email address for mail deliver'
+    DESC 'Addresses which are ALWAYS allowed to send email to mailing list'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
+attributetype ( 1.3.6.1.4.1.32349.1.2.3.4 NAME 'listModerator'
+    DESC 'Moderator of mailing list'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )

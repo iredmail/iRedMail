@@ -50,8 +50,8 @@ clamav_config()
     perl -pi -e 's/^#(LocalSocket ).*/${1}$ENV{CLAMD_LOCAL_SOCKET}/' ${CLAMD_CONF}
 
     ECHO_DEBUG "Configure freshclam: ${FRESHCLAM_CONF}."
-    perl -pi -e 's#^(UpdateLogFile ).*#${1}$ENV{FRESHCLAM_LOGFILE}#' ${CLAMD_CONF}
-    perl -pi -e 's/^#(UpdateLogFile ).*/${1}$ENV{FRESHCLAM_LOGFILE}/' ${CLAMD_CONF}
+    perl -pi -e 's#^(UpdateLogFile ).*#${1}$ENV{FRESHCLAM_LOGFILE}#' ${FRESHCLAM_CONF}
+    perl -pi -e 's/^#(UpdateLogFile ).*/${1}$ENV{FRESHCLAM_LOGFILE}/' ${FRESHCLAM_CONF}
 
     # Official database only
     perl -pi -e 's/^#(OfficialDatabaseOnly ).*/${1} yes/' ${CLAMD_CONF}
