@@ -125,7 +125,7 @@ EOF
 -- Grant privileges for Roundcubemail, so that user can change
 -- their own password and setting mail forwarding.
 GRANT UPDATE,SELECT ON ${VMAIL_DB_NAME}.mailbox TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}";
-GRANT UPDATE,SELECT ON ${VMAIL_DB_NAME}.mailbox TO "${RCM_DB_USER}"@"${HOSTNAME}";
+-- GRANT UPDATE,SELECT ON ${VMAIL_DB_NAME}.mailbox TO "${RCM_DB_USER}"@"${HOSTNAME}";
 
 FLUSH PRIVILEGES;
 EOF
