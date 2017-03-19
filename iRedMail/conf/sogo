@@ -111,3 +111,6 @@ fi
 if [ X"${USE_SOGO}" == X'YES' ]; then
     export SQL_BACKUP_DATABASES="${SQL_BACKUP_DATABASES} ${SOGO_DB_NAME}"
 fi
+
+# Script used to backup SOGo data.
+export BACKUP_SCRIPT_SOGO="${BACKUP_DIR}/backup_sogo.sh"

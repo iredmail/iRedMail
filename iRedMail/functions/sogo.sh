@@ -293,11 +293,18 @@ EOF
 
 sogo_cron_setup()
 {
-    # Add cron job for email reminders
+    # Add cron jobs
     cp -f ${SAMPLE_DIR}/sogo/sogo.cron ${CRON_FILE_SOGO} &>/dev/null
     perl -pi -e 's#PH_SOGO_CMD_TOOL#$ENV{SOGO_CMD_TOOL}#g' ${CRON_FILE_SOGO}
     perl -pi -e 's#PH_SOGO_CMD_EALARMS_NOTIFY#$ENV{SOGO_CMD_EALARMS_NOTIFY}#g' ${CRON_FILE_SOGO}
     perl -pi -e 's#PH_SOGO_SIEVE_CREDENTIAL_FILE#$ENV{SOGO_SIEVE_CREDENTIAL_FILE}#g' ${CRON_FILE_SOGO}
+
+    # Backup script
+    perl -pi -e 's#PH_SHELL_BASH#$ENV{SHELL_BASH}#g' ${CRON_FILE_SOGO}
+    perl -pi -e 's#PH_BACKUP_SCRIPT_SOGO#$ENV{BACKUP_SCRIPT_SOGO}#g' ${CRON_FILE_SOGO}
+
+    cp -f ${TOOLS_DIR}/backup_sogo.sh ${BACKUP_SCRIPT_SOGO}
+    perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#g' ${BACKUP_SCRIPT_SOGO}
 
     # SOGo-2.x: sogo-tool doesn't support 'update-autoreply'
     if [ X"${SOGO_VERSION}" == X'2' ]; then

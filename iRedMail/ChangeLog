@@ -1,5 +1,9 @@
 iRedMail-0.9.7:
     * Improvements:
+        - SOGo:
+            + New script 'tools/backup_sogo.sh'. used to backs up SOGo data
+              with 'sogo-tool backup' command.
+
         - Fail2ban:
             + Enable 2 new jails: apache-auth, nginx-http-auth.
             + Split jail.local to multiple modular jail config files under
