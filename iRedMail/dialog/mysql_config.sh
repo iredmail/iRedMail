@@ -26,11 +26,12 @@
 
 . ${CONF_DIR}/mysql
 
-# MySQL root password.
-while : ; do
-    ${DIALOG} \
-    --title "Password for MySQL administrator: ${MYSQL_ROOT_USER}" \
-    --passwordbox "\
+if [ -z "${MYSQL_ROOT_PASSWD}" ]; then
+    # set a new MySQL root password.
+    while : ; do
+        ${DIALOG} \
+        --title "Password for MySQL administrator: ${MYSQL_ROOT_USER}" \
+        --passwordbox "\
 Please specify password for MySQL administrator ${MYSQL_ROOT_USER} on server
 ${MYSQL_SERVER_ADDRESS}.
 
@@ -41,11 +42,13 @@ WARNING:
 * Sample password: $(${RANDOM_STRING})
 " 20 76 2>${RUNTIME_DIR}/.mysql_rootpw
 
-    MYSQL_ROOT_PASSWD="$(cat ${RUNTIME_DIR}/.mysql_rootpw)"
+        MYSQL_ROOT_PASSWD="$(cat ${RUNTIME_DIR}/.mysql_rootpw)"
 
-    [ X"${MYSQL_ROOT_PASSWD}" != X'' ] && break
-done
+        [ X"${MYSQL_ROOT_PASSWD}" != X'' ] && break
+    done
 
-export MYSQL_ROOT_PASSWD="${MYSQL_ROOT_PASSWD}"
+    export MYSQL_ROOT_PASSWD="${MYSQL_ROOT_PASSWD}"
+fi
+
 echo "export MYSQL_ROOT_PASSWD='${MYSQL_ROOT_PASSWD}'" >>${IREDMAIL_CONFIG_FILE}
 rm -f ${RUNTIME_DIR}/.mysql_rootpw &>/dev/null
