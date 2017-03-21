@@ -157,7 +157,8 @@ EOF
 mysql_generate_defaults_file_root()
 {
     ECHO_DEBUG "Generate defauts file for MySQL client option --defaults-file: ${MYSQL_DEFAULTS_FILE_ROOT}."
-    cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
+    backup_file ${MYSQL_DEFAULTS_FILE_ROOT}
+    cat > ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 # NOTE: This file is used by several programs:
 #   - daily SQL backup script: ${BACKUP_DIR}/${BACKUP_SCRIPT_MYSQL_NAME}
 #   - iRedAPD upgrade script
