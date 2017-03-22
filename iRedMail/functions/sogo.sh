@@ -299,12 +299,16 @@ sogo_cron_setup()
     perl -pi -e 's#PH_SOGO_CMD_EALARMS_NOTIFY#$ENV{SOGO_CMD_EALARMS_NOTIFY}#g' ${CRON_FILE_SOGO}
     perl -pi -e 's#PH_SOGO_SIEVE_CREDENTIAL_FILE#$ENV{SOGO_SIEVE_CREDENTIAL_FILE}#g' ${CRON_FILE_SOGO}
 
-    # Backup script
-    perl -pi -e 's#PH_SHELL_BASH#$ENV{SHELL_BASH}#g' ${CRON_FILE_SOGO}
-    perl -pi -e 's#PH_BACKUP_SCRIPT_SOGO#$ENV{BACKUP_SCRIPT_SOGO}#g' ${CRON_FILE_SOGO}
-
+    # backup script
     cp -f ${TOOLS_DIR}/backup_sogo.sh ${BACKUP_SCRIPT_SOGO}
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#g' ${BACKUP_SCRIPT_SOGO}
+
+    # Add cron job for root user
+    cat >> ${CRON_FILE_ROOT} <<EOF
+# ${PROG_NAME}: Backup SOGo data databases on 04:01AM
+1   4   *   *   *   ${SHELL_BASH} ${BACKUP_SCRIPT_SOGO}
+
+EOF
 
     # SOGo-2.x: sogo-tool doesn't support 'update-autoreply'
     if [ X"${SOGO_VERSION}" == X'2' ]; then
