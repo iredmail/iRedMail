@@ -10,8 +10,9 @@
 #   - it's hard to restore single user's data
 #   - if SOGo changes some SQL structure, it's hard to restore all data.
 #
-# So this script does backup with 'sogo-tool backup' command to avoid issues
-# mentioned above, you can restore with 'sogo-tool restore'.
+# This script does backup with 'sogo-tool backup' command to avoid issues
+# mentioned above, it stores each user's data in a single file, so you can
+# restore a single user's data or all users data with 'sogo-tool restore'.
 
 # Required commands:
 #
