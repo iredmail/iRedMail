@@ -4,10 +4,14 @@
 # Purpose:  Backup SOGo database with `sogo-tool` command.
 #           You can run this script manually or via crontab (recommended).
 #
-#           Backing up SOGo data by exporting SQL database is not ideal because
-#           it's hard to restore single user's data, that's why we backup with
-#           'sogo-tool backup' command, it's easy to restore with
-#           'sogo-tool restore' command.
+# Backing up SOGo data by dumping SQL database to a plain SQL file is not ideal
+# because:
+#
+#   - it's hard to restore single user's data
+#   - if SOGo changes some SQL structure, it's hard to restore all data.
+#
+# So this script does backup with 'sogo-tool backup' command to avoid issues
+# mentioned above, you can restore with 'sogo-tool restore'.
 
 # Required commands:
 #
@@ -84,7 +88,6 @@ fi
 
 # Check and create directories.
 if [ ! -d ${BACKUP_DIR} ]; then
-    echo "* Create directory ${BACKUP_DIR}."
     mkdir -p ${BACKUP_DIR} 2>/dev/null
     chown root ${BACKUP_DIR}
     chmod 0700 ${BACKUP_DIR}
@@ -94,27 +97,32 @@ fi
 echo "* Backup all users' data under ${BACKUP_DIR}"
 ${CMD_SOGO_TOOL} backup ${BACKUP_DIR} ALL
 
-# Get original size of backup files
-original_size="$(${CMD_DU} ${BACKUP_DIR} | awk '{print $1}')"
-
 dir_name="$(dirname ${BACKUP_DIR})"
 base_name="$(basename ${BACKUP_DIR})"
 
-# Compress the directory.
-echo "* Compress backup files."
-cd ${dir_name}
-    tar cjf ${base_name}.tar.bz2 ${base_name} && \
-    rm -rf ${base_name}
+if ls ${BACKUP_DIR} | grep -i '[a-z0-9]' &>/dev/null; then
+    # Backup is not empty.
 
-compressed_size="$(${CMD_DU} ${base_name}.tar.bz2 | awk '{print $1}')"
-if [ -n X"${MYSQL_USER}" -a -f ${MYSQL_DOT_MY_CNF} ]; then
-    sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'SOGo data. size: ${compressed_size} (original: ${original_size})', 'cron_backup_sogo', '127.0.0.1', UTC_TIMESTAMP());"
-    ${CMD_MYSQL} iredadmin -e "${sql_log_msg}"
+    # Get original size of backup files
+    original_size="$(${CMD_DU} ${BACKUP_DIR} | awk '{print $1}')"
+
+    # Compress the directory.
+    echo "* Compress backup files."
+    cd ${dir_name}
+        tar cjf ${base_name}.tar.bz2 ${base_name} && \
+        rm -rf ${base_name}
+
+    compressed_size="$(${CMD_DU} ${base_name}.tar.bz2 | awk '{print $1}')"
+    if [ -n X"${MYSQL_USER}" -a -f ${MYSQL_DOT_MY_CNF} ]; then
+        sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'SOGo data. size: ${compressed_size} (original: ${original_size})', 'cron_backup_sogo', '127.0.0.1', UTC_TIMESTAMP());"
+        ${CMD_MYSQL} iredadmin -e "${sql_log_msg}"
+    fi
+else
+    echo "* Backup is empty, remove temporary backup directory: ${BACKUP_DIR}."
+    rm -rf ${BACKUP_DIR} &>/dev/null
 fi
 
-# Backup.
 if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
-    echo -e "* Delete old backup: ${REMOVED_BACKUP_DIR}."
-    echo -e "* Suppose to delete: ${REMOVED_BACKUP_DIR}"
-    rm -rf ${REMOVED_BACKUP_DIR}
+    echo -e "* Old backup found. Deleting: ${REMOVED_BACKUP_DIR}."
+    rm -rf ${REMOVED_BACKUP_DIR} &>/dev/null
 fi
