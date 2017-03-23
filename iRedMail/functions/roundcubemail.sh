@@ -147,6 +147,7 @@ rcm_config()
     perl -pi -e 's#PH_RCM_DB_PASSWD#$ENV{RCM_DB_PASSWD}#g' ${RCM_CONF}
     perl -pi -e 's#PH_RCM_DB_NAME#$ENV{RCM_DB_NAME}#g' ${RCM_CONF}
     perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' ${RCM_CONF}
+    perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#g' ${RCM_CONF}
 
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${RCM_CONF}
     perl -pi -e 's#PH_RCM_DES_KEY#$ENV{RCM_DES_KEY}#g' ${RCM_CONF}
