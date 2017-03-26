@@ -36,7 +36,7 @@ export POSTFIX_VERSION="$(postconf mail_version 2>/dev/null | awk '{print $NF}')
 
 # postscreen requires Postfix 2.8 or later.
 if echo ${POSTFIX_VERSION} | grep '^2\.[01234567]\.' &>/dev/null; then
-    echo "<ERROR> postscreen requires Postfix 2.8 or later, you're running ${POSTFIX_VERSION}."
+    echo "<WARNING> postscreen requires Postfix 2.8 or later, you're running ${POSTFIX_VERSION}."
     exit 255
 fi
 

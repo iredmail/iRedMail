@@ -30,7 +30,7 @@ sogo_initialize_db()
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         tmp_sql="${ROOTDIR}/sogo_init.sql"
         cat >> ${tmp_sql} <<EOF
-CREATE DATABASE ${SOGO_DB_NAME} CHARSET='UTF8';
+CREATE DATABASE ${SOGO_DB_NAME};
 GRANT ALL ON ${SOGO_DB_NAME}.* TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${SOGO_DB_PASSWD}";
 -- GRANT ALL ON ${SOGO_DB_NAME}.* TO ${SOGO_DB_USER}@"${HOSTNAME}" IDENTIFIED BY "${SOGO_DB_PASSWD}";
 EOF

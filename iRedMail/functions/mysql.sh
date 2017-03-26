@@ -64,10 +64,10 @@ mysql_initialize_db()
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         if [ X"${BACKEND_ORIG}" == X'MYSQL' -o X"${BACKEND}" == X'OPENLDAP' ]; then
-            ECHO_DEBUG "Enable 'skip_grant_tables' option, so that we can reset password."
-            perl -pi -e 's#^(\[mysqld\])#${1}\nskip_grant_tables#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
-
             if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+                ECHO_DEBUG "Enable 'skip_grant_tables' option, so that we can reset password."
+                perl -pi -e 's#^(\[mysqld\])#${1}\nskip_grant_tables#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+
                 # inside Jail: listen on Jail IP address
                 ECHO_DEBUG "Enable 'bind-address = ${LOCAL_ADDRESS}' in my.cnf."
                 perl -pi -e 's#^(bind-address).*#${1} = $ENV{LOCAL_ADDRESS}#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
@@ -93,8 +93,11 @@ mysql_initialize_db()
             # MySQL 5.7
             ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
             if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
-                mysqladmin -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+                # Get initial random root password from /root/.mysql-secret
+                export _mysql_root_pw="$(tail -1 /root/.mysql_secret)"
+                mysqladmin -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} -p${_mysql_root_pw} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
             else
+                # Jail
                 mysql -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} --connect-expired-password mysql -e "UPDATE user SET host='${LOCAL_ADDRESS}',authentication_string=PASSWORD('${MYSQL_ROOT_PASSWD}'),password_expired='N' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
 
                 ECHO_DEBUG "Remove 'skip_grant_tables'."
