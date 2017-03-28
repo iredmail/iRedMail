@@ -30,6 +30,8 @@ sogo_initialize_db()
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         tmp_sql="${ROOTDIR}/sogo_init.sql"
         cat >> ${tmp_sql} <<EOF
+-- Do not create sogo database with 'utf8' character set.
+-- https://sogo.nu/bugs/view.php?id=4105
 CREATE DATABASE ${SOGO_DB_NAME};
 GRANT ALL ON ${SOGO_DB_NAME}.* TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${SOGO_DB_PASSWD}";
 -- GRANT ALL ON ${SOGO_DB_NAME}.* TO ${SOGO_DB_USER}@"${HOSTNAME}" IDENTIFIED BY "${SOGO_DB_PASSWD}";
