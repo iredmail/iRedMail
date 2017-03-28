@@ -42,9 +42,6 @@ iRedMail-0.9.7:
                 directory ('root /var/www/vhosts/iredmail.org;')
 
     * Fixed issues:
-        - SOGo:
-            - database was created with 'UTF8' character set, this causes SOGo
-              cannot create cache SQL table automatically with MySQL 5.1.x.
         - tools/backup_mysql.sh: Backup sql databases with mysqldump option
           '--skip-comments' to avoid possible backdooring hack.
           FYI: https://blog.tarq.io/cve-2016-5483-backdooring-mysqldump-backups/
