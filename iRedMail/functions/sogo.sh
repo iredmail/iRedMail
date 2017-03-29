@@ -29,8 +29,19 @@ sogo_initialize_db()
 
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         tmp_sql="${ROOTDIR}/sogo_init.sql"
-        cat >> ${tmp_sql} <<EOF
+
+        if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
+            # MySQL 5.1. FYI: https://sogo.nu/bugs/view.php?id=4105
+            cat > ${tmp_sql} <<EOF
+CREATE DATABASE ${SOGO_DB_NAME};
+EOF
+        else
+            cat > ${tmp_sql} <<EOF
 CREATE DATABASE ${SOGO_DB_NAME} CHARSET='UTF8';
+EOF
+        fi
+
+        cat >> ${tmp_sql} <<EOF
 GRANT ALL ON ${SOGO_DB_NAME}.* TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${SOGO_DB_PASSWD}";
 -- GRANT ALL ON ${SOGO_DB_NAME}.* TO ${SOGO_DB_USER}@"${HOSTNAME}" IDENTIFIED BY "${SOGO_DB_PASSWD}";
 EOF
