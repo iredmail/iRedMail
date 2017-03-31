@@ -254,6 +254,9 @@ iredadmin_cron_setup()
 
 # iRedAdmin: Clean up sql database.
 1   *   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null 2>&1
+
+# iRedAdmin: Delete mailboxes on file system which belong to removed accounts.
+1   *   *   *   *   ${PYTHON_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/delete_mailboxes.py
 EOF
 
     # Disable cron jobs if we don't need to initialize database on this server.
