@@ -23,19 +23,20 @@
 web_server_extra()
 {
     # Create robots.txt.
-    backup_file ${HTTPD_DOCUMENTROOT}/robots.txt
-    cat >> ${HTTPD_DOCUMENTROOT}/robots.txt <<EOF
+    if [ ! -e ${HTTPD_DOCUMENTROOT}/robots.txt ]; then
+        cat >> ${HTTPD_DOCUMENTROOT}/robots.txt <<EOF
 User-agent: *
 Disallow: /
 EOF
+    fi
 
     # Redirect home page to webmail by default
-    backup_file ${HTTPD_DOCUMENTROOT}/index.html
-
-    if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
-        echo '<html><head><meta HTTP-EQUIV="REFRESH" content="0; url=/mail/"></head></html>' > ${HTTPD_DOCUMENTROOT}/index.html
-    elif [ X"${USE_SOGO}" == X'YES' ]; then
-        echo '<html><head><meta HTTP-EQUIV="REFRESH" content="0; url=/SOGo/"></head></html>' > ${HTTPD_DOCUMENTROOT}/index.html
+    if [ ! -e ${HTTPD_DOCUMENTROOT}/index.html ]; then
+        if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
+            echo '<html><head><meta HTTP-EQUIV="REFRESH" content="0; url=/mail/"></head></html>' > ${HTTPD_DOCUMENTROOT}/index.html
+        elif [ X"${USE_SOGO}" == X'YES' ]; then
+            echo '<html><head><meta HTTP-EQUIV="REFRESH" content="0; url=/SOGo/"></head></html>' > ${HTTPD_DOCUMENTROOT}/index.html
+        fi
     fi
 
     # Add alias for Apache daemon user
