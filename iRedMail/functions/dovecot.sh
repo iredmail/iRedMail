@@ -352,7 +352,7 @@ Dovecot:
         - ${DOVECOT_REALTIME_QUOTA_CONF} (For real-time quota usage)
         - ${DOVECOT_SHARE_FOLDER_CONF} (For IMAP sharing folder)
     * Syslog config file:
-        - ${SYSLOG_CONF_DIR}/0-dovecot.conf (present if rsyslog >= 8.x)
+        - ${SYSLOG_CONF_DIR}/1-dovecot.conf (present if rsyslog >= 8.x)
     * RC script: ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME}
     * Log files:
         - ${DOVECOT_LOG_FILE}
@@ -377,13 +377,13 @@ dovecot_log() {
     if [ X"${DOVECOT_USE_SYSLOG}" == X'YES' ]; then
         # Use rsyslog.
         # Copy rsyslog config file used to filter Dovecot log
-        cp ${SAMPLE_DIR}/rsyslog.d/0-dovecot.conf ${SYSLOG_CONF_DIR}
+        cp ${SAMPLE_DIR}/rsyslog.d/1-dovecot.conf ${SYSLOG_CONF_DIR}
 
-        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
-        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_LDA#$ENV{DOVECOT_SYSLOG_FILE_LDA}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
-        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_IMAP#$ENV{DOVECOT_SYSLOG_FILE_IMAP}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
-        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_POP3#$ENV{DOVECOT_SYSLOG_FILE_POP3}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
-        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_SIEVE#$ENV{DOVECOT_SYSLOG_FILE_SIEVE}#g' ${SYSLOG_CONF_DIR}/0-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_LDA#$ENV{DOVECOT_SYSLOG_FILE_LDA}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_IMAP#$ENV{DOVECOT_SYSLOG_FILE_IMAP}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_POP3#$ENV{DOVECOT_SYSLOG_FILE_POP3}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_SIEVE#$ENV{DOVECOT_SYSLOG_FILE_SIEVE}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
 
         # Although no need to create log files manually, but fail2ban will skip
         # the log file which doesn't exist while fail2ban starts up, so we
