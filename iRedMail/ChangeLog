@@ -54,6 +54,7 @@ iRedMail-0.9.7:
 
     * Updated packages:
         + Roundcube -> 1.2.4
+        + uwsgi -> 2.0.15 (OpenBSD only)
 
 iRedMail-0.9.6:
     * Supports new distribution release:
