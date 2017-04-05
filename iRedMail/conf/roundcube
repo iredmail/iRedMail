@@ -57,8 +57,3 @@ export RCM_DB_USER="roundcube"
 # please provide a string of exactly 24 chars.
 export tmp_rcm_des_key="$(${RANDOM_STRING} | cut -c-24)"
 export RCM_DES_KEY="${tmp_rcm_des_key}"
-
-# Backup database.
-if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
-    export SQL_BACKUP_DATABASES="${SQL_BACKUP_DATABASES} ${RCM_DB_NAME}"
-fi

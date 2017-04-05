@@ -123,9 +123,6 @@ export VMAIL_DB_NAME='vmail'
 export VMAIL_DB_BIND_USER='vmail'
 export VMAIL_DB_ADMIN_USER='vmailadmin'
 
-# SQL databases we should backup
-export SQL_BACKUP_DATABASES="${VMAIL_DB_NAME}"
-
 # Default virtual domain admin name without domain name (@example.com).
 export DOMAIN_ADMIN_NAME='postmaster'
 

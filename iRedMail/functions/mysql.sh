@@ -289,11 +289,10 @@ mysql_cron_backup()
     chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${mysql_backup_script}
     chmod 0500 ${mysql_backup_script}
 
-    export MYSQL_ROOT_PASSWD SQL_BACKUP_DATABASES
+    export MYSQL_ROOT_PASSWD
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${mysql_backup_script}
     perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{MYSQL_ROOT_USER}"#' ${mysql_backup_script}
     perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{MYSQL_ROOT_PASSWD}"#' ${mysql_backup_script}
-    perl -pi -e 's#^(export DATABASES=)(.*)#${1}"$ENV{SQL_BACKUP_DATABASES}"#' ${mysql_backup_script}
 
     # Add cron job
     cat >> ${CRON_FILE_ROOT} <<EOF

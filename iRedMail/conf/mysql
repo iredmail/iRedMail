@@ -68,10 +68,6 @@ export MYSQL_VMAIL_SQL="${RUNTIME_DIR}/mysql_vmail.sql"
 # SQL structure of MySQL vmail database.
 export MYSQL_VMAIL_STRUCTURE_SAMPLE="${SAMPLE_DIR}/iredmail/iredmail.mysql"
 
-if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'OPENLDAP' ]; then
-    export SQL_BACKUP_DATABASES="${SQL_BACKUP_DATABASES} mysql"
-fi
-
 # File used to stores MySQL root password to avoid warning:
 # "Using a password on the command line interface can be insecure."
 # File will be copied to /root/.my.cnf after iRedMail installation.

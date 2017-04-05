@@ -212,7 +212,6 @@ pgsql_cron_backup()
 
     perl -pi -e 's#^(export PGSQL_SYS_USER=).*#${1}"$ENV{PGSQL_SYS_USER}"#' ${pgsql_backup_script}
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${pgsql_backup_script}
-    perl -pi -e 's#^(export DATABASES=).*#${1}"$ENV{SQL_BACKUP_DATABASES}"#' ${pgsql_backup_script}
 
     # Add cron job
     cat >> ${CRON_FILE_ROOT} <<EOF

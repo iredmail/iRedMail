@@ -43,5 +43,3 @@ export IREDAPD_LOGROTATE_FILE="${LOGROTATE_DIR}/iredapd"
 # IREDAPD_DB_PASSWD is generated in dialog/optional_components.sh.
 export IREDAPD_DB_NAME='iredapd'
 export IREDAPD_DB_USER='iredapd'
-
-export SQL_BACKUP_DATABASES="${SQL_BACKUP_DATABASES} ${IREDAPD_DB_NAME}"
