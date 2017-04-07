@@ -573,8 +573,8 @@ EOF
             if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
                 ln -sf /usr/local/bin/php-${OB_PHP_VERSION} /usr/local/bin/php >> ${INSTALL_LOG} 2>&1
                 ln -sf /usr/local/bin/php-config-${OB_PHP_VERSION} /usr/local/bin/php-config >> ${INSTALL_LOG} 2>&1
-                ln -sf /usr/local/bin/phpize-${OB_PHP_VERSION} /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1
-                ln -sf /usr/local/bin/php-fpm-${OB_PHP_VERSION} /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1
+                ln -sf /usr/local/bin/phpize-${OB_PHP_VERSION} /usr/local/bin/phpize >> ${INSTALL_LOG} 2>&1
+                ln -sf /usr/local/bin/php-fpm-${OB_PHP_VERSION} /usr/local/bin/php-fpm >> ${INSTALL_LOG} 2>&1
             fi
 
             # uwsgi. Required by iRedAdmin.
