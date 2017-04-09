@@ -494,6 +494,11 @@ EOF
 EOF
 
     cat >> ${AMAVISD_CONF} <<EOF
+# \$bounce_killer_score defaults to 100, it will cause quota exceed notification
+# email sent by Dovecot quarantined by Amavisd.
+\$penpals_bonus_score = undef;
+\$bounce_killer_score = 0;
+
 # Selectively disable some of the header checks
 #
 # Duplicate or multiple occurrence of a header field
