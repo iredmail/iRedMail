@@ -146,6 +146,9 @@ sogo_config() {
 
     # Proxy timeout
     perl -pi -e 's#PH_SOGO_PROXY_TIMEOUT#$ENV{SOGO_PROXY_TIMEOUT}#g' ${SOGO_CONF}
+    # WatchDog timeout
+    export watchdog_request_timeout="$((SOGO_PROXY_TIMEOUT / 60))"
+    perl -pi -e 's#PH_SOGO_WATCHDOG_REQUEST_TIMEOUT#$ENV{watchdog_request_timeout}#g' ${SOGO_CONF}
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Default 'WOPort = 127.0.0.1:20000;' doesn't work on OpenBSD
