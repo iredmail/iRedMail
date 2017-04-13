@@ -1,4 +1,7 @@
 iRedMail-0.9.7:
+    * Supports new distribution release:
+        + OpenBSD 6.1. OpenBSD 6.0 is not supported anymore.
+
     * Improvements:
         - SOGo:
             + New script 'tools/backup_sogo.sh'. used to backs up SOGo data
