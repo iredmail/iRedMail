@@ -369,11 +369,11 @@ CREATE TABLE IF NOT EXISTS `used_quota` (
 -- NOTE: `used_quota.domain` is not used by Dovecot, but used in iRedAdmin to
 --       get better SQL query performance while calculating per-domain used
 --       quota.
-DELIMITER $$
+DELIMITER //
 CREATE TRIGGER `used_quota_before_insert`
     BEFORE INSERT ON `used_quota` FOR EACH ROW
     BEGIN
         SET NEW.domain = SUBSTRING_INDEX(NEW.username, '@', -1);
     END;
-$$
+//
 DELIMITER ;
