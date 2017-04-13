@@ -2,7 +2,6 @@
     compress
     weekly
     rotate 10
-    create 0600 PH_VMAIL_USER_NAME PH_VMAIL_GROUP_NAME
     missingok
 
     # Use bzip2 for compress.
