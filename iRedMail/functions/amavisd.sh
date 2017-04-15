@@ -329,10 +329,9 @@ $(cat ${SAMPLE_DIR}/amavisd/log_templ)
 #   - undef, do not quarantine mail.
 
 # SPAM.
-\$final_spam_destiny = D_PASS;
-\$spam_quarantine_method = undef;
-#\$spam_quarantine_method = 'sql:';
-#\$spam_quarantine_to = 'spam-quarantine';
+\$final_spam_destiny = D_DISCARD;
+\$spam_quarantine_method = 'sql:';
+\$spam_quarantine_to = 'spam-quarantine';
 
 # Virus
 \$final_virus_destiny = D_DISCARD;
@@ -341,15 +340,13 @@ $(cat ${SAMPLE_DIR}/amavisd/log_templ)
 
 # Banned
 \$final_banned_destiny = D_DISCARD;
-\$banned_files_quarantine_method = undef;
-#\$banned_files_quarantine_method = 'sql:';
-#\$banned_quarantine_to = 'banned-quarantine';
+\$banned_files_quarantine_method = 'sql:';
+\$banned_quarantine_to = 'banned-quarantine';
 
 # Bad header.
-\$final_bad_header_destiny = D_PASS;
-\$bad_header_quarantine_method = undef;
-#\$bad_header_quarantine_method = 'sql:';
-#\$bad_header_quarantine_to = 'bad-header-quarantine';
+\$final_bad_header_destiny = D_DISCARD;
+\$bad_header_quarantine_method = 'sql:';
+\$bad_header_quarantine_to = 'bad-header-quarantine';
 
 #########################
 # Quarantine CLEAN mails.
@@ -568,11 +565,13 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${AMAVISD_DB_NAME}.* TO '${AMAVISD_DB_USER}
 -- Import Amavisd SQL template
 USE ${AMAVISD_DB_NAME};
 SOURCE ${AMAVISD_DB_MYSQL_TMPL};
+SOURCE ${SAMPLE_DIR}/amavisd/bypass.sql;
 
 FLUSH PRIVILEGES;
 EOF
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_SYS_USER_HOME}/amavisd.sql >> ${INSTALL_LOG} 2>&1
+        cp -f ${SAMPLE_DIR}/amavisd/bypass.sql ${PGSQL_SYS_USER_HOME}/bypass.sql >> ${INSTALL_LOG} 2>&1
         chmod 0777 ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG}  <<EOF
@@ -588,8 +587,9 @@ EOF
         # Import Amavisd SQL template
         su - ${PGSQL_SYS_USER} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
 \i ${PGSQL_SYS_USER_HOME}/amavisd.sql;
+\i ${PGSQL_SYS_USER_HOME}/bypass.sql;
 EOF
-        rm -f ${PGSQL_SYS_USER_HOME}/amavisd.sql >> ${INSTALL_LOG}
+        rm -f ${PGSQL_SYS_USER_HOME}/{amavisd,bypass}.sql >> ${INSTALL_LOG}
 
         if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
             :
