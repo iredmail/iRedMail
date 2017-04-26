@@ -85,14 +85,21 @@ install_all()
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} openldap openldap-clients openldap-servers"
-            if [ X"${DISTRO_VERSION}" == X'6' ]; then
-                ALL_PKGS="${ALL_PKGS} mysql-server"
-            else
+
+            if [ X"${ENABLE_BACKEND_MYSQL}" == X'NO' ]; then
                 ALL_PKGS="${ALL_PKGS} mariadb-server mod_ldap"
+            else
+                ALL_PKGS="${ALL_PKGS} mysql-server"
             fi
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl mysql-server mysql-client libdbd-mysql-perl"
+            ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl libdbd-mysql-perl"
+
+            if [ X"${ENABLE_BACKEND_MYSQL}" == X'NO' ]; then
+                ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client"
+            else
+                ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
+            fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
