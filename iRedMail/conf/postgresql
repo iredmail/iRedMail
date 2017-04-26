@@ -46,14 +46,17 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    # Debian 8
     export PGSQL_VERSION='9.4'
 
-    # Ubuntu-14.04
+    # Ubuntu 14.04
     [ X"${DISTRO_CODENAME}" == X'trusty' ] && export PGSQL_VERSION='9.3'
     # Ubuntu 16.04
     [ X"${DISTRO_CODENAME}" == X'xenial' ] && export PGSQL_VERSION='9.5'
-    # Ubuntu 16.10
-    [ X"${DISTRO_CODENAME}" == X'yakkety' ] && export PGSQL_VERSION='9.5'
+    # Debian 9
+    [ X"${DISTRO_CODENAME}" == X'stretch' ] && export PGSQL_VERSION='9.6'
+    # Ubuntu 17.04
+    [ X"${DISTRO_CODENAME}" == X'zesty' ] && export PGSQL_VERSION='9.6'
 
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"
     export PGSQL_CONF_DIR="/etc/postgresql/${PGSQL_VERSION}/main"

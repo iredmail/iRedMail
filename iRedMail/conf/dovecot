@@ -57,15 +57,16 @@ export DOVECOT_DELIVER_BIN='/usr/libexec/dovecot/deliver'
 # Logging with syslog (Require rsyslog-8.x+)
 export DOVECOT_USE_SYSLOG='YES'
 # main log file
-export DOVECOT_LOG_FILE='/var/log/dovecot.log'
+export DOVECOT_LOG_DIR='/var/log/dovecot'
+export DOVECOT_LOG_FILE="${DOVECOT_LOG_DIR}/dovecot.log"
 # Log files when we use Dovecot internal log system
-export DOVECOT_SIEVE_LOG_FILE='/var/log/dovecot-sieve.log'
-export DOVECOT_LMTP_LOG_FILE='/var/log/dovecot-lmtp.log'
+export DOVECOT_SIEVE_LOG_FILE="${DOVECOT_LOG_DIR}/sieve.log"
+export DOVECOT_LMTP_LOG_FILE="${DOVECOT_LOG_DIR}/lmtp.log"
 # Log files when we use syslog
-export DOVECOT_SYSLOG_FILE_LDA='/var/log/dovecot-lda.log'
-export DOVECOT_SYSLOG_FILE_IMAP='/var/log/dovecot-imap.log'
-export DOVECOT_SYSLOG_FILE_POP3='/var/log/dovecot-pop3.log'
-export DOVECOT_SYSLOG_FILE_SIEVE='/var/log/dovecot-sieve.log'
+export DOVECOT_SYSLOG_FILE_LDA="${DOVECOT_LOG_DIR}/lda.log"
+export DOVECOT_SYSLOG_FILE_IMAP="${DOVECOT_LOG_DIR}/imap.log"
+export DOVECOT_SYSLOG_FILE_POP3="${DOVECOT_LOG_DIR}/pop3.log"
+export DOVECOT_SYSLOG_FILE_SIEVE="${DOVECOT_LOG_DIR}/sieve.log"
 
 # Log rotate config file
 export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"

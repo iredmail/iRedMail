@@ -168,6 +168,10 @@ dovecot_config()
     perl -pi -e 's#PH_SSL_KEY#$ENV{SSL_KEY_FILE}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_SSL_CIPHERS#$ENV{SSL_CIPHERS}#' ${DOVECOT_CONF}
 
+    if [ X"${DISTRO_CODENAME}" == X'stretch' ]; then
+        perl -pi -e 's#^(ssl_protocols).*#ssl_protocols = !SSLv3#' ${DOVECOT_CONF}
+    fi
+
     # Enable parameters which requires at least Dovecot-2.2.6.
     #   - RHEL/CentOS 6 uses Dovecot-2.1.x
     #   - Debian 7 uses Dovecot-2.1.x
@@ -373,6 +377,8 @@ EOF
 
 dovecot_log() {
     ECHO_DEBUG "Configure Dovecot logging."
+
+    mkdir -p ${DOVECOT_LOG_DIR} >> ${INSTALL_LOG} 2>&1
 
     if [ X"${DOVECOT_USE_SYSLOG}" == X'YES' ]; then
         # Use rsyslog.

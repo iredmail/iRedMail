@@ -1,6 +1,8 @@
 iRedMail-0.9.7:
     * Supports new distribution release:
         + OpenBSD 6.1. OpenBSD 6.0 is not supported anymore.
+        + Ubuntu 17.04. Ubuntu 16.10 is not supported anymore.
+        + Debian 9 (code name: stretch). Tested with Debian 9 RC3.
 
     * Improvements:
         - SOGo:

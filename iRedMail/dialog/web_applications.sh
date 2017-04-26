@@ -33,8 +33,8 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
         export DIALOG_SELECTABLE_SOGO='NO'
     fi
 
-    # SOGo team doesn't offer binary packages for ubuntu 16.10 (yet)
-    if [ X"${DISTRO_CODENAME}" == X'yakkety' ]; then
+    # SOGo team doesn't offer binary packages for ubuntu 17.04 (yet)
+    if [ X"${DISTRO_CODENAME}" == X'zesty' ]; then
         export DIALOG_SELECTABLE_SOGO='NO'
     fi
 fi

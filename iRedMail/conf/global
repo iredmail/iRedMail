@@ -265,7 +265,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Ubuntu version number and code name:
         #   - 14.04: trusty
         #   - 16.04: xenial
-        #   - 16.10: yakkety
+        #   - 17.04: zesty
         export DISTRO_VERSION="$(awk -F'=' '/^DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)"
         export DISTRO_CODENAME="$(awk -F'=' '/^DISTRIB_CODENAME/ {print $2}' /etc/lsb-release)"
 
@@ -285,6 +285,10 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
             grep -i '^jessie' /etc/debian_version &>/dev/null; then
             export DISTRO_VERSION='8'
             export DISTRO_CODENAME='jessie'
+        elif grep '^9' /etc/debian_version &>/dev/null || \
+            grep -i '^stretch' /etc/debian_version &>/dev/null; then
+            export DISTRO_VERSION='9'
+            export DISTRO_CODENAME='stretch'
         else
             export UNSUPPORTED_RELEASE='YES'
         fi
@@ -467,7 +471,10 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export SYSLOG_POSTROTATE_CMD='invoke-rc.d rsyslog rotate > /dev/null'
 
         # MariaDB support requires Debian >= 8 (jessie)
-        if [ X"${DISTRO_VERSION}" != X'7' ]; then
+        if [ X"${DISTRO_VERSION}" == X'8' ]; then
+            export ENABLE_BACKEND_MARIADB='YES'
+        elif [ X"${DISTRO_VERSION}" == X'9' ]; then
+            export ENABLE_BACKEND_MYSQL='NO'
             export ENABLE_BACKEND_MARIADB='YES'
         fi
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
