@@ -47,6 +47,8 @@ iRedMail-0.9.7:
                 directory ('root /var/www/vhosts/iredmail.org;')
 
     * Fixed issues:
+        - Enable 'iterate_query =' in 'dovecot-mysql.conf', so that doveadm
+          works fine if it needs to get all mail users.
         - Not enable cron job for iRedAdmin script: tools/delete_mailboxes.py.
           Thanks sergiocesar <sergio _at_ winc.net> for the report.
         - tools/backup_mysql.sh: Backup sql databases with mysqldump option
@@ -58,7 +60,7 @@ iRedMail-0.9.7:
             - Cannot reset MySQL (5.7) password.
 
     * Updated packages:
-        + Roundcube -> 1.2.4
+        + Roundcube -> 1.2.5
         + uwsgi -> 2.0.15 (OpenBSD only)
 
 iRedMail-0.9.6:

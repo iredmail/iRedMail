@@ -90,15 +90,19 @@ GRANT ALL ON ${IREDAPD_DB_NAME}.* TO '${IREDAPD_DB_USER}'@'${MYSQL_GRANT_HOST}' 
 FLUSH PRIVILEGES;
 
 -- Enable greylisting by default.
-INSERT INTO greylisting (account, priority, sender, sender_priority, active) VALUES ('@.', 0, '@.', 0, 1);
+SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/enable_global_greylisting.sql.sql;
 
 -- Import greylisting whitelist domains.
 SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/greylisting_whitelist_domains.sql;
+
+-- Blacklist some rDNS names
+SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/blacklist_rdns.sql;
 EOF
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/{iredapd.pgsql,greylisting_whitelist_domains.sql} ${PGSQL_DATA_DIR}/ >> ${INSTALL_LOG} 2>&1
-        chmod 0555 ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelist_domains.sql}
+        mkdir ${PGSQL_DATA_DIR}/tmp 2>/dev/null
+        cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/*sql ${PGSQL_DATA_DIR}/tmp/ >> ${INSTALL_LOG} 2>&1
+        chmod 0555 ${PGSQL_DATA_DIR}/tmp/*sql
 
         su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create user
@@ -112,16 +116,20 @@ EOF
 
         su - ${PGSQL_SYS_USER} -c "psql -U ${IREDAPD_DB_USER} -d ${IREDAPD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Import SQL template
-\i ${PGSQL_DATA_DIR}/iredapd.pgsql;
+\i ${PGSQL_DATA_DIR}/tmp/iredapd.pgsql;
 
 -- Enable greylisting by default.
-INSERT INTO greylisting (account, priority, sender, sender_priority, active) VALUES ('@.', 0, '@.', 0, 1);
+\i ${PGSQL_DATA_DIR}/tmp/enable_global_greylisting.sql.sql;
 
 -- Import greylisting whitelist domains.
-\i ${PGSQL_DATA_DIR}/greylisting_whitelist_domains.sql;
+\i ${PGSQL_DATA_DIR}/tmp/greylisting_whitelist_domains.sql;
+
+-- Blacklist some rDNS names
+\i ${PGSQL_DATA_DIR}/tmp/blacklist_rdns.sql;
+
 EOF
 
-        rm -f ${PGSQL_DATA_DIR}/{iredapd.pgsql,greylisting_whitelist_domains.sql} >> ${INSTALL_LOG} 2>&1
+        rm -rf ${PGSQL_DATA_DIR}/tmp >> ${INSTALL_LOG} 2>&1
     fi
 
     echo 'export status_iredapd_initialize_db="DONE"' >> ${STATUS_FILE}
@@ -150,7 +158,7 @@ iredapd_config()
         perl -pi -e 's#^(ldap_bindpw).*#${1} = "$ENV{LDAP_BINDPW}"#' ${IREDAPD_CONF}
         perl -pi -e 's#^(ldap_basedn).*#${1} = "$ENV{LDAP_BASEDN}"#' ${IREDAPD_CONF}
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "blacklist_rdns", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' ${IREDAPD_CONF}
 
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#^(vmail_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' ${IREDAPD_CONF}
@@ -159,7 +167,7 @@ iredapd_config()
         perl -pi -e 's#^(vmail_db_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' ${IREDAPD_CONF}
         perl -pi -e 's#^(vmail_db_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' ${IREDAPD_CONF}
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "blacklist_rdns", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' ${IREDAPD_CONF}
     fi
 
     # Amavisd database
