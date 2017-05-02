@@ -24,8 +24,8 @@ INSERT INTO mailbox (username,
                      1,
                      NOW());
 
-INSERT INTO alias (address, goto, domain, created)
-           VALUES ('PH_DOMAIN_ADMIN_EMAIL', 'PH_DOMAIN_ADMIN_EMAIL', 'PH_FIRST_DOMAIN', NOW());
+INSERT INTO forwardings (address, forwarding, domain, is_forwarding)
+           VALUES ('PH_DOMAIN_ADMIN_EMAIL', 'PH_DOMAIN_ADMIN_EMAIL', 'PH_FIRST_DOMAIN', 1);
 
 -- Mark first mail user as global admin
 INSERT INTO domain_admins (username, domain, created)

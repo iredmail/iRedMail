@@ -3,4 +3,4 @@ port        = PH_SQL_SERVER_PORT
 user        = PH_VMAIL_DB_BIND_USER
 password    = PH_VMAIL_DB_BIND_PASSWD
 dbname      = PH_VMAIL_DB_NAME
-query       = SELECT alias.goto FROM alias,domain WHERE alias.address='%d' AND '%u' NOT LIKE '%%+%%' AND alias.address=domain.domain AND alias.active=1 AND domain.active=1 AND domain.backupmx=0
+query       = SELECT forwardings.forwarding FROM forwardings,domain WHERE forwardings.address='%d' AND '%u' NOT LIKE '%%+%%' AND forwardings.address=domain.domain AND forwardings.active=1 AND domain.active=1 AND domain.backupmx=0

@@ -3,4 +3,4 @@ port        = PH_SQL_SERVER_PORT
 user        = PH_VMAIL_DB_BIND_USER
 password    = PH_VMAIL_DB_BIND_PASSWD
 dbname      = PH_VMAIL_DB_NAME
-query       = SELECT alias.goto FROM alias,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND alias.address=alias_domain.target_domain AND alias_domain.target_domain=domain.domain AND alias.active=1 AND alias_domain.active=1
+query       = SELECT forwardings.forwarding FROM forwardings,alias_domain,domain WHERE alias_domain.alias_domain='%d' AND forwardings.address=alias_domain.target_domain AND alias_domain.target_domain=domain.domain AND forwardings.active=1 AND alias_domain.active=1

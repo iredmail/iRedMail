@@ -49,30 +49,48 @@ CREATE TABLE IF NOT EXISTS admin (
 --
 CREATE TABLE IF NOT EXISTS alias (
     address VARCHAR(255) NOT NULL DEFAULT '',
-    goto TEXT,
     name VARCHAR(255) NOT NULL DEFAULT '',
-    moderators TEXT,
     accesspolicy VARCHAR(30) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
-    -- Mark this record as a mail list/alias account
-    islist TINYINT(1) NOT NULL DEFAULT 0,
-    -- Mark this record as a per-account alias account
-    is_alias TINYINT(1) NOT NULL DEFAULT 0,
-    -- Required by per-account alias account (`is_alias=1`), used for indexed
-    -- searching (`goto` is not good for searching). Its value must be same as
-    -- `goto`.
-    alias_to VARCHAR(255) NOT NULL DEFAULT '',
     created DATETIME NOT NULL DEFAULT '1970-01-01 01:01:01',
     modified DATETIME NOT NULL DEFAULT '1970-01-01 01:01:01',
     expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
     active TINYINT(1) NOT NULL DEFAULT 1,
     PRIMARY KEY (address),
     INDEX (domain),
-    INDEX (islist),
-    INDEX (is_alias),
-    INDEX (alias_to),
     INDEX (expired),
     INDEX (active)
+) ENGINE=InnoDB;
+
+-- Alias moderators.
+CREATE TABLE IF NOT EXISTS alias_moderators (
+    id BIGINT(20) UNSIGNED AUTO_INCREMENT,
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    moderator VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    PRIMARY KEY (id),
+    UNIQUE INDEX (address, moderator),
+    INDEX (domain)
+) ENGINE=InnoDB;
+
+-- Forwardings, contains alias members, per-account alias addresses
+CREATE TABLE IF NOT EXISTS forwardings (
+    id BIGINT(20) UNSIGNED AUTO_INCREMENT,
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    forwarding VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    -- defines whether it's a standalone mail alias account. 0=no, 1=yes.
+    is_list TINYINT(1) NOT NULL DEFAULT 0,
+    -- defines whether it's a mail forwarding address of mail user. 0=no, 1=yes.
+    is_forwarding TINYINT(1) NOT NULL DEFAULT 0,
+    -- defines whether it's a per-account alias address. 0=no, 1=yes.
+    is_alias TINYINT(1) NOT NULL DEFAULT 0,
+    active TINYINT(1) NOT NULL DEFAULT 1,
+    PRIMARY KEY (id),
+    UNIQUE INDEX (address, forwarding),
+    INDEX (domain),
+    INDEX (is_list),
+    INDEX (is_alias)
 ) ENGINE=InnoDB;
 
 --

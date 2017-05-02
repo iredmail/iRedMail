@@ -90,7 +90,7 @@ GRANT ALL ON ${IREDAPD_DB_NAME}.* TO '${IREDAPD_DB_USER}'@'${MYSQL_GRANT_HOST}' 
 FLUSH PRIVILEGES;
 
 -- Enable greylisting by default.
-SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/enable_global_greylisting.sql.sql;
+SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/enable_global_greylisting.sql;
 
 -- Import greylisting whitelist domains.
 SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/greylisting_whitelist_domains.sql;
@@ -119,7 +119,7 @@ EOF
 \i ${PGSQL_DATA_DIR}/tmp/iredapd.pgsql;
 
 -- Enable greylisting by default.
-\i ${PGSQL_DATA_DIR}/tmp/enable_global_greylisting.sql.sql;
+\i ${PGSQL_DATA_DIR}/tmp/enable_global_greylisting.sql;
 
 -- Import greylisting whitelist domains.
 \i ${PGSQL_DATA_DIR}/tmp/greylisting_whitelist_domains.sql;

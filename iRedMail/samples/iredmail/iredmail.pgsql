@@ -44,19 +44,9 @@ CREATE INDEX idx_admin_active ON admin (active);
 -- Used to store mail alias accounts
 CREATE TABLE alias (
     address VARCHAR(255) NOT NULL DEFAULT '',
-    goto TEXT NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
-    moderators TEXT NOT NULL DEFAULT '',
     accesspolicy VARCHAR(30) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
-    -- Mark this record as a mail list/alias account
-    islist INT2 NOT NULL DEFAULT 0,
-    -- Mark this record as a per-account alias account
-    is_alias INT2 NOT NULL DEFAULT 0,
-    -- Required by per-account alias account (`is_alias=1`), used for indexed
-    -- searching (`goto` is not good for searching). Its value must be same as
-    -- `goto`.
-    alias_to VARCHAR(255) NOT NULL DEFAULT '',
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 00:00:00',
@@ -64,11 +54,41 @@ CREATE TABLE alias (
     PRIMARY KEY (address)
 );
 CREATE INDEX idx_alias_domain ON alias (domain);
-CREATE INDEX idx_alias_islist ON alias (islist);
-CREATE INDEX idx_alias_is_alias ON alias (is_alias);
-CREATE INDEX idx_alias_alias_to ON alias (alias_to);
 CREATE INDEX idx_alias_expired ON alias (expired);
 CREATE INDEX idx_alias_active ON alias (active);
+
+CREATE TABLE alias_moderators (
+    id SERIAL PRIMARY KEY,
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    moderator VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT ''
+);
+
+CREATE INDEX idx_alias_moderators_address ON alias_moderators (address);
+CREATE INDEX idx_alias_moderators_moderator ON alias_moderators (moderator);
+CREATE INDEX idx_alias_moderators_domain ON alias_moderators (domain);
+CREATE UNIQUE INDEX idx_alias_moderators_address_moderator ON alias_moderators (address, moderator);
+
+CREATE TABLE forwardings (
+    id SERIAL PRIMARY KEY,
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    forwarding VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    -- defines whether it's a standalone mail alias account. 0=no, 1=yes.
+    is_list INT2 NOT NULL DEFAULT 0,
+    -- defines whether it's a mail forwarding address of mail user. 0=no, 1=yes.
+    is_forwarding INT2 NOT NULL DEFAULT 0,
+    -- defines whether it's a per-account alias address. 0=no, 1=yes.
+    is_alias INT2 NOT NULL DEFAULT 0,
+    active INT2 NOT NULL DEFAULT 1
+);
+CREATE INDEX idx_forwardings_address ON forwardings (address);
+CREATE INDEX idx_forwardings_forwarding ON forwardings (forwarding);
+CREATE UNIQUE INDEX idx_forwardings_address_forwarding ON forwardings (address, forwarding);
+CREATE INDEX idx_forwardings_domain ON forwardings (domain);
+CREATE INDEX idx_forwardings_is_list ON forwardings (is_list);
+CREATE INDEX idx_forwardings_is_forwarding ON forwardings (is_forwarding);
+CREATE INDEX idx_forwardings_is_alias ON forwardings (is_alias);
 
 -- Used to store virtual mail domains
 CREATE TABLE domain (
