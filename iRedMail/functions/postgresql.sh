@@ -184,7 +184,7 @@ pgsql_import_vmail_users()
     su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/grant_permissions.sql" >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Add first domain and postmaster@ user."
-    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/add_first_domain_and_user.sql" >> ${INSTALL_LOG} 2>&1
+    su - ${PGSQL_SYS_USER} -c "psql -U ${VMAIL_DB_ADMIN_USER} -d template1 -f ${PGSQL_DATA_DIR}/add_first_domain_and_user.sql" >> ${INSTALL_LOG} 2>&1
 
     mv ${PGSQL_DATA_DIR}/*sql ${RUNTIME_DIR}
     chmod 0700 ${RUNTIME_DIR}/*sql

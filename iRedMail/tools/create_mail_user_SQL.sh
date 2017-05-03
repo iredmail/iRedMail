@@ -104,6 +104,6 @@ INSERT INTO mailbox (username, password, name,
              VALUES ('${mail}', '${CRYPT_PASSWD}', '${username}',
                      '${STORAGE_BASE}','${STORAGE_NODE}', '${maildir}',
                      '${DEFAULT_QUOTA}', '${domain}', '1','${username}', NOW());
-INSERT INTO alias (address, goto, domain, created, active)
-           VALUES ('${mail}', '${mail}','${domain}', NOW(), 1);
+INSERT INTO forwardings (address, forwarding, domain, is_forwarding)
+                 VALUES ('${mail}', '${mail}','${domain}', 1);
 EOF

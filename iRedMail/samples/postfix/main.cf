@@ -173,9 +173,9 @@ smtpd_helo_required = yes
 smtpd_helo_restrictions =
     permit_mynetworks
     permit_sasl_authenticated
+    check_helo_access pcre:PH_POSTFIX_FILE_HELO_ACCESS
     reject_non_fqdn_helo_hostname
     reject_unknown_helo_hostname
-    check_helo_access pcre:PH_POSTFIX_FILE_HELO_ACCESS
 
 # Sender restrictions
 smtpd_sender_restrictions =

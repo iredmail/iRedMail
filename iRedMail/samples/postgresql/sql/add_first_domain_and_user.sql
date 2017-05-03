@@ -1,5 +1,6 @@
 -- Connect as vmailadmin
-\c PH_VMAIL_DB_NAME PH_VMAIL_DB_ADMIN_USER;
+-- \c PH_VMAIL_DB_NAME PH_VMAIL_DB_ADMIN_USER;
+\c PH_VMAIL_DB_NAME;
 
 -- Add your first domain
 INSERT INTO domain (domain, transport, settings, created)
@@ -25,8 +26,8 @@ INSERT INTO mailbox (username,
                      1,
                      NOW());
 
-INSERT INTO alias (address, goto, domain, created)
-           VALUES ('PH_DOMAIN_ADMIN_EMAIL', 'PH_DOMAIN_ADMIN_EMAIL', 'PH_FIRST_DOMAIN', NOW());
+INSERT INTO forwardings (address, forwarding, domain, is_forwarding)
+           VALUES ('PH_DOMAIN_ADMIN_EMAIL', 'PH_DOMAIN_ADMIN_EMAIL', 'PH_FIRST_DOMAIN', 1);
 
 -- Mark first mail user as global admin
 INSERT INTO domain_admins (username, domain, created)
