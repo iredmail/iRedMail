@@ -58,7 +58,9 @@ clamav_config()
 
     # Enable AllowSupplementaryGroups
     perl -pi -e 's/^(AllowSupplementaryGroups.*)/#${1}/' ${CLAMD_CONF}
-    echo 'AllowSupplementaryGroups true' >> ${CLAMD_CONF}
+    if [ X"${DISTRO_CODENAME}" != X'stretch' ]; then
+        echo 'AllowSupplementaryGroups true' >> ${CLAMD_CONF}
+    fi
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ECHO_DEBUG "Add clamav user to amavid group."

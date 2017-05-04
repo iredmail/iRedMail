@@ -57,6 +57,7 @@ CREATE INDEX idx_alias_domain ON alias (domain);
 CREATE INDEX idx_alias_expired ON alias (expired);
 CREATE INDEX idx_alias_active ON alias (active);
 
+-- Alias moderators.
 CREATE TABLE alias_moderators (
     id SERIAL PRIMARY KEY,
     address VARCHAR(255) NOT NULL DEFAULT '',
@@ -69,6 +70,10 @@ CREATE INDEX idx_alias_moderators_moderator ON alias_moderators (moderator);
 CREATE INDEX idx_alias_moderators_domain ON alias_moderators (domain);
 CREATE UNIQUE INDEX idx_alias_moderators_address_moderator ON alias_moderators (address, moderator);
 
+-- Forwardings. it contains
+--  - members of mail alias account
+--  - per-account alias addresses
+--  - per-user mail forwarding addresses
 CREATE TABLE forwardings (
     id SERIAL PRIMARY KEY,
     address VARCHAR(255) NOT NULL DEFAULT '',

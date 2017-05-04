@@ -73,7 +73,10 @@ CREATE TABLE IF NOT EXISTS alias_moderators (
     INDEX (domain)
 ) ENGINE=InnoDB;
 
--- Forwardings, contains alias members, per-account alias addresses
+-- Forwardings. it contains
+--  - members of mail alias account
+--  - per-account alias addresses
+--  - per-user mail forwarding addresses
 CREATE TABLE IF NOT EXISTS forwardings (
     id BIGINT(20) UNSIGNED AUTO_INCREMENT,
     address VARCHAR(255) NOT NULL DEFAULT '',
