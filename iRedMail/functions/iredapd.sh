@@ -96,7 +96,7 @@ SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/enable_global_greylisting.sql;
 SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/greylisting_whitelist_domains.sql;
 
 -- Blacklist some rDNS names
-SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/blacklist_rdns.sql;
+SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/wblist_rdns.sql;
 EOF
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
@@ -125,7 +125,7 @@ EOF
 \i ${PGSQL_DATA_DIR}/tmp/greylisting_whitelist_domains.sql;
 
 -- Blacklist some rDNS names
-\i ${PGSQL_DATA_DIR}/tmp/blacklist_rdns.sql;
+\i ${PGSQL_DATA_DIR}/tmp/wblist_rdns.sql;
 
 EOF
 
@@ -158,7 +158,7 @@ iredapd_config()
         perl -pi -e 's#^(ldap_bindpw).*#${1} = "$ENV{LDAP_BINDPW}"#' ${IREDAPD_CONF}
         perl -pi -e 's#^(ldap_basedn).*#${1} = "$ENV{LDAP_BASEDN}"#' ${IREDAPD_CONF}
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "blacklist_rdns", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "wblist_rdns", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "ldap_maillist_access_policy"]#' ${IREDAPD_CONF}
 
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#^(vmail_db_server).*#${1} = "$ENV{SQL_SERVER_ADDRESS}"#' ${IREDAPD_CONF}
@@ -167,7 +167,7 @@ iredapd_config()
         perl -pi -e 's#^(vmail_db_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' ${IREDAPD_CONF}
         perl -pi -e 's#^(vmail_db_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' ${IREDAPD_CONF}
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "blacklist_rdns", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "wblist_rdns", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' ${IREDAPD_CONF}
     fi
 
     # Amavisd database
