@@ -5,7 +5,6 @@ submission inet n       -       n       -       -       smtpd
   -o smtpd_sasl_auth_enable=yes
   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
   -o content_filter=smtp-amavis:[PH_SMTP_SERVER]:10026
-  #-o smtpd_upstream_proxy_protocol=haproxy
 
 # Use dovecot's `deliver` program as LDA.
 dovecot unix    -       n       n       -       -      pipe
@@ -42,4 +41,3 @@ PH_LOCAL_ADDRESS:10025 inet n  -   n   -   -  smtpd
     -o smtpd_client_connection_count_limit=0
     -o smtpd_client_connection_rate_limit=0
     -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_address_mappings
-    #-o smtpd_upstream_proxy_protocol=haproxy

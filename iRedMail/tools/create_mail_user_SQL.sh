@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Author:   Zhang Huangbin (zhb _at_ iredmail.org)
-# Purpose:  Import users to MySQL database from plain text file.
+# Purpose:  Import users to SQL database from plain text file.
 # Project:  iRedMail (http://www.iredmail.org/)
 
 # -------------------------------------------------------------------
@@ -12,12 +12,12 @@
 #
 #   * Run this script to generate SQL command used to create new user.
 #
-#       # bash create_mail_user_MySQL.sh user@domain.ltd plain_password
+#       # bash create_mail_user_SQL.sh user@domain.ltd plain_password
 #
 #     It will print SQL commands on console directly, you can redirect the
 #     output to a file for further use like this:
 #
-#       # bash create_mail_user_MySQL.sh user@domain.ltd plain_password > output.sql
+#       # bash create_mail_user_SQL.sh user@domain.ltd plain_password > output.sql
 #
 #   * Import output.sql into SQL database like below:
 #
