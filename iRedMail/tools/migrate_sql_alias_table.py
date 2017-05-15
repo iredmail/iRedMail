@@ -13,12 +13,14 @@ import web
 
 web.config.debug = False
 
-# Read iRedAdmin config file `settings.py`
-sys.path.insert(0, '/opt/www/iredadmin')
-sys.path.insert(0, '/var/www/iredadmin')
-sys.path.insert(0, '/usr/share/apache2/iredadmin')
+# Read iRedAdmin config file `settings.py` from one of expected paths
+sys.path.insert(0, '/usr/local/www/iredadmin')      # FreeBSD
+sys.path.insert(0, '/opt/www/iredadmin')            # Debian/Ubuntu
+sys.path.insert(0, '/var/www/iredadmin')            # CentOS/OpenBSD
+sys.path.insert(0, '/usr/share/apache2/iredadmin')  # Debian/Ubuntu (old iRedMail releases)
 
 import settings
+print "* Read SQL username/password from iRedAdmin config file:", settings.__file__
 print "* Backend:", settings.backend
 
 if settings.backend in ['ldap', 'mysql']:
