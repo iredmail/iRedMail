@@ -167,4 +167,4 @@
 /(marunouchi\.tokyo\.ocn\.ne\.jp)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 /(amedex\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 /(aageneva\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
-/^ylmf-pc/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly
+/^ylmf-pc/ REJECT ACCESS DENIED
