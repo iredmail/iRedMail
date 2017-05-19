@@ -61,7 +61,7 @@ You can login to webmail and iRedAdmin with this account.
 
 WARNING:
 
-* Do *NOT* use special characters in password right now. e.g. $, #, @.
+* Do *NOT* use special characters (like \$, #, @, white space) in password.
 * EMPTY password is *NOT* permitted.
 * Sample password: $(${RANDOM_STRING})
 " 20 76 2>${RUNTIME_DIR}/.first_domain_admin_passwd
