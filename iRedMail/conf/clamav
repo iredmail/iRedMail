@@ -26,12 +26,13 @@ export CLAMAV_CLAMD_SERVICE_NAME='clamd'
 export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclamd'
 
 export CLAMD_CONF='/etc/clamd.conf'
-export CLAMD_LOGFILE='/var/log/clamav/clamd.log'
+export CLAMD_LOG_DIR='/var/log/clamav'
+export CLAMD_LOGFILE="${CLAMD_LOG_DIR}/clamd.log"
 # CLAMD_BIND_HOST is configured in conf/global
 export CLAMD_LOCAL_SOCKET='/tmp/clamd.socket'
 
 export FRESHCLAM_CONF='/etc/freshclam.conf'
-export FRESHCLAM_LOGFILE='/var/log/clamav/freshclam.log'
+export FRESHCLAM_LOGFILE="${CLAMD_LOG_DIR}/freshclam.log"
 export FRESHCLAM_PID_FILE='/var/run/clamav/freshclam.pid'
 
 # Update database immediately

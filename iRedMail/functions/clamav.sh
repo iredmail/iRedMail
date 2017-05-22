@@ -51,7 +51,6 @@ clamav_config()
 
     ECHO_DEBUG "Configure freshclam: ${FRESHCLAM_CONF}."
     perl -pi -e 's#^(UpdateLogFile ).*#${1}$ENV{FRESHCLAM_LOGFILE}#' ${FRESHCLAM_CONF}
-    perl -pi -e 's/^#(UpdateLogFile ).*/${1}$ENV{FRESHCLAM_LOGFILE}/' ${FRESHCLAM_CONF}
 
     # Official database only
     perl -pi -e 's/^#(OfficialDatabaseOnly ).*/${1} yes/' ${CLAMD_CONF}
@@ -99,9 +98,6 @@ ClamAV:
     * RC scripts:
             + ${DIR_RC_SCRIPTS}/${CLAMAV_CLAMD_SERVICE_NAME}
             + ${DIR_RC_SCRIPTS}/${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}
-    * Log files:
-        - ${CLAMD_LOGFILE}
-        - ${FRESHCLAM_LOGFILE}
 
 EOF
 
