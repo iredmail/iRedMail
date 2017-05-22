@@ -10,6 +10,7 @@ iRedMail-0.9.7:
               with 'sogo-tool backup' command.
 
         - Fail2ban:
+            + Add one new regular expession to filter Roundcube log.
             + Enable 2 new jails: apache-auth, nginx-http-auth.
             + Split jail.local to multiple modular jail config files under
               /etc/fail2ban/jail.d.
