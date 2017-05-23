@@ -54,13 +54,15 @@ install_all()
     freebsd_make_conf_add 'WANT_MYSQL' "${PREFERRED_MYSQL_VER}"
     #freebsd_make_conf_add 'WANT_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
     freebsd_make_conf_add 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
-    freebsd_make_conf_add 'APACHE_PORT' "www/apache${PREFERRED_APACHE_VER}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
     freebsd_make_conf_add 'DEFAULT_VERSIONS' 'ssl=libressl python=2.7 python2=2.7 apache=2.4 pgsql=9.5 php=7.0'
 
+    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
+        freebsd_make_conf_add 'APACHE_PORT' "www/apache${PREFERRED_APACHE_VER}"
+    fi
+
     freebsd_make_conf_plus_option 'OPTIONS_SET' 'SASL'
     freebsd_make_conf_plus_option 'OPTIONS_UNSET' 'X11'
-
     freebsd_make_conf_plus_option 'LICENSES_ACCEPTED' 'NONE'
 
     for p in \
