@@ -213,8 +213,8 @@ iredapd_cron_setup()
 1   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null
 
 # iRedAPD: Convert SPF DNS record of specified domain names to IP
-#          addresses/networks every 30 minutes.
-*/30   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py >/dev/null
+#          addresses/networks hourly.
+2   *   *   *   *   ${PYTHON_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py >/dev/null
 
 EOF
 
