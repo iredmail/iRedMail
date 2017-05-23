@@ -250,6 +250,9 @@ amavisd_config_general()
     perl -pi -e 's/^(.final_spam_destiny.*)/#${1}/' ${AMAVISD_CONF}
     perl -pi -e 's/^(.final_bad_header_destiny.*)/#${1}/' ${AMAVISD_CONF}
 
+    # Disable bdb support, majorly used for SNMP support and amavisd-nanny.
+    perl -pi -e 's/^(.enable_db.*)/${1} = 0;/' ${AMAVISD_CONF}
+
     cat >> ${AMAVISD_CONF} <<EOF
 
 $(cat ${SAMPLE_DIR}/amavisd/log_templ)
