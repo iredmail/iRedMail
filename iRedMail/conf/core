@@ -424,7 +424,7 @@ add_postfix_alias()
 install_pkg_rhel()
 {
     ECHO_INFO "Installing package(s): $@"
-    ${YUM} -y --disablerepo=rpmforge,ius,remi install $@
+    ${YUM} -y --disablerepo=rpmforge,ius,remi,atrpms install $@
 
     # Leave a mark if package installation failed.
     if [ X"$?" != X'0' ]; then
