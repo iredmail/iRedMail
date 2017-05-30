@@ -131,6 +131,9 @@ PostgreSQL:
         - Name: ${VMAIL_DB_ADMIN_USER}, Password: ${VMAIL_DB_ADMIN_PASSWD}
     * Database stored in: ${PGSQL_DATA_DIR}
     * RC script: ${PGSQL_RC_SCRIPT}
+    * Config files:
+        * ${PGSQL_CONF_POSTGRESQL}
+        * ${PGSQL_CONF_PG_HBA}
     * Log file: /var/log/postgresql/
     * See also:
         - ${PGSQL_INIT_SQL_SAMPLE}
