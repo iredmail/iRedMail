@@ -134,6 +134,15 @@ GRANT ALL ON ${IREDADMIN_DB_NAME}.* TO '${IREDADMIN_DB_USER}'@'${MYSQL_GRANT_HOS
 FLUSH PRIVILEGES;
 EOF
 
+        # Generate .my.cnf file
+        cat > /root/.my.cnf-iredadmin <<EOF
+[client]
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+user=${IREDADMIN_DB_USER}
+password="${IREDADMIN_DB_PASSWD}"
+EOF
+
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/SQL/iredadmin.pgsql ${PGSQL_DATA_DIR}/ >/dev/null
         chmod 0777 ${PGSQL_DATA_DIR}/iredadmin.pgsql >/dev/null

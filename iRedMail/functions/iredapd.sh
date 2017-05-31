@@ -99,6 +99,15 @@ SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/greylisting_whitelist_domains.sql;
 SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/wblist_rdns.sql;
 EOF
 
+        # Generate .my.cnf file
+        cat > /root/.my.cnf-iredapd <<EOF
+[client]
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+user=${IREDAPD_DB_USER}
+password="${IREDAPD_DB_PASSWD}"
+EOF
+
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         mkdir ${PGSQL_DATA_DIR}/tmp 2>/dev/null
         cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/*sql ${PGSQL_DATA_DIR}/tmp/ >> ${INSTALL_LOG} 2>&1

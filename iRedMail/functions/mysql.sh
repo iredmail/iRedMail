@@ -180,6 +180,22 @@ EOF
 
     chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT}
 
+    cat > /root/.my.cnf-vmail <<EOF
+[client]
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+user=${VMAIL_DB_BIND_USER}
+password="${VMAIL_DB_BIND_PASSWD}"
+EOF
+
+    cat > /root/.my.cnf-vmailadmin <<EOF
+[client]
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+user=${VMAIL_DB_ADMIN_USER}
+password="${VMAIL_DB_ADMIN_PASSWD}"
+EOF
+
     echo 'export status_mysql_generate_defaults_file_root="DONE"' >> ${STATUS_FILE}
 }
 

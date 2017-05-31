@@ -88,6 +88,15 @@ SOURCE ${RCM_HTTPD_ROOT}/SQL/mysql.initial.sql;
 FLUSH PRIVILEGES;
 EOF
 
+        # Generate .my.cnf file
+        cat > /root/.my.cnf-roundcube <<EOF
+[client]
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+user=${RCM_DB_USER}
+password="${RCM_DB_PASSWD}"
+EOF
+
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_SYS_USER_HOME}/rcm.sql >> ${INSTALL_LOG} 2>&1
         chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql

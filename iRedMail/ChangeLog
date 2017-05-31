@@ -5,6 +5,14 @@ iRedMail-0.9.7:
         + Debian 9 (code name: stretch). Tested with Debian 9 RC3.
 
     * Improvements:
+        - Generate /root/.my.cnf-<sql-user>:
+            - /root/my.cnf-vmail
+            - /root/my.cnf-vmailadmin
+            - /root/my.cnf-amavisd
+            - /root/my.cnf-iredapd
+            - /root/my.cnf-iredadmin
+            - /root/my.cnf-sogo
+            - /root/my.cnf-roundcube
         - SOGo:
             + New script 'tools/backup_sogo.sh'. used to backs up SOGo data
               with 'sogo-tool backup' command.

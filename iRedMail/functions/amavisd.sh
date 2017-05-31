@@ -572,6 +572,16 @@ SOURCE ${SAMPLE_DIR}/amavisd/bypass.sql;
 
 FLUSH PRIVILEGES;
 EOF
+
+        # Generate .my.cnf file
+        cat > /root/.my.cnf-sogo <<EOF
+[client]
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+user=${AMAVISD_DB_USER}
+password="${AMAVISD_DB_PASSWD}"
+EOF
+
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_SYS_USER_HOME}/amavisd.sql >> ${INSTALL_LOG} 2>&1
         cp -f ${SAMPLE_DIR}/amavisd/bypass.sql ${PGSQL_SYS_USER_HOME}/bypass.sql >> ${INSTALL_LOG} 2>&1

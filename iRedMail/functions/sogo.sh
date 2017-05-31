@@ -56,6 +56,15 @@ EOF
 
         ${MYSQL_CLIENT_ROOT} -e "SOURCE ${tmp_sql}"
 
+        # Generate .my.cnf file
+        cat > /root/.my.cnf-sogo <<EOF
+[client]
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+user=${SOGO_DB_USER}
+password="${SOGO_DB_PASSWD}"
+EOF
+
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         tmp_sql="${PGSQL_DATA_DIR}/create_db.sql"
 
