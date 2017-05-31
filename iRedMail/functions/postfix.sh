@@ -212,6 +212,14 @@ postfix_config_basic()
         fi
     fi
 
+    # Create symbol link: /var/log/mail.log -> maillog
+    # So that all linux/bsd distributions have the same maillog file.
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        if [ -f ${MAILLOG} -a ! -f /var/log/maillog ]; then
+            ln -s ${MAILLOG} /var/log/maillog
+        fi
+    fi
+
     echo 'export status_postfix_config_basic="DONE"' >> ${STATUS_FILE}
 }
 
