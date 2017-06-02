@@ -68,9 +68,11 @@ CREATE TABLE IF NOT EXISTS alias_moderators (
     address VARCHAR(255) NOT NULL DEFAULT '',
     moderator VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
+    dest_domain VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (id),
     UNIQUE INDEX (address, moderator),
-    INDEX (domain)
+    INDEX (domain),
+    INDEX (dest_domain)
 ) ENGINE=InnoDB;
 
 -- Forwardings. it contains
@@ -82,6 +84,7 @@ CREATE TABLE IF NOT EXISTS forwardings (
     address VARCHAR(255) NOT NULL DEFAULT '',
     forwarding VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
+    dest_domain VARCHAR(255) NOT NULL DEFAULT '',
     -- defines whether it's a standalone mail alias account. 0=no, 1=yes.
     is_list TINYINT(1) NOT NULL DEFAULT 0,
     -- defines whether it's a mail forwarding address of mail user. 0=no, 1=yes.
@@ -92,6 +95,7 @@ CREATE TABLE IF NOT EXISTS forwardings (
     PRIMARY KEY (id),
     UNIQUE INDEX (address, forwarding),
     INDEX (domain),
+    INDEX (dest_domain),
     INDEX (is_list),
     INDEX (is_alias)
 ) ENGINE=InnoDB;

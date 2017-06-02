@@ -84,10 +84,13 @@ for r in records:
     for m in members:
         if m:
             try:
+                dest_domain = m.split('@', 1)[-1]
+
                 db.insert('forwardings',
                           address=account,
                           forwarding=m,
                           domain=domain,
+                          dest_domain=dest_domain,
                           active=active,
                           is_list=is_list,
                           is_alias=is_alias,
@@ -109,10 +112,13 @@ for r in records:
     if moderators:
         for m in moderators:
             try:
+                dest_domain = m.split('@', 1)[-1]
+
                 db.insert('alias_moderators',
                           address=account,
                           moderator=m,
-                          domain=domain)
+                          domain=domain,
+                          dest_domain=dest_domain)
             except Exception, e:
                 if e[0] == 1062 or 'duplicate' in repr(e):
                     # Duplicate record
