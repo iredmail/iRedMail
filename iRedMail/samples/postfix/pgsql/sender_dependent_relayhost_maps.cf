@@ -3,4 +3,5 @@ port        = PH_SQL_SERVER_PORT
 user        = PH_VMAIL_DB_BIND_USER
 password    = PH_VMAIL_DB_BIND_PASSWD
 dbname      = PH_VMAIL_DB_NAME
+# '%s' will be replaced by the envelope sender address or @domain.
 query       = SELECT relayhost FROM sender_relayhost WHERE account='%s' LIMIT 1
