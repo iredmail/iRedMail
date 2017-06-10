@@ -259,6 +259,7 @@ $(cat ${SAMPLE_DIR}/amavisd/log_templ)
 
 # Set hostname.
 \$myhostname = "${HOSTNAME}";
+\$mydomain = \$myhostname;
 \$localhost_name = \$myhostname;
 
 # Set listen IP/PORT.
