@@ -180,6 +180,9 @@ check_env()
                         cat > ${TIP_FILE} <<EOF
 ${CONF_MSG}
 EOF
+
+                        chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${TIP_FILE}
+                        chmod 0500 ${TIP_FILE}
                     fi
                     ;;
                 N|n|* )
