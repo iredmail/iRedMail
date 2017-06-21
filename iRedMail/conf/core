@@ -182,7 +182,7 @@ ${CONF_MSG}
 EOF
 
                         chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${TIP_FILE}
-                        chmod 0500 ${TIP_FILE}
+                        chmod 0400 ${TIP_FILE}
                     fi
                     ;;
                 N|n|* )
