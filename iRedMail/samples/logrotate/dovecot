@@ -1,4 +1,4 @@
-/var/log/dovecot*.log {
+/var/log/dovecot*.log /var/log/dovecot/*.log {
     compress
     weekly
     rotate 10
