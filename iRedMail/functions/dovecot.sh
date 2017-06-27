@@ -419,13 +419,15 @@ dovecot_log() {
     fi
 
     ECHO_DEBUG "Setting logrotate for dovecot log file."
-    if [ X"${KERNEL_NAME}" == X'LINUX' -o X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-        if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-            cp -f ${SAMPLE_DIR}/logrotate/dovecot ${DOVECOT_LOGROTATE_FILE}
-            chmod 0644 ${DOVECOT_LOGROTATE_FILE}
-        elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-            cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/dovecot ${DOVECOT_LOGROTATE_FILE}
-        fi
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        cp -f ${SAMPLE_DIR}/logrotate/dovecot ${DOVECOT_LOGROTATE_FILE}
+        chmod 0644 ${DOVECOT_LOGROTATE_FILE}
+
+        perl -pi -e 's#PH_DOVECOT_LOG_DIR#$ENV{DOVECOT_LOG_DIR}#g' ${DOVECOT_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${DOVECOT_LOGROTATE_FILE}
+
+    elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/dovecot ${DOVECOT_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_DOVECOT_MASTER_PID#$ENV{DOVECOT_MASTER_PID}#g' ${DOVECOT_LOGROTATE_FILE}
         perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}

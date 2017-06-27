@@ -1,8 +1,9 @@
-/var/log/dovecot*.log /var/log/dovecot/*.log {
-    compress
+PH_DOVECOT_LOG_DIR/*.log {
     weekly
     rotate 10
     missingok
+    compress
+    delaycompress
 
     # Use bzip2 for compress.
     #compresscmd bzip2
@@ -11,6 +12,6 @@
     #compressext .bz2
 
     postrotate
-        doveadm log reopen
+        PH_SYSLOG_POSTROTATE_CMD
     endscript
 }

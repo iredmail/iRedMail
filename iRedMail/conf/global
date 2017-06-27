@@ -466,9 +466,9 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
     # Syslog (rsyslog)
     export SYSLOG_CONF_DIR='/etc/rsyslog.d'
+    export SYSLOG_POSTROTATE_CMD='/usr/sbin/service rsyslog restart'
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
         export SYSLOG_CONF='/etc/rsyslog.conf'
-        export SYSLOG_POSTROTATE_CMD='invoke-rc.d rsyslog rotate > /dev/null'
 
         # MariaDB support requires Debian >= 8 (jessie)
         if [ X"${DISTRO_VERSION}" == X'8' ]; then
@@ -481,7 +481,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export SYSLOG_DAEMON_USER='syslog'
         export SYSLOG_DAEMON_GROUP='adm'
         export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
-        export SYSLOG_POSTROTATE_CMD='reload rsyslog &>/dev/null || true'
 
         # MariaDB support requires Ubuntu >= 14.04
         export ENABLE_BACKEND_MARIADB='YES'
