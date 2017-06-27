@@ -379,6 +379,7 @@ dovecot_log() {
     ECHO_DEBUG "Configure Dovecot logging."
 
     mkdir -p ${DOVECOT_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+    chown ${SYSLOG_DAEMON_USER}:${SYSLOG_DAEMON_GROUP} ${DOVECOT_LOG_DIR}
 
     if [ X"${DOVECOT_USE_SYSLOG}" == X'YES' ]; then
         # Use rsyslog.
@@ -421,6 +422,7 @@ dovecot_log() {
     if [ X"${KERNEL_NAME}" == X'LINUX' -o X"${KERNEL_NAME}" == X'FREEBSD' ]; then
         if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
             cp -f ${SAMPLE_DIR}/logrotate/dovecot ${DOVECOT_LOGROTATE_FILE}
+            chmod 0644 ${DOVECOT_LOGROTATE_FILE}
         elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
             cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/dovecot ${DOVECOT_LOGROTATE_FILE}
         fi
