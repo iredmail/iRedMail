@@ -20,7 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-export IREDADMIN_VERSION='beta'
+export IREDADMIN_VERSION='0.8'
 export IREDADMIN_TARBALL="iRedAdmin-${IREDADMIN_VERSION}.tar.bz2"
 export IREDADMIN_HTTPD_ROOT="${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}"
 export IREDADMIN_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/iredadmin"
