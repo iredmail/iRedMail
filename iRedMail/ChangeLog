@@ -5,14 +5,11 @@ iRedMail-0.9.7:
         + Debian 9 (code name: stretch). Tested with Debian 9 RC3.
 
     * Improvements:
-        - Generate /root/.my.cnf-<sql-user>:
-            - /root/my.cnf-vmail
-            - /root/my.cnf-vmailadmin
-            - /root/my.cnf-amavisd
-            - /root/my.cnf-iredapd
-            - /root/my.cnf-iredadmin
-            - /root/my.cnf-sogo
-            - /root/my.cnf-roundcube
+        - SQL structure change (for SQL backends): drop few columns in sql
+          table `vmail.alias`, and creates 2 new tables: forwardings,
+          alias_moderators. For more technical details, please check this issue:
+          https://bitbucket.org/zhb/iredmail/issues/101
+
         - SOGo:
             + New script 'tools/backup_sogo.sh'. used to backs up SOGo data
               with 'sogo-tool backup' command.
@@ -31,14 +28,15 @@ iRedMail-0.9.7:
             - /etc/nginx/sites-enabled/ - store config files for web sites.
               All files under this directory will be loaded by default.
               Usually file under this directory is a symbol link to file under
-              /etc/nginx/sites-enabled/. This way we can easily enable or
+              /etc/nginx/sites-available/. This way we can easily enable or
               disable a site without renaming or moving its config file.
             - /etc/nginx/sites-conf.d/ - store per-site modular config files.
               for example, for web domain 'iredmail.org', we use directory
-              '/etc/nginx/sites-conf.d/iredmail.org/' to store all its http
-              settings, and '/etc/nginx/sites-conf.d/iredmail.org-ssl/' for
-              all https settings. You can use a prefixed digital number or
-              letter to define the order loaded by Nginx. For example,
+              '/etc/nginx/sites-conf.d/iredmail.org/' to store modular config
+              files for all its http settings, and
+              '/etc/nginx/sites-conf.d/iredmail.org-ssl/' for all https
+              settings. You can use a prefixed digital number or letter to
+              define the order of config files loaded by Nginx. For example,
               '00-listen.conf' will be loaded before other files.
 
               NOTE: of course you're not forced to use this directory, and
@@ -55,6 +53,14 @@ iRedMail-0.9.7:
               - sites-conf.d/iredmail.org/root.conf: define the document root
                 directory ('root /var/www/vhosts/iredmail.org;')
 
+        - Generate /root/.my.cnf-<sql-user>:
+            - /root/my.cnf-vmail
+            - /root/my.cnf-vmailadmin
+            - /root/my.cnf-amavisd
+            - /root/my.cnf-iredapd
+            - /root/my.cnf-iredadmin
+            - /root/my.cnf-sogo
+            - /root/my.cnf-roundcube
     * Fixed issues:
         - Enable 'iterate_query =' in 'dovecot-mysql.conf', so that doveadm
           works fine if it needs to get all mail users.
