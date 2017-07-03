@@ -1,6 +1,6 @@
 # SOGo session cleanup and email reminder, should be run every minute.
-*   *   *   *   *   PH_SOGO_CMD_TOOL expire-sessions 30 >/dev/null; PH_SOGO_CMD_EALARMS_NOTIFY >/dev/null
+*   *   *   *   *   PH_SOGO_CMD_TOOL expire-sessions 30 >/dev/null 2>&1; PH_SOGO_CMD_EALARMS_NOTIFY >/dev/null 2>&1
 
 # SOGo vacation messages expiration
 # The credentials file should contain the sieve admin credentials (username:passwd)
-0   0   *   *   *   PH_SOGO_CMD_TOOL update-autoreply -p PH_SOGO_SIEVE_CREDENTIAL_FILE >/dev/null
+0   0   *   *   *   PH_SOGO_CMD_TOOL update-autoreply -p PH_SOGO_SIEVE_CREDENTIAL_FILE >/dev/null 2>&1
