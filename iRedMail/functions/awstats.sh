@@ -25,37 +25,6 @@ awstats_config_basic()
     ECHO_INFO "Configure Awstats (logfile analyzer for mail and web server)."
     [ -f ${AWSTATS_CONF_SAMPLE} ] && dos2unix ${AWSTATS_CONF_SAMPLE} &>/dev/null
 
-    ECHO_DEBUG "Generate apache config file for awstats: ${AWSTATS_HTTPD_CONF}."
-    backup_file ${AWSTATS_HTTPD_CONF}
-
-    # Assign Apache daemon user to group 'adm', so that Awstats cron job can read log files.
-    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        usermod -G adm ${HTTPD_USER} >> ${INSTALL_LOG} 2>&1
-    fi
-
-    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        cp -f ${SAMPLE_DIR}/awstats/apache.conf ${AWSTATS_HTTPD_CONF}
-
-        perl -pi -e 's#PH_AWSTATS_ICON_DIR#$ENV{AWSTATS_ICON_DIR}#g' ${AWSTATS_HTTPD_CONF}
-        perl -pi -e 's#PH_AWSTATS_CSS_DIR#$ENV{AWSTATS_CSS_DIR}#g' ${AWSTATS_HTTPD_CONF}
-        perl -pi -e 's#PH_AWSTATS_JS_DIR#$ENV{AWSTATS_JS_DIR}#g' ${AWSTATS_HTTPD_CONF}
-        perl -pi -e 's#PH_AWSTATS_CGI_DIR#$ENV{AWSTATS_CGI_DIR}#g' ${AWSTATS_HTTPD_CONF}
-        perl -pi -e 's#PH_AWSTATS_HTTPD_AUTH_FILE#$ENV{AWSTATS_HTTPD_AUTH_FILE}#g' ${AWSTATS_HTTPD_CONF}
-
-        # Make Awstats accessible via HTTPS.
-        perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstats/icon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-        perl -pi -e 's#^(\s*</VirtualHost>)#Alias /awstatsicon "$ENV{AWSTATS_ICON_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-        perl -pi -e 's#^(\s*</VirtualHost>)#ScriptAlias /awstats "$ENV{AWSTATS_CGI_DIR}/"\n${1}#' ${HTTPD_SSL_CONF}
-
-        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            a2enmod cgi >> ${INSTALL_LOG} 2>&1
-
-            # serve-cgi-bin.conf contains duplicate and conflict setting for cgi-bin
-            a2disconf serve-cgi-bin >> ${INSTALL_LOG} 2>&1
-            a2enconf awstats >> ${INSTALL_LOG} 2>&1
-        fi
-    fi
-
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         ECHO_DEBUG "Create directory used to store static statistics web pages: ${AWSTATS_STATIC_PAGES_DIR}"
         [ -d ${AWSTATS_STATIC_PAGES_DIR} ] || mkdir -p ${AWSTATS_STATIC_PAGES_DIR} >> ${INSTALL_LOG} 2>&1
@@ -67,16 +36,11 @@ awstats_config_basic()
     chmod 0400 ${AWSTATS_HTTPD_AUTH_FILE}
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # Use htpasswd in OpenBSD base system (it's not same as Apache htpasswd)
+        # Use htpasswd in OpenBSD base system
         echo "${DOMAIN_ADMIN_EMAIL}:${DOMAIN_ADMIN_PASSWD_PLAIN}" | htpasswd -I ${AWSTATS_HTTPD_AUTH_FILE}
     else
-        if [ X"${WEB_SERVER}" == X'APACHE' -a X"${APACHE_VERSION}" == X'2.4' ]; then
-            # Use BCRYPT (the '-B' flag)
-            htpasswd -b -B -c ${AWSTATS_HTTPD_AUTH_FILE} ${DOMAIN_ADMIN_EMAIL} ${DOMAIN_ADMIN_PASSWD_PLAIN} >> ${INSTALL_LOG} 2>&1
-        else
-            _pw="$(generate_password_hash MD5 ${DOMAIN_ADMIN_PASSWD_PLAIN})"
-            echo "${DOMAIN_ADMIN_EMAIL}:${_pw}" >> ${AWSTATS_HTTPD_AUTH_FILE}
-        fi
+        _pw="$(generate_password_hash MD5 ${DOMAIN_ADMIN_PASSWD_PLAIN})"
+        echo "${DOMAIN_ADMIN_EMAIL}:${_pw}" >> ${AWSTATS_HTTPD_AUTH_FILE}
     fi
 
     cat >> ${TIP_FILE} <<EOF
@@ -86,17 +50,12 @@ Awstats:
         - ${AWSTATS_CONF_WEB}
         - ${AWSTATS_CONF_MAIL}
         - ${AWSTATS_HTTPD_AUTH_FILE}
-        - ${AWSTATS_HTTPD_CONF} - Available if you're running Apache
     * Login account:
         - Username: ${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}, password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
     * URL:
-        - Apache:
-            - https://${HOSTNAME}/awstats/awstats.pl?config=web
-            - https://${HOSTNAME}/awstats/awstats.pl?config=smtp
-        - Nginx:
-            - https://${HOSTNAME}/awstats/
-            - https://${HOSTNAME}/awstats/awstats.smtp.html
-            - https://${HOSTNAME}/awstats/awstats.web.html
+        - https://${HOSTNAME}/awstats/
+        - https://${HOSTNAME}/awstats/awstats.smtp.html
+        - https://${HOSTNAME}/awstats/awstats.web.html
     * Crontab job:
         shell> crontab -l root
     * Command used to add a new user, or reset password for an existing user:
@@ -109,7 +68,7 @@ EOF
 
 awstats_config_weblog()
 {
-    ECHO_DEBUG "Config awstats to analyze apache web access log: ${AWSTATS_CONF_WEB}."
+    ECHO_DEBUG "Config awstats to analyze web server access log: ${AWSTATS_CONF_WEB}."
     cd ${AWSTATS_CONF_DIR}
     cp -f ${AWSTATS_CONF_SAMPLE} ${AWSTATS_CONF_WEB}
 
@@ -201,16 +160,7 @@ awstats_config_crontab()
 {
     ECHO_DEBUG "Setup crontab jobs for awstats."
 
-    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        cat >> ${CRON_FILE_ROOT} <<EOF
-# ${PROG_NAME}: update Awstats statistics for web hourly
-1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_AWSTATS_PL} -update -config=web >/dev/null
-
-# ${PROG_NAME}: update Awstats statistics for smtp hourly
-1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_AWSTATS_PL} -update -config=smtp >/dev/null
-
-EOF
-    elif [ X"${WEB_SERVER}" == X'NGINX' ]; then
+    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         cat >> ${CRON_FILE_ROOT} <<EOF
 # ${PROG_NAME}: update Awstats statistics for web hourly
 1   */1   *   *   *   ${PERL_BIN} ${AWSTATS_CMD_BUILDSTATICPAGE} -update -dir=${AWSTATS_STATIC_PAGES_DIR} -configdir=${AWSTATS_CONF_DIR} -awstatsprog=${AWSTATS_CMD_AWSTATS_PL} -config=web >/dev/null

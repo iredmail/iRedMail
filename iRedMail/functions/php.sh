@@ -40,7 +40,7 @@ php_config()
         done
     fi
 
-    ECHO_DEBUG "Hide PHP Version in Apache from remote users requests: ${PHP_INI}."
+    ECHO_DEBUG "Hide PHP info from remote users requests: ${PHP_INI}."
     perl -pi -e 's#^(expose_php.*=).*#${1} Off;#' ${PHP_INI}
 
     ECHO_DEBUG "Increase 'memory_limit' to 256M: ${PHP_INI}."
@@ -77,12 +77,6 @@ php_config()
     fi
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        # Disable suhosin.session.encrypt on Debian 6. Required by Roundcube webmail.
-        if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-            [ -f ${PHP_INI_CONF_DIR}/suhosin.ini ] && \
-                perl -pi -e 's#.*(suhosin.session.encrypt).*#${1} = off#' ${PHP_INI_CONF_DIR}/suhosin.ini
-        fi
-
         # Enable mcrypt
         ${PHPENMOD_BIN} mcrypt >> ${INSTALL_LOG} 2>&1
 
@@ -95,8 +89,7 @@ php_config()
 
     cat >> ${TIP_FILE} <<EOF
 PHP:
-    * PHP config file for Apache: ${PHP_INI} (not exist if you're running Nginx)
-    * PHP config file for Nginx: ${NGINX_PHP_INI} (not exist if you're running Apache)
+    * PHP config file for Nginx: ${NGINX_PHP_INI}
     * Disabled functions: ${PHP_DISABLE_FUNCTIONS}
 
 EOF

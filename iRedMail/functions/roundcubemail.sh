@@ -15,8 +15,8 @@ rcm_install()
         # Extract source tarball.
         extract_pkg ${RCM_TARBALL} ${HTTPD_SERVERROOT}
 
-        # Create symbol link, so that we don't need to modify apache
-        # conf.d/roundcubemail.conf file after upgrade this component.
+        # Create symbol link, so that we don't need to modify web server config
+        # file to set new version number after upgrading this software.
         ln -s ${RCM_HTTPD_ROOT} ${RCM_HTTPD_ROOT_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
 
         ECHO_DEBUG "Set correct permission for Roundcubemail: ${RCM_HTTPD_ROOT}."
@@ -31,42 +31,6 @@ rcm_install()
     chmod 0600 ${RCM_CONF}
 
     echo 'export status_rcm_install="DONE"' >> ${STATUS_FILE}
-}
-
-rcm_config_apache()
-{
-    ECHO_DEBUG "Create directory alias for Roundcubemail."
-    cat > ${HTTPD_CONF_DIR}/roundcubemail.conf <<EOF
-${CONF_MSG}
-# Note: Please refer to ${HTTPD_SSL_CONF} for SSL/TLS setting.
-Alias /mail "${RCM_HTTPD_ROOT_SYMBOL_LINK}/"
-<Directory "${RCM_HTTPD_ROOT_SYMBOL_LINK}/">
-    Options -Indexes
-
-    <IfVersion < 2.4>
-        Order deny,allow
-        Allow from all
-    </IfVersion>
-    <IfVersion >= 2.4>
-        Require all granted
-    </IfVersion>
-</Directory>
-EOF
-
-    # Enable this config file on Ubuntu 13.10 and later releases.
-    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            # Enable conf file: conf-available/roundcubemail.conf
-            a2enconf roundcubemail >> ${INSTALL_LOG} 2>&1
-        fi
-    fi
-
-    # Make Roundcube can be accessed via HTTPS.
-    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        perl -pi -e 's#^(\s*</VirtualHost>)#Alias /mail "$ENV{RCM_HTTPD_ROOT_SYMBOL_LINK}/"\n${1}#' ${HTTPD_SSL_CONF}
-    fi
-
-    echo 'export status_rcm_config_apache="DONE"' >> ${STATUS_FILE}
 }
 
 rcm_initialize_db()
@@ -196,9 +160,8 @@ Roundcube webmail: ${RCM_HTTPD_ROOT}
         - Database name: ${RCM_DB_NAME}
         - Username: ${RCM_DB_USER}
         - Password: ${RCM_DB_PASSWD}
-    * See also:
-        - ${HTTPD_CONF_DIR}/roundcubemail.conf (Apache)
-        - Cron job: crontab -l -u ${SYS_ROOT_USER}
+    * Cron job:
+        - Command: "crontab -l -u ${SYS_ROOT_USER}"
 
 EOF
 
@@ -331,10 +294,6 @@ rcm_plugin_enigma()
 
 rcm_setup() {
     check_status_before_run rcm_install
-
-    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        check_status_before_run rcm_config_apache
-    fi
 
     if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
         check_status_before_run rcm_initialize_db

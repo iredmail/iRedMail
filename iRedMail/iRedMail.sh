@@ -150,7 +150,7 @@ check_status_before_run generate_ssl_keys
 # User/Group: vmail
 check_status_before_run add_required_users
 
-# Apache & PHP.
+# web server & PHP.
 check_status_before_run web_server_config
 
 # Install & Config Backend: OpenLDAP or MySQL.

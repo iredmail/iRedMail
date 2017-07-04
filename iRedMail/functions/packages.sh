@@ -130,16 +130,6 @@ install_all()
             # Perl module
             ALL_PKGS="${ALL_PKGS} perl-DBD-MySQL"
 
-            if [ X"${USE_AWSTATS}" == X'YES' ]; then
-                if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-                    if [ X"${DISTRO_VERSION}" == X'6' ]; then
-                        ALL_PKGS="${ALL_PKGS} mod_auth_mysql"
-                    else
-                        ALL_PKGS="${ALL_PKGS} apr-util-mysql"
-                    fi
-                fi
-            fi
-
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # MySQL server and client.
             [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-client"
@@ -151,9 +141,6 @@ install_all()
             fi
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql libdbd-mysql-perl"
-            if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-                ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-mysql"
-            fi
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} mariadb-client"
@@ -182,10 +169,6 @@ install_all()
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql libdbd-pg-perl"
 
-            if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-                ALL_PKGS="${ALL_PKGS} libaprutil1-dbd-pgsql"
-            fi
-
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-client postgresql-server postgresql-contrib p5-DBD-Pg"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${PGSQL_RC_SCRIPT_NAME}"
@@ -196,8 +179,6 @@ install_all()
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} php-common php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
-
-            [ X"${WEB_SERVER}" == X'APACHE' ] && ALL_PKGS="${ALL_PKGS} php"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
@@ -221,23 +202,6 @@ install_all()
         fi
     fi
 
-    # Apache
-    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} httpd mod_ssl"
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} apache2 apache2-utils"
-            if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
-                ALL_PKGS="${ALL_PKGS} libapache2-mod-php5"
-            else
-                ALL_PKGS="${ALL_PKGS} libapache2-mod-php"
-            fi
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # Apache is not available in base system
-            :
-        fi
-    fi
-
     # Nginx
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -257,10 +221,6 @@ install_all()
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
-        DISABLED_SERVICES="${DISABLED_SERVICES} ${APACHE_RC_SCRIPT_NAME}"
-    else
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${APACHE_RC_SCRIPT_NAME}"
-        DISABLED_SERVICES="${DISABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
     fi
 
     # Dovecot.
@@ -445,13 +405,11 @@ EOF
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces python-beautifulsoup4 python-lxml python-pycurl"
         [ X"${DISTRO_VERSION}" == X'7' ] && ALL_PKGS="${ALL_PKGS} py-bcrypt"
 
-        [ X"${WEB_SERVER}" == X'APACHE' ] && ALL_PKGS="${ALL_PKGS} mod_wsgi"
         [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy python-beautifulsoup python-lxml python-pycurl"
 
-        [ X"${WEB_SERVER}" == X'APACHE' ] && ALL_PKGS="${ALL_PKGS} libapache2-mod-wsgi"
         [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
         # Debian

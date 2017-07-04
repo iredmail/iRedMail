@@ -265,38 +265,10 @@ EOF
         fi
     fi
 
-    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        backup_file ${SOGO_HTTPD_CONF}
-        cp -f ${SAMPLE_DIR}/sogo/sogo-apache.conf ${SOGO_HTTPD_CONF}
-        perl -pi -e 's#(.*timeout=)360#${1}$ENV{SOGO_PROXY_TIMEOUT}#' ${HTTPD_CONF}
-
-        perl -pi -e 's#PH_SOGO_GNUSTEP_DIR#$ENV{SOGO_GNUSTEP_DIR}#g' ${SOGO_HTTPD_CONF}
-
-        # Always redirect http access to https
-        perl -pi -e 's#^(\s*</VirtualHost>)#RewriteRule /SOGo(.*) https://%{HTTP_HOST}%{REQUEST_URI}\n${1}#' ${HTTPD_CONF}
-
-        # Enable access in https mode
-        perl -pi -e 's#^(\s*</VirtualHost>)#ProxyPass /Microsoft-Server-ActiveSync http://127.0.0.1:20000/SOGo/Microsoft-Server-ActiveSync retry=60 connectiontimeout=5 timeout=$ENV{SOGO_PROXY_TIMEOUT}\n${1}#' ${HTTPD_SSL_CONF}
-        perl -pi -e 's#^(\s*</VirtualHost>)#ProxyPass /SOGo http://127.0.0.1:20000/SOGo retry=0\n${1}#' ${HTTPD_SSL_CONF}
-
-        if [ X"${DISTRO}" == X'RHEL' ]; then
-            echo '# Always redirect http access to https' >> ${HTTPD_CONF}
-            echo 'RewriteRule /SOGo(.*) https://%{HTTP_HOST}%{REQUEST_URI}' >> ${HTTPD_CONF}
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            perl -pi -e 's#^(\s*</VirtualHost>)#RewriteRule /SOGo(.*) https://%{HTTP_HOST}%{REQUEST_URI}\n${1}#' ${HTTPD_HTTP_CONF}
-            a2enconf SOGo >> ${INSTALL_LOG} 2>&1
-        elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-            # Enable required Apache modules
-            perl -pi -e 's/^#(LoadModule proxy_module.*)/${1}/' ${HTTPD_CONF}
-            perl -pi -e 's/^#(LoadModule proxy_http_module.*)/${1}/' ${HTTPD_CONF}
-        fi
-    fi
-
     cat >> ${TIP_FILE} <<EOF
 SOGo Groupware:
     * Web access: httpS://${HOSTNAME}/SOGo/
     * Main config file: ${SOGO_CONF}
-    * Apache config file: ${SOGO_HTTPD_CONF}
     * Nginx template file: ${NGINX_CONF_TMPL_DIR}/sogo.tmpl
     * Database:
         - Database name: ${SOGO_DB_NAME}

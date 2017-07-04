@@ -25,24 +25,13 @@ iredadmin_install()
 {
     ECHO_INFO "Configure iRedAdmin (official web-based admin panel)."
 
-    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ECHO_DEBUG "Enable apache module: wsgi."
-            a2enmod wsgi >> ${INSTALL_LOG} 2>&1
-        elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-            if ls ${HTTPD_MODULES_DIR}/*mod_wsgi.conf &>/dev/null; then
-                perl -pi -e 's/^#(LoadModule.*wsgi_module.*)/${1}/' ${HTTPD_MODULES_DIR}/*mod_wsgi.conf
-            fi
-        fi
-    fi
-
     cd ${PKG_MISC_DIR}
 
     # Extract source tarball.
     extract_pkg ${IREDADMIN_TARBALL} ${HTTPD_SERVERROOT}
 
-    # Create symbol link, so that we don't need to modify apache
-    # conf.d/iredadmin.conf file after upgrading this component.
+    # Create symbol link, so that we don't need to modify web server config
+    # file to set new version number after upgrading this software.
     ln -s ${IREDADMIN_HTTPD_ROOT} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Set correct permission for iRedAdmin: ${IREDADMIN_HTTPD_ROOT}."
@@ -71,46 +60,6 @@ iredadmin_web_config() {
         # Change file owner
         # iRedAdmin is not running as user 'iredadmin' on OpenBSD
         chown -R ${HTTPD_USER}:${HTTPD_GROUP} settings.py
-    fi
-
-    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        backup_file ${IREDADMIN_HTTPD_CONF}
-        ECHO_DEBUG "Create directory alias for iRedAdmin."
-
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # iRedMail doesn't enable Apache on OpenBSD
-            :
-        else
-            perl -pi -e 's#^(\s*</VirtualHost>)#Alias /iredadmin/static "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static/"\n${1}#' ${HTTPD_SSL_CONF}
-            perl -pi -e 's#^(\s*</VirtualHost>)#WSGIScriptAlias /iredadmin "$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py/"\n${1}#' ${HTTPD_SSL_CONF}
-
-            # iRedAdmin runs as WSGI application with Apache + mod_wsgi
-            cat > ${IREDADMIN_HTTPD_CONF} <<EOF
-WSGISocketPrefix /var/run/wsgi
-WSGIDaemonProcess iredadmin user=${IREDADMIN_USER_NAME} threads=15
-WSGIProcessGroup ${IREDADMIN_GROUP_NAME}
-
-AddType text/html .py
-
-<Directory ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/>
-    <IfVersion < 2.4>
-        Order deny,allow
-        Allow from all
-    </IfVersion>
-    <IfVersion >= 2.4>
-        Require all granted
-    </IfVersion>
-</Directory>
-
-#Alias /iredadmin/static "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/static/"
-#WSGIScriptAlias /iredadmin "${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/iredadmin.py/"
-EOF
-        fi
-
-        # Enable Apache module config file on Ubuntu 14.04.
-        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            a2enconf iredadmin >> ${INSTALL_LOG} 2>&1
-        fi
     fi
 
     echo 'export status_iredadmin_web_config="DONE"' >> ${STATUS_FILE}

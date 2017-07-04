@@ -69,9 +69,7 @@ fail2ban_config()
     cp -f ${SAMPLE_DIR}/fail2ban/filter.d/*.conf ${FAIL2BAN_FILTER_DIR}
 
     # Enable Nginx
-    if [ X"${WEB_SERVER}" == X'APACHE' ]; then
-        perl -pi -e 's#(enabled.*=.*)false#${1}true#' ${FAIL2BAN_JAIL_CONF_DIR}/apache-auth.local
-    elif [ X"${WEB_SERVER}" == X'NGINX' ]; then
+    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         perl -pi -e 's#(enabled.*=.*)false#${1}true#' ${FAIL2BAN_JAIL_CONF_DIR}/nginx-http-auth.local
     fi
 

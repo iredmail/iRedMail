@@ -26,7 +26,6 @@ export IREDADMIN_HTTPD_ROOT="${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}"
 export IREDADMIN_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/iredadmin"
 export IREDADMIN_HTTPD_CONF="${HTTPD_CONF_DIR}/iredadmin.conf"
 
-# Run iRedAdmin with Apache + mod_wsgi, but as a low privilege user/group.
 export IREDADMIN_HOME_DIR='/home/iredadmin'
 export IREDADMIN_USER_NAME='iredadmin'
 export IREDADMIN_GROUP_NAME="${IREDADMIN_USER_NAME}"

@@ -115,7 +115,6 @@ else
 TIP: Use SPACE key to select item." \
 20 76 3 \
 "Nginx" "The fastest web server" "on" \
-"Apache" "The most popular web server" "off" \
 "No web server" "I don't need any web applications on this server" "off" \
 2>${RUNTIME_DIR}/.web_server
 
@@ -127,9 +126,7 @@ TIP: Use SPACE key to select item." \
     rm -f ${RUNTIME_DIR}/.web_server
 fi
 
-if [ X"${web_server}" == X'APACHE' ]; then
-    export WEB_SERVER='APACHE'
-elif [ X"${web_server}" == X'NGINX' ]; then
+if [ X"${web_server}" == X'NGINX' ]; then
     export WEB_SERVER='NGINX'
 else
     export DISABLE_WEB_SERVER='YES'

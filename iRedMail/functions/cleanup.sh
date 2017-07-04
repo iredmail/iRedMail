@@ -253,7 +253,6 @@ cleanup_feedback()
     url="${url}&AWSTATS=${USE_AWSTATS}"
     url="${url}&FAIL2BAN=${USE_FAIL2BAN}"
     url="${url}&IREDADMIN=${USE_IREDADMIN}"
-    [ X"${WEB_SERVER}" == X'APACHE' ] && url="${url}&APACHE=YES"
     [ X"${WEB_SERVER}" == X'NGINX' ] && url="${url}&NGINX=YES"
 
     ECHO_DEBUG "Send info of chosed packages to iRedMail team to help improve iRedMail:"
