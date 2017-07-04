@@ -476,7 +476,7 @@ OPTIONS_FILE_SET+=NOMARCH
 OPTIONS_FILE_SET+=P0F
 OPTIONS_FILE_SET+=P7ZIP
 OPTIONS_FILE_UNSET+=PGSQL
-OPTIONS_FILE_SET+=RAR
+OPTIONS_FILE_UNSET+=RAR
 OPTIONS_FILE_SET+=RPM
 OPTIONS_FILE_SET+=SASL
 OPTIONS_FILE_SET+=SNMP
@@ -498,8 +498,7 @@ EOF
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/security_amavisd-new/options
     fi
 
-    # Enable RAR support on i386 only since it requires 32-bit libraries
-    # installed under /usr/lib32.
+    # RAR is i386 only.
     if [ X"${OS_ARCH}" == X'i386' ]; then
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=RAR#OPTIONS_FILE_SET+=RAR#' /var/db/ports/security_amavisd-new/options
     fi
