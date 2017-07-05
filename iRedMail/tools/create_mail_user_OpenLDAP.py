@@ -61,6 +61,7 @@ HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME = ['NTLM']
 import os
 import sys
 import time
+import datetime
 from subprocess import Popen, PIPE
 from base64 import b64encode
 import re
@@ -188,6 +189,14 @@ def generate_password_with_doveadmpw(scheme, plain_password):
     except:
         return generate_ssha_password(p)
 
+def get_days_of_today():
+    """Return number of days since 1970-01-01."""
+    today = datetime.date.today()
+
+    try:
+        return (datetime.date(today.year, today.month, today.day) - datetime.date(1970, 1, 1)).days
+    except:
+        return 0
 
 def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     # Append timestamp in maildir path
@@ -232,28 +241,28 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     mailMessageStore = STORAGE_NODE + '/' + mailMessageStore
 
     ldif = [
-        ('objectClass',         ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount']),
-        ('mail',                [mail]),
-        ('userPassword',        generate_password_hash(passwd)),
-        ('mailQuota',           [quota]),
-        ('cn',                  [cn]),
-        ('sn',                  [username]),
-        ('uid',                 [username]),
+        ('objectClass', ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount']),
+        ('mail', [mail]),
+        ('userPassword', generate_password_hash(passwd)),
+        ('mailQuota', [quota]),
+        ('cn', [cn]),
+        ('sn', [username]),
+        ('uid', [username]),
         ('storageBaseDirectory', [STORAGE_BASE]),
-        ('mailMessageStore',    [mailMessageStore]),
-        ('homeDirectory',       [homeDirectory]),
-        ('accountStatus',       ['active']),
-        ('enabledService',      ['internal', 'doveadm', 'lib-storage', 'indexer-worker', 'dsync',
-                                 'mail', 'smtp', 'smtpsecured',
-                                 'pop3', 'pop3secured', 'imap', 'imapsecured',
-                                 'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',
-                                 'managesieve', 'managesievesecured',
-                                 'sieve', 'sievesecured', 'lmtp', 'sogo',
-                                 'shadowaddress',
-                                 'displayedInGlobalAddressBook']),
-        ('memberOfGroup',       groups),
+        ('mailMessageStore', [mailMessageStore]),
+        ('homeDirectory', [homeDirectory]),
+        ('accountStatus', ['active']),
+        ('enabledService', ['internal', 'doveadm', 'lib-storage', 'indexer-worker', 'dsync',
+                            'mail', 'smtp', 'smtpsecured',
+                            'pop3', 'pop3secured', 'imap', 'imapsecured',
+                            'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',
+                            'managesieve', 'managesievesecured',
+                            'sieve', 'sievesecured', 'lmtp', 'sogo',
+                            'shadowaddress',
+                            'displayedInGlobalAddressBook']),
+        ('memberOfGroup', groups),
         # shadowAccount integration.
-        ('shadowLastChange', ['0']),
+        ('shadowLastChange', [get_days_of_today()]),
         # Amavisd integration.
         ('amavisLocal', ['TRUE'])]
 

@@ -125,6 +125,10 @@ DATE="$(date +%Y.%m.%d.%H.%M.%S)"
 STORAGE_BASE="$(dirname ${STORAGE_BASE_DIRECTORY})"
 STORAGE_NODE="$(basename ${STORAGE_BASE_DIRECTORY})"
 
+# Get days since 1970-01-01
+EPOCH_SECONDS="$(date +%s)"
+DAYS_SINCE_EPOCH="$((EPOCH_SECONDS / 24 / 60 / 60))"
+
 add_new_domain()
 {
     domain="$(echo ${1} | tr '[A-Z]' '[a-z]')"
@@ -179,10 +183,6 @@ add_new_user()
     USERNAME="$(echo $1 | tr [A-Z] [a-z])"
     MAIL="$( echo $2 | tr [A-Z] [a-z])"
 
-    # Create template LDIF file for this new user and add it.
-    # If you do *NOT* want to keep rootpw in script, use '-W' instead of
-    # '-w "${BINDPW}".
-
     maildir="${DOMAIN_NAME}/$(hash_maildir ${USERNAME})"
 
     # Generate user password.
@@ -225,7 +225,7 @@ cn: ${USERNAME}
 sn: ${USERNAME}
 givenName: ${USERNAME}
 uid: ${USERNAME}
-shadowLastChange: 0
+shadowLastChange: ${DAYS_SINCE_EPOCH}
 amavisLocal: TRUE
 enabledService: internal
 enabledService: doveadm

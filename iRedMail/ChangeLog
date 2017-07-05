@@ -1,6 +1,10 @@
 iRedMail-0.9.8:
     * Apache has been removed, Nginx is the only one web server available.
 
+    * Fixed issues:
+        - tools/create_mail_user_* scripts doesn't use current date as
+          password last change date for newly created user.
+
 iRedMail-0.9.7:
     * Supports new distribution release:
         + OpenBSD 6.1. OpenBSD 6.0 is not supported anymore.
