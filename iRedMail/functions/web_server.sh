@@ -54,13 +54,12 @@ web_server_config()
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         . ${FUNCTIONS_DIR}/nginx.sh
         check_status_before_run nginx_config
+        check_status_before_run web_server_extra
     fi
 
-    if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
+    if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         . ${FUNCTIONS_DIR}/php.sh
         check_status_before_run php_config
-
-        check_status_before_run web_server_extra
     fi
 
     echo 'export status_web_server_config="DONE"' >> ${STATUS_FILE}

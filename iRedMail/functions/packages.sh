@@ -178,17 +178,17 @@ install_all()
     # PHP
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} php-common php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
+            ALL_PKGS="${ALL_PKGS} php-common php-fpm php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
-                ALL_PKGS="${ALL_PKGS} php5-cli php5-json php5-gd php5-mcrypt php5-curl mcrypt php5-intl"
+                ALL_PKGS="${ALL_PKGS} php5-cli php5-fpm php5-json php5-gd php5-mcrypt php5-curl mcrypt php5-intl"
                 [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php5-ldap php5-mysql"
                 [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
                 [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php5-pgsql"
             else
-                # Ubuntu 16.04
-                ALL_PKGS="${ALL_PKGS} php-json php-gd php-mcrypt php-curl mcrypt php-intl php-xml php-mbstring"
+                # Debian 9, Ubuntu 16.04
+                ALL_PKGS="${ALL_PKGS} php-cli php-fpm php-json php-gd php-mcrypt php-curl mcrypt php-intl php-xml php-mbstring"
                 [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-mysql"
                 [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql"
                 [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql"
@@ -205,21 +205,14 @@ install_all()
     # Nginx
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} nginx php-fpm"
+            ALL_PKGS="${ALL_PKGS} nginx"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} nginx-full"
-            if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
-                ALL_PKGS="${ALL_PKGS} php5-fpm"
-            else
-                ALL_PKGS="${ALL_PKGS} php-fpm"
-            fi
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} nginx${OB_PKG_NGINX_VER}"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${NGINX_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
-    fi
 
-    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
     fi
 

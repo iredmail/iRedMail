@@ -187,6 +187,7 @@ EOF
                     ;;
                 N|n|* )
                     ECHO_INFO "Skip configuration file: ${IREDMAIL_CONFIG_FILE}."
+                    backup_file ${IREDMAIL_CONFIG_FILE}
                     . ${CONFIG_VIA_DIALOG}
                     ;;
             esac

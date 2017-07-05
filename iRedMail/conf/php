@@ -43,13 +43,13 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
-        [ X"${WEB_SERVER}" == X'NGINX' ] && export PHP_INI='/etc/php5/fpm/php.ini'
+        export PHP_INI='/etc/php5/fpm/php.ini'
 
         export PHP_FPM_POOL_WWW_CONF='/etc/php5/fpm/pool.d/www.conf'
         export PHP_FPM_RC_SCRIPT_NAME='php5-fpm'
         export PHPENMOD_BIN='php5enmod'
     else
-        [ X"${WEB_SERVER}" == X'NGINX' ] && export PHP_INI='/etc/php/7.0/fpm/php.ini'
+        export PHP_INI='/etc/php/7.0/fpm/php.ini'
 
         export PHP_FPM_POOL_WWW_CONF='/etc/php/7.0/fpm/pool.d/www.conf'
         export PHP_FPM_RC_SCRIPT_NAME="php7.0-fpm"
