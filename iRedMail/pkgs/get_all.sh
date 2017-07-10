@@ -273,6 +273,11 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         eval ${install_pkg} ${PKG_APT_TRANSPORT_HTTPS}
     fi
 
+    # dirmngr is required by apt-key
+    if [ ! -e /usr/bin/dirmngr ]; then
+        eval ${install_pkg} dirmngr
+    fi
+
     # Force update.
     ECHO_INFO "apt-get update ..."
     ${APTGET} update
