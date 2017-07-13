@@ -124,22 +124,24 @@ nginx_config()
     perl -pi -e 's#PH_HTTPD_SERVERROOT#$ENV{HTTPD_SERVERROOT}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
 
     # php-fpm
-    perl -pi -e 's#^(listen *=).*#${1} $ENV{PHP_FPM_SOCKET}#g' ${PHP_FPM_POOL_WWW_CONF}
-    perl -pi -e 's#^;(listen.owner *=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
-    perl -pi -e 's#^;(listen.group *=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
-    perl -pi -e 's#^;(listen.mode *=).*#${1} 0660#g' ${PHP_FPM_POOL_WWW_CONF}
-    perl -pi -e 's#^(user.*=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
-    perl -pi -e 's#^(group.*=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
-    perl -pi -e 's#^(php_value.*session.save_path.).*#${1} = "$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_FPM_POOL_WWW_CONF}
+    if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
+        perl -pi -e 's#^(listen *=).*#${1} $ENV{PHP_FPM_SOCKET}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#^;(listen.owner *=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#^;(listen.group *=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#^;(listen.mode *=).*#${1} 0660#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#^(user.*=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#^(group.*=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#^(php_value.*session.save_path.).*#${1} = "$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_FPM_POOL_WWW_CONF}
+
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            perl -pi -e 's#^(\[www\])$#${1}\nuser = $ENV{HTTPD_USER}\ngroup = $ENV{HTTPD_GROUP}\n#' ${PHP_FPM_POOL_WWW_CONF}
+        fi
+    fi
 
     # Awstats
     perl -pi -e 's#PH_AWSTATS_STATIC_PAGES_DIR#$ENV{AWSTATS_STATIC_PAGES_DIR}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
     perl -pi -e 's#PH_AWSTATS_HTTPD_AUTH_FILE#$ENV{AWSTATS_HTTPD_AUTH_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
     perl -pi -e 's#PH_AWSTATS_ICON_DIR#$ENV{AWSTATS_ICON_DIR}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
-
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        perl -pi -e 's#^(\[www\])$#${1}\nuser = $ENV{HTTPD_USER}\ngroup = $ENV{HTTPD_GROUP}\n#' ${PHP_FPM_POOL_WWW_CONF}
-    fi
 
     # Copy uwsgi config file for iRedAdmin
     [ -d ${UWSGI_CONF_DIR} ] || mkdir -p ${UWSGI_CONF_DIR} >> ${INSTALL_LOG} 2>&1
@@ -198,8 +200,10 @@ nginx_config()
         echo 'nginx_flags="-u"' >> ${RC_CONF_LOCAL}
 
         # Disable chroot in php-fpm
-        perl -pi -e 's#^(chroot *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
-        perl -pi -e 's#^(chdir *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
+        if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
+            perl -pi -e 's#^(chroot *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
+            perl -pi -e 's#^(chdir *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
+        fi
 
         mkdir -p ${UWSGI_CONF_DIR} >> ${INSTALL_LOG} 2>&1
         cp ${SAMPLE_DIR}/nginx/uwsgi_iredadmin.ini ${IREDADMIN_UWSGI_CONF}
