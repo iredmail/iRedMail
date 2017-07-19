@@ -5,6 +5,9 @@ iRedMail-0.9.8:
         - Cannot sync contacts on Android devices via EAS with SOGo.
         - tools/create_mail_user_* scripts doesn't use current date as
           password last change date for newly created user.
+        - tools/migrate_sql_alias_table.py: doesn't support 'utf8' charset.
+          Thanks Kacper Guzik <kacper.guzik _at_ zenbox _dot_ pl> for the
+          report and code contribution.
 
 iRedMail-0.9.7:
     * Supports new distribution release:

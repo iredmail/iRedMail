@@ -36,7 +36,9 @@ try:
                       port=int(settings.vmail_db_port),
                       db=settings.vmail_db_name,
                       user=settings.vmail_db_user,
-                      pw=settings.vmail_db_password)
+                      pw=settings.vmail_db_password,
+                      charset='utf8',
+                      use_unicode=False)
 
     db.supports_multiple_insert = True
 except Exception, e:
