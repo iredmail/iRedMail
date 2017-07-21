@@ -2,6 +2,8 @@ iRedMail-0.9.8:
     * Apache has been removed, Nginx is the only one web server available.
 
     * Fixed issues:
+        - SQL backends: User under disabled domain is able to send email with
+          smtp protocol.
         - Cannot sync contacts on Android devices via EAS with SOGo.
         - tools/create_mail_user_* scripts doesn't use current date as
           password last change date for newly created user.
