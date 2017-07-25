@@ -31,14 +31,22 @@ else:
     sys.exit('* << ERROR >>: Unsupported backend (%s).' % settings.backend)
 
 try:
-    db = web.database(dbn=sql_dbn,
-                      host=settings.vmail_db_host,
-                      port=int(settings.vmail_db_port),
-                      db=settings.vmail_db_name,
-                      user=settings.vmail_db_user,
-                      pw=settings.vmail_db_password,
-                      charset='utf8',
-                      use_unicode=False)
+    if sql_dbn == 'pgsql':
+        db = web.database(dbn=sql_dbn,
+                          host=settings.vmail_db_host,
+                          port=int(settings.vmail_db_port),
+                          db=settings.vmail_db_name,
+                          user=settings.vmail_db_user,
+                          pw=settings.vmail_db_password)
+    else:
+        db = web.database(dbn=sql_dbn,
+                          host=settings.vmail_db_host,
+                          port=int(settings.vmail_db_port),
+                          db=settings.vmail_db_name,
+                          user=settings.vmail_db_user,
+                          pw=settings.vmail_db_password,
+                          charset='utf8',
+                          use_unicode=False)
 
     db.supports_multiple_insert = True
 except Exception, e:
