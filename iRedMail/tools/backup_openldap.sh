@@ -167,9 +167,9 @@ fi
 # check backup status (System -> Admin Log)
 if [[ -n ${MYSQL_USER} ]]; then
     if [[ -n ${MYSQL_PASSWD} ]]; then
-        export CMD_MYSQL_ROOT="${CMD_MYSQL} -u'${MYSQL_USER}' -p'${MYSQL_PASSWD}'"
+        export CMD_MYSQL_ROOT="${CMD_MYSQL} -u${MYSQL_USER} -p${MYSQL_PASSWD}"
     else
-        export CMD_MYSQL_ROOT="${CMD_MYSQL} --defaults-file=${MYSQL_DOT_MY_CNF} -u'${MYSQL_USER}'"
+        export CMD_MYSQL_ROOT="${CMD_MYSQL} --defaults-file=${MYSQL_DOT_MY_CNF} -u${MYSQL_USER}"
     fi
 fi
 
@@ -193,7 +193,7 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Suppose to delete: ${REMOVED_BACKUPS}" >> ${LOGFILE}
     rm -rf ${REMOVED_BACKUPS} >> ${LOGFILE} 2>&1
 
-    if [ -n ${MYSQL_USER} ] && [ -n ${MYSQL_PASSWD} ]; then
+    if [ -n ${MYSQL_USER} ] && [ -n ${MYSQL_PASSWD} -o -n ${MYSQL_DOT_MY_CNF} ]; then
         sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUPS}.', 'cron_backup_sql', '127.0.0.1', UTC_TIMESTAMP());"
         ${CMD_MYSQL_ROOT} iredadmin -e "${sql_log_msg}"
     fi
