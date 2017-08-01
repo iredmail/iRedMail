@@ -35,7 +35,7 @@
 #       1   4   *   *   *   bash /var/vmail/backup/backup_sogo.sh
 
 # Keep backup for how many days. Defaults to 90 days.
-KEEP_DAYS='90'
+export KEEP_DAYS='90'
 
 # Where to store backup copies.
 export BACKUP_ROOTDIR='/var/vmail/backup'
