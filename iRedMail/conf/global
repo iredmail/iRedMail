@@ -654,6 +654,10 @@ else
     # -c: Continue getting a partially-downloaded file.
     # -q: Turn off Wget's output.
     FETCH_CMD="wget -cq --timeout=30"
+
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        FETCH_CMD="${FETCH_CMD} --ca-certificate=${SSL_CERT_DIR}/ca-bundle.crt"
+    fi
 fi
 
 # Where to fetch/store binary packages and source tarball.
