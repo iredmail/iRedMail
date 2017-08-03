@@ -31,7 +31,7 @@ else:
     sys.exit('* << ERROR >>: Unsupported backend (%s).' % settings.backend)
 
 try:
-    if sql_dbn == 'pgsql':
+    if sql_dbn == 'postgres':
         db = web.database(dbn=sql_dbn,
                           host=settings.vmail_db_host,
                           port=int(settings.vmail_db_port),
