@@ -22,7 +22,7 @@
 
 install_all()
 {
-    # Port name under /usr/ports/. e.g. mail/dovecot2.
+    # Port name under /usr/ports/. e.g. mail/dovecot.
     ALL_PORTS=''
 
     # Extension used for backup file during in-place editing.
@@ -90,7 +90,7 @@ install_all()
         graphics_cairo \
         www_pecl-APC \
         lang_python27 \
-        mail_dovecot2 \
+        mail_dovecot \
         mail_postfix \
         mail_roundcube \
         net_openldap${PREFERRED_OPENLDAP_VER}-client \
@@ -297,7 +297,7 @@ EOF
     fi
 
     # Dovecot v2.0.x. REQUIRED.
-    cat > /var/db/ports/mail_dovecot2/options <<EOF
+    cat > /var/db/ports/mail_dovecot/options <<EOF
 OPTIONS_FILE_SET+=DOCS
 OPTIONS_FILE_SET+=EXAMPLES
 OPTIONS_FILE_UNSET+=GC
@@ -322,17 +322,17 @@ OPTIONS_FILE_UNSET+=TEXTCAT
 EOF
 
     # Note: dovecot-sieve will install dovecot first.
-    ALL_PORTS="${ALL_PORTS} mail/dovecot2 mail/dovecot2-pigeonhole"
+    ALL_PORTS="${ALL_PORTS} mail/dovecot mail/dovecot-pigeonhole"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/mail_dovecot2/options
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/mail_dovecot2/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=LDAP#OPTIONS_FILE_SET+=LDAP#' /var/db/ports/mail_dovecot/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/mail_dovecot/options
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/mail_dovecot2/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/mail_dovecot/options
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/mail_dovecot2/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/mail_dovecot/options
     fi
-    rm -f /var/db/ports/mail_dovecot2/options${SED_EXTENSION} &>/dev/null
+    rm -f /var/db/ports/mail_dovecot/options${SED_EXTENSION} &>/dev/null
 
     # ca_root_nss. DEPENDENCE.
     cat > /var/db/ports/security_ca_root_nss/options <<EOF
