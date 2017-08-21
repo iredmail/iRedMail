@@ -192,8 +192,6 @@ iRedAdmin - official web-based admin panel:
         - Database name: ${IREDADMIN_DB_NAME}
         - Username: ${IREDADMIN_DB_USER}
         - Password: ${IREDADMIN_DB_PASSWD}
-    * See also:
-        - ${IREDADMIN_HTTPD_CONF}
 
 EOF
 

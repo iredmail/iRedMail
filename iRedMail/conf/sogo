@@ -63,8 +63,6 @@ export SOGO_DB_TABLE_STORE='sogo_store'
 export SOGO_DB_TABLE_ACL='sogo_acl'
 export SOGO_DB_TABLE_CACHE_FOLDER='sogo_cache_folder'
 
-export SOGO_HTTPD_CONF="${HTTPD_CONF_DIR}/SOGo.conf"
-
 export SOGO_CMD_TOOL='/usr/sbin/sogo-tool'
 export SOGO_CMD_EALARMS_NOTIFY='/usr/sbin/sogo-ealarms-notify'
 export SOGO_GNUSTEP_DIR="/usr/lib/GNUstep/SOGo"

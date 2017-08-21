@@ -24,7 +24,6 @@
 
 # Variables for awstats and related.
 
-export AWSTATS_HTTPD_CONF="${HTTPD_CONF_DIR}/awstats.conf"
 export AWSTATS_CONF_DIR='/etc/awstats'
 export AWSTATS_CONF_WEB="${AWSTATS_CONF_DIR}/awstats.web.conf"
 export AWSTATS_CONF_MAIL="${AWSTATS_CONF_DIR}/awstats.smtp.conf"
