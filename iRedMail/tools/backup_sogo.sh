@@ -90,8 +90,8 @@ fi
 # Check and create directories.
 if [ ! -d ${BACKUP_DIR} ]; then
     mkdir -p ${BACKUP_DIR} 2>/dev/null
-    chown root ${BACKUP_DIR}
-    chmod 0700 ${BACKUP_DIR}
+    chown -R root ${BACKUP_DIR}
+    chmod -R 0700 ${BACKUP_DIR}
 fi
 
 # Backup
@@ -103,14 +103,18 @@ base_name="$(basename ${BACKUP_DIR})"
 
 if ls ${BACKUP_DIR} | grep -i '[a-z0-9]' &>/dev/null; then
     # Backup is not empty.
+    chown -R root ${BACKUP_DIR}
+    chmod -R 0700 ${BACKUP_DIR}
 
     # Get original size of backup files
     original_size="$(${CMD_DU} ${BACKUP_DIR} | awk '{print $1}')"
 
     # Compress the directory.
     echo "* Compress backup files."
-    cd ${dir_name}
+    cd ${dir_name} &&\
         tar cjf ${base_name}.tar.bz2 ${base_name} && \
+        chown root ${base_name}.tar.bz2 && \
+        chmod 0700 ${base_name}.tar.bz2 && \
         rm -rf ${base_name}
 
     compressed_size="$(${CMD_DU} ${base_name}.tar.bz2 | awk '{print $1}')"
