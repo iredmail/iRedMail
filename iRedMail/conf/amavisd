@@ -34,7 +34,6 @@ export CRON_FILE_AMAVISD="${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER}"
 
 export AMAVISD_SPOOL_DIR='/var/spool/amavisd'
 export AMAVISD_DKIM_DIR="${AMAVISD_DKIM_DIR:=/var/lib/dkim}"
-export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
 # Network ports
 export AMAVISD_SMTP_PORT='10024'
@@ -64,7 +63,9 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export AMAVISD_CONF='/etc/amavis/conf.d/50-user'
     export AMAVISD_RC_SCRIPT_NAME='amavis'
     export AMAVISD_LDAP_SCHEMA_NAME='amavis.schema'
-    export AMAVISD_VIRUSMAILS_DIR='/var/lib/amavis/virusmails'
+
+    export AMAVISD_SPOOL_DIR='/var/lib/amavis'
+    export AMAVISD_VIRUSMAILS_DIR="${AMAVISD_SPOOL_DIR}/virusmails"
     export AMAVISD_VAR_RUN_DIR='/var/run/amavis'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -78,6 +79,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
     export AMAVISD_SPOOL_DIR='/var/amavis'
     export AMAVISD_VAR_RUN_DIR="${AMAVISD_SPOOL_DIR}/var"
+    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
     # Override location of command 'altermime'
     export ALTERMIME_BIN='/usr/local/bin/altermime'
@@ -91,7 +93,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd.schema'
 
     export AMAVISD_SPOOL_DIR='/var/amavisd'
-    export AMAVISD_VAR_RUN_DIR='/var/amavisd'
+    export AMAVISD_VAR_RUN_DIR="${AMAVISD_SPOOL_DIR}"
+    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
     # Override location of command 'altermime'
     export ALTERMIME_BIN='/usr/local/bin/altermime'
