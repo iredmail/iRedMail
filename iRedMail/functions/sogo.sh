@@ -57,7 +57,7 @@ EOF
         ${MYSQL_CLIENT_ROOT} -e "SOURCE ${tmp_sql}"
 
         # Generate .my.cnf file
-        cat > /root/.my.cnf-sogo <<EOF
+        cat > /root/.my.cnf-${SOGO_DB_USER} <<EOF
 [client]
 host=${MYSQL_SERVER_ADDRESS}
 port=${MYSQL_SERVER_PORT}

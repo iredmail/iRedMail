@@ -180,7 +180,7 @@ EOF
 
     chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT}
 
-    cat > /root/.my.cnf-vmail <<EOF
+    cat > /root/.my.cnf-${VMAIL_DB_BIND_USER} <<EOF
 [client]
 host=${MYSQL_SERVER_ADDRESS}
 port=${MYSQL_SERVER_PORT}
@@ -188,7 +188,7 @@ user=${VMAIL_DB_BIND_USER}
 password="${VMAIL_DB_BIND_PASSWD}"
 EOF
 
-    cat > /root/.my.cnf-vmailadmin <<EOF
+    cat > /root/.my.cnf-${VMAIL_DB_ADMIN_USER} <<EOF
 [client]
 host=${MYSQL_SERVER_ADDRESS}
 port=${MYSQL_SERVER_PORT}

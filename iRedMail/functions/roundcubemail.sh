@@ -53,7 +53,7 @@ FLUSH PRIVILEGES;
 EOF
 
         # Generate .my.cnf file
-        cat > /root/.my.cnf-roundcube <<EOF
+        cat > /root/.my.cnf-${RCM_DB_USER} <<EOF
 [client]
 host=${MYSQL_SERVER_ADDRESS}
 port=${MYSQL_SERVER_PORT}

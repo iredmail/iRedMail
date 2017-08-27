@@ -100,7 +100,7 @@ SOURCE ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/SQL/wblist_rdns.sql;
 EOF
 
         # Generate .my.cnf file
-        cat > /root/.my.cnf-iredapd <<EOF
+        cat > /root/.my.cnf-${IREDAPD_DB_USER} <<EOF
 [client]
 host=${MYSQL_SERVER_ADDRESS}
 port=${MYSQL_SERVER_PORT}
