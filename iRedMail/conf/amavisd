@@ -90,7 +90,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export AMAVISD_CONF='/etc/amavisd.conf'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd.schema'
 
-    export AMAVISD_DKIM_DIR='/var/amavisd/dkim'
+    export AMAVISD_SPOOL_DIR='/var/amavisd'
     export AMAVISD_VAR_RUN_DIR='/var/amavisd'
 
     # Override location of command 'altermime'
