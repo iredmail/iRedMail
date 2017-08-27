@@ -18,8 +18,8 @@ smtp-amavis unix -  -   n   -   PH_AMAVISD_MAX_SERVERS  smtp
     -o disable_dns_lookups=yes
     -o max_use=20
 
-PH_LOCAL_ADDRESS:10025 inet n  -   n   -   -  smtpd
-    -o syslog_name=postfix/10025
+PH_LOCAL_ADDRESS:PH_POSTFIX_MAIL_REINJECT_PORT inet n  -   n   -   -  smtpd
+    -o syslog_name=postfix/PH_POSTFIX_MAIL_REINJECT_PORT
     -o content_filter=
     -o mynetworks_style=host
     -o mynetworks=PH_AMAVISD_MYNETWORKS

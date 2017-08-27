@@ -65,8 +65,8 @@ clamav_config()
         ECHO_DEBUG "Add clamav user to amavid group."
         usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
 
-        ECHO_DEBUG "Set permission to 750: ${AMAVISD_TEMPDIR}, ${AMAVISD_QUARANTINEDIR},"
-        chmod -R 750 ${AMAVISD_TEMPDIR} ${AMAVISD_QUARANTINEDIR}
+        ECHO_DEBUG "Set permission to 750: ${AMAVISD_TEMP_DIR}, ${AMAVISD_QUARANTINE_DIR},"
+        chmod -R 750 ${AMAVISD_TEMP_DIR} ${AMAVISD_QUARANTINE_DIR}
 
         if [ X"${DISTRO_VERSION}" == X'7' ]; then
             # Enable freshclam

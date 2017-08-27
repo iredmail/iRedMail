@@ -32,8 +32,14 @@ export AMAVISD_RC_SCRIPT_NAME='amavisd'
 
 export CRON_FILE_AMAVISD="${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER}"
 
+export AMAVISD_SPOOL_DIR='/var/spool/amavisd'
 export AMAVISD_DKIM_DIR="${AMAVISD_DKIM_DIR:=/var/lib/dkim}"
 export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
+
+# Network ports
+export AMAVISD_SMTP_PORT='10024'
+export AMAVISD_ORIGINATING_PORT='10026'
+export AMAVISD_QUARANTINE_PORT='9998'
 
 # Database used to store incoming & outgoing email related information.
 export AMAVISD_DB_NAME='amavisd'
@@ -46,25 +52,20 @@ export DISCLAIMER_DIR="${POSTFIX_ROOTDIR}/disclaimer"
 if [ X"${DISTRO}" == X'RHEL' ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
-
-    export AMAVISD_MYHOME='/var/spool/amavisd'
-    export AMAVISD_QUARANTINEDIR="${AMAVISD_MYHOME}/quarantine"
-    export AMAVISD_TEMPDIR="${AMAVISD_MYHOME}/tmp"
+    export AMAVISD_VAR_RUN_DIR='/var/run/amavisd'
 
     # RHEL/CENTOS 6
     export AMAVISD_CONF='/etc/amavisd/amavisd.conf'
-    export AMAVISD_VIRUSMAILS_DIR="${AMAVISD_QUARANTINEDIR}"
-
-    export AMAVISD_DKIM_CONF="${AMAVISD_CONF}"
+    export AMAVISD_VIRUSMAILS_DIR="${AMAVISD_QUARANTINE_DIR}"
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd-new'
     export AMAVISD_CONF_DIR='/etc/amavis/conf.d'
     export AMAVISD_CONF='/etc/amavis/conf.d/50-user'
-    export AMAVISD_DKIM_CONF='/etc/amavis/conf.d/50-user'
     export AMAVISD_RC_SCRIPT_NAME='amavis'
     export AMAVISD_LDAP_SCHEMA_NAME='amavis.schema'
     export AMAVISD_VIRUSMAILS_DIR='/var/lib/amavis/virusmails'
+    export AMAVISD_VAR_RUN_DIR='/var/run/amavis'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Override global setting: user/group.
@@ -73,8 +74,10 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
     export AMAVISD_BIN='/usr/local/sbin/amavisd'
     export AMAVISD_CONF='/usr/local/etc/amavisd.conf'
-    export AMAVISD_DKIM_CONF='/usr/local/etc/amavisd.conf'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
+
+    export AMAVISD_SPOOL_DIR='/var/amavis'
+    export AMAVISD_VAR_RUN_DIR="${AMAVISD_SPOOL_DIR}/var"
 
     # Override location of command 'altermime'
     export ALTERMIME_BIN='/usr/local/bin/altermime'
@@ -85,15 +88,23 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
     export AMAVISD_BIN='/usr/local/sbin/amavisd'
     export AMAVISD_CONF='/etc/amavisd.conf'
-    export AMAVISD_DKIM_CONF='/etc/amavisd.conf'
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd.schema'
 
     export AMAVISD_DKIM_DIR='/var/amavisd/dkim'
+    export AMAVISD_VAR_RUN_DIR='/var/amavisd'
 
     # Override location of command 'altermime'
     export ALTERMIME_BIN='/usr/local/bin/altermime'
 
 fi
+
+export AMAVISD_DB_DIR="${AMAVISD_SPOOL_DIR}/db"
+export AMAVISD_QUARANTINE_DIR="${AMAVISD_SPOOL_DIR}/quarantine"
+export AMAVISD_TEMP_DIR="${AMAVISD_SPOOL_DIR}/tmp"
+
+export AMAVISD_LOCK_FILE="${AMAVISD_VAR_RUN_DIR}/amavisd.lock"
+export AMAVISD_PID_FILE="${AMAVISD_VAR_RUN_DIR}/amavisd.pid"
+export AMAVISD_SOCKET_FILE="${AMAVISD_VAR_RUN_DIR}/amavisd.socket"
 
 export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.mysql"
 export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.pgsql"
