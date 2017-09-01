@@ -67,7 +67,7 @@ from base64 import b64encode
 import re
 
 try:
-    import ldap
+    #import ldap
     import ldif
 except ImportError:
     print '''
@@ -262,7 +262,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
                             'displayedInGlobalAddressBook']),
         ('memberOfGroup', groups),
         # shadowAccount integration.
-        ('shadowLastChange', [get_days_of_today()]),
+        ('shadowLastChange', [str(get_days_of_today())]),
         # Amavisd integration.
         ('amavisLocal', ['TRUE'])]
 
