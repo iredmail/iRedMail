@@ -17,6 +17,9 @@ iRedMail-0.9.8:
           Thanks Kacper Guzik <kacper.guzik _at_ zenbox _dot_ pl> for the
           report and code contribution.
 
+    * Updated packages:
+        + Roundcube -> 1.3.1
+
 iRedMail-0.9.7:
     * Supports new distribution release:
         + OpenBSD 6.1. OpenBSD 6.0 is not supported anymore.
