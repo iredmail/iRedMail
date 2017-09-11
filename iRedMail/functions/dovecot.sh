@@ -99,7 +99,8 @@ dovecot_config()
     perl -pi -e 's#PH_FIRST_VALID_UID#$ENV{VMAIL_USER_UID}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_LAST_VALID_UID#$ENV{VMAIL_USER_UID}#' ${DOVECOT_CONF}
 
-    # Log file.
+    # syslog and log file.
+    perl -pi -e 's#PH_DOVECOT_SYSLOG_FACILITY#$ENV{DOVECOT_SYSLOG_FACILITY}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_LOG_PATH#$ENV{DOVECOT_LOG_FILE}#' ${DOVECOT_CONF}
 
     # Authentication related settings.
@@ -386,6 +387,7 @@ dovecot_log() {
         # Copy rsyslog config file used to filter Dovecot log
         cp ${SAMPLE_DIR}/rsyslog.d/1-dovecot.conf ${SYSLOG_CONF_DIR}
 
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FACILITY#$ENV{DOVECOT_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
         perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
         perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_LDA#$ENV{DOVECOT_SYSLOG_FILE_LDA}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
         perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_IMAP#$ENV{DOVECOT_SYSLOG_FILE_IMAP}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
@@ -438,6 +440,12 @@ dovecot_log() {
         perl -pi -e 's#PH_VMAIL_GROUP_NAME#$ENV{VMAIL_GROUP_NAME}#g' ${DOVECOT_LOGROTATE_FILE}
 
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+        # Log dovecot to a dedicated file
+        if ! grep "${DOVECOT_LOG_FILE}" /etc/syslog.conf &>/dev/null; then
+            echo '!dovecot' >> /etc/syslog.conf
+            echo "${DOVECOT_SYSLOG_FACILITY}.*        ${DOVECOT_LOG_FILE}" >> /etc/syslog.conf
+        fi
+
         if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
             cat >> /etc/newsyslog.conf <<EOF

@@ -56,6 +56,7 @@ export DOVECOT_DELIVER_BIN='/usr/libexec/dovecot/deliver'
 
 # Logging with syslog (Require rsyslog-8.x+)
 export DOVECOT_USE_SYSLOG='YES'
+export DOVECOT_SYSLOG_FACILITY='local5'
 # main log file
 export DOVECOT_LOG_DIR='/var/log/dovecot'
 export DOVECOT_LOG_FILE="${DOVECOT_LOG_DIR}/dovecot.log"
