@@ -1,5 +1,7 @@
 iRedMail-0.9.8:
     * Apache has been removed, Nginx is the only one web server available.
+    * Nginx:
+        - Revert the directory structure used to store splited config files.
 
     * Fixed issues:
         - tools/backup_sogo.sh doesn't set correct owner and permission on
