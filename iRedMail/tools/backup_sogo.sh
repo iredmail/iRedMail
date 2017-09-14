@@ -84,7 +84,7 @@ if which python &>/dev/null; then
     shift_year="$(echo ${shift_date} | awk -F'-' '{print $1}')"
     shift_month="$(echo ${shift_date} | awk -F'-' '{print $2}')"
     shift_day="$(echo ${shift_date} | awk -F'-' '{print $3}')"
-    export REMOVED_BACKUP_DIR="${BACKUP_ROOTDIR}/sogo/${shift_year}/${shift_month}/${shift_day}"
+    export REMOVED_BACKUP="${BACKUP_ROOTDIR}/sogo/${shift_year}/${shift_month}/${shift_day}.tar.bz2"
 fi
 
 # Check and create directories.
@@ -127,7 +127,7 @@ else
     rm -rf ${BACKUP_DIR} &>/dev/null
 fi
 
-if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
-    echo -e "* Old backup found. Deleting: ${REMOVED_BACKUP_DIR}."
-    rm -rf ${REMOVED_BACKUP_DIR} &>/dev/null
+if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -f ${REMOVED_BACKUP} ]; then
+    echo -e "* Old backup found. Deleting: ${REMOVED_BACKUP}."
+    rm -rf ${REMOVED_BACKUP} &>/dev/null
 fi

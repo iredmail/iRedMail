@@ -2,8 +2,9 @@ iRedMail-0.9.8:
     * Apache has been removed, Nginx is the only one web server available.
 
     * Fixed issues:
-        - tools/backup_sogo.sh doesn't set correct owner and permission on
-          backup files.
+        - tools/backup_sogo.sh
+            - not set correct owner and permission on backup files.
+            - cannot remove old backup files.
         - Cannot log backup result to SQL db in tools/backup_openldap.sh.
           Note: backup is fine, just no log in SQL db.
           Thanks swejun <ingvar _at_ zebware.com> for the feedback and fix in
