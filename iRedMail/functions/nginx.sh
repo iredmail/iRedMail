@@ -95,6 +95,7 @@ nginx_config()
     perl -pi -e 's#PH_HTTPD_CONF_DIR_VHOST_CONF_DIR#$ENV{HTTPD_CONF_DIR_VHOST_CONF_DIR}#g' \
         ${NGINX_CONF_SITE_DEFAULT} \
         ${NGINX_CONF_SITE_DEFAULT_SSL}
+
     perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${HTTPD_CONF_DIR_VHOST_CONF_DIR}/default/*.conf
     perl -pi -e 's#PH_HTTPD_DOCUMENTROOT#$ENV{HTTPD_DOCUMENTROOT}#g' \
         ${HTTPD_CONF_DIR_VHOST_CONF_DIR}/default/*.conf \

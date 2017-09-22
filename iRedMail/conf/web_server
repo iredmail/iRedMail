@@ -45,7 +45,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
     # Web data.
     export HTTPD_SERVERROOT='/usr/local/www'
-    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/apache24/data"
+    export HTTPD_DOCUMENTROOT="${HTTPD_SERVERROOT}/htdocs"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     # Daemon user.
