@@ -295,6 +295,7 @@ sogo_cron_setup()
 
     # backup script
     cp -f ${TOOLS_DIR}/backup_sogo.sh ${BACKUP_SCRIPT_SOGO}
+    chmod 0400 ${BACKUP_SCRIPT_SOGO}
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#g' ${BACKUP_SCRIPT_SOGO}
 
     # Add cron job for root user
