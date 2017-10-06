@@ -30,9 +30,10 @@ dovecot_config()
 
     backup_file ${DOVECOT_CONF}
 
-    # RHEL/CentOS 6:    Dovecot-2.1.x
-    # RHEL/CentOS 7:    Dovecot-2.2.10+
-    # Debian 8:         Dovecot-2.2.13+
+    # RHEL/CentOS 6:    Dovecot-2.1.17
+    # RHEL/CentOS 7:    Dovecot-2.2.32+
+    # Debian 8:         Dovecot-2.2.13
+    # Debian 9:         Dovecot-2.2.27
     # Ubuntu 14.04:     Dovecot-2.2.9
     # Ubuntu 16.04:     Dovecot-2.2.22
     dovecot_version="$(dovecot --version | cut -c1,2,3)"

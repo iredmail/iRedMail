@@ -1,6 +1,9 @@
 iRedMail-0.9.8:
     * Apache has been removed, Nginx is the only one web server available.
 
+    * Improvements:
+        - Dovecot: Log subject, sender, size in mail deliver log.
+
     * Fixed issues:
         - tools/backup_sogo.sh
             - not set correct owner and permission on backup files.
