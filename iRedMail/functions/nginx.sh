@@ -44,15 +44,11 @@ nginx_config()
     [ -d ${HTTPD_CONF_DIR_ENABLED_SITES} ] && mv ${HTTPD_CONF_DIR_ENABLED_SITES} ${HTTPD_CONF_DIR_ENABLED_SITES}.bak
     [ ! -d ${HTTPD_CONF_DIR_ENABLED_SITES} ] && mkdir -p ${HTTPD_CONF_DIR_ENABLED_SITES}
 
-    [ -d ${HTTPD_CONF_DIR_VHOST_CONF_DIR} ] && mv ${HTTPD_CONF_DIR_VHOST_CONF_DIR} ${HTTPD_CONF_DIR_VHOST_CONF_DIR}.bak
-    [ ! -d ${HTTPD_CONF_DIR_VHOST_CONF_DIR} ] && mkdir -p ${HTTPD_CONF_DIR_VHOST_CONF_DIR}
-
     # Copy sample config files
     cp ${SAMPLE_DIR}/nginx/nginx.conf ${NGINX_CONF}
     cp -f ${SAMPLE_DIR}/nginx/conf-available/*.conf ${HTTPD_CONF_DIR_AVAILABLE_CONF}
     cp -f ${SAMPLE_DIR}/nginx/sites-available/00-default.conf ${NGINX_CONF_SITE_DEFAULT}
     cp -f ${SAMPLE_DIR}/nginx/sites-available/00-default-ssl.conf ${NGINX_CONF_SITE_DEFAULT_SSL}
-    cp -rf ${SAMPLE_DIR}/nginx/sites-conf.d/* ${HTTPD_CONF_DIR_VHOST_CONF_DIR}
 
     # Enable basic config files
     for cf in client_max_body_size.conf \
@@ -75,8 +71,7 @@ nginx_config()
     [ ! -d ${NGINX_CONF_TMPL_DIR} ] && mkdir -p ${NGINX_CONF_TMPL_DIR}
     cp ${SAMPLE_DIR}/nginx/templates/*.tmpl ${NGINX_CONF_TMPL_DIR}
     perl -pi -e 's#PH_NGINX_CONF_TMPL_DIR#$ENV{NGINX_CONF_TMPL_DIR}#g' \
-        ${HTTPD_CONF_DIR_VHOST_CONF_DIR}/default/*.conf \
-        ${HTTPD_CONF_DIR_VHOST_CONF_DIR}/default-ssl/*.conf \
+        ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf \
         ${NGINX_CONF_TMPL_DIR}/*tmpl
 
     # nginx.conf
@@ -92,17 +87,11 @@ nginx_config()
     perl -pi -e 's#PH_PHP_FPM_SOCKET#$ENV{PHP_FPM_SOCKET}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php-fpm.conf
 
     # default web sites
-    perl -pi -e 's#PH_HTTPD_CONF_DIR_VHOST_CONF_DIR#$ENV{HTTPD_CONF_DIR_VHOST_CONF_DIR}#g' \
-        ${NGINX_CONF_SITE_DEFAULT} \
-        ${NGINX_CONF_SITE_DEFAULT_SSL}
-
-    perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${HTTPD_CONF_DIR_VHOST_CONF_DIR}/default/*.conf
-    perl -pi -e 's#PH_HTTPD_DOCUMENTROOT#$ENV{HTTPD_DOCUMENTROOT}#g' \
-        ${HTTPD_CONF_DIR_VHOST_CONF_DIR}/default/*.conf \
-        ${HTTPD_CONF_DIR_VHOST_CONF_DIR}/default-ssl/*.conf
+    perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
+    perl -pi -e 's#PH_HTTPD_DOCUMENTROOT#$ENV{HTTPD_DOCUMENTROOT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
 
     # ssl
-    perl -pi -e 's#PH_HTTPS_PORT#$ENV{HTTPS_PORT}#g' ${HTTPD_CONF_DIR_VHOST_CONF_DIR}/default-ssl/*.conf
+    perl -pi -e 's#PH_HTTPS_PORT#$ENV{HTTPS_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
     perl -pi -e 's#PH_SSL_CERT_FILE#$ENV{SSL_CERT_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
     perl -pi -e 's#PH_SSL_KEY_FILE#$ENV{SSL_KEY_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
     perl -pi -e 's#PH_SSL_CIPHERS#$ENV{SSL_CIPHERS}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
