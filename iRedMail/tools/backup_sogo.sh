@@ -51,7 +51,8 @@ export CMD_MYSQL="mysql --defaults-file=${MYSQL_DOT_MY_CNF} -u${MYSQL_USER}"
 #########################################################
 # You do *NOT* need to modify below lines.
 #########################################################
-export PATH='/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin'
+# FreeBSD has 'sogo-tool' in different directory.
+export PATH=/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/GNUstep/Local/Tools/Admin:$PATH
 
 # Commands.
 export CMD_DATE='/bin/date'
