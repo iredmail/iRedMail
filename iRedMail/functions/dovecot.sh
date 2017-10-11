@@ -430,6 +430,13 @@ dovecot_log() {
         perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${DOVECOT_LOGROTATE_FILE}
 
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        # Log dovecot to a dedicated file
+        if ! grep "${DOVECOT_LOG_FILE}" /etc/syslog.conf &>/dev/null; then
+            # '!!' means abort further evaluation after first match
+            echo '!dovecot' >> /etc/syslog.conf
+            echo "${DOVECOT_SYSLOG_FACILITY}.*        -${DOVECOT_LOG_FILE}" >> /etc/syslog.conf
+        fi
+
         cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/dovecot ${DOVECOT_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_DOVECOT_MASTER_PID#$ENV{DOVECOT_MASTER_PID}#g' ${DOVECOT_LOGROTATE_FILE}
@@ -443,7 +450,8 @@ dovecot_log() {
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         # Log dovecot to a dedicated file
         if ! grep "${DOVECOT_LOG_FILE}" /etc/syslog.conf &>/dev/null; then
-            echo '!dovecot' >> /etc/syslog.conf
+            # '!!' means abort further evaluation after first match
+            echo '!!dovecot' >> /etc/syslog.conf
             echo "${DOVECOT_SYSLOG_FACILITY}.*        ${DOVECOT_LOG_FILE}" >> /etc/syslog.conf
         fi
 

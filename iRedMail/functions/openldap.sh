@@ -136,8 +136,12 @@ EOF
     chown ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP} ${OPENLDAP_LDAP_CONF}
 
     ECHO_DEBUG "Setting up syslog configration file for OpenLDAP."
-    if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         echo -e '!slapd' >> ${SYSLOG_CONF}
+        echo -e "*.*\t\t\t\t\t\t-${OPENLDAP_LOGFILE}" >> ${SYSLOG_CONF}
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # '!!' means abort further evaluation after first match
+        echo -e '!!slapd' >> ${SYSLOG_CONF}
         echo -e "*.*\t\t\t\t\t\t${OPENLDAP_LOGFILE}" >> ${SYSLOG_CONF}
     else
         echo -e "local4.*\t\t\t\t\t\t-${OPENLDAP_LOGFILE}" >> ${SYSLOG_CONF}

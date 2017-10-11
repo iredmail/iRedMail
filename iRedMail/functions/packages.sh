@@ -30,9 +30,7 @@ install_all()
     PKG_SCRIPTS=''
     OB_PKG_OPENLDAP_SERVER_VER='-2.4.45p4'
     OB_PKG_OPENLDAP_CLIENT_VER='-2.4.45p4'
-    OB_PKG_PHP_VER='-7.0.23'
-    OB_PKG_NGINX_VER='-1.12.1'
-    OB_PKG_MEMCACHED_VER='-1.4.39'
+    OB_PKG_PHP_VER='%7'
 
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         export IREDMAIL_USE_PHP='YES'
@@ -208,7 +206,7 @@ install_all()
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} nginx-full"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} nginx${OB_PKG_NGINX_VER}"
+            ALL_PKGS="${ALL_PKGS} nginx"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${NGINX_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
 
@@ -349,7 +347,7 @@ EOF
             apt-get update
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} sogo memcached${OB_PKG_MEMCACHED_VER}"
+            ALL_PKGS="${ALL_PKGS} sogo memcached--"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope-mysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope-mysql"
