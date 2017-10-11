@@ -28,12 +28,11 @@ install_all()
 
     # OpenBSD only
     PKG_SCRIPTS=''
-    OB_PKG_POSTFIX_VER='-3.2.0'
-    OB_PKG_OPENLDAP_SERVER_VER='-2.4.44p3'
-    OB_PKG_OPENLDAP_CLIENT_VER='-2.4.44p3'
-    OB_PKG_PHP_VER='-7.0.16'
-    OB_PKG_NGINX_VER='-1.10.2p2'
-    OB_PKG_MEMCACHED_VER='-1.4.33'
+    OB_PKG_OPENLDAP_SERVER_VER='-2.4.45p4'
+    OB_PKG_OPENLDAP_CLIENT_VER='-2.4.45p4'
+    OB_PKG_PHP_VER='-7.0.23'
+    OB_PKG_NGINX_VER='-1.12.1'
+    OB_PKG_MEMCACHED_VER='-1.4.39'
 
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         export IREDMAIL_USE_PHP='YES'
@@ -73,9 +72,9 @@ install_all()
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-sasl2-ldap"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-sasl2-mysql"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} postfix${OB_PKG_POSTFIX_VER}-sasl2-pgsql"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-ldap%stable"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-mysql%stable"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-pgsql%stable"
     fi
 
     # Backend: OpenLDAP, MySQL, PGSQL and extra packages.

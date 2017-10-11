@@ -1,4 +1,7 @@
 iRedMail-0.9.8:
+    * Supports new distribution release:
+        + OpenBSD 6.2. OpenBSD 6.1 is not supported anymore.
+
     * Apache has been removed, Nginx is the only one web server available.
 
     * Improvements:
