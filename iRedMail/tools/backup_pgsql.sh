@@ -172,8 +172,7 @@ else
 fi
 
 if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
-    echo -e "* Delete old backup: ${REMOVED_BACKUP_DIR}." >> ${LOGFILE}
-    echo -e "* Suppose to delete: ${REMOVED_BACKUP_DIR}" >> ${LOGFILE}
+    echo -e "* Old backup found. Deleting: ${REMOVED_BACKUP_DIR}." >>${LOGFILE}
     rm -rf ${REMOVED_BACKUP_DIR} >> ${LOGFILE} 2>&1
 
     su - ${PGSQL_SYS_USER} -c "psql -d iredadmin" <<EOF
