@@ -83,9 +83,9 @@ if echo ${OPTIONAL_COMPONENTS} | grep -i 'sogo' &>/dev/null; then
     echo "export USE_SOGO='YES'" >> ${IREDMAIL_CONFIG_FILE}
 fi
 
-if echo ${OPTIONAL_COMPONENTS} | grep -i 'awstats' &>/dev/null; then
-    export USE_AWSTATS='YES'
-    echo "export USE_AWSTATS='YES'" >>${IREDMAIL_CONFIG_FILE}
+if echo ${OPTIONAL_COMPONENTS} | grep -i 'netdata' &>/dev/null; then
+    export USE_NETDATA='YES'
+    echo "export USE_NETDATA='YES'" >>${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'fail2ban' &>/dev/null; then

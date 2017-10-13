@@ -923,11 +923,6 @@ EOF
         rm -f /var/db/ports/devel_sope3/options${SED_EXTENSION} &>/dev/null
     fi
 
-    # Awstats.
-    if [ X"${USE_AWSTATS}" == X'YES' ]; then
-        ALL_PORTS="${ALL_PORTS} www/awstats"
-    fi
-
     # Python database interfaces
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PORTS="${ALL_PORTS} net/py-ldap databases/py-MySQLdb"

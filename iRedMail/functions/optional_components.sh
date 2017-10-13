@@ -26,6 +26,6 @@ optional_components()
     # SOGo
     [ X"${USE_SOGO}" == X'YES' ] && check_status_before_run sogo_setup
 
-    # Awstats.
-    [ X"${USE_AWSTATS}" == X'YES' ] && check_status_before_run awstats_setup
+    # netdata.
+    [ X"${USE_NETDATA}" == X'YES' ] && check_status_before_run netdata_setup
 }

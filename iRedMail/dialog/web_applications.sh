@@ -21,11 +21,11 @@
 #---------------------------------------------------------------------
 
 # ---------------------------------------------------------------
-# Optional web applications: Awstats, Roundcube, SOGo, iRedAdmin
+# Optional web applications
 # ---------------------------------------------------------------
 if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
     export DIALOG_SELECTABLE_ROUNDCUBE='YES'
-    export DIALOG_SELECTABLE_AWSTATS='YES'
+    export DIALOG_SELECTABLE_NETDATA='YES'
     export DIALOG_SELECTABLE_SOGO='YES'
 
     # SOGo team doesn't offer binary packages for arm platform.
@@ -36,6 +36,11 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
     # SOGo team doesn't offer binary packages for ubuntu 17.04 (yet)
     if [ X"${DISTRO_CODENAME}" == X'zesty' ]; then
         export DIALOG_SELECTABLE_SOGO='NO'
+    fi
+
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # OpenBSD doesn't have 'libuuid' which required by netdata
+        export DIALOG_SELECTABLE_NETDATA='NO'
     fi
 fi
 
@@ -54,7 +59,7 @@ if [ X"${DIALOG_SELECTABLE_SOGO}" == X'YES' ]; then
     LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} SOGo Webmail,_Calendar,_Address_book off"
 fi
 
-# Awstats
-if [ X"${DIALOG_SELECTABLE_AWSTATS}" == X'YES' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Awstats Advanced_web_and_mail_log_analyzer on"
+# netdata
+if [ X"${DIALOG_SELECTABLE_NETDATA}" == X'YES' ]; then
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} netdata Awesome_system_monitor on"
 fi

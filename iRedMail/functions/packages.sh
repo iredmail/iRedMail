@@ -154,14 +154,6 @@ install_all()
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} postgresql-server postgresql-contrib perl-DBD-Pg"
 
-            if [ X"${USE_AWSTATS}" == X'YES' ]; then
-                if [ X"${DISTRO_VERSION}" == X'6' ]; then
-                    ALL_PKGS="${ALL_PKGS} mod_auth_pgsql"
-                else
-                    ALL_PKGS="${ALL_PKGS} apr-util-pgsql"
-                fi
-            fi
-
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # postgresql-contrib provides extension 'dblink' used in Roundcube password plugin.
             ALL_PKGS="${ALL_PKGS} postgresql postgresql-client postgresql-contrib postfix-pgsql libdbd-pg-perl"
@@ -411,17 +403,6 @@ EOF
         ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-beautifulsoup4 py-lxml py-curl"
         # /etc/rc.d/uwsgi
         export PKG_SCRIPTS="${PKG_SCRIPTS} ${UWSGI_RC_SCRIPT_NAME}"
-    fi
-
-    # Awstats.
-    if [ X"${USE_AWSTATS}" == X'YES' ]; then
-        if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} awstats"
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} awstats"
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} awstats"
-        fi
     fi
 
     # Fail2ban

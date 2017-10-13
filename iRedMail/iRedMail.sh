@@ -94,7 +94,7 @@ export DOMAIN_ADMIN_EMAIL="${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}"
 . ${CONF_DIR}/clamav
 . ${CONF_DIR}/spamassassin
 . ${CONF_DIR}/roundcube
-. ${CONF_DIR}/awstats
+. ${CONF_DIR}/netdata
 . ${CONF_DIR}/fail2ban
 . ${CONF_DIR}/iredadmin
 
@@ -123,7 +123,7 @@ fi
 . ${FUNCTIONS_DIR}/spamassassin.sh
 . ${FUNCTIONS_DIR}/roundcubemail.sh
 . ${FUNCTIONS_DIR}/sogo.sh
-. ${FUNCTIONS_DIR}/awstats.sh
+. ${FUNCTIONS_DIR}/netdata.sh
 . ${FUNCTIONS_DIR}/fail2ban.sh
 . ${FUNCTIONS_DIR}/iredadmin.sh
 . ${FUNCTIONS_DIR}/optional_components.sh

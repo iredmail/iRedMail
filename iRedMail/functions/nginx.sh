@@ -128,11 +128,6 @@ nginx_config()
         fi
     fi
 
-    # Awstats
-    perl -pi -e 's#PH_AWSTATS_STATIC_PAGES_DIR#$ENV{AWSTATS_STATIC_PAGES_DIR}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
-    perl -pi -e 's#PH_AWSTATS_HTTPD_AUTH_FILE#$ENV{AWSTATS_HTTPD_AUTH_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
-    perl -pi -e 's#PH_AWSTATS_ICON_DIR#$ENV{AWSTATS_ICON_DIR}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
-
     # Copy uwsgi config file for iRedAdmin
     [ -d ${UWSGI_CONF_DIR} ] || mkdir -p ${UWSGI_CONF_DIR} >> ${INSTALL_LOG} 2>&1
 
