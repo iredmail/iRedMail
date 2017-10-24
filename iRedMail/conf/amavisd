@@ -30,8 +30,6 @@ export AMAVISD_LOGROTATE_FILE="${LOGROTATE_DIR}/amavisd"
 export AMAVISD_DKIM_SELECTOR='dkim'
 export AMAVISD_RC_SCRIPT_NAME='amavisd'
 
-export CRON_FILE_AMAVISD="${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER}"
-
 export AMAVISD_SPOOL_DIR='/var/spool/amavisd'
 export AMAVISD_DKIM_DIR="${AMAVISD_DKIM_DIR:=/var/lib/dkim}"
 
@@ -100,6 +98,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export ALTERMIME_BIN='/usr/local/bin/altermime'
 
 fi
+
+export CRON_FILE_AMAVISD="${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER}"
 
 export AMAVISD_DB_DIR="${AMAVISD_SPOOL_DIR}/db"
 export AMAVISD_QUARANTINE_DIR="${AMAVISD_SPOOL_DIR}/quarantine"
