@@ -449,7 +449,7 @@ EOF
         if [ -f ${RUNTIME_DIR}/.pkg_install_failed ]; then
             ECHO_ERROR "Installation failed, please check the terminal output."
             ECHO_ERROR "If you're not sure what the problem is, try to get help in iRedMail"
-            ECHO_ERROR "forum: http://www.iredmail.org/forum/"
+            ECHO_ERROR "forum: https://forum.iredmail.org/"
             exit 255
         fi
     }

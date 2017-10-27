@@ -8,7 +8,7 @@
   [Installation Guides](http://www.iredmail.org/docs/)
 
 * Community, bug report, feature requests:
-  [online support forum](http://www.iredmail.org/forum/)
+  [online support forum](https://forum.iredmail.org/)
 
 * [Paid support service](http://www.iredmail.org/support.html)
 
