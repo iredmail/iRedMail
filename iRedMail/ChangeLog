@@ -8,6 +8,9 @@ iRedMail-0.9.8:
         - Dovecot: Log subject, sender, size in mail deliver log.
 
     * Fixed issues:
+        - installer: not correctly configure SOGo with IPv6 SQL server address.
+          Thanks to Wraptor <nijs.thibaut _at_ gmail.com> for the report in
+          forum.
         - Nginx: Use single config file for default web hosts.
         - tools/backup_sogo.sh
             - not set correct owner and permission on backup files.
