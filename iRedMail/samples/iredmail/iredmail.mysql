@@ -85,6 +85,8 @@ CREATE TABLE IF NOT EXISTS forwardings (
     forwarding VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     dest_domain VARCHAR(255) NOT NULL DEFAULT '',
+    -- defines whether it's a (mlmmj) mailing list account. 0=no, 1=yes.
+    is_maillist TINYINT(1) NOT NULL DEFAULT 0,
     -- defines whether it's a standalone mail alias account. 0=no, 1=yes.
     is_list TINYINT(1) NOT NULL DEFAULT 0,
     -- defines whether it's a mail forwarding address of mail user. 0=no, 1=yes.
@@ -96,6 +98,7 @@ CREATE TABLE IF NOT EXISTS forwardings (
     UNIQUE INDEX (address, forwarding),
     INDEX (domain),
     INDEX (dest_domain),
+    INDEX (is_maillist),
     INDEX (is_list),
     INDEX (is_alias)
 ) ENGINE=InnoDB;

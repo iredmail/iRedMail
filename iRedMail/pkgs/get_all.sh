@@ -208,7 +208,7 @@ check_new_iredmail()
     #   - DISTRO_VERSION: distribution release number
     #   - DISTRO_CODENAME: code name
     ECHO_INFO "Checking new version of iRedMail ..."
-    ${FETCH_CMD} "${IREDMAIL_MIRROR}/version/check.py/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${OS_ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
+    ${FETCH_CMD} "https://lic.iredmail.org/check_version/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${OS_ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
 
     UPDATE_AVAILABLE='NO'
     if ls iredmail_os* &>/dev/null; then

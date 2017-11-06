@@ -82,6 +82,8 @@ CREATE TABLE forwardings (
     forwarding VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     dest_domain VARCHAR(255) NOT NULL DEFAULT '',
+    -- defines whether it's a (mlmmj) mailing list account. 0=no, 1=yes.
+    is_maillist INT2 NOT NULL DEFAULT 0,
     -- defines whether it's a standalone mail alias account. 0=no, 1=yes.
     is_list INT2 NOT NULL DEFAULT 0,
     -- defines whether it's a mail forwarding address of mail user. 0=no, 1=yes.
@@ -95,6 +97,7 @@ CREATE INDEX idx_forwardings_forwarding ON forwardings (forwarding);
 CREATE UNIQUE INDEX idx_forwardings_address_forwarding ON forwardings (address, forwarding);
 CREATE INDEX idx_forwardings_domain ON forwardings (domain);
 CREATE INDEX idx_forwardings_dest_domain ON forwardings (dest_domain);
+CREATE INDEX idx_forwardings_is_maillist ON forwardings (is_maillist);
 CREATE INDEX idx_forwardings_is_list ON forwardings (is_list);
 CREATE INDEX idx_forwardings_is_forwarding ON forwardings (is_forwarding);
 CREATE INDEX idx_forwardings_is_alias ON forwardings (is_alias);
