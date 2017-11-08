@@ -144,35 +144,14 @@ cat <<EOF
 EOF
 
 
-# Create SSL/TLS cert file.
 check_status_before_run generate_ssl_keys
-
-# User/Group: vmail
 check_status_before_run add_required_users
-
-# web server & PHP.
 check_status_before_run web_server_config
-
-# Install & Config Backend: OpenLDAP or MySQL.
 check_status_before_run backend_install
-
-# Postfix.
 check_status_before_run postfix_setup
-
-# Dovecot.
 check_status_before_run dovecot_setup
-
-# ClamAV.
 check_status_before_run clamav_config
-
-# Amavisd-new.
 check_status_before_run amavisd_config
-
-# SpamAssassin.
 check_status_before_run sa_config
-
-# Optional components.
 optional_components
-
-# Cleanup.
 check_status_before_run cleanup

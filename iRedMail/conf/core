@@ -136,10 +136,17 @@ check_runtime_dir() {
     rm -f ${RUNTIME_DIR}/.pkg_install_failed &>/dev/null
 }
 
+check_required_os_dirs() {
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        [ -d ${LOGROTATE_DIR} ] || mkdir -p ${LOGROTATE_DIR}
+    fi
+}
+
 # Check necessery privileges/files/dirs.
 check_env()
 {
     check_runtime_dir
+    check_required_os_dirs
 
     # Check user privilege.
     check_user root
@@ -240,9 +247,6 @@ check_status_before_run()
         ECHO_SKIP "Function: $1."
     else
         $function_name
-        #if [ X"$?" == X'0' ]; then
-        #    echo "export ${function_status_name}='DONE'" >> ${STATUS_FILE}
-        #fi
     fi
 }
 
@@ -328,7 +332,7 @@ service_control()
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
         if [ X"${action}" == X'enable' ]; then
             if [ X"$#" == X'2' ]; then
-                ${SYSRC} ${1}="${2}" >> ${INSTALL_LOG} 2>&1
+                ${SYSRC} -f ${RC_CONF_LOCAL} ${1}="${2}" >> ${INSTALL_LOG} 2>&1
             fi
         elif [ X"${action}" == X'disable' ]; then
             # Already handled in functions/*.sh.

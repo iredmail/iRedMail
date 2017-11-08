@@ -189,7 +189,7 @@ amavisd_config()
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.
         service_control enable 'amavisd_enable' 'YES'
-        service_control enable 'amavisd_pidfile' '/var/amavis/amavisd.pid'
+        service_control enable 'amavisd_pidfile' "${AMAVISD_PID_FILE}"
         service_control enable 'amavis_milter_enable' 'NO'
         service_control enable 'amavis_p0fanalyzer_enable' 'NO'
     fi

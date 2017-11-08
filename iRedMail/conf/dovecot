@@ -54,8 +54,10 @@ export DOVECOT_CONF_INCLUDE_DIR='/etc/dovecot/iredmail'
 # Path to Dovecot deliver agant
 export DOVECOT_DELIVER_BIN='/usr/libexec/dovecot/deliver'
 
-# Logging with syslog (Require rsyslog-8.x+)
-export DOVECOT_USE_SYSLOG='YES'
+# Logging with Linux rsyslog (Require rsyslog-8.x+)
+export DOVECOT_USE_RSYSLOG='YES'
+# Use BSD syslog.
+export DOVECOT_USE_BSD_SYSLOG='NO'
 export DOVECOT_SYSLOG_FACILITY='local5'
 # main log file
 export DOVECOT_LOG_DIR='/var/log/dovecot'
@@ -73,21 +75,25 @@ export DOVECOT_SYSLOG_FILE_SIEVE="${DOVECOT_LOG_DIR}/sieve.log"
 export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
-    [ X"${DISTRO_VERSION}" == X'6' ] && export DOVECOT_USE_SYSLOG='NO'
+    [ X"${DISTRO_VERSION}" == X'6' ] && export DOVECOT_USE_RSYSLOG='NO'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER_BIN='/usr/lib/dovecot/deliver'
 
-    [ X"${DISTRO_CODENAME}" == X'trusty' ] && export DOVECOT_USE_SYSLOG='NO'
+    [ X"${DISTRO_CODENAME}" == X'trusty' ] && export DOVECOT_USE_RSYSLOG='NO'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-    export DOVECOT_USE_SYSLOG='NO'
+    export DOVECOT_USE_RSYSLOG='NO'
+    export DOVECOT_USE_BSD_SYSLOG='YES'
+
     export DOVECOT_CONF_DIR='/usr/local/etc/dovecot'
     export DOVECOT_DELIVER_BIN='/usr/local/libexec/dovecot/deliver'
     export DOVECOT_DOVEADM_BIN='/usr/local/bin/doveadm'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export DOVECOT_USE_SYSLOG='NO'
+    export DOVECOT_USE_RSYSLOG='NO'
+    export DOVECOT_USE_BSD_SYSLOG='YES'
+
     export DOVECOT_USER='_dovecot'
     export DOVECOT_GROUP='_dovecot'
     export DOVECOT_DELIVER_BIN='/usr/local/libexec/dovecot/deliver'

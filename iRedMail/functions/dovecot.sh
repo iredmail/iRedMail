@@ -212,7 +212,7 @@ dovecot_config()
     chown root ${DOVECOT_QUOTA_WARNING_SCRIPT}
     chmod 0755 ${DOVECOT_QUOTA_WARNING_SCRIPT}
 
-    # Use '/usr/local/bin/bash' as shabang line, otherwise quota waning will be failed.
+    # Use '/usr/local/bin/bash' as shabang line, otherwise quota warning will fail.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         perl -pi -e 's#(.*)/usr/bin/env bash.*#${1}/usr/local/bin/bash#' ${DOVECOT_QUOTA_WARNING_SCRIPT}
     fi
@@ -383,7 +383,7 @@ dovecot_log() {
     mkdir -p ${DOVECOT_LOG_DIR} >> ${INSTALL_LOG} 2>&1
     chown ${SYSLOG_DAEMON_USER}:${SYSLOG_DAEMON_GROUP} ${DOVECOT_LOG_DIR}
 
-    if [ X"${DOVECOT_USE_SYSLOG}" == X'YES' ]; then
+    if [ X"${DOVECOT_USE_RSYSLOG}" == X'YES' ]; then
         # Use rsyslog.
         # Copy rsyslog config file used to filter Dovecot log
         cp ${SAMPLE_DIR}/rsyslog.d/1-dovecot.conf ${SYSLOG_CONF_DIR}
@@ -407,6 +407,24 @@ dovecot_log() {
             touch ${f}
             chown ${SYSLOG_DAEMON_USER}:${SYSLOG_DAEMON_GROUP} ${f}
         done
+    elif [ X"${DOVECOT_USE_BSD_SYSLOG}" == X'YES' ]; then
+        # Log dovecot to a dedicated file
+        if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+            if ! grep "${DOVECOT_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
+                # '!!' means abort further evaluation after first match
+                echo '!dovecot' >> ${SYSLOG_CONF}
+                echo "${DOVECOT_SYSLOG_FACILITY}.*        -${DOVECOT_LOG_FILE}" >> ${SYSLOG_CONF}
+            fi
+        elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+            if ! grep "${DOVECOT_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
+                # '!!' means abort further evaluation after first match
+                echo '!!dovecot' >> ${SYSLOG_CONF}
+                echo "${DOVECOT_SYSLOG_FACILITY}.*        ${DOVECOT_LOG_FILE}" >> ${SYSLOG_CONF}
+            fi
+        fi
+
+        # WARNING: If log file doesn't exist, syslog won't log matched log lines.
+        touch ${DOVECOT_LOG_FILE}
     else
         # Disable syslog and use Dovecot internal log system
         perl -pi -e 's/^(syslog_facility.*)/#${1}/' ${DOVECOT_CONF}
@@ -430,13 +448,6 @@ dovecot_log() {
         perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${DOVECOT_LOGROTATE_FILE}
 
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-        # Log dovecot to a dedicated file
-        if ! grep "${DOVECOT_LOG_FILE}" /etc/syslog.conf &>/dev/null; then
-            # '!!' means abort further evaluation after first match
-            echo '!dovecot' >> /etc/syslog.conf
-            echo "${DOVECOT_SYSLOG_FACILITY}.*        -${DOVECOT_LOG_FILE}" >> /etc/syslog.conf
-        fi
-
         cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/dovecot ${DOVECOT_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_DOVECOT_MASTER_PID#$ENV{DOVECOT_MASTER_PID}#g' ${DOVECOT_LOGROTATE_FILE}
@@ -448,13 +459,6 @@ dovecot_log() {
         perl -pi -e 's#PH_VMAIL_GROUP_NAME#$ENV{VMAIL_GROUP_NAME}#g' ${DOVECOT_LOGROTATE_FILE}
 
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-        # Log dovecot to a dedicated file
-        if ! grep "${DOVECOT_LOG_FILE}" /etc/syslog.conf &>/dev/null; then
-            # '!!' means abort further evaluation after first match
-            echo '!!dovecot' >> /etc/syslog.conf
-            echo "${DOVECOT_SYSLOG_FACILITY}.*        ${DOVECOT_LOG_FILE}" >> /etc/syslog.conf
-        fi
-
         if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
             cat >> /etc/newsyslog.conf <<EOF
