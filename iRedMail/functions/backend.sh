@@ -37,6 +37,12 @@ backend_install()
         export SQL_ROOT_PASSWD="${PGSQL_ROOT_PASSWD}"
     fi
 
+    # Check whether remote MySQL server is an IPv6 address.
+    SQL_SERVER_ADDRESS_IS_IPV6='NO'
+    if echo ${SQL_SERVER_ADDRESS} | grep ':' &>/dev/null; then
+        SQL_SERVER_ADDRESS_IS_IPV6='YES'
+    fi
+
     # Hashed admin password. It requies Python.
     export DOMAIN_ADMIN_PASSWD_HASH="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${DOMAIN_ADMIN_PASSWD_PLAIN})"
 

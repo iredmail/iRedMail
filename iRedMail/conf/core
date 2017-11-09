@@ -295,10 +295,10 @@ hash_maildir()
 # Service control: enable, disable, [start | stop | restart]
 service_control()
 {
-    action="$1"
+    action="$1"     # enable, disable, start, stop, restart
     shift 1
-    service="$1"    # start, stop, restart
-    services="$@"   # enable, disable
+    service="$1"    # first service name
+    services="$@"   # extra service names
 
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         for srv in ${services}; do

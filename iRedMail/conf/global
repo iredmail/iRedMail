@@ -304,6 +304,7 @@ elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
 
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/usr/local/etc/rc.d'
+    export RC_CONF_LOCAL='/etc/rc.conf.local'
 
     export PYTHON_BIN='/usr/local/bin/python'
     export PERL_BIN='/usr/local/bin/perl'
