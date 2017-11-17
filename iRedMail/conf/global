@@ -31,6 +31,10 @@ export LC_ALL=C
 export LC_CTYPE=C
 export LANG=C
 
+# Tells ncurses (dialog) to use Unicode values which correspond to the VT100
+# line-drawing glyphs.
+export NCURSES_NO_UTF8_ACS=1
+
 # Debug mode: YES, NO.
 export IREDMAIL_DEBUG="${IREDMAIL_DEBUG:=NO}"
 
