@@ -13,6 +13,7 @@ iRedMail-0.9.8:
         - installer: not correctly configure SOGo with IPv6 SQL server address.
           Thanks to Wraptor <nijs.thibaut _at_ gmail.com> for the report in
           forum.
+        - Postfix: Improper SQL queries used to query per-user bcc address.
         - Nginx: Use single config file for default web hosts.
         - tools/backup_sogo.sh
             - not set correct owner and permission on backup files.

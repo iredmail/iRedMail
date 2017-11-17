@@ -3,4 +3,12 @@ port        = PH_SQL_SERVER_PORT
 user        = PH_VMAIL_DB_BIND_USER
 password    = PH_VMAIL_DB_BIND_PASSWD
 dbname      = PH_VMAIL_DB_NAME
-query       = SELECT recipient_bcc_user.bcc_address FROM recipient_bcc_user,domain WHERE recipient_bcc_user.username='%s' AND recipient_bcc_user.domain='%d' AND recipient_bcc_user.domain=domain.domain AND domain.backupmx=0 AND domain.active=1 AND recipient_bcc_user.active=1
+query       = SELECT recipient_bcc_user.bcc_address
+                FROM recipient_bcc_user,domain,alias_domain
+               WHERE recipient_bcc_user.username='%s'
+                     AND recipient_bcc_user.domain='%d'
+                     AND ((recipient_bcc_user.domain=domain.domain)
+                          OR (recipient_bcc_user.domain=alias_domain.alias_domain AND domain.domain = alias_domain.target_domain))
+                     AND domain.backupmx=0
+                     AND domain.active=1
+                     AND recipient_bcc_user.active=1
