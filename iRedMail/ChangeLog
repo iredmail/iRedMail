@@ -8,6 +8,8 @@ iRedMail-0.9.8:
         - LDAP backend: Allow mail list account to use 2 attributes: member,
           uniqueMember.
         - Dovecot: Log subject, sender, size in mail deliver log.
+        - Amavisd: Add new sql column `maddr.email_raw` and trigger to store
+          email address without address extension.
 
     * Fixed issues:
         - installer: not correctly configure SOGo with IPv6 SQL server address.

@@ -417,5 +417,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER mergequota BEFORE INSERT ON used_quota
-    FOR EACH ROW EXECUTE PROCEDURE merge_quota();
+CREATE TRIGGER mergequota
+    BEFORE INSERT ON used_quota FOR EACH ROW
+    EXECUTE PROCEDURE merge_quota();

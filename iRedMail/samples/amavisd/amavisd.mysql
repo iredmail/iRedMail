@@ -138,13 +138,33 @@ CREATE TABLE maddr (
   partition_tag integer      DEFAULT 0, -- see $partition_tag
   id         bigint unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
   email      varbinary(255)  NOT NULL,  -- full mail address
+  -- mail address without address extension: user+abc@domain.com -> user@domain.com
+  email_raw  varbinary(255)  NOT NULL DEFAULT '',
   domain     varchar(255)    NOT NULL,  -- only domain part of the email address
                                         -- with subdomain fields in reverse
   CONSTRAINT part_email UNIQUE (partition_tag,email)
 ) ENGINE=InnoDB;
 
 CREATE INDEX maddr_idx_email ON maddr (email);
+CREATE INDEX maddr_idx_email_raw ON maddr (email_raw);
 CREATE INDEX maddr_idx_domain ON maddr (domain);
+
+-- Create trigger to save email address withou address extension
+-- user+abc@domain.com -> user@domain.com
+DELIMITER //
+CREATE TRIGGER `maddr_email_raw`
+    BEFORE INSERT
+    ON `maddr`
+    FOR EACH ROW
+    BEGIN
+        IF (NEW.email LIKE '%+%') THEN
+            SET NEW.email_raw = CONCAT(SUBSTRING_INDEX(NEW.email, '+', 1), '@', SUBSTRING_INDEX(new.email, '@', -1));
+        ELSE
+            SET NEW.email_raw = NEW.email;
+        END IF;
+    END;
+//
+DELIMITER ;
 
 -- used in @storage_sql_dsn
 -- information pertaining to each processed message as a whole;

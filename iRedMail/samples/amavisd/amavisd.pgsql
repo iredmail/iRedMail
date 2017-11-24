@@ -115,13 +115,40 @@ CREATE UNIQUE INDEX policy_idx_policy_name ON policy (policy_name);
 -- used in @storage_sql_dsn
 -- provide unique id for each e-mail address, avoids storing copies
 CREATE TABLE maddr (
-  partition_tag integer   DEFAULT 0,   -- see $partition_tag
-  id         serial       PRIMARY KEY,
-  email      bytea        NOT NULL,    -- full e-mail address
-  domain     varchar(255) NOT NULL,    -- only domain part of the email address
-                                       -- with subdomain fields in reverse
-  CONSTRAINT part_email UNIQUE (partition_tag,email)
+    partition_tag integer   DEFAULT 0,   -- see $partition_tag
+    id serial       PRIMARY KEY,
+    -- full e-mail address
+    email VARCHAR(255) NOT NULL DEFAULT '',
+    -- mail address without address extension: user+abc@domain.com -> user@domain.com
+    -- email_raw  VARCHAR(255) NOT NULL DEFAULT '',
+    domain     varchar(255) NOT NULL,   -- only domain part of the email address
+                                        -- with subdomain fields in reverse
+    CONSTRAINT part_email UNIQUE (partition_tag,email)
 );
+
+CREATE INDEX maddr_idx_email ON maddr (email);
+CREATE INDEX maddr_idx_email_raw ON maddr (email_raw);
+CREATE INDEX maddr_idx_domain ON maddr (domain);
+
+-- Create trigger to save email address withou address extension
+-- user+abc@domain.com -> user@domain.com
+-- CREATE OR REPLACE FUNCTION strip_addr_extension(bytea, varchar, integer) RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION strip_addr_extension()
+RETURNS TRIGGER AS $$
+BEGIN
+    IF (NEW.email LIKE '%+%') THEN
+        NEW.email_raw := split_part(NEW.email, '+', 1) || '@' || split_part(NEW.email, '@', 2);
+    ELSE
+        NEW.email_raw := NEW.email;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER maddr_email_raw
+    BEFORE INSERT ON maddr
+    FOR EACH ROW
+    EXECUTE PROCEDURE strip_addr_extension();
 
 -- used in @storage_sql_dsn
 -- information pertaining to each processed message as a whole;

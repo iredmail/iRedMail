@@ -84,12 +84,8 @@ if [ X"${MAILDIR_STYLE}" == X"hashed" ]; then
     str2="$(echo ${username} | cut -c2)"
     str3="$(echo ${username} | cut -c3)"
 
-    if [ X"${length}" == X"1" ]; then
-        str2="${str1}"
-        str3="${str1}"
-    elif [ X"${length}" == X"2" ]; then
-        str3="${str2}"
-    fi
+    test -z "${str2}" && str2="${str1}"
+    test -z "${str3}" && str3="${str2}"
 
     # Use mbox, will be changed later.
     maildir="${domain}/${str1}/${str2}/${str3}/${username}-${DATE}/"
