@@ -49,10 +49,17 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export PHP_FPM_RC_SCRIPT_NAME='php5-fpm'
         export PHPENMOD_BIN='php5enmod'
     else
-        export PHP_INI='/etc/php/7.0/fpm/php.ini'
+        if [ X"${DISTRO_CODENAME}" == X'stretch' -o X"${DISTRO_CODENAME}" == X'xenial' ]; then
+            # Debian 9, Ubuntu 16.04
+            export PHP_VERSION='7.0'
+        else
+            # Ubuntu 17.10
+            export PHP_VERSION='7.1'
+        fi
 
-        export PHP_FPM_POOL_WWW_CONF='/etc/php/7.0/fpm/pool.d/www.conf'
-        export PHP_FPM_RC_SCRIPT_NAME="php7.0-fpm"
+        export PHP_INI="/etc/php/${PHP_VERSION}/fpm/php.ini"
+        export PHP_FPM_POOL_WWW_CONF="/etc/php/${PHP_VERSION}/fpm/pool.d/www.conf"
+        export PHP_FPM_RC_SCRIPT_NAME="php${PHP_VERSION}-fpm"
         export PHPENMOD_BIN='phpenmod'
     fi
 
