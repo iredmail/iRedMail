@@ -86,10 +86,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Module related.
     export OPENLDAP_MODULE_PATH='/usr/lib/ldap'
 
-    if [ X"${DISTRO_CODENAME}" == X'trusty' ]; then
-        export OPENLDAP_HAS_SHA2='NO'
-    fi
-
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Configuration files.
     export OPENLDAP_CONF_ROOT='/usr/local/etc/openldap'

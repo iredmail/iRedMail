@@ -42,7 +42,8 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PHP_INI='/etc/php.ini'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
+    if [ X"${DISTRO_CODENAME}" == X'jessie' ]; then
+        # Debian 9
         export PHP_INI='/etc/php5/fpm/php.ini'
 
         export PHP_FPM_POOL_WWW_CONF='/etc/php5/fpm/pool.d/www.conf'

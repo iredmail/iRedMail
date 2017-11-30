@@ -170,7 +170,7 @@ install_all()
             ALL_PKGS="${ALL_PKGS} php-common php-fpm php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
+            if [ X"${DISTRO_CODENAME}" == X'jessie' ]; then
                 ALL_PKGS="${ALL_PKGS} php5-cli php5-fpm php5-json php5-gd php5-mcrypt php5-curl mcrypt php5-intl"
                 [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php5-ldap php5-mysql"
                 [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php5-mysql"
@@ -275,7 +275,7 @@ install_all()
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} php-pear-Net-IDNA2"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            if [ X"${DISTRO_CODENAME}" == X'jessie' -o X"${DISTRO_CODENAME}" == X'trusty' ]; then
+            if [ X"${DISTRO_CODENAME}" == X'jessie' ]; then
                 [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-net-ldap2"
             else
                 [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-net-ldap3"
@@ -364,11 +364,7 @@ EOF
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
 
-        if [ X"${DISTRO}" == X'UBUNTU' ]; then
-            if [ X"${DISTRO_CODENAME}" != X'trusty' ]; then
-                ALL_PKGS="${ALL_PKGS} python-pymysql"
-            fi
-        fi
+        [ X"${DISTRO}" == X'UBUNTU' ] && ALL_PKGS="${ALL_PKGS} python-pymysql"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py-sqlalchemy py-dnspython"

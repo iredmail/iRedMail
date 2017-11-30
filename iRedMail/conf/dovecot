@@ -80,8 +80,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER_BIN='/usr/lib/dovecot/deliver'
 
-    [ X"${DISTRO_CODENAME}" == X'trusty' ] && export DOVECOT_USE_RSYSLOG='NO'
-
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DOVECOT_USE_RSYSLOG='NO'
     export DOVECOT_USE_BSD_SYSLOG='YES'
