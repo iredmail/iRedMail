@@ -175,6 +175,7 @@ iredadmin_config() {
     perl -pi -e 's#^(iredapd_db_password =).*#${1} "$ENV{IREDAPD_DB_PASSWD}"#' settings.py
 
     echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
+    echo "mlmmj_admin_api_auth_token = '${MLMMJ_ADMIN_API_AUTH_TOKEN}'" >> settings.py
 
     # Add postfix alias for user: iredapd
     add_postfix_alias ${IREDAPD_DAEMON_USER} ${SYS_ROOT_USER}

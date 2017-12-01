@@ -6,6 +6,12 @@ iRedMail-0.9.8:
     * Apache has been removed, Nginx is the only one web server available.
 
     * Improvements:
+        - Integrate 'mlmmj' mailing list manager, and 'mlmmj-admin' RESTful API
+          server for easy mlmmj management.
+
+            - mlmmj: http://mlmmj.org/
+            - mlmmj-admin: https://bitbucket.org/iredmail/mlmmj-admin/src
+
         - LDAP backend: Allow mail list account to use 2 attributes: member,
           uniqueMember.
         - Dovecot: Log subject, sender, size in mail deliver log.

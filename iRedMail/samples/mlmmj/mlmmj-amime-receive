@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# File name: mlmmj-amime-receive
+# Purpose: Read mail messages from stdin, pipe it to altermime to add footer
+#          in MIME-aware way, then pipe modified message to mlmmj-receive for
+#          final delivery.
+#
+# Requirements:
+#   - altermime: http://www.pldaniels.com/altermime/
+#
+# Authors:
+#   - Original wrote by Gerd v. Egidy <gerd@egidy.de>, MIT License.
+#   - Updated by Zhang Huangbin <zhb@iredmail.org>.
+
+export CMD_MLMMJ_RECEIVE='PH_CMD_MLMMJ_RECEIVE'
+export CMD_ALTERMIME='PH_CMD_ALTERMIME'
+
+# File names used to store footer in different MIME types:
+# plain text, html, base64 encoded.
+export FILE_FOOTER_TEXT='footer_text'
+export FILE_FOOTER_HTML='footer_html'
+#export FILE_FOOTER_BASE64='footer_base64'
+
+# Make sure programs exist and executable
+if [ ! -x ${CMD_MLMMJ_RECEIVE} ]; then
+    echo "Command ${CMD_MLMMJ_RECEIVE} doesn't exist or not executable, mail delivery aborted"
+    exit 1
+fi
+
+if [ ! -x ${CMD_ALTERMIME} ]; then
+    echo "Command ${CMD_ALTERMIME} doesn't exist or not executable, mail delivery aborted"
+    exit 1
+fi
+
+# Get mailing list directory passed to '-L' argument
+ML_DIR=''
+_has_L='NO'
+for i in $@; do
+    if [ X"${_has_L}" == X'NO' ]; then
+        if [ X"$i" == X'-L' ]; then
+            _has_L='YES'
+        fi
+    else
+        ML_DIR="$i"
+        break
+    fi
+done
+
+if [ X"${ML_DIR}" == X'' ]; then
+    echo "No mailing list directory specified (-L /path/to/listdir), mail delivery aborted"
+    exit 1
+fi
+
+if [ ! -d "${ML_DIR}" ]; then
+    echo "Mailing list directory (${ML_DIR}) does not exist or not a directory, mail delivery aborted"
+    exit 1
+fi
+
+# Mailing list sub-directory: control
+ML_SUBDIR_CONTROL="${ML_DIR}/control"
+
+if [ ! -d "${ML_SUBDIR_CONTROL}" ]; then
+    echo "Mailing list control directory (${ML_SUBDIR_CONTROL}) does not exist or not a directory, mail delivery aborted"
+    exit 1
+fi
+
+# Looking for footer files and build alterMIME parameters
+PARAMS=''
+if [ -f "${ML_SUBDIR_CONTROL}/${FILE_FOOTER_TEXT}" ]; then
+    PARAMS="${PARAMS} --disclaimer=${ML_SUBDIR_CONTROL}/${FILE_FOOTER_TEXT}"
+fi
+
+if [ -f "${ML_SUBDIR_CONTROL}/${FILE_FOOTER_HTML}" ]; then
+    PARAMS="${PARAMS} --disclaimer-html=${ML_SUBDIR_CONTROL}/${FILE_FOOTER_HTML} --htmltoo --force-for-bad-html"
+fi
+
+#if [ -f "${ML_SUBDIR_CONTROL}/${FILE_FOOTER_BASE64}" ]; then
+#    PARAMS="${PARAMS} --disclaimer-b64=${ML_SUBDIR_CONTROL}/${FILE_FOOTER_BASE64}"
+#fi
+
+# go to a dir where altermime can write it's tmp-files safely
+cd ${ML_DIR}
+
+# Check whether we have any footer file available
+if echo ${PARAMS} | grep 'disclaimer' &>/dev/null; then
+    PARAMS="${PARAMS} --altersigned --log-syslog"
+
+    # pipe to altermime, then pipe to mlmmj-receive
+    ${CMD_ALTERMIME} --input=- ${PARAMS} | ${CMD_MLMMJ_RECEIVE} "$@"
+else
+    ${CMD_MLMMJ_RECEIVE} "$@"
+fi

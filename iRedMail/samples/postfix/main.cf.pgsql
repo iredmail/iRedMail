@@ -3,6 +3,7 @@
 #
 transport_maps =
     proxy:pgsql:PH_POSTFIX_LOOKUP_DIR/transport_maps_user.cf
+    proxy:mysql:PH_POSTFIX_LOOKUP_DIR/transport_maps_maillist.cf
     proxy:pgsql:PH_POSTFIX_LOOKUP_DIR/transport_maps_domain.cf
 
 sender_dependent_relayhost_maps =

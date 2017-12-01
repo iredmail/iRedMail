@@ -64,7 +64,8 @@ add_user_vmail()
 
     # set owner/group and permission.
     chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${STORAGE_BASE_DIR} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
-    chmod -R 0700 ${STORAGE_BASE_DIR} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
+    chmod -R 0755 ${STORAGE_BASE_DIR}
+    chmod -R 0700 ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
 
     # backup directory
     [ -d ${BACKUP_DIR} ] || mkdir -p ${BACKUP_DIR} &>/dev/null
@@ -109,6 +110,33 @@ add_user_iredadmin()
     echo 'export status_add_user_iredadmin="DONE"' >> ${STATUS_FILE}
 }
 
+add_user_mlmmj()
+{
+    ECHO_DEBUG "Create system account: ${MLMMJ_USER_NAME}:${MLMMJ_GROUP_NAME} (${MLMMJ_USER_UID}:${MLMMJ_USER_GID})"
+
+    # Low privilege user used to run mlmmj.
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        pw groupadd -g ${MLMMJ_USER_GID} -n ${MLMMJ_USER_NAME} >> ${INSTALL_LOG} 2>&1
+        pw useradd -m \
+            -u ${MLMMJ_USER_GID} \
+            -g ${MLMMJ_GROUP_NAME} \
+            -s ${SHELL_NOLOGIN} \
+            -d ${MLMMJ_HOME_DIR} \
+            -n ${MLMMJ_USER_NAME} >> ${INSTALL_LOG} 2>&1
+    else
+        groupadd -g ${MLMMJ_USER_GID} ${MLMMJ_GROUP_NAME} >> ${INSTALL_LOG} 2>&1
+        useradd -m \
+            -u ${MLMMJ_USER_UID} \
+            -g ${MLMMJ_GROUP_NAME} \
+            -s ${SHELL_NOLOGIN} \
+            -d ${MLMMJ_HOME_DIR} \
+            ${MLMMJ_USER_NAME} >> ${INSTALL_LOG} 2>&1
+    fi
+    rm -rf ${MLMMJ_HOME_DIR}/.* &>/dev/null
+
+    echo 'export status_add_user_mlmmj="DONE"' >> ${STATUS_FILE}
+}
+
 add_user_iredapd()
 {
     ECHO_DEBUG "Create system account: ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_GROUP} (${IREDAPD_DAEMON_USER_UID}:${IREDAPD_DAEMON_USER_GID})."
@@ -137,11 +165,10 @@ add_user_iredapd()
 
 add_required_users()
 {
-    ECHO_INFO "Create required system account: ${VMAIL_USER_NAME}, ${IREDADMIN_USER_NAME}, ${IREDAPD_DAEMON_USER}."
+    ECHO_INFO "Create required system account: ${VMAIL_USER_NAME}, ${MLMMJ_USER_NAME}, ${IREDADMIN_USER_NAME}, ${IREDAPD_DAEMON_USER}."
 
     check_status_before_run add_user_vmail
-    [ X"${USE_IREDADMIN}" == X'YES' ] && check_status_before_run add_user_iredadmin
+    check_status_before_run add_user_mlmmj
+    check_status_before_run add_user_iredadmin
     check_status_before_run add_user_iredapd
-
-    echo 'export status_add_required_users="DONE"' >> ${STATUS_FILE}
 }

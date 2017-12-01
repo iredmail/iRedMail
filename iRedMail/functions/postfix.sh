@@ -153,6 +153,12 @@ postfix_config_basic()
     # Dovecot LDA
     perl -pi -e 's#PH_DOVECOT_DELIVER_BIN#$ENV{DOVECOT_DELIVER_BIN}#g' ${POSTFIX_FILE_MASTER_CF}
 
+    # mlmmj
+    perl -pi -e 's#PH_MLMMJ_USER_NAME#$ENV{MLMMJ_USER_NAME}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_MLMMJ_GROUP_NAME#$ENV{MLMMJ_GROUP_NAME}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_CMD_MLMMJ_AMIME_RECEIVE#$ENV{CMD_MLMMJ_AMIME_RECEIVE}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_MLMMJ_SPOOL_DIR#$ENV{MLMMJ_SPOOL_DIR}#g' ${POSTFIX_FILE_MASTER_CF}
+
     ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
     mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ >> ${INSTALL_LOG} 2>&1
     for i in /etc/hosts /etc/resolv.conf /etc/localtime /etc/services; do

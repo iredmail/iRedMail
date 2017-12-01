@@ -105,6 +105,9 @@ export CLAMD_BIND_HOST="${LOCAL_ADDRESS}"
 # iRedAPD
 export IREDAPD_BIND_HOST="${LOCAL_ADDRESS}"
 export IREDAPD_SERVER_ADDRESS="${IREDAPD_SERVER_ADDRESS:=${IREDAPD_BIND_HOST}}"
+# mlmmj-admin
+export MLMMJ_ADMIN_BIND_HOST="${LOCAL_ADDRESS}"
+export MLMMJ_ADMIN_SERVER_ADDRESS="${MLMMJ_ADMIN_SERVER_ADDRESS:=${MLMMJ_ADMIN_BIND_HOST}}"
 
 # For managesieve service and software.
 export USE_MANAGESIEVE='YES'
@@ -121,6 +124,8 @@ export IREDADMIN_USER_UID='2001'
 export IREDADMIN_USER_GID='2001'
 export IREDAPD_DAEMON_USER_UID='2002'
 export IREDAPD_DAEMON_USER_GID='2002'
+export MLMMJ_USER_UID='2003'
+export MLMMJ_USER_GID='2003'
 
 # Default SQL database name used to store mail accounts.
 export VMAIL_DB_NAME='vmail'
@@ -379,9 +384,12 @@ export SYS_ROOT_USER='root'
 export SYS_ROOT_GROUP='root'
 
 # Syslog
+export USE_RSYSLOG='YES'
+export USE_BSD_SYSLOG='NO'
 export SYSLOG_DAEMON_USER='root'
 export SYSLOG_DAEMON_GROUP='root'
 export SYSLOG_POSTROTATE_CMD=''
+export IREDMAIL_SYSLOG_FACILITY='local5'
 
 # Use systemd
 export USE_SYSTEMD='NO'
@@ -539,6 +547,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PORT_WRKDIRPREFIX='/usr/ports'
 
     # Syslog (newsyslog)
+    export USE_RSYSLOG='NO'
+    export USE_BSD_SYSLOG='YES'
     export SYSLOG_DAEMON_USER='root'
     export SYSLOG_DAEMON_GROUP='wheel'
     export SYSLOG_CONF='/etc/syslog.conf'
@@ -579,6 +589,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export LIST_FILES_IN_PKG='pkg_info -L'
 
     # Syslog (newsyslog)
+    export USE_RSYSLOG='NO'
+    export USE_BSD_SYSLOG='YES'
     export SYSLOG_DAEMON_USER='root'
     export SYSLOG_DAEMON_GROUP='wheel'
     export SYSLOG_CONF='/etc/syslog.conf'

@@ -1,0 +1,5 @@
+#
+# mlmmj - mailing list manager
+#
+mlmmj_destination_recipient_limit = 1
+

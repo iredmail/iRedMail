@@ -36,6 +36,7 @@ export AMAVISD_DKIM_DIR="${AMAVISD_DKIM_DIR:=/var/lib/dkim}"
 # Network ports
 export AMAVISD_SMTP_PORT='10024'
 export AMAVISD_ORIGINATING_PORT='10026'
+export AMAVISD_MLMMJ_PORT='10027'
 export AMAVISD_QUARANTINE_PORT='9998'
 
 # Database used to store incoming & outgoing email related information.
@@ -43,7 +44,7 @@ export AMAVISD_DB_NAME='amavisd'
 export AMAVISD_DB_USER='amavisd'
 
 # Altermime.
-export ALTERMIME_BIN='/usr/bin/altermime'
+export CMD_ALTERMIME='/usr/bin/altermime'
 export DISCLAIMER_DIR="${POSTFIX_ROOTDIR}/disclaimer"
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -80,7 +81,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
     # Override location of command 'altermime'
-    export ALTERMIME_BIN='/usr/local/bin/altermime'
+    export CMD_ALTERMIME='/usr/local/bin/altermime'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export AMAVISD_SYS_USER='_vscan'
@@ -95,7 +96,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
     # Override location of command 'altermime'
-    export ALTERMIME_BIN='/usr/local/bin/altermime'
+    export CMD_ALTERMIME='/usr/local/bin/altermime'
 
 fi
 

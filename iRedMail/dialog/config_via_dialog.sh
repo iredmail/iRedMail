@@ -194,6 +194,10 @@ echo "export VMAIL_DB_BIND_PASSWD='${VMAIL_DB_BIND_PASSWD}'" >> ${IREDMAIL_CONFI
 export VMAIL_DB_ADMIN_PASSWD="$(${RANDOM_STRING})"
 echo "export VMAIL_DB_ADMIN_PASSWD='${VMAIL_DB_ADMIN_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
 
+# For mlmmj mailing list manager
+export MLMMJ_ADMIN_API_AUTH_TOKEN="$(${RANDOM_STRING})"
+echo "export MLMMJ_ADMIN_API_AUTH_TOKEN='${MLMMJ_ADMIN_API_AUTH_TOKEN}'" >> ${IREDMAIL_CONFIG_FILE}
+
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     . ${DIALOG_DIR}/ldap_config.sh
     . ${DIALOG_DIR}/mysql_config.sh

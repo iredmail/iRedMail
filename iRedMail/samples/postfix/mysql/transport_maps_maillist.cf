@@ -1,0 +1,6 @@
+hosts       = PH_SQL_SERVER_ADDRESS
+port        = PH_SQL_SERVER_PORT
+user        = PH_VMAIL_DB_BIND_USER
+password    = PH_VMAIL_DB_BIND_PASSWD
+dbname      = PH_VMAIL_DB_NAME
+query       = SELECT 'mlmmj:%d/%u' FROM maillists,domain WHERE maillists.address='%s' AND maillists.active=1 AND maillists.domain = domain.domain AND domain.active=1

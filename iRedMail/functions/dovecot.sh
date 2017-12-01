@@ -101,7 +101,7 @@ dovecot_config()
     perl -pi -e 's#PH_LAST_VALID_UID#$ENV{VMAIL_USER_UID}#' ${DOVECOT_CONF}
 
     # syslog and log file.
-    perl -pi -e 's#PH_DOVECOT_SYSLOG_FACILITY#$ENV{DOVECOT_SYSLOG_FACILITY}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_LOG_PATH#$ENV{DOVECOT_LOG_FILE}#' ${DOVECOT_CONF}
 
     # Authentication related settings.
@@ -358,7 +358,7 @@ Dovecot:
         - ${DOVECOT_REALTIME_QUOTA_CONF} (For real-time quota usage)
         - ${DOVECOT_SHARE_FOLDER_CONF} (For IMAP sharing folder)
     * Syslog config file:
-        - ${SYSLOG_CONF_DIR}/1-dovecot.conf (present if rsyslog >= 8.x)
+        - ${SYSLOG_CONF_DIR}/1-iredmail-dovecot.conf (present if rsyslog >= 8.x)
     * RC script: ${DIR_RC_SCRIPTS}/${DOVECOT_RC_SCRIPT_NAME}
     * Log files:
         - ${DOVECOT_LOG_FILE}
@@ -383,17 +383,17 @@ dovecot_log() {
     mkdir -p ${DOVECOT_LOG_DIR} >> ${INSTALL_LOG} 2>&1
     chown ${SYSLOG_DAEMON_USER}:${SYSLOG_DAEMON_GROUP} ${DOVECOT_LOG_DIR}
 
-    if [ X"${DOVECOT_USE_RSYSLOG}" == X'YES' ]; then
+    if [ X"${USE_RSYSLOG}" == X'YES' ]; then
         # Use rsyslog.
         # Copy rsyslog config file used to filter Dovecot log
-        cp ${SAMPLE_DIR}/rsyslog.d/1-dovecot.conf ${SYSLOG_CONF_DIR}
+        cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-dovecot.conf ${SYSLOG_CONF_DIR}
 
-        perl -pi -e 's#PH_DOVECOT_SYSLOG_FACILITY#$ENV{DOVECOT_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
-        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
-        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_LDA#$ENV{DOVECOT_SYSLOG_FILE_LDA}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
-        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_IMAP#$ENV{DOVECOT_SYSLOG_FILE_IMAP}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
-        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_POP3#$ENV{DOVECOT_SYSLOG_FILE_POP3}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
-        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_SIEVE#$ENV{DOVECOT_SYSLOG_FILE_SIEVE}#g' ${SYSLOG_CONF_DIR}/1-dovecot.conf
+        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-iredmail-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-iredmail-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_LDA#$ENV{DOVECOT_SYSLOG_FILE_LDA}#g' ${SYSLOG_CONF_DIR}/1-iredmail-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_IMAP#$ENV{DOVECOT_SYSLOG_FILE_IMAP}#g' ${SYSLOG_CONF_DIR}/1-iredmail-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_POP3#$ENV{DOVECOT_SYSLOG_FILE_POP3}#g' ${SYSLOG_CONF_DIR}/1-iredmail-dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_SYSLOG_FILE_SIEVE#$ENV{DOVECOT_SYSLOG_FILE_SIEVE}#g' ${SYSLOG_CONF_DIR}/1-iredmail-dovecot.conf
 
         # Although no need to create log files manually, but fail2ban will skip
         # the log file which doesn't exist while fail2ban starts up, so we
@@ -407,19 +407,19 @@ dovecot_log() {
             touch ${f}
             chown ${SYSLOG_DAEMON_USER}:${SYSLOG_DAEMON_GROUP} ${f}
         done
-    elif [ X"${DOVECOT_USE_BSD_SYSLOG}" == X'YES' ]; then
+    elif [ X"${USE_BSD_SYSLOG}" == X'YES' ]; then
         # Log dovecot to a dedicated file
         if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
             if ! grep "${DOVECOT_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
                 # '!!' means abort further evaluation after first match
                 echo '!dovecot' >> ${SYSLOG_CONF}
-                echo "${DOVECOT_SYSLOG_FACILITY}.*        -${DOVECOT_LOG_FILE}" >> ${SYSLOG_CONF}
+                echo "${IREDMAIL_SYSLOG_FACILITY}.*        -${DOVECOT_LOG_FILE}" >> ${SYSLOG_CONF}
             fi
         elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
             if ! grep "${DOVECOT_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
                 # '!!' means abort further evaluation after first match
                 echo '!!dovecot' >> ${SYSLOG_CONF}
-                echo "${DOVECOT_SYSLOG_FACILITY}.*        ${DOVECOT_LOG_FILE}" >> ${SYSLOG_CONF}
+                echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${DOVECOT_LOG_FILE}" >> ${SYSLOG_CONF}
             fi
         fi
 

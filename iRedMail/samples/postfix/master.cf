@@ -41,3 +41,9 @@ PH_LOCAL_ADDRESS:PH_POSTFIX_MAIL_REINJECT_PORT inet n  -   n   -   -  smtpd
     -o smtpd_client_connection_count_limit=0
     -o smtpd_client_connection_rate_limit=0
     -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_address_mappings
+
+# mlmmj - mailing list manager
+# ${nexthop} is '%d/%u' in transport ('mlmmj:%d/%u')
+mlmmj   unix  -       n       n       -       -       pipe
+    flags=ORh user=PH_MLMMJ_USER_NAME:PH_MLMMJ_GROUP_NAME argv=PH_CMD_MLMMJ_AMIME_RECEIVE -L PH_MLMMJ_SPOOL_DIR/${nexthop}
+

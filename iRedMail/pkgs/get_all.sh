@@ -162,6 +162,20 @@ gpgcheck=0
 #exclude=postfix*
 EOF
 
+    # For RHEL/CentOS 6: rsyslog-8.x
+    # http://www.rsyslog.com/rhelcentos-rpms/
+    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        cat > ${YUM_REPOS_DIR}/rsyslog.repo <<EOF
+[rsyslog_v8]
+name=Adiscon CentOS-\$releasever - local packages for \$basearch
+baseurl=http://rpms.adiscon.com/v8-stable/epel-\$releasever/\$basearch
+enabled=1
+gpgcheck=0
+gpgkey=http://rpms.adiscon.com/RPM-GPG-KEY-Adiscon
+protect=1
+EOF
+    fi
+
     # For Red Hat Enterprise Linux
     if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then
         # repo to install epel-release without GPG check.

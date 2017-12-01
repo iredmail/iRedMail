@@ -266,9 +266,12 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-Mail-SpamAssassin clamav unrar"
+        ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-Mail-SpamAssassin clamav unrar altermime"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_SERVICE_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
+
+    # mlmmj: mailing list manager
+    ALL_PKGS="${ALL_PKGS} mlmmj"
 
     # Roundcube
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then

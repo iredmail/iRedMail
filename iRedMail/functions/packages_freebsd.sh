@@ -498,7 +498,7 @@ EOF
     fi
     rm -f /var/db/ports/security_amavisd-new/options${SED_EXTENSION} &>/dev/null
 
-    ALL_PORTS="${ALL_PORTS} security/amavisd-new"
+    ALL_PORTS="${ALL_PORTS} security/amavisd-new mail/altermime"
 
     # Postfix. REQUIRED.
     cat > /var/db/ports/mail_postfix/options <<EOF
@@ -854,6 +854,9 @@ OPTIONS_FILE_SET+=UNZOO
 EOF
 
     ALL_PORTS="${ALL_PORTS} security/clamav"
+
+    # mlmmj: mailing list manager
+    ALL_PORTS="${ALL_PORTS} mail/mlmmj"
 
     # Roundcube.
     cat > /var/db/ports/mail_roundcube/options <<EOF
