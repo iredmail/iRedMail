@@ -261,9 +261,9 @@ CREATE TABLE maillists (
     expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 00:00:00',
     active INT2 NOT NULL DEFAULT 1
 );
-CREATE INDEX idx_maillists_address ON maillists (address);
+CREATE UNIQUE INDEX idx_maillists_address ON maillists (address);
 CREATE INDEX idx_maillists_domain ON maillists (domain);
-CREATE INDEX idx_maillists_mlid ON maillists (mlid);
+CREATE UNIQUE INDEX idx_maillists_mlid ON maillists (mlid);
 CREATE INDEX idx_maillists_active ON maillists (active);
 
 CREATE TABLE sender_bcc_domain (

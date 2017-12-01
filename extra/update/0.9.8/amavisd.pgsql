@@ -1,7 +1,3 @@
--- Change `maddr.email` type to VARCHAR, because split_part() doesn't support
--- `bytea`
-ALTER TABLE maddr ALTER COLUMN email TYPE VARCHAR(255);
-
 -- mail address without address extension: user+abc@domain.com -> user@domain.com
 ALTER TABLE maddr ADD COLUMN email_raw VARCHAR(255) NOT NULL DEFAULT '';
 
@@ -17,9 +13,9 @@ CREATE OR REPLACE FUNCTION strip_addr_extension()
 RETURNS TRIGGER AS $$
 BEGIN
     IF (NEW.email LIKE '%+%') THEN
-        NEW.email_raw := split_part(NEW.email, '+', 1) || '@' || split_part(NEW.email, '@', 2);
+        NEW.email_raw := split_part(convert_from(NEW.email, 'UTF8'), '+', 1) || '@' || split_part(convert_from(NEW.email, 'UTF8'), '@', 2);
     ELSE
-        NEW.email_raw := NEW.email;
+        NEW.email_raw := convert_from(NEW.email, 'UTF8');
     END IF;
     RETURN NEW;
 END;
