@@ -113,6 +113,8 @@ CREATE TABLE domain (
     aliases INT8 NOT NULL DEFAULT 0,
     -- Max mail accounts in this domain. e.g. 100.
     mailboxes INT8 NOT NULL DEFAULT 0,
+    -- Max mailing lists in this domain. e.g. 100.
+    maillists INT8 NOT NULL DEFAULT 0,
     -- Max mailbox quota in this domain. e.g. 1073741824 (1GB).
     maxquota INT8 NOT NULL DEFAULT 0,
     -- Not used. Historical.
@@ -244,6 +246,25 @@ CREATE INDEX idx_mailbox_enablesogo ON mailbox (enablesogo);
 CREATE INDEX idx_mailbox_passwordlastchange ON mailbox (passwordlastchange);
 CREATE INDEX idx_mailbox_expired ON mailbox (expired);
 CREATE INDEX idx_mailbox_active ON mailbox (active);
+
+
+CREATE TABLE maillists (
+    id SERIAL PRIMARY KEY,
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    name VARCHAR(255) NOT NULL DEFAULT '',
+    -- a server-wide unique id (a 36-characters string) for each mailing list
+    mlid VARCHAR(36) NOT NULL DEFAULT '',
+    settings TEXT,
+    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
+    modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
+    expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 00:00:00',
+    active INT2 NOT NULL DEFAULT 1
+);
+CREATE INDEX idx_maillists_address ON maillists (address);
+CREATE INDEX idx_maillists_domain ON maillists (domain);
+CREATE INDEX idx_maillists_mlid ON maillists (mlid);
+CREATE INDEX idx_maillists_active ON maillists (active);
 
 CREATE TABLE sender_bcc_domain (
     domain VARCHAR(255) NOT NULL DEFAULT '',

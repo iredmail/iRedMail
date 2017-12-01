@@ -120,7 +120,7 @@ CREATE TABLE maddr (
     -- full e-mail address
     email VARCHAR(255) NOT NULL DEFAULT '',
     -- mail address without address extension: user+abc@domain.com -> user@domain.com
-    -- email_raw  VARCHAR(255) NOT NULL DEFAULT '',
+    email_raw  VARCHAR(255) NOT NULL DEFAULT '',
     domain     varchar(255) NOT NULL,   -- only domain part of the email address
                                         -- with subdomain fields in reverse
     CONSTRAINT part_email UNIQUE (partition_tag,email)

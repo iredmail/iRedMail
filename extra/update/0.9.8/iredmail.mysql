@@ -1,0 +1,28 @@
+-- USE vmail;
+
+-- Column used to limit number of mailing lists a domain admin can create
+ALTER TABLE domain ADD COLUMN maillists INT(10) NOT NULL DEFAULT 0;
+
+-- Column used to mark sql record is a mailing list
+ALTER TABLE forwardings ADD COLUMN `is_maillist` TINYINT(1) NOT NULL DEFAULT 0;
+ALTER TABLE forwardings ADD INDEX (`is_maillist`);
+
+-- Table used to store mailing list accounts
+CREATE TABLE IF NOT EXISTS maillists (
+    id BIGINT(20) UNSIGNED AUTO_INCREMENT,
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    name VARCHAR(255) NOT NULL DEFAULT '',
+    -- a server-wide unique id (a 36-characters string) for each mailing list
+    mlid VARCHAR(36) NOT NULL DEFAULT '',
+    settings TEXT,
+    created DATETIME NOT NULL DEFAULT '1970-01-01 01:01:01',
+    modified DATETIME NOT NULL DEFAULT '1970-01-01 01:01:01',
+    expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
+    active TINYINT(1) NOT NULL DEFAULT 1,
+    PRIMARY KEY (id),
+    UNIQUE INDEX (address),
+    UNIQUE INDEX (mlid),
+    INDEX (domain),
+    INDEX (active)
+) ENGINE=InnoDB;

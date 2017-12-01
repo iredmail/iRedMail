@@ -85,8 +85,9 @@ CREATE TABLE IF NOT EXISTS forwardings (
     forwarding VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     dest_domain VARCHAR(255) NOT NULL DEFAULT '',
-    -- defines whether it's a (mlmmj) mailing list account. 0=no, 1=yes.
+    -- defines whether it's a standalone (mlmmj) mailing list account. 0=no, 1=yes.
     is_maillist TINYINT(1) NOT NULL DEFAULT 0,
+    -- defines whether it's a mail forwarding address of mail user. 0=no, 1=yes.
     -- defines whether it's a standalone mail alias account. 0=no, 1=yes.
     is_list TINYINT(1) NOT NULL DEFAULT 0,
     -- defines whether it's a mail forwarding address of mail user. 0=no, 1=yes.
@@ -116,6 +117,8 @@ CREATE TABLE IF NOT EXISTS domain (
     aliases INT(10) NOT NULL DEFAULT 0,
     -- Max mail accounts in this domain. e.g. 100.
     mailboxes INT(10) NOT NULL DEFAULT 0,
+    -- Max mailing list accounts in this domain. e.g. 10.
+    maillists INT(10) NOT NULL DEFAULT 0,
     -- Max mailbox quota in this domain. e.g. 1073741824 (1GB).
     maxquota BIGINT(20) NOT NULL DEFAULT 0,
     -- Not used. Historical.
@@ -248,6 +251,25 @@ CREATE TABLE IF NOT EXISTS mailbox (
     INDEX (enablesogo),
     INDEX (passwordlastchange),
     INDEX (expired),
+    INDEX (active)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS maillists (
+    id BIGINT(20) UNSIGNED AUTO_INCREMENT,
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    name VARCHAR(255) NOT NULL DEFAULT '',
+    -- a server-wide unique id (a 36-characters string) for each mailing list
+    mlid VARCHAR(36) NOT NULL DEFAULT '',
+    settings TEXT,
+    created DATETIME NOT NULL DEFAULT '1970-01-01 01:01:01',
+    modified DATETIME NOT NULL DEFAULT '1970-01-01 01:01:01',
+    expired DATETIME NOT NULL DEFAULT '9999-12-31 00:00:00',
+    active TINYINT(1) NOT NULL DEFAULT 1,
+    PRIMARY KEY (id),
+    UNIQUE INDEX (address),
+    UNIQUE INDEX (mlid),
+    INDEX (domain),
     INDEX (active)
 ) ENGINE=InnoDB;
 
