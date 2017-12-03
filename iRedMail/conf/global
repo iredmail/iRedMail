@@ -662,7 +662,14 @@ if [ X"${SSHD_PORT}" == X'' ]; then
 fi
 
 # Command use to fetch source tarballs.
-if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    if [ -f /usr/local/etc/ssl/cert.pem ]; then
+        # require package/port 'security/ca_root_nss'
+        FETCH_CMD='fetch'
+    else
+        FETCH_CMD='fetch --no-verify-hostname --no-verify-peer'
+    fi
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     # -i: Turns off interactive prompting during multiple file transfers.
     # -V: Disable verbose and progress
     FETCH_CMD='ftp -iV'
