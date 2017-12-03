@@ -498,7 +498,7 @@ EOF
     fi
     rm -f /var/db/ports/security_amavisd-new/options${SED_EXTENSION} &>/dev/null
 
-    ALL_PORTS="${ALL_PORTS} security/amavisd-new mail/altermime"
+    ALL_PORTS="${ALL_PORTS} security/amavisd-new"
 
     # Postfix. REQUIRED.
     cat > /var/db/ports/mail_postfix/options <<EOF
@@ -857,6 +857,9 @@ EOF
 
     # mlmmj: mailing list manager
     ALL_PORTS="${ALL_PORTS} mail/mlmmj"
+
+    # dependencies for mlmmj-admin: a RESTful API server used to manage mlmmj
+    ALL_PORTS="${ALL_PORTS} www/py-requests"
 
     # Roundcube.
     cat > /var/db/ports/mail_roundcube/options <<EOF

@@ -106,29 +106,30 @@ mlmmj_admin_config()
     # Copy init rc script.
     if [ X"${USE_SYSTEMD}" == X'YES' ]; then
         ECHO_DEBUG "Create symbol link: ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.service -> ${SYSTEMD_SERVICE_DIR}/mlmmjadmin.service."
-        ln -s ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.service ${SYSTEMD_SERVICE_DIR}/mlmmjadmin.service
-        systemctl daemon-reload &>/dev/null
+        ln -s ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.service ${SYSTEMD_SERVICE_DIR}/mlmmjadmin.service >> ${INSTALL_LOG} 2>&1
+        systemctl daemon-reload >> ${INSTALL_LOG} 2>&1
     else
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.rhel ${DIR_RC_SCRIPTS}/mlmmjadmin
+            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.rhel ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.debian ${DIR_RC_SCRIPTS}/mlmmjadmin
+            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.debian ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
         elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.freebsd ${DIR_RC_SCRIPTS}/mlmmjadmin
+            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.freebsd ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
+            service_control enable 'mlmmjadmin_enable' 'YES' >> ${INSTALL_LOG} 2>&1
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.openbsd ${DIR_RC_SCRIPTS}/mlmmjadmin
+            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.openbsd ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
         else
-            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.rhel ${DIR_RC_SCRIPTS}/mlmmjadmin
+            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.rhel ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
         fi
 
-        chmod 0755 ${DIR_RC_SCRIPTS}/mlmmjadmin
+        chmod 0755 ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
     fi
 
     ECHO_DEBUG "Make mlmmjadmin start after system startup."
     service_control enable mlmmjadmin >> ${INSTALL_LOG} 2>&1
     export ENABLED_SERVICES="${ENABLED_SERVICES} mlmmjadmin"
 
-    ECHO_DEBUG "Generate modular syslog config file for mlmmj-admin: {{ syslog_conf_mlmmj_admin }}."
+    ECHO_DEBUG "Generate modular syslog config file for mlmmj-admin."
     if [ X"${USE_RSYSLOG}" == X'YES' ]; then
         # Use rsyslog.
         # Copy rsyslog config file used to filter Dovecot log
@@ -140,13 +141,14 @@ mlmmj_admin_config()
         # Log to a dedicated file
         if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
             if ! grep "${MLMMJ_ADMIN_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
-                # '!!' means abort further evaluation after first match
+                echo '' >> ${SYSLOG_CONF}
                 echo '!mlmmj-admin' >> ${SYSLOG_CONF}
                 echo "${IREDMAIL_SYSLOG_FACILITY}.*        -${MLMMJ_ADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
             fi
         elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
             if ! grep "${MLMMJ_ADMIN_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
                 # '!!' means abort further evaluation after first match
+                echo '' >> ${SYSLOG_CONF}
                 echo '!!mlmmj-admin' >> ${SYSLOG_CONF}
                 echo "${IREDMAIL_SYSLOG_FACILITY}.*        -${MLMMJ_ADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
             fi

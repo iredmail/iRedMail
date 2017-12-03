@@ -38,22 +38,23 @@ iredapd_install()
     # Copy init rc script.
     if [ X"${USE_SYSTEMD}" == X'YES' ]; then
         ECHO_DEBUG "Create symbol link: ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service -> ${SYSTEMD_SERVICE_DIR}/iredapd.service."
-        ln -s ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service ${SYSTEMD_SERVICE_DIR}/iredapd.service
-        systemctl daemon-reload &>/dev/null
+        ln -s ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service ${SYSTEMD_SERVICE_DIR}/iredapd.service >> ${INSTALL_LOG} 2>&1
+        systemctl daemon-reload >> ${INSTALL_LOG} 2>&1
     else
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
+            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd
+            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
         elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd
+            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
+            service_control enable 'iredapd_enable' 'YES' >> ${INSTALL_LOG} 2>&1
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd
+            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
         else
-            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd
+            cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
         fi
 
-        chmod 0755 ${DIR_RC_SCRIPTS}/iredapd
+        chmod 0755 ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
     fi
 
     ECHO_DEBUG "Make iredapd start after system startup."
@@ -202,11 +203,6 @@ iredapd_config()
 
     if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
         echo "MYNETWORKS = ['${LOCAL_ADDRESS}']" >> ${IREDAPD_CONF}
-    fi
-
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        # Start service when system start up.
-        service_control enable 'iredapd_enable' 'YES'
     fi
 
     echo 'export status_iredapd_config="DONE"' >> ${STATUS_FILE}
