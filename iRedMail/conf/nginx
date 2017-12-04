@@ -22,7 +22,6 @@
 
 # RC scripts
 export NGINX_RC_SCRIPT_NAME='nginx'
-export UWSGI_RC_SCRIPT_NAME='uwsgi'
 
 # Configuration files
 export HTTPD_CONF_ROOT='/etc/nginx'
@@ -37,50 +36,18 @@ export NGINX_PID='/var/run/nginx.pid'
 # Directory for storing temporary files holding client request bodies.
 export NGINX_CLIENT_BODY_TEMP_PATH='/var/lib/nginx_tmp_client_body'
 
-# uWSGI
-export UWSGI_SOCKET_IREDADMIN='/var/run/uwsgi_iredadmin.socket'
-export UWSGI_PID_IREDADMIN='/var/run/uwsgi_iredadmin.pid'
-export UWSGI_LOGROTATE_FILE="${LOGROTATE_DIR}/uwsgi"
-
 if [ X"${DISTRO}" == X'RHEL' ]; then
     # Daemon user.
     export HTTPD_USER='nginx'
     export HTTPD_GROUP='nginx'
 
-    export UWSGI_CONF='/etc/uwsgi.ini'
-    export UWSGI_CONF_DIR='/etc/uwsgi.d'
-
-    export UWSGI_LOG_DIR='/var/log/uwsgi'
-    export UWSGI_LOG_FILE="${UWSGI_LOG_DIR}/uwsgi.log"
-
-    if [ X"${DISTRO_VERSION}" == X'6' ]; then
-        export UWSGI_PID='/var/run/uwsgi.pid'
-        export UWSGI_SOCKET='/var/run/uwsgi.sock'
-        export UWSGI_SOCKET_IREDADMIN='/var/run/uwsgi_iredadmin.socket'
-        export UWSGI_PID_IREDADMIN='/var/run/uwsgi_iredadmin.pid'
-    else
-        export UWSGI_PID='/run/uwsgi/uwsgi.pid'
-        export UWSGI_SOCKET='/run/uwsgi/uwsgi.sock'
-        export UWSGI_SOCKET_IREDADMIN='/run/uwsgi/iredadmin.socket'
-        export UWSGI_PID_IREDADMIN='/run/uwsgi/iredadmin.pid'
-    fi
-elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    export UWSGI_CONF_DIR='/etc/uwsgi/apps-available'
-
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-    export UWSGI_CONF_DIR='/usr/local/etc/uwsgi'
     export HTTPD_CONF_ROOT="/usr/local/etc/nginx"
-
-    export UWSGI_LOG_FILE="/var/log/uwsgi-iredadmin.log"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export HTTPD_LOG_ACCESSLOG='logs/access.log'
     export HTTPD_LOG_ERRORLOG='logs/error.log'
 
-    export UWSGI_CONF_DIR='/etc/uwsgi'
-    export UWSGI_SOCKET_IREDADMIN="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.socket"
-    export UWSGI_PID_IREDADMIN="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.pid"
-    export UWSGI_LOG_FILE='/var/www/logs/uwsgi.log'
 fi
 
 export HTTPD_CONF_DIR_AVAILABLE_CONF="${HTTPD_CONF_ROOT}/conf-available"
@@ -98,5 +65,3 @@ export NGINX_CONF_SITE_DEFAULT_SSL="${HTTPD_CONF_DIR_AVAILABLE_SITES}/00-default
 export NGINX_CONF_TMPL_DIR="${HTTPD_CONF_ROOT}/templates"
 
 export NGINX_MIME_TYPES="${HTTPD_CONF_ROOT}/mime.types"
-
-export UWSGI_SOCKET_IREDADMIN_FULL="unix:${UWSGI_SOCKET_IREDADMIN}"

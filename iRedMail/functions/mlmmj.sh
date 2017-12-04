@@ -51,6 +51,8 @@ EOF
 
     ECHO_DEBUG "Enable mlmmj transport in postfix: ${POSTFIX_FILE_MAIN_CF}."
     cat ${SAMPLE_DIR}/postfix/main.cf.mlmmj >> ${POSTFIX_FILE_MAIN_CF}
+
+    echo 'export status_mlmmj_config="DONE"' >> ${STATUS_FILE}
 }
 
 mlmmj_admin_config()
@@ -99,35 +101,31 @@ mlmmj_admin_config()
         perl -pi -e 's#^(iredmail_sql_db_password =)(.*)#${1} "$ENV{VMAIL_DB_ADMIN_PASSWD}"#g' ${MLMMJ_ADMIN_CONF}
     fi
 
-    # Create log directory
+    # Create log directory and empty log file
     mkdir -p ${MLMMJ_ADMIN_LOG_DIR}
-    chown ${SYSLOG_DAEMON_USER}:${SYSLOG_DAEMON_GROUP} ${MLMMJ_ADMIN_LOG_DIR}
+    touch ${MLMMJ_ADMIN_LOG_FILE}
+    chown ${SYSLOG_DAEMON_USER}:${SYSLOG_DAEMON_GROUP} ${MLMMJ_ADMIN_LOG_DIR} ${MLMMJ_ADMIN_LOG_FILE}
 
-    # Copy init rc script.
-    if [ X"${USE_SYSTEMD}" == X'YES' ]; then
-        ECHO_DEBUG "Create symbol link: ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.service -> ${SYSTEMD_SERVICE_DIR}/mlmmjadmin.service."
-        ln -s ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.service ${SYSTEMD_SERVICE_DIR}/mlmmjadmin.service >> ${INSTALL_LOG} 2>&1
-        systemctl daemon-reload >> ${INSTALL_LOG} 2>&1
-    else
-        if [ X"${DISTRO}" == X'RHEL' ]; then
-            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.rhel ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.debian ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
-        elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.freebsd ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
-            service_control enable 'mlmmjadmin_enable' 'YES' >> ${INSTALL_LOG} 2>&1
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.openbsd ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
-        else
-            cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.rhel ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
+    ECHO_DEBUG "Setting logrotate for dovecot log file."
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        cp -f ${SAMPLE_DIR}/logrotate/mlmmjadmin ${MLMMJ_ADMIN_LOGROTATE_FILE}
+        chmod 0644 ${MLMMJ_ADMIN_LOGROTATE_FILE}
+
+        perl -pi -e 's#PH_MLMMJ_ADMIN_LOG_DIR#$ENV{MLMMJ_ADMIN_LOG_DIR}#g' ${MLMMJ_ADMIN_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${MLMMJ_ADMIN_LOGROTATE_FILE}
+    elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/uwsgi-mlmmjadmin ${MLMMJ_ADMIN_LOGROTATE_FILE}
+
+        perl -pi -e 's#PH_MLMMJ_ADMIN_LOG_FILE#$ENV{MLMMJ_ADMIN_LOG_FILE}#g' ${MLMMJ_ADMIN_LOGROTATE_FILE}
+        perl -pi -e 's#PH_MLMMJ_ADMIN_UWSGI_PID_FILE#$ENV{MLMMJ_ADMIN_UWSGI_PID_FILE}#g' ${MLMMJ_ADMIN_LOGROTATE_FILE}
+
+    elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+        if ! grep "${MLMMJ_ADMIN_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
+            cat >> /etc/newsyslog.conf <<EOF
+${MLMMJ_ADMIN_LOG_FILE}    ${MLMMJ_USER_NAME}:${MLMMJ_GROUP_NAME}   600  7     *    24    Z
+EOF
         fi
-
-        chmod 0755 ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
     fi
-
-    ECHO_DEBUG "Make mlmmjadmin start after system startup."
-    service_control enable mlmmjadmin >> ${INSTALL_LOG} 2>&1
-    export ENABLED_SERVICES="${ENABLED_SERVICES} mlmmjadmin"
 
     ECHO_DEBUG "Generate modular syslog config file for mlmmj-admin."
     if [ X"${USE_RSYSLOG}" == X'YES' ]; then
@@ -136,7 +134,7 @@ mlmmj_admin_config()
         cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-mlmmj-admin.conf ${SYSLOG_CONF_DIR}
 
         perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-iredmail-mlmmj-admin.conf
-        perl -pi -e 's#PH_MLMMJ_ADMIN_LOG_FILE#$ENV{MLMMJ_ADMIN_LOG_DIR}#g' ${SYSLOG_CONF_DIR}/1-iredmail-mlmmj-admin.conf
+        perl -pi -e 's#PH_MLMMJ_ADMIN_LOG_FILE#$ENV{MLMMJ_ADMIN_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-iredmail-mlmmj-admin.conf
     elif [ X"${USE_BSD_SYSLOG}" == X'YES' ]; then
         # Log to a dedicated file
         if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
@@ -153,5 +151,44 @@ mlmmj_admin_config()
                 echo "${IREDMAIL_SYSLOG_FACILITY}.*        -${MLMMJ_ADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
             fi
         fi
+
+        echo "${IREDMAIL_SYSLOG_FACILITY}.*        -${MLMMJ_ADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
     fi
+
+    backup_file ${MLMMJ_ADMIN_UWSGI_CONF}
+    cp -f ${SAMPLE_DIR}/uwsgi/mlmmjadmin.ini ${MLMMJ_ADMIN_UWSGI_CONF}
+
+    perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${MLMMJ_ADMIN_UWSGI_CONF}
+    perl -pi -e 's#PH_MLMMJ_ADMIN_LOG_FILE#$ENV{MLMMJ_ADMIN_LOG_FILE}#g' ${MLMMJ_ADMIN_UWSGI_CONF}
+    perl -pi -e 's#PH_MLMMJ_ADMIN_BIND_HOST#$ENV{MLMMJ_ADMIN_BIND_HOST}#g' ${MLMMJ_ADMIN_UWSGI_CONF}
+    perl -pi -e 's#PH_MLMMJ_ADMIN_LISTEN_PORT#$ENV{MLMMJ_ADMIN_LISTEN_PORT}#g' ${MLMMJ_ADMIN_UWSGI_CONF}
+    perl -pi -e 's#PH_MLMMJ_USER_NAME#$ENV{MLMMJ_USER_NAME}#g' ${MLMMJ_ADMIN_UWSGI_CONF}
+    perl -pi -e 's#PH_MLMMJ_GROUP_NAME#$ENV{MLMMJ_GROUP_NAME}#g' ${MLMMJ_ADMIN_UWSGI_CONF}
+    perl -pi -e 's#PH_MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK#$ENV{MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}#g' ${MLMMJ_ADMIN_UWSGI_CONF}
+    perl -pi -e 's#PH_MLMMJ_ADMIN_PID_FILE#$ENV{MLMMJ_ADMIN_PID_FILE}#g' ${MLMMJ_ADMIN_UWSGI_CONF}
+    perl -pi -e 's#PH_MLMMJ_ADMIN_UWSGI_PID_FILE#$ENV{MLMMJ_ADMIN_UWSGI_PID_FILE}#g' ${MLMMJ_ADMIN_UWSGI_CONF}
+
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        perl -pi -e 's/^#(plugins.*)/${1}/' ${MLMMJ_ADMIN_UWSGI_CONF}
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        perl -pi -e 's/^#(plugins.*)/${1}/' ${MLMMJ_ADMIN_UWSGI_CONF}
+        perl -pi -e 's#^(pidfile =).*#${1} $ENV{MLMMJ_ADMIN_UWSGI_PID_FILE}#g' ${MLMMJ_ADMIN_UWSGI_CONF}
+        ln -s ${MLMMJ_ADMIN_UWSGI_CONF} /etc/uwsgi/apps-enabled/$(basename ${MLMMJ_ADMIN_UWSGI_CONF})
+
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+        service_control enable 'mlmmjadmin_enable' 'YES' >> ${INSTALL_LOG} 2>&1
+        service_control enable 'uwsgi_mlmmjadmin_flags' "--ini ${MLMMJ_ADMIN_UWSGI_CONF} --log-syslog"
+
+        # Rotate log file with newsyslog
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/uwsgi-mlmmjadmin ${MLMMJ_ADMIN_LOGROTATE_FILE}
+        perl -pi -e 's#PH_IREDADMIN_UWSGI_PID#$ENV{IREDADMIN_UWSGI_PID}#g' ${MLMMJ_ADMIN_LOGROTATE_FILE}
+
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        cp ${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.openbsd ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
+        rcctl enable mlmmjadmin
+        rcctl set mlmmjadmin flags "--ini ${MLMMJ_ADMIN_UWSGI_CONF} --log-syslog" >> ${INSTALL_LOG} 2>&1
+        chmod 0755 ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
+    fi
+
+    echo 'export status_mlmmj_admin_config="DONE"' >> ${STATUS_FILE}
 }

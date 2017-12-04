@@ -39,7 +39,7 @@ install_all()
     export PREFERRED_MARIADB_VER='55'
     export PREFERRED_PGSQL_VER='95'
     export PREFERRED_BDB_VER='5'
-    export PREFERRED_PHP_VER='70'
+    export PREFERRED_PHP_VER='71'
 
     if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
         export PREFERRED_MYSQL_VER='55m'
@@ -54,7 +54,7 @@ install_all()
     #freebsd_make_conf_add 'WANT_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
     freebsd_make_conf_add 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_make_conf_add 'DEFAULT_VERSIONS' 'ssl=libressl python=2.7 python2=2.7 pgsql=9.5 php=7.0'
+    freebsd_make_conf_add 'DEFAULT_VERSIONS' 'ssl=libressl python=2.7 python2=2.7 pgsql=9.5 php=7.1'
 
     freebsd_make_conf_plus_option 'OPTIONS_SET' 'SASL'
     freebsd_make_conf_plus_option 'OPTIONS_UNSET' 'X11'

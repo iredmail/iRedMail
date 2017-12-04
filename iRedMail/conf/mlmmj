@@ -49,7 +49,7 @@ fi
 # mlmmj-admin: RESTful API server used to manage mlmmj mailing lists
 #
 export MLMMJ_ADMIN_LISTEN_PORT='7779'
-export MLMMJ_ADMIN_PID_FILE='/var/run/mlmmj-admin.pid'
+export MLMMJ_ADMIN_PID_FILE='/var/run/mlmmjadmin.pid'
 
 export MLMMJ_ADMIN_VERSION='1.0-beta1'
 export MLMMJ_ADMIN_TARBALL="mlmmj-admin-${MLMMJ_ADMIN_VERSION}.tar.bz2"
@@ -61,3 +61,12 @@ export MLMMJ_ADMIN_CONF="${MLMMJ_ADMIN_ROOT_DIR_SYMBOL_LINK}/settings.py"
 
 export MLMMJ_ADMIN_LOG_DIR='/var/log/mlmmj-admin'
 export MLMMJ_ADMIN_LOG_FILE="${MLMMJ_ADMIN_LOG_DIR}/mlmmj-admin.log"
+export MLMMJ_ADMIN_LOGROTATE_FILE="${LOGROTATE_DIR}/mlmmjadmin"
+
+# uwsgi related
+export MLMMJ_ADMIN_UWSGI_CONF="${UWSGI_CONF_DIR}/mlmmjadmin.ini"
+export MLMMJ_ADMIN_UWSGI_PID_FILE='/var/run/mlmmjadmin.pid'
+
+if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    export MLMMJ_ADMIN_UWSGI_PID_FILE='/var/run/uwsgi/app/mlmmjadmin/pid'
+fi

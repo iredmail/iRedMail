@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# Author: Zhang Huangbin (zhb _at_ iredmail.org)
+
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+export UWSGI_RC_SCRIPT_NAME='uwsgi'
+export UWSGI_LOGROTATE_FILE="${LOGROTATE_DIR}/uwsgi"
+
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    export UWSGI_CONF='/etc/uwsgi.ini'
+    export UWSGI_CONF_DIR='/etc/uwsgi.d'
+
+    export UWSGI_LOG_DIR='/var/log/uwsgi'
+    export UWSGI_LOG_FILE="${UWSGI_LOG_DIR}/uwsgi.log"
+
+    if [ X"${DISTRO_VERSION}" == X'6' ]; then
+        export UWSGI_PID='/var/run/uwsgi.pid'
+        export UWSGI_SOCKET='/var/run/uwsgi.sock'
+    else
+        export UWSGI_PID='/run/uwsgi/uwsgi.pid'
+        export UWSGI_SOCKET='/run/uwsgi/uwsgi.sock'
+    fi
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    export UWSGI_CONF_DIR='/etc/uwsgi/apps-available'
+
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export UWSGI_CONF_DIR='/usr/local/etc/uwsgi'
+    export UWSGI_LOG_FILE="/var/log/uwsgi-iredadmin.log"
+
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export UWSGI_CONF_DIR='/etc/uwsgi'
+    export UWSGI_LOG_FILE='/var/www/logs/uwsgi.log'
+fi

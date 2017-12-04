@@ -272,6 +272,11 @@ install_all()
 
     # mlmmj: mailing list manager
     ALL_PKGS="${ALL_PKGS} mlmmj"
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        ALL_PKGS="${ALL_PKGS} uwsgi-logger-syslog"
+    fi
+    PKG_SCRIPTS="${PKG_SCRIPTS} ${UWSGI_RC_SCRIPT_NAME}"
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${UWSGI_RC_SCRIPT_NAME}"
 
     # Roundcube
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then

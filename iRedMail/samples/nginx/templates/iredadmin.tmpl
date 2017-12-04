@@ -12,7 +12,7 @@ location ~ ^/iredadmin(.*) {
     include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
 
     include uwsgi_params;
-    uwsgi_pass PH_UWSGI_SOCKET_IREDADMIN_FULL;
+    uwsgi_pass PH_IREDADMIN_UWSGI_SOCKET_FULL;
     uwsgi_param UWSGI_CHDIR PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK;
     uwsgi_param UWSGI_SCRIPT iredadmin;
     uwsgi_param SCRIPT_NAME /iredadmin;

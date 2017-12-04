@@ -220,6 +220,50 @@ EOF
     echo 'export status_iredadmin_cron_setup="DONE"' >> ${STATUS_FILE}
 }
 
+iredadmin_uwsgi_setup()
+{
+    backup_file ${IREDADMIN_UWSGI_CONF}
+    cp ${SAMPLE_DIR}/uwsgi/iredadmin.ini ${IREDADMIN_UWSGI_CONF}
+
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        :
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        perl -pi -e 's/^(pidfile.*)/#${1}/' ${IREDADMIN_UWSGI_CONF}
+        ln -s ${IREDADMIN_UWSGI_CONF} /etc/uwsgi/apps-enabled/iredadmin.ini
+
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+        perl -pi -e 's/^(plugins.*)/#${1}/' ${IREDADMIN_UWSGI_CONF}
+        perl -pi -e 's#PH_UWSGI_LOG_FILE#$ENV{UWSGI_LOG_FILE}#g' ${IREDADMIN_UWSGI_CONF}
+        perl -pi -e 's#PH_IREDADMIN_UWSGI_PID#$ENV{IREDADMIN_UWSGI_PID}#g' ${IREDADMIN_UWSGI_CONF}
+
+        service_control enable 'uwsgi_iredadmin_flags' "--ini ${IREDADMIN_UWSGI_CONF}"
+
+        # Rotate log file with newsyslog
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/uwsgi-iredadmin ${UWSGI_LOGROTATE_FILE}
+        perl -pi -e 's#PH_IREDADMIN_UWSGI_PID#$ENV{IREDADMIN_UWSGI_PID}#g' ${UWSGI_LOGROTATE_FILE}
+
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        perl -pi -e 's#^(uid).*#${1} = $ENV{HTTPD_USER}#g' ${IREDADMIN_UWSGI_CONF}
+        perl -pi -e 's#^(gid).*#${1} = $ENV{HTTPD_GROUP}#g' ${IREDADMIN_UWSGI_CONF}
+        perl -pi -e 's/^(plugins.*)/#${1}/g' ${IREDADMIN_UWSGI_CONF}
+
+        rcctl set uwsgi flags "--ini ${IREDADMIN_UWSGI_CONF} --log-syslog" >> ${INSTALL_LOG} 2>&1
+    fi
+
+    if [ -f ${IREDADMIN_UWSGI_CONF} ]; then
+        perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${IREDADMIN_UWSGI_CONF}
+        perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' ${IREDADMIN_UWSGI_CONF}
+        perl -pi -e 's#PH_IREDADMIN_UWSGI_SOCKET#$ENV{IREDADMIN_UWSGI_SOCKET}#g' ${IREDADMIN_UWSGI_CONF}
+        perl -pi -e 's#PH_IREDADMIN_UWSGI_PID#$ENV{IREDADMIN_UWSGI_PID}#g' ${IREDADMIN_UWSGI_CONF}
+    fi
+
+    cat >> ${TIP_FILE} <<EOF
+    * Socket for iRedAdmin: ${IREDADMIN_UWSGI_SOCKET}
+EOF
+
+    echo 'export status_iredadmin_uwsgi_setup="DONE"' >> ${STATUS_FILE}
+}
+
 iredadmin_setup() {
     check_status_before_run iredadmin_install
     check_status_before_run iredadmin_web_config
@@ -230,6 +274,7 @@ iredadmin_setup() {
 
     check_status_before_run iredadmin_cron_setup
     check_status_before_run iredadmin_config
+    check_status_before_run iredadmin_uwsgi_setup
 
     echo 'export status_iredadmin_setup="DONE"' >> ${STATUS_FILE}
 }

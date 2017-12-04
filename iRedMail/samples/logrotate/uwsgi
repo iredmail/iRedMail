@@ -4,6 +4,7 @@ PH_UWSGI_LOG_FILE {
     rotate 10
     create 0600 PH_SYS_ROOT_USER PH_SYS_ROOT_GROUP
     missingok
+    notifempty
 
     # Use bzip2 for compress.
     #compresscmd bzip2

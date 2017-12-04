@@ -4,6 +4,7 @@ PH_OPENLDAP_LOGFILE {
     rotate 10
     create 0600 PH_OPENLDAP_DAEMON_USER PH_OPENLDAP_DAEMON_GROUP
     missingok
+    notifempty
 
     # Use bzip2 for compress.
     #compresscmd bzip2

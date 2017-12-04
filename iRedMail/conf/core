@@ -361,7 +361,7 @@ generate_password_hash()
 # Create SSL certs/private files.
 generate_ssl_keys()
 {
-    ECHO_INFO "Create self-signed SSL certification files (${SSL_KEY_SIZE} bits, expire in 10 years)."
+    ECHO_INFO "Generate self-signed SSL cert (${SSL_KEY_SIZE} bits, expire in 10 years)."
 
     # Create necessary directories.
     mkdir -p ${SSL_KEY_DIR} ${SSL_CERT_DIR} &>/dev/null

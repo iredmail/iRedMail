@@ -1,0 +1,1 @@
+PH_UWSGI_LOG_FILE    root:wheel   600  7     *    24    Z    PH_IREDADMIN_UWSGI_PID
