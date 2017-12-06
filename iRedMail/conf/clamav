@@ -40,18 +40,13 @@ export FRESHCLAM_UPDATE_IMMEDIATELY="${FRESHCLAM_UPDATE_IMMEDIATELY:=YES}"
 
 # Clamav.
 if [ X"${DISTRO}" == X'RHEL' ]; then
-    if [ X"${DISTRO_VERSION}" == X'6' ]; then
-        export CLAMAV_USER='clam'
-        export CLAMAV_GROUP='clam'
-    else
-        export CLAMAV_USER='amavis'
-        export CLAMAV_GROUP='amavis'
+    export CLAMAV_USER='amavis'
+    export CLAMAV_GROUP='amavis'
 
-        export CLAMD_CONF='/etc/clamd.d/amavisd.conf'
-        export CLAMD_LOCAL_SOCKET='/var/run/clamd.amavisd/clamd.socket'
+    export CLAMD_CONF='/etc/clamd.d/amavisd.conf'
+    export CLAMD_LOCAL_SOCKET='/var/run/clamd.amavisd/clamd.socket'
 
-        export CLAMAV_CLAMD_SERVICE_NAME='clamd@amavisd'
-    fi
+    export CLAMAV_CLAMD_SERVICE_NAME='clamd@amavisd'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export CLAMAV_CLAMD_SERVICE_NAME='clamav-daemon'

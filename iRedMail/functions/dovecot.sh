@@ -174,20 +174,8 @@ dovecot_config()
         perl -pi -e 's#^(ssl_protocols).*#ssl_protocols = !SSLv3#' ${DOVECOT_CONF}
     fi
 
-    # Enable parameters which requires at least Dovecot-2.2.6.
-    #   - RHEL/CentOS 6 uses Dovecot-2.1.x
-    #   - Debian 7 uses Dovecot-2.1.x
-    use_longer_dhparam_length='YES'
-    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
-        use_longer_dhparam_length='NO'
-    elif [ X"${DISTRO}" == X'DEBIAN' -a X"${DISTRO_VERSION}" == X'7' ]; then
-        use_longer_dhparam_length='NO'
-    fi
-    if [ X"${use_longer_dhparam_length}" == X'YES' ]; then
-        perl -pi -e 's/^#(ssl_dh_parameters_length.*)/${1}/' ${DOVECOT_CONF}
-        perl -pi -e 's/^#(ssl_prefer_server_ciphers.*)/${1}/' ${DOVECOT_CONF}
-    fi
-
+    perl -pi -e 's/^#(ssl_dh_parameters_length.*)/${1}/' ${DOVECOT_CONF}
+    perl -pi -e 's/^#(ssl_prefer_server_ciphers.*)/${1}/' ${DOVECOT_CONF}
     perl -pi -e 's#PH_POSTFIX_CHROOT_DIR#$ENV{POSTFIX_CHROOT_DIR}#' ${DOVECOT_CONF}
 
     # Generate dovecot quota warning script.

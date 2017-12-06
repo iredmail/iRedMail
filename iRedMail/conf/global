@@ -243,10 +243,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         export DISTRO='RHEL'
 
         # Get distribution version
-        if grep '\ 6' /etc/redhat-release &>/dev/null; then
-            # version 6.x
-            export DISTRO_VERSION='6'
-        elif grep '\ 7' /etc/redhat-release &>/dev/null; then
+        if grep '\ 7' /etc/redhat-release &>/dev/null; then
             # version 7.x
             export DISTRO_VERSION='7'
         else
@@ -415,13 +412,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     # Directory /etc/sysconfig/ on RHEL/CentOS.
     export ETC_SYSCONFIG_DIR='/etc/sysconfig'
 
-    if [ X"${DISTRO_VERSION}" == X'6' ]; then
-        ENABLE_BACKEND_MYSQL='YES'
-        ENABLE_BACKEND_MARIADB='NO'
-
-        # iptables rule file.
-        export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/iptables"
-    else
+    if [ X"${DISTRO_VERSION}" == X'7' ]; then
         export USE_SYSTEMD='YES'
 
         # No MySQL available since RHEL/CentOS 7.

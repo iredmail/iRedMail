@@ -30,13 +30,8 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export UWSGI_LOG_DIR='/var/log/uwsgi'
     export UWSGI_LOG_FILE="${UWSGI_LOG_DIR}/uwsgi.log"
 
-    if [ X"${DISTRO_VERSION}" == X'6' ]; then
-        export UWSGI_PID='/var/run/uwsgi.pid'
-        export UWSGI_SOCKET='/var/run/uwsgi.sock'
-    else
-        export UWSGI_PID='/run/uwsgi/uwsgi.pid'
-        export UWSGI_SOCKET='/run/uwsgi/uwsgi.sock'
-    fi
+    export UWSGI_PID='/run/uwsgi/uwsgi.pid'
+    export UWSGI_SOCKET='/run/uwsgi/uwsgi.sock'
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export UWSGI_CONF_DIR='/etc/uwsgi/apps-available'
 

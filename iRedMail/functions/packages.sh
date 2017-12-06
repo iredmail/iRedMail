@@ -68,7 +68,9 @@ install_all()
         fi
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} postfix postfix-pcre"
+        # libsasl2-modules is required for sasl auth (used by relay host which
+        # requires sasl auth)
+        ALL_PKGS="${ALL_PKGS} postfix postfix-pcre libsasl2-modules"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-ldap%stable"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-mysql%stable"
@@ -210,10 +212,10 @@ install_all()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
 
-        if [ X"${DISTRO_VERSION}" == X'6' ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot-managesieve"
-        else
-            ALL_PKGS="${ALL_PKGS} dovecot-mysql dovecot-pgsql"
+        if [ X"${BACKEND}" == X'OPENLDAP' -a X"${BACKEND}" == X'MYSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot-mysql"
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} dovecot-pgsql"
         fi
 
         # We use Dovecot SASL auth instead of saslauthd
@@ -248,16 +250,10 @@ install_all()
     # Amavisd-new & ClamAV & Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_SERVICE_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF unrar pax lz4"
+        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF unrar pax lz4 clamav clamav-update clamav-server clamav-server-systemd"
 
-        if [ X"${DISTRO_VERSION}" == X'6' ]; then
-            ALL_PKGS="${ALL_PKGS} clamd clamav-db"
-        else
-            ALL_PKGS="${ALL_PKGS} clamav clamav-update clamav-server clamav-server-systemd"
-            DISABLED_SERVICES="${DISABLED_SERVICES} clamd"
-        fi
-
-        DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
+        # RHEL uses service name 'clamd@amavisd' instead of clamd.
+        DISABLED_SERVICES="${DISABLED_SERVICES} clamd spamassassin"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj zoo nomarch cpio lzop cabextract p7zip-full rpm ripole libmail-spf-perl unrar-free pax lrzip"
@@ -427,10 +423,6 @@ EOF
 
     # Misc packages & services.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        if [ X"${DISTRO_VERSION}" == X'6' ]; then
-            ALL_PKGS="${ALL_PKGS} mcrypt"
-        fi
-
         ALL_PKGS="${ALL_PKGS} unzip bzip2 acl patch tmpwatch crontabs dos2unix logwatch lz4"
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -488,21 +480,7 @@ EOF
 
     after_package_installation()
     {
-        if [ X"${DISTRO}" == X'RHEL' -o X"${DISTRO_VERSION}" == X'6' ]; then
-            # Copy DNS related libs to chrooted Postfix directory, so that Postfix
-            # can correctly resolve IP address under chroot.
-            for i in '/lib' '/lib64'; do
-                ls $i/*nss* &>/dev/null
-                ret1=$?
-                ls $i/*reso* &>/dev/null
-                ret2=$?
-
-                if [ X"${ret1}" == X'0' -o X"${ret2}" == X'0' ]; then
-                    mkdir -p ${POSTFIX_CHROOT_DIR}${i}
-                    cp ${i}/*nss* ${i}/*reso* ${POSTFIX_CHROOT_DIR}${i}/ &>/dev/null
-                fi
-            done
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
             # Create symbol links for Python.
             ln -sf /usr/local/bin/python2.7 /usr/local/bin/python >> ${INSTALL_LOG} 2>&1
             ln -sf /usr/local/bin/python2.7-2to3 /usr/local/bin/2to3 >> ${INSTALL_LOG} 2>&1

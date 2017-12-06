@@ -76,13 +76,9 @@ EOF
 EOF
         rm -f ${PGSQL_SYS_USER_HOME}/{amavisd,bypass}.sql >> ${INSTALL_LOG}
 
-        if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
-            :
-        else
-            su - ${PGSQL_SYS_USER} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
+        su - ${PGSQL_SYS_USER} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
 ALTER DATABASE ${AMAVISD_DB_NAME} SET bytea_output TO 'escape';
 EOF
-        fi
     fi
 
     echo 'export status_amavisd_initialize_db="DONE"' >> ${STATUS_FILE}

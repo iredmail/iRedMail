@@ -30,16 +30,9 @@ sogo_initialize_db()
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         tmp_sql="${ROOTDIR}/sogo_init.sql"
 
-        if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'6' ]; then
-            # MySQL 5.1. FYI: https://sogo.nu/bugs/view.php?id=4105
-            cat > ${tmp_sql} <<EOF
-CREATE DATABASE ${SOGO_DB_NAME};
-EOF
-        else
-            cat > ${tmp_sql} <<EOF
+        cat > ${tmp_sql} <<EOF
 CREATE DATABASE ${SOGO_DB_NAME} CHARSET='UTF8';
 EOF
-        fi
 
         cat >> ${tmp_sql} <<EOF
 GRANT ALL ON ${SOGO_DB_NAME}.* TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${SOGO_DB_PASSWD}";
@@ -74,18 +67,8 @@ CREATE DATABASE ${SOGO_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${SOGO_DB_USER} WITH ENCRYPTED PASSWORD '${SOGO_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 ALTER DATABASE ${SOGO_DB_NAME} OWNER TO ${SOGO_DB_USER};
 \c ${SOGO_DB_NAME};
-EOF
-
-        if [ X"${DISTRO}" == X'RHEL' -a  X"${DISTRO_VERSION}" == X'6' ]; then
-            cat >> ${tmp_sql} <<EOF
-CREATE LANGUAGE plpgsql;
-\i /usr/share/pgsql/contrib/dblink.sql;
-EOF
-        else
-            cat >> ${tmp_sql} <<EOF
 CREATE EXTENSION dblink;
 EOF
-        fi
 
         # Create view for user authentication
         cat >> ${tmp_sql} <<EOF

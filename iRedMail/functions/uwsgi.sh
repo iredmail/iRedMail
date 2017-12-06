@@ -37,10 +37,7 @@ uwsgi_config()
         cp -f ${SAMPLE_DIR}/uwsgi/uwsgi.ini ${UWSGI_CONF}
 
         perl -pi -e 's#^(daemonize .*=).*#${1} $ENV{UWSGI_LOG_FILE}#' ${UWSGI_CONF}
-        if [ X"${DISTRO_VERSION}" != X'6' ]; then
-            perl -pi -e 's/^(daemonize.*)/#${1}/' ${UWSGI_CONF}
-        fi
-
+        perl -pi -e 's/^(daemonize.*)/#${1}/' ${UWSGI_CONF}
         perl -pi -e 's#^(pidfile.*=).*#${1} $ENV{UWSGI_PID}#' ${UWSGI_CONF}
         perl -pi -e 's#^(emperor *=).*#${1} $ENV{UWSGI_CONF_DIR}#' ${UWSGI_CONF}
         perl -pi -e 's#^(emperor-tyrant.*=).*#${1} false#' ${UWSGI_CONF}

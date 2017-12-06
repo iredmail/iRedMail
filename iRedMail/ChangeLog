@@ -3,6 +3,7 @@ iRedMail-0.9.8:
         + OpenBSD 6.2. OpenBSD 6.1 is not supported anymore.
         + Ubuntu 17.10. Ubuntu 14.04 LTS, 17.04 are not supported anymore.
 
+    * Drop support for RHEL/CentOS 6.
     * Apache has been removed, Nginx is the only one web server available.
 
     * Improvements:

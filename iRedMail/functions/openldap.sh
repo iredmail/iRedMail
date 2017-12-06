@@ -37,14 +37,6 @@ openldap_config()
         # Run slapd with slapd.conf, not slapd.d.
         perl -pi -e 's/#(SLAPD_OPTIONS=).*/${1}"-f $ENV{OPENLDAP_SLAPD_CONF}"/' ${OPENLDAP_SYSCONFIG_CONF}
 
-        if [ X"${DISTRO_VERSION}" == X'6' ]; then
-            # Run slapd with -h "... ldap:/// ..."
-            perl -pi -e 's/#(SLAPD_LDAP=).*/${1}yes/' ${OPENLDAP_SYSCONFIG_CONF}
-
-            # Run slapd with -h "... ldaps:/// ...".
-            perl -pi -e 's/#(SLAPD_LDAPS=).*/${1}yes/' ${OPENLDAP_SYSCONFIG_CONF}
-        fi
-
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Add openldap daemon user to 'ssl-cert' group, so that slapd can read SSL key.
         usermod -G ssl-cert ${OPENLDAP_DAEMON_USER}

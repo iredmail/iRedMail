@@ -34,11 +34,7 @@ pgsql_initialize()
 
     # Init db
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        if [ X"${DISTRO_VERSION}"  == X'6' ]; then
-            ${PGSQL_RC_SCRIPT} initdb >> ${INSTALL_LOG} 2>&1
-        else
-            postgresql-setup initdb >> ${INSTALL_LOG} 2>&1
-        fi
+        postgresql-setup initdb >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.
         # 'postgresql_enable=YES' is required to start service immediately.
