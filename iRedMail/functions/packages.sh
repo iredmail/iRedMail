@@ -212,7 +212,7 @@ install_all()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
 
-        if [ X"${BACKEND}" == X'OPENLDAP' -a X"${BACKEND}" == X'MYSQL' ]; then
+        if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-mysql"
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-pgsql"
