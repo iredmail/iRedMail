@@ -43,15 +43,6 @@ backend_cli = 'bk_none'
 # first 8 characters to help you identity the client.
 api_auth_tokens = ['PH_MLMMJ_ADMIN_API_AUTH_TOKEN']
 
-# SQL database which stores meta data of mailing list accounts.
-# Required by backend `bk_iredmail_sql`.
-iredmail_sql_db_type = 'mysql'
-iredmail_sql_db_server = 'mysql_server_address'
-iredmail_sql_db_port = 3306
-iredmail_sql_db_name = 'vmail'
-iredmail_sql_db_user = 'vmailadmin'
-iredmail_sql_db_password = '{{ vmail_db_admin_password }}'
-
 MLMMJ_SPOOL_DIR = 'PH_MLMMJ_SPOOL_DIR'
 MLMMJ_ARCHIVE_DIR = 'PH_MLMMJ_ARCHIVE_DIR'
 MLMMJ_SKEL_DIR = 'PH_MLMMJ_SKEL_DIR'

@@ -7,6 +7,6 @@ bind_dn         = PH_LDAP_BINDDN
 bind_pw         = PH_LDAP_BINDPW
 search_base     = PH_LDAP_BASEDN
 scope           = sub
-query_filter    = (&(accountStatus=active)(!(domainStatus=disabled))(enabledService=mail)(enabledService=deliver)(|(&(|(memberOfGroup=%s)(shadowAddress=%s))(objectClass=mailUser))(&(memberOfGroup=%s)(!(shadowAddress=%s))(|(objectClass=mailExternalUser)(objectClass=mailList)(objectClass=mailAlias)))))
+query_filter     = (&(accountStatus=active)(!(domainStatus=disabled))(enabledService=mail)(enabledService=deliver)(|(&(objectClass=mailUser)(|(memberOfGroup=%s)(shadowAddress=%s)))(&(memberOfGroup=%s)(!(shadowAddress=%s))(|(objectClass=mailExternalUser)(&(objectClass=mailList)(!(enabledService=mlmmj)))(objectClass=mailAlias)))(&(objectClass=mailList)(enabledService=mlmmj)(|(mail=%s)(shadowAddress=%s)))))
 result_attribute= mail
 debuglevel      = 0

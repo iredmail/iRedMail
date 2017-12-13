@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS maillists (
     id BIGINT(20) UNSIGNED AUTO_INCREMENT,
     address VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
+    transport VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
     -- a server-wide unique id (a 36-characters string) for each mailing list
     mlid VARCHAR(36) NOT NULL DEFAULT '',

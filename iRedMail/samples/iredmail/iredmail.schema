@@ -350,6 +350,11 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.3.4 NAME 'listModerator'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
+attributetype ( 1.3.6.1.4.1.32349.1.2.3.5 NAME 'mailingListID'
+    DESC 'A server-wide unique id for each (mlmmj) mailing list'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{36} )
 
 #
 # Object Class Definitions
@@ -403,13 +408,17 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.4 NAME 'mailAlias'
         enabledService $ disabledService $
         mailForwardingAddress $ shadowAddress $ expiredDate $
         accountSetting $ mailHost $ domainStatus ) )
+
+# Notes:
+#   - 'mtaTransport' and 'mailingListID' are used by mlmmj mailing list account
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.5 NAME 'mailList'
     DESC 'Mailing List Account' SUP top STRUCTURAL
     MUST ( mail )
     MAY ( cn $ accountStatus $ description $ accessPolicy $ shadowAddress $
         enabledService $ disabledService $ memberOfGroup $ hasMember $
         listAllowedUser $ expiredDate $ accountSetting $ mailHost $
-        member $ uniqueMember $ memberUid $ gidNumber $ domainStatus ) )
+        member $ uniqueMember $ memberUid $ gidNumber $ domainStatus $
+        mtaTransport $ mailinglistID ) )
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.6 NAME 'mailExternalUser'
     DESC 'Mail External User' SUP top STRUCTURAL
     MUST ( memberOfGroup )

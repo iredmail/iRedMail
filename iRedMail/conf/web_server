@@ -32,7 +32,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Web data.
     export HTTPD_SERVERROOT='/opt/www'
-    export HTTPD_DOCUMENTROOT="/var/www/html"
+    export HTTPD_DOCUMENTROOT='/var/www/html'
 
     # Daemon user.
     export HTTPD_USER='www-data'

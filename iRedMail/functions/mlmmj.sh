@@ -84,21 +84,40 @@ mlmmj_admin_config()
     perl -pi -e 's#PH_MLMMJ_SKEL_DIR#$ENV{MLMMJ_SKEL_DIR}#g' ${MLMMJ_ADMIN_CONF}
     perl -pi -e 's#PH_AMAVISD_MLMMJ_PORT#$ENV{AMAVISD_MLMMJ_PORT}#g' ${MLMMJ_ADMIN_CONF}
 
-    if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
-        perl -pi -e 's#^(backend_api =)(.*)#${1} "bk_none"#g' ${MLMMJ_ADMIN_CONF}
+    perl -pi -e 's#^(backend_api =)(.*)#${1} "bk_none"#g' ${MLMMJ_ADMIN_CONF}
+
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        perl -pi -e 's#^(backend_cli =)(.*)#${1} "bk_iredmail_ldap"#g' ${MLMMJ_ADMIN_CONF}
+
+        cat >> ${MLMMJ_ADMIN_CONF} <<EOF
+# LDAP server info. Required by backend 'bk_iredmail_ldap'.
+iredmail_ldap_uri = 'ldap://${LDAP_SERVER_HOST}:${LDAP_SERVER_PORT}'
+iredmail_ldap_basedn = '${LDAP_BASEDN}'
+iredmail_ldap_bind_dn = '${LDAP_ADMIN_DN}'
+iredmail_ldap_bind_password = '${LDAP_ADMIN_PW}'
+EOF
+    elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         perl -pi -e 's#^(backend_cli =)(.*)#${1} "bk_iredmail_sql"#g' ${MLMMJ_ADMIN_CONF}
 
+        cat >> ${MLMMJ_ADMIN_CONF} <<EOF
+# SQL database which stores meta data of mailing list accounts.
+# Required by backend 'bk_iredmail_sql'.
+EOF
+
+
         if [ X"${BACKEND}" == X'MYSQL' ]; then
-            perl -pi -e 's#^(iredmail_sql_db_type =)(.*)#${1} "mysql"#g' ${MLMMJ_ADMIN_CONF}
+            echo 'iredmail_sql_db_type = "mysql"' >> ${MLMMJ_ADMIN_CONF }
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            perl -pi -e 's#^(iredmail_sql_db_type =)(.*)#${1} "pgsql"#g' ${MLMMJ_ADMIN_CONF}
+            echo 'iredmail_sql_db_type = "pgsql"' >> ${MLMMJ_ADMIN_CONF }
         fi
 
-        perl -pi -e 's#^(iredmail_sql_db_server =)(.*)#${1} "$ENV{SQL_SERVER_ADDRESS}"#g' ${MLMMJ_ADMIN_CONF}
-        perl -pi -e 's#^(iredmail_sql_db_port =)(.*)#${1} "$ENV{SQL_SERVER_PORT}"#g' ${MLMMJ_ADMIN_CONF}
-        perl -pi -e 's#^(iredmail_sql_db_name =)(.*)#${1} "$ENV{VMAIL_DB_NAME}"#g' ${MLMMJ_ADMIN_CONF}
-        perl -pi -e 's#^(iredmail_sql_db_user =)(.*)#${1} "$ENV{VMAIL_DB_ADMIN_USER}"#g' ${MLMMJ_ADMIN_CONF}
-        perl -pi -e 's#^(iredmail_sql_db_password =)(.*)#${1} "$ENV{VMAIL_DB_ADMIN_PASSWD}"#g' ${MLMMJ_ADMIN_CONF}
+        cat >> ${MLMMJ_ADMIN_CONF} <<EOF
+iredmail_sql_db_server = '${SQL_SERVER_ADDRESS}'
+iredmail_sql_db_port = ${SQL_SERVER_PORT}
+iredmail_sql_db_name = '${VMAIL_DB_NAME}'
+iredmail_sql_db_user = '${VMAIL_DB_ADMIN_USER}'
+iredmail_sql_db_password = '${VMAIL_DB_ADMIN_PASSWD}'
+EOF
     fi
 
     # Create log directory and empty log file

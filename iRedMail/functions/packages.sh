@@ -400,7 +400,7 @@ EOF
         [ X"${DISTRO}" == X'UBUNTU' ] && ALL_PKGS="${ALL_PKGS} python-bcrypt"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-beautifulsoup4 py-lxml py-curl py-requests"
+        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-beautifulsoup4 py-lxml py-curl py-requests py-netifaces"
         # /etc/rc.d/uwsgi
         export PKG_SCRIPTS="${PKG_SCRIPTS} ${UWSGI_RC_SCRIPT_NAME}"
     fi

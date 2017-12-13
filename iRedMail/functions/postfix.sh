@@ -255,6 +255,9 @@ postfix_config_vhost()
         perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
         perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+
+        perl -pi -e 's#PH_LDAP_ATTR_GROUP_USERS#$ENV{LDAP_ATTR_GROUP_USERS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
+        perl -pi -e 's#PH_LDAP_ATTR_GROUP_GROUPS#$ENV{LDAP_ATTR_GROUP_GROUPS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf
     elif [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
         # SQL server, port, bind username, password
         perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#g' ${POSTFIX_LOOKUP_DIR}/*.cf

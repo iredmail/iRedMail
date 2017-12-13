@@ -5,7 +5,7 @@ bind            = yes
 start_tls       = no
 bind_dn         = PH_LDAP_BINDDN
 bind_pw         = PH_LDAP_BINDPW
-search_base     = ou=Users,domainName=%d,PH_LDAP_BASEDN
+search_base     = ou=PH_LDAP_ATTR_GROUP_USERS,domainName=%d,PH_LDAP_BASEDN
 scope           = one
 query_filter    = (&(|(mail=%s)(&(enabledService=shadowaddress)(shadowAddress=%s)))(objectClass=mailUser)(accountStatus=active)(!(domainStatus=disabled))(enabledService=mail)(enabledService=recipientbcc))
 result_attribute= userRecipientBccAddress
