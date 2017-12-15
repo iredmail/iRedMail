@@ -106,9 +106,9 @@ EOF
 
 
         if [ X"${BACKEND}" == X'MYSQL' ]; then
-            echo 'iredmail_sql_db_type = "mysql"' >> ${MLMMJ_ADMIN_CONF }
+            echo 'iredmail_sql_db_type = "mysql"' >> ${MLMMJ_ADMIN_CONF}
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            echo 'iredmail_sql_db_type = "pgsql"' >> ${MLMMJ_ADMIN_CONF }
+            echo 'iredmail_sql_db_type = "pgsql"' >> ${MLMMJ_ADMIN_CONF}
         fi
 
         cat >> ${MLMMJ_ADMIN_CONF} <<EOF
