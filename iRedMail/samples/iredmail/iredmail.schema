@@ -306,7 +306,6 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.2.24 NAME 'disabledService'
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
-
 # This is a comma separated list of IPs and/or networks where the user is
 # allowed to log in from. If the user tries to log in elsewhere, the
 # authentication will fail the same way as if a wrong password was given.
@@ -323,6 +322,12 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.2.26 NAME 'senderRelayHost'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{255}
+    SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.27 NAME 'maxMessageSize'
+    DESC 'Max message size (in bytes)'
+    EQUALITY integerMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
     SINGLE-VALUE )
 
 #
@@ -400,7 +405,7 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
         title $ userManager $
         mailWhitelistRecipient $ mailBlacklistRecipient $
         domainGlobalAdmin $ allowNets $ senderRelayHost $
-        domainStatus ) )
+        domainStatus $ maxMessageSize ) )
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.4 NAME 'mailAlias'
     DESC 'Mail Alias Account' SUP top STRUCTURAL
     MUST ( mail )
@@ -418,7 +423,7 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.5 NAME 'mailList'
         enabledService $ disabledService $ memberOfGroup $ hasMember $
         listAllowedUser $ expiredDate $ accountSetting $ mailHost $
         member $ uniqueMember $ memberUid $ gidNumber $ domainStatus $
-        mtaTransport $ mailinglistID ) )
+        mtaTransport $ mailinglistID $ maxMessageSize ) )
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.6 NAME 'mailExternalUser'
     DESC 'Mail External User' SUP top STRUCTURAL
     MUST ( memberOfGroup )
