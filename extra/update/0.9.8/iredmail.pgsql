@@ -12,6 +12,7 @@ CREATE TABLE maillists (
     address VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     transport VARCHAR(255) NOT NULL DEFAULT '',
+    accesspolicy VARCHAR(30) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
     -- a server-wide unique id (a 36-characters string) for each mailing list
     mlid VARCHAR(36) NOT NULL DEFAULT '',
