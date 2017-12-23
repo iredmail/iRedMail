@@ -62,8 +62,8 @@ CREATE TABLE IF NOT EXISTS alias (
     INDEX (active)
 ) ENGINE=InnoDB;
 
--- Alias moderators.
-CREATE TABLE IF NOT EXISTS alias_moderators (
+-- Alias and mailing list moderators.
+CREATE TABLE IF NOT EXISTS moderators (
     id BIGINT(20) UNSIGNED AUTO_INCREMENT,
     address VARCHAR(255) NOT NULL DEFAULT '',
     moderator VARCHAR(255) NOT NULL DEFAULT '',

@@ -1,5 +1,8 @@
 -- \c vmail;
 
+-- Rename table
+ALTER TABLE alias_moderators RENAME TO moderators;
+
 -- Column used to limit number of mailing lists a domain admin can create
 ALTER TABLE domain ADD COLUMN maillists INT8 NOT NULL DEFAULT 0;
 

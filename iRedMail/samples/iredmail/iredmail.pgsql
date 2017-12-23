@@ -57,8 +57,8 @@ CREATE INDEX idx_alias_domain ON alias (domain);
 CREATE INDEX idx_alias_expired ON alias (expired);
 CREATE INDEX idx_alias_active ON alias (active);
 
--- Alias moderators.
-CREATE TABLE alias_moderators (
+-- Alias and mailing list moderators.
+CREATE TABLE moderators (
     id SERIAL PRIMARY KEY,
     address VARCHAR(255) NOT NULL DEFAULT '',
     moderator VARCHAR(255) NOT NULL DEFAULT '',
@@ -66,11 +66,11 @@ CREATE TABLE alias_moderators (
     dest_domain VARCHAR(255) NOT NULL DEFAULT ''
 );
 
-CREATE INDEX idx_alias_moderators_address ON alias_moderators (address);
-CREATE INDEX idx_alias_moderators_moderator ON alias_moderators (moderator);
-CREATE UNIQUE INDEX idx_alias_moderators_address_moderator ON alias_moderators (address, moderator);
-CREATE INDEX idx_alias_moderators_domain ON alias_moderators (domain);
-CREATE INDEX idx_alias_moderators_dest_domain ON alias_moderators (dest_domain);
+CREATE INDEX idx_moderators_address ON moderators (address);
+CREATE INDEX idx_moderators_moderator ON moderators (moderator);
+CREATE UNIQUE INDEX idx_moderators_address_moderator ON moderators (address, moderator);
+CREATE INDEX idx_moderators_domain ON moderators (domain);
+CREATE INDEX idx_moderators_dest_domain ON moderators (dest_domain);
 
 -- Forwardings. it contains
 --  - members of mail alias account

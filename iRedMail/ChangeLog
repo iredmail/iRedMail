@@ -13,6 +13,7 @@ iRedMail-0.9.8:
             - mlmmj: http://mlmmj.org/
             - mlmmj-admin: https://bitbucket.org/iredmail/mlmmj-admin/src
 
+        - SQL table renamed for SQL backends: alias_moderators -> moderators.
         - Upgrade rsyslog to latest 8.x on CentOS 6, package comes from
           rsyslog official yum repo.
         - LDAP backend: Allow mail list account to use 2 attributes: member,
