@@ -215,8 +215,6 @@ CREATE TABLE mailbox (
     modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 00:00:00',
     active INT2 NOT NULL DEFAULT 1,
-    -- Required by PostfixAdmin
-    local_part VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (username)
 );
 CREATE INDEX idx_mailbox_domain ON mailbox (domain);
