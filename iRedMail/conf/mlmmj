@@ -51,7 +51,7 @@ fi
 export MLMMJ_ADMIN_LISTEN_PORT='7779'
 export MLMMJ_ADMIN_PID_FILE='/var/run/mlmmjadmin.pid'
 
-export MLMMJ_ADMIN_VERSION='1.0-beta1'
+export MLMMJ_ADMIN_VERSION='1.0-beta2'
 export MLMMJ_ADMIN_TARBALL="mlmmj-admin-${MLMMJ_ADMIN_VERSION}.tar.bz2"
 
 export MLMMJ_ADMIN_PARENT_DIR='/opt'
