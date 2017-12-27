@@ -170,8 +170,6 @@ EOF
                 echo "${IREDMAIL_SYSLOG_FACILITY}.*        -${MLMMJ_ADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
             fi
         fi
-
-        echo "${IREDMAIL_SYSLOG_FACILITY}.*        -${MLMMJ_ADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
     fi
 
     backup_file ${MLMMJ_ADMIN_UWSGI_CONF}
