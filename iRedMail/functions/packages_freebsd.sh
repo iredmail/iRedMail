@@ -858,7 +858,7 @@ EOF
     # mlmmj: mailing list manager
     ALL_PORTS="${ALL_PORTS} mail/mlmmj"
 
-    # dependencies for mlmmj-admin: a RESTful API server used to manage mlmmj
+    # dependencies for mlmmjadmin: a RESTful API server used to manage mlmmj
     ALL_PORTS="${ALL_PORTS} www/py-requests"
 
     # Roundcube.

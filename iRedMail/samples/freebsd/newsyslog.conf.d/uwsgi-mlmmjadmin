@@ -1,1 +1,1 @@
-PH_MLMMJ_ADMIN_LOG_FILE     root:wheel   600  7     *    24    Z    PH_MLMMJ_ADMIN_UWSGI_PID_FILE
+PH_MLMMJADMIN_LOG_FILE     root:wheel   600  7     *    24    Z    PH_MLMMJADMIN_UWSGI_PID_FILE

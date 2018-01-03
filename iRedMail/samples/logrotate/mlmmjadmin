@@ -1,4 +1,4 @@
-PH_MLMMJ_ADMIN_LOG_DIR/*.log {
+PH_MLMMJADMIN_LOG_DIR/*.log {
     weekly
     rotate 10
     missingok

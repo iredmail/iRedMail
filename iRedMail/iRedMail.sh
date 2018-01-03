@@ -159,6 +159,6 @@ check_status_before_run clamav_config
 check_status_before_run amavisd_config
 check_status_before_run sa_config
 check_status_before_run mlmmj_config
-check_status_before_run mlmmj_admin_config
+check_status_before_run mlmmjadmin_config
 optional_components
 check_status_before_run cleanup

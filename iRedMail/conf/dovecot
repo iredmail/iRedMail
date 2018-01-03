@@ -76,6 +76,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DOVECOT_CONF_DIR='/usr/local/etc/dovecot'
     export DOVECOT_DELIVER_BIN='/usr/local/libexec/dovecot/deliver'
     export DOVECOT_DOVEADM_BIN='/usr/local/bin/doveadm'
+    export DOVECOT_CONF_INCLUDE_DIR='/usr/local/etc/dovecot/iredmail'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export DOVECOT_USER='_dovecot'

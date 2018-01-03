@@ -10,4 +10,4 @@ location ~ ^/mail(.*) {
     index index.php;
 }
 
-location ~ ^/mail/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING)$ { deny all; }
+location ~ ^/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING|composor.json|jsdeps.json)$ { deny all; }

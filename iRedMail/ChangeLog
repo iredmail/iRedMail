@@ -7,11 +7,11 @@ iRedMail-0.9.8:
     * Apache has been removed, Nginx is the only one web server available.
 
     * Improvements:
-        - Integrate 'mlmmj' mailing list manager, and 'mlmmj-admin' RESTful API
+        - Integrate 'mlmmj' mailing list manager, and 'mlmmjadmin' RESTful API
           server for easy mlmmj management.
 
             - mlmmj: http://mlmmj.org/
-            - mlmmj-admin: https://bitbucket.org/iredmail/mlmmj-admin/src
+            - mlmmjadmin: https://bitbucket.org/iredmail/mlmmjadmin/src
 
         - Remove SQL column: `mailbox.local_part`. It's inherited from
           PostfixAdmin at the very beginning, but not used by any applications,

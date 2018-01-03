@@ -13,4 +13,4 @@ location ~ \.php$ {
     fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK$fastcgi_script_name;
 }
 
-location ~ ^/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING)$ { deny all; }
+location ~ ^/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING|composor.json|jsdeps.json)$ { deny all; }
