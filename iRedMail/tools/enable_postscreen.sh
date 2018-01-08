@@ -89,9 +89,9 @@ cat > ${POSTSCREEN_ACCESS_CIDR} <<EOF
 127.0.0.0/8 permit
 EOF
 
-postconf -e postscreen_greet_action='enforce'
-postconf -e postscreen_dnsbl_action='enforce'
-postconf -e postscreen_blacklist_action='enforce'
+postconf -e postscreen_greet_action='drop'
+postconf -e postscreen_dnsbl_action='drop'
+postconf -e postscreen_blacklist_action='drop'
 
 # Require Postfix-2.11.
 if echo ${POSTFIX_VERSION} | grep '^2\.[123456789][123456789]' &>/dev/null; then

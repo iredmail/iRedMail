@@ -453,6 +453,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Ubuntu & Debian.
     export DEBIAN_FRONTEND='noninteractive'
+    export SYSTEMD_SERVICE_DIR='/lib/systemd/system'
 
     # Package management.
     if [ X"${APTGET}" != X"" ]; then

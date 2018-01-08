@@ -88,8 +88,8 @@ export DOMAIN_ADMIN_EMAIL="${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}"
 . ${CONF_DIR}/postgresql
 . ${CONF_DIR}/dovecot
 . ${CONF_DIR}/postfix
-. ${CONF_DIR}/amavisd
 . ${CONF_DIR}/mlmmj
+. ${CONF_DIR}/amavisd
 . ${CONF_DIR}/iredapd
 . ${CONF_DIR}/memcached
 . ${CONF_DIR}/sogo
@@ -120,8 +120,8 @@ fi
 
 . ${FUNCTIONS_DIR}/postfix.sh
 . ${FUNCTIONS_DIR}/dovecot.sh
-. ${FUNCTIONS_DIR}/amavisd.sh
 . ${FUNCTIONS_DIR}/mlmmj.sh
+. ${FUNCTIONS_DIR}/amavisd.sh
 . ${FUNCTIONS_DIR}/iredapd.sh
 . ${FUNCTIONS_DIR}/clamav.sh
 . ${FUNCTIONS_DIR}/spamassassin.sh
@@ -155,10 +155,10 @@ check_status_before_run web_server_config
 check_status_before_run backend_install
 check_status_before_run postfix_setup
 check_status_before_run dovecot_setup
+check_status_before_run mlmmj_config
+check_status_before_run mlmmjadmin_config
 check_status_before_run clamav_config
 check_status_before_run amavisd_config
 check_status_before_run sa_config
-check_status_before_run mlmmj_config
-check_status_before_run mlmmjadmin_config
 optional_components
 check_status_before_run cleanup

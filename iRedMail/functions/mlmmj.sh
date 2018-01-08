@@ -171,40 +171,38 @@ EOF
         fi
     fi
 
-    backup_file ${MLMMJADMIN_UWSGI_CONF}
-    cp -f ${SAMPLE_DIR}/uwsgi/mlmmjadmin.ini ${MLMMJADMIN_UWSGI_CONF}
+    # Copy rc script file
+    if [ X"${USE_SYSTEMD}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            cp -f ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/systemd/rhel.service ${SYSTEMD_SERVICE_DIR}/${MLMMJADMIN_RC_SCRIPT_NAME}.service >> ${INSTALL_LOG} 2>&1
+            chmod 0644 ${SYSTEMD_SERVICE_DIR}/${MLMMJADMIN_RC_SCRIPT_NAME}.service
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            cp -f ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/systemd/debian.service ${SYSTEMD_SERVICE_DIR}/${MLMMJADMIN_RC_SCRIPT_NAME}.service >> ${INSTALL_LOG} 2>&1
+            chmod 0644 ${SYSTEMD_SERVICE_DIR}/${MLMMJADMIN_RC_SCRIPT_NAME}.service
+        fi
 
-    perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${MLMMJADMIN_UWSGI_CONF}
-    perl -pi -e 's#PH_MLMMJADMIN_LOG_FILE#$ENV{MLMMJADMIN_LOG_FILE}#g' ${MLMMJADMIN_UWSGI_CONF}
-    perl -pi -e 's#PH_MLMMJADMIN_BIND_HOST#$ENV{MLMMJADMIN_BIND_HOST}#g' ${MLMMJADMIN_UWSGI_CONF}
-    perl -pi -e 's#PH_MLMMJADMIN_LISTEN_PORT#$ENV{MLMMJADMIN_LISTEN_PORT}#g' ${MLMMJADMIN_UWSGI_CONF}
-    perl -pi -e 's#PH_MLMMJ_USER_NAME#$ENV{MLMMJ_USER_NAME}#g' ${MLMMJADMIN_UWSGI_CONF}
-    perl -pi -e 's#PH_MLMMJ_GROUP_NAME#$ENV{MLMMJ_GROUP_NAME}#g' ${MLMMJADMIN_UWSGI_CONF}
-    perl -pi -e 's#PH_MLMMJADMIN_ROOT_DIR_SYMBOL_LINK#$ENV{MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}#g' ${MLMMJADMIN_UWSGI_CONF}
-    perl -pi -e 's#PH_MLMMJADMIN_PID_FILE#$ENV{MLMMJADMIN_PID_FILE}#g' ${MLMMJADMIN_UWSGI_CONF}
-    perl -pi -e 's#PH_MLMMJADMIN_UWSGI_PID_FILE#$ENV{MLMMJADMIN_UWSGI_PID_FILE}#g' ${MLMMJADMIN_UWSGI_CONF}
+        systemctl daemon-reload >> ${INSTALL_LOG} 2>&1
+    else
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/${MLMMJADMIN_RC_SCRIPT_NAME}.rhel ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/${MLMMJADMIN_RC_SCRIPT_NAME}.debian ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
+        elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+            cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/${MLMMJADMIN_RC_SCRIPT_NAME}.freebsd ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
+            service_control enable 'mlmmjadmin_enable' 'YES' >> ${INSTALL_LOG} 2>&1
 
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        perl -pi -e 's/^#(plugins.*)/${1}/' ${MLMMJADMIN_UWSGI_CONF}
-    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        perl -pi -e 's/^#(plugins.*)/${1}/' ${MLMMJADMIN_UWSGI_CONF}
-        perl -pi -e 's#^(pidfile =).*#${1} $ENV{MLMMJADMIN_UWSGI_PID_FILE}#g' ${MLMMJADMIN_UWSGI_CONF}
-        ln -s ${MLMMJADMIN_UWSGI_CONF} /etc/uwsgi/apps-enabled/$(basename ${MLMMJADMIN_UWSGI_CONF})
-
-    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-        service_control enable 'mlmmjadmin_enable' 'YES' >> ${INSTALL_LOG} 2>&1
-        service_control enable 'uwsgi_mlmmjadmin_flags' "--ini ${MLMMJADMIN_UWSGI_CONF} --log-syslog"
-
-        # Rotate log file with newsyslog
-        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/uwsgi-mlmmjadmin ${MLMMJADMIN_LOGROTATE_FILE}
-        perl -pi -e 's#PH_IREDADMIN_UWSGI_PID#$ENV{IREDADMIN_UWSGI_PID}#g' ${MLMMJADMIN_LOGROTATE_FILE}
-
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.openbsd ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
-        rcctl enable mlmmjadmin
-        rcctl set mlmmjadmin flags "--ini ${MLMMJADMIN_UWSGI_CONF} --log-syslog" >> ${INSTALL_LOG} 2>&1
-        chmod 0755 ${DIR_RC_SCRIPTS}/mlmmjadmin >> ${INSTALL_LOG} 2>&1
+            # Rotate log file with newsyslog
+            cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/uwsgi-mlmmjadmin ${MLMMJADMIN_LOGROTATE_FILE}
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.openbsd ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
+            chmod 0755 ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
+            rcctl enable mlmmjadmin
+        fi
     fi
+
+    ECHO_DEBUG "Make mlmmjadmin starting after system startup."
+    service_control enable ${MLMMJADMIN_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    export ENABLED_SERVICES="${ENABLED_SERVICES} ${MLMMJADMIN_RC_SCRIPT_NAME}"
 
     echo 'export status_mlmmjadmin_config="DONE"' >> ${STATUS_FILE}
 }

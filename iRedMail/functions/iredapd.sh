@@ -57,7 +57,7 @@ iredapd_install()
         chmod 0755 ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
     fi
 
-    ECHO_DEBUG "Make iredapd start after system startup."
+    ECHO_DEBUG "Make iredapd starting after system startup."
     service_control enable iredapd >> ${INSTALL_LOG} 2>&1
     export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
 
