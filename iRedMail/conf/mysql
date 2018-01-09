@@ -83,3 +83,6 @@ if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
 else
     export MYSQL_GRANT_HOST="${LOCAL_ADDRESS}"
 fi
+
+# Custom settings
+export MYSQL_MAX_CONNECTIONS="${MYSQL_MAX_CONNECTIONS:=1024}"

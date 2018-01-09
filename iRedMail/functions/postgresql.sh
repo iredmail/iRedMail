@@ -56,6 +56,10 @@ pgsql_initialize()
         ECHO_DEBUG "Set client_min_messages to ERROR."
         perl -pi -e 's#.*(client_min_messages =).*#${1} error#' ${PGSQL_CONF_POSTGRESQL}
 
+        ECHO_DEBUG "Set max_connections to 1024."
+        perl -pi -e 's/^(max_connections .*)/#${1}/' ${PGSQL_CONF_POSTGRESQL}
+        echo "max_connections = ${PGSQL_MAX_CONNECTIONS}    # change requires restart" >> ${PGSQL_CONF_POSTGRESQL}
+
         # SSL is enabled by default on Ubuntu.
         [ X"${DISTRO}" == X'FREEBSD' ] && \
             perl -pi -e 's/^#(ssl.=.)off(.*)/${1}on${2}/' ${PGSQL_CONF_POSTGRESQL}
