@@ -253,9 +253,13 @@ CREATE TABLE maillists (
     transport VARCHAR(255) NOT NULL DEFAULT '',
     accesspolicy VARCHAR(30) NOT NULL DEFAULT '',
     maxmsgsize INT8 NOT NULL DEFAULT 0,
+    -- name of the mailing list
     name VARCHAR(255) NOT NULL DEFAULT '',
     -- a server-wide unique id (a 36-characters string) for each mailing list
     mlid VARCHAR(36) NOT NULL DEFAULT '',
+    -- control whether newsletter-style subscription from website is enabled
+    -- 1 -> enabled, 0 -> disabled
+    is_newsletter INT2 NOT NULL DEFAULT 0,
     settings TEXT,
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
     modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '1970-01-01 00:00:00',
@@ -265,6 +269,7 @@ CREATE TABLE maillists (
 CREATE UNIQUE INDEX idx_maillists_address ON maillists (address);
 CREATE INDEX idx_maillists_domain ON maillists (domain);
 CREATE UNIQUE INDEX idx_maillists_mlid ON maillists (mlid);
+CREATE INDEX idx_maillists_is_newsletter ON maillists (is_newsletter);
 CREATE INDEX idx_maillists_active ON maillists (active);
 
 CREATE TABLE sender_bcc_domain (

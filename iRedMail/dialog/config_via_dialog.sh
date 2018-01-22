@@ -33,6 +33,8 @@ trap "exit 255" 2
 
 # Initialize config file.
 echo '' > ${IREDMAIL_CONFIG_FILE}
+chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${IREDMAIL_CONFIG_FILE}
+chmod 0400 ${IREDMAIL_CONFIG_FILE}
 
 DIALOG="dialog --colors --no-collapse --insecure --ok-label Next \
         --no-cancel --backtitle ${PROG_NAME}:_Open_Source_Mail_Server_Solution"
