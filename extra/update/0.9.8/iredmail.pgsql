@@ -23,6 +23,8 @@ CREATE TABLE maillists (
     maxmsgsize INT8 NOT NULL DEFAULT 0,
     -- name of the mailing list
     name VARCHAR(255) NOT NULL DEFAULT '',
+    -- short introduction of the mailing list on subscription page
+    description TEXT,
     -- a server-wide unique id (a 36-characters string) for each mailing list
     mlid VARCHAR(36) NOT NULL DEFAULT '',
     -- control whether newsletter-style subscription from website is enabled
