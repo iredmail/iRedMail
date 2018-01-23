@@ -17,9 +17,11 @@ CREATE TABLE maillists (
     id SERIAL PRIMARY KEY,
     address VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
+    -- Per mailing list transport. for example: 'mlmmj:example.com/listname'.
     transport VARCHAR(255) NOT NULL DEFAULT '',
     accesspolicy VARCHAR(30) NOT NULL DEFAULT '',
     maxmsgsize INT8 NOT NULL DEFAULT 0,
+    -- name of the mailing list
     name VARCHAR(255) NOT NULL DEFAULT '',
     -- a server-wide unique id (a 36-characters string) for each mailing list
     mlid VARCHAR(36) NOT NULL DEFAULT '',
