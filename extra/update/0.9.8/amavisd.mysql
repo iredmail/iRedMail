@@ -1,3 +1,6 @@
+-- If subject contains emoji, varchar doesn't work well.
+ALTER TABLE msgs MODIFY COLUMN subject VARBINARY(255);
+
 -- mail address without address extension: user+abc@domain.com -> user@domain.com
 ALTER TABLE maddr ADD COLUMN email_raw varbinary(255) NOT NULL DEFAULT '';
 

@@ -31,21 +31,25 @@ iRedMail-0.9.8:
           forum.
         - Postfix: Improper SQL queries used to query per-user bcc address.
         - Nginx: Use single config file for default web hosts.
+        - SOGo: Cannot sync contacts on Android devices via EAS.
+        - Amavisd: cannot store mail subject if contains emoji.
+        - SQL backends: User under disabled domain is able to send email with
+          smtp protocol.
         - tools/backup_sogo.sh
             - not set correct owner and permission on backup files.
             - cannot remove old backup files.
-        - Cannot log backup result to SQL db in tools/backup_openldap.sh.
-          Note: backup is fine, just no log in SQL db.
-          Thanks swejun <ingvar _at_ zebware.com> for the feedback and fix in
-          forum.
-        - SQL backends: User under disabled domain is able to send email with
-          smtp protocol.
-        - Cannot sync contacts on Android devices via EAS with SOGo.
-        - tools/create_mail_user_* scripts doesn't use current date as
-          password last change date for newly created user.
-        - tools/migrate_sql_alias_table.py: doesn't support 'utf8' charset.
-          Thanks Kacper Guzik <kacper.guzik _at_ zenbox _dot_ pl> for the
-          report and code contribution.
+        - tools/backup_openldap.sh:
+            - Cannot log backup result to SQL db.
+              Note: backup is fine, just no log in SQL db.
+              Thanks swejun <ingvar _at_ zebware.com> for the feedback and fix
+              in forum.
+        - tools/create_mail_user_*:
+            - Not use current date as password last change date for newly
+              created user.
+        - tools/migrate_sql_alias_table.py:
+            - doesn't support 'utf8' charset.
+              Thanks Kacper Guzik <kacper.guzik _at_ zenbox _dot_ pl> for the
+              report and code contribution.
 
     * Updated packages:
         + Roundcube -> 1.3.3
