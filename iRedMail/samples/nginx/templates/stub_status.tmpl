@@ -1,0 +1,15 @@
+location = /stub_status {
+    stub_status on;
+    access_log off;
+    allow 127.0.0.1;
+    deny all;
+}
+
+location = /status {
+    include fastcgi_params;
+    fastcgi_pass php_workers;
+    fastcgi_param SCRIPT_FILENAME $fastcgi_script_name;
+    access_log off;
+    allow 127.0.0.1;
+    deny all;
+} 

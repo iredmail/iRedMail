@@ -420,6 +420,19 @@ EOF
         fi
     fi
 
+    # netdata
+    # Note: netdata installer will generate rc/systemd script and enable the
+    #       service automatically.
+    if [ X"${USE_NETDATA}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            ALL_PKGS="${ALL_PKGS} curl libmnl libuuid lm_sensors nc PyYAML zlib iproute"
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors iproute netcat"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            # netdata doesn't work on OpenBSD
+            :
+        fi
+    fi
 
     # Misc packages & services.
     if [ X"${DISTRO}" == X'RHEL' ]; then

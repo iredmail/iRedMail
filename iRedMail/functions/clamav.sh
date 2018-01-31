@@ -32,7 +32,7 @@ clamav_config()
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         perl -pi -e 's/^(Example)/#${1}/' ${CLAMD_CONF} ${FRESHCLAM_CONF}
         mkdir /var/log/clamav
-        chown ${CLAMAV_USER}:${CLAMAV_GROUP} /var/log/clamav
+        chown ${SYS_USER_CLAMAV}:${SYS_GROUP_CLAMAV} /var/log/clamav
     fi
 
     [ -f ${FRESHCLAM_CONF} ] && perl -pi -e 's#^Example##' ${FRESHCLAM_CONF}
@@ -63,7 +63,7 @@ clamav_config()
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
-        usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
+        usermod ${SYS_USER_CLAMAV} -G ${SYS_GROUP_AMAVISD}
 
         ECHO_DEBUG "Set permission to 750: ${AMAVISD_TEMP_DIR}, ${AMAVISD_QUARANTINE_DIR},"
         chmod -R 750 ${AMAVISD_TEMP_DIR} ${AMAVISD_QUARANTINE_DIR}
@@ -74,20 +74,20 @@ clamav_config()
         fi
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
-        pw usermod ${CLAMAV_USER} -G ${AMAVISD_SYS_GROUP}
+        pw usermod ${SYS_USER_CLAMAV} -G ${SYS_GROUP_AMAVISD}
 
         # Start service when system start up.
         service_control enable 'clamav_clamd_enable' 'YES'
         service_control enable 'clamav_freshclam_enable' 'YES'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER}
+        usermod -G ${SYS_GROUP_AMAVISD} ${SYS_USER_CLAMAV}
 
         # OpenBSD use 'yes' instead of 'true'
         perl -pi -e 's/^(AllowSupplementaryGroups).*/${1} yes/g' ${CLAMD_CONF}
     fi
 
     # Add user alias in Postfix
-    add_postfix_alias ${CLAMAV_USER} ${SYS_ROOT_USER}
+    add_postfix_alias ${SYS_USER_CLAMAV} ${SYS_ROOT_USER}
 
     cat >> ${TIP_FILE} <<EOF
 ClamAV:

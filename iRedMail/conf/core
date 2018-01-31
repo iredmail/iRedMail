@@ -573,3 +573,19 @@ add_sys_user_group()
             ${_user} >> ${INSTALL_LOG} 2>&1
     fi
 }
+
+update_sysctl_param()
+{
+    export _param="$1"
+    export _value="$2"
+
+    if grep "^${_param}\>" ${SYSCTL_CONF} &>/dev/null; then
+        # param exists, updating it.
+        perl -pi -e 's#(${_param}=).*#${1}$ENV{_value}#' ${SYSCTL_CONF}
+    else
+        # param doesn't exist. add a new one.
+        echo "${_param}=${_value}" >> ${SYSCTL_CONF}
+    fi
+
+    unset _param _value
+}

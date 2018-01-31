@@ -188,7 +188,7 @@ CREATE TABLE msgs (
   dsn_sent   char(1),                   -- was DSN sent? Y/N/q (q=quenched)
   spam_level real,                      -- SA spam level (no boosts)
   message_id varchar(255)  DEFAULT '',  -- mail Message-ID header field
-  from_addr  varchar(255)  DEFAULT '',  -- mail From header field,    UTF8
+  from_addr  bytea         DEFAULT '',  -- mail From header field, UTF8
   subject    bytea         DEFAULT '',  -- mail Subject header field, UTF8
   host       varchar(255)  NOT NULL,    -- hostname where amavisd is running
   PRIMARY KEY (partition_tag,mail_id)

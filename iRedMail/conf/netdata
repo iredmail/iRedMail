@@ -26,6 +26,7 @@ export NETDATA_ROOT_DIR="${NETDATA_PARENT_DIR}/netdata"
 export NETDATA_CONF_DIR="${NETDATA_ROOT_DIR}/etc/netdata"
 
 export NETDATA_PORT='19999'
+export NETDATA_RC_SCRIPT_NAME='netdata'
 
 # Main config files.
 export NETDATA_CONF="${NETDATA_CONF_DIR}/netdata.conf"
@@ -36,7 +37,7 @@ export NETDATA_DOT_MY_CNF="${NETDATA_CONF_DIR}/my.cnf"
 
 # Install stable release.
 export NETDATA_VERSION='1.9.0'
-export NETDATA_DOWNLOAD_URL="https://github.com/firehol/netdata/releases/download/v${NETDATA_VERSION}/netdata-latest.gz.run"
+export NETDATA_PKG_NAME="netdata-${NETDATA_VERSION}.gz.run"
 
 # Modular config files.
 export NETDATA_CONF_HEALTH_ALARM_NOTIFY="${NETDATA_CONF_DIR}/health_alarm_notify.conf"

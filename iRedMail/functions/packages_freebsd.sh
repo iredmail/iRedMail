@@ -973,6 +973,10 @@ EOF
 OPTIONS_FILE_SET+=SASL
 EOF
 
+    if [ X"${USE_NETDATA}" == X'YES' ]; then
+        ALL_PORTS="${ALL_PORTS} net-mgmt/netdata"
+    fi
+
     # Misc
     ALL_PORTS="${ALL_PORTS} sysutils/logwatch"
 

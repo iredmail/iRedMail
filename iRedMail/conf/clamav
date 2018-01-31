@@ -20,8 +20,8 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-export CLAMAV_USER='clamav'
-export CLAMAV_GROUP='clamav'
+export SYS_USER_CLAMAV='clamav'
+export SYS_GROUP_CLAMAV='clamav'
 export CLAMAV_CLAMD_SERVICE_NAME='clamd'
 export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclamd'
 
@@ -40,8 +40,8 @@ export FRESHCLAM_UPDATE_IMMEDIATELY="${FRESHCLAM_UPDATE_IMMEDIATELY:=YES}"
 
 # Clamav.
 if [ X"${DISTRO}" == X'RHEL' ]; then
-    export CLAMAV_USER='amavis'
-    export CLAMAV_GROUP='amavis'
+    export SYS_USER_CLAMAV='amavis'
+    export SYS_GROUP_CLAMAV='amavis'
 
     export CLAMD_CONF='/etc/clamd.d/amavisd.conf'
     export CLAMD_LOCAL_SOCKET='/var/run/clamd.amavisd/clamd.socket'
@@ -63,8 +63,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export CLAMD_LOCAL_SOCKET='/var/run/clamav/clamd.sock'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export CLAMAV_USER='_clamav'
-    export CLAMAV_GROUP='_clamav'
+    export SYS_USER_CLAMAV='_clamav'
+    export SYS_GROUP_CLAMAV='_clamav'
     export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclam'
 
     export FRESHCLAM_PID_FILE='/var/run/freshclam.pid'

@@ -123,6 +123,9 @@ nginx_config()
         perl -pi -e 's#^(group.*=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
         perl -pi -e 's#^(php_value.*session.save_path.).*#${1} = "$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_FPM_POOL_WWW_CONF}
 
+        # Add '/status'
+        perl -pi -e 's#^;(pm.status_path =).*#${1} = /status"#g' ${PHP_FPM_POOL_WWW_CONF}
+
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
             perl -pi -e 's#^(\[www\])$#${1}\nuser = $ENV{HTTPD_USER}\ngroup = $ENV{HTTPD_GROUP}\n#' ${PHP_FPM_POOL_WWW_CONF}
 

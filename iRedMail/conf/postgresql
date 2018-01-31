@@ -92,6 +92,3 @@ if [ X"${DISTRO}" == X"FREEBSD" -o X"${DISTRO}" == X'OPENBSD' ]; then
     export PGSQL_BIN_PG_DUMP='/usr/local/bin/pg_dump'
     export PGSQL_BIN_PG_DUMPALL='/usr/local/bin/pg_dumpall'
 fi
-
-# Custom settings
-export PGSQL_MAX_CONNECTIONS="${PGSQL_MAX_CONNECTIONS:=1024}"

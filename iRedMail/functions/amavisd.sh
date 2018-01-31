@@ -97,7 +97,7 @@ amavisd_config()
 
     ECHO_DEBUG "Generate DKIM pem files: ${AMAVISD_FIRST_DOMAIN_DKIM_KEY}."
     mkdir -p ${AMAVISD_DKIM_DIR} &>/dev/null && \
-    chown -R ${AMAVISD_SYS_USER}:${AMAVISD_SYS_GROUP} ${AMAVISD_DKIM_DIR}
+    chown -R ${SYS_USER_AMAVISD}:${SYS_GROUP_AMAVISD} ${AMAVISD_DKIM_DIR}
     chmod -R 0700 ${AMAVISD_DKIM_DIR}
 
     # Create DKIM key if not exists.
@@ -106,7 +106,7 @@ amavisd_config()
         ${AMAVISD_BIN} genrsa ${AMAVISD_FIRST_DOMAIN_DKIM_KEY} 1024 &>/dev/null
     fi
 
-    chown -R ${AMAVISD_SYS_USER}:${AMAVISD_SYS_GROUP} ${AMAVISD_FIRST_DOMAIN_DKIM_KEY}
+    chown -R ${SYS_USER_AMAVISD}:${SYS_GROUP_AMAVISD} ${AMAVISD_FIRST_DOMAIN_DKIM_KEY}
     chmod 0400 ${AMAVISD_FIRST_DOMAIN_DKIM_KEY}
 
     #
@@ -131,8 +131,8 @@ amavisd_config()
     # Main config file
     #
     cp -f ${SAMPLE_DIR}/amavisd/amavisd.conf ${AMAVISD_CONF} >> ${INSTALL_LOG} 2>&1
-    perl -pi -e 's#PH_AMAVISD_SYS_USER#$ENV{AMAVISD_SYS_USER}#g' ${AMAVISD_CONF}
-    perl -pi -e 's#PH_AMAVISD_SYS_GROUP#$ENV{AMAVISD_SYS_GROUP}#g' ${AMAVISD_CONF}
+    perl -pi -e 's#PH_SYS_USER_AMAVISD#$ENV{SYS_USER_AMAVISD}#g' ${AMAVISD_CONF}
+    perl -pi -e 's#PH_SYS_GROUP_AMAVISD#$ENV{SYS_GROUP_AMAVISD}#g' ${AMAVISD_CONF}
     perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${AMAVISD_CONF}
 
     perl -pi -e 's#PH_AMAVISD_SPOOL_DIR#$ENV{AMAVISD_SPOOL_DIR}#g' ${AMAVISD_CONF}
@@ -168,19 +168,19 @@ amavisd_config()
     perl -pi -e 's#PH_AMAVISD_MAX_SERVERS#$ENV{AMAVISD_MAX_SERVERS}#g' ${AMAVISD_CONF}
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        usermod -G ${AMAVISD_SYS_GROUP} ${CLAMAV_USER} >> ${INSTALL_LOG} 2>&1
+        usermod -G ${SYS_GROUP_AMAVISD} ${SYS_USER_CLAMAV} >> ${INSTALL_LOG} 2>&1
     fi
 
     if [ X"${DISTRO}" == X'RHEL' \
         -o X"${DISTRO}" == X'FREEBSD' \
         -o X"${DISTRO}" == X'OPENBSD' ]; then
-        chgrp ${AMAVISD_SYS_GROUP} ${AMAVISD_CONF}
+        chgrp ${SYS_GROUP_AMAVISD} ${AMAVISD_CONF}
         chmod 0640 ${AMAVISD_CONF}
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Make sure clamav is configured to init supplementary
         # groups when it drops priviledges, and that you add the
         # clamav user to the amavis group.
-        adduser --quiet ${CLAMAV_USER} ${AMAVISD_SYS_GROUP} >> ${INSTALL_LOG} 2>&1
+        adduser --quiet ${SYS_USER_CLAMAV} ${SYS_GROUP_AMAVISD} >> ${INSTALL_LOG} 2>&1
     fi
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -199,7 +199,7 @@ amavisd_config()
 
     # Add postfix alias for user: amavis.
     add_postfix_alias 'virusalert' ${SYS_ROOT_USER}
-    add_postfix_alias ${AMAVISD_SYS_USER} ${SYS_ROOT_USER}
+    add_postfix_alias ${SYS_USER_AMAVISD} ${SYS_ROOT_USER}
 
     #
     # Cron jobs

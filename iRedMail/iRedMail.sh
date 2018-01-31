@@ -127,9 +127,9 @@ fi
 . ${FUNCTIONS_DIR}/spamassassin.sh
 . ${FUNCTIONS_DIR}/roundcubemail.sh
 . ${FUNCTIONS_DIR}/sogo.sh
-. ${FUNCTIONS_DIR}/netdata.sh
 . ${FUNCTIONS_DIR}/fail2ban.sh
 . ${FUNCTIONS_DIR}/iredadmin.sh
+. ${FUNCTIONS_DIR}/netdata.sh
 . ${FUNCTIONS_DIR}/optional_components.sh
 . ${FUNCTIONS_DIR}/cleanup.sh
 

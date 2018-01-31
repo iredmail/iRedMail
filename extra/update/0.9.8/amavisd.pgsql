@@ -1,7 +1,11 @@
--- If subject contains emoji, varchar doesn't work well.
+-- If subject/from_addr contains emoji, varchar doesn't work well.
 ALTER TABLE msgs ALTER COLUMN subject DROP DEFAULT;
 ALTER TABLE msgs ALTER COLUMN subject TYPE bytea USING subject::bytea;
 ALTER TABLE msgs ALTER COLUMN subject SET DEFAULT '';
+
+ALTER TABLE msgs ALTER COLUMN from_addr DROP DEFAULT;
+ALTER TABLE msgs ALTER COLUMN from_addr TYPE bytea USING subject::bytea;
+ALTER TABLE msgs ALTER COLUMN from_addr SET DEFAULT '';
 
 -- mail address without address extension: user+abc@domain.com -> user@domain.com
 ALTER TABLE maddr ADD COLUMN email_raw VARCHAR(255) NOT NULL DEFAULT '';

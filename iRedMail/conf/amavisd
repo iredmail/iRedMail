@@ -22,8 +22,8 @@
 
 # Warning: Please source 'conf/postfix' first.
 
-export AMAVISD_SYS_USER='amavis'
-export AMAVISD_SYS_GROUP='amavis'
+export SYS_USER_AMAVISD='amavis'
+export SYS_GROUP_AMAVISD='amavis'
 export AMAVISD_QUARANTINE_PORT='9998'
 export AMAVISD_LOGFILE='/var/log/amavisd.log'
 export AMAVISD_LOGROTATE_FILE="${LOGROTATE_DIR}/amavisd"
@@ -69,8 +69,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Override global setting: user/group.
-    export AMAVISD_SYS_USER='vscan'
-    export AMAVISD_SYS_GROUP='vscan'
+    export SYS_USER_AMAVISD='vscan'
+    export SYS_GROUP_AMAVISD='vscan'
 
     export AMAVISD_BIN='/usr/local/sbin/amavisd'
     export AMAVISD_CONF='/usr/local/etc/amavisd.conf'
@@ -84,8 +84,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export CMD_ALTERMIME='/usr/local/bin/altermime'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export AMAVISD_SYS_USER='_vscan'
-    export AMAVISD_SYS_GROUP='_vscan'
+    export SYS_USER_AMAVISD='_vscan'
+    export SYS_GROUP_AMAVISD='_vscan'
 
     export AMAVISD_BIN='/usr/local/sbin/amavisd'
     export AMAVISD_CONF='/etc/amavisd.conf'
@@ -100,7 +100,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
 fi
 
-export CRON_FILE_AMAVISD="${CRON_SPOOL_DIR}/${AMAVISD_SYS_USER}"
+export CRON_FILE_AMAVISD="${CRON_SPOOL_DIR}/${SYS_USER_AMAVISD}"
 
 export AMAVISD_DB_DIR="${AMAVISD_SPOOL_DIR}/db"
 export AMAVISD_QUARANTINE_DIR="${AMAVISD_SPOOL_DIR}/quarantine"

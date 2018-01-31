@@ -66,13 +66,11 @@ uwsgi_config()
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         mkdir -p ${UWSGI_CONF_DIR} >> ${INSTALL_LOG} 2>&1
 
-        if ! grep '^kern.seminfo.sem' /etc/sysctl.conf &>/dev/null; then
-            echo 'kern.seminfo.semmni=40' >> /etc/sysctl.conf
-            echo 'kern.seminfo.semmns=120' >> /etc/sysctl.conf
-            echo 'kern.seminfo.semmnu=60' >> /etc/sysctl.conf
-            echo 'kern.seminfo.semmsl=120' >> /etc/sysctl.conf
-            echo 'kern.seminfo.semopm=200' >> /etc/sysctl.conf
-        fi
+        update_sysctl_param kern.seminfo.semmni 1024
+        update_sysctl_param kern.seminfo.semmns 1200
+        update_sysctl_param kern.seminfo.semmnu 60
+        update_sysctl_param kern.seminfo.semmsl 120
+        update_sysctl_param kern.seminfo.semopm 200
 
         # Start uWSGI
         cp ${SAMPLE_DIR}/openbsd/rc.d/uwsgi ${DIR_RC_SCRIPTS}/${UWSGI_RC_SCRIPT_NAME}
