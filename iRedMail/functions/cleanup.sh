@@ -331,7 +331,7 @@ For more details, please check detailed documentations:
 http://www.iredmail.org/docs/#mua
 EOF
 
-    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOMAIN_ADMIN_MAILDIR_INBOX}
+    chown -R ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${DOMAIN_ADMIN_MAILDIR_INBOX}
     chmod -R 0700 ${DOMAIN_ADMIN_MAILDIR_INBOX}
 
     check_status_before_run cleanup_set_cron_file_permission

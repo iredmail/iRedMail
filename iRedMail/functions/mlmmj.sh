@@ -30,7 +30,7 @@ mlmmj_config()
 
     ECHO_DEBUG "Generate script: ${CMD_MLMMJ_AMIME_RECEIVE}."
     cp -f ${SAMPLE_DIR}/mlmmj/mlmmj-amime-receive ${CMD_MLMMJ_AMIME_RECEIVE}
-    chown ${MLMMJ_USER_NAME}:${MLMMJ_GROUP_NAME} ${CMD_MLMMJ_AMIME_RECEIVE}
+    chown ${SYS_USER_MLMMJ}:${SYS_GROUP_MLMMJ} ${CMD_MLMMJ_AMIME_RECEIVE}
     chmod 0550 ${CMD_MLMMJ_AMIME_RECEIVE}
 
     perl -pi -e 's#PH_CMD_MLMMJ_RECEIVE#$ENV{CMD_MLMMJ_RECEIVE}#g' ${CMD_MLMMJ_AMIME_RECEIVE}
@@ -38,7 +38,7 @@ mlmmj_config()
 
     ECHO_DEBUG "Create required directories: ${MLMMJ_SPOOL_DIR}, ${MLMMJ_ARCHIVE_DIR}."
     mkdir -p ${MLMMJ_SPOOL_DIR} ${MLMMJ_ARCHIVE_DIR}
-    chown ${MLMMJ_USER_NAME}:${MLMMJ_GROUP_NAME} ${MLMMJ_SPOOL_DIR} ${MLMMJ_ARCHIVE_DIR}
+    chown ${SYS_USER_MLMMJ}:${SYS_GROUP_MLMMJ} ${MLMMJ_SPOOL_DIR} ${MLMMJ_ARCHIVE_DIR}
     chmod 0700 ${MLMMJ_SPOOL_DIR} ${MLMMJ_ARCHIVE_DIR}
 
     ECHO_DEBUG "Setting cron job for mlmmj maintenance."
@@ -65,7 +65,7 @@ mlmmjadmin_config()
     extract_pkg ${MLMMJADMIN_TARBALL} ${MLMMJADMIN_PARENT_DIR}
 
     # Set file permission.
-    chown -R ${MLMMJ_USER_NAME}:${MLMMJ_GROUP_NAME} ${MLMMJADMIN_ROOT_DIR}
+    chown -R ${SYS_USER_MLMMJ}:${SYS_GROUP_MLMMJ} ${MLMMJADMIN_ROOT_DIR}
     chmod -R 0500 ${MLMMJADMIN_ROOT_DIR}
 
     # Create symbol link.
@@ -75,8 +75,8 @@ mlmmjadmin_config()
     cp ${SAMPLE_DIR}/mlmmj/mlmmjadmin.settings.py ${MLMMJADMIN_CONF}
     perl -pi -e 's#PH_MLMMJADMIN_BIND_HOST#$ENV{MLMMJADMIN_BIND_HOST}#g' ${MLMMJADMIN_CONF}
     perl -pi -e 's#PH_MLMMJADMIN_LISTEN_PORT#$ENV{MLMMJADMIN_LISTEN_PORT}#g' ${MLMMJADMIN_CONF}
-    perl -pi -e 's#PH_MLMMJ_USER_NAME#$ENV{MLMMJ_USER_NAME}#g' ${MLMMJADMIN_CONF}
-    perl -pi -e 's#PH_MLMMJ_GROUP_NAME#$ENV{MLMMJ_GROUP_NAME}#g' ${MLMMJADMIN_CONF}
+    perl -pi -e 's#PH_SYS_USER_MLMMJ#$ENV{SYS_USER_MLMMJ}#g' ${MLMMJADMIN_CONF}
+    perl -pi -e 's#PH_SYS_GROUP_MLMMJ#$ENV{SYS_GROUP_MLMMJ}#g' ${MLMMJADMIN_CONF}
     perl -pi -e 's#PH_MLMMJADMIN_PID_FILE#$ENV{MLMMJADMIN_PID_FILE}#g' ${MLMMJADMIN_CONF}
     perl -pi -e 's#PH_MLMMJADMIN_API_AUTH_TOKEN#$ENV{MLMMJADMIN_API_AUTH_TOKEN}#g' ${MLMMJADMIN_CONF}
     perl -pi -e 's#PH_MLMMJ_SPOOL_DIR#$ENV{MLMMJ_SPOOL_DIR}#g' ${MLMMJADMIN_CONF}
@@ -140,7 +140,7 @@ EOF
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if ! grep "${MLMMJADMIN_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             cat >> /etc/newsyslog.conf <<EOF
-${MLMMJADMIN_LOG_FILE}    ${MLMMJ_USER_NAME}:${MLMMJ_GROUP_NAME}   600  7     *    24    Z
+${MLMMJADMIN_LOG_FILE}    ${SYS_USER_MLMMJ}:${SYS_GROUP_MLMMJ}   600  7     *    24    Z
 EOF
         fi
     fi

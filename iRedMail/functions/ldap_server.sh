@@ -16,9 +16,9 @@ dn: ${LDAP_BINDDN}
 objectClass: person
 objectClass: shadowAccount
 objectClass: top
-cn: ${VMAIL_USER_NAME}
-sn: ${VMAIL_USER_NAME}
-uid: ${VMAIL_USER_NAME}
+cn: ${SYS_USER_VMAIL}
+sn: ${SYS_USER_VMAIL}
+uid: ${SYS_USER_VMAIL}
 userPassword: $(generate_password_hash SSHA "${LDAP_BINDPW}")
 
 dn: ${LDAP_ADMIN_DN}

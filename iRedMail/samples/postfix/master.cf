@@ -8,12 +8,12 @@ submission inet n       -       n       -       -       smtpd
 
 # Use dovecot's `deliver` program as LDA.
 dovecot unix    -       n       n       -       -      pipe
-    flags=DRh user=PH_VMAIL_USER_NAME:PH_VMAIL_GROUP_NAME argv=PH_DOVECOT_DELIVER_BIN -f ${sender} -d ${user}@${domain} -m ${extension}
+    flags=DRh user=PH_SYS_USER_VMAIL:PH_SYS_GROUP_VMAIL argv=PH_DOVECOT_DELIVER_BIN -f ${sender} -d ${user}@${domain} -m ${extension}
 
 # mlmmj - mailing list manager
 # ${nexthop} is '%d/%u' in transport ('mlmmj:%d/%u')
 mlmmj   unix  -       n       n       -       -       pipe
-    flags=ORhu user=PH_MLMMJ_USER_NAME:PH_MLMMJ_GROUP_NAME argv=PH_CMD_MLMMJ_AMIME_RECEIVE -L PH_MLMMJ_SPOOL_DIR/${nexthop}
+    flags=ORhu user=PH_SYS_USER_MLMMJ:PH_SYS_GROUP_MLMMJ argv=PH_CMD_MLMMJ_AMIME_RECEIVE -L PH_MLMMJ_SPOOL_DIR/${nexthop}
 
 # Amavisd integration.
 smtp-amavis unix -  -   n   -   PH_AMAVISD_MAX_SERVERS  smtp

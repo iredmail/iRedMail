@@ -8,8 +8,8 @@ listen_address = 'PH_MLMMJADMIN_BIND_HOST'
 listen_port = PH_MLMMJADMIN_LISTEN_PORT
 
 # Run as a non-privileged user/group.
-run_as_user = 'PH_MLMMJ_USER_NAME'
-run_as_group = 'PH_MLMMJ_GROUP_NAME'
+run_as_user = 'PH_SYS_USER_MLMMJ'
+run_as_group = 'PH_SYS_GROUP_MLMMJ'
 
 # Pid file
 pid_file = 'PH_MLMMJADMIN_PID_FILE'

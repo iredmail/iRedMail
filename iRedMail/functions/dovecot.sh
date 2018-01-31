@@ -112,8 +112,8 @@ dovecot_config()
     # service auth {}
     perl -pi -e 's#PH_DOVECOT_AUTH_USER#$ENV{POSTFIX_DAEMON_USER}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_DOVECOT_AUTH_GROUP#$ENV{POSTFIX_DAEMON_GROUP}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_AUTH_MASTER_USER#$ENV{VMAIL_USER_NAME}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_AUTH_MASTER_GROUP#$ENV{VMAIL_GROUP_NAME}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_AUTH_MASTER_USER#$ENV{SYS_USER_VMAIL}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_AUTH_MASTER_GROUP#$ENV{SYS_GROUP_VMAIL}#' ${DOVECOT_CONF}
 
     # Virtual mail accounts.
     # Reference: http://wiki2.dovecot.org/AuthDatabase/LDAP
@@ -147,12 +147,12 @@ dovecot_config()
     # Quota.
     perl -pi -e 's#PH_QUOTA_TYPE#$ENV{DOVECOT_QUOTA_TYPE}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_QUOTA_WARNING_SCRIPT#$ENV{DOVECOT_QUOTA_WARNING_SCRIPT}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_QUOTA_WARNING_USER#$ENV{VMAIL_USER_NAME}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_QUOTA_WARNING_GROUP#$ENV{VMAIL_GROUP_NAME}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_QUOTA_WARNING_USER#$ENV{SYS_USER_VMAIL}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_QUOTA_WARNING_GROUP#$ENV{SYS_GROUP_VMAIL}#' ${DOVECOT_CONF}
 
     # Quota dict.
-    perl -pi -e 's#PH_SERVICE_DICT_USER#$ENV{VMAIL_USER_NAME}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_SERVICE_DICT_GROUP#$ENV{VMAIL_GROUP_NAME}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_SERVICE_DICT_USER#$ENV{SYS_USER_VMAIL}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_SERVICE_DICT_GROUP#$ENV{SYS_GROUP_VMAIL}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_DOVECOT_REALTIME_QUOTA_SQLTYPE#$ENV{DOVECOT_REALTIME_QUOTA_SQLTYPE}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_DOVECOT_REALTIME_QUOTA_CONF#$ENV{DOVECOT_REALTIME_QUOTA_CONF}#' ${DOVECOT_CONF}
 
@@ -319,7 +319,7 @@ dovecot_config()
 
     ECHO_DEBUG "Copy global sieve filter rule file: ${DOVECOT_GLOBAL_SIEVE_FILE}."
     cp -f ${SAMPLE_DIR}/dovecot/dovecot.sieve ${DOVECOT_GLOBAL_SIEVE_FILE}
-    chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${DOVECOT_GLOBAL_SIEVE_FILE}
+    chown ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${DOVECOT_GLOBAL_SIEVE_FILE}
     chmod 0500 ${DOVECOT_GLOBAL_SIEVE_FILE}
 
     ECHO_DEBUG "Enable dovecot SASL support in postfix: ${POSTFIX_FILE_MAIN_CF}."
@@ -422,7 +422,7 @@ dovecot_log() {
         for f in ${DOVECOT_LOG_FILE} ${DOVECOT_SIEVE_LOG_FILE} ${DOVECOT_LMTP_LOG_FILE}; do
             ECHO_DEBUG "Create dovecot log file: ${f}."
             touch ${f}
-            chown ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${f}
+            chown ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${f}
             chmod 0600 ${f}
         done
     fi
@@ -443,28 +443,28 @@ dovecot_log() {
         perl -pi -e 's#PH_DOVECOT_SIEVE_LOG_FILE#$ENV{DOVECOT_SIEVE_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}
         perl -pi -e 's#PH_DOVECOT_LMTP_LOG_FILE#$ENV{DOVECOT_LMTP_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}
 
-        perl -pi -e 's#PH_VMAIL_USER_NAME#$ENV{VMAIL_USER_NAME}#g' ${DOVECOT_LOGROTATE_FILE}
-        perl -pi -e 's#PH_VMAIL_GROUP_NAME#$ENV{VMAIL_GROUP_NAME}#g' ${DOVECOT_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYS_USER_VMAIL#$ENV{SYS_USER_VMAIL}#g' ${DOVECOT_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYS_GROUP_VMAIL#$ENV{SYS_GROUP_VMAIL}#g' ${DOVECOT_LOGROTATE_FILE}
 
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
             cat >> /etc/newsyslog.conf <<EOF
-${DOVECOT_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
+${DOVECOT_LOG_FILE}    ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
 EOF
         fi
 
         if ! grep "${DOVECOT_SIEVE_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
             cat >> /etc/newsyslog.conf <<EOF
-${DOVECOT_SIEVE_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
+${DOVECOT_SIEVE_LOG_FILE}    ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
 EOF
         fi
 
         if ! grep "${DOVECOT_LMTP_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
             cat >> /etc/newsyslog.conf <<EOF
-${DOVECOT_LMTP_LOG_FILE}    ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
+${DOVECOT_LMTP_LOG_FILE}    ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
 EOF
         fi
     fi

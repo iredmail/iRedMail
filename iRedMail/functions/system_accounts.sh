@@ -6,7 +6,7 @@
 
 add_user_vmail()
 {
-    ECHO_DEBUG "Create system account: ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} (${VMAIL_USER_UID}:${VMAIL_USER_GID})."
+    ECHO_DEBUG "Create system account: ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} (${VMAIL_USER_UID}:${VMAIL_USER_GID})."
 
     [ -d ${STORAGE_BASE_DIR} ] || mkdir -p ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
     chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${STORAGE_BASE_DIR}
@@ -17,34 +17,34 @@ add_user_vmail()
     # vmail/vmail must has the same UID/GID on all supported Linux/BSD
     # distributions, required by cluster environment. e.g. GlusterFS.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${VMAIL_USER_GID} -n ${VMAIL_GROUP_NAME}
+        pw groupadd -g ${VMAIL_USER_GID} -n ${SYS_GROUP_VMAIL}
         pw useradd -m \
             -u ${VMAIL_USER_UID} \
-            -g ${VMAIL_GROUP_NAME} \
+            -g ${SYS_GROUP_VMAIL} \
             -s ${SHELL_NOLOGIN} \
-            -n ${VMAIL_USER_NAME} >> ${INSTALL_LOG} 2>&1
+            -n ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME} >> ${INSTALL_LOG} 2>&1
+        groupadd -g ${VMAIL_USER_GID} ${SYS_GROUP_VMAIL} >> ${INSTALL_LOG} 2>&1
         # Don't use -m to create new home directory
         useradd \
             -u ${VMAIL_USER_UID} \
-            -g ${VMAIL_GROUP_NAME} \
+            -g ${SYS_GROUP_VMAIL} \
             -s ${SHELL_NOLOGIN} \
-            ${VMAIL_USER_NAME} >> ${INSTALL_LOG} 2>&1
+            ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
     else
-        groupadd -g ${VMAIL_USER_GID} ${VMAIL_GROUP_NAME} >> ${INSTALL_LOG} 2>&1
+        groupadd -g ${VMAIL_USER_GID} ${SYS_GROUP_VMAIL} >> ${INSTALL_LOG} 2>&1
         useradd -m \
             -u ${VMAIL_USER_UID} \
-            -g ${VMAIL_GROUP_NAME} \
+            -g ${SYS_GROUP_VMAIL} \
             -s ${SHELL_NOLOGIN} \
-            ${VMAIL_USER_NAME} >> ${INSTALL_LOG} 2>&1
+            ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
     fi
 
     if [ -n "${MAILBOX_INDEX_DIR}" ]; then
         if [ ! -d ${MAILBOX_INDEX_DIR} ]; then
             ECHO_DEBUG "Create directory used to store mailbox indexes: ${MAILBOX_INDEX_DIR}."
             mkdir -p ${MAILBOX_INDEX_DIR} >> ${INSTALL_LOG} 2>&1
-            chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${MAILBOX_INDEX_DIR}
+            chown -R ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${MAILBOX_INDEX_DIR}
             chmod -R 0700 ${MAILBOX_INDEX_DIR}
         fi
     fi
@@ -63,7 +63,7 @@ add_user_vmail()
     mkdir -p ${DOMAIN_ADMIN_MAILDIR_INBOX} >> ${INSTALL_LOG} 2>&1
 
     # set owner/group and permission.
-    chown -R ${VMAIL_USER_NAME}:${VMAIL_GROUP_NAME} ${STORAGE_BASE_DIR} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
+    chown -R ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${STORAGE_BASE_DIR} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
     chmod -R 0755 ${STORAGE_BASE_DIR}
     chmod -R 0700 ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
 
@@ -86,25 +86,25 @@ EOF
 
 add_user_iredadmin()
 {
-    ECHO_DEBUG "Create system account: ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} (${IREDADMIN_USER_UID}:${IREDADMIN_USER_GID})"
+    ECHO_DEBUG "Create system account: ${SYS_USER_IREDADMIN}:${SYS_GROUP_IREDADMIN} (${IREDADMIN_USER_UID}:${IREDADMIN_USER_GID})"
 
     # Low privilege user used to run iRedAdmin.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${IREDADMIN_USER_GID} -n ${IREDADMIN_USER_NAME} >> ${INSTALL_LOG} 2>&1
+        pw groupadd -g ${IREDADMIN_USER_GID} -n ${SYS_USER_IREDADMIN} >> ${INSTALL_LOG} 2>&1
         pw useradd -m \
             -u ${IREDADMIN_USER_GID} \
-            -g ${IREDADMIN_GROUP_NAME} \
+            -g ${SYS_GROUP_IREDADMIN} \
             -s ${SHELL_NOLOGIN} \
             -d ${IREDADMIN_HOME_DIR} \
-            -n ${IREDADMIN_USER_NAME} >> ${INSTALL_LOG} 2>&1
+            -n ${SYS_USER_IREDADMIN} >> ${INSTALL_LOG} 2>&1
     else
-        groupadd -g ${IREDADMIN_USER_GID} ${IREDADMIN_GROUP_NAME} >> ${INSTALL_LOG} 2>&1
+        groupadd -g ${IREDADMIN_USER_GID} ${SYS_GROUP_IREDADMIN} >> ${INSTALL_LOG} 2>&1
         useradd -m \
             -u ${IREDADMIN_USER_UID} \
-            -g ${IREDADMIN_GROUP_NAME} \
+            -g ${SYS_GROUP_IREDADMIN} \
             -s ${SHELL_NOLOGIN} \
             -d ${IREDADMIN_HOME_DIR} \
-            ${IREDADMIN_USER_NAME} >> ${INSTALL_LOG} 2>&1
+            ${SYS_USER_IREDADMIN} >> ${INSTALL_LOG} 2>&1
     fi
 
     echo 'export status_add_user_iredadmin="DONE"' >> ${STATUS_FILE}
@@ -112,25 +112,25 @@ add_user_iredadmin()
 
 add_user_mlmmj()
 {
-    ECHO_DEBUG "Create system account: ${MLMMJ_USER_NAME}:${MLMMJ_GROUP_NAME} (${MLMMJ_USER_UID}:${MLMMJ_USER_GID})"
+    ECHO_DEBUG "Create system account: ${SYS_USER_MLMMJ}:${SYS_GROUP_MLMMJ} (${MLMMJ_USER_UID}:${MLMMJ_USER_GID})"
 
     # Low privilege user used to run mlmmj.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${MLMMJ_USER_GID} -n ${MLMMJ_USER_NAME} >> ${INSTALL_LOG} 2>&1
+        pw groupadd -g ${MLMMJ_USER_GID} -n ${SYS_USER_MLMMJ} >> ${INSTALL_LOG} 2>&1
         pw useradd -m \
             -u ${MLMMJ_USER_GID} \
-            -g ${MLMMJ_GROUP_NAME} \
+            -g ${SYS_GROUP_MLMMJ} \
             -s ${SHELL_NOLOGIN} \
             -d ${MLMMJ_HOME_DIR} \
-            -n ${MLMMJ_USER_NAME} >> ${INSTALL_LOG} 2>&1
+            -n ${SYS_USER_MLMMJ} >> ${INSTALL_LOG} 2>&1
     else
-        groupadd -g ${MLMMJ_USER_GID} ${MLMMJ_GROUP_NAME} >> ${INSTALL_LOG} 2>&1
+        groupadd -g ${MLMMJ_USER_GID} ${SYS_GROUP_MLMMJ} >> ${INSTALL_LOG} 2>&1
         useradd -m \
             -u ${MLMMJ_USER_UID} \
-            -g ${MLMMJ_GROUP_NAME} \
+            -g ${SYS_GROUP_MLMMJ} \
             -s ${SHELL_NOLOGIN} \
             -d ${MLMMJ_HOME_DIR} \
-            ${MLMMJ_USER_NAME} >> ${INSTALL_LOG} 2>&1
+            ${SYS_USER_MLMMJ} >> ${INSTALL_LOG} 2>&1
     fi
     rm -rf ${MLMMJ_HOME_DIR}/.* &>/dev/null
 
@@ -165,7 +165,7 @@ add_user_iredapd()
 
 add_required_users()
 {
-    ECHO_INFO "Create required system account: ${VMAIL_USER_NAME}, ${MLMMJ_USER_NAME}, ${IREDADMIN_USER_NAME}, ${IREDAPD_DAEMON_USER}."
+    ECHO_INFO "Create required system account: ${SYS_USER_VMAIL}, ${SYS_USER_MLMMJ}, ${SYS_USER_IREDADMIN}, ${IREDAPD_DAEMON_USER}."
 
     check_status_before_run add_user_vmail
     check_status_before_run add_user_mlmmj

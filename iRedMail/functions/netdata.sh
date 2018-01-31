@@ -22,4 +22,5 @@
 netdata_setup()
 {
     :
+    #perl -pi -e 's#PH_SYS_USER_NETDATA#$ENV{SYS_USER_NETDATA}#g' ${NETDATA_CONF}
 }

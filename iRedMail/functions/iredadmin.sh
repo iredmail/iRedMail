@@ -35,7 +35,7 @@ iredadmin_install()
     ln -s ${IREDADMIN_HTTPD_ROOT} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Set correct permission for iRedAdmin: ${IREDADMIN_HTTPD_ROOT}."
-    chown -R ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} ${IREDADMIN_HTTPD_ROOT}
+    chown -R ${SYS_USER_IREDADMIN}:${SYS_GROUP_IREDADMIN} ${IREDADMIN_HTTPD_ROOT}
     chmod -R 0555 ${IREDADMIN_HTTPD_ROOT}
 
     echo 'export status_iredadmin_install="DONE"' >> ${STATUS_FILE}
@@ -53,7 +53,7 @@ iredadmin_web_config() {
         cp settings.py.pgsql.sample settings.py
     fi
 
-    chown -R ${IREDADMIN_USER_NAME}:${IREDADMIN_GROUP_NAME} settings.py
+    chown -R ${SYS_USER_IREDADMIN}:${SYS_GROUP_IREDADMIN} settings.py
     chmod 0400 settings.py
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then

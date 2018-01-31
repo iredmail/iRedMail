@@ -25,6 +25,8 @@ export NETDATA_PARENT_DIR='/opt'
 export NETDATA_ROOT_DIR="${NETDATA_PARENT_DIR}/netdata"
 export NETDATA_CONF_DIR="${NETDATA_ROOT_DIR}/etc/netdata"
 
+export NETDATA_PORT='19999'
+
 # Main config files.
 export NETDATA_CONF="${NETDATA_CONF_DIR}/netdata.conf"
 export NETDATA_STREAM_CONF="${NETDATA_CONF_DIR}/stream.conf"

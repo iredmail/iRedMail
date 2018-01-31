@@ -140,8 +140,8 @@ postfix_config_basic()
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${POSTFIX_FILE_MASTER_CF}
 
     # set mailbox owner: user/group
-    perl -pi -e 's#PH_VMAIL_USER_NAME#$ENV{VMAIL_USER_NAME}#g' ${POSTFIX_FILE_MASTER_CF}
-    perl -pi -e 's#PH_VMAIL_GROUP_NAME#$ENV{VMAIL_GROUP_NAME}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_SYS_USER_VMAIL#$ENV{SYS_USER_VMAIL}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_SYS_GROUP_VMAIL#$ENV{SYS_GROUP_VMAIL}#g' ${POSTFIX_FILE_MASTER_CF}
 
     # Amavisd integration.
     perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#g' ${POSTFIX_FILE_MASTER_CF}
@@ -154,8 +154,8 @@ postfix_config_basic()
     perl -pi -e 's#PH_DOVECOT_DELIVER_BIN#$ENV{DOVECOT_DELIVER_BIN}#g' ${POSTFIX_FILE_MASTER_CF}
 
     # mlmmj
-    perl -pi -e 's#PH_MLMMJ_USER_NAME#$ENV{MLMMJ_USER_NAME}#g' ${POSTFIX_FILE_MASTER_CF}
-    perl -pi -e 's#PH_MLMMJ_GROUP_NAME#$ENV{MLMMJ_GROUP_NAME}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_SYS_USER_MLMMJ#$ENV{SYS_USER_MLMMJ}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_SYS_GROUP_MLMMJ#$ENV{SYS_GROUP_MLMMJ}#g' ${POSTFIX_FILE_MASTER_CF}
     perl -pi -e 's#PH_CMD_MLMMJ_AMIME_RECEIVE#$ENV{CMD_MLMMJ_AMIME_RECEIVE}#g' ${POSTFIX_FILE_MASTER_CF}
     perl -pi -e 's#PH_MLMMJ_SPOOL_DIR#$ENV{MLMMJ_SPOOL_DIR}#g' ${POSTFIX_FILE_MASTER_CF}
 
@@ -173,7 +173,7 @@ postfix_config_basic()
 
     # Update Postfix aliases file.
     add_postfix_alias nobody ${SYS_ROOT_USER}
-    add_postfix_alias ${VMAIL_USER_NAME} ${SYS_ROOT_USER}
+    add_postfix_alias ${SYS_USER_VMAIL} ${SYS_ROOT_USER}
     add_postfix_alias ${SYS_ROOT_USER} ${DOMAIN_ADMIN_EMAIL}
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then

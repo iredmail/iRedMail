@@ -21,8 +21,8 @@
 #---------------------------------------------------------------------
 
 # mlmmj user/group name
-export MLMMJ_USER_NAME='mlmmj'
-export MLMMJ_GROUP_NAME='mlmmj'
+export SYS_USER_MLMMJ='mlmmj'
+export SYS_GROUP_MLMMJ='mlmmj'
 
 # Directory used to store mailing list accounts and archive of in/out mails
 export MLMMJ_SPOOL_DIR="${STORAGE_BASE_DIR}/mlmmj"
@@ -36,7 +36,7 @@ export CMD_MLMMJ_RECEIVE='/usr/bin/mlmmj-receive'
 export CMD_MLMMJ_MAINTD='/usr/bin/mlmmj-maintd'
 export CMD_MLMMJ_AMIME_RECEIVE='/usr/bin/mlmmj-amime-receive'
 
-export CRON_FILE_MLMMJ="${CRON_SPOOL_DIR}/${MLMMJ_USER_NAME}"
+export CRON_FILE_MLMMJ="${CRON_SPOOL_DIR}/${SYS_USER_MLMMJ}"
 
 if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
     export CMD_MLMMJ_RECEIVE='/usr/local/bin/mlmmj-receive'

@@ -113,8 +113,12 @@ export MLMMJADMIN_SERVER_ADDRESS="${MLMMJADMIN_SERVER_ADDRESS:=${MLMMJADMIN_BIND
 export USE_MANAGESIEVE='YES'
 
 # vmail user/group name, uid and gid.
-export VMAIL_USER_NAME='vmail'
-export VMAIL_GROUP_NAME='vmail'
+export SYS_USER_VMAIL='vmail'
+export SYS_GROUP_VMAIL='vmail'
+
+# netdata
+export SYS_USER_NETDATA='netdata'
+export SYS_GROUP_NETDATA='netdata'
 
 # Specify UID/GID for system accounts: vmail, iredadmin, iredapd.
 # Required by cluster environment. e.g. GlusterFS.
@@ -126,6 +130,8 @@ export IREDAPD_DAEMON_USER_UID='2002'
 export IREDAPD_DAEMON_USER_GID='2002'
 export MLMMJ_USER_UID='2003'
 export MLMMJ_USER_GID='2003'
+export NETDATA_USER_UID='2004'
+export NETDATA_USER_GID='2004'
 
 # Default SQL database name used to store mail accounts.
 export VMAIL_DB_NAME='vmail'
