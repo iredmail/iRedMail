@@ -534,3 +534,42 @@ ask_confirm()
         N|n|* ) echo "Exit." && exit ;;
     esac
 }
+
+add_sys_user_group()
+{
+    _user="$1"
+    _group="$2"
+    _uid="$3"
+    _gid="$4"
+
+    _home="$5"
+    _shell="$6"
+
+    if [ X"${_home}" == X'' ]; then
+        _home="/home/${_user}"
+    fi
+
+    if [ X"${_shell}" == X'' ]; then
+        _shell="${SHELL_NOLOGIN}"
+    fi
+
+    ECHO_DEBUG "Create system account: ${_user}:${_group} (${_uid}:${_gid})."
+
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        pw groupadd -g ${_gid} -n ${_group} >> ${INSTALL_LOG} 2>&1
+        pw useradd -m \
+            -u ${_gid} \
+            -g ${_group} \
+            -s ${_shell} \
+            -d ${_home} \
+            -n ${_user} >> ${INSTALL_LOG} 2>&1
+    else
+        groupadd -g ${_gid} ${_group} >> ${INSTALL_LOG} 2>&1
+        useradd -m \
+            -u ${_uid} \
+            -g ${_group} \
+            -s ${_shell} \
+            -d ${_home} \
+            ${_user} >> ${INSTALL_LOG} 2>&1
+    fi
+}

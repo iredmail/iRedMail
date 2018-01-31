@@ -95,10 +95,10 @@ dovecot_config()
     perl -pi -e 's#PH_PROTOCOLS#$ENV{DOVECOT_PROTOCOLS}#' ${DOVECOT_CONF}
 
     # Set correct uid/gid.
-    perl -pi -e 's#PH_MAIL_UID#$ENV{VMAIL_USER_UID}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_MAIL_GID#$ENV{VMAIL_USER_GID}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_FIRST_VALID_UID#$ENV{VMAIL_USER_UID}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_LAST_VALID_UID#$ENV{VMAIL_USER_UID}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_MAIL_UID#$ENV{SYS_USER_VMAIL_UID}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_MAIL_GID#$ENV{SYS_GROUP_VMAIL_GID}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_FIRST_VALID_UID#$ENV{SYS_USER_VMAIL_UID}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_LAST_VALID_UID#$ENV{SYS_USER_VMAIL_UID}#' ${DOVECOT_CONF}
 
     # syslog and log file.
     perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#' ${DOVECOT_CONF}

@@ -211,9 +211,9 @@ proxy_read_maps = $canonical_maps $lmtp_generic_maps $local_recipient_maps $myde
 enable_original_recipient = no
 
 # Virtual support.
-virtual_minimum_uid = PH_VMAIL_USER_UID
-virtual_uid_maps = static:PH_VMAIL_USER_UID
-virtual_gid_maps = static:PH_VMAIL_USER_GID
+virtual_minimum_uid = PH_SYS_USER_VMAIL_UID
+virtual_uid_maps = static:PH_SYS_USER_VMAIL_UID
+virtual_gid_maps = static:PH_SYS_GROUP_VMAIL_GID
 virtual_mailbox_base = PH_STORAGE_BASE_DIR
 
 # Do not set virtual_alias_domains.

@@ -6,7 +6,7 @@
 
 add_user_vmail()
 {
-    ECHO_DEBUG "Create system account: ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} (${VMAIL_USER_UID}:${VMAIL_USER_GID})."
+    ECHO_DEBUG "Create system account: ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} (${SYS_USER_VMAIL_UID}:${SYS_GROUP_VMAIL_GID})."
 
     [ -d ${STORAGE_BASE_DIR} ] || mkdir -p ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
     chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${STORAGE_BASE_DIR}
@@ -17,24 +17,24 @@ add_user_vmail()
     # vmail/vmail must has the same UID/GID on all supported Linux/BSD
     # distributions, required by cluster environment. e.g. GlusterFS.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${VMAIL_USER_GID} -n ${SYS_GROUP_VMAIL}
+        pw groupadd -g ${SYS_GROUP_VMAIL_GID} -n ${SYS_GROUP_VMAIL}
         pw useradd -m \
-            -u ${VMAIL_USER_UID} \
+            -u ${SYS_USER_VMAIL_UID} \
             -g ${SYS_GROUP_VMAIL} \
             -s ${SHELL_NOLOGIN} \
             -n ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        groupadd -g ${VMAIL_USER_GID} ${SYS_GROUP_VMAIL} >> ${INSTALL_LOG} 2>&1
+        groupadd -g ${SYS_GROUP_VMAIL_GID} ${SYS_GROUP_VMAIL} >> ${INSTALL_LOG} 2>&1
         # Don't use -m to create new home directory
         useradd \
-            -u ${VMAIL_USER_UID} \
+            -u ${SYS_USER_VMAIL_UID} \
             -g ${SYS_GROUP_VMAIL} \
             -s ${SHELL_NOLOGIN} \
             ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
     else
-        groupadd -g ${VMAIL_USER_GID} ${SYS_GROUP_VMAIL} >> ${INSTALL_LOG} 2>&1
+        groupadd -g ${SYS_GROUP_VMAIL_GID} ${SYS_GROUP_VMAIL} >> ${INSTALL_LOG} 2>&1
         useradd -m \
-            -u ${VMAIL_USER_UID} \
+            -u ${SYS_USER_VMAIL_UID} \
             -g ${SYS_GROUP_VMAIL} \
             -s ${SHELL_NOLOGIN} \
             ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
@@ -86,89 +86,58 @@ EOF
 
 add_user_iredadmin()
 {
-    ECHO_DEBUG "Create system account: ${SYS_USER_IREDADMIN}:${SYS_GROUP_IREDADMIN} (${IREDADMIN_USER_UID}:${IREDADMIN_USER_GID})"
-
-    # Low privilege user used to run iRedAdmin.
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${IREDADMIN_USER_GID} -n ${SYS_USER_IREDADMIN} >> ${INSTALL_LOG} 2>&1
-        pw useradd -m \
-            -u ${IREDADMIN_USER_GID} \
-            -g ${SYS_GROUP_IREDADMIN} \
-            -s ${SHELL_NOLOGIN} \
-            -d ${IREDADMIN_HOME_DIR} \
-            -n ${SYS_USER_IREDADMIN} >> ${INSTALL_LOG} 2>&1
-    else
-        groupadd -g ${IREDADMIN_USER_GID} ${SYS_GROUP_IREDADMIN} >> ${INSTALL_LOG} 2>&1
-        useradd -m \
-            -u ${IREDADMIN_USER_UID} \
-            -g ${SYS_GROUP_IREDADMIN} \
-            -s ${SHELL_NOLOGIN} \
-            -d ${IREDADMIN_HOME_DIR} \
-            ${SYS_USER_IREDADMIN} >> ${INSTALL_LOG} 2>&1
-    fi
+    add_sys_user_group \
+        ${SYS_USER_IREDADMIN} \
+        ${SYS_GROUP_IREDADMIN} \
+        ${SYS_USER_IREDADMIN_UID} \
+        ${SYS_GROUP_IREDADMIN_GID}
 
     echo 'export status_add_user_iredadmin="DONE"' >> ${STATUS_FILE}
 }
 
 add_user_mlmmj()
 {
-    ECHO_DEBUG "Create system account: ${SYS_USER_MLMMJ}:${SYS_GROUP_MLMMJ} (${MLMMJ_USER_UID}:${MLMMJ_USER_GID})"
-
-    # Low privilege user used to run mlmmj.
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${MLMMJ_USER_GID} -n ${SYS_USER_MLMMJ} >> ${INSTALL_LOG} 2>&1
-        pw useradd -m \
-            -u ${MLMMJ_USER_GID} \
-            -g ${SYS_GROUP_MLMMJ} \
-            -s ${SHELL_NOLOGIN} \
-            -d ${MLMMJ_HOME_DIR} \
-            -n ${SYS_USER_MLMMJ} >> ${INSTALL_LOG} 2>&1
-    else
-        groupadd -g ${MLMMJ_USER_GID} ${SYS_GROUP_MLMMJ} >> ${INSTALL_LOG} 2>&1
-        useradd -m \
-            -u ${MLMMJ_USER_UID} \
-            -g ${SYS_GROUP_MLMMJ} \
-            -s ${SHELL_NOLOGIN} \
-            -d ${MLMMJ_HOME_DIR} \
-            ${SYS_USER_MLMMJ} >> ${INSTALL_LOG} 2>&1
-    fi
-    rm -rf ${MLMMJ_HOME_DIR}/.* &>/dev/null
+    add_sys_user_group \
+        ${SYS_USER_MLMMJ} \
+        ${SYS_GROUP_MLMMJ} \
+        ${SYS_USER_MLMMJ_UID} \
+        ${SYS_GROUP_MLMMJ_GID} \
+        ${MLMMJ_HOME_DIR}
 
     echo 'export status_add_user_mlmmj="DONE"' >> ${STATUS_FILE}
 }
 
 add_user_iredapd()
 {
-    ECHO_DEBUG "Create system account: ${SYS_USER_IREDAPD}:${SYS_GROUP_IREDAPD} (${SYS_USER_IREDAPD_UID}:${SYS_USER_IREDAPD_GID})."
-
-    # Low privilege user used to run iRedAPD daemon.
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${SYS_USER_IREDAPD_GID} -n ${SYS_GROUP_IREDAPD} >> ${INSTALL_LOG} 2>&1
-        pw useradd -m \
-            -u ${SYS_USER_IREDAPD_GID} \
-            -g ${SYS_GROUP_IREDAPD} \
-            -s ${SHELL_NOLOGIN} \
-            -d ${IREDAPD_HOME_DIR} \
-            -n ${SYS_USER_IREDAPD} >> ${INSTALL_LOG} 2>&1
-    else
-        groupadd -g ${SYS_USER_IREDAPD_GID} ${SYS_GROUP_IREDAPD} >> ${INSTALL_LOG} 2>&1
-        useradd -m \
-            -u ${SYS_USER_IREDAPD_UID} \
-            -g ${SYS_GROUP_IREDAPD} \
-            -s ${SHELL_NOLOGIN} \
-            -d ${IREDAPD_HOME_DIR} \
-            ${SYS_USER_IREDAPD} >> ${INSTALL_LOG} 2>&1
-    fi
+    add_sys_user_group \
+        ${SYS_USER_IREDAPD} \
+        ${SYS_GROUP_IREDAPD} \
+        ${SYS_USER_IREDAPD_UID} \
+        ${SYS_GROUP_IREDAPD_GID}
 
     echo 'export status_add_user_iredapd="DONE"' >> ${STATUS_FILE}
 }
 
+add_user_netdata()
+{
+    add_sys_user_group \
+        ${SYS_USER_NETDATA} \
+        ${SYS_GROUP_NETDATA} \
+        ${SYS_USER_NETDATA_UID} \
+        ${SYS_GROUP_NETDATA_GID}
+
+    echo 'export status_add_user_netdata="DONE"' >> ${STATUS_FILE}
+}
+
+
 add_required_users()
 {
-    ECHO_INFO "Create required system account: ${SYS_USER_VMAIL}, ${SYS_USER_MLMMJ}, ${SYS_USER_IREDADMIN}, ${SYS_USER_IREDAPD}."
+    ECHO_INFO "Create required system accounts."
 
     check_status_before_run add_user_vmail
     check_status_before_run add_user_mlmmj
     check_status_before_run add_user_iredadmin
     check_status_before_run add_user_iredapd
+
+    [ X"${USE_NETDATA}" == X'YES' ] && check_status_before_run add_user_netdata
 }

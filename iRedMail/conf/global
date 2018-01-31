@@ -120,18 +120,23 @@ export SYS_GROUP_VMAIL='vmail'
 export SYS_USER_NETDATA='netdata'
 export SYS_GROUP_NETDATA='netdata'
 
-# Specify UID/GID for system accounts: vmail, iredadmin, iredapd.
-# Required by cluster environment. e.g. GlusterFS.
-export VMAIL_USER_UID='2000'
-export VMAIL_USER_GID='2000'
-export IREDADMIN_USER_UID='2001'
-export IREDADMIN_USER_GID='2001'
+# Specify UID/GID for system accounts. Required if you have multiple LDA/LMTP
+# servers access same mailbox storage. e.g. cluster environment.
+# vmail
+export SYS_USER_VMAIL_UID='2000'
+export SYS_GROUP_VMAIL_GID='2000'
+# iredadmin
+export SYS_USER_IREDADMIN_UID='2001'
+export SYS_GROUP_IREDADMIN_GID='2001'
+# netdata
 export SYS_USER_IREDAPD_UID='2002'
 export SYS_USER_IREDAPD_GID='2002'
-export MLMMJ_USER_UID='2003'
-export MLMMJ_USER_GID='2003'
-export NETDATA_USER_UID='2004'
-export NETDATA_USER_GID='2004'
+# mlmmj
+export SYS_USER_MLMMJ_UID='2003'
+export SYS_GROUP_MLMMJ_GID='2003'
+# netdata
+export SYS_USER_NETDATA_UID='2004'
+export SYS_GROUP_NETDATA_GID='2004'
 
 # Default SQL database name used to store mail accounts.
 export VMAIL_DB_NAME='vmail'
