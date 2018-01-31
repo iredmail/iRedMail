@@ -110,8 +110,8 @@ dovecot_config()
     perl -pi -e 's#PH_AUTH_DEFAULT_REALM#$ENV{FIRST_DOMAIN}#' ${DOVECOT_CONF}
 
     # service auth {}
-    perl -pi -e 's#PH_DOVECOT_AUTH_USER#$ENV{POSTFIX_DAEMON_USER}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_DOVECOT_AUTH_GROUP#$ENV{POSTFIX_DAEMON_GROUP}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_AUTH_USER#$ENV{SYS_USER_POSTFIX}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_AUTH_GROUP#$ENV{SYS_GROUP_POSTFIX}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_AUTH_MASTER_USER#$ENV{SYS_USER_VMAIL}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_AUTH_MASTER_GROUP#$ENV{SYS_GROUP_VMAIL}#' ${DOVECOT_CONF}
 
@@ -369,7 +369,7 @@ dovecot_log() {
     ECHO_DEBUG "Configure Dovecot logging."
 
     mkdir -p ${DOVECOT_LOG_DIR} >> ${INSTALL_LOG} 2>&1
-    chown ${SYSLOG_DAEMON_USER}:${SYSLOG_DAEMON_GROUP} ${DOVECOT_LOG_DIR}
+    chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${DOVECOT_LOG_DIR}
 
     if [ X"${USE_RSYSLOG}" == X'YES' ]; then
         # Use rsyslog.
@@ -393,7 +393,7 @@ dovecot_log() {
             ${DOVECOT_SYSLOG_FILE_SIEVE}; do
             ECHO_DEBUG "Create dovecot log file: ${f}."
             touch ${f}
-            chown ${SYSLOG_DAEMON_USER}:${SYSLOG_DAEMON_GROUP} ${f}
+            chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${f}
         done
     elif [ X"${USE_BSD_SYSLOG}" == X'YES' ]; then
         # Log dovecot to a dedicated file

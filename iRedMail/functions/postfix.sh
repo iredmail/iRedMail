@@ -103,7 +103,7 @@ postfix_config_basic()
     # Create required files and set correct owner + permission
     _files="${POSTFIX_FILE_HELO_ACCESS} ${POSTFIX_FILE_HEADER_CHECKS} ${POSTFIX_FILE_BODY_CHECKS} ${POSTFIX_FILE_SENDER_ACCESS}"
     touch ${_files}
-    chown ${SYS_ROOT_USER}:${POSTFIX_DAEMON_GROUP} ${_files}
+    chown ${SYS_ROOT_USER}:${SYS_GROUP_POSTFIX} ${_files}
     chmod 0640 ${_files}
     unset _files
 
@@ -244,7 +244,7 @@ postfix_config_vhost()
 
     cp -f ${SAMPLE_DIR}/postfix/${POSTFIX_LOOKUP_DB}/*.cf ${POSTFIX_LOOKUP_DIR}
 
-    chown ${SYS_ROOT_USER}:${POSTFIX_DAEMON_GROUP} ${POSTFIX_LOOKUP_DIR}/*.cf
+    chown ${SYS_ROOT_USER}:${SYS_GROUP_POSTFIX} ${POSTFIX_LOOKUP_DIR}/*.cf
     chmod 0640 ${POSTFIX_LOOKUP_DIR}/*.cf
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
@@ -325,7 +325,7 @@ postfix_config_postscreen()
         ECHO_DEBUG "Create ${_chrooted_data_directory}/postscreen_cache.db."
         if [ ! -d ${_chrooted_data_directory} ]; then
             mkdir -p ${_chrooted_data_directory}
-            chown ${POSTFIX_DAEMON_USER}:${SYS_ROOT_GROUP} ${_chrooted_data_directory}
+            chown ${SYS_USER_POSTFIX}:${SYS_ROOT_GROUP} ${_chrooted_data_directory}
             chmod 0700 ${_chrooted_data_directory}
         fi
 
@@ -334,7 +334,7 @@ postfix_config_postscreen()
         touch postscreen_cache
         postmap btree:postscreen_cache
         rm postscreen_cache
-        chown ${POSTFIX_DAEMON_USER}:${POSTFIX_DAEMON_GROUP} postscreen_cache.db
+        chown ${SYS_USER_POSTFIX}:${SYS_GROUP_POSTFIX} postscreen_cache.db
         chmod 0700 postscreen_cache.db
     fi
 

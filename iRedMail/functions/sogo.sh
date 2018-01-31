@@ -124,7 +124,7 @@ sogo_config() {
     [ ! -d ${SOGO_CONF_DIR} ] && mkdir -p ${SOGO_CONF_DIR}
 
     cp -f ${SAMPLE_DIR}/sogo/sogo.conf ${SOGO_CONF}
-    chown ${SOGO_DAEMON_USER}:${SOGO_DAEMON_GROUP} ${SOGO_CONF}
+    chown ${SYS_USER_SOGO}:${SYS_GROUP_SOGO} ${SOGO_CONF}
     chmod 0400 ${SOGO_CONF}
 
     perl -pi -e 's#PH_SOGO_BIND_ADDRESS#$ENV{SOGO_BIND_ADDRESS}#g' ${SOGO_CONF}
@@ -227,14 +227,14 @@ EOF
 ${SOGO_SIEVE_MASTER_USER}@${DOVECOT_MASTER_USER_DOMAIN}:${SOGO_SIEVE_MASTER_PASSWD}
 EOF
 
-    chown ${SOGO_DAEMON_USER}:${SOGO_DAEMON_GROUP} ${SOGO_SIEVE_CREDENTIAL_FILE}
+    chown ${SYS_USER_SOGO}:${SYS_GROUP_SOGO} ${SOGO_SIEVE_CREDENTIAL_FILE}
     chmod 0400 ${SOGO_SIEVE_CREDENTIAL_FILE}
 
     # Start SOGo service to avoid cron job error.
     service_control restart ${SOGO_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     sleep 3
 
-    add_postfix_alias ${SOGO_DAEMON_USER} ${SYS_ROOT_USER}
+    add_postfix_alias ${SYS_USER_SOGO} ${SYS_ROOT_USER}
 
     # Enable sieve support if Roundcube is not installed
     # WARNING: Do not enable sieve support in both Roundcube and SOGo, because
@@ -266,7 +266,7 @@ SOGo Groupware:
         - username: ${SOGO_SIEVE_MASTER_USER}@${DOVECOT_MASTER_USER_DOMAIN}
         - password: ${SOGO_SIEVE_MASTER_PASSWD}
     * See also:
-        - cron job of system user: ${SOGO_DAEMON_USER}
+        - cron job of system user: ${SYS_USER_SOGO}
 
 EOF
 

@@ -26,8 +26,8 @@
 # You do *NOT* need to modify them.
 #
 # ---- Postfix ----
-export POSTFIX_DAEMON_USER='postfix'
-export POSTFIX_DAEMON_GROUP='postfix'
+export SYS_USER_POSTFIX='postfix'
+export SYS_GROUP_POSTFIX='postfix'
 
 export POSTFIX_ROOTDIR='/etc/postfix'
 export POSTFIX_RC_SCRIPT_NAME='postfix'
@@ -45,8 +45,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export POSTFIX_ROOTDIR='/usr/local/etc/postfix'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export POSTFIX_DAEMON_USER='_postfix'
-    export POSTFIX_DAEMON_GROUP='_postfix'
+    export SYS_USER_POSTFIX='_postfix'
+    export SYS_GROUP_POSTFIX='_postfix'
 fi
 
 # You do *NOT* need to modify them.

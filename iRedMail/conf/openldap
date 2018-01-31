@@ -37,8 +37,8 @@ export LDAP_BIND='yes'
 export LDAP_BIND_VERSION='3'
 
 # OpenLDAP daemon user and group name.
-export OPENLDAP_DAEMON_USER='ldap'
-export OPENLDAP_DAEMON_GROUP='ldap'
+export SYS_USER_LDAP='ldap'
+export SYS_GROUP_LDAP='ldap'
 
 export OPENLDAP_RC_SCRIPT_NAME='slapd'
 
@@ -68,8 +68,8 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # LDAP daemon user & group.
-    export OPENLDAP_DAEMON_USER='openldap'
-    export OPENLDAP_DAEMON_GROUP='openldap'
+    export SYS_USER_LDAP='openldap'
+    export SYS_GROUP_LDAP='openldap'
 
     # Configuration files.
     export OPENLDAP_CONF_ROOT="/etc/ldap"
@@ -94,8 +94,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     # LDAP daemon user & group.
-    export OPENLDAP_DAEMON_USER='_openldap'
-    export OPENLDAP_DAEMON_GROUP='_openldap'
+    export SYS_USER_LDAP='_openldap'
+    export SYS_GROUP_LDAP='_openldap'
 
     # mdb is not available on OpenBSD.
     export OPENLDAP_DEFAULT_DBTYPE='hdb'

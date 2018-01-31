@@ -21,8 +21,8 @@
 #---------------------------------------------------------------------
 
 export IREDAPD_VERSION='beta'
-export IREDAPD_DAEMON_USER='iredapd'
-export IREDAPD_DAEMON_GROUP='iredapd'
+export SYS_USER_IREDAPD='iredapd'
+export SYS_GROUP_IREDAPD='iredapd'
 export IREDAPD_HOME_DIR='/home/iredapd'
 
 export IREDAPD_TARBALL="iRedAPD-${IREDAPD_VERSION}.tar.bz2"

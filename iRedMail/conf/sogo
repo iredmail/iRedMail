@@ -28,8 +28,8 @@ export SOGO_PKG_MIRROR_APT_KEY="${SOGO_PKG_MIRROR_APT_KEY:=0x810273C4}"
 # Major SOGo version number: 2, 3.
 export SOGO_VERSION='3'
 
-export SOGO_DAEMON_USER='sogo'
-export SOGO_DAEMON_GROUP='sogo'
+export SYS_USER_SOGO='sogo'
+export SYS_GROUP_SOGO='sogo'
 
 export SOGO_PID_FILE='/var/run/sogo/sogo.pid'
 export SOGO_LOG_FILE='/var/log/sogo/sogo.log'
@@ -76,8 +76,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export SOGO_RC_SCRIPT_NAME='sogo'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-    export SOGO_DAEMON_USER='sogod'
-    export SOGO_DAEMON_GROUP='sogod'
+    export SYS_USER_SOGO='sogod'
+    export SYS_GROUP_SOGO='sogod'
 
     export SOGO_GNUSTEP_DIR='/usr/local/GNUstep/Local/Library/SOGo'
     export SOGO_RC_SCRIPT_NAME='sogod'
@@ -87,8 +87,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SOGO_CMD_EALARMS_NOTIFY='/usr/local/GNUstep/Local/Tools/Admin/sogo-ealarms-notify'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SOGO_VERSION='2'
-    export SOGO_DAEMON_USER='_sogo'
-    export SOGO_DAEMON_GROUP='_sogo'
+    export SYS_USER_SOGO='_sogo'
+    export SYS_GROUP_SOGO='_sogo'
 
     export SOGO_GNUSTEP_DIR='/usr/local/lib/GNUstep/SOGo'
     export SOGO_CMD_TOOL='/usr/local/sbin/sogo-tool'
@@ -97,7 +97,7 @@ fi
 
 export SOGO_CONF="${SOGO_CONF_DIR}/sogo.conf"
 export SOGO_SIEVE_CREDENTIAL_FILE="${SOGO_CONF_DIR}/sieve.cred"
-export CRON_FILE_SOGO="${CRON_SPOOL_DIR}/${SOGO_DAEMON_USER}"
+export CRON_FILE_SOGO="${CRON_SPOOL_DIR}/${SYS_USER_SOGO}"
 
 if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
     export SOGO_DB_TYPE='mysql'

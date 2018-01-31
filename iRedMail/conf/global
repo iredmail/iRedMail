@@ -126,8 +126,8 @@ export VMAIL_USER_UID='2000'
 export VMAIL_USER_GID='2000'
 export IREDADMIN_USER_UID='2001'
 export IREDADMIN_USER_GID='2001'
-export IREDAPD_DAEMON_USER_UID='2002'
-export IREDAPD_DAEMON_USER_GID='2002'
+export SYS_USER_IREDAPD_UID='2002'
+export SYS_USER_IREDAPD_GID='2002'
 export MLMMJ_USER_UID='2003'
 export MLMMJ_USER_GID='2003'
 export NETDATA_USER_UID='2004'
@@ -389,8 +389,8 @@ export SYS_ROOT_GROUP='root'
 # Syslog
 export USE_RSYSLOG='YES'
 export USE_BSD_SYSLOG='NO'
-export SYSLOG_DAEMON_USER='root'
-export SYSLOG_DAEMON_GROUP='root'
+export SYS_USER_SYSLOG='root'
+export SYS_GROUP_SYSLOG='root'
 export SYSLOG_POSTROTATE_CMD=''
 export IREDMAIL_SYSLOG_FACILITY='local5'
 
@@ -476,7 +476,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
     # Syslog (rsyslog)
     export SYSLOG_CONF_DIR='/etc/rsyslog.d'
-    export SYSLOG_DAEMON_GROUP='adm'
+    export SYS_GROUP_SYSLOG='adm'
     export SYSLOG_POSTROTATE_CMD='/usr/sbin/service rsyslog restart'
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
         export SYSLOG_CONF='/etc/rsyslog.conf'
@@ -489,7 +489,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             export ENABLE_BACKEND_MARIADB='YES'
         fi
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-        export SYSLOG_DAEMON_USER='syslog'
+        export SYS_USER_SYSLOG='syslog'
         export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
 
         # MariaDB support requires Ubuntu >= 14.04
@@ -547,8 +547,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Syslog (newsyslog)
     export USE_RSYSLOG='NO'
     export USE_BSD_SYSLOG='YES'
-    export SYSLOG_DAEMON_USER='root'
-    export SYSLOG_DAEMON_GROUP='wheel'
+    export SYS_USER_SYSLOG='root'
+    export SYS_GROUP_SYSLOG='wheel'
     export SYSLOG_CONF='/etc/syslog.conf'
 
     # SSHD log file
@@ -589,8 +589,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     # Syslog (newsyslog)
     export USE_RSYSLOG='NO'
     export USE_BSD_SYSLOG='YES'
-    export SYSLOG_DAEMON_USER='root'
-    export SYSLOG_DAEMON_GROUP='wheel'
+    export SYS_USER_SYSLOG='root'
+    export SYS_GROUP_SYSLOG='wheel'
     export SYSLOG_CONF='/etc/syslog.conf'
 
     # SSHD log file

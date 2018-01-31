@@ -178,7 +178,7 @@ iredadmin_config() {
     echo "mlmmjadmin_api_auth_token = '${MLMMJADMIN_API_AUTH_TOKEN}'" >> settings.py
 
     # Add postfix alias for user: iredapd
-    add_postfix_alias ${IREDAPD_DAEMON_USER} ${SYS_ROOT_USER}
+    add_postfix_alias ${SYS_USER_IREDAPD} ${SYS_ROOT_USER}
 
     cat >> ${TIP_FILE} <<EOF
 iRedAdmin - official web-based admin panel:

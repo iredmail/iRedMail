@@ -2,7 +2,7 @@ PH_OPENLDAP_LOGFILE {
     compress
     weekly
     rotate 10
-    create 0600 PH_OPENLDAP_DAEMON_USER PH_OPENLDAP_DAEMON_GROUP
+    create 0600 PH_SYS_USER_LDAP PH_SYS_GROUP_LDAP
     missingok
     notifempty
 

@@ -39,7 +39,7 @@ openldap_config()
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Add openldap daemon user to 'ssl-cert' group, so that slapd can read SSL key.
-        usermod -G ssl-cert ${OPENLDAP_DAEMON_USER}
+        usermod -G ssl-cert ${SYS_USER_LDAP}
 
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         # Start service when system start up.
@@ -69,7 +69,7 @@ EOF
 
     ECHO_DEBUG "Generate new server configuration file: ${OPENLDAP_SLAPD_CONF}."
     cp -f ${SAMPLE_DIR}/openldap/slapd.conf ${OPENLDAP_SLAPD_CONF}
-    chown ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP} ${OPENLDAP_SLAPD_CONF}
+    chown ${SYS_USER_LDAP}:${SYS_GROUP_LDAP} ${OPENLDAP_SLAPD_CONF}
     chmod 0640 ${OPENLDAP_SLAPD_CONF}
 
     export LDAP_SUFFIX
@@ -125,7 +125,7 @@ EOF
     perl -pi -e 's#PH_LDAP_SERVER_HOST#$ENV{LDAP_SERVER_HOST}#g' ${OPENLDAP_LDAP_CONF}
     perl -pi -e 's#PH_LDAP_SERVER_PORT#$ENV{LDAP_SERVER_PORT}#g' ${OPENLDAP_LDAP_CONF}
     perl -pi -e 's#PH_SSL_CERT_FILE#$ENV{SSL_CERT_FILE}#g' ${OPENLDAP_LDAP_CONF}
-    chown ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP} ${OPENLDAP_LDAP_CONF}
+    chown ${SYS_USER_LDAP}:${SYS_GROUP_LDAP} ${OPENLDAP_LDAP_CONF}
 
     ECHO_DEBUG "Setting up syslog configration file for OpenLDAP."
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -141,7 +141,7 @@ EOF
 
     ECHO_DEBUG "Create empty log file for OpenLDAP: ${OPENLDAP_LOGFILE}."
     touch ${OPENLDAP_LOGFILE}
-    chown ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP} ${OPENLDAP_LOGFILE}
+    chown ${SYS_USER_LDAP}:${SYS_GROUP_LDAP} ${OPENLDAP_LOGFILE}
     chmod 0600 ${OPENLDAP_LOGFILE}
 
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
@@ -149,13 +149,13 @@ EOF
         cp -f ${SAMPLE_DIR}/logrotate/openldap ${OPENLDAP_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_OPENLDAP_LOGFILE#$ENV{OPENLDAP_LOGFILE}#g' ${OPENLDAP_LOGROTATE_FILE}
-        perl -pi -e 's#PH_OPENLDAP_DAEMON_USER#$ENV{OPENLDAP_DAEMON_USER}#g' ${OPENLDAP_LOGROTATE_FILE}
-        perl -pi -e 's#PH_OPENLDAP_DAEMON_GROUP#$ENV{OPENLDAP_DAEMON_GROUP}#g' ${OPENLDAP_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYS_USER_LDAP#$ENV{SYS_USER_LDAP}#g' ${OPENLDAP_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYS_GROUP_LDAP#$ENV{SYS_GROUP_LDAP}#g' ${OPENLDAP_LOGROTATE_FILE}
         perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${OPENLDAP_LOGROTATE_FILE}
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' -o X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         if ! grep "${OPENLDAP_LOGFILE}" /etc/newsyslog.conf &>/dev/null; then
             cat >> /etc/newsyslog.conf <<EOF
-${OPENLDAP_LOGFILE}    ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP}   600  7     *    24    Z
+${OPENLDAP_LOGFILE}    ${SYS_USER_LDAP}:${SYS_GROUP_LDAP}   600  7     *    24    Z
 EOF
         fi
     fi
@@ -180,7 +180,7 @@ openldap_data_initialize()
         cp -f ${OPENLDAP_DB_CONFIG_SAMPLE} ${LDAP_DATA_DIR}/DB_CONFIG
     fi
 
-    chown -R ${OPENLDAP_DAEMON_USER}:${OPENLDAP_DAEMON_GROUP} ${OPENLDAP_DATA_DIR}
+    chown -R ${SYS_USER_LDAP}:${SYS_GROUP_LDAP} ${OPENLDAP_DATA_DIR}
     chmod -R 0700 ${OPENLDAP_DATA_DIR}
 
     ECHO_DEBUG "Starting OpenLDAP."

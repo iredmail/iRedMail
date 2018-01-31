@@ -139,25 +139,25 @@ add_user_mlmmj()
 
 add_user_iredapd()
 {
-    ECHO_DEBUG "Create system account: ${IREDAPD_DAEMON_USER}:${IREDAPD_DAEMON_GROUP} (${IREDAPD_DAEMON_USER_UID}:${IREDAPD_DAEMON_USER_GID})."
+    ECHO_DEBUG "Create system account: ${SYS_USER_IREDAPD}:${SYS_GROUP_IREDAPD} (${SYS_USER_IREDAPD_UID}:${SYS_USER_IREDAPD_GID})."
 
     # Low privilege user used to run iRedAPD daemon.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${IREDAPD_DAEMON_USER_GID} -n ${IREDAPD_DAEMON_GROUP} >> ${INSTALL_LOG} 2>&1
+        pw groupadd -g ${SYS_USER_IREDAPD_GID} -n ${SYS_GROUP_IREDAPD} >> ${INSTALL_LOG} 2>&1
         pw useradd -m \
-            -u ${IREDAPD_DAEMON_USER_GID} \
-            -g ${IREDAPD_DAEMON_GROUP} \
+            -u ${SYS_USER_IREDAPD_GID} \
+            -g ${SYS_GROUP_IREDAPD} \
             -s ${SHELL_NOLOGIN} \
             -d ${IREDAPD_HOME_DIR} \
-            -n ${IREDAPD_DAEMON_USER} >> ${INSTALL_LOG} 2>&1
+            -n ${SYS_USER_IREDAPD} >> ${INSTALL_LOG} 2>&1
     else
-        groupadd -g ${IREDAPD_DAEMON_USER_GID} ${IREDAPD_DAEMON_GROUP} >> ${INSTALL_LOG} 2>&1
+        groupadd -g ${SYS_USER_IREDAPD_GID} ${SYS_GROUP_IREDAPD} >> ${INSTALL_LOG} 2>&1
         useradd -m \
-            -u ${IREDAPD_DAEMON_USER_UID} \
-            -g ${IREDAPD_DAEMON_GROUP} \
+            -u ${SYS_USER_IREDAPD_UID} \
+            -g ${SYS_GROUP_IREDAPD} \
             -s ${SHELL_NOLOGIN} \
             -d ${IREDAPD_HOME_DIR} \
-            ${IREDAPD_DAEMON_USER} >> ${INSTALL_LOG} 2>&1
+            ${SYS_USER_IREDAPD} >> ${INSTALL_LOG} 2>&1
     fi
 
     echo 'export status_add_user_iredapd="DONE"' >> ${STATUS_FILE}
@@ -165,7 +165,7 @@ add_user_iredapd()
 
 add_required_users()
 {
-    ECHO_INFO "Create required system account: ${SYS_USER_VMAIL}, ${SYS_USER_MLMMJ}, ${SYS_USER_IREDADMIN}, ${IREDAPD_DAEMON_USER}."
+    ECHO_INFO "Create required system account: ${SYS_USER_VMAIL}, ${SYS_USER_MLMMJ}, ${SYS_USER_IREDADMIN}, ${SYS_USER_IREDAPD}."
 
     check_status_before_run add_user_vmail
     check_status_before_run add_user_mlmmj
