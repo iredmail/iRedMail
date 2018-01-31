@@ -64,15 +64,17 @@ NOTES:
 * Depends on the mail traffic, it may take large disk space.
 * Maildir path will be converted to lowercases, so please create this
   directory in lowcases.
-* It cannot be /var/mail (used to store mails sent to system accounts).
+* It cannot be /var/mail or /root.
 * Mailboxes will be stored under its sub-directory: ${STORAGE_BASE_DIR}/${STORAGE_NODE}/
 * Daily backup of SQL/LDAP databases will be stored under another sub-directory: /var/vmail/backup.
 " 20 76 "${STORAGE_BASE_DIR}" 2>${RUNTIME_DIR}/.storage_base_dir
 
     export STORAGE_BASE_DIR="$(cat ${RUNTIME_DIR}/.storage_base_dir | tr '[A-Z]' '[a-z]')"
 
-    if echo ${STORAGE_BASE_DIR} | grep -i '^/var/mail\>' &>/dev/null; then
-        # Cannot be /var/mail -- it's used to store mails for system accounts
+    # Make sure storage directory is not one of:
+    #   - /var/mail: it's used to store mails for system accounts
+    #   - /root: only root user can access it, mail services won't work.
+    if echo ${STORAGE_BASE_DIR} | grep -iE '^(/var/mail\>|/root\>)' &>/dev/null; then
         :
     else
         break

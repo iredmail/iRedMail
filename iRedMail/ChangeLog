@@ -17,19 +17,19 @@ iRedMail-0.9.8:
           PostfixAdmin at the very beginning, but not used by any applications,
           time to drop it.
         - SQL table renamed for SQL backends: alias_moderators -> moderators.
-        - Upgrade rsyslog to latest 8.x on CentOS 6, package comes from
-          rsyslog official yum repo.
         - LDAP backend: Allow mail list account to use 2 attributes: member,
           uniqueMember.
+        - Fail2ban: new jail `postfix-pregreet`.
         - Dovecot: Log subject, sender, size in mail deliver log.
         - Amavisd: Add new sql column `maddr.email_raw` and trigger to store
           email address without address extension.
 
     * Fixed issues:
-        - installer: not correctly configure SOGo with IPv6 SQL server address.
-          Thanks to Wraptor <nijs.thibaut _at_ gmail.com> for the report in
-          forum.
-        - Postfix: Improper SQL queries used to query per-user bcc address.
+        - installer:
+            - not correctly configure SOGo with IPv6 SQL server address.
+              Thanks to Wraptor <nijs.thibaut _at_ gmail.com> for the report in
+              forum.
+            - not check whether mailbox storage is set to /root.
         - Nginx: Use single config file for default web hosts.
         - SOGo: Cannot sync contacts on Android devices via EAS.
         - Amavisd: cannot store mail subject if contains emoji.

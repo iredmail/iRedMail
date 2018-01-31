@@ -21,3 +21,32 @@
 #---------------------------------------------------------------------
 
 # netdata: https://my-netdata.io
+export NETDATA_PARENT_DIR='/opt'
+export NETDATA_ROOT_DIR="${NETDATA_PARENT_DIR}/netdata"
+export NETDATA_CONF_DIR="${NETDATA_ROOT_DIR}/etc/netdata"
+
+# Main config files.
+export NETDATA_CONF="${NETDATA_CONF_DIR}/netdata.conf"
+export NETDATA_STREAM_CONF="${NETDATA_CONF_DIR}/stream.conf"
+
+# .my.cnf used to access MySQL db.
+export NETDATA_DOT_MY_CNF="${NETDATA_CONF_DIR}/my.cnf"
+
+# Install stable release.
+export NETDATA_VERSION='1.9.0'
+export NETDATA_DOWNLOAD_URL="https://github.com/firehol/netdata/releases/download/v${NETDATA_VERSION}/netdata-latest.gz.run"
+
+# Modular config files.
+export NETDATA_CONF_HEALTH_ALARM_NOTIFY="${NETDATA_CONF_DIR}/health_alarm_notify.conf"
+
+# Plugin config files.
+export NETDATA_CONF_PLUGIN_FAIL2BAN="${NETDATA_CONF_DIR}/python.d/fail2ban.conf"
+export NETDATA_CONF_PLUGIN_MYSQL="${NETDATA_CONF_DIR}/python.d/mysql.conf"
+export NETDATA_CONF_PLUGIN_PHPFPM="${NETDATA_CONF_DIR}/python.d/phpfpm.conf"
+export NETDATA_CONF_PLUGIN_NGINX="${NETDATA_CONF_DIR}/python.d/nginx.conf"
+
+# Log directories and files
+export NETDATA_LOG_DIR='/var/log/netdata'
+export NETDATA_LOG_ACCESSLOG="${NETDATA_LOG_DIR}/access.log"
+export NETDATA_LOG_ERRORLOG="${NETDATA_LOG_DIR}/error.log"
+export NETDATA_LOG_DEBUGLOG="${NETDATA_LOG_DIR}/debug.log"
