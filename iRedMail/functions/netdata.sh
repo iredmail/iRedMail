@@ -54,6 +54,14 @@ netdata_config()
     perl -pi -e 's#PH_NETDATA_PORT#$ENV{NETDATA_PORT}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
     perl -pi -e 's#PH_SYS_USER_NETDATA#$ENV{SYS_USER_NETDATA}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
 
+    ECHO_DEBUG "Generate htpasswd file: ${NETDATA_HTTPD_AUTH_FILE}."
+    touch ${NETDATA_HTTPD_AUTH_FILE}
+    chown ${HTTPD_USER}:${HTTPD_GROUP} ${NETDATA_HTTPD_AUTH_FILE}
+    chmod 0400 ${NETDATA_HTTPD_AUTH_FILE}
+
+    _pw="$(generate_password_hash MD5 ${DOMAIN_ADMIN_PASSWD_PLAIN})"
+    echo "${DOMAIN_ADMIN_EMAIL}:${_pw}" >> ${NETDATA_HTTPD_AUTH_FILE}
+
     echo 'export status_netdata_config="DONE"' >> ${STATUS_FILE}
 }
 

@@ -1,4 +1,4 @@
-# Roundcube webmail
+# Running Roundcube as a subfolder to an existing virtual host
 location ~ ^/mail(.*)\.php$ {
     include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
     include PH_NGINX_CONF_TMPL_DIR/fastcgi_php.tmpl;

@@ -44,26 +44,37 @@ nginx_config()
     [ -d ${HTTPD_CONF_DIR_ENABLED_SITES} ] && mv ${HTTPD_CONF_DIR_ENABLED_SITES} ${HTTPD_CONF_DIR_ENABLED_SITES}.bak
     [ ! -d ${HTTPD_CONF_DIR_ENABLED_SITES} ] && mkdir -p ${HTTPD_CONF_DIR_ENABLED_SITES}
 
-    # Copy sample config files
+    #
+    # Modular config files
+    #
+    # Copy sample files
     cp ${SAMPLE_DIR}/nginx/nginx.conf ${NGINX_CONF}
     cp -f ${SAMPLE_DIR}/nginx/conf-available/*.conf ${HTTPD_CONF_DIR_AVAILABLE_CONF}
-    cp -f ${SAMPLE_DIR}/nginx/sites-available/00-default.conf ${NGINX_CONF_SITE_DEFAULT}
-    cp -f ${SAMPLE_DIR}/nginx/sites-available/00-default-ssl.conf ${NGINX_CONF_SITE_DEFAULT_SSL}
 
-    # Enable basic config files
-    for cf in client_max_body_size.conf \
+    #
+    # Enable modular config files
+    #
+    _modular_conf='client_max_body_size.conf \
         default_type.conf \
         gzip.conf \
         log.conf \
         mime_types.conf \
-        php-fpm.conf \
         sendfile.conf \
         server_tokens.conf \
-        types_hash_max_size.conf; do
+        types_hash_max_size.conf'
+
+    [ X"${IREDMAIL_USE_PHP}" == X'YES' ] && _modular_conf="${_modular_conf} php-fpm.conf"
+    [ X"${USE_NETDATA}" == X'YES' ] && _modular_conf="${_modular_conf} netdata.conf"
+
+    for cf in ${_modular_conf}; do
         ln -s ${HTTPD_CONF_DIR_AVAILABLE_CONF}/${cf} ${HTTPD_CONF_DIR_ENABLED_CONF}/${cf} >> ${INSTALL_LOG} 2>&1
     done
 
-    # Enable default sites
+    #
+    # Default sites
+    #
+    cp -f ${SAMPLE_DIR}/nginx/sites-available/00-default.conf ${NGINX_CONF_SITE_DEFAULT}
+    cp -f ${SAMPLE_DIR}/nginx/sites-available/00-default-ssl.conf ${NGINX_CONF_SITE_DEFAULT_SSL}
     ln -s ${NGINX_CONF_SITE_DEFAULT} ${HTTPD_CONF_DIR_ENABLED_SITES} >> ${INSTALL_LOG} 2>&1
     ln -s ${NGINX_CONF_SITE_DEFAULT_SSL} ${HTTPD_CONF_DIR_ENABLED_SITES} >> ${INSTALL_LOG} 2>&1
 
@@ -80,13 +91,19 @@ nginx_config()
     perl -pi -e 's#PH_HTTPD_CONF_DIR_ENABLED_SITES#$ENV{HTTPD_CONF_DIR_ENABLED_SITES}#g' ${NGINX_CONF}
     perl -pi -e 's#PH_HTTPD_CONF_DIR_ENABLED_CONF#$ENV{HTTPD_CONF_DIR_ENABLED_CONF}#g' ${NGINX_CONF}
 
-    # conf-available.d/*.conf
+    #
+    # conf-available/*.conf
+    #
     perl -pi -e 's#PH_HTTPD_LOG_ERRORLOG#$ENV{HTTPD_LOG_ERRORLOG}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/log.conf
     perl -pi -e 's#PH_HTTPD_LOG_ACCESSLOG#$ENV{HTTPD_LOG_ACCESSLOG}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/log.conf
     perl -pi -e 's#PH_NGINX_MIME_TYPES#$ENV{NGINX_MIME_TYPES}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/mime_types.conf
     perl -pi -e 's#PH_PHP_FPM_SOCKET#$ENV{PHP_FPM_SOCKET}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php-fpm.conf
+    # netdata
+    perl -pi -e 's#PH_NETDATA_PORT#$ENV{NETDATA_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/*.tmpl
 
-    # default web sites
+    #
+    # web sites
+    #
     perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
     perl -pi -e 's#PH_HTTPD_DOCUMENTROOT#$ENV{HTTPD_DOCUMENTROOT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
 
@@ -110,6 +127,9 @@ nginx_config()
     perl -pi -e 's#PH_SOGO_GNUSTEP_DIR#$ENV{SOGO_GNUSTEP_DIR}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
     perl -pi -e 's#PH_SOGO_PROXY_TIMEOUT#$ENV{SOGO_PROXY_TIMEOUT}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
 
+    # netdata
+    perl -pi -e 's#PH_NETDATA_HTTPD_AUTH_FILE#$ENV{NETDATA_HTTPD_AUTH_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
+
     # Adminer
     perl -pi -e 's#PH_HTTPD_SERVERROOT#$ENV{HTTPD_SERVERROOT}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
 
@@ -124,7 +144,7 @@ nginx_config()
         perl -pi -e 's#^(php_value.*session.save_path.).*#${1} = "$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_FPM_POOL_WWW_CONF}
 
         # Add '/status'
-        perl -pi -e 's#^;(pm.status_path =).*#${1} = /status"#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#^;(pm.status_path =).*#${1} /status#g' ${PHP_FPM_POOL_WWW_CONF}
 
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
             perl -pi -e 's#^(\[www\])$#${1}\nuser = $ENV{HTTPD_USER}\ngroup = $ENV{HTTPD_GROUP}\n#' ${PHP_FPM_POOL_WWW_CONF}

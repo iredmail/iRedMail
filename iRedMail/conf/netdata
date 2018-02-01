@@ -32,6 +32,9 @@ export NETDATA_RC_SCRIPT_NAME='netdata'
 export NETDATA_CONF="${NETDATA_CONF_DIR}/netdata.conf"
 export NETDATA_STREAM_CONF="${NETDATA_CONF_DIR}/stream.conf"
 
+# web auth file
+export NETDATA_HTTPD_AUTH_FILE="${HTTPD_CONF_ROOT}/netdata.users"
+
 # .my.cnf used to access MySQL db.
 export NETDATA_DOT_MY_CNF="${NETDATA_CONF_DIR}/my.cnf"
 
