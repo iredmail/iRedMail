@@ -115,6 +115,9 @@ dovecot_config()
     perl -pi -e 's#PH_AUTH_MASTER_USER#$ENV{SYS_USER_VMAIL}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_AUTH_MASTER_GROUP#$ENV{SYS_GROUP_VMAIL}#' ${DOVECOT_CONF}
 
+    # service stats {}
+    perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_PORT#$ENV{DOVECOT_SERVICE_STATS_PORT}#' ${DOVECOT_CONF}
+
     # Virtual mail accounts.
     # Reference: http://wiki2.dovecot.org/AuthDatabase/LDAP
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then

@@ -24,6 +24,9 @@
 # For Dovecot and dovecot-sieve.
 # ----------------------------------------
 
+# Port used by dovecot plugin `stats`.
+export DOVECOT_SERVICE_STATS_PORT='24242'
+
 # Dovecot user & group.
 export DOVECOT_USER='dovecot'
 export DOVECOT_GROUP='dovecot'

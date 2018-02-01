@@ -202,6 +202,10 @@ echo "export VMAIL_DB_ADMIN_PASSWD='${VMAIL_DB_ADMIN_PASSWD}'" >> ${IREDMAIL_CON
 export MLMMJADMIN_API_AUTH_TOKEN="$(${RANDOM_STRING})"
 echo "export MLMMJADMIN_API_AUTH_TOKEN='${MLMMJADMIN_API_AUTH_TOKEN}'" >> ${IREDMAIL_CONFIG_FILE}
 
+# For database management: vmail.
+export NETDATA_DB_PASSWD="$(${RANDOM_STRING})"
+echo "export NETDATA_DB_PASSWD='${NETDATA_DB_PASSWD}'" >> ${IREDMAIL_CONFIG_FILE}
+
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then
     . ${DIALOG_DIR}/ldap_config.sh
     . ${DIALOG_DIR}/mysql_config.sh

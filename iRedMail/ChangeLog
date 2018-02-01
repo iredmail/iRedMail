@@ -6,6 +6,9 @@ iRedMail-0.9.8:
     * Drop support for RHEL/CentOS 6, Debian 8.
     * Apache has been removed, Nginx is the only one web server available.
 
+    * New:
+        - netdata monitor integration: http://my-netdata.io
+
     * Improvements:
         - Integrate 'mlmmj' mailing list manager, and 'mlmmjadmin' RESTful API
           server for easy mlmmj management.

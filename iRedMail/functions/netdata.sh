@@ -31,9 +31,14 @@ netdata_install()
 
     service_control enable ${NETDATA_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
-    ECHO_DEBUG "Create directory used to store netdata log files."
-    mkdir -p ${NETDATA_LOG_DIR} >> ${INSTALL_LOG} 2>&1
-    chown ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        ln -s ${NETDATA_CONF_DIR} /usr/local/etc/netdata >> ${INSTALL_LOG} 2>&1
+    else
+        ln -s ${NETDATA_CONF_DIR} /etc/netdata >> ${INSTALL_LOG} 2>&1
+    fi
+
+    # netdata will handle logrotate config file automatically.
+    ln -s ${NETDATA_LOG_DIR} /var/log/netdata >> ${INSTALL_LOG} 2>&1
 
     echo 'export status_netdata_install="DONE"' >> ${STATUS_FILE}
 }
@@ -48,12 +53,47 @@ netdata_config()
 
     perl -pi -e 's#PH_NETDATA_PORT#$ENV{NETDATA_PORT}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
     perl -pi -e 's#PH_SYS_USER_NETDATA#$ENV{SYS_USER_NETDATA}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
-    perl -pi -e 's#PH_NETDATA_LOG_DIR#$ENV{NETDATA_LOG_DIR}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
-    perl -pi -e 's#PH_NETDATA_LOG_ACCESSLOG#$ENV{NETDATA_LOG_ACCESSLOG}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
-    perl -pi -e 's#PH_NETDATA_LOG_ERRORLOG#$ENV{NETDATA_LOG_ERRORLOG}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
-    perl -pi -e 's#PH_NETDATA_LOG_DEBUGLOG#$ENV{NETDATA_LOG_DEBUGLOG}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
 
     echo 'export status_netdata_config="DONE"' >> ${STATUS_FILE}
+}
+
+netdata_module_config()
+{
+    # MySQL & PostgreSQL
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        ECHO_DEBUG "Create MySQL user ${NETDATA_DB_USER} with minimal privilege: USAGE."
+        ${MYSQL_CLIENT_ROOT} >> ${INSTALL_LOG} 2>&1 <<EOF
+GRANT USAGE ON *.* TO ${NETDATA_DB_USER}@${MYSQL_GRANT_HOST} IDENTIFIED BY '${NETDATA_DB_PASSWD}';
+FLUSH PRIVILEGES;
+EOF
+
+        #ECHO_DEBUG "Create ${NETDATA_DOT_MY_CNF}."
+        #cp -f ${SAMPLE_DIR}/netdata/my.cnf ${NETDATA_DOT_MY_CNF} >> ${INSTALL_LOG} 2>&1
+        #perl -pi -e 's#PH_MYSQL_SERVER_ADDRESS#$ENV{MYSQL_SERVER_ADDRESS}#g' ${NETDATA_DOT_MY_CNF} >> ${INSTALL_LOG} 2>&1
+        #perl -pi -e 's#PH_MYSQL_SERVER_PORT#$ENV{MYSQL_SERVER_PORT}#g' ${NETDATA_DOT_MY_CNF} >> ${INSTALL_LOG} 2>&1
+        #perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_DOT_MY_CNF} >> ${INSTALL_LOG} 2>&1
+        #perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_DOT_MY_CNF} >> ${INSTALL_LOG} 2>&1
+
+        #ECHO_DEBUG "Link ${NETDATA_DOT_MY_CNF} to /root/.my.cnf-${NETDATA_DB_USER}."
+        #ln -s ${NETDATA_DOT_MY_CNF} /root/.my.cnf-${NETDATA_DB_USER} >> ${INSTALL_LOG} 2>&1
+
+        ECHO_DEBUG "Generate ${NETDATA_CONF_PLUGIN_MYSQL}."
+        cp -f ${SAMPLE_DIR}/netdata/python.d/mysql.conf ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_MYSQL_SERVER_ADDRESS#$ENV{MYSQL_SERVER_ADDRESS}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_MYSQL_SERVER_PORT#$ENV{MYSQL_SERVER_PORT}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
+
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
+CREATE USER ${NETDATA_DB_USER} WITH ENCRYPTED PASSWORD '${NETDATA_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+EOF
+
+        ECHO_DEBUG "Generate ${NETDATA_CONF_PLUGIN_PGSQL}."
+        cp -f ${SAMPLE_DIR}/netdata/python.d/postgres.conf ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
+    fi
 }
 
 netdata_system_tune()
@@ -71,6 +111,7 @@ netdata_setup()
     if [ X"${DISTRO}" != X'OPENBSD' ]; then
         check_status_before_run netdata_install
         check_status_before_run netdata_config
+        check_status_before_run netdata_module_config
         check_status_before_run netdata_system_tune
     fi
 }
