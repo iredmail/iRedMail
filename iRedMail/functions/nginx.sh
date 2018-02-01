@@ -99,7 +99,7 @@ nginx_config()
     perl -pi -e 's#PH_NGINX_MIME_TYPES#$ENV{NGINX_MIME_TYPES}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/mime_types.conf
     perl -pi -e 's#PH_PHP_FPM_SOCKET#$ENV{PHP_FPM_SOCKET}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php-fpm.conf
     # netdata
-    perl -pi -e 's#PH_NETDATA_PORT#$ENV{NETDATA_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/*.tmpl
+    perl -pi -e 's#PH_NETDATA_PORT#$ENV{NETDATA_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/*.conf
 
     #
     # web sites
