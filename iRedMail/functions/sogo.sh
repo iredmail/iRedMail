@@ -96,7 +96,7 @@ CREATE VIEW ${SOGO_DB_VIEW_AUTH} AS
 ALTER TABLE ${SOGO_DB_VIEW_AUTH} OWNER TO ${SOGO_DB_USER};
 EOF
 
-        su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >> ${INSTALL_LOG} 2>&1
+        su - ${SYS_USER_PGSQL} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >> ${INSTALL_LOG} 2>&1
     fi
 
     rm -f ${tmp_sql} &>/dev/null

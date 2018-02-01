@@ -117,6 +117,7 @@ dovecot_config()
 
     # service stats {}
     perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_PORT#$ENV{DOVECOT_SERVICE_STATS_PORT}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_USER#$ENV{DOVECOT_SERVICE_STATS_USER}#' ${DOVECOT_CONF}
 
     # Virtual mail accounts.
     # Reference: http://wiki2.dovecot.org/AuthDatabase/LDAP
@@ -142,7 +143,7 @@ dovecot_config()
     # Master user.
     perl -pi -e 's#PH_DOVECOT_MASTER_USER_PASSWORD_FILE#$ENV{DOVECOT_MASTER_USER_PASSWORD_FILE}#' ${DOVECOT_CONF}
     touch ${DOVECOT_MASTER_USER_PASSWORD_FILE}
-    chown ${DOVECOT_USER}:${DOVECOT_GROUP} ${DOVECOT_MASTER_USER_PASSWORD_FILE}
+    chown ${SYS_USER_DOVECOT}:${SYS_GROUP_DOVECOT} ${DOVECOT_MASTER_USER_PASSWORD_FILE}
     chmod 0500 ${DOVECOT_MASTER_USER_PASSWORD_FILE}
 
     perl -pi -e 's#PH_DOVECOT_AUTH_MASTER_PATH#$ENV{DOVECOT_AUTH_MASTER_PATH}#' ${DOVECOT_CONF}
@@ -278,7 +279,7 @@ dovecot_config()
 
     # Copy sample config and set file owner/permission
     cp ${SAMPLE_DIR}/dovecot/dovecot-used-quota.conf ${DOVECOT_REALTIME_QUOTA_CONF}
-    chown ${DOVECOT_USER}:${DOVECOT_GROUP} ${DOVECOT_REALTIME_QUOTA_CONF}
+    chown ${SYS_USER_DOVECOT}:${SYS_GROUP_DOVECOT} ${DOVECOT_REALTIME_QUOTA_CONF}
     chmod 0500 ${DOVECOT_REALTIME_QUOTA_CONF}
 
     # Replace place holders in sample config file
@@ -308,7 +309,7 @@ dovecot_config()
 
     # Copy sample config and set file owner/permission
     cp ${SAMPLE_DIR}/dovecot/dovecot-share-folder.conf ${DOVECOT_SHARE_FOLDER_CONF}
-    chown ${DOVECOT_USER}:${DOVECOT_GROUP} ${DOVECOT_SHARE_FOLDER_CONF}
+    chown ${SYS_USER_DOVECOT}:${SYS_GROUP_DOVECOT} ${DOVECOT_SHARE_FOLDER_CONF}
     chmod 0500 ${DOVECOT_SHARE_FOLDER_CONF}
 
     # Replace place holders in sample config file
@@ -336,7 +337,7 @@ dovecot_config()
     ECHO_DEBUG "Create directory for Dovecot plugin: Expire."
     dovecot_expire_dict_dir="$(dirname ${DOVECOT_EXPIRE_DICT_BDB})"
     mkdir -p ${dovecot_expire_dict_dir} && \
-    chown -R ${DOVECOT_USER}:${DOVECOT_GROUP} ${dovecot_expire_dict_dir} && \
+    chown -R ${SYS_USER_DOVECOT}:${SYS_GROUP_DOVECOT} ${dovecot_expire_dict_dir} && \
     chmod -R 0750 ${dovecot_expire_dict_dir}
 
     cat >> ${TIP_FILE} <<EOF

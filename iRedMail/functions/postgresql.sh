@@ -43,8 +43,8 @@ pgsql_initialize()
         ${PGSQL_RC_SCRIPT} initdb >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         mkdir -p ${PGSQL_DATA_DIR} >> ${INSTALL_LOG} 2>&1
-        chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_DATA_DIR}
-        su - ${PGSQL_SYS_USER} -c "initdb -D ${PGSQL_DATA_DIR} -U ${PGSQL_SYS_USER} -A trust" >> ${INSTALL_LOG} 2>&1
+        chown ${SYS_USER_PGSQL}:${SYS_GROUP_PGSQL} ${PGSQL_DATA_DIR}
+        su - ${SYS_USER_PGSQL} -c "initdb -D ${PGSQL_DATA_DIR} -U ${SYS_USER_PGSQL} -A trust" >> ${INSTALL_LOG} 2>&1
     fi
 
     backup_file ${PGSQL_CONF_PG_HBA} ${PGSQL_CONF_POSTGRESQL}
@@ -66,7 +66,7 @@ pgsql_initialize()
     rm -f ${PGSQL_DATA_DIR}/server.{crt,key} >> ${INSTALL_LOG} 2>&1
     cp -f ${SSL_CERT_FILE} ${PGSQL_SSL_CERT} >> ${INSTALL_LOG} 2>&1
     cp -f ${SSL_KEY_FILE} ${PGSQL_SSL_KEY} >> ${INSTALL_LOG} 2>&1
-    chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_SSL_CERT} ${PGSQL_SSL_KEY} >> ${INSTALL_LOG} 2>&1
+    chown ${SYS_USER_PGSQL}:${SYS_GROUP_PGSQL} ${PGSQL_SSL_CERT} ${PGSQL_SSL_KEY} >> ${INSTALL_LOG} 2>&1
     chmod 0600 ${PGSQL_SSL_CERT} ${PGSQL_SSL_KEY} >> ${INSTALL_LOG} 2>&1
     ln -s ${PGSQL_SSL_CERT} ${PGSQL_DATA_DIR}/server.crt >> ${INSTALL_LOG} 2>&1
     ln -s ${PGSQL_SSL_KEY} ${PGSQL_DATA_DIR}/server.key >> ${INSTALL_LOG} 2>&1
@@ -81,7 +81,7 @@ pgsql_initialize()
     # will fail, because we cannot set/change passwords at all, so we're trying
     # to connect with a wrong password.
     ECHO_DEBUG "Setting password for PostgreSQL admin: (${PGSQL_ROOT_USER})."
-    su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
+    su - ${SYS_USER_PGSQL} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 ALTER USER ${PGSQL_ROOT_USER} WITH ENCRYPTED PASSWORD '${PGSQL_ROOT_PASSWD}';
 EOF
 
@@ -90,9 +90,9 @@ EOF
     perl -pi -e 's/^(host.*)/#${1}/g' ${PGSQL_CONF_PG_HBA}
 
     if [ X"${PGSQL_VERSION}" == X'8' ]; then
-        echo "local all     ${PGSQL_SYS_USER}   ident" >> ${PGSQL_CONF_PG_HBA}
+        echo "local all     ${SYS_USER_PGSQL}   ident" >> ${PGSQL_CONF_PG_HBA}
     else
-        echo "local all     ${PGSQL_SYS_USER}   peer" >> ${PGSQL_CONF_PG_HBA}
+        echo "local all     ${SYS_USER_PGSQL}   peer" >> ${PGSQL_CONF_PG_HBA}
     fi
     echo 'local all     all                 md5' >> ${PGSQL_CONF_PG_HBA}
     echo 'host  all     all     0.0.0.0/0   md5' >> ${PGSQL_CONF_PG_HBA}
@@ -115,7 +115,7 @@ EOF
 *:*:*:${AMAVISD_DB_USER}:${AMAVISD_DB_PASSWD}
 EOF
 
-    chown ${PGSQL_SYS_USER}:${PGSQL_SYS_GROUP} ${PGSQL_DOT_PGPASS}
+    chown ${SYS_USER_PGSQL}:${SYS_GROUP_PGSQL} ${PGSQL_DOT_PGPASS}
     chmod 0600 ${PGSQL_DOT_PGPASS} >> ${INSTALL_LOG} 2>&1
 
     cat >> ${TIP_FILE} <<EOF
@@ -174,16 +174,16 @@ pgsql_import_vmail_users()
     chmod 0755 ${PGSQL_DATA_DIR}/*sql
 
     ECHO_DEBUG "Create roles (${VMAIL_DB_BIND_USER}, ${VMAIL_DB_ADMIN_USER}) and database: ${VMAIL_DB_NAME}."
-    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init_vmail_db.sql" >> ${INSTALL_LOG} 2>&1
+    su - ${SYS_USER_PGSQL} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init_vmail_db.sql" >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Create tables in ${VMAIL_DB_NAME} database."
-    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/iredmail.sql" >> ${INSTALL_LOG} 2>&1
+    su - ${SYS_USER_PGSQL} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/iredmail.sql" >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Grant permissions."
-    su - ${PGSQL_SYS_USER} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/grant_permissions.sql" >> ${INSTALL_LOG} 2>&1
+    su - ${SYS_USER_PGSQL} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/grant_permissions.sql" >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Add first domain and postmaster@ user."
-    su - ${PGSQL_SYS_USER} -c "psql -U ${VMAIL_DB_ADMIN_USER} -d template1 -f ${PGSQL_DATA_DIR}/add_first_domain_and_user.sql" >> ${INSTALL_LOG} 2>&1
+    su - ${SYS_USER_PGSQL} -c "psql -U ${VMAIL_DB_ADMIN_USER} -d template1 -f ${PGSQL_DATA_DIR}/add_first_domain_and_user.sql" >> ${INSTALL_LOG} 2>&1
 
     mv ${PGSQL_DATA_DIR}/*sql ${RUNTIME_DIR}
     chmod 0700 ${RUNTIME_DIR}/*sql
@@ -209,7 +209,7 @@ pgsql_cron_backup()
     chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${pgsql_backup_script}
     chmod 0500 ${pgsql_backup_script}
 
-    perl -pi -e 's#^(export PGSQL_SYS_USER=).*#${1}"$ENV{PGSQL_SYS_USER}"#' ${pgsql_backup_script}
+    perl -pi -e 's#^(export SYS_USER_PGSQL=).*#${1}"$ENV{SYS_USER_PGSQL}"#' ${pgsql_backup_script}
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${pgsql_backup_script}
 
     # Add cron job

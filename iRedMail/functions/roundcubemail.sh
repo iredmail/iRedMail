@@ -62,10 +62,10 @@ password="${RCM_DB_PASSWD}"
 EOF
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_SYS_USER_HOME}/rcm.sql >> ${INSTALL_LOG} 2>&1
-        chmod 0777 ${PGSQL_SYS_USER_HOME}/rcm.sql
+        cp -f ${RCM_HTTPD_ROOT}/SQL/postgres.initial.sql ${PGSQL_USER_HOMEDIR}/rcm.sql >> ${INSTALL_LOG} 2>&1
+        chmod 0777 ${PGSQL_USER_HOMEDIR}/rcm.sql
 
-        su - ${PGSQL_SYS_USER} -c "psql -d template1 >/dev/null" >> ${INSTALL_LOG} 2>&1 <<EOF
+        su - ${SYS_USER_PGSQL} -c "psql -d template1 >/dev/null" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create database and role
 CREATE DATABASE ${RCM_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE ROLE ${RCM_DB_USER} WITH LOGIN ENCRYPTED PASSWORD '${RCM_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
@@ -75,9 +75,9 @@ ALTER DATABASE ${RCM_DB_NAME} OWNER TO ${RCM_DB_USER};
 EOF
 
         # Import sql templte as roundcube user.
-        su - ${PGSQL_SYS_USER} -c "psql -U ${RCM_DB_USER} -d ${RCM_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
+        su - ${SYS_USER_PGSQL} -c "psql -U ${RCM_DB_USER} -d ${RCM_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Import Roundcubemail SQL template
-\i ${PGSQL_SYS_USER_HOME}/rcm.sql;
+\i ${PGSQL_USER_HOMEDIR}/rcm.sql;
 
 -- Grant privileges
 -- GRANT SELECT,INSERT,UPDATE,DELETE ON cache,cache_index,cache_messages,cache_shared,cache_thread,contactgroupmembers,contactgroups,contacts,dictionary,identities,searches,session,system,users TO ${RCM_DB_USER};
@@ -85,11 +85,11 @@ EOF
 EOF
 
         # Grant privilege to update password (vmail.mailbox) through roundcube webmail
-        su - ${PGSQL_SYS_USER} -c "psql -d ${VMAIL_DB_NAME} >/dev/null" >> ${INSTALL_LOG} 2>&1 <<EOF
+        su - ${SYS_USER_PGSQL} -c "psql -d ${VMAIL_DB_NAME} >/dev/null" >> ${INSTALL_LOG} 2>&1 <<EOF
 \c ${VMAIL_DB_NAME};
 GRANT UPDATE,SELECT ON mailbox TO ${RCM_DB_USER};
 EOF
-        rm -f ${PGSQL_SYS_USER_HOME}/rcm.sql >> ${INSTALL_LOG} 2>&1
+        rm -f ${PGSQL_USER_HOMEDIR}/rcm.sql >> ${INSTALL_LOG} 2>&1
     fi
 
     # Grant privileges

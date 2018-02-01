@@ -25,7 +25,7 @@
 #
 #   * Set correct values for below variables:
 #
-#       PGSQL_SYS_USER
+#       SYS_USER_PGSQL
 #       BACKUP_ROOTDIR
 #       DATABASES
 #
@@ -47,7 +47,7 @@ KEEP_DAYS='90'
 #   - On Linux, it's postgres.
 #   - On FreeBSD, it's pgsql.
 #   - On OpenBSD, it's _postgresql.
-export PGSQL_SYS_USER='postgres'
+export SYS_USER_PGSQL='postgres'
 
 # Where to store backup copies.
 export BACKUP_ROOTDIR='/var/vmail/backup'
@@ -103,8 +103,8 @@ export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"
 chown root ${BACKUP_DIR}
 chmod 0700 ${BACKUP_DIR}
 
-# Get HOME directory of PGSQL_SYS_USER
-export PGSQL_SYS_USER_HOME="$(su - ${PGSQL_SYS_USER} -c 'echo $HOME')"
+# Get HOME directory of SYS_USER_PGSQL
+export PGSQL_USER_HOMEDIR="$(su - ${SYS_USER_PGSQL} -c 'echo $HOME')"
 
 # Initialize log file.
 echo "* Starting at: ${YEAR}-${MONTH}-${DAY}-${TIME}." >${LOGFILE}
@@ -116,15 +116,15 @@ for db in ${DATABASES}; do
     output_sql="${db}-${TIMESTAMP}.sql"
 
     # Check database existence
-    su - "${PGSQL_SYS_USER}" -c "psql -d ${db} -c '\q' >/dev/null 2>&1"
+    su - "${SYS_USER_PGSQL}" -c "psql -d ${db} -c '\q' >/dev/null 2>&1"
 
     # Dump
     if [ X"$?" == X'0' ]; then
-        su - "${PGSQL_SYS_USER}" -c "${CMD_PG_DUMP} ${db} > ${PGSQL_SYS_USER_HOME}/${output_sql}"
+        su - "${SYS_USER_PGSQL}" -c "${CMD_PG_DUMP} ${db} > ${PGSQL_USER_HOMEDIR}/${output_sql}"
 
         if [ X"$?" == X'0' ]; then
             # Move to backup directory.
-            mv ${PGSQL_SYS_USER_HOME}/${output_sql} ${BACKUP_DIR}
+            mv ${PGSQL_USER_HOMEDIR}/${output_sql} ${BACKUP_DIR}
 
             cd ${BACKUP_DIR}
 
@@ -149,7 +149,7 @@ for db in ${DATABASES}; do
             sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup failed: ${db}, check log file ${LOGFILE} for more details.', 'cron_backup_sql', '127.0.0.1', NOW());"
         fi
 
-        su - "${PGSQL_SYS_USER}" >/dev/null <<EOF
+        su - "${SYS_USER_PGSQL}" >/dev/null <<EOF
 psql -d iredadmin <<EOF2
 ${sql_log_msg}
 EOF2
@@ -175,7 +175,7 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Old backup found. Deleting: ${REMOVED_BACKUP_DIR}." >>${LOGFILE}
     rm -rf ${REMOVED_BACKUP_DIR} >> ${LOGFILE} 2>&1
 
-    su - ${PGSQL_SYS_USER} -c "psql -d iredadmin" <<EOF
+    su - ${SYS_USER_PGSQL} -c "psql -d iredadmin" <<EOF
 INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES
     ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUP_DIR}.', 'cron_backup_sql', '127.0.0.1', NOW());
 EOF

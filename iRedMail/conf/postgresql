@@ -24,18 +24,18 @@
 # PGSQL_SERVER_ADDRESS and PGSQL_SERVER_PORT are defined in conf/global.
 # SQL_SERVER_ADDRESS and SQL_SERVER_PORT are defined in dialog/config_via_dialog.sh.
 
-export PGSQL_SYS_USER='postgres'
-export PGSQL_SYS_GROUP='postgres'
+export SYS_USER_PGSQL='postgres'
+export SYS_GROUP_PGSQL='postgres'
 
-export PGSQL_SYS_USER_HOME='/var/lib/postgresql'
+export PGSQL_USER_HOMEDIR='/var/lib/postgresql'
 
 export PGSQL_RC_SCRIPT_NAME='postgresql'
 
 export PGSQL_INIT_SQL_SAMPLE="${RUNTIME_DIR}/pgsql_init.pgsql"
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
-    export PGSQL_SYS_USER_HOME='/var/lib/pgsql'
-    export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
+    export PGSQL_USER_HOMEDIR='/var/lib/pgsql'
+    export PGSQL_DATA_DIR="${PGSQL_USER_HOMEDIR}/data"
 
     export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
@@ -57,29 +57,29 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-    export PGSQL_SYS_USER='pgsql'
-    export PGSQL_SYS_GROUP='pgsql'
-    export PGSQL_SYS_USER_HOME='/usr/local/pgsql'
+    export SYS_USER_PGSQL='pgsql'
+    export SYS_GROUP_PGSQL='pgsql'
+    export PGSQL_USER_HOMEDIR='/usr/local/pgsql'
 
-    export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
+    export PGSQL_DATA_DIR="${PGSQL_USER_HOMEDIR}/data"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export PGSQL_SYS_USER='_postgresql'
-    export PGSQL_SYS_GROUP='_postgresql'
-    export PGSQL_SYS_USER_HOME='/var/postgresql'
+    export SYS_USER_PGSQL='_postgresql'
+    export SYS_GROUP_PGSQL='_postgresql'
+    export PGSQL_USER_HOMEDIR='/var/postgresql'
 
-    export PGSQL_DATA_DIR="${PGSQL_SYS_USER_HOME}/data"
+    export PGSQL_DATA_DIR="${PGSQL_USER_HOMEDIR}/data"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 fi
 
-export PGSQL_ROOT_USER="${PGSQL_SYS_USER}"
+export PGSQL_ROOT_USER="${SYS_USER_PGSQL}"
 export PGSQL_RC_SCRIPT="${DIR_RC_SCRIPTS}/${PGSQL_RC_SCRIPT_NAME}"
 
 # ~/.pgpass
-export PGSQL_DOT_PGPASS="${PGSQL_SYS_USER_HOME}/.pgpass"
+export PGSQL_DOT_PGPASS="${PGSQL_USER_HOMEDIR}/.pgpass"
 
 # SSL cert/key
 export PGSQL_SSL_CERT="${SSL_CERT_DIR}/iRedMail_CA_PostgreSQL.pem"

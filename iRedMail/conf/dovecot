@@ -24,12 +24,9 @@
 # For Dovecot and dovecot-sieve.
 # ----------------------------------------
 
-# Port used by dovecot plugin `stats`.
-export DOVECOT_SERVICE_STATS_PORT='24242'
-
 # Dovecot user & group.
-export DOVECOT_USER='dovecot'
-export DOVECOT_GROUP='dovecot'
+export SYS_USER_DOVECOT='dovecot'
+export SYS_GROUP_DOVECOT='dovecot'
 export DOVECOT_RC_SCRIPT_NAME='dovecot'
 
 export DOVECOT_BIN='/usr/sbin/dovecot'
@@ -82,8 +79,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DOVECOT_CONF_INCLUDE_DIR='/usr/local/etc/dovecot/iredmail'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export DOVECOT_USER='_dovecot'
-    export DOVECOT_GROUP='_dovecot'
+    export SYS_USER_DOVECOT='_dovecot'
+    export SYS_GROUP_DOVECOT='_dovecot'
     export DOVECOT_DELIVER_BIN='/usr/local/libexec/dovecot/deliver'
     export DOVECOT_DOVEADM_BIN='/usr/local/bin/doveadm'
 fi
@@ -104,12 +101,16 @@ export DOVECOT_SASL_AUTH_SOCKET='private/dovecot-auth'
 export DOVECOT_AUTH_MASTER_PATH="${DOVECOT_BASE_DIR}/auth-master"
 export DOVECOT_MASTER_PID="${DOVECOT_BASE_DIR}/master.pid"
 
-# Dovecot plugin: Expire.
+# Protocols.
+export DOVECOT_PROTOCOLS="pop3 imap sieve lmtp"
+
+# Plugin: Expire.
 # NOTE: dict process currently runs as root, so this file will be owned as root.
 export DOVECOT_EXPIRE_DICT_BDB='/var/lib/dovecot/expire/expire.db'
 
-# Dovecot quota warning.
+# Plugin: quota warning.
 export DOVECOT_QUOTA_WARNING_SCRIPT='/usr/local/bin/dovecot-quota-warning.sh'
+# Plugin: share folder.
 export DOVECOT_SHARE_FOLDER_DB_TABLE='share_folder'
 export DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE='anyone_shares'
 export DOVECOT_REALTIME_QUOTA_TABLE='used_quota'
@@ -122,7 +123,9 @@ elif [ X"${BACKEND}" == X'PGSQL' ]; then
     export DOVECOT_REALTIME_QUOTA_SQLTYPE='pgsql'
 fi
 
-export DOVECOT_PROTOCOLS="pop3 imap sieve lmtp"
+# Plugin: stats
+export DOVECOT_SERVICE_STATS_USER="${SYS_USER_VMAIL}"
+export DOVECOT_SERVICE_STATS_PORT='24242'
 
 # Local (Mail) Delivery Agent
 #   - dovecot

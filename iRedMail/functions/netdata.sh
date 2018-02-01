@@ -31,9 +31,7 @@ netdata_install()
 
     service_control enable ${NETDATA_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        ln -s ${NETDATA_CONF_DIR} /usr/local/etc/netdata >> ${INSTALL_LOG} 2>&1
-    else
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         ln -s ${NETDATA_CONF_DIR} /etc/netdata >> ${INSTALL_LOG} 2>&1
     fi
 
@@ -93,7 +91,7 @@ EOF
         perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
+        su - ${SYS_USER_PGSQL} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 CREATE USER ${NETDATA_DB_USER} WITH ENCRYPTED PASSWORD '${NETDATA_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 EOF
 
@@ -117,7 +115,10 @@ netdata_system_tune()
 netdata_setup()
 {
     if [ X"${DISTRO}" != X'OPENBSD' ]; then
-        check_status_before_run netdata_install
+        if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+            check_status_before_run netdata_install
+        fi
+
         check_status_before_run netdata_config
         check_status_before_run netdata_module_config
         check_status_before_run netdata_system_tune
@@ -125,7 +126,6 @@ netdata_setup()
 
     cat >> ${TIP_FILE} <<EOF
 netdata (monitor):
-    - Installation directory: ${NETDATA_ROOT_DIR}
     - Config files:
         - All config files: ${NETDATA_CONF_DIR}
         - Main config file: ${NETDATA_CONF}

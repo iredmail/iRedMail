@@ -20,15 +20,26 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
+#
 # netdata: https://my-netdata.io
-export NETDATA_PARENT_DIR='/opt'
-export NETDATA_ROOT_DIR="${NETDATA_PARENT_DIR}/netdata"
-export NETDATA_CONF_DIR="${NETDATA_ROOT_DIR}/etc/netdata"
+#
+# iRedMail install netdata with the '.bin' package on Linux, it installs
+# netdata application files under '/opt/netdata' by default.
+# Directory contains all config files
+export NETDATA_CONF_DIR="/opt/netdata/etc/netdata"
+
+# Log directory
+export NETDATA_LOG_DIR="/opt/netdata/var/log/netdata"
+
+if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+    export NETDATA_CONF_DIR='/usr/local/etc/netdata'
+    export NETDATA_LOG_DIR='/var/log/netdata'
+fi
 
 export NETDATA_PORT='19999'
 export NETDATA_RC_SCRIPT_NAME='netdata'
 
-# Main config files.
+# Main config file.
 export NETDATA_CONF="${NETDATA_CONF_DIR}/netdata.conf"
 
 # web auth file
@@ -48,8 +59,10 @@ export NETDATA_CONF_HEALTH_ALARM_NOTIFY="${NETDATA_CONF_DIR}/health_alarm_notify
 export NETDATA_CONF_PLUGIN_MYSQL="${NETDATA_CONF_DIR}/python.d/mysql.conf"
 export NETDATA_CONF_PLUGIN_PGSQL="${NETDATA_CONF_DIR}/python.d/postgres.conf"
 
-# Log directories and files
-export NETDATA_LOG_DIR="${NETDATA_ROOT_DIR}/var/log/netdata"
+if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+    export NETDATA_CONF_DIR="/usr/local/etc/netdata"
+    export NETDATA_LOG_DIR='/var/log/netdata'
+fi
 
 # Database
 # NETDATA_DB_PASSWD is generated in dialog/optional_components.sh.

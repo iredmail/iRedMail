@@ -55,11 +55,11 @@ password="${AMAVISD_DB_PASSWD}"
 EOF
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_SYS_USER_HOME}/amavisd.sql >> ${INSTALL_LOG} 2>&1
-        cp -f ${SAMPLE_DIR}/amavisd/bypass.sql ${PGSQL_SYS_USER_HOME}/bypass.sql >> ${INSTALL_LOG} 2>&1
-        chmod 0777 ${PGSQL_SYS_USER_HOME}/amavisd.sql >/dev/null
+        cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_USER_HOMEDIR}/amavisd.sql >> ${INSTALL_LOG} 2>&1
+        cp -f ${SAMPLE_DIR}/amavisd/bypass.sql ${PGSQL_USER_HOMEDIR}/bypass.sql >> ${INSTALL_LOG} 2>&1
+        chmod 0777 ${PGSQL_USER_HOMEDIR}/amavisd.sql >/dev/null
 
-        su - ${PGSQL_SYS_USER} -c "psql -d template1" >> ${INSTALL_LOG}  <<EOF
+        su - ${SYS_USER_PGSQL} -c "psql -d template1" >> ${INSTALL_LOG}  <<EOF
 -- Create database
 CREATE DATABASE ${AMAVISD_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 
@@ -70,13 +70,13 @@ ALTER DATABASE ${AMAVISD_DB_NAME} OWNER TO ${AMAVISD_DB_USER};
 EOF
 
         # Import Amavisd SQL template
-        su - ${PGSQL_SYS_USER} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
-\i ${PGSQL_SYS_USER_HOME}/amavisd.sql;
-\i ${PGSQL_SYS_USER_HOME}/bypass.sql;
+        su - ${SYS_USER_PGSQL} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
+\i ${PGSQL_USER_HOMEDIR}/amavisd.sql;
+\i ${PGSQL_USER_HOMEDIR}/bypass.sql;
 EOF
-        rm -f ${PGSQL_SYS_USER_HOME}/{amavisd,bypass}.sql >> ${INSTALL_LOG}
+        rm -f ${PGSQL_USER_HOMEDIR}/{amavisd,bypass}.sql >> ${INSTALL_LOG}
 
-        su - ${PGSQL_SYS_USER} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
+        su - ${SYS_USER_PGSQL} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
 ALTER DATABASE ${AMAVISD_DB_NAME} SET bytea_output TO 'escape';
 EOF
     fi
