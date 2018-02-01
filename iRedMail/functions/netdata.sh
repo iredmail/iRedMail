@@ -27,7 +27,7 @@ netdata_install()
     chmod +x ${NETDATA_PKG_NAME}
 
     # Note: netdata installer will generate rc/systemd script automatically.
-    ./${NETDATA_PKG_NAME} --accept >> ${RUNTIME_DIR}/netdata-install.log
+    ./${NETDATA_PKG_NAME} --accept > ${RUNTIME_DIR}/netdata-install.log 2>&1
 
     service_control enable ${NETDATA_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
@@ -122,4 +122,21 @@ netdata_setup()
         check_status_before_run netdata_module_config
         check_status_before_run netdata_system_tune
     fi
+
+    cat >> ${TIP_FILE} <<EOF
+netdata (monitor):
+    - Installation directory: ${NETDATA_ROOT_DIR}
+    - Config files:
+        - All config files: ${NETDATA_CONF_DIR}
+        - Main config file: ${NETDATA_CONF}
+        - Modified modular config files:
+            - ${NETDATA_CONF_PLUGIN_MYSQL}
+            - ${NETDATA_CONF_PLUGIN_PGSQL}
+    - Log directory: ${NETDATA_LOG_DIR}
+    - SQL:
+        - Username: ${NETDATA_DB_USER}
+        - Password: ${NETDATA_DB_PASSWD}
+        - NOTE: No database created for netdata.
+
+EOF
 }
