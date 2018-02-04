@@ -57,8 +57,11 @@ netdata_config()
     chown ${HTTPD_USER}:${HTTPD_GROUP} ${NETDATA_HTTPD_AUTH_FILE}
     chmod 0400 ${NETDATA_HTTPD_AUTH_FILE}
 
-    _pw="$(generate_password_hash MD5 ${DOMAIN_ADMIN_PASSWD_PLAIN})"
-    echo "${DOMAIN_ADMIN_EMAIL}:${_pw}" >> ${NETDATA_HTTPD_AUTH_FILE}
+    # Add postmaster@<first-domain> if not present.
+    if ! grep "^${DOMAIN_ADMIN_EMAIL}:" ${NETDATA_HTTPD_AUTH_FILE} &>/dev/null; then
+        _pw="{SSHA}$(generate_password_hash SSHA ${DOMAIN_ADMIN_PASSWD_PLAIN})"
+        echo "${DOMAIN_ADMIN_EMAIL}:${_pw}" >> ${NETDATA_HTTPD_AUTH_FILE}
+    fi
 
     echo 'export status_netdata_config="DONE"' >> ${STATUS_FILE}
 }
@@ -72,16 +75,6 @@ netdata_module_config()
 GRANT USAGE ON *.* TO ${NETDATA_DB_USER}@${MYSQL_GRANT_HOST} IDENTIFIED BY '${NETDATA_DB_PASSWD}';
 FLUSH PRIVILEGES;
 EOF
-
-        #ECHO_DEBUG "Create ${NETDATA_DOT_MY_CNF}."
-        #cp -f ${SAMPLE_DIR}/netdata/my.cnf ${NETDATA_DOT_MY_CNF} >> ${INSTALL_LOG} 2>&1
-        #perl -pi -e 's#PH_MYSQL_SERVER_ADDRESS#$ENV{MYSQL_SERVER_ADDRESS}#g' ${NETDATA_DOT_MY_CNF} >> ${INSTALL_LOG} 2>&1
-        #perl -pi -e 's#PH_MYSQL_SERVER_PORT#$ENV{MYSQL_SERVER_PORT}#g' ${NETDATA_DOT_MY_CNF} >> ${INSTALL_LOG} 2>&1
-        #perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_DOT_MY_CNF} >> ${INSTALL_LOG} 2>&1
-        #perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_DOT_MY_CNF} >> ${INSTALL_LOG} 2>&1
-
-        #ECHO_DEBUG "Link ${NETDATA_DOT_MY_CNF} to /root/.my.cnf-${NETDATA_DB_USER}."
-        #ln -s ${NETDATA_DOT_MY_CNF} /root/.my.cnf-${NETDATA_DB_USER} >> ${INSTALL_LOG} 2>&1
 
         ECHO_DEBUG "Generate ${NETDATA_CONF_PLUGIN_MYSQL}."
         backup_file ${NETDATA_CONF_PLUGIN_MYSQL}
