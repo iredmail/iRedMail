@@ -71,6 +71,8 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export PKG_APT_TRANSPORT_HTTPS="apt-transport-https"
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SHASUM_CHECK_FILE='pkgs.freebsd.sha256'
+    export CMD_SHASUM_CHECK='shasum -c'
+    export CMD_SHASUM='sha256'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SHASUM_CHECK_FILE='pkgs.openbsd.sha256'
     export CMD_SHASUM_CHECK='cksum -c'
@@ -113,10 +115,26 @@ fetch_misc()
 verify_downloaded_packages()
 {
     ECHO_INFO "Validate downloaded source tarballs ..."
-    cd ${_ROOTDIR}
-    ${CMD_SHASUM_CHECK} ${SHASUM_CHECK_FILE}
 
-    if [ X"$?" == X"0" ]; then
+    cd ${_ROOTDIR}
+    if [ X"${DISTRO}" == X"FREEBSD" ]; then
+        # Get package names.
+        pkg_names="$(cat ${SHASUM_CHECK_FILE} | awk -F'(' '{print $2}' | awk -F')' '{print $1}')"
+
+        # Create a temp file to store shasum
+        ${CMD_SHASUM} ${pkg_names} > _tmp_pkg_names
+        #cat _tmp_pkg_names
+
+        # Compare the shasum
+        diff _tmp_pkg_names ${SHASUM_CHECK_FILE}
+        RETVAL="$?"
+        rm -f _tmp_pkg_names &>/dev/null
+    else
+        ${CMD_SHASUM_CHECK} ${SHASUM_CHECK_FILE}
+        RETVAL="$?"
+    fi
+
+    if [ X"${RETVAL}" == X"0" ]; then
         echo -e "\t[ OK ]"
         echo 'export status_fetch_misc="DONE"' >> ${STATUS_FILE}
         echo 'export status_verify_downloaded_packages="DONE"' >> ${STATUS_FILE}
