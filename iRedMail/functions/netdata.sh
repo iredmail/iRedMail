@@ -29,7 +29,11 @@ netdata_install()
     # Note: netdata installer will generate rc/systemd script automatically.
     ./${NETDATA_PKG_NAME} --accept > ${RUNTIME_DIR}/netdata-install.log 2>&1
 
-    service_control enable ${NETDATA_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        service_control enable 'netdata_enable' 'YES' >> ${INSTALL_LOG} 2>&1
+    else
+        service_control enable ${NETDATA_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    fi
 
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         ln -s ${NETDATA_CONF_DIR} /etc/netdata >> ${INSTALL_LOG} 2>&1

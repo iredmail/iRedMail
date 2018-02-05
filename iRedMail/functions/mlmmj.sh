@@ -124,7 +124,7 @@ EOF
     touch ${MLMMJADMIN_LOG_FILE}
     chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${MLMMJADMIN_LOG_DIR} ${MLMMJADMIN_LOG_FILE}
 
-    ECHO_DEBUG "Setting logrotate for dovecot log file."
+    ECHO_DEBUG "Setting logrotate for mlmmjadmin log file."
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         cp -f ${SAMPLE_DIR}/logrotate/mlmmjadmin ${MLMMJADMIN_LOGROTATE_FILE}
         chmod 0644 ${MLMMJADMIN_LOGROTATE_FILE}
@@ -132,7 +132,7 @@ EOF
         perl -pi -e 's#PH_MLMMJADMIN_LOG_DIR#$ENV{MLMMJADMIN_LOG_DIR}#g' ${MLMMJADMIN_LOGROTATE_FILE}
         perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${MLMMJADMIN_LOGROTATE_FILE}
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/uwsgi-mlmmjadmin ${MLMMJADMIN_LOGROTATE_FILE}
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/mlmmjadmin ${MLMMJADMIN_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_MLMMJADMIN_LOG_FILE#$ENV{MLMMJADMIN_LOG_FILE}#g' ${MLMMJADMIN_LOGROTATE_FILE}
         perl -pi -e 's#PH_MLMMJADMIN_UWSGI_PID_FILE#$ENV{MLMMJADMIN_UWSGI_PID_FILE}#g' ${MLMMJADMIN_LOGROTATE_FILE}
@@ -148,7 +148,7 @@ EOF
     ECHO_DEBUG "Generate modular syslog config file for mlmmjadmin."
     if [ X"${USE_RSYSLOG}" == X'YES' ]; then
         # Use rsyslog.
-        # Copy rsyslog config file used to filter Dovecot log
+        # Copy rsyslog config file used to filter mlmmjadmin log
         cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-mlmmjadmin.conf ${SYSLOG_CONF_DIR}
 
         perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-iredmail-mlmmjadmin.conf
@@ -190,9 +190,6 @@ EOF
         elif [ X"${DISTRO}" == X'FREEBSD' ]; then
             cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/${MLMMJADMIN_RC_SCRIPT_NAME}.freebsd ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
             service_control enable 'mlmmjadmin_enable' 'YES' >> ${INSTALL_LOG} 2>&1
-
-            # Rotate log file with newsyslog
-            cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/uwsgi-mlmmjadmin ${MLMMJADMIN_LOGROTATE_FILE}
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.openbsd ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
             chmod 0755 ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
