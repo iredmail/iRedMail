@@ -311,9 +311,6 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         else
             export UNSUPPORTED_RELEASE='YES'
         fi
-
-        # Override settings.
-        export SHELL_NOLOGIN='/usr/sbin/nologin'
     else
         export UNSUPPORTED_RELEASE='YES'
     fi
@@ -468,6 +465,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Ubuntu & Debian.
     export DEBIAN_FRONTEND='noninteractive'
     export SYSTEMD_SERVICE_DIR='/lib/systemd/system'
+    export SHELL_NOLOGIN='/usr/sbin/nologin'
 
     # Package management.
     if [ X"${APTGET}" != X"" ]; then

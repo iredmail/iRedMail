@@ -21,6 +21,9 @@
 #---------------------------------------------------------------------
 netdata_install()
 {
+    #
+    # NOTE: Install netdata on __LINUX__.
+    #
     ECHO_DEBUG "Install netdata with package: ${NETDATA_PKG_NAME}."
 
     cd ${PKG_MISC_DIR}
@@ -29,15 +32,7 @@ netdata_install()
     # Note: netdata installer will generate rc/systemd script automatically.
     ./${NETDATA_PKG_NAME} --accept > ${RUNTIME_DIR}/netdata-install.log 2>&1
 
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        service_control enable 'netdata_enable' 'YES' >> ${INSTALL_LOG} 2>&1
-    else
-        service_control enable ${NETDATA_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
-    fi
-
-    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-        ln -s ${NETDATA_CONF_DIR} /etc/netdata >> ${INSTALL_LOG} 2>&1
-    fi
+    ln -s ${NETDATA_CONF_DIR} /etc/netdata >> ${INSTALL_LOG} 2>&1
 
     # netdata will handle logrotate config file automatically.
     ln -s ${NETDATA_LOG_DIR} /var/log/netdata >> ${INSTALL_LOG} 2>&1
@@ -47,6 +42,13 @@ netdata_install()
 
 netdata_config()
 {
+    # Enable service.
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        service_control enable 'netdata_enable' 'YES' >> ${INSTALL_LOG} 2>&1
+    else
+        service_control enable ${NETDATA_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    fi
+
     backup_file ${NETDATA_CONF}
 
     ECHO_DEBUG "Generate netdata config file: ${SAMPLE_DIR}/netdata/netdata.conf -> ${NETDATA_CONF}."
@@ -99,6 +101,8 @@ EOF
         perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
         perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
     fi
+
+    echo 'export status_netdata_module_config="DONE"' >> ${STATUS_FILE}
 }
 
 netdata_system_tune()
@@ -138,4 +142,6 @@ netdata (monitor):
         - NOTE: No database created for netdata.
 
 EOF
+
+    echo 'export status_netdata_setup="DONE"' >> ${STATUS_FILE}
 }
