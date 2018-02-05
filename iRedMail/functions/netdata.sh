@@ -59,7 +59,7 @@ netdata_config()
 
     # Add postmaster@<first-domain> if not present.
     if ! grep "^${DOMAIN_ADMIN_EMAIL}:" ${NETDATA_HTTPD_AUTH_FILE} &>/dev/null; then
-        _pw="{SSHA}$(generate_password_hash SSHA ${DOMAIN_ADMIN_PASSWD_PLAIN})"
+        _pw="$(generate_password_hash SSHA ${DOMAIN_ADMIN_PASSWD_PLAIN})"
         echo "${DOMAIN_ADMIN_EMAIL}:${_pw}" >> ${NETDATA_HTTPD_AUTH_FILE}
     fi
 

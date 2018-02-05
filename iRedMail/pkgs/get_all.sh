@@ -37,7 +37,11 @@ check_runtime_dir
 
 export PKG_DIR="${_ROOTDIR}/pkgs"
 export PKG_MISC_DIR="${_ROOTDIR}/misc"
-export BIN_MD5="md5sum"
+
+# Verify downloaded source tarballs
+export SHASUM_CHECK_FILE='pkgs.sha256'
+# Linux/FreeBSD use 'shasum -c'
+export CMD_SHASUM_CHECK='shasum -c'
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
     # Special package.
@@ -48,6 +52,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export BIN_WGET='wget'
     export PKG_WGET='wget'
 
+    export CMD_SHASUM_CHECK='sha256sum -c'
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     if [ X"${OS_ARCH}" == X"x86_64" ]; then
         export pkg_arch='amd64'
@@ -64,23 +69,17 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export PKG_WGET="wget"
 
     export PKG_APT_TRANSPORT_HTTPS="apt-transport-https"
-fi
-
-# Misc file (source tarball) list.
-if [ X"${DISTRO}" == X'FREEBSD' ]; then
-    export BIN_MD5="md5"
-    MD5_FILE='MD5.freebsd'
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export SHASUM_CHECK_FILE='pkgs.freebsd.sha256'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export BIN_MD5="md5"
-    MD5_FILE='MD5.openbsd'
-else
-    MD5_FILE='MD5.misc'
+    export SHASUM_CHECK_FILE='pkgs.openbsd.sha256'
+    export CMD_SHASUM_CHECK='cksum -c'
 fi
 
 if [ X"${DISTRO}" == X'FREEBSD' ]; then
-    MISCLIST="$(cat ${_ROOTDIR}/${MD5_FILE} | awk -F'[(/)]' '{print $3}')"
+    MISCLIST="$(cat ${_ROOTDIR}/${SHASUM_CHECK_FILE} | awk -F'[(/)]' '{print $3}')"
 else
-    MISCLIST="$(cat ${_ROOTDIR}/${MD5_FILE} | awk -F'misc/' '{print $2}')"
+    MISCLIST="$(cat ${_ROOTDIR}/${SHASUM_CHECK_FILE} | awk -F'misc/' '{print $2}')"
 fi
 
 prepare_dirs()
@@ -111,36 +110,19 @@ fetch_misc()
     done
 }
 
-check_md5()
+verify_downloaded_packages()
 {
+    ECHO_INFO "Validate downloaded source tarballs ..."
     cd ${_ROOTDIR}
+    ${CMD_SHASUM_CHECK} ${SHASUM_CHECK_FILE}
 
-    ECHO_INFO "Validate packages ..."
-
-    if [ X"${DISTRO}" == X"FREEBSD" ]; then
-        # Get package names.
-        pkg_names="$(cat ${MD5_FILE} | awk -F'(' '{print $2}' | awk -F')' '{print $1}')"
-
-        # Create a temp file to store shasum
-        ${BIN_MD5} ${pkg_names} > _tmp_pkg_names
-        cat _tmp_pkg_names
-
-        # Compare the shasum
-        diff _tmp_pkg_names ${MD5_FILE} &>/dev/null
-        RETVAL="$?"
-        rm -f _tmp_pkg_names &>/dev/null
-    else
-        ${BIN_MD5} -c ${MD5_FILE}
-        RETVAL="$?"
-    fi
-
-    if [ X"${RETVAL}" == X"0" ]; then
+    if [ X"$?" == X"0" ]; then
         echo -e "\t[ OK ]"
         echo 'export status_fetch_misc="DONE"' >> ${STATUS_FILE}
-        echo 'export status_check_md5="DONE"' >> ${STATUS_FILE}
+        echo 'export status_verify_downloaded_packages="DONE"' >> ${STATUS_FILE}
     else
         echo -e "\t[ FAILED ]"
-        ECHO_ERROR "MD5 check failed. Script exit ...\n"
+        ECHO_ERROR "Package verification failed. Script exit ...\n"
         exit 255
     fi
 }
@@ -284,7 +266,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 fi
 
 check_status_before_run fetch_misc && \
-check_status_before_run check_md5 && \
+check_status_before_run verify_downloaded_packages && \
 check_pkg ${BIN_DIALOG} ${PKG_DIALOG} && \
 echo_end_msg && \
 echo 'export status_get_all="DONE"' >> ${STATUS_FILE}
