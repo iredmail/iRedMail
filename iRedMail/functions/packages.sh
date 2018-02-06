@@ -332,7 +332,7 @@ EOF
             fi
 
             ECHO_INFO "Import apt key (${SOGO_PKG_MIRROR_APT_KEY}) for SOGo repo (${SOGO_PKG_MIRROR})."
-            apt-key adv --keyserver keys.gnupg.net --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
+            apt-key adv --keyserver https://keys.gnupg.net --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
 
             # Try another PGP key server if `keys.gnupg.net` is not available
             if [ X"$?" != X'0' ]; then
