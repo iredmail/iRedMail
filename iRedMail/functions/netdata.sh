@@ -107,10 +107,18 @@ EOF
 
 netdata_system_tune()
 {
-    ECHO_DEBUG "Add sysctl parameters for better netdata performance."
-    update_sysctl_param vm.dirty_expire_centisecs 60000
-    update_sysctl_param vm.dirty_background_ratio 80
-    update_sysctl_param vm.dirty_ratio 90
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        ECHO_DEBUG "Add sysctl parameters for better netdata performance."
+        update_sysctl_param vm.dirty_expire_centisecs 60000
+        update_sysctl_param vm.dirty_background_ratio 80
+        update_sysctl_param vm.dirty_ratio 90
+
+        ECHO_DEBUG "Increase open files limit."
+        if [ X"${USE_SYSTEMD}" == X'YES' ]; then
+            mkdir /etc/systemd/system/netdata.service.d >> ${INSTALL_LOG} 2>&1
+            cp -f ${SAMPLE_DIR}/netdata/systemd-limits.conf /etc/systemd/system/netdata.service.d/limits.conf >> ${INSTALL_LOG} 2>&1
+        fi
+    fi
 
     echo 'export status_netdata_system_tune="DONE"' >> ${STATUS_FILE}
 }

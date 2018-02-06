@@ -359,19 +359,19 @@ EOF
 
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
 cat <<EOF
-* - Roundcube webmail: httpS://${HOSTNAME}/mail/
+* - Roundcube webmail: https://${HOSTNAME}/mail/
 EOF
     fi
 
     if [ X"${USE_SOGO}" == X'YES' ]; then
 cat <<EOF
-* - SOGo groupware: httpS://${HOSTNAME}/SOGo/
+* - SOGo groupware: https://${HOSTNAME}/SOGo/
 EOF
     fi
 
     cat <<EOF
 *
-* - Web admin panel (iRedAdmin): httpS://${HOSTNAME}/iredadmin/
+* - Web admin panel (iRedAdmin): https://${HOSTNAME}/iredadmin/
 *
 * You can login to above links with below credential:
 *
