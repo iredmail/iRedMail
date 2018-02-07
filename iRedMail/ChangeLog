@@ -14,7 +14,7 @@ iRedMail-0.9.8:
           server for easy mlmmj management.
 
             - mlmmj: http://mlmmj.org/
-            - mlmmjadmin: https://bitbucket.org/iredmail/mlmmjadmin/src
+            - mlmmjadmin: https://github.com/iredmail/mlmmjadmin
 
         - Remove SQL column: `mailbox.local_part`. It's inherited from
           PostfixAdmin at the very beginning, but not used by any applications,
