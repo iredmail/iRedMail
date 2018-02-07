@@ -107,6 +107,26 @@ check_hostname()
         exit 255
 }
 
+check_openbsd_install_url()
+{
+    touch /etc/installurl
+
+    # Make sure it contains a http/ftp/scp URL
+    if ! grep -i '^(ftp|http|https|scp)://' /etc/installurl &>/dev/null; then
+        ECHO_INFO "No valid OpenBSD mirror server URL found in file /etc/installurl."
+        ECHO_INFO "We will use the fastly CDN for this iRedMail installation:"
+        ECHO_INFO ''
+        ECHO_INFO "  - https://fastly.cdn.openbsd.org/pub/OpenBSD/\$(uname -r)/packages/\$(machine -a)/"
+        ECHO_INFO ''
+        ECHO_INFO "If you prefer a nearest mirror site, please check links below:"
+        ECHO_INFO ''
+        ECHO_INFO "  - Mirror sites: http://www.openbsd.org/ftp.html"
+        ECHO_INFO "  - installurl(5): http://man.openbsd.org/installurl.5"
+        ECHO_INFO ''
+        echo 'https://fastly.cdn.openbsd.org/pub/OpenBSD/$(uname -r)/packages/$(machine -a)/' >> /etc/installurl
+    fi
+}
+
 check_pkg()
 {
     # Usage: check_pkg <command> <package>
@@ -153,6 +173,8 @@ check_env()
 
     # Check FQDN hostname.
     check_hostname
+
+    [ X"${DISTRO}" == X'OPENBSD' ] && check_openbsd_install_url
 
     # Check config tool: dialog.
     check_pkg ${BIN_DIALOG} ${PKG_DIALOG}
@@ -474,7 +496,6 @@ remove_pkg_debian()
 
 install_pkg_openbsd()
 {
-    ECHO_INFO "PKG_PATH: ${PKG_PATH}"
     ECHO_INFO "Installing packages (pkg_add -i -m): $@"
 
     pkg_add -i -m $@

@@ -583,10 +583,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export ENABLE_BACKEND_MYSQL='NO'
 
     # Package management.
-    export ob_pkg_path="https://fastly.cdn.openbsd.org/pub/OpenBSD/$(uname -r)/packages/$(machine -a)/"
-    export PKG_PATH="${PKG_PATH:=${ob_pkg_path}}"
-
-    # Package management.
     export install_pkg='install_pkg_openbsd'
     export remove_pkg='pkg_delete'
     export LIST_ALL_PKGS="pkg_info -a | awk '{print $1}'"
