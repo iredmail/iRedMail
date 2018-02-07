@@ -358,17 +358,22 @@ EOF
 EOF
 
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
-cat <<EOF
+        cat <<EOF
 * - Roundcube webmail: https://${HOSTNAME}/mail/
 EOF
     fi
 
     if [ X"${USE_SOGO}" == X'YES' ]; then
-cat <<EOF
+        cat <<EOF
 * - SOGo groupware: https://${HOSTNAME}/SOGo/
 EOF
     fi
 
+    if [ X"${USE_NETDATA}" == X'YES' ]; then
+        cat <<EOF
+* - netdata (monitor): https://${HOSTNAME}/netdata/
+EOF
+    fi
     cat <<EOF
 *
 * - Web admin panel (iRedAdmin): https://${HOSTNAME}/iredadmin/
