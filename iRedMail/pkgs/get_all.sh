@@ -78,7 +78,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export CMD_SHASUM_CHECK='cksum -c'
 fi
 
-if [ X"${DISTRO}" == X'FREEBSD' ]; then
+if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
     MISCLIST="$(cat ${_ROOTDIR}/${SHASUM_CHECK_FILE} | awk -F'[(/)]' '{print $3}')"
 else
     MISCLIST="$(cat ${_ROOTDIR}/${SHASUM_CHECK_FILE} | awk -F'misc/' '{print $2}')"
