@@ -14,14 +14,18 @@ iRedMail-0.9.8:
           server for easy mlmmj management.
 
             - mlmmj: http://mlmmj.org/
-            - mlmmjadmin: https://github.com/iredmail/mlmmjadmin
+            - mlmmjadmin (developed and maintained by iRedMail team):
+              https://github.com/iredmail/mlmmjadmin
 
-        - Remove SQL column: `mailbox.local_part`. It's inherited from
-          PostfixAdmin at the very beginning, but not used by any applications,
-          time to drop it.
-        - SQL table renamed for SQL backends: alias_moderators -> moderators.
-        - LDAP backend: Allow mail list account to use 2 attributes: member,
-          uniqueMember.
+        - SQL backends:
+            - New table: maillists.[/*]
+            - New columns: domain.maillists, forwardings.is_maillist[/*]
+            - Removed column: mailbox.local_part.
+              It's inherited from PostfixAdmin at the beginning, but not used
+              by any applications, time to drop it.
+            - Table renamed: alias_moderators -> moderators.
+        - LDAP backend:
+            - Allow mail list account to use 2 attributes: member, uniqueMember.
         - Fail2ban: new jail `postfix-pregreet`.
         - Dovecot: Log subject, sender, size in mail deliver log.
         - Amavisd: Add new sql column `maddr.email_raw` and trigger to store
@@ -33,11 +37,12 @@ iRedMail-0.9.8:
               Thanks to Wraptor <nijs.thibaut _at_ gmail.com> for the report in
               forum.
             - not check whether mailbox storage is set to /root.
+        - Postfix: don't block the HELOs used by SendGrid.
         - Nginx: Use single config file for default web hosts.
         - SOGo: Cannot sync contacts on Android devices via EAS.
         - Amavisd: cannot store mail subject if contains emoji.
-        - SQL backends: User under disabled domain is able to send email with
-          smtp protocol.
+        - SQL backends:
+            - User under disabled domain is able to send email with smtp protocol.
         - tools/backup_sogo.sh
             - not set correct owner and permission on backup files.
             - cannot remove old backup files.

@@ -100,6 +100,10 @@
 
 # bypass "[IP_ADDRESS]"
 /^\[(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\]$/ DUNNO
+
+# bypass some HELOs which contains IP address
+/^o\d{1,3}-\d{1,3}-\d{1,3}-\d{1,3}\.outbound-mail\.sendgrid\.net$/ DUNNO
+
 # reject HELO which contains IP address
 /(\d{1,3}[\.-]\d{1,3}[\.-]\d{1,3}[\.-]\d{1,3})/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
 /(\d{1,3}\.ip\.-\d{1,3}-\d{1,3}-\d{1,3}\.eu)/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
