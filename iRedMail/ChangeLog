@@ -1,13 +1,25 @@
 iRedMail-0.9.8:
     * Supports new distribution release:
-        + OpenBSD 6.2. OpenBSD 6.1 is not supported anymore.
-        + Ubuntu 17.10. Ubuntu 14.04 LTS, 17.04 are not supported anymore.
+        + OpenBSD 6.2
+        + Ubuntu 17.10
 
-    * Drop support for RHEL/CentOS 6, Debian 8.
+    * Dropped distribution releases:
+        + RHEL/CentOS 6
+        + Ubuntu 14.04 LTS, 17.04
+        + Debian 8
+        + OpenBSD 6.1
+
     * Apache has been removed, Nginx is the only one web server available.
 
-    * New:
+    * New components:
         - netdata monitor integration: http://my-netdata.io
+          Note: netdata currently works on Linux and FreeBSD, not OpenBSD.
+
+          - Integrate netdata on Linux server:
+            https://docs.iredmail.org/integration.netdata.linux.html
+
+          - Integrate netdata on FreeBSD server:
+            https://docs.iredmail.org/integration.netdata.freebsd.html
 
     * Improvements:
         - Integrate 'mlmmj' mailing list manager, and 'mlmmjadmin' RESTful API
@@ -16,6 +28,12 @@ iRedMail-0.9.8:
             - mlmmj: http://mlmmj.org/
             - mlmmjadmin (developed and maintained by iRedMail team):
               https://github.com/iredmail/mlmmjadmin
+            - Integrate mlmmj & mlmmjadmin:
+                - LDAP backends: https://docs.iredmail.org/integration.mlmmj.ldap.html
+                - MySQL/MariaDB backends: https://docs.iredmail.org/integration.mlmmj.mysql.html
+                - PostgreSQL backend: https://docs.iredmail.org/integration.mlmmj.pgsql.html
+
+          Note: mlmmj & mlmmjadmin are now core components in iRedMail.
 
         - SQL backends:
             - New table: maillists.[/*]
