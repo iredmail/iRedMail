@@ -1,3 +1,7 @@
+location ~* .(jpg|jpeg|png|gif|ico|css|js|bmp)$ {
+    expires 10d;
+}
+
 # Allow access to '^/.well-known/'
 location ~ ^/.well-known/ {
     allow all;
