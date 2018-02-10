@@ -98,8 +98,6 @@ nginx_config()
     perl -pi -e 's#PH_HTTPD_LOG_ACCESSLOG#$ENV{HTTPD_LOG_ACCESSLOG}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/log.conf
     perl -pi -e 's#PH_NGINX_MIME_TYPES#$ENV{NGINX_MIME_TYPES}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/mime_types.conf
     perl -pi -e 's#PH_PHP_FPM_SOCKET#$ENV{PHP_FPM_SOCKET}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php-fpm.conf
-    # netdata
-    perl -pi -e 's#PH_NETDATA_PORT#$ENV{NETDATA_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/*.conf
 
     #
     # web sites
@@ -129,6 +127,7 @@ nginx_config()
 
     # netdata
     perl -pi -e 's#PH_NETDATA_HTTPD_AUTH_FILE#$ENV{NETDATA_HTTPD_AUTH_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
+    perl -pi -e 's#PH_NETDATA_PORT#$ENV{NETDATA_HTTPD_AUTH_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
 
     # Adminer
     perl -pi -e 's#PH_HTTPD_SERVERROOT#$ENV{HTTPD_SERVERROOT}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
