@@ -51,6 +51,9 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     # command: wget.
     export BIN_WGET='wget'
     export PKG_WGET='wget'
+    # command: shasum
+    export BIN_SHASUM='shasum'
+    export PKG_SHASUM='perl-Digest-SHA'
 
     export CMD_SHASUM_CHECK='sha256sum -c'
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
@@ -67,6 +70,9 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # command: wget.
     export BIN_WGET='wget'
     export PKG_WGET="wget"
+    # command: shasum
+    export BIN_SHASUM='shasum'
+    export PKG_SHASUM='perl'
 
     export PKG_APT_TRANSPORT_HTTPS="apt-transport-https"
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -267,6 +273,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     # Check required commands, install related package if command doesn't exist.
     check_pkg ${BIN_WHICH} ${PKG_WHICH}
     check_pkg ${BIN_WGET} ${PKG_WGET}
+    check_pkg ${BIN_SHASUM} ${PKG_SHASUM}
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ ! -e /usr/lib/apt/methods/https ]; then
@@ -277,6 +284,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ ! -e /usr/bin/dirmngr ]; then
         eval ${install_pkg} dirmngr
     fi
+
+    check_pkg ${BIN_SHASUM} ${PKG_SHASUM}
 
     # Force update.
     ECHO_INFO "apt-get update ..."
