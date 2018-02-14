@@ -1,16 +1,20 @@
+#
 # Running Roundcube as a subfolder to an existing virtual host
+#
+# Block access to sensitive files.
 location ~ ^/mail/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING|config|temp|logs|installer)(.*) { deny all; }
 location ~ ^/mail/plugins/enigma/home(.*) { deny all; }
 location ~ (composer.json|jsdeps.json)(.*) { deny all; }
 
+# Redirect URI `/mail` to `/mail/`.
 location = /mail {
     return 301 /mail/;
 }
 
-location ~ ^/mail/(.*)\.php$ {
+location ~ ^/mail/(.*\.php)$ {
     include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
     include PH_NGINX_CONF_TMPL_DIR/fastcgi_php.tmpl;
-    fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK/$1.php;
+    fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK/$1;
 }
 
 location ~ ^/mail/(.*) {

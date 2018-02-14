@@ -1,8 +1,9 @@
 #
 # Run Roundcube as a sub-domain virtual host.
 #
-location ~ ^/mail/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING|config|temp|logs|installer)(.*) { deny all; }
-location ~ ^/mail/plugins/enigma/home(.*) { deny all; }
+# Block access to sensitive files.
+location ~ ^/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING|config|temp|logs|installer)(.*) { deny all; }
+location ~ ^/plugins/enigma/home(.*) { deny all; }
 location ~ (composer.json|jsdeps.json)(.*) { deny all; }
 
 location / {
