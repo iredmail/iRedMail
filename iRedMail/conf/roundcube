@@ -57,3 +57,6 @@ export RCM_DB_USER="roundcube"
 # please provide a string of exactly 24 chars.
 export tmp_rcm_des_key="$(${RANDOM_STRING} | cut -c-24)"
 export RCM_DES_KEY="${tmp_rcm_des_key}"
+
+# Directory used to store PGP keys generated with Roundcube plugin `enigma`
+export RCM_PLUGIN_ENIGMA_PGP_HOMEDIR="${RCM_PLUGIN_ENIGMA_PGP_HOMEDIR:=${STORAGE_BASE_DIR}/pgp-keys}"

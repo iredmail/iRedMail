@@ -54,7 +54,8 @@ nginx_config()
     #
     # Enable modular config files
     #
-    _modular_conf='client_max_body_size.conf \
+    _modular_conf='cache.conf \
+        client_max_body_size.conf \
         default_type.conf \
         gzip.conf \
         log.conf \
