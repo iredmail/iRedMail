@@ -56,7 +56,9 @@ iRedMail-0.9.8:
               forum.
             - not check whether mailbox storage is set to /root.
         - Postfix: don't block the HELOs used by SendGrid.
-        - Nginx: Use single config file for default web hosts.
+        - Nginx:
+            - Use single config file for default web hosts.
+            - [SECURITY FIX] Not block access to Roundcube sensitive files.
         - SOGo: Cannot sync contacts on Android devices via EAS.
         - Amavisd: cannot store mail subject if contains emoji.
         - SQL backends:
