@@ -2,9 +2,8 @@
 # Running Roundcube as a subfolder to an existing virtual host
 #
 # Block access to sensitive files.
-location ~ ^/mail/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING|config|temp|logs|installer)(.*) { deny all; }
-location ~ ^/mail/plugins/enigma/home(.*) { deny all; }
-location ~ (composer.json|jsdeps.json)(.*) { deny all; }
+location ~ ^/mail/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING|config|temp|logs|installer|composer|jsdeps) { deny all; }
+location ~ ^/mail/plugins/enigma/home { deny all; }
 
 # Redirect URI `/mail` to `/mail/`.
 location = /mail {
