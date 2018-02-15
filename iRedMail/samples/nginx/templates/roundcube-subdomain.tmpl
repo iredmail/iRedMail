@@ -1,8 +1,8 @@
 #
 # Run Roundcube as a sub-domain virtual host.
 #
-# Block access to default directories (except 'skins' and 'plugins') and files under these directories
-location ~ /(bin|config|installer|logs|program|public_html|SQL|temp|vendor)($|/.*) { deny all; }
+# Block access to default directories and files under these directories
+location ~ /(bin|config|installer|logs|public_html|SQL|temp|vendor)($|/.*) { deny all; }
 
 # Block access to default files under top-directory and files start with same name.
 location ~ /(CHANGELOG|composer.json|INSTALL|jsdeps.json|LICENSE|README|UPGRADING)($|.*) { deny all; }
