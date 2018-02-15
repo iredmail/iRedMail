@@ -220,6 +220,8 @@ case $arch in
     armv6l|arm7l|armv7l)
         # Debian ARM platform and Raspberry Pi.
         export OS_ARCH='armhf' ;;
+    aarch64)
+        export OS_ARCH='aarch64' ;;
     *)
         echo "Your architecture is not supported yet: ${arch}."
         echo "Both i386 and x86_64 are supported by ${PROG_NAME}."

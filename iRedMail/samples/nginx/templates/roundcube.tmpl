@@ -2,7 +2,7 @@
 # Running Roundcube as a subfolder to an existing virtual host
 #
 # Block access to default directories and files under these directories
-location ~ /mail/(bin|config|installer|logs|public_html|SQL|temp|vendor)($|/.*) { deny all; }
+location ~ /mail/(bin|config|installer|logs|SQL|temp|vendor)($|/.*) { deny all; }
 
 # Block access to default files under top-directory and files start with same name.
 location ~ /mail/(CHANGELOG|composer.json|INSTALL|jsdeps.json|LICENSE|README|UPGRADING)($|.*) { deny all; }
