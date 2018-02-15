@@ -1,9 +1,17 @@
 #
 # Run Roundcube as a sub-domain virtual host.
 #
-# Block access to sensitive files.
-location ~ ^/(bin|SQL|README|INSTALL|LICENSE|CHANGELOG|UPGRADING|config|temp|logs|installer|composer|jsdeps) { deny all; }
-location ~ ^/plugins/enigma/home { deny all; }
+# Block access to default directories (except 'skins' and 'plugins') and files under these directories
+location ~ /(bin|config|installer|logs|program|public_html|SQL|temp|vendor)($|/.*) { deny all; }
+
+# Block access to default files under top-directory and files start with same name.
+location ~ /(CHANGELOG|composer.json|INSTALL|jsdeps.json|LICENSE|README|UPGRADING)($|.*) { deny all; }
+
+# Block plugin config files and sample config files.
+location ~ /plugins/.*/config.inc.php.* { deny all; }
+
+# Block access to plugin data
+location ~ /plugins/enigma/home($|/.*) { deny all; }
 
 location / {
     root    PH_RCM_HTTPD_ROOT_SYMBOL_LINK;
