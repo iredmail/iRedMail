@@ -190,7 +190,6 @@ smtpd_sender_restrictions =
 
 # Recipient restrictions
 smtpd_recipient_restrictions =
-    reject_unknown_recipient_domain
     reject_non_fqdn_recipient
     reject_unlisted_recipient
     check_policy_service inet:PH_IREDAPD_SERVER_ADDRESS:PH_IREDAPD_LISTEN_PORT
