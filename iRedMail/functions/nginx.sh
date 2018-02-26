@@ -65,7 +65,6 @@ nginx_config()
         types_hash_max_size.conf'
 
     [ X"${IREDMAIL_USE_PHP}" == X'YES' ] && _modular_conf="${_modular_conf} php-fpm.conf"
-    [ X"${USE_NETDATA}" == X'YES' ] && _modular_conf="${_modular_conf} netdata.conf"
 
     for cf in ${_modular_conf}; do
         ln -s ${HTTPD_CONF_DIR_AVAILABLE_CONF}/${cf} ${HTTPD_CONF_DIR_ENABLED_CONF}/${cf} >> ${INSTALL_LOG} 2>&1
