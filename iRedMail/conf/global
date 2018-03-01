@@ -217,16 +217,7 @@ arch="$(uname -m)"
 case $arch in
     i[3456]86) export OS_ARCH='i386' ;;
     x86_64|amd64) export OS_ARCH='x86_64' ;;
-    armv6l|arm7l|armv7l)
-        # Debian ARM platform and Raspberry Pi.
-        export OS_ARCH='armhf' ;;
-    aarch64)
-        export OS_ARCH='aarch64' ;;
-    *)
-        echo "Your architecture is not supported yet: ${arch}."
-        echo "Both i386 and x86_64 are supported by ${PROG_NAME}."
-        exit 255
-        ;;
+    *) export OS_ARCH="${arch}" ;;
 esac
 
 # Path to some programs

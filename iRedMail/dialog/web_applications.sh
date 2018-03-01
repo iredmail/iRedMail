@@ -26,11 +26,11 @@
 if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
     export DIALOG_SELECTABLE_ROUNDCUBE='YES'
     export DIALOG_SELECTABLE_NETDATA='YES'
-    export DIALOG_SELECTABLE_SOGO='YES'
+    export DIALOG_SELECTABLE_SOGO='NO'
 
     # SOGo team doesn't offer binary packages for arm platform.
-    if [ X"${OS_ARCH}" == X'armhf' ]; then
-        export DIALOG_SELECTABLE_SOGO='NO'
+    if [ X"${OS_ARCH}" == X'i386' -o X"${OS_ARCH}" == 'x86_64' ]; then
+        export DIALOG_SELECTABLE_SOGO='YES'
     fi
 
     # SOGo team doesn't offer binary packages for ubuntu 17.10 (yet)

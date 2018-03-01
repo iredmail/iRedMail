@@ -52,12 +52,6 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     export BIN_WGET='wget'
     export PKG_WGET='wget'
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-    if [ X"${OS_ARCH}" == X"x86_64" ]; then
-        export pkg_arch='amd64'
-    else
-        export pkg_arch="${OS_ARCH}"
-    fi
-
     # Special package.
     # command: which.
     export BIN_WHICH='which'
