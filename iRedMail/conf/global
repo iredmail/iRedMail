@@ -212,14 +212,6 @@ export PKG_BZIP2='bzip2'
 export SHELL_NOLOGIN='/sbin/nologin'
 export SHELL_BASH='/bin/bash'
 
-# Check hardware architecture.
-arch="$(uname -m)"
-case $arch in
-    i[3456]86) export OS_ARCH='i386' ;;
-    x86_64|amd64) export OS_ARCH='x86_64' ;;
-    *) export OS_ARCH="${arch}" ;;
-esac
-
 # Path to some programs
 export PYTHON_BIN='python'
 export PERL_BIN='/usr/bin/perl'
@@ -363,6 +355,19 @@ EOF
 
     exit 255
 fi
+
+# Check hardware architecture.
+if [ X"${DISTRO}" == X'DEBIAN' ]; then
+    arch="$(uname -m)"
+else
+    arch="$(uname -p)"
+fi
+
+case $arch in
+    i[3456]86) export OS_ARCH='i386' ;;
+    x86_64|amd64) export OS_ARCH='x86_64' ;;
+    *) export OS_ARCH="${arch}" ;;
+esac
 
 # Hostname.
 if [ X"${IREDMAIL_HOSTNAME}" != X'' ]; then
