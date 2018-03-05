@@ -25,7 +25,7 @@ export SOGO_PKG_MIRROR="${SOGO_PKG_MIRROR:=https://packages.inverse.ca}"
 # APT key of SOGo official apt repo: 0x810273C4.
 export SOGO_PKG_MIRROR_APT_KEY="${SOGO_PKG_MIRROR_APT_KEY:=0x810273C4}"
 
-# Major SOGo version number: 2, 3.
+# Major SOGo version number: 3.
 export SOGO_VERSION='3'
 
 export SYS_USER_SOGO='sogo'
@@ -86,7 +86,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SOGO_CMD_TOOL='/usr/local/GNUstep/Local/Tools/Admin/sogo-tool'
     export SOGO_CMD_EALARMS_NOTIFY='/usr/local/GNUstep/Local/Tools/Admin/sogo-ealarms-notify'
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export SOGO_VERSION='2'
     export SYS_USER_SOGO='_sogo'
     export SYS_GROUP_SOGO='_sogo'
 

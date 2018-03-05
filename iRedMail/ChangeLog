@@ -44,6 +44,7 @@ iRedMail-0.9.8:
             - Table renamed: alias_moderators -> moderators.
         - LDAP backend:
             - Allow mail list account to use 2 attributes: member, uniqueMember.
+        - Nginx: redirect all traffic from http to https by default.
         - Fail2ban: new jail `postfix-pregreet`.
         - Dovecot: Log subject, sender, size in mail deliver log.
         - Amavisd: Add new sql column `maddr.email_raw` and trigger to store

@@ -300,10 +300,10 @@ gpgcheck=0
 # SOGo v3 stable release.
 # WARNING: A proper support contract from Inverse is required:
 # https://sogo.nu/support/index.html#support-plans
-#baseurl=${SOGO_PKG_MIRROR}/SOGo/release/3/rhel/${DISTRO_VERSION}/\$basearch
+#baseurl=${SOGO_PKG_MIRROR}/SOGo/release/${SOGO_VERSION}/rhel/${DISTRO_VERSION}/\$basearch
 
 # SOGo v3 nightly builds
-baseurl=${SOGO_PKG_MIRROR}/SOGo/nightly/3/rhel/${DISTRO_VERSION}/\$basearch
+baseurl=${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/rhel/${DISTRO_VERSION}/\$basearch
 EOF
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -315,9 +315,9 @@ EOF
 
             ECHO_INFO "Add apt repo for SOGo: ${SOGO_PKG_MIRROR}"
             if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
+                echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
             elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/3/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
+                echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
             fi
 
             ECHO_INFO "Import apt key (${SOGO_PKG_MIRROR_APT_KEY}) for SOGo repo (${SOGO_PKG_MIRROR})."

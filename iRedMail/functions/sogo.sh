@@ -293,11 +293,6 @@ sogo_cron_setup()
 
 EOF
 
-    # SOGo-2.x: sogo-tool doesn't support 'update-autoreply'
-    if [ X"${SOGO_VERSION}" == X'2' ]; then
-        perl -pi -e 's#update-autoreply#expire-autoreply#g' ${CRON_FILE_SOGO}
-    fi
-
     # Disable cron jobs if we don't need to initialize database on this server.
     if [ X"${INITIALIZE_SQL_DATA}" != X'YES' ]; then
         perl -pi -e 's/(.*sogo-tool.*)/#${1}/g' ${CRON_FILE_SOGO}
