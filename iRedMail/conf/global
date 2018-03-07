@@ -395,7 +395,7 @@ export IREDMAIL_SYSLOG_FACILITY='local5'
 
 # Use systemd
 export USE_SYSTEMD='NO'
-export SYSTEMD_SERVICE_DIR='/etc/systemd/system/multi-user.target.wants/'
+export SYSTEMD_SERVICE_DIR='/lib/systemd/system'
 
 # install_pkg: function used to install packages without confirm.
 # remove_pkg: function used to remove packages without confirm.
@@ -458,7 +458,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Ubuntu & Debian.
     export DEBIAN_FRONTEND='noninteractive'
-    export SYSTEMD_SERVICE_DIR='/lib/systemd/system'
     export SHELL_NOLOGIN='/usr/sbin/nologin'
 
     # Package management.
