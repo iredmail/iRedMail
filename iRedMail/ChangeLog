@@ -85,6 +85,7 @@ iRedMail-0.9.8:
         + iRedAdmin -> 0.9
         + iRedAPD -> 2.2
         + uwsgi -> 2.0.17 (OpenBSD only)
+        + SOGo -> 4.0 (switched yum/apt repo to SOGo v4 nightly builds)
 
 iRedMail-0.9.7:
     * Supports new distribution release:

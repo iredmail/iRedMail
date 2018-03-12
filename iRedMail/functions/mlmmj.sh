@@ -159,7 +159,7 @@ EOF
             if ! grep "${MLMMJADMIN_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
                 echo '' >> ${SYSLOG_CONF}
                 echo '!mlmmjadmin' >> ${SYSLOG_CONF}
-                echo "${IREDMAIL_SYSLOG_FACILITY}.*        -${MLMMJADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
+                echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${MLMMJADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
             fi
         elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
             if ! grep "${MLMMJADMIN_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
