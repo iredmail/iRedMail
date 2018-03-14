@@ -28,8 +28,7 @@ install_all()
 
     # OpenBSD only
     PKG_SCRIPTS=''
-    OB_PKG_OPENLDAP_SERVER_VER='-2.4.45p4'
-    OB_PKG_OPENLDAP_CLIENT_VER='-2.4.45p4'
+    OB_PKG_OPENLDAP_VER='-2.4.45p4'
     OB_PKG_PHP_VER='%7'
 
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
@@ -102,10 +101,10 @@ install_all()
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
-                ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_SERVER_VER}"
+                ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_VER}"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
             elif [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-                ALL_PKGS="${ALL_PKGS} openldap-client${OB_PKG_OPENLDAP_CLIENT_VER}"
+                ALL_PKGS="${ALL_PKGS} openldap-client${OB_PKG_OPENLDAP_VER}"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${LDAPD_RC_SCRIPT_NAME}"
             fi
 
