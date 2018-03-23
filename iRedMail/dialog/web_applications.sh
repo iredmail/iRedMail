@@ -29,7 +29,7 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
     export DIALOG_SELECTABLE_SOGO='NO'
 
     # SOGo team doesn't offer binary packages for arm platform.
-    if [ X"${OS_ARCH}" == X'i386' -o X"${OS_ARCH}" == 'x86_64' ]; then
+    if [ X"${OS_ARCH}" == X'i386' -o X"${OS_ARCH}" == X'x86_64' ]; then
         export DIALOG_SELECTABLE_SOGO='YES'
     fi
 
