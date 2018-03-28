@@ -49,7 +49,7 @@ export NETDATA_HTTPD_AUTH_FILE="${HTTPD_CONF_ROOT}/netdata.users"
 export NETDATA_DOT_MY_CNF="${NETDATA_CONF_DIR}/my.cnf"
 
 # Install stable release.
-export NETDATA_VERSION='1.9.0'
+export NETDATA_VERSION='1.10.0'
 export NETDATA_PKG_NAME="netdata-${NETDATA_VERSION}.gz.run"
 
 # Modular config files.

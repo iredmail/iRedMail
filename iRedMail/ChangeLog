@@ -12,7 +12,7 @@ iRedMail-0.9.8:
     * Apache has been removed, Nginx is the only one web server available.
 
     * New components:
-        - netdata monitor integration: http://my-netdata.io
+        - netdata (1.10.0) monitor integration: http://my-netdata.io
           Note: netdata currently works on Linux and FreeBSD, not OpenBSD.
 
           - Integrate netdata on Linux server:
