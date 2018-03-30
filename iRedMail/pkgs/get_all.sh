@@ -51,6 +51,9 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     # command: wget.
     export BIN_WGET='wget'
     export PKG_WGET='wget'
+    # command: perl
+    export BIN_PERL='perl'
+    export PKG_PERL='perl'
 elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # Special package.
     # command: which.
@@ -59,6 +62,9 @@ elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     # command: wget.
     export BIN_WGET='wget'
     export PKG_WGET="wget"
+    # command: perl
+    export BIN_PERL='perl'
+    export PKG_PERL='perl'
 
     export PKG_APT_TRANSPORT_HTTPS="apt-transport-https"
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -259,6 +265,7 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     # Check required commands, install related package if command doesn't exist.
     check_pkg ${BIN_WHICH} ${PKG_WHICH}
     check_pkg ${BIN_WGET} ${PKG_WGET}
+    check_pkg ${BIN_PERL} ${PKG_PERL}
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ ! -e /usr/lib/apt/methods/https ]; then
@@ -273,6 +280,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Force update.
     ECHO_INFO "apt-get update ..."
     ${APTGET} update
+
+    check_pkg ${BIN_PERL} ${PKG_PERL}
 fi
 
 check_status_before_run fetch_misc && \
