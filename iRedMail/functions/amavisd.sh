@@ -204,13 +204,15 @@ amavisd_config()
     #
     # Cron jobs
     #
-    ECHO_DEBUG "Setting cron job for vmail user to delete virus mail per month."
-    cat >> ${CRON_FILE_AMAVISD} <<EOF
+    if [ -n "${AMAVISD_VIRUSMAILS_DIR}" ]; then
+        ECHO_DEBUG "Setting cron job for vmail user to delete virus mail per month."
+        cat >> ${CRON_FILE_AMAVISD} <<EOF
 ${CONF_MSG}
 # Delete virus mails which created 15 days ago.
 1   5   *   *   *   touch ${AMAVISD_VIRUSMAILS_DIR}; find ${AMAVISD_VIRUSMAILS_DIR}/ -mtime +15 | xargs rm -rf {}
 
 EOF
+    fi
 
     #
     # Populate SQL data
