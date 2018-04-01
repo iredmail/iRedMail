@@ -52,9 +52,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export AMAVISD_LDAP_SCHEMA_NAME='amavisd-new.schema'
     export AMAVISD_VAR_RUN_DIR='/var/run/amavisd'
 
-    # RHEL/CENTOS 6
     export AMAVISD_CONF='/etc/amavisd/amavisd.conf'
-    export AMAVISD_VIRUSMAILS_DIR="${AMAVISD_QUARANTINE_DIR}"
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export AMAVISD_BIN='/usr/sbin/amavisd-new'
@@ -64,7 +62,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export AMAVISD_LDAP_SCHEMA_NAME='amavis.schema'
 
     export AMAVISD_SPOOL_DIR='/var/lib/amavis'
-    export AMAVISD_VIRUSMAILS_DIR="${AMAVISD_SPOOL_DIR}/virusmails"
     export AMAVISD_VAR_RUN_DIR='/var/run/amavis'
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -78,7 +75,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
     export AMAVISD_SPOOL_DIR='/var/amavis'
     export AMAVISD_VAR_RUN_DIR="${AMAVISD_SPOOL_DIR}/var"
-    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
     # Override location of command 'altermime'
     export CMD_ALTERMIME='/usr/local/bin/altermime'
@@ -93,7 +89,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
     export AMAVISD_SPOOL_DIR='/var/amavisd'
     export AMAVISD_VAR_RUN_DIR="${AMAVISD_SPOOL_DIR}"
-    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
 
     # Override location of command 'altermime'
     export CMD_ALTERMIME='/usr/local/bin/altermime'
@@ -105,6 +100,16 @@ export CRON_FILE_AMAVISD="${CRON_SPOOL_DIR}/${SYS_USER_AMAVISD}"
 export AMAVISD_DB_DIR="${AMAVISD_SPOOL_DIR}/db"
 export AMAVISD_QUARANTINE_DIR="${AMAVISD_SPOOL_DIR}/quarantine"
 export AMAVISD_TEMP_DIR="${AMAVISD_SPOOL_DIR}/tmp"
+
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    export AMAVISD_VIRUSMAILS_DIR="${AMAVISD_QUARANTINE_DIR}"
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    export AMAVISD_VIRUSMAILS_DIR="${AMAVISD_SPOOL_DIR}/virusmails"
+elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
+elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
+fi
 
 export AMAVISD_LOCK_FILE="${AMAVISD_VAR_RUN_DIR}/amavisd.lock"
 export AMAVISD_PID_FILE="${AMAVISD_VAR_RUN_DIR}/amavisd.pid"
