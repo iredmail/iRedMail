@@ -27,11 +27,22 @@ install_all()
     DISABLED_SERVICES=''
 
     # OpenBSD only
-    PKG_SCRIPTS=''
-    OB_PKG_OPENLDAP_VER='-2.4.45p4'
-    OB_PKG_PHP_VER='%7'
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        PKG_SCRIPTS=''
+        OB_PKG_PHP_VER='%7'
 
-    if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
+        if [ X"${DISTRO_VERSION}" == X'6.2' ]; then
+            OB_PKG_OPENLDAP_SERVER_VER='-2.4.45p4'
+            OB_PKG_OPENLDAP_CLIENT_VER='-2.4.45p4'
+        else
+            # 6.3
+            OB_PKG_OPENLDAP_SERVER_VER='-2.4.45p5'
+            OB_PKG_OPENLDAP_CLIENT_VER='-2.4.45p4'
+        fi
+    fi
+
+    # Install PHP if there's a web server running -- php is too popular.
+    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         export IREDMAIL_USE_PHP='YES'
     fi
 
@@ -101,10 +112,10 @@ install_all()
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
-                ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_VER}"
+                ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_SERVER_VER}"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
             elif [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-                ALL_PKGS="${ALL_PKGS} openldap-client${OB_PKG_OPENLDAP_VER}"
+                ALL_PKGS="${ALL_PKGS} openldap-client${OB_PKG_OPENLDAP_CLIENT_VER}"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${LDAPD_RC_SCRIPT_NAME}"
             fi
 
