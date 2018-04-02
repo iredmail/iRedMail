@@ -143,11 +143,14 @@ netdata (monitor):
         - Modified modular config files:
             - ${NETDATA_CONF_PLUGIN_MYSQL}
             - ${NETDATA_CONF_PLUGIN_PGSQL}
+    - HTTP auth file (if you need a new account to access netdata, please
+      update this file with command like 'htpasswd' or edit manually):
+        - ${NETDATA_HTTPD_AUTH_FILE}
     - Log directory: ${NETDATA_LOG_DIR}
     - SQL:
         - Username: ${NETDATA_DB_USER}
         - Password: ${NETDATA_DB_PASSWD}
-        - NOTE: No database created for netdata.
+        - NOTE: No database required by netdata.
 
 EOF
 

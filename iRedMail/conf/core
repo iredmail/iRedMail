@@ -112,18 +112,18 @@ check_openbsd_install_url()
     touch /etc/installurl
 
     # Make sure it contains a http/ftp/scp URL
-    if ! grep -i '^(ftp|http|https|scp)://' /etc/installurl &>/dev/null; then
+    if ! grep -Ei '^(ftp|http|https|scp)://' /etc/installurl &>/dev/null; then
         ECHO_INFO "No valid OpenBSD mirror server URL found in file /etc/installurl."
         ECHO_INFO "We will use the fastly CDN for this iRedMail installation:"
         ECHO_INFO ''
-        ECHO_INFO "  - https://fastly.cdn.openbsd.org/pub/OpenBSD/\$(uname -r)/packages/\$(machine -a)/"
+        ECHO_INFO "  - https://fastly.cdn.openbsd.org/pub/OpenBSD"
         ECHO_INFO ''
         ECHO_INFO "If you prefer a nearest mirror site, please check links below:"
         ECHO_INFO ''
         ECHO_INFO "  - Mirror sites: http://www.openbsd.org/ftp.html"
         ECHO_INFO "  - installurl(5): http://man.openbsd.org/installurl.5"
         ECHO_INFO ''
-        echo 'https://fastly.cdn.openbsd.org/pub/OpenBSD/$(uname -r)/packages/$(machine -a)/' >> /etc/installurl
+        echo 'https://fastly.cdn.openbsd.org/pub/OpenBSD' >> /etc/installurl
     fi
 }
 
