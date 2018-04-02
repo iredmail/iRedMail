@@ -9,10 +9,11 @@ iRedMail-0.9.8:
         + Debian 8
         + OpenBSD 6.1
 
-    * Apache has been removed, Nginx is the only one web server available.
+    * Remove components:
+        - Apache has been removed, Nginx is the only one web server available.
 
     * New components:
-        - netdata (1.10.0) monitor integration: http://my-netdata.io
+        + netdata (1.10.0) monitor integration: http://my-netdata.io
           Note: netdata currently works on Linux and FreeBSD, not OpenBSD.
 
           - Integrate netdata on Linux server:
@@ -21,8 +22,7 @@ iRedMail-0.9.8:
           - Integrate netdata on FreeBSD server:
             https://docs.iredmail.org/integration.netdata.freebsd.html
 
-    * Improvements:
-        - Integrate 'mlmmj' mailing list manager, and 'mlmmjadmin' RESTful API
+        + Integrate 'mlmmj' mailing list manager, and 'mlmmjadmin' RESTful API
           server for easy mlmmj management.
 
             - mlmmj: http://mlmmj.org/
@@ -35,9 +35,10 @@ iRedMail-0.9.8:
 
           Note: mlmmj & mlmmjadmin are now core components in iRedMail.
 
+    * Improvements:
         - SQL backends:
-            - New table: maillists.[/*]
-            - New columns: domain.maillists, forwardings.is_maillist[/*]
+            - New table: maillists.
+            - New columns: domain.maillists, forwardings.is_maillist.
             - Removed column: mailbox.local_part.
               It's inherited from PostfixAdmin at the beginning, but not used
               by any applications, time to drop it.
@@ -51,7 +52,7 @@ iRedMail-0.9.8:
           email address without address extension.
 
     * Fixed issues:
-        - installer:
+        - iRedMail Installer:
             - not correctly configure SOGo with IPv6 SQL server address.
               Thanks to Wraptor <nijs.thibaut _at_ gmail.com> for the report in
               forum.
@@ -65,8 +66,8 @@ iRedMail-0.9.8:
         - SQL backends:
             - User under disabled domain is able to send email with smtp protocol.
         - tools/backup_sogo.sh
-            - not set correct owner and permission on backup files.
-            - cannot remove old backup files.
+            - Not set correct owner and permission on backup files.
+            - Cannot remove old backup files.
         - tools/backup_openldap.sh:
             - Cannot log backup result to SQL db.
               Note: backup is fine, just no log in SQL db.
@@ -76,12 +77,12 @@ iRedMail-0.9.8:
             - Not use current date as password last change date for newly
               created user.
         - tools/migrate_sql_alias_table.py:
-            - doesn't support 'utf8' charset.
+            - Doesn't support 'utf8' charset.
               Thanks Kacper Guzik <kacper.guzik _at_ zenbox _dot_ pl> for the
               report and code contribution.
 
     * Updated packages:
-        + Roundcube -> 1.3.3
+        + Roundcube -> 1.3.5
         + iRedAdmin -> 0.9
         + iRedAPD -> 2.2
         + uwsgi -> 2.0.17 (OpenBSD only)
