@@ -133,8 +133,6 @@ cleanup_replace_firewall_rules()
 
                     [ X"${SSHD_PORT}" != X'22' ] && \
                         cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
-
-                    cp -f ${SAMPLE_DIR}/firewalld/services/{imap,pop3,submission}.xml ${FIREWALLD_CONF_DIR}/services/
                 else
                     cp -f ${SAMPLE_DIR}/iptables/iptables.rules ${FIREWALL_RULE_CONF}
                 fi

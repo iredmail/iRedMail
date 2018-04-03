@@ -5,7 +5,7 @@
     <service name="http"/>
     <service name="https"/>
     <service name="smtp"/>
-    <service name="submission"/>
+    <service name="smtp-submission"/>
     <service name="pop3"/>
     <service name="pop3s"/>
     <service name="imap"/>
