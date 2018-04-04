@@ -1,8 +1,5 @@
 -- \c vmail;
 
--- Column used to limit number of mailing lists a domain admin can create
-ALTER TABLE domain ADD COLUMN maillists INT8 NOT NULL DEFAULT 0;
-
 -- Column used to mark sql record is a mailing list
 ALTER TABLE forwardings ADD COLUMN is_maillist INT2 NOT NULL DEFAULT 0;
 CREATE INDEX idx_forwardings_is_maillist ON forwardings (is_maillist);
