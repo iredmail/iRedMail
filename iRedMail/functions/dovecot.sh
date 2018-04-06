@@ -30,20 +30,27 @@ dovecot_config()
 
     backup_file ${DOVECOT_CONF}
 
-    # RHEL/CentOS 6:    Dovecot-2.1.17
     # RHEL/CentOS 7:    Dovecot-2.2.32+
-    # Debian 8:         Dovecot-2.2.13
     # Debian 9:         Dovecot-2.2.27
-    # Ubuntu 14.04:     Dovecot-2.2.9
     # Ubuntu 16.04:     Dovecot-2.2.22
-    dovecot_version="$(dovecot --version | cut -c1,2,3)"
-    if [ X"${dovecot_version}" == X'2.0' -o X"${dovecot_version}" == X'2.1' ]; then
-        ECHO_DEBUG "Copy sample Dovecot config file: ${SAMPLE_DIR}/dovecot/dovecot2.conf -> ${DOVECOT_CONF}"
-        cp ${SAMPLE_DIR}/dovecot/dovecot2.conf ${DOVECOT_CONF}
-    else
-        ECHO_DEBUG "Copy sample Dovecot config file: ${SAMPLE_DIR}/dovecot/dovecot22.conf -> ${DOVECOT_CONF}"
-        cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
+    # FreeBSD:          Dovecot-2.3.0+
+    # OpenBSD:          Dovecot-2.2.32+
+    ECHO_DEBUG "Copy sample Dovecot config file: ${SAMPLE_DIR}/dovecot/dovecot22.conf -> ${DOVECOT_CONF}"
+    cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
+
+    # FreeBSD ports tree offers Dovecot 2.3, we need to fix some backward
+    # compatibilites.
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        perl -pi -e 's/^ssl_protocols/#${1}/g' ${DOVECOT_CONF}
+        perl -pi -e 's#^(mail_plugins.*) stats(.*)#${1} old_stats${2}#g' ${DOVECOT_CONF}
+        perl -pi -e 's#imap_stats#imap_old_stats#g' ${DOVECOT_CONF}
+        perl -pi -e 's#service stats#service old-stats#g' ${DOVECOT_CONF}
+        perl -pi -e 's#fifo_listener stats-mail#fifo_listener old-stats-mail#g' ${DOVECOT_CONF}
+        perl -pi -e 's#stats_refresh#old_stats_refresh#g' ${DOVECOT_CONF}
+        perl -pi -e 's#stats_track_cmds#old_stats_track_cmds#g' ${DOVECOT_CONF}
+        echo "ssl_dh = <${SSL_DH1024_PARAM_FILE}" >> ${DOVECOT_CONF}
     fi
+
     chmod 0664 ${DOVECOT_CONF}
 
     ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
@@ -83,11 +90,7 @@ dovecot_config()
         perl -pi -e 's#^(mail_location.*:INDEX=)%Lh/Maildir/#${1}$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/#' ${DOVECOT_CONF}
 
         # Per-user seen flags. Maildir indexes are not shared. INDEXPVT requires v2.2+.
-        if [ X"${dovecot_version}" == X'2.0' -o X"${dovecot_version}" == X'2.1' ]; then
-            perl -pi -e 's#(location.*:INDEX=)(.*/Shared/.*)#${1}$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/Shared/%%Ld/%%Ln#g' ${DOVECOT_CONF}
-        else
-            perl -pi -e 's#(location.*:INDEX=)(.*/Shared/.*)#${1}$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/Shared/%%Ld/%%Ln:INDEXPVT=$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/Shared/%%Ld/%%Ln#g' ${DOVECOT_CONF}
-        fi
+        perl -pi -e 's#(location.*:INDEX=)(.*/Shared/.*)#${1}$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/Shared/%%Ld/%%Ln:INDEXPVT=$ENV{MAILBOX_INDEX_DIR}/%Ld/%Ln/Shared/%%Ld/%%Ln#g' ${DOVECOT_CONF}
     fi
 
     # Provided services.
@@ -178,8 +181,6 @@ dovecot_config()
         perl -pi -e 's#^(ssl_protocols).*#ssl_protocols = !SSLv3#' ${DOVECOT_CONF}
     fi
 
-    perl -pi -e 's/^#(ssl_dh_parameters_length.*)/${1}/' ${DOVECOT_CONF}
-    perl -pi -e 's/^#(ssl_prefer_server_ciphers.*)/${1}/' ${DOVECOT_CONF}
     perl -pi -e 's#PH_POSTFIX_CHROOT_DIR#$ENV{POSTFIX_CHROOT_DIR}#' ${DOVECOT_CONF}
 
     # Generate dovecot quota warning script.
