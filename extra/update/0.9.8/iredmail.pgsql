@@ -6,6 +6,8 @@ ALTER TABLE mailbox DROP COLUMN local_part;
 -- New SQL column
 ALTER TABLE mailbox ADD COLUMN enableimaptls INT2 NOT NULL DEFAULT 1;
 CREATE INDEX idx_mailbox_enableimaptls ON mailbox (enableimaptls);
+ALTER TABLE mailbox ADD COLUMN enablepop3tls INT2 NOT NULL DEFAULT 1;
+CREATE INDEX idx_mailbox_enablepop3tls ON mailbox (enablepop3tls);
 
 -- Rename table
 ALTER TABLE alias_moderators RENAME TO moderators;
