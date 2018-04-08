@@ -65,6 +65,8 @@ iRedMail-0.9.8:
         - Amavisd: cannot store mail subject if contains emoji.
         - SQL backends:
             - User under disabled domain is able to send email with smtp protocol.
+            - Add new SQL column `mailbox.enableimaptls`, required by
+              Dovecot-2.3.
         - tools/backup_sogo.sh
             - Not set correct owner and permission on backup files.
             - Cannot remove old backup files.
