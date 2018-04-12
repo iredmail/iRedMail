@@ -235,8 +235,10 @@ enabledService: dsync
 enabledService: mail
 enabledService: pop3
 enabledService: pop3secured
+enabledService: pop3tls
 enabledService: imap
 enabledService: imapsecured
+enabledService: imaptls
 enabledService: managesieve
 enabledService: managesievesecured
 enabledService: sieve
