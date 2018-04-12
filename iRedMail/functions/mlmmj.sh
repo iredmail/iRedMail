@@ -166,7 +166,7 @@ EOF
                 # '!!' means abort further evaluation after first match
                 echo '' >> ${SYSLOG_CONF}
                 echo '!!mlmmjadmin' >> ${SYSLOG_CONF}
-                echo "${IREDMAIL_SYSLOG_FACILITY}.*        -${MLMMJADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
+                echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${MLMMJADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
             fi
         fi
     fi
