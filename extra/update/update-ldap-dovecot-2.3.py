@@ -37,18 +37,24 @@ for (dn, entry) in allUsers:
 
     enabledService = entry['enabledService']
 
-    if 'imapsecured' in enabledService:
+    _update = False
+    if 'imaptls' not in enabledService:
         enabledService += ['imaptls']
+        _update = True
 
-    if 'pop3secured' in enabledService:
+    if 'pop3tls' not in enabledService:
         enabledService += ['pop3tls']
+        _update = True
 
-    print "* (%d of %d) Updating user: %s" % (count, total, mail)
-    mod_attr = [(ldap.MOD_REPLACE, 'enabledService', enabledService)]
-    try:
-        conn.modify_s(dn, mod_attr)
-    except Exception, e:
-        print "Error while updating user:", mail, e
+    if _update:
+        print "* (%d of %d) Updating user: %s" % (count, total, mail)
+        mod_attr = [(ldap.MOD_REPLACE, 'enabledService', enabledService)]
+        try:
+            conn.modify_s(dn, mod_attr)
+        except Exception, e:
+            print "Error while updating user:", mail, e
+    else:
+        print "* [SKIP] No update required for user:", mail
 
     count += 1
 
