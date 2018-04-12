@@ -44,7 +44,7 @@ for (dn, entry) in allUsers:
         enabledService += ['pop3tls']
 
     print "* (%d of %d) Updating user: %s" % (count, total, mail)
-    mod_attr = [(ldap.MOD_ADD, 'enabledService', enabledService)]
+    mod_attr = [(ldap.MOD_REPLACE, 'enabledService', enabledService)]
     try:
         conn.modify_s(dn, mod_attr)
     except Exception, e:
