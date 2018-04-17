@@ -133,6 +133,11 @@ cleanup_replace_firewall_rules()
 
                     [ X"${SSHD_PORT}" != X'22' ] && \
                         cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
+
+                    if [ X"${DISTRO}" == X'RHEL' ]; then
+                        cd ${ETC_SYSCONFIG_DIR}/network-scripts/
+                        perl -pi -e 's#ZONE=public#ZONE=iredmail#g' *
+                    fi
                 else
                     cp -f ${SAMPLE_DIR}/iptables/iptables.rules ${FIREWALL_RULE_CONF}
                 fi
