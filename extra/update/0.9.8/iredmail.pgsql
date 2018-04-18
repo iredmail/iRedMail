@@ -49,4 +49,11 @@ CREATE INDEX idx_maillists_is_newsletter ON maillists (is_newsletter);
 CREATE INDEX idx_maillists_active ON maillists (active);
 
 GRANT SELECT ON maillists TO vmail;
+GRANT SELECT ON maillists_id_seq TO vmail;
+GRANT SELECT ON alias_moderators_id_seq TO vmail;
+GRANT SELECT ON forwardings_id_seq TO vmail;
+
 GRANT ALL ON maillists TO vmailadmin;
+GRANT ALL ON maillists_id_seq TO vmailadmin;
+GRANT ALL ON alias_moderators_id_seq TO vmailadmin;
+GRANT ALL ON forwardings_id_seq TO vmailadmin;
