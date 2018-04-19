@@ -124,11 +124,12 @@ fi
 # Check and create directories.
 [ ! -d ${BACKUP_DIR} ] && mkdir -p ${BACKUP_DIR} 2>/dev/null
 chown root ${BACKUP_DIR}
-chmod 0700 ${BACKUP_DIR}
+chmod 0400 ${BACKUP_DIR}
 
 # Initialize log file.
 echo "* Starting backup: ${TIMESTAMP}." >${LOGFILE}
 echo "* Backup directory: ${BACKUP_DIR}." >>${LOGFILE}
+chmod 0400 ${LOGFILE}
 
 # Backup.
 echo "* Backing up databases: ${DATABASES}." >> ${LOGFILE}
@@ -148,6 +149,7 @@ for db in ${DATABASES}; do
     if [ X"$?" == X'0' ]; then
         # Dump
         ${CMD_MYSQLDUMP} ${db} > ${output_sql}
+        chmod 0400 ${output_sql}
 
         if [ X"$?" == X'0' ]; then
             # Get original SQL file size
@@ -155,6 +157,7 @@ for db in ${DATABASES}; do
 
             # Compress
             ${CMD_COMPRESS} ${output_sql} >>${LOGFILE}
+            chmod 0400 ${output_sql}.*
 
             if [ X"$?" == X'0' ]; then
                 rm -f ${output_sql} >> ${LOGFILE}
