@@ -2,16 +2,17 @@ hosts       = PH_SQL_SERVER_ADDRESS:PH_SQL_SERVER_PORT
 user        = PH_VMAIL_DB_BIND_USER
 password    = PH_VMAIL_DB_BIND_PASSWD
 dbname      = PH_VMAIL_DB_NAME
-query       = SELECT domain
+query       = (SELECT domain
                 FROM domain
                WHERE domain='%s'
                      AND backupmx=1
                      AND active=1
-               LIMIT 1
-        UNION SELECT a.target_domain
-                FROM alias_domain AS a, domain AS b
-               WHERE a.alias_domain='%s'
-                     AND a.target_domain=b.domain
-                     AND b.backupmx=1
-                     AND b.active=1
-               LIMIT 1
+               LIMIT 1)
+               UNION
+             (SELECT alias_domain.target_domain
+                FROM alias_domain, domain
+               WHERE alias_domain.alias_domain='%s'
+                     AND alias_domain.target_domain=domain.domain
+                     AND domain.backupmx=1
+                     AND domain.active=1
+               LIMIT 1)
