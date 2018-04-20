@@ -3,6 +3,10 @@ iRedMail-0.9.9:
         + Switch to utf8mb4 as default character set in MySQL.
         + Set file/directory permission to 0400 for dumpped SQL backup files.
 
+    * Fixed issues:
+        - SQL backends:
+            - Not handle alias domains for relay in Postfix.
+
 iRedMail-0.9.8:
     * Supports new distribution release:
         + OpenBSD 6.2, 6.3
