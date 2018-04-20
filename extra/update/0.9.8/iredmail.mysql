@@ -5,9 +5,11 @@ ALTER TABLE mailbox DROP COLUMN local_part;
 
 -- New SQL column
 ALTER TABLE mailbox ADD COLUMN enableimaptls TINYINT(1) NOT NULL DEFAULT 1;
-ALTER TABLE mailbox ADD INDEX (`enableimaptls`);
+ALTER TABLE mailbox ADD INDEX (enableimaptls);
 ALTER TABLE mailbox ADD COLUMN enablepop3tls TINYINT(1) NOT NULL DEFAULT 1;
-ALTER TABLE mailbox ADD INDEX (`enablepop3tls`);
+ALTER TABLE mailbox ADD INDEX (enablepop3tls);
+ALTER TABLE mailbox ADD COLUMN enablesievetls TINYINT(1) NOT NULL DEFAULT 1;
+ALTER TABLE mailbox ADD INDEX (enablesievetls);
 
 -- Rename table
 RENAME TABLE alias_moderators TO moderators;

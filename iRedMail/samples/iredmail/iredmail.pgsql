@@ -181,16 +181,17 @@ CREATE TABLE mailbox (
     enablesmtpsecured INT2 NOT NULL DEFAULT 1,
     enablepop3 INT2 NOT NULL DEFAULT 1,
     enablepop3secured INT2 NOT NULL DEFAULT 1,
+    enablepop3tls INT2 NOT NULL DEFAULT 1,
     enableimap INT2 NOT NULL DEFAULT 1,
     enableimapsecured INT2 NOT NULL DEFAULT 1,
     enableimaptls INT2 NOT NULL DEFAULT 1,
-    enablepop3tls INT2 NOT NULL DEFAULT 1,
     enabledeliver INT2 NOT NULL DEFAULT 1,
     enablelda INT2 NOT NULL DEFAULT 1,
     enablemanagesieve INT2 NOT NULL DEFAULT 1,
     enablemanagesievesecured INT2 NOT NULL DEFAULT 1,
     enablesieve INT2 NOT NULL DEFAULT 1,
     enablesievesecured INT2 NOT NULL DEFAULT 1,
+    enablesievetls INT2 NOT NULL DEFAULT 1,
     enableinternal INT2 NOT NULL DEFAULT 1,
     enabledoveadm INT2 NOT NULL DEFAULT 1,
     "enablelib-storage" INT2 NOT NULL DEFAULT 1,
@@ -232,6 +233,7 @@ CREATE INDEX idx_mailbox_enableimap ON mailbox (enableimap);
 CREATE INDEX idx_mailbox_enableimapsecured ON mailbox (enableimapsecured);
 CREATE INDEX idx_mailbox_enableimaptls ON mailbox (enableimaptls);
 CREATE INDEX idx_mailbox_enablepop3tls ON mailbox (enablepop3tls);
+CREATE INDEX idx_mailbox_enablesievetls ON mailbox (enablesievetls);
 CREATE INDEX idx_mailbox_enabledeliver ON mailbox (enabledeliver);
 CREATE INDEX idx_mailbox_enablelda ON mailbox (enablelda);
 CREATE INDEX idx_mailbox_enablemanagesieve ON mailbox (enablemanagesieve);
