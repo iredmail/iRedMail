@@ -4,6 +4,7 @@ iRedMail-0.9.9:
         + Set file/directory permission to 0400 for dumpped SQL backup files.
 
     * Fixed issues:
+        - mlmmjadmin config file doesn't have correct owner/group.
         - SQL backends:
             - Not handle alias domains for relay in Postfix.
 

@@ -73,6 +73,9 @@ mlmmjadmin_config()
 
     # Generate main config file
     cp ${SAMPLE_DIR}/mlmmj/mlmmjadmin.settings.py ${MLMMJADMIN_CONF}
+    chown -R ${SYS_USER_MLMMJ}:${SYS_GROUP_MLMMJ} ${MLMMJADMIN_CONF}
+    chmod 0400 ${MLMMJADMIN_CONF}
+
     perl -pi -e 's#PH_MLMMJADMIN_BIND_HOST#$ENV{MLMMJADMIN_BIND_HOST}#g' ${MLMMJADMIN_CONF}
     perl -pi -e 's#PH_MLMMJADMIN_LISTEN_PORT#$ENV{MLMMJADMIN_LISTEN_PORT}#g' ${MLMMJADMIN_CONF}
     perl -pi -e 's#PH_SYS_USER_MLMMJ#$ENV{SYS_USER_MLMMJ}#g' ${MLMMJADMIN_CONF}
