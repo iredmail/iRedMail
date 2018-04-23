@@ -21,7 +21,7 @@ conn.bind_s(bind_dn, bind_pw)
 print "* Get mail accounts ..."
 allUsers = conn.search_s(basedn,
                          ldap.SCOPE_SUBTREE,
-                         "(&(objectClass=mailUser)(|(enabledService=imapsecured)(enabledService=pop3secured)))",
+                         "(&(objectClass=mailUser)(|(enabledService=imapsecured)(enabledService=pop3secured)(enabledService=smtpsecured)))",
                          ['mail', 'enabledService'])
 
 total = len(allUsers)
@@ -44,6 +44,10 @@ for (dn, entry) in allUsers:
 
     if 'pop3tls' not in enabledService:
         enabledService += ['pop3tls']
+        _update = True
+
+    if 'smtptls' not in enabledService:
+        enabledService += ['smtptls']
         _update = True
 
     if _update:
