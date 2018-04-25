@@ -20,7 +20,7 @@ if [ -z ${MAILLOG_FILE} ]; then
 fi
 
 tmpfile="/tmp/sasl_username_${RANDOM}"
-grep 'sasl_username=' ${MAILLOG_FILE} > ${tmpfile}
+grep 'sasl_username=' ${MAILLOG_FILE} |awk -F'sasl_username=' '{print $2}' > ${tmpfile}
 awk '{print $NF}' ${tmpfile}  | sort | uniq -c | sort -n
 
 rm -f ${tmpfile}
