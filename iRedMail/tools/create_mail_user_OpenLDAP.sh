@@ -239,12 +239,13 @@ enabledService: pop3tls
 enabledService: imap
 enabledService: imapsecured
 enabledService: imaptls
+enabledService: smtp
+enabledService: smtpsecured
+enabledService: smtptls
 enabledService: managesieve
 enabledService: managesievesecured
 enabledService: sieve
 enabledService: sievesecured
-enabledService: smtp
-enabledService: smtpsecured
 enabledService: deliver
 enabledService: lda
 enabledService: lmtp
