@@ -33,8 +33,8 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
         export DIALOG_SELECTABLE_SOGO='YES'
     fi
 
-    # SOGo team doesn't offer binary packages for ubuntu 17.10 (yet)
-    if [ X"${DISTRO_CODENAME}" == X'artful' ]; then
+    # SOGo team doesn't offer binary packages for ubuntu 18.04 (yet)
+    if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
         export DIALOG_SELECTABLE_SOGO='NO'
     fi
 

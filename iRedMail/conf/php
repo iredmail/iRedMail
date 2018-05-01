@@ -43,8 +43,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Debian 9, Ubuntu 16.04
         export PHP_VERSION='7.0'
     else
-        # Ubuntu 17.10
-        export PHP_VERSION='7.1'
+        # Ubuntu 18.04
+        export PHP_VERSION='7.2'
     fi
 
     export PHP_INI="/etc/php/${PHP_VERSION}/fpm/php.ini"

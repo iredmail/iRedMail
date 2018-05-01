@@ -11,7 +11,7 @@ iRedMail-0.9.9:
 iRedMail-0.9.8:
     * Supports new distribution release:
         + OpenBSD 6.2, 6.3
-        + Ubuntu 17.10
+        + Ubuntu 18.04
 
     * Dropped distribution releases:
         + RHEL/CentOS 6

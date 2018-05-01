@@ -183,7 +183,13 @@ install_all()
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # Debian 9, Ubuntu 16.04
-            ALL_PKGS="${ALL_PKGS} php-cli php-fpm php-json php-gd php-mcrypt php-curl mcrypt php-intl php-xml php-mbstring"
+            ALL_PKGS="${ALL_PKGS} php-cli php-fpm php-json php-gd php-curl mcrypt php-intl php-xml php-mbstring"
+
+            # Ubuntu 18.04 doesn't have php-mcrypt.
+            if [ X"${DISTRO_CODENAME}" == X'stretch' -o X"${DISTRO_CODENAME}" == X'xenial' ]; then
+                ALL_PKGS="${ALL_PKGS} php-mcrypt"
+            fi
+
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-mysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql"
@@ -259,7 +265,7 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} clamd spamassassin"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj zoo nomarch cpio lzop cabextract p7zip-full rpm ripole libmail-spf-perl unrar-free pax lrzip"
+        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm ripole libmail-spf-perl unrar-free pax lrzip"
 
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
@@ -424,7 +430,7 @@ EOF
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} curl libmnl libuuid lm_sensors nc PyYAML zlib iproute"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors iproute netcat"
+            ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors netcat"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # netdata doesn't work on OpenBSD
             :

@@ -48,8 +48,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     [ X"${DISTRO_CODENAME}" == X'xenial' ] && export PGSQL_VERSION='9.5'
     # Debian 9
     [ X"${DISTRO_CODENAME}" == X'stretch' ] && export PGSQL_VERSION='9.6'
-    # Ubuntu 17.10
-    [ X"${DISTRO_CODENAME}" == X'artful' ] && export PGSQL_VERSION='9.6'
+    # Ubuntu 18.04
+    [ X"${DISTRO_CODENAME}" == X'bionic' ] && export PGSQL_VERSION='10'
 
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"
     export PGSQL_CONF_DIR="/etc/postgresql/${PGSQL_VERSION}/main"
