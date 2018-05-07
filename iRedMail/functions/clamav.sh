@@ -57,7 +57,7 @@ clamav_config()
 
     # Enable AllowSupplementaryGroups
     perl -pi -e 's/^(AllowSupplementaryGroups.*)/#${1}/' ${CLAMD_CONF}
-    if [ X"${DISTRO_CODENAME}" != X'stretch' ]; then
+    if [ X"${DISTRO_CODENAME}" != X'stretch' -o X"${DISTRO_CODENAME}" == X'bionic' ]; then
         echo 'AllowSupplementaryGroups true' >> ${CLAMD_CONF}
     fi
 
