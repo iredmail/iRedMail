@@ -331,7 +331,7 @@ Subject: How to configure your mail client applications (MUA)
 * CalDAV and CardDAV server addresses: https://<server>/SOGo/dav/<full email address>
 
 For more details, please check detailed documentations:
-http://www.iredmail.org/docs/#mua
+https://docs.iredmail.org/#mua
 EOF
 
     chown -R ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${DOMAIN_ADMIN_MAILDIR_INBOX}
