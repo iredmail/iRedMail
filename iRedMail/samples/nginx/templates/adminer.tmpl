@@ -32,7 +32,6 @@ location ~ ^/adminer {
     include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
     include PH_NGINX_CONF_TMPL_DIR/fastcgi_php.tmpl;
 
-    fastcgi_index latest.php;
     fastcgi_param SCRIPT_FILENAME PH_HTTPD_SERVERROOT/adminer/latest.php;
 
     # Access control

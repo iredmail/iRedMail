@@ -54,14 +54,14 @@ nginx_config()
     #
     # Enable modular config files
     #
-    _modular_conf='cache.conf \
-        client_max_body_size.conf \
-        default_type.conf \
-        gzip.conf \
-        log.conf \
-        mime_types.conf \
-        sendfile.conf \
-        server_tokens.conf \
+    _modular_conf='cache.conf
+        client_max_body_size.conf
+        default_type.conf
+        gzip.conf
+        log.conf
+        mime_types.conf
+        sendfile.conf
+        server_tokens.conf
         types_hash_max_size.conf'
 
     [ X"${IREDMAIL_USE_PHP}" == X'YES' ] && _modular_conf="${_modular_conf} php-fpm.conf"

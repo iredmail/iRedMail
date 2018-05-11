@@ -45,7 +45,7 @@ install_all()
         export PREFERRED_MYSQL_VER='55m'
     fi
 
-    if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
+    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         export IREDMAIL_USE_PHP='YES'
     fi
 
