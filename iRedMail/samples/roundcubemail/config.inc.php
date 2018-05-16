@@ -65,5 +65,5 @@ $config['layout'] = 'widescreen';   // three columns
 //$config['skip_deleted'] = true;
 
 // PLUGINS
-$config['plugins'] = array('managesieve', 'password', 'enigma');
+$config['plugins'] = array('managesieve', 'password');
 
