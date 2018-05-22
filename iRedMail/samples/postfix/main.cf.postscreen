@@ -5,6 +5,16 @@ postscreen_greet_action = drop
 postscreen_blacklist_action = drop
 postscreen_dnsbl_action = drop
 postscreen_dnsbl_threshold = 2
+
+# Attention:
+#   - zen.spamhaus.org free tire has 3 limits
+#     (https://www.spamhaus.org/organization/dnsblusage/):
+#
+#     1) Your use of the Spamhaus DNSBLs is non-commercial*, and
+#     2) Your email traffic is less than 100,000 SMTP connections per day, and
+#     3) Your DNSBL query volume is less than 300,000 queries per day.
+#
+# It's strongly recommended to use a local DNS server for cache.
 postscreen_dnsbl_sites =
     zen.spamhaus.org=127.0.0.[2..11]*3
     b.barracudacentral.org=127.0.0.2*2
