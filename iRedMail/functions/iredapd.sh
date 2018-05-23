@@ -35,10 +35,18 @@ iredapd_install()
     # Create symbol link.
     ln -s ${IREDAPD_ROOT_DIR} ${IREDAPD_ROOT_DIR_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
 
+    # Set file permission.
+    chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${IREDAPD_ROOT_DIR}
+    chmod -R 0500 ${IREDAPD_ROOT_DIR}
+
     # Copy init rc script.
     if [ X"${USE_SYSTEMD}" == X'YES' ]; then
         ECHO_DEBUG "Create symbol link: ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service -> ${SYSTEMD_SERVICE_DIR}/iredapd.service."
         ln -s ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service ${SYSTEMD_SERVICE_DIR}/iredapd.service >> ${INSTALL_LOG} 2>&1
+
+        # To supress systemd warning.
+        chmod u-x,o+r ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service
+
         systemctl daemon-reload >> ${INSTALL_LOG} 2>&1
     else
         if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -60,10 +68,6 @@ iredapd_install()
     ECHO_DEBUG "Make iredapd starting after system startup."
     service_control enable iredapd >> ${INSTALL_LOG} 2>&1
     export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
-
-    # Set file permission.
-    chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${IREDAPD_ROOT_DIR}
-    chmod -R 0500 ${IREDAPD_ROOT_DIR}
 
     # Copy sample config file.
     cd ${IREDAPD_ROOT_DIR_SYMBOL_LINK}
