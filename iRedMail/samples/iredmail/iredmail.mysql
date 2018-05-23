@@ -173,6 +173,10 @@ CREATE TABLE IF NOT EXISTS mailbox (
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
     language VARCHAR(5) NOT NULL DEFAULT '',
+    -- Mailbox format.
+    -- All formats supported by Dovecot are ok. e.g. maildir, mdbox.
+    -- FYI: https://wiki2.dovecot.org/MailboxFormat
+    mailboxformat VARCHAR(20) NOT NULL DEFAULT 'maildir',
     storagebasedirectory VARCHAR(255) NOT NULL DEFAULT '',
     storagenode VARCHAR(255) NOT NULL DEFAULT '',
     maildir VARCHAR(255) NOT NULL DEFAULT '',
