@@ -455,14 +455,14 @@ dovecot_log() {
         if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
             cat >> /etc/newsyslog.conf <<EOF
-${DOVECOT_LOG_FILE}    ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
+${DOVECOT_LOG_FILE}    ${SYS_USER_ROOT}:${SYS_GROUP_ROOT}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
 EOF
         fi
 
         if ! grep "${DOVECOT_SIEVE_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
             cat >> /etc/newsyslog.conf <<EOF
-${DOVECOT_SIEVE_LOG_FILE}    ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
+${DOVECOT_SIEVE_LOG_FILE}    ${SYS_USER_ROOT}:${SYS_GROUP_ROOT}   600  7     *    24    Z "${DOVECOT_DOVEADM_BIN} log reopen"
 EOF
         fi
 

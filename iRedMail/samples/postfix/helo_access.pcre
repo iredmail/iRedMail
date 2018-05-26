@@ -172,3 +172,10 @@
 /(amedex\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 /(aageneva\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 /^ylmf-pc/ REJECT ACCESS DENIED
+
+/(\.*wideragents\.com)$/ REJECT ACCESS DENIED (${1})
+/(\.*resumekeep\.net)$/ REJECT ACCESS DENIED (${1})
+/(\.*terracedrink\.com)$/ REJECT ACCESS DENIED (${1})
+/(\.*sincemessage\.com)$/ REJECT ACCESS DENIED (${1})
+/(\.*ordertranquility\.com)$/ REJECT ACCESS DENIED (${1})
+/(\.*terracedrink\.com)$/ REJECT ACCESS DENIED (${1})

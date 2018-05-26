@@ -14,6 +14,9 @@ postscreen_dnsbl_threshold = 2
 #     2) Your email traffic is less than 100,000 SMTP connections per day, and
 #     3) Your DNSBL query volume is less than 300,000 queries per day.
 #
+#   - FAQ: "Your DNSBL blocks nothing at all!"
+#     https://www.spamhaus.org/faq/section/DNSBL%20Usage#261
+#
 # It's strongly recommended to use a local DNS server for cache.
 postscreen_dnsbl_sites =
     zen.spamhaus.org=127.0.0.[2..11]*3
