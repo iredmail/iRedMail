@@ -1,6 +1,7 @@
 iRedMail-0.9.9:
     * Improvements:
-        + Able to set per-user mailbox format (e.g. mdbox) in SQL/LDAP.
+        + Able to set per-user mailbox format (e.g. mdbox) and mailbox folder
+          appended to maildir path in SQL/LDAP.
         + Switch to utf8mb4 as default character set in MySQL.
         + Set file/directory permission to 0400 for dumpped SQL backup files.
 

@@ -169,7 +169,8 @@ CREATE TABLE mailbox (
     -- Mailbox format.
     -- All formats supported by Dovecot are ok. e.g. maildir, mdbox.
     -- FYI: https://wiki2.dovecot.org/MailboxFormat
-    mailboxformat VARCHAR(20) NOT NULL DEFAULT 'maildir',
+    mailboxformat VARCHAR(50) NOT NULL DEFAULT 'maildir',
+    mailboxfolder VARCHAR(50) NOT NULL DEFAULT 'Maildir',
     storagebasedirectory VARCHAR(255) NOT NULL DEFAULT '',
     storagenode VARCHAR(255) NOT NULL DEFAULT '',
     maildir VARCHAR(255) NOT NULL DEFAULT '',
