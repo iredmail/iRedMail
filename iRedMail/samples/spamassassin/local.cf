@@ -149,3 +149,5 @@ ok_locales          all
 # of the first untrusted relay (if any), or any trusted relay otherwise.
 # https://wiki.apache.org/spamassassin/Rules/RP_MATCHES_RCVD
 score RP_MATCHES_RCVD 0
+
+razor_config PH_SA_PLUGIN_RAZOR_CONF

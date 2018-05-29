@@ -13,9 +13,9 @@ sa_config()
 
     ECHO_DEBUG "Copy sample SpamAssassin config file: ${SAMPLE_DIR}/spamassassin/local.cf -> ${SA_LOCAL_CF}."
     cp -f ${SAMPLE_DIR}/spamassassin/local.cf ${SA_LOCAL_CF}
+    cp -f ${SAMPLE_DIR}/spamassassin/razor.conf ${SA_PLUGIN_RAZOR_CONF}
 
-    #ECHO_DEBUG "Disable plugin: URIDNSBL."
-    #perl -pi -e 's/(^loadplugin.*Mail.*SpamAssassin.*Plugin.*URIDNSBL.*)/#${1}/' ${SA_INIT_PRE}
+    perl -pi -e 's#PH_SA_PLUGIN_RAZOR_CONF#$ENV{SA_PLUGIN_RAZOR_CONF}#g' ${SA_LOCAL_CF}
 
     ECHO_DEBUG "Enable crontabs for SpamAssassin update."
     if [ X"${DISTRO}" == X'RHEL' ]; then
