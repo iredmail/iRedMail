@@ -51,7 +51,6 @@ install_all()
 
     freebsd_make_conf_add 'WANT_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
     freebsd_make_conf_add 'WANT_MYSQL' "${PREFERRED_MYSQL_VER}"
-    #freebsd_make_conf_add 'WANT_MARIADB_VER' "${PREFERRED_MARIADB_VER}"
     freebsd_make_conf_add 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
     freebsd_make_conf_add 'DEFAULT_VERSIONS' 'ssl=libressl python=2.7 python2=2.7 pgsql=9.5 php=7.1'

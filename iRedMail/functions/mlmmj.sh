@@ -122,6 +122,11 @@ iredmail_sql_db_password = '${VMAIL_DB_ADMIN_PASSWD}'
 EOF
     fi
 
+    # FreeBSD uses different path for syslog socket.
+    if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        echo "SYSLOG_SERVER = '/var/run/log'" >> ${MLMMJADMIN_CONF}
+    fi
+
     # Create log directory and empty log file
     mkdir -p ${MLMMJADMIN_LOG_DIR}
     touch ${MLMMJADMIN_LOG_FILE}
