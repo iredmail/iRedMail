@@ -45,7 +45,7 @@ iredapd_install()
         ln -s ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service ${SYSTEMD_SERVICE_DIR}/iredapd.service >> ${INSTALL_LOG} 2>&1
 
         # To supress systemd warning.
-        chmod u-x,o+r ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service
+        chmod 0644 ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service
 
         systemctl daemon-reload >> ${INSTALL_LOG} 2>&1
     else
