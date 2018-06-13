@@ -858,7 +858,7 @@ EOF
     ALL_PORTS="${ALL_PORTS} mail/mlmmj"
 
     # dependencies for mlmmjadmin: a RESTful API server used to manage mlmmj
-    ALL_PORTS="${ALL_PORTS} www/py-requests"
+    #ALL_PORTS="${ALL_PORTS} www/py-requests"
 
     # Roundcube.
     cat > /var/db/ports/mail_roundcube/options <<EOF
