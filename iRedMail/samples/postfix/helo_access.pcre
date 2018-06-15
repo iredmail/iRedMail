@@ -138,7 +138,6 @@
 /(embarqhsd\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 /(emcali\.net\.co)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 /(epm\.net\.co)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
-/(eutelia\.it)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 /(fibertel\.com\.ar)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 /(freedom2surf\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
 /(hgcbroadband\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server does not identify itself correctly (${1})
