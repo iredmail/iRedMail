@@ -5,18 +5,6 @@ location ~ ^/iredadmin/static/(.*) {
     alias PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK/static/$1;
 }
 
-# Handle newsletter-style subscription/unsubscription supported in iRedAdmin-Pro.
-location ~ ^/newsletter/ {
-    include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
-
-    include uwsgi_params;
-    uwsgi_pass PH_IREDADMIN_UWSGI_SOCKET_FULL;
-    uwsgi_param UWSGI_CHDIR PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK;
-    uwsgi_param UWSGI_SCRIPT iredadmin;
-    uwsgi_param SCRIPT_NAME /iredadmin;
-    uwsgi_param REQUEST_URI /iredadmin/$request_uri;
-}
-
 # Python scripts
 location ~ ^/iredadmin(.*) {
     rewrite ^/iredadmin(/.*)$ $1 break;
@@ -39,4 +27,9 @@ location ~ ^/iredadmin(.*) {
 # iRedAdmin: redirect /iredadmin to /iredadmin/
 location = /iredadmin {
     rewrite ^ /iredadmin/;
+}
+
+# Handle newsletter-style subscription/unsubscription supported in iRedAdmin-Pro.
+location ~ ^/newsletter/ {
+    rewrite /newsletter/(.*) /iredadmin/newsletter/$1 last;
 }
