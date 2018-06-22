@@ -602,7 +602,7 @@ update_sysctl_param()
 
     if grep "^${_param}\>" ${SYSCTL_CONF} &>/dev/null; then
         # param exists, updating it.
-        perl -pi -e 's#(${_param}=).*#${1}$ENV{_value}#' ${SYSCTL_CONF}
+        perl -pi -e 's#^($ENV{_param})[ =].*#${1}=$ENV{_value}#' ${SYSCTL_CONF}
     else
         # param doesn't exist. add a new one.
         echo "${_param}=${_value}" >> ${SYSCTL_CONF}
