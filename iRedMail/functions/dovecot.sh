@@ -341,6 +341,12 @@ dovecot_config()
     chown -R ${SYS_USER_DOVECOT}:${SYS_GROUP_DOVECOT} ${dovecot_expire_dict_dir} && \
     chmod -R 0750 ${dovecot_expire_dict_dir}
 
+    # Prevent read-only files forced by systemd.
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        mkdir -p /etc/systemd/system/dovecot.service.d >> ${INSTALL_LOG} 2>&1
+        cp -f ${SAMPLE_DIR}/dovecot/systemd/override.conf /etc/systemd/system/dovecot.service.d >> ${INSTALL_LOG} 2>&1
+    fi
+
     cat >> ${TIP_FILE} <<EOF
 Dovecot:
     * Configuration files:

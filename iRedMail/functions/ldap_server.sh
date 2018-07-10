@@ -89,10 +89,13 @@ enabledService: internal
 enabledService: doveadm
 enabledService: smtp
 enabledService: smtpsecured
+enabledService: smtptls
 enabledService: pop3
 enabledService: pop3secured
+enabledService: pop3tls
 enabledService: imap
 enabledService: imapsecured
+enabledService: imaptls
 enabledService: deliver
 enabledService: lda
 enabledService: lmtp
@@ -103,6 +106,7 @@ enabledService: managesieve
 enabledService: managesievesecured
 enabledService: sieve
 enabledService: sievesecured
+enabledService: sievetls
 enabledService: displayedInGlobalAddressBook
 enabledService: shadowaddress
 enabledService: lib-storage
