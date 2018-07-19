@@ -8,8 +8,12 @@ add_user_vmail()
 {
     ECHO_DEBUG "Create system account: ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} (${SYS_USER_VMAIL_UID}:${SYS_GROUP_VMAIL_GID})."
 
-    [ -d ${STORAGE_BASE_DIR} ] || mkdir -p ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
-    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${STORAGE_BASE_DIR}
+    # Create STORAGE_BASE_DIR and set correct owner and permission.
+    if [ ! -d ${STORAGE_BASE_DIR} ]; then
+        mkdir -p ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
+        chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
+        chmod -R 0755 ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
+    fi
 
     [ -d ${STORAGE_MAILBOX_DIR} ] || mkdir -p ${STORAGE_MAILBOX_DIR} >> ${INSTALL_LOG} 2>&1
     [ -d ${PUBLIC_MAILBOX_DIR} ] || mkdir -p ${PUBLIC_MAILBOX_DIR} >> ${INSTALL_LOG} 2>&1
@@ -63,8 +67,7 @@ add_user_vmail()
     mkdir -p ${DOMAIN_ADMIN_MAILDIR_INBOX} >> ${INSTALL_LOG} 2>&1
 
     # set owner/group and permission.
-    chown -R ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${STORAGE_BASE_DIR} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
-    chmod -R 0755 ${STORAGE_BASE_DIR}
+    chown -R ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
     chmod -R 0700 ${STORAGE_MAILBOX_DIR} ${PUBLIC_MAILBOX_DIR} ${SIEVE_DIR}
 
     # backup directory
