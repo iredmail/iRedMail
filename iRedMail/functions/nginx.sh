@@ -58,6 +58,7 @@ nginx_config()
         client_max_body_size.conf
         default_type.conf
         gzip.conf
+        headers.conf
         log.conf
         mime_types.conf
         sendfile.conf
