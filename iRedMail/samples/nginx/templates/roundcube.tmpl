@@ -14,7 +14,7 @@ location ~ ^/mail/plugins/.*/config.inc.php.* { deny all; }
 location ~ ^/mail/plugins/enigma/home($|/.*) { deny all; }
 
 # Redirect URI `/mail` to `/mail/`.
-location = ^/mail {
+location = /mail {
     return 301 /mail/;
 }
 
