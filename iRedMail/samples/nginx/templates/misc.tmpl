@@ -4,7 +4,7 @@ location ~ ^/.well-known/ {
     access_log off;
     log_not_found off;
     autoindex off;
-    #alias /var/www/html;
+    #root /var/www/html;
 }
 
 # Deny all attempts to access hidden files such as .htaccess.
