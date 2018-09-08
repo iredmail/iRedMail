@@ -161,12 +161,12 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.1.21 NAME 'domainWhitelistSender'
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 attributetype ( 1.3.6.1.4.1.32349.1.2.1.22 NAME 'domainBlacklistIP'
-    DESC 'Whitelist IP address'
+    DESC 'Blacklist IP address'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 attributetype ( 1.3.6.1.4.1.32349.1.2.1.23 NAME 'domainBlacklistSender'
-    DESC 'Whitelist sender address'
+    DESC 'Blacklist sender address'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
