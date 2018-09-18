@@ -55,7 +55,7 @@ uwsgi_config()
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         mkdir -p ${UWSGI_CONF_DIR} >> ${INSTALL_LOG} 2>&1
 
-        _uwsgi_profiles="mlmmjadmin"
+        _uwsgi_profiles=""
         if [ X"${USE_IREDADMIN}" == X'YES' ]; then
             _uwsgi_profiles="${_uwsgi_profiles} iredadmin"
         fi
