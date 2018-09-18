@@ -141,7 +141,7 @@ EOF
 
     ECHO_DEBUG "Create empty log file for OpenLDAP: ${OPENLDAP_LOGFILE}."
     touch ${OPENLDAP_LOGFILE}
-    chown ${SYS_USER_LDAP}:${SYS_GROUP_LDAP} ${OPENLDAP_LOGFILE}
+    chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${OPENLDAP_LOGFILE}
     chmod 0600 ${OPENLDAP_LOGFILE}
 
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
