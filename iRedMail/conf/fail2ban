@@ -44,7 +44,7 @@ export FAIL2BAN_FILTER_DOVECOT="dovecot.iredmail"
 # Fail2ban logtarget: STDOUT STDERR SYSLOG file.
 # Default log file is /var/log/fail2ban.log.
 export FAIL2BAN_LOGTARGET='SYSLOG'
-export FAIL2BAN_DISABLED_SERVICES="http,https,smtp,submission,pop3,pop3s,imap,imaps,sieve"
+export FAIL2BAN_DISABLED_SERVICES="http,https,smtp,submission,465,pop3,pop3s,imap,imaps,sieve"
 
 # Firewall command (fail2ban/action.d/[NAME].conf)
 if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
