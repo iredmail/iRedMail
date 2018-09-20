@@ -20,7 +20,11 @@ else
     export CMD_MLMMJ_RECEIVE='/usr/bin/mlmmj-receive'
 fi
 
-export CMD_ALTERMIME='altermime'
+if [[ -x /usr/local/bin/altermime ]]; then
+    export CMD_ALTERMIME='/usr/local/bin/altermime'
+else
+    export CMD_ALTERMIME='/usr/bin/altermime'
+fi
 
 # File names used to store footer in different MIME types:
 # plain text, html, base64 encoded.
