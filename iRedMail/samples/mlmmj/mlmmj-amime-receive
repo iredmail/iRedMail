@@ -11,11 +11,20 @@
 #   - Original wrote by Gerd v. Egidy <gerd@egidy.de>, MIT License.
 #   - Updated by Zhang Huangbin <zhb@iredmail.org>.
 
-export CMD_MLMMJ_RECEIVE='PH_CMD_MLMMJ_RECEIVE'
-export CMD_ALTERMIME='PH_CMD_ALTERMIME'
+export PATH="/usr/bin:/usr/local/bin:/bin:/sbin:/usr/sbin:/usr/local/sbin:$PATH"
+
+# All `mlmmj-*` programs must be ran with absolute path to the program.
+if [[ -x /usr/local/bin/mlmmj-receive ]]; then
+    export CMD_MLMMJ_RECEIVE='/usr/local/bin/mlmmj-receive'
+else
+    export CMD_MLMMJ_RECEIVE='/usr/bin/mlmmj-receive'
+fi
+
+export CMD_ALTERMIME='altermime'
 
 # File names used to store footer in different MIME types:
 # plain text, html, base64 encoded.
+# WARNING: both `footer_text` and `footer_html` must exist.
 export FILE_FOOTER_TEXT='footer_text'
 export FILE_FOOTER_HTML='footer_html'
 #export FILE_FOOTER_BASE64='footer_base64'
@@ -63,29 +72,22 @@ if [ ! -d "${ML_SUBDIR_CONTROL}" ]; then
     exit 1
 fi
 
-# Looking for footer files and build alterMIME parameters
-PARAMS=''
-if [ -f "${ML_SUBDIR_CONTROL}/${FILE_FOOTER_TEXT}" ]; then
-    PARAMS="${PARAMS} --disclaimer=${ML_SUBDIR_CONTROL}/${FILE_FOOTER_TEXT}"
-fi
-
-if [ -f "${ML_SUBDIR_CONTROL}/${FILE_FOOTER_HTML}" ]; then
-    PARAMS="${PARAMS} --disclaimer-html=${ML_SUBDIR_CONTROL}/${FILE_FOOTER_HTML} --htmltoo --force-for-bad-html"
-fi
-
-#if [ -f "${ML_SUBDIR_CONTROL}/${FILE_FOOTER_BASE64}" ]; then
-#    PARAMS="${PARAMS} --disclaimer-b64=${ML_SUBDIR_CONTROL}/${FILE_FOOTER_BASE64}"
-#fi
+# Path to footer files
+PATH_FOOTER_TEXT="${ML_SUBDIR_CONTROL}/${FILE_FOOTER_TEXT}"
+PATH_FOOTER_HTML="${ML_SUBDIR_CONTROL}/${FILE_FOOTER_HTML}"
 
 # go to a dir where altermime can write it's tmp-files safely
 cd ${ML_DIR}
 
-# Check whether we have any footer file available
-if echo ${PARAMS} | grep 'disclaimer' &>/dev/null; then
-    PARAMS="${PARAMS} --altersigned --log-syslog"
-
+if [[ -f ${PATH_FOOTER_TEXT} ]] && [[ -f ${PATH_FOOTER_HTML} ]]; then
     # pipe to altermime, then pipe to mlmmj-receive
-    ${CMD_ALTERMIME} --input=- ${PARAMS} | ${CMD_MLMMJ_RECEIVE} "$@"
+    ${CMD_ALTERMIME} --input=- \
+        --altersigned \
+        --log-syslog \
+        --disclaimer=${PATH_FOOTER_TEXT} \
+        --disclaimer-html=${PATH_FOOTER_HTML} \
+        --htmltoo \
+        --force-for-bad-html | ${CMD_MLMMJ_RECEIVE} "$@"
 else
     ${CMD_MLMMJ_RECEIVE} "$@"
 fi

@@ -4,8 +4,13 @@ iRedMail-0.9.9:
           appended to maildir path in SQL/LDAP.
         + Switch to utf8mb4 as default character set in MySQL.
         + Set file/directory permission to 0400 for dumpped SQL backup files.
+        + OpenLDAP log file has been moved to /var/log/openldap/openldap.log
+          (was /var/log/openldap.log).
 
     * Fixed issues:
+        + Index ldap attribute `mobile`.
+        - Not always specify a plain text footer file for altermime to update
+          email sent to mlmmj mailing list.
         + Use accurate Nginx url match for Roundcube.
         - mlmmjadmin:
             - Not set correct owner/group for config file.

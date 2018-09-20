@@ -113,7 +113,12 @@ export OPENLDAP_RC_SCRIPT="${DIR_RC_SCRIPTS}/${OPENLDAP_RC_SCRIPT_NAME}"
 export OPENLDAP_SCHEMA_DIR="${OPENLDAP_CONF_ROOT}/schema"
 export OPENLDAP_SLAPD_CONF="${OPENLDAP_CONF_ROOT}/slapd.conf"
 export OPENLDAP_LDAP_CONF="${OPENLDAP_CONF_ROOT}/ldap.conf"
-export OPENLDAP_LOGFILE='/var/log/openldap.log'
+
+# Log
+# OpenLDAP logs to local4 by default.
+export OPENLDAP_SYSLOG_FACILITY='local4'
+export OPENLDAP_LOG_DIR='/var/log/openldap'
+export OPENLDAP_LOG_FILE="${OPENLDAP_LOG_DIR}/openldap.log"
 export OPENLDAP_LOGROTATE_FILE="${LOGROTATE_DIR}/openldap"
 
 # LDAP data directory.

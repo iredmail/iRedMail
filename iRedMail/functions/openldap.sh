@@ -127,35 +127,43 @@ EOF
     perl -pi -e 's#PH_SSL_CERT_FILE#$ENV{SSL_CERT_FILE}#g' ${OPENLDAP_LDAP_CONF}
     chown ${SYS_USER_LDAP}:${SYS_GROUP_LDAP} ${OPENLDAP_LDAP_CONF}
 
+    ECHO_DEBUG "Create directory used to store OpenLDAP log file: ${OPENLDAP_LOG_DIR}"
+    mkdir -p ${OPENLDAP_LOG_DIR}
+    chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${OPENLDAP_LOG_DIR}
+    chmod 0640 ${OPENLDAP_LOG_DIR}
+
+    ECHO_DEBUG "Create empty log file: ${OPENLDAP_LOG_FILE}."
+    touch ${OPENLDAP_LOG_FILE}
+    chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${OPENLDAP_LOG_FILE}
+    chmod 0600 ${OPENLDAP_LOG_FILE}
+
     ECHO_DEBUG "Setting up syslog configration file for OpenLDAP."
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         echo -e '!slapd' >> ${SYSLOG_CONF}
-        echo -e "*.*\t\t\t\t\t\t-${OPENLDAP_LOGFILE}" >> ${SYSLOG_CONF}
+        echo -e "*.*\t\t\t\t\t\t-${OPENLDAP_LOG_FILE}" >> ${SYSLOG_CONF}
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # '!!' means abort further evaluation after first match
         echo -e '!!slapd' >> ${SYSLOG_CONF}
-        echo -e "*.*\t\t\t\t\t\t${OPENLDAP_LOGFILE}" >> ${SYSLOG_CONF}
+        echo -e "*.*\t\t\t\t\t\t${OPENLDAP_LOG_FILE}" >> ${SYSLOG_CONF}
     else
-        echo -e "local4.*\t\t\t\t\t\t-${OPENLDAP_LOGFILE}" >> ${SYSLOG_CONF}
+        # Copy rsyslog config file used to filter mlmmjadmin log
+        cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-openldap.conf ${SYSLOG_CONF_DIR}
+        perl -pi -e 's#PH_OPENLDAP_SYSLOG_FACILITY#$ENV{OPENLDAP_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-iredmail-openldap.conf
+        perl -pi -e 's#PH_OPENLDAP_LOG_FILE#$ENV{OPENLDAP_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-iredmail-openldap.conf
     fi
 
-    ECHO_DEBUG "Create empty log file for OpenLDAP: ${OPENLDAP_LOGFILE}."
-    touch ${OPENLDAP_LOGFILE}
-    chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${OPENLDAP_LOGFILE}
-    chmod 0600 ${OPENLDAP_LOGFILE}
-
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-        ECHO_DEBUG "Setting logrotate for openldap log file: ${OPENLDAP_LOGFILE}."
+        ECHO_DEBUG "Setting logrotate for openldap log file: ${OPENLDAP_LOG_FILE}."
         cp -f ${SAMPLE_DIR}/logrotate/openldap ${OPENLDAP_LOGROTATE_FILE}
 
-        perl -pi -e 's#PH_OPENLDAP_LOGFILE#$ENV{OPENLDAP_LOGFILE}#g' ${OPENLDAP_LOGROTATE_FILE}
+        perl -pi -e 's#PH_OPENLDAP_LOG_FILE#$ENV{OPENLDAP_LOG_FILE}#g' ${OPENLDAP_LOGROTATE_FILE}
         perl -pi -e 's#PH_SYS_USER_LDAP#$ENV{SYS_USER_LDAP}#g' ${OPENLDAP_LOGROTATE_FILE}
         perl -pi -e 's#PH_SYS_GROUP_LDAP#$ENV{SYS_GROUP_LDAP}#g' ${OPENLDAP_LOGROTATE_FILE}
         perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${OPENLDAP_LOGROTATE_FILE}
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' -o X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-        if ! grep "${OPENLDAP_LOGFILE}" /etc/newsyslog.conf &>/dev/null; then
+        if ! grep "${OPENLDAP_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             cat >> /etc/newsyslog.conf <<EOF
-${OPENLDAP_LOGFILE}    ${SYS_USER_LDAP}:${SYS_GROUP_LDAP}   600  7     *    24    Z
+${OPENLDAP_LOG_FILE}    ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG}   640  7     *    24    Z
 EOF
         fi
     fi
@@ -207,7 +215,7 @@ OpenLDAP:
         - ${OPENLDAP_SCHEMA_DIR}/${PROG_NAME_LOWERCASE}.schema
     * Log file related:
         - ${SYSLOG_CONF}
-        - ${OPENLDAP_LOGFILE}
+        - ${OPENLDAP_LOG_FILE}
         - ${OPENLDAP_LOGROTATE_FILE}
     * Data dir and files:
         - ${OPENLDAP_DATA_DIR}
