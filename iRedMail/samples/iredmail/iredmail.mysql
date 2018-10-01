@@ -87,7 +87,6 @@ CREATE TABLE IF NOT EXISTS forwardings (
     dest_domain VARCHAR(255) NOT NULL DEFAULT '',
     -- defines whether it's a standalone (mlmmj) mailing list account. 0=no, 1=yes.
     is_maillist TINYINT(1) NOT NULL DEFAULT 0,
-    -- defines whether it's a mail forwarding address of mail user. 0=no, 1=yes.
     -- defines whether it's a standalone mail alias account. 0=no, 1=yes.
     is_list TINYINT(1) NOT NULL DEFAULT 0,
     -- defines whether it's a mail forwarding address of mail user. 0=no, 1=yes.
