@@ -42,7 +42,7 @@ iredapd_install()
     # Copy init rc script.
     if [ X"${USE_SYSTEMD}" == X'YES' ]; then
         ECHO_DEBUG "Create symbol link: ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service -> ${SYSTEMD_SERVICE_DIR}/iredapd.service."
-        ln -s ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service ${SYSTEMD_SERVICE_DIR}/iredapd.service >> ${INSTALL_LOG} 2>&1
+        cp -f ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service ${SYSTEMD_SERVICE_DIR}/iredapd.service >> ${INSTALL_LOG} 2>&1
 
         # To supress systemd warning.
         chmod 0644 ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.service

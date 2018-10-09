@@ -55,7 +55,7 @@ mysql_initialize_db()
     ECHO_DEBUG "Disable 'skip-networking' in my.cnf."
     perl -pi -e 's/^(skip-networking.*)/#${1}/' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
 
-    ECHO_DEBUG "Set max_connections to 1024."
+    ECHO_DEBUG "Set max_connections to ${MYSQL_MAX_CONNECTIONS}."
     perl -pi -e 's#^(max_connections .*=)(.*)#${1} $ENV{MYSQL_MAX_CONNECTIONS}#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
 
     # Enable innodb_file_per_table by default.
