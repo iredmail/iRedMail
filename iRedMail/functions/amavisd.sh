@@ -40,7 +40,7 @@ GRANT SELECT,INSERT,UPDATE,DELETE ON ${AMAVISD_DB_NAME}.* TO '${AMAVISD_DB_USER}
 -- Import Amavisd SQL template
 USE ${AMAVISD_DB_NAME};
 SOURCE ${AMAVISD_DB_MYSQL_TMPL};
-SOURCE ${SAMPLE_DIR}/amavisd/bypass.sql;
+SOURCE ${SAMPLE_DIR}/amavisd/default_spam_policy.sql;
 
 FLUSH PRIVILEGES;
 EOF
@@ -56,7 +56,7 @@ EOF
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         cp -f ${AMAVISD_DB_PGSQL_TMPL} ${PGSQL_USER_HOMEDIR}/amavisd.sql >> ${INSTALL_LOG} 2>&1
-        cp -f ${SAMPLE_DIR}/amavisd/bypass.sql ${PGSQL_USER_HOMEDIR}/bypass.sql >> ${INSTALL_LOG} 2>&1
+        cp -f ${SAMPLE_DIR}/amavisd/default_spam_policy.sql ${PGSQL_USER_HOMEDIR}/default_spam_policy.sql >> ${INSTALL_LOG} 2>&1
         chmod 0777 ${PGSQL_USER_HOMEDIR}/amavisd.sql >/dev/null
 
         su - ${SYS_USER_PGSQL} -c "psql -d template1" >> ${INSTALL_LOG}  <<EOF
@@ -72,7 +72,7 @@ EOF
         # Import Amavisd SQL template
         su - ${SYS_USER_PGSQL} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
 \i ${PGSQL_USER_HOMEDIR}/amavisd.sql;
-\i ${PGSQL_USER_HOMEDIR}/bypass.sql;
+\i ${PGSQL_USER_HOMEDIR}/default_spam_policy.sql;
 EOF
         rm -f ${PGSQL_USER_HOMEDIR}/{amavisd,bypass}.sql >> ${INSTALL_LOG}
 
