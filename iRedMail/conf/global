@@ -324,8 +324,8 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export SHELL_BASH='/usr/local/bin/bash'
     export PYTHON_BIN='/usr/local/bin/python'
 
-    # Unsupported release: 5.7 and earlier versions.
-    if echo "${DISTRO_VERSION}" | grep '^5.[1234567]' &>/dev/null ; then
+    # Unsupported release: 6.3 and earlier versions.
+    if echo "${DISTRO_VERSION}" | grep '^6.[0123]' &>/dev/null ; then
         export UNSUPPORTED_RELEASE='YES'
     fi
 

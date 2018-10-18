@@ -29,16 +29,11 @@ install_all()
     # OpenBSD only
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         PKG_SCRIPTS=''
-        OB_PKG_PHP_VER='%7'
+        OB_PKG_PHP_VER='-7.2.10'
 
-        if [ X"${DISTRO_VERSION}" == X'6.2' ]; then
-            OB_PKG_OPENLDAP_SERVER_VER='-2.4.45p4'
-            OB_PKG_OPENLDAP_CLIENT_VER='-2.4.45p4'
-        else
-            # 6.3
-            OB_PKG_OPENLDAP_SERVER_VER='-2.4.45p5'
-            OB_PKG_OPENLDAP_CLIENT_VER='-2.4.45p4'
-        fi
+        # 6.4
+        OB_PKG_OPENLDAP_SERVER_VER='-2.4.46'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.46'
     fi
 
     # Install PHP if there's a web server running -- php is too popular.
@@ -194,7 +189,7 @@ install_all()
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} php${OB_PKG_PHP_VER} php-bz2${OB_PKG_PHP_VER} php-imap${OB_PKG_PHP_VER} php-mcrypt${OB_PKG_PHP_VER} php-gd${OB_PKG_PHP_VER} php-intl${OB_PKG_PHP_VER}"
+            ALL_PKGS="${ALL_PKGS} php${OB_PKG_PHP_VER} php-bz2${OB_PKG_PHP_VER} php-imap${OB_PKG_PHP_VER} php-gd${OB_PKG_PHP_VER} php-intl${OB_PKG_PHP_VER}"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap${OB_PKG_PHP_VER} php-pdo_mysql${OB_PKG_PHP_VER}"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql${OB_PKG_PHP_VER}"

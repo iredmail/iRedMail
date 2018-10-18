@@ -136,6 +136,10 @@ nginx_config()
 
     # php-fpm
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            cp ${PHP_FPM_POOL_WWW_CONF}.default ${PHP_FPM_POOL_WWW_CONF}
+        fi
+
         perl -pi -e 's#^(listen *=).*#${1} $ENV{PHP_FPM_SOCKET}#g' ${PHP_FPM_POOL_WWW_CONF}
         perl -pi -e 's#^;(listen.owner *=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
         perl -pi -e 's#^;(listen.group *=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}

@@ -1,4 +1,7 @@
 iRedMail-0.9.9:
+    * Supports new distribution release:
+        + OpenBSD 6.4
+
     * Improvements:
         + Able to set per-user mailbox format (e.g. mdbox) and mailbox folder
           appended to maildir path in SQL/LDAP.
@@ -23,6 +26,7 @@ iRedMail-0.9.9:
         + iRedAdmin -> 0.9.1
         + iRedAPD -> 2.3
         + mlmmjadmin -> 1.7
+        + uwsgi -> 2.0.17.1 (OpenBSD only)
 
 iRedMail-0.9.8:
     * Supports new distribution release:
