@@ -99,7 +99,9 @@ nginx_config()
     perl -pi -e 's#PH_HTTPD_LOG_ERRORLOG#$ENV{HTTPD_LOG_ERRORLOG}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/log.conf
     perl -pi -e 's#PH_HTTPD_LOG_ACCESSLOG#$ENV{HTTPD_LOG_ACCESSLOG}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/log.conf
     perl -pi -e 's#PH_NGINX_MIME_TYPES#$ENV{NGINX_MIME_TYPES}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/mime_types.conf
-    perl -pi -e 's#PH_PHP_FPM_SOCKET#$ENV{PHP_FPM_SOCKET}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php-fpm.conf
+
+    perl -pi -e 's#PH_PHP_FPM_BIND_HOST#$ENV{PHP_FPM_BIND_HOST}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php-fpm.conf
+    perl -pi -e 's#PH_PHP_FPM_PORT#$ENV{PHP_FPM_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php-fpm.conf
 
     #
     # web sites
@@ -136,28 +138,84 @@ nginx_config()
 
     # php-fpm
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            cp ${PHP_FPM_POOL_WWW_CONF}.default ${PHP_FPM_POOL_WWW_CONF}
+        set -x
+        # Update php-fpm.conf
+        perl -pi -e 's#;(error_log)( =.*)#$1 = syslog#g' ${PHP_FPM_CONF}
+        perl -pi -e 's#;(syslog.facility)( =.*)#$1 = $ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${PHP_FPM_CONF}
+        perl -pi -e 's#;(syslog.ident)( =.*)#$1 = php-fpm#g' ${PHP_FPM_CONF}
+
+        # Create php-fpm conf directory
+        mkdir -p ${PHP_FPM_POOL_DIR} >> ${INSTALL_LOG} 2>&1
+        cp ${SAMPLE_DIR}/php/fpm/pool.d/www.conf ${PHP_FPM_POOL_WWW_CONF} >> ${INSTALL_LOG} 2>&1
+
+        perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_LOCAL_ADDRESS#$ENV{LOCAL_ADDRESS}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_PORT#$ENV{PHP_FPM_PORT}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_POOL_MAX_CHILDREN#$ENV{PHP_FPM_POOL_MAX_CHILDREN}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_POOL_START_SERVERS#$ENV{PHP_FPM_POOL_START_SERVERS}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_POOL_MIN_SPARE_SERVERS#$ENV{PHP_FPM_POOL_MIN_SPARE_SERVERS}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_POOL_MAX_SPARE_SERVERS#$ENV{PHP_FPM_POOL_MAX_SPARE_SERVERS}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_POOL_MAX_CHILDREN#$ENV{PHP_FPM_POOL_MAX_CHILDREN}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_URI_STATUS#$ENV{PHP_FPM_URI_STATUS}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_URI_PING#$ENV{PHP_FPM_URI_PING}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_POOL_REQUEST_TERMINATE_TIMEOUT#$ENV{PHP_FPM_POOL_REQUEST_TERMINATE_TIMEOUT}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_REQUEST_SLOWLOG_TIMEOUT#$ENV{PHP_FPM_REQUEST_SLOWLOG_TIMEOUT}#g' ${PHP_FPM_POOL_WWW_CONF}
+
+        perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${PHP_FPM_POOL_WWW_CONF}
+        perl -pi -e 's#PH_PHP_FPM_LOG_SLOW#$ENV{PHP_FPM_LOG_SLOW}#g' ${PHP_FPM_POOL_WWW_CONF}
+
+        # Create log directory
+        mkdir -p ${PHP_FPM_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+
+        # Create modular syslog config file
+        if [[ X"${KERNEL_NAME}" == X'LINUX' ]]; then
+            cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-phpfpm.conf ${SYSLOG_CONF_DIR}
+
+            perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-iredmail-phpfpm.conf
+            perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${SYSLOG_CONF_DIR}/1-iredmail-phpfpm.conf
+        elif [[ X"${KERNEL_NAME}" == X'OPENBSD' ]]; then
+            if ! grep "${PHP_FPM_LOG_MAIN}" ${SYSLOG_CONF} &>/dev/null; then
+                # '!!' means abort further evaluation after first match
+                echo '!!php-fpm' >> ${SYSLOG_CONF}
+                echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${PHP_FPM_LOG_MAIN}" >> ${SYSLOG_CONF}
+            fi
         fi
 
-        perl -pi -e 's#^(listen *=).*#${1} $ENV{PHP_FPM_SOCKET}#g' ${PHP_FPM_POOL_WWW_CONF}
-        perl -pi -e 's#^;(listen.owner *=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
-        perl -pi -e 's#^;(listen.group *=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
-        perl -pi -e 's#^;(listen.mode *=).*#${1} 0660#g' ${PHP_FPM_POOL_WWW_CONF}
-        perl -pi -e 's#^(user.*=).*#${1} $ENV{HTTPD_USER}#g' ${PHP_FPM_POOL_WWW_CONF}
-        perl -pi -e 's#^(group.*=).*#${1} $ENV{HTTPD_GROUP}#g' ${PHP_FPM_POOL_WWW_CONF}
-        perl -pi -e 's#^(php_value.*session.save_path.).*#${1} = "$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_FPM_POOL_WWW_CONF}
+        # Create modular logrotate config file
+        ECHO_DEBUG "Setting logrotate for php-fpm log file."
+        if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+            cp -f ${SAMPLE_DIR}/logrotate/php-fpm ${PHP_FPM_LOGROTATE_CONF}
+            chmod 0644 ${PHP_FPM_LOGROTATE_CONF}
 
-        # Add '/status'
-        perl -pi -e 's#^;(pm.status_path =).*#${1} /status#g' ${PHP_FPM_POOL_WWW_CONF}
+            perl -pi -e 's#PH_PHP_FPM_LOG_DIR#$ENV{PHP_FPM_LOG_DIR}#g' ${PHP_FPM_LOGROTATE_CONF}
+            perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${PHP_FPM_LOGROTATE_CONF}
+        elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+            cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/php-fpm ${PHP_FPM_LOGROTATE_CONF}
 
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            perl -pi -e 's#^(\[www\])$#${1}\nuser = $ENV{HTTPD_USER}\ngroup = $ENV{HTTPD_GROUP}\n#' ${PHP_FPM_POOL_WWW_CONF}
+            perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${PHP_FPM_LOGROTATE_CONF}
+            perl -pi -e 's#PH_PHP_FPM_LOG_SLOW#$ENV{PHP_FPM_LOG_SLOW}#g' ${PHP_FPM_LOGROTATE_CONF}
 
-            # Disable chroot in php-fpm
-            perl -pi -e 's#^(chroot *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
-            perl -pi -e 's#^(chdir *=.*)#;${1}#g' ${PHP_FPM_POOL_WWW_CONF}
+            perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${PHP_FPM_LOGROTATE_CONF}
+            perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' ${PHP_FPM_LOGROTATE_CONF}
+
+        elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+            # We don't use this log file, remove it to avoid confusion.
+            rm -f /var/log/php-fpm.log &>/dev/null
+
+            if ! grep "${PHP_FPM_LOG_MAIN}" /etc/newsyslog.conf &>/dev/null; then
+                cat >> /etc/newsyslog.conf <<EOF
+${PHP_FPM_LOG_MAIN}    ${HTTPD_USER}:${HTTPD_GROUP}   600  7     *    24    Z
+EOF
+            fi
+
+            if ! grep "${PHP_FPM_LOG_SLOW}" /etc/newsyslog.conf &>/dev/null; then
+                cat >> /etc/newsyslog.conf <<EOF
+${PHP_FPM_LOG_SLOW}    ${HTTPD_USER}:${HTTPD_GROUP}   600  7     *    24    Z
+EOF
+            fi
         fi
+        set +x
     fi
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -183,7 +241,6 @@ Nginx:
 
 php-fpm:
     * Configuration files: ${PHP_FPM_POOL_WWW_CONF}
-    * Socket: ${PHP_FPM_SOCKET}
 
 EOF
 

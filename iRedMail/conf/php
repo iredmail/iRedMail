@@ -28,8 +28,9 @@ export PHP_SESSION_SAVE_PATH='/var/lib/php/sessions'
 
 # php-fpm
 export PHP_FPM_RC_SCRIPT_NAME='php-fpm'
-export PHP_FPM_SOCKET='/var/run/php-fpm.socket'
-export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
+export PHP_FPM_CONF='/etc/php-fpm.conf'
+export PHP_FPM_POOL_DIR='/etc/php-fpm.d'
+export PHP_FPM_LOGROTATE_CONF='/etc/logrotate.d/php-fpm'
 
 # Disabled PHP functions.
 #   - Roundcube requires: proc_open, proc_close, escapeshellarg.
@@ -48,7 +49,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     fi
 
     export PHP_INI="/etc/php/${PHP_VERSION}/fpm/php.ini"
-    export PHP_FPM_POOL_WWW_CONF="/etc/php/${PHP_VERSION}/fpm/pool.d/www.conf"
+    export PHP_FPM_LOGROTATE_CONF="${LOGROTATE_DIR}/php${PHP_VERSION}-fpm"
+    export PHP_FPM_POOL_DIR="/etc/php/${PHP_VERSION}/fpm/pool.d"
     export PHP_FPM_RC_SCRIPT_NAME="php${PHP_VERSION}-fpm"
     export PHPENMOD_BIN='phpenmod'
 
@@ -57,7 +59,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
     # Copy from example: /usr/local/etc/php.ini-production
     export PHP_INI='/usr/local/etc/php.ini'
-    export PHP_FPM_POOL_WWW_CONF='/usr/local/etc/php-fpm.d/www.conf'
+    export PHP_FPM_CONF='/usr/local/etc/php-fpm.conf'
+    export PHP_FPM_POOL_DIR='/usr/local/etc/php-fpm.d'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export OB_PHP_VERSION='7.2'
@@ -65,9 +68,24 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export PHP_BIN="/usr/local/bin/php-${OB_PHP_VERSION}"
     export PHP_INI="/etc/php-${OB_PHP_VERSION}.ini"
     export PHP_FPM_RC_SCRIPT_NAME='php72_fpm'
-    export PHP_FPM_POOL_WWW_CONF='/etc/php-fpm.d/www.conf'
-    export PHP_FPM_SOCKET="${HTTPD_SERVERROOT}/run/php-fpm.socket"
 fi
+
+# PHP-FPM
+export PHP_FPM_POOL_WWW_CONF="${PHP_FPM_POOL_DIR}/www.conf"
+# log
+export PHP_FPM_LOG_DIR='/var/log/php-fpm'
+export PHP_FPM_LOG_MAIN="${PHP_FPM_LOG_DIR}/php-fpm.log"
+export PHP_FPM_LOG_SLOW="${PHP_FPM_LOG_DIR}/slow.log"
+# parameters
+export PHP_FPM_REQUEST_SLOWLOG_TIMEOUT='10s'
+export PHP_FPM_URI_STATUS='status'
+export PHP_FPM_URI_PING='ping'
+export PHP_FPM_POOL_MAX_CHILDREN=5
+export PHP_FPM_POOL_START_SERVERS=2
+export PHP_FPM_POOL_MIN_SPARE_SERVERS=1
+export PHP_FPM_POOL_MAX_SPARE_SERVERS=3
+export PHP_FPM_POOL_REQUEST_TERMINATE_TIMEOUT='10s'
+export PHP_FPM_POOL_MAX_REQUESTS=100
 
 # connection type: mysql, mysqli (recommended for MySQL/MariaDB), pgsql.
 export PHP_CONN_TYPE='mysqli'

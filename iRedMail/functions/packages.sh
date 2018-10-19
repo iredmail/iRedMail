@@ -32,7 +32,7 @@ install_all()
         OB_PKG_PHP_VER='-7.2.10'
 
         # 6.4
-        OB_PKG_OPENLDAP_SERVER_VER='-2.4.46'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.4.46p0'
         OB_PKG_OPENLDAP_CLIENT_VER='-2.4.46'
     fi
 

@@ -1,0 +1,12 @@
+PH_PHP_FPM_LOG_DIR/*.log {
+    weekly
+    rotate 10
+    missingok
+    compress
+    delaycompress
+    notifempty
+
+    postrotate
+        PH_SYSLOG_POSTROTATE_CMD
+    endscript
+}
