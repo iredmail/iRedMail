@@ -46,11 +46,11 @@ location ^~ /SOGo/Microsoft-Server-ActiveSync {
     proxy_read_timeout PH_SOGO_PROXY_TIMEOUT;
 }
 
-location ^/SOGo.woa/WebServerResources/ {
+location /SOGo.woa/WebServerResources/ {
     alias PH_SOGO_GNUSTEP_DIR/WebServerResources/;
     expires max;
 }
-location ^/SOGo/WebServerResources/ {
+location /SOGo/WebServerResources/ {
     alias PH_SOGO_GNUSTEP_DIR/WebServerResources/;
     expires max;
 }

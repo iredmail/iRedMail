@@ -138,7 +138,6 @@ nginx_config()
 
     # php-fpm
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
-        set -x
         # Update php-fpm.conf
         perl -pi -e 's#;(error_log)( =.*)#$1 = syslog#g' ${PHP_FPM_CONF}
         perl -pi -e 's#;(syslog.facility)( =.*)#$1 = $ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${PHP_FPM_CONF}
@@ -215,7 +214,6 @@ ${PHP_FPM_LOG_SLOW}    ${HTTPD_USER}:${HTTPD_GROUP}   600  7     *    24    Z
 EOF
             fi
         fi
-        set +x
     fi
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then

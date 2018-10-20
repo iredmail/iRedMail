@@ -51,7 +51,7 @@ openldap_config()
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable TLS/SSL support
         cat >> ${RC_CONF_LOCAL} <<EOF
-slapd_flags='-u _openldap -h ldap:///\ ldaps:///'
+slapd_flags="-u ${SYS_USER_LDAP} -f ${OPENLDAP_SLAPD_CONF} -h ldapi:///\ ldap://0.0.0.0/\ ldaps://0.0.0.0/"
 EOF
     fi
 

@@ -82,8 +82,9 @@ clamav_config()
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         usermod -G ${SYS_GROUP_AMAVISD} ${SYS_USER_CLAMAV}
 
-        # OpenBSD use 'yes' instead of 'true'
-        perl -pi -e 's/^(AllowSupplementaryGroups).*/${1} yes/g' ${CLAMD_CONF}
+        perl -pi -e 's#^(AllowSupplementaryGroups.*)##g' ${CLAMD_CONF}
+        # Remove all `StatsXXX` parameters
+        perl -pi -e 's#^(Stats.*)##g' ${CLAMD_CONF}
     fi
 
     # Add user alias in Postfix

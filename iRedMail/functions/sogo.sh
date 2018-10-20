@@ -142,16 +142,6 @@ sogo_config() {
     export watchdog_request_timeout="$((SOGO_PROXY_TIMEOUT / 60 + 2 ))"
     perl -pi -e 's#PH_SOGO_WATCHDOG_REQUEST_TIMEOUT#$ENV{watchdog_request_timeout}#g' ${SOGO_CONF}
 
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # Default 'WOPort = 127.0.0.1:20000;' doesn't work on OpenBSD
-        perl -pi -e 's#(.*WOPort = ).*#${1}\*:$ENV{SOGO_BIND_PORT};#' ${SOGO_CONF}
-
-        # Default pid file is /var/run/sogo/sogo.pid, but SOGo rc script on
-        # OpenBSD doesn't create this directory automatically, so we use this
-        # alternative directory instead.
-        perl -pi -e 's#//(WOPidFile =).*#${1} /var/log/sogo/sogo.pid;#' ${SOGO_CONF}
-    fi
-
     perl -pi -e 's#PH_IMAP_SERVER#$ENV{IMAP_SERVER}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_MANAGESIEVE_SERVER#$ENV{MANAGESIEVE_SERVER}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_MANAGESIEVE_PORT#$ENV{MANAGESIEVE_PORT}#g' ${SOGO_CONF}
