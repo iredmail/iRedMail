@@ -382,7 +382,8 @@ dovecot_log() {
     mkdir -p ${DOVECOT_LOG_DIR} >> ${INSTALL_LOG} 2>&1
     chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${DOVECOT_LOG_DIR}
 
-    if [ X"${USE_RSYSLOG}" == X'YES' ]; then
+    ECHO_DEBUG "Generate modular syslog and log rotate config files for dovecot log files."
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Use rsyslog.
         # Copy rsyslog config file used to filter Dovecot log
         cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-dovecot.conf ${SYSLOG_CONF_DIR}
@@ -406,40 +407,7 @@ dovecot_log() {
             touch ${f}
             chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${f}
         done
-    elif [ X"${USE_BSD_SYSLOG}" == X'YES' ]; then
-        # Log dovecot to a dedicated file
-        if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-            if ! grep "${DOVECOT_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
-                # '!!' means abort further evaluation after first match
-                echo '!dovecot' >> ${SYSLOG_CONF}
-                echo "${IREDMAIL_SYSLOG_FACILITY}.*        -${DOVECOT_LOG_FILE}" >> ${SYSLOG_CONF}
-            fi
-        elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-            if ! grep "${DOVECOT_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
-                # '!!' means abort further evaluation after first match
-                echo '!!dovecot' >> ${SYSLOG_CONF}
-                echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${DOVECOT_LOG_FILE}" >> ${SYSLOG_CONF}
-            fi
-        fi
 
-        # WARNING: If log file doesn't exist, syslog won't log matched log lines.
-        touch ${DOVECOT_LOG_FILE}
-    else
-        # Disable syslog and use Dovecot internal log system
-        perl -pi -e 's/^(syslog_facility.*)/#${1}/' ${DOVECOT_CONF}
-        perl -pi -e 's/#(log_path =.*)/${1}/' ${DOVECOT_CONF}
-
-        # Create log files manually
-        for f in ${DOVECOT_LOG_FILE} ${DOVECOT_SIEVE_LOG_FILE} ${DOVECOT_LMTP_LOG_FILE}; do
-            ECHO_DEBUG "Create dovecot log file: ${f}."
-            touch ${f}
-            chown ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${f}
-            chmod 0600 ${f}
-        done
-    fi
-
-    ECHO_DEBUG "Setting logrotate for dovecot log file."
-    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         cp -f ${SAMPLE_DIR}/logrotate/dovecot ${DOVECOT_LOGROTATE_FILE}
         chmod 0644 ${DOVECOT_LOGROTATE_FILE}
 
@@ -447,6 +415,16 @@ dovecot_log() {
         perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${DOVECOT_LOGROTATE_FILE}
 
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        #
+        # modular syslog config file
+        #
+        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/dovecot ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/dovecot
+        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/dovecot
+
+        #
+        # modular log rotate config file
+        #
         cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/dovecot ${DOVECOT_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_DOVECOT_MASTER_PID#$ENV{DOVECOT_MASTER_PID}#g' ${DOVECOT_LOGROTATE_FILE}
@@ -458,6 +436,18 @@ dovecot_log() {
         perl -pi -e 's#PH_SYS_GROUP_VMAIL#$ENV{SYS_GROUP_VMAIL}#g' ${DOVECOT_LOGROTATE_FILE}
 
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+        # WARNING: If log file doesn't exist, syslog won't log matched log lines.
+        touch ${DOVECOT_LOG_FILE}
+
+        #
+        # modular syslog config file
+        #
+        if ! grep "${DOVECOT_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
+            # '!!' means abort further evaluation after first match
+            echo '!!dovecot' >> ${SYSLOG_CONF}
+            echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${DOVECOT_LOG_FILE}" >> ${SYSLOG_CONF}
+        fi
+
         if ! grep "${DOVECOT_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             # Define command used to reopen log service after rotated
             cat >> /etc/newsyslog.conf <<EOF

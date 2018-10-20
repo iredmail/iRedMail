@@ -1072,7 +1072,8 @@ EOF
         ln -sf /usr/local/bin/2to3-2.7 /usr/local/bin/2to3
         ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config
 
-        # Create logrotate.d
+        # Create syslog.d and logrotate.d
+        mkdir -p ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
         mkdir -p ${LOGROTATE_DIR} >> ${INSTALL_LOG} 2>&1
 
         echo "export status_post_install_cleanup='DONE'" >> ${STATUS_FILE}

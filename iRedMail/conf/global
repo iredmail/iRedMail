@@ -544,6 +544,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SYS_USER_SYSLOG='root'
     export SYS_GROUP_SYSLOG='wheel'
     export SYSLOG_CONF='/etc/syslog.conf'
+    export SYSLOG_CONF_DIR='/usr/local/etc/syslog.d'
 
     # SSHD log file
     export SSHD_LOGFILE='/var/log/auth.log'

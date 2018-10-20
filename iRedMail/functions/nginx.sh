@@ -169,27 +169,33 @@ nginx_config()
 
         # Create modular syslog config file
         if [[ X"${KERNEL_NAME}" == X'LINUX' ]]; then
+            #
+            # modular syslog config file
+            #
             cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-phpfpm.conf ${SYSLOG_CONF_DIR}
 
             perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-iredmail-phpfpm.conf
             perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${SYSLOG_CONF_DIR}/1-iredmail-phpfpm.conf
-        elif [[ X"${KERNEL_NAME}" == X'OPENBSD' ]]; then
-            if ! grep "${PHP_FPM_LOG_MAIN}" ${SYSLOG_CONF} &>/dev/null; then
-                # '!!' means abort further evaluation after first match
-                echo '!!php-fpm' >> ${SYSLOG_CONF}
-                echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${PHP_FPM_LOG_MAIN}" >> ${SYSLOG_CONF}
-            fi
-        fi
 
-        # Create modular logrotate config file
-        ECHO_DEBUG "Setting logrotate for php-fpm log file."
-        if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+            #
+            # modular newsyslog (log rotate) config file
+            #
             cp -f ${SAMPLE_DIR}/logrotate/php-fpm ${PHP_FPM_LOGROTATE_CONF}
             chmod 0644 ${PHP_FPM_LOGROTATE_CONF}
 
             perl -pi -e 's#PH_PHP_FPM_LOG_DIR#$ENV{PHP_FPM_LOG_DIR}#g' ${PHP_FPM_LOGROTATE_CONF}
             perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${PHP_FPM_LOGROTATE_CONF}
+
         elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+            #
+            # modular syslog config file
+            #
+            cp -f ${SAMPLE_DIR}/freebsd/syslog.d/php-fpm ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+            perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${SYSLOG_CONF_DIR}/php-fpm
+
+            #
+            # modular newsyslog (log rotate) config file
+            #
             cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/php-fpm ${PHP_FPM_LOGROTATE_CONF}
 
             perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${PHP_FPM_LOGROTATE_CONF}
@@ -197,8 +203,13 @@ nginx_config()
 
             perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${PHP_FPM_LOGROTATE_CONF}
             perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' ${PHP_FPM_LOGROTATE_CONF}
+        elif [[ X"${KERNEL_NAME}" == X'OPENBSD' ]]; then
+            if ! grep "${PHP_FPM_LOG_MAIN}" ${SYSLOG_CONF} &>/dev/null; then
+                # '!!' means abort further evaluation after first match
+                echo '!!php-fpm' >> ${SYSLOG_CONF}
+                echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${PHP_FPM_LOG_MAIN}" >> ${SYSLOG_CONF}
+            fi
 
-        elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
             # We don't use this log file, remove it to avoid confusion.
             rm -f /var/log/php-fpm.log &>/dev/null
 

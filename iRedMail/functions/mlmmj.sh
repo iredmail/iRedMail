@@ -132,50 +132,52 @@ EOF
     touch ${MLMMJADMIN_LOG_FILE}
     chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${MLMMJADMIN_LOG_DIR} ${MLMMJADMIN_LOG_FILE}
 
-    ECHO_DEBUG "Setting logrotate for mlmmjadmin log file."
+    ECHO_DEBUG "Generate modular syslog and log rotate config files for mlmmjadmin."
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        #
+        # modular syslog config file
+        #
+        cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-mlmmjadmin.conf ${SYSLOG_CONF_DIR}
+
+        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-iredmail-mlmmjadmin.conf
+        perl -pi -e 's#PH_MLMMJADMIN_LOG_FILE#$ENV{MLMMJADMIN_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-iredmail-mlmmjadmin.conf
+
+        #
+        # modular logrotate config file
+        #
         cp -f ${SAMPLE_DIR}/logrotate/mlmmjadmin ${MLMMJADMIN_LOGROTATE_FILE}
         chmod 0644 ${MLMMJADMIN_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_MLMMJADMIN_LOG_DIR#$ENV{MLMMJADMIN_LOG_DIR}#g' ${MLMMJADMIN_LOGROTATE_FILE}
         perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${MLMMJADMIN_LOGROTATE_FILE}
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        #
+        # modular syslog config file
+        #
+        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/mlmmjadmin ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/mlmmjadmin
+        perl -pi -e 's#PH_MLMMJADMIN_LOG_FILE#$ENV{MLMMJADMIN_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/mlmmjadmin
+
+        #
+        # modular newsyslog (log rotate) config file
+        #
         cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/mlmmjadmin ${MLMMJADMIN_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_MLMMJADMIN_LOG_FILE#$ENV{MLMMJADMIN_LOG_FILE}#g' ${MLMMJADMIN_LOGROTATE_FILE}
         perl -pi -e 's#PH_MLMMJADMIN_UWSGI_PID_FILE#$ENV{MLMMJADMIN_UWSGI_PID_FILE}#g' ${MLMMJADMIN_LOGROTATE_FILE}
 
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+        if ! grep "${MLMMJADMIN_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
+            # '!!' means abort further evaluation after first match
+            echo '' >> ${SYSLOG_CONF}
+            echo '!!mlmmjadmin' >> ${SYSLOG_CONF}
+            echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${MLMMJADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
+        fi
+
         if ! grep "${MLMMJADMIN_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             cat >> /etc/newsyslog.conf <<EOF
 ${MLMMJADMIN_LOG_FILE}    ${SYS_USER_MLMMJ}:${SYS_GROUP_MLMMJ}   600  7     *    24    Z
 EOF
-        fi
-    fi
-
-    ECHO_DEBUG "Generate modular syslog config file for mlmmjadmin."
-    if [ X"${USE_RSYSLOG}" == X'YES' ]; then
-        # Use rsyslog.
-        # Copy rsyslog config file used to filter mlmmjadmin log
-        cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-mlmmjadmin.conf ${SYSLOG_CONF_DIR}
-
-        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-iredmail-mlmmjadmin.conf
-        perl -pi -e 's#PH_MLMMJADMIN_LOG_FILE#$ENV{MLMMJADMIN_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-iredmail-mlmmjadmin.conf
-    elif [ X"${USE_BSD_SYSLOG}" == X'YES' ]; then
-        # Log to a dedicated file
-        if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-            if ! grep "${MLMMJADMIN_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
-                echo '' >> ${SYSLOG_CONF}
-                echo '!mlmmjadmin' >> ${SYSLOG_CONF}
-                echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${MLMMJADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
-            fi
-        elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-            if ! grep "${MLMMJADMIN_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
-                # '!!' means abort further evaluation after first match
-                echo '' >> ${SYSLOG_CONF}
-                echo '!!mlmmjadmin' >> ${SYSLOG_CONF}
-                echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${MLMMJADMIN_LOG_FILE}" >> ${SYSLOG_CONF}
-            fi
         fi
     fi
 

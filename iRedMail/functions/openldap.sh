@@ -137,30 +137,45 @@ EOF
     chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${OPENLDAP_LOG_FILE}
     chmod 0600 ${OPENLDAP_LOG_FILE}
 
-    ECHO_DEBUG "Setting up syslog configration file for OpenLDAP."
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        echo -e '!slapd' >> ${SYSLOG_CONF}
-        echo -e "*.*\t\t\t\t\t\t-${OPENLDAP_LOG_FILE}" >> ${SYSLOG_CONF}
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # '!!' means abort further evaluation after first match
-        echo -e '!!slapd' >> ${SYSLOG_CONF}
-        echo -e "*.*\t\t\t\t\t\t${OPENLDAP_LOG_FILE}" >> ${SYSLOG_CONF}
-    else
-        # Copy rsyslog config file used to filter mlmmjadmin log
+    ECHO_DEBUG "Setting up syslog and logrotate config files for OpenLDAP."
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        #
+        # modular syslog config file
+        #
         cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-openldap.conf ${SYSLOG_CONF_DIR}
         perl -pi -e 's#PH_OPENLDAP_SYSLOG_FACILITY#$ENV{OPENLDAP_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-iredmail-openldap.conf
         perl -pi -e 's#PH_OPENLDAP_LOG_FILE#$ENV{OPENLDAP_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-iredmail-openldap.conf
-    fi
 
-    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-        ECHO_DEBUG "Setting logrotate for openldap log file: ${OPENLDAP_LOG_FILE}."
+        #
+        # modular newsyslog (log rotate) config file
+        #
         cp -f ${SAMPLE_DIR}/logrotate/openldap ${OPENLDAP_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_OPENLDAP_LOG_FILE#$ENV{OPENLDAP_LOG_FILE}#g' ${OPENLDAP_LOGROTATE_FILE}
         perl -pi -e 's#PH_SYS_USER_LDAP#$ENV{SYS_USER_LDAP}#g' ${OPENLDAP_LOGROTATE_FILE}
         perl -pi -e 's#PH_SYS_GROUP_LDAP#$ENV{SYS_GROUP_LDAP}#g' ${OPENLDAP_LOGROTATE_FILE}
         perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${OPENLDAP_LOGROTATE_FILE}
-    elif [ X"${KERNEL_NAME}" == X'FREEBSD' -o X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+
+    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+        #
+        # modular syslog config file
+        #
+        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/slapd ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_OPENLDAP_LOG_FILE#$ENV{OPENLDAP_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/slapd
+
+        #
+        # modular newsyslog (log rotate) config file
+        #
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/slapd ${LOGROTATE_DIR}
+        perl -pi -e 's#PH_OPENLDAP_LOG_FILE#$ENV{OPENLDAP_LOG_FILE}#g' ${LOGROTATE_DIR}/slapd
+        perl -pi -e 's#PH_SYS_USER_SYSLOG#$ENV{SYS_USER_SYSLOG}#g' ${LOGROTATE_DIR}/slapd
+        perl -pi -e 's#PH_SYS_GROUP_SYSLOG#$ENV{SYS_GROUP_SYSLOG}#g' ${LOGROTATE_DIR}/slapd
+
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # '!!' means abort further evaluation after first match
+        echo -e '!!slapd' >> ${SYSLOG_CONF}
+        echo -e "*.*\t\t\t\t\t\t${OPENLDAP_LOG_FILE}" >> ${SYSLOG_CONF}
+
         if ! grep "${OPENLDAP_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
             cat >> /etc/newsyslog.conf <<EOF
 ${OPENLDAP_LOG_FILE}    ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG}   640  7     *    24    Z
