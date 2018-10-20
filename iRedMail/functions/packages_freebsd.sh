@@ -76,7 +76,7 @@ install_all()
         devel_m4 \
         devel_py-Jinja2 \
         devel_py-babel \
-        devel_sope3 \
+        devel_sope4 \
         dns_p5-Net-DNS \
         dns_py-dnspython \
         ftp_curl \
@@ -106,7 +106,7 @@ install_all()
         security_p5-Authen-SASL \
         security_p5-IO-Socket-SSL \
         www_nginx \
-        www_sogo3; do
+        www_sogo4; do
         mkdir -p /var/db/ports/${p} >> ${INSTALL_LOG} 2>&1
     done
 
@@ -903,29 +903,29 @@ EOF
         ALL_PORTS="${ALL_PORTS} mail/roundcube"
     fi
 
-    # LDAP support is required, otherwise www/sogo3 cannot be built.
-    cat > /var/db/ports/devel_sope3/options <<EOF
+    # LDAP support is required, otherwise www/sogo4 cannot be built.
+    cat > /var/db/ports/devel_sope4/options <<EOF
 OPTIONS_FILE_SET+=LDAP
 OPTIONS_FILE_SET+=MEMCACHED
 OPTIONS_FILE_UNSET+=MYSQL
 OPTIONS_FILE_UNSET+=PGSQL
 EOF
 
-    cat > /var/db/ports/www_sogo3/options <<EOF
+    cat > /var/db/ports/www_sogo4/options <<EOF
 OPTIONS_FILE_SET+=ACTIVESYNC
 EOF
 
     # SOGo groupware.
     if [ X"${USE_SOGO}" == X'YES' ]; then
-        ALL_PORTS="${ALL_PORTS} devel/sope3 www/sogo3"
+        ALL_PORTS="${ALL_PORTS} devel/sope4 www/sogo4"
 
         if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-            ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/devel_sope3/options
+            ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/devel_sope4/options
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/devel_sope3/options
+            ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/devel_sope4/options
         fi
 
-        rm -f /var/db/ports/devel_sope3/options${SED_EXTENSION} &>/dev/null
+        rm -f /var/db/ports/devel_sope4/options${SED_EXTENSION} &>/dev/null
     fi
 
     # Python database interfaces

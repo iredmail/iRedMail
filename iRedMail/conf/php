@@ -61,6 +61,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PHP_INI='/usr/local/etc/php.ini'
     export PHP_FPM_CONF='/usr/local/etc/php-fpm.conf'
     export PHP_FPM_POOL_DIR='/usr/local/etc/php-fpm.d'
+    export PHP_FPM_LOGROTATE_CONF="${LOGROTATE_DIR}/php-fpm"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export OB_PHP_VERSION='7.2'
