@@ -443,7 +443,8 @@ EOF
         ALL_PKGS="${ALL_PKGS} bzip2 lz4"
     fi
 
-    # Disable Ubuntu firewall rules, we have iptables init script and rule file.
+    # Disable ufw service and use iptables init script and rule file
+    # shipped in iRedMail instead.
     [ X"${DISTRO}" == X'UBUNTU' ] && export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
 
     export ALL_PKGS ENABLED_SERVICES PKG_SCRIPTS

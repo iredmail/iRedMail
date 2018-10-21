@@ -176,6 +176,11 @@ check_env()
 
     [ X"${DISTRO}" == X'OPENBSD' ] && check_openbsd_install_url
 
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+        # Many packages are in 'universe' apt repo.
+        /usr/bin/apt-add-repository -u universe
+    fi
+
     # Check config tool: dialog.
     check_pkg ${BIN_DIALOG} ${PKG_DIALOG}
 
