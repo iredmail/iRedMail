@@ -268,6 +268,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Ubuntu version number and code name:
         #   - 16.04: xenial
         #   - 18.04: bionic
+        #   - 18.10: cosmic
         export DISTRO_VERSION="$(awk -F'=' '/^DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)"
         export DISTRO_CODENAME="$(awk -F'=' '/^DISTRIB_CODENAME/ {print $2}' /etc/lsb-release)"
 

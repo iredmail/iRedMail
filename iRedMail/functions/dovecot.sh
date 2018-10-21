@@ -32,11 +32,17 @@ dovecot_config()
 
     # RHEL/CentOS 7:    Dovecot-2.2.32+
     # Debian 9:         Dovecot-2.2.27
-    # Ubuntu 16.04:     Dovecot-2.2.22
+    # Ubuntu 16.04 (xenial):    Dovecot-2.2.22
+    # Ubuntu 18.04 (bionic):    Dovecot-2.2.33
+    # Ubuntu 18.10 (cosmic):    Dovecot-2.3.33
     # FreeBSD:          Dovecot-2.3.0+
-    # OpenBSD:          Dovecot-2.2.32+
+    # OpenBSD:          Dovecot-2.2.36
     ECHO_DEBUG "Copy sample Dovecot config file: ${SAMPLE_DIR}/dovecot/dovecot22.conf -> ${DOVECOT_CONF}"
-    cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
+    if [ X"${DOVECOT_VERSION}" == X'2.2' ]; then
+        cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
+    else
+        cp ${SAMPLE_DIR}/dovecot/dovecot23.conf ${DOVECOT_CONF}
+    fi
 
     # FreeBSD ports tree offers Dovecot 2.3, we need to fix some backward
     # compatibilites.
@@ -244,12 +250,8 @@ dovecot_config()
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
 
         backup_file ${DOVECOT_PGSQL_CONF}
-        if [ X"${DISTRO}" == X'RHEL' ]; then
-            # PGSQL 8.x
-            cp -f ${SAMPLE_DIR}/dovecot/dovecot-pgsql-8.x.conf ${DOVECOT_PGSQL_CONF}
-        else
-            cp -f ${SAMPLE_DIR}/dovecot/dovecot-sql.conf ${DOVECOT_PGSQL_CONF}
-        fi
+        cp -f ${SAMPLE_DIR}/dovecot/dovecot-sql.conf ${DOVECOT_PGSQL_CONF}
+
         perl -pi -e 's#(.*mailbox.)(enable.*Lc)(=1)#${1}"${2}"${3}#' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's/^#(iterate_.*)/${1}/' ${DOVECOT_PGSQL_CONF}
         perl -pi -e 's#PH_SQL_DRIVER#pgsql#' ${DOVECOT_PGSQL_CONF}

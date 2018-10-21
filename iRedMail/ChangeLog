@@ -1,6 +1,9 @@
 iRedMail-0.9.9:
     * Supports new distribution release:
         + OpenBSD 6.4
+        + Ubuntu 18.10. WARNING: It receives only 9 months of security and
+          maintenance updates, until July 2019.
+          NOT RECOMMENDED FOR PRODUCTION SERVER.
 
     * Improvements:
         + Able to set per-user mailbox format (e.g. mdbox) and mailbox folder

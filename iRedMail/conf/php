@@ -49,11 +49,11 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     fi
 
     export PHP_INI="/etc/php/${PHP_VERSION}/fpm/php.ini"
+    export PHP_FPM_CONF="/etc/php/${PHP_VERSION}/fpm/php-fpm.conf"
     export PHP_FPM_LOGROTATE_CONF="${LOGROTATE_DIR}/php${PHP_VERSION}-fpm"
     export PHP_FPM_POOL_DIR="/etc/php/${PHP_VERSION}/fpm/pool.d"
     export PHP_FPM_RC_SCRIPT_NAME="php${PHP_VERSION}-fpm"
     export PHPENMOD_BIN='phpenmod'
-
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PHP_BIN='/usr/local/bin/php'
 

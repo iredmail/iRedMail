@@ -24,6 +24,9 @@
 # For Dovecot and dovecot-sieve.
 # ----------------------------------------
 
+# Major version number of Dovecot package: 2.2, 2.3.
+export DOVECOT_VERSION='2.2'
+
 # Dovecot user & group.
 export SYS_USER_DOVECOT='dovecot'
 export SYS_GROUP_DOVECOT='dovecot'
@@ -72,6 +75,7 @@ export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
 if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER_BIN='/usr/lib/dovecot/deliver'
 
+    [ X"${DISTRO_CODENAME}" == X'cosmic' ] && export DOVECOT_VERSION='2.3'
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DOVECOT_CONF_DIR='/usr/local/etc/dovecot'
     export DOVECOT_DELIVER_BIN='/usr/local/libexec/dovecot/deliver'
