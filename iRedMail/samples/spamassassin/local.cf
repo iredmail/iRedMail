@@ -68,6 +68,36 @@ bayes_auto_expire  1
 # You can also use this config option to trick sa-learn to learn data as a specific user.
 #bayes_sql_override_username vmail
 
+# Increase score for message which contains blacklisted or phishing URI
+# URIBL
+#score URIBL_SBL 3
+# dbl.spamhaus.org
+#score URIBL_DBL_SPAM 3
+#score URIBL_DBL_PHISH 3
+#score URIBL_DBL_MALWARE 3
+#score URIBL_DBL_BOTNETCC 3
+#score URIBL_DBL_ABUSE_SPAM 3
+#score URIBL_DBL_ABUSE_REDIR 3
+#score URIBL_DBL_ABUSE_PHISH 3
+#score URIBL_DBL_ABUSE_MALW 3
+#score URIBL_DBL_ABUSE_BOTCC 3
+#score URIBL_DBL_ERROR 0
+# multi.surbl.org
+#score URIBL_WS_SURBL 3
+#score URIBL_PH_SURBL 3
+#score URIBL_MW_SURBL 3
+#score URIBL_CR_SURBL 3
+#score URIBL_ABUSE_SURBL 3
+#score SURBL_BLOCKED 0
+# multi.urlbl.com
+#score URIBL_BLACK 3
+#score URIBL_RED 3
+#score URIBL_BLOCKED 0
+
+# DNSBL
+#score RCVD_IN_SBL 5
+#score RCVD_IN_XBL 5
+#score RCVD_IN_PBL 5
 
 # Turn off ALL DNSBL (DNS Blocklists)
 #skip_rbl_checks  1

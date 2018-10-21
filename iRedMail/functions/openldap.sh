@@ -135,7 +135,7 @@ EOF
     ECHO_DEBUG "Create empty log file: ${OPENLDAP_LOG_FILE}."
     touch ${OPENLDAP_LOG_FILE}
     chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${OPENLDAP_LOG_FILE}
-    chmod 0600 ${OPENLDAP_LOG_FILE}
+    chmod 0640 ${OPENLDAP_LOG_FILE}
 
     ECHO_DEBUG "Setting up syslog and logrotate config files for OpenLDAP."
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
@@ -160,8 +160,8 @@ EOF
         #
         # modular syslog config file
         #
-        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/slapd ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's#PH_OPENLDAP_LOG_FILE#$ENV{OPENLDAP_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/slapd
+        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/slapd.conf ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_OPENLDAP_LOG_FILE#$ENV{OPENLDAP_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/slapd.conf
 
         #
         # modular newsyslog (log rotate) config file

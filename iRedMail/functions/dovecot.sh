@@ -381,6 +381,9 @@ dovecot_log() {
 
     mkdir -p ${DOVECOT_LOG_DIR} >> ${INSTALL_LOG} 2>&1
     chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${DOVECOT_LOG_DIR}
+    touch ${DOVECOT_LOG_FILE}
+    chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${DOVECOT_LOG_FILE}
+    chmod 0640 ${DOVECOT_LOG_FILE}
 
     ECHO_DEBUG "Generate modular syslog and log rotate config files for dovecot log files."
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
@@ -406,6 +409,7 @@ dovecot_log() {
             ECHO_DEBUG "Create dovecot log file: ${f}."
             touch ${f}
             chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${f}
+            chmod 0640 ${f}
         done
 
         cp -f ${SAMPLE_DIR}/logrotate/dovecot ${DOVECOT_LOGROTATE_FILE}
@@ -418,9 +422,9 @@ dovecot_log() {
         #
         # modular syslog config file
         #
-        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/dovecot ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/dovecot
-        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/dovecot
+        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/dovecot.conf ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/dovecot.conf
+        perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/dovecot.conf
 
         #
         # modular log rotate config file
@@ -432,13 +436,10 @@ dovecot_log() {
         perl -pi -e 's#PH_DOVECOT_SIEVE_LOG_FILE#$ENV{DOVECOT_SIEVE_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}
         perl -pi -e 's#PH_DOVECOT_LMTP_LOG_FILE#$ENV{DOVECOT_LMTP_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}
 
-        perl -pi -e 's#PH_SYS_USER_VMAIL#$ENV{SYS_USER_VMAIL}#g' ${DOVECOT_LOGROTATE_FILE}
-        perl -pi -e 's#PH_SYS_GROUP_VMAIL#$ENV{SYS_GROUP_VMAIL}#g' ${DOVECOT_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYS_USER_SYSLOG#$ENV{SYS_USER_SYSLOG}#g' ${DOVECOT_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYS_GROUP_SYSLOG#$ENV{SYS_GROUP_SYSLOG}#g' ${DOVECOT_LOGROTATE_FILE}
 
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-        # WARNING: If log file doesn't exist, syslog won't log matched log lines.
-        touch ${DOVECOT_LOG_FILE}
-
         #
         # modular syslog config file
         #

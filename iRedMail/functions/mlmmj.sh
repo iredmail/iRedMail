@@ -131,6 +131,7 @@ EOF
     mkdir -p ${MLMMJADMIN_LOG_DIR}
     touch ${MLMMJADMIN_LOG_FILE}
     chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${MLMMJADMIN_LOG_DIR} ${MLMMJADMIN_LOG_FILE}
+    chmod 0640 ${MLMMJADMIN_LOG_FILE}
 
     ECHO_DEBUG "Generate modular syslog and log rotate config files for mlmmjadmin."
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
@@ -154,9 +155,9 @@ EOF
         #
         # modular syslog config file
         #
-        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/mlmmjadmin ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/mlmmjadmin
-        perl -pi -e 's#PH_MLMMJADMIN_LOG_FILE#$ENV{MLMMJADMIN_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/mlmmjadmin
+        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/mlmmjadmin.conf ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/mlmmjadmin.conf
+        perl -pi -e 's#PH_MLMMJADMIN_LOG_FILE#$ENV{MLMMJADMIN_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/mlmmjadmin.conf
 
         #
         # modular newsyslog (log rotate) config file

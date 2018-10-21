@@ -166,6 +166,9 @@ nginx_config()
 
         # Create log directory
         mkdir -p ${PHP_FPM_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+        touch ${PHP_FPM_LOG_MAIN} ${PHP_FPM_LOG_SLOW}
+        chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${PHP_FPM_LOG_MAIN} ${PHP_FPM_LOG_SLOW}
+        chmod 0640 ${PHP_FPM_LOG_MAIN} ${PHP_FPM_LOG_SLOW}
 
         # Create modular syslog config file
         if [[ X"${KERNEL_NAME}" == X'LINUX' ]]; then
@@ -178,7 +181,7 @@ nginx_config()
             perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${SYSLOG_CONF_DIR}/1-iredmail-phpfpm.conf
 
             #
-            # modular newsyslog (log rotate) config file
+            # modular log rotate config file
             #
             cp -f ${SAMPLE_DIR}/logrotate/php-fpm ${PHP_FPM_LOGROTATE_CONF}
             chmod 0644 ${PHP_FPM_LOGROTATE_CONF}
@@ -190,8 +193,8 @@ nginx_config()
             #
             # modular syslog config file
             #
-            cp -f ${SAMPLE_DIR}/freebsd/syslog.d/php-fpm ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
-            perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${SYSLOG_CONF_DIR}/php-fpm
+            cp -f ${SAMPLE_DIR}/freebsd/syslog.d/php-fpm.conf ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+            perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${SYSLOG_CONF_DIR}/php-fpm.conf
 
             #
             # modular newsyslog (log rotate) config file
@@ -201,8 +204,8 @@ nginx_config()
             perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${PHP_FPM_LOGROTATE_CONF}
             perl -pi -e 's#PH_PHP_FPM_LOG_SLOW#$ENV{PHP_FPM_LOG_SLOW}#g' ${PHP_FPM_LOGROTATE_CONF}
 
-            perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${PHP_FPM_LOGROTATE_CONF}
-            perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' ${PHP_FPM_LOGROTATE_CONF}
+            perl -pi -e 's#PH_SYS_USER_SYSLOG#$ENV{SYS_USER_SYSLOG}#g' ${PHP_FPM_LOGROTATE_CONF}
+            perl -pi -e 's#PH_SYS_GROUP_SYSLOG#$ENV{SYS_GROUP_SYSLOG}#g' ${PHP_FPM_LOGROTATE_CONF}
         elif [[ X"${KERNEL_NAME}" == X'OPENBSD' ]]; then
             if ! grep "${PHP_FPM_LOG_MAIN}" ${SYSLOG_CONF} &>/dev/null; then
                 # '!!' means abort further evaluation after first match
