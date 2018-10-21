@@ -1,2 +1,2 @@
 !php-fpm
-local5.*                        -PH_PHP_FPM_LOG_MAIN
+local5.*                        PH_PHP_FPM_LOG_MAIN

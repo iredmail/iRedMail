@@ -82,7 +82,7 @@ export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'
 export COMPRESS_SUFFIX='bz2'
 export CMD_MYSQL="mysql --defaults-file=${MYSQL_DOT_MY_CNF} -u${MYSQL_ROOT_USER}"
-export CMD_MYSQLDUMP="mysqldump --defaults-file=${MYSQL_DOT_MY_CNF} -u${MYSQL_ROOT_USER} --events --ignore-table=mysql.event --default-character-set=${DB_CHARACTER_SET} --skip-comments"
+export CMD_MYSQLDUMP="mysqldump --defaults-file=${MYSQL_DOT_MY_CNF} -u${MYSQL_ROOT_USER} --events --ignore-table=mysql.event --default-character-set=${DB_CHARACTER_SET} --skip-comments --set-gtid-purged=OFF"
 
 # Date.
 export YEAR="$(${CMD_DATE} +%Y)"

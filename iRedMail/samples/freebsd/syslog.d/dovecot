@@ -1,2 +1,2 @@
 !dovecot
-PH_IREDMAIL_SYSLOG_FACILITY.*                       -PH_DOVECOT_LOG_FILE
+PH_IREDMAIL_SYSLOG_FACILITY.*                       PH_DOVECOT_LOG_FILE
