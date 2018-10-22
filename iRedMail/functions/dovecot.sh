@@ -37,15 +37,12 @@ dovecot_config()
     # Ubuntu 18.10 (cosmic):    Dovecot-2.3.33
     # FreeBSD:          Dovecot-2.3.0+
     # OpenBSD:          Dovecot-2.2.36
-    #
-    # netdata (1.10) doesn't support metric in Dovecot-2.3, so let's use old
-    # `stats` plugin instead.
-    ECHO_DEBUG "Copy sample Dovecot config file: ${SAMPLE_DIR}/dovecot/dovecot22.conf -> ${DOVECOT_CONF}"
-    #if [ X"${DOVECOT_VERSION}" == X'2.2' ]; then
+    ECHO_DEBUG "Copy sample Dovecot config file to ${DOVECOT_CONF}."
+    if [ X"${DOVECOT_VERSION}" == X'2.2' ]; then
         cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
-    #else
-    #    cp ${SAMPLE_DIR}/dovecot/dovecot23.conf ${DOVECOT_CONF}
-    #fi
+    else
+        cp ${SAMPLE_DIR}/dovecot/dovecot23.conf ${DOVECOT_CONF}
+    fi
 
     # FreeBSD ports tree offers Dovecot 2.3, we need to fix some backward
     # compatibilites.
