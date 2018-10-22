@@ -139,8 +139,11 @@ nginx_config()
     # php-fpm
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         # Update php-fpm.conf
+        perl -pi -e 's#^(error_log)( =.*)#$1 = syslog#g' ${PHP_FPM_CONF}
         perl -pi -e 's#;(error_log)( =.*)#$1 = syslog#g' ${PHP_FPM_CONF}
+        perl -pi -e 's#^(syslog.facility)( =.*)#$1 = $ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${PHP_FPM_CONF}
         perl -pi -e 's#;(syslog.facility)( =.*)#$1 = $ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${PHP_FPM_CONF}
+        perl -pi -e 's#^(syslog.ident)( =.*)#$1 = php-fpm#g' ${PHP_FPM_CONF}
         perl -pi -e 's#;(syslog.ident)( =.*)#$1 = php-fpm#g' ${PHP_FPM_CONF}
 
         # Create php-fpm conf directory
