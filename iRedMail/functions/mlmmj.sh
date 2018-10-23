@@ -66,7 +66,7 @@ mlmmjadmin_config()
 
     # Set file permission.
     chown -R ${SYS_USER_MLMMJ}:${SYS_GROUP_MLMMJ} ${MLMMJADMIN_ROOT_DIR}
-    chmod -R 0500 ${MLMMJADMIN_ROOT_DIR}
+    chmod -R 0644 ${MLMMJADMIN_ROOT_DIR}
 
     # Create symbol link.
     ln -s ${MLMMJADMIN_ROOT_DIR} ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
