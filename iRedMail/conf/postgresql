@@ -58,11 +58,12 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export PGSQL_CONF_PG_HBA="${PGSQL_CONF_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-    export SYS_USER_PGSQL='pgsql'
-    export SYS_GROUP_PGSQL='pgsql'
-    export PGSQL_USER_HOMEDIR='/usr/local/pgsql'
+    export SYS_USER_PGSQL='postgres'
+    export SYS_GROUP_PGSQL='postgres'
+    export PGSQL_USER_HOMEDIR='/var/db/postgres'
+    export PGSQL_VERSION='10'
 
-    export PGSQL_DATA_DIR="${PGSQL_USER_HOMEDIR}/data"
+    export PGSQL_DATA_DIR="${PGSQL_USER_HOMEDIR}/data${PGSQL_VERSION}"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 

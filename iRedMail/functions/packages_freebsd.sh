@@ -37,7 +37,7 @@ install_all()
     export PREFERRED_OPENLDAP_VER='24'
     export PREFERRED_MYSQL_VER='57'
     export PREFERRED_MARIADB_VER='55'
-    export PREFERRED_PGSQL_VER='95'
+    export PGSQL_VERSION='10'
     export PREFERRED_BDB_VER='5'
     export PREFERRED_PHP_VER='71'
 
@@ -51,7 +51,7 @@ install_all()
 
     freebsd_make_conf_add 'WANT_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
     freebsd_make_conf_add 'WANT_MYSQL' "${PREFERRED_MYSQL_VER}"
-    freebsd_make_conf_add 'WANT_PGSQL_VER' "${PREFERRED_PGSQL_VER}"
+    freebsd_make_conf_add 'WANT_PGSQL_VER' "${PGSQL_VERSION}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
     freebsd_make_conf_add 'DEFAULT_VERSIONS' 'ssl=libressl python=2.7 python2=2.7 pgsql=9.5 php=7.1'
 
@@ -65,9 +65,9 @@ install_all()
         archivers_p7zip \
         archivers_rar \
         converters_libiconv \
-        databases_postgresql${PREFERRED_PGSQL_VER}-client \
-        databases_postgresql${PREFERRED_PGSQL_VER}-contrib \
-        databases_postgresql${PREFERRED_PGSQL_VER}-server \
+        databases_postgresql${PGSQL_VERSION}-client \
+        databases_postgresql${PGSQL_VERSION}-contrib \
+        databases_postgresql${PGSQL_VERSION}-server \
         databases_py-MySQLdb \
         databases_py-sqlalchemy10 \
         devel_cmake \
@@ -241,7 +241,7 @@ EOF
 
     # No options for MySQL server.
     # PostgreSQL
-    cat > /var/db/ports/databases_postgresql${PREFERRED_PGSQL_VER}-server/options <<EOF
+    cat > /var/db/ports/databases_postgresql${PGSQL_VERSION}-server/options <<EOF
 OPTIONS_FILE_UNSET+=DEBUG
 OPTIONS_FILE_UNSET+=DTRACE
 OPTIONS_FILE_UNSET+=GSSAPI
@@ -257,7 +257,7 @@ OPTIONS_FILE_UNSET+=MIT_KRB5
 OPTIONS_FILE_UNSET+=HEIMDAL_KRB5
 EOF
 
-    cat > /var/db/ports/databases_postgresql${PREFERRED_PGSQL_VER}-client/options <<EOF
+    cat > /var/db/ports/databases_postgresql${PGSQL_VERSION}-client/options <<EOF
 OPTIONS_FILE_UNSET+=DEBUG
 OPTIONS_FILE_UNSET+=GSSAPI
 OPTIONS_FILE_UNSET+=LIBEDIT
@@ -292,7 +292,7 @@ EOF
         fi
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ALL_PORTS="${ALL_PORTS} databases/postgresql${PREFERRED_PGSQL_VER}-server databases/postgresql${PREFERRED_PGSQL_VER}-contrib"
+        ALL_PORTS="${ALL_PORTS} databases/postgresql${PGSQL_VERSION}-server databases/postgresql${PGSQL_VERSION}-contrib"
     fi
 
     # Dovecot v2.0.x. REQUIRED.
