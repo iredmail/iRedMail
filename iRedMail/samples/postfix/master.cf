@@ -23,6 +23,7 @@ smtp-amavis unix -  -   n   -   PH_AMAVISD_MAX_SERVERS  smtp
     -o disable_dns_lookups=yes
     -o max_use=20
 
+# smtp port used by Amavisd to re-inject scanned email back to Postfix
 PH_LOCAL_ADDRESS:PH_POSTFIX_MAIL_REINJECT_PORT inet n  -   n   -   -  smtpd
     -o syslog_name=postfix/PH_POSTFIX_MAIL_REINJECT_PORT
     -o content_filter=
@@ -46,4 +47,30 @@ PH_LOCAL_ADDRESS:PH_POSTFIX_MAIL_REINJECT_PORT inet n  -   n   -   -  smtpd
     -o smtpd_client_connection_count_limit=0
     -o smtpd_client_connection_rate_limit=0
     -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks,no_address_mappings
+
+# smtp port used by mlmmj to re-inject scanned email back to Postfix, with
+# address mapping support
+PH_LOCAL_ADDRESS:PH_POSTFIX_MLMMJ_REINJECT_PORT inet n  -   n   -   -  smtpd
+    -o syslog_name=postfix/PH_POSTFIX_MLMMJ_REINJECT_PORT
+    -o content_filter=
+    -o mynetworks_style=host
+    -o mynetworks=PH_AMAVISD_MYNETWORKS
+    -o local_recipient_maps=
+    -o relay_recipient_maps=
+    -o strict_rfc821_envelopes=yes
+    -o smtp_tls_security_level=none
+    -o smtpd_tls_security_level=none
+    -o smtpd_restriction_classes=
+    -o smtpd_delay_reject=no
+    -o smtpd_client_restrictions=permit_mynetworks,reject
+    -o smtpd_helo_restrictions=
+    -o smtpd_sender_restrictions=
+    -o smtpd_recipient_restrictions=permit_mynetworks,reject
+    -o smtpd_end_of_data_restrictions=
+    -o smtpd_error_sleep_time=0
+    -o smtpd_soft_error_limit=1001
+    -o smtpd_hard_error_limit=1000
+    -o smtpd_client_connection_count_limit=0
+    -o smtpd_client_connection_rate_limit=0
+    -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks
 

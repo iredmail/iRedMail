@@ -6,6 +6,7 @@ iRedMail-0.9.9:
           NOT RECOMMENDED FOR PRODUCTION SERVER.
 
     * Improvements:
+        + Use /opt/www to store web applications on all Linux/BSD distros.
         + Able to set per-user mailbox format (e.g. mdbox) and mailbox folder
           appended to maildir path in SQL/LDAP.
         + Switch to utf8mb4 as default character set in MySQL.
@@ -28,7 +29,7 @@ iRedMail-0.9.9:
         + Roundcube -> 1.3.8
         + iRedAdmin -> 0.9.1
         + iRedAPD -> 2.3
-        + mlmmjadmin -> 1.7
+        + mlmmjadmin -> 1.8
         + uwsgi -> 2.0.17.1 (OpenBSD only)
 
 iRedMail-0.9.8:
