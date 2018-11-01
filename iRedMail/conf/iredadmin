@@ -20,7 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-export IREDADMIN_VERSION='0.9.1'
+export IREDADMIN_VERSION='0.9.2'
 export IREDADMIN_TARBALL="iRedAdmin-${IREDADMIN_VERSION}.tar.bz2"
 export IREDADMIN_HTTPD_ROOT="${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}"
 export IREDADMIN_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/iredadmin"
@@ -33,17 +33,5 @@ export SYS_GROUP_IREDADMIN="${SYS_USER_IREDADMIN}"
 export IREDADMIN_DB_NAME="${SYS_USER_IREDADMIN}"
 export IREDADMIN_DB_USER="${SYS_USER_IREDADMIN}"
 
-# uwsgi related
-export IREDADMIN_UWSGI_CONF="${UWSGI_CONF_DIR}/iredadmin.ini"
-export IREDADMIN_UWSGI_PID='/var/run/uwsgi_iredadmin.pid'
-export IREDADMIN_UWSGI_SOCKET='/var/run/uwsgi_iredadmin.socket'
-
-if [ X"${DISTRO}" == X'RHEL' ]; then
-    export IREDADMIN_UWSGI_SOCKET='/run/uwsgi/iredadmin.socket'
-    export IREDADMIN_UWSGI_PID='/run/uwsgi/iredadmin.pid'
-elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export IREDADMIN_UWSGI_SOCKET="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.socket"
-    export IREDADMIN_UWSGI_PID="${HTTPD_SERVERROOT}/run/uwsgi_iredadmin.pid"
-fi
-
-export IREDADMIN_UWSGI_SOCKET_FULL="unix:${IREDADMIN_UWSGI_SOCKET}"
+export IREDADMIN_BIND_ADDRESS='127.0.0.1'
+export IREDADMIN_LISTEN_PORT='7791'

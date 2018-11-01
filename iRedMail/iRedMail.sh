@@ -81,7 +81,6 @@ export DOMAIN_ADMIN_EMAIL="${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}"
 
 # Import global variables in specified order.
 . ${CONF_DIR}/web_server
-. ${CONF_DIR}/uwsgi
 . ${CONF_DIR}/openldap
 . ${CONF_DIR}/ldapd
 . ${CONF_DIR}/mysql
@@ -109,7 +108,6 @@ else
 fi
 
 . ${FUNCTIONS_DIR}/system_accounts.sh
-. ${FUNCTIONS_DIR}/uwsgi.sh
 . ${FUNCTIONS_DIR}/web_server.sh
 . ${FUNCTIONS_DIR}/ldap_server.sh
 . ${FUNCTIONS_DIR}/mysql.sh
@@ -150,7 +148,6 @@ EOF
 
 check_status_before_run generate_ssl_keys
 check_status_before_run add_required_users
-check_status_before_run uwsgi_config
 check_status_before_run web_server_config
 check_status_before_run backend_install
 check_status_before_run postfix_setup

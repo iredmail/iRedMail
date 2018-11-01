@@ -205,10 +205,10 @@ install_all()
             ALL_PKGS="${ALL_PKGS} nginx-full"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} nginx"
-            PKG_SCRIPTS="${PKG_SCRIPTS} ${NGINX_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME}"
+            PKG_SCRIPTS="${PKG_SCRIPTS} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME}"
         fi
 
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME} ${UWSGI_RC_SCRIPT_NAME}"
+        ENABLED_SERVICES="${ENABLED_SERVICES} ${NGINX_RC_SCRIPT_NAME} ${PHP_FPM_RC_SCRIPT_NAME}"
     fi
 
     # Dovecot.
@@ -275,8 +275,6 @@ install_all()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} uwsgi-logger-syslog"
     fi
-    PKG_SCRIPTS="${PKG_SCRIPTS} ${UWSGI_RC_SCRIPT_NAME}"
-    ENABLED_SERVICES="${ENABLED_SERVICES} ${UWSGI_RC_SCRIPT_NAME}"
 
     # Roundcube
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
@@ -399,8 +397,6 @@ EOF
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-beautifulsoup4 py-lxml py-curl py-requests py-netifaces"
-        # /etc/rc.d/uwsgi
-        export PKG_SCRIPTS="${PKG_SCRIPTS} ${UWSGI_RC_SCRIPT_NAME}"
     fi
 
     # Fail2ban
@@ -513,6 +509,13 @@ EOF
             tar zxf uwsgi-*.tar.gz
             cd uwsgi-*/
             python setup.py install > ${RUNTIME_DIR}/uwsgi_install.log 2>&1
+
+            # Required by uwsgi applications.
+            update_sysctl_param kern.seminfo.semmni 1024
+            update_sysctl_param kern.seminfo.semmns 1200
+            update_sysctl_param kern.seminfo.semmnu 60
+            update_sysctl_param kern.seminfo.semmsl 120
+            update_sysctl_param kern.seminfo.semopm 200
         fi
 
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}

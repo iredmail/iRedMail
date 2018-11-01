@@ -56,12 +56,6 @@ iredadmin_web_config() {
     chown -R ${SYS_USER_IREDADMIN}:${SYS_GROUP_IREDADMIN} settings.py
     chmod 0400 settings.py
 
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # Change file owner
-        # iRedAdmin is not running as user 'iredadmin' on OpenBSD
-        chown -R ${HTTPD_USER}:${HTTPD_GROUP} settings.py
-    fi
-
     echo 'export status_iredadmin_web_config="DONE"' >> ${STATUS_FILE}
 }
 
@@ -220,51 +214,44 @@ EOF
     echo 'export status_iredadmin_cron_setup="DONE"' >> ${STATUS_FILE}
 }
 
-iredadmin_uwsgi_setup()
+iredadmin_rc_setup()
 {
-    backup_file ${IREDADMIN_UWSGI_CONF}
-    cp ${SAMPLE_DIR}/uwsgi/iredadmin.ini ${IREDADMIN_UWSGI_CONF}
-
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        :
+        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/rhel.service ${SYSTEMD_SERVICE_DIR}/iredadmin.service
+        chmod 0644 ${SYSTEMD_SERVICE_DIR}/iredadmin.service
+
+        perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel.ini
+        perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel.ini
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        perl -pi -e 's/^(pidfile.*)/#${1}/' ${IREDADMIN_UWSGI_CONF}
-        ln -s ${IREDADMIN_UWSGI_CONF} /etc/uwsgi/apps-enabled/iredadmin.ini
+        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/debian.service ${SYSTEMD_SERVICE_DIR}/iredadmin.service
+        chmod 0644 ${SYSTEMD_SERVICE_DIR}/iredadmin.service
 
+        perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/debian.ini
+        perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/debian.ini
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-        perl -pi -e 's/^(plugins.*)/#${1}/' ${IREDADMIN_UWSGI_CONF}
-        perl -pi -e 's#PH_UWSGI_LOG_FILE#$ENV{UWSGI_LOG_FILE}#g' ${IREDADMIN_UWSGI_CONF}
-        perl -pi -e 's#PH_IREDADMIN_UWSGI_PID#$ENV{IREDADMIN_UWSGI_PID}#g' ${IREDADMIN_UWSGI_CONF}
+        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/iredadmin.freebsd ${DIR_RC_SCRIPTS}/iredadmin
+        chmod 0755 ${DIR_RC_SCRIPTS}/iredadmin
 
-        service_control enable 'uwsgi_iredadmin_flags' "--ini ${IREDADMIN_UWSGI_CONF}"
+        perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/freebsd.ini
+        perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/freebsd.ini
 
-        # Rotate log file with newsyslog
-        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/uwsgi-iredadmin ${UWSGI_LOGROTATE_FILE}
-        perl -pi -e 's#PH_IREDADMIN_UWSGI_PID#$ENV{IREDADMIN_UWSGI_PID}#g' ${UWSGI_LOGROTATE_FILE}
-        perl -pi -e 's#PH_UWSGI_LOG_FILE#$ENV{UWSGI_LOG_FILE}#g' ${UWSGI_LOGROTATE_FILE}
-
-        perl -pi -e 's#PH_SYS_USER_SYSLOG#$ENV{SYS_USER_SYSLOG}#g' ${UWSGI_LOGROTATE_FILE}
-        perl -pi -e 's#PH_SYS_GROUP_SYSLOG#$ENV{SYS_GROUP_SYSLOG}#g' ${UWSGI_LOGROTATE_FILE}
+        service_control enable 'iredadmin_enable' 'YES' >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        perl -pi -e 's#^(uid).*#${1} = $ENV{HTTPD_USER}#g' ${IREDADMIN_UWSGI_CONF}
-        perl -pi -e 's#^(gid).*#${1} = $ENV{HTTPD_GROUP}#g' ${IREDADMIN_UWSGI_CONF}
-        perl -pi -e 's/^(plugins.*)/#${1}/g' ${IREDADMIN_UWSGI_CONF}
+        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/iredadmin.openbsd ${DIR_RC_SCRIPTS}/iredadmin
+        chmod 0755 ${DIR_RC_SCRIPTS}/iredadmin
 
-        rcctl set uwsgi flags "--ini ${IREDADMIN_UWSGI_CONF} --log-syslog" >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/openbsd.ini
+        perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/openbsd.ini
     fi
 
-    if [ -f ${IREDADMIN_UWSGI_CONF} ]; then
-        perl -pi -e 's#PH_HTTPD_USER#$ENV{HTTPD_USER}#g' ${IREDADMIN_UWSGI_CONF}
-        perl -pi -e 's#PH_HTTPD_GROUP#$ENV{HTTPD_GROUP}#g' ${IREDADMIN_UWSGI_CONF}
-        perl -pi -e 's#PH_IREDADMIN_UWSGI_SOCKET#$ENV{IREDADMIN_UWSGI_SOCKET}#g' ${IREDADMIN_UWSGI_CONF}
-        perl -pi -e 's#PH_IREDADMIN_UWSGI_PID#$ENV{IREDADMIN_UWSGI_PID}#g' ${IREDADMIN_UWSGI_CONF}
-    fi
+    ECHO_DEBUG "Make sure iredadmin starting after system startup."
+    service_control enable iredadmin >> ${INSTALL_LOG} 2>&1
+    export ENABLED_SERVICES="${ENABLED_SERVICES} iredadmin"
 
     cat >> ${TIP_FILE} <<EOF
-    * Socket for iRedAdmin: ${IREDADMIN_UWSGI_SOCKET}
 EOF
 
-    echo 'export status_iredadmin_uwsgi_setup="DONE"' >> ${STATUS_FILE}
+    echo 'export status_iredadmin_rc_setup="DONE"' >> ${STATUS_FILE}
 }
 
 iredadmin_setup() {
@@ -277,7 +264,7 @@ iredadmin_setup() {
 
     check_status_before_run iredadmin_cron_setup
     check_status_before_run iredadmin_config
-    check_status_before_run iredadmin_uwsgi_setup
+    check_status_before_run iredadmin_rc_setup
 
     echo 'export status_iredadmin_setup="DONE"' >> ${STATUS_FILE}
 }

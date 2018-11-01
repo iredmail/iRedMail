@@ -52,9 +52,9 @@ export MLMMJADMIN_RC_SCRIPT_NAME='mlmmjadmin'
 export MLMMJADMIN_RC_SCRIPT_PATH="${DIR_RC_SCRIPTS}/${MLMMJADMIN_RC_SCRIPT_NAME}"
 
 export MLMMJADMIN_LISTEN_PORT='7790'
-export MLMMJADMIN_PID_FILE='/var/run/mlmmjadmin.pid'
+export MLMMJADMIN_PID_FILE='/var/run/mlmmjadmin/mlmmjadmin.pid'
 
-export MLMMJADMIN_VERSION='1.8'
+export MLMMJADMIN_VERSION='1.9'
 export MLMMJADMIN_TARBALL="mlmmjadmin-${MLMMJADMIN_VERSION}.tar.gz"
 
 export MLMMJADMIN_PARENT_DIR='/opt'

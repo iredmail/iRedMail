@@ -5,7 +5,7 @@ include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
 
 location / {
     root PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK;
-    uwsgi_pass PH_IREDADMIN_UWSGI_SOCKET_FULL;
+    uwsgi_pass PH_IREDADMIN_BIND_ADDRESS:PH_IREDADMIN_LISTEN_PORT;
     uwsgi_param UWSGI_CHDIR PH_IREDADMIN_HTTPD_ROOT_SYMBOL_LINK;
     uwsgi_param UWSGI_SCRIPT iredadmin;
     include uwsgi_params;
