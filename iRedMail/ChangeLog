@@ -8,7 +8,8 @@ iRedMail-0.9.9:
     * Improvements:
         + iRedAdmin is now running as a standalone uwsgi instance (service
           name 'iredadmin'), not controlled by 'uwsgi' service anymore.
-        + Use /opt/www to store web applications on all Linux/BSD distros.
+        + Use /opt/www to store web applications on all Linux distros and
+          OpenBSD.
         + Able to set per-user mailbox format (e.g. mdbox) and mailbox folder
           appended to maildir path in SQL/LDAP.
         + Switch to utf8mb4 as default character set in MySQL.
@@ -17,7 +18,7 @@ iRedMail-0.9.9:
           (was /var/log/openldap.log).
 
     * Fixed issues:
-        + Index ldap attribute `mobile`.
+        - Not index ldap attribute `mobile`.
         - Not always specify a plain text footer file for altermime to update
           email sent to mlmmj mailing list.
         + Use accurate Nginx url match for Roundcube.

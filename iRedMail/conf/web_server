@@ -45,6 +45,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export HTTPD_GROUP='www'
 
     # Web data.
+    export HTTPD_SERVERROOT='/usr/local/www'
     export HTTPD_DOCUMENTROOT='/usr/local/www/htdocs'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
