@@ -190,12 +190,12 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.2.2 NAME 'mailGID'
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.27
     SINGLE-VALUE )
 attributetype ( 1.3.6.1.4.1.32349.1.2.2.3 NAME 'storageBaseDirectory'
-    DESC 'Path to mail storage base directory'
+    DESC 'Path to mail storage base directory. Deprecated since iRedMail-0.9.8.'
     EQUALITY caseExactIA5Match
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
     SINGLE-VALUE )
 attributetype ( 1.3.6.1.4.1.32349.1.2.2.4 NAME 'mailMessageStore'
-    DESC 'Path to the maildir/mbox on the mail system'
+    DESC 'Path to the maildir/mbox on the mail system. Deprecated since iRedMail-0.9.8.'
     EQUALITY caseExactIA5Match
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
     SINGLE-VALUE )

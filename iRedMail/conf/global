@@ -507,6 +507,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
     # iptables rule file.
     export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/iptables"
+    export FIREWALL_RULE_CONF6="${ETC_SYSCONFIG_DIR}/ip6tables"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
@@ -645,10 +646,20 @@ fi
 
 # Location of sshd_config
 export SSHD_CONFIG='/etc/ssh/sshd_config'
-export SSHD_PORT="$(awk '/^Port/ {print $2}' ${SSHD_CONFIG})"
+
+export SSHD_PORT="$(awk '/^Port/ {print $2}' ${SSHD_CONFIG} | head -1)"
+export SSHD_PORT2="$(awk '/^Port/ {print $2}' ${SSHD_CONFIG} | tail -1)"
 if [ X"${SSHD_PORT}" == X'' ]; then
     # No port number defined, use default port number (22).
     export SSHD_PORT='22'
+    export SSHD_PORT2='22'
+    export SSHD_PORTS_WITH_COMMA="${SSHD_PORT}"
+    export SSHD_PORTS_WITH_SPACE="${SSHD_PORT}"
+fi
+
+if [ X"${SSHD_PORT}" != X'' -a X"${SSHD_PORT2}" != X'' -a X"${SSHD_PORT}" != X"${SSHD_PORT2}" ]; then
+    export SSHD_PORTS_WITH_COMMA="${SSHD_PORT},${SSHD_PORT2}"
+    export SSHD_PORTS_WITH_SPACE="${SSHD_PORT} ${SSHD_PORT2}"
 fi
 
 # sysctl.conf

@@ -57,7 +57,8 @@ fail2ban_config()
     perl -pi -e 's#PH_SOGO_LOG_FILE#$ENV{SOGO_LOG_FILE}#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
     perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_DIR}/*.log#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
     perl -pi -e 's#PH_FAIL2BAN_DISABLED_SERVICES#$ENV{FAIL2BAN_DISABLED_SERVICES}#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
-    perl -pi -e 's#PH_SSHD_PORT#$ENV{SSHD_PORT}#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
+
+    perl -pi -e 's#PH_SSHD_PORT#$ENV{SSHD_PORTS_WITH_COMMA}#' ${FAIL2BAN_JAIL_CONF_DIR}/*.local
 
     ECHO_DEBUG "Copy sample Fail2ban filter config files."
     cp -f ${SAMPLE_DIR}/fail2ban/filter.d/*.conf ${FAIL2BAN_FILTER_DIR}

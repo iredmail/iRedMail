@@ -1,0 +1,108 @@
+#---------------------------------------------------------------------
+# This file is part of iRedMail, which is an open source mail server
+# solution for Red Hat(R) Enterprise Linux, CentOS, Debian and Ubuntu.
+#
+# iRedMail is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# iRedMail is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
+#---------------------------------------------------------------------
+
+#
+# Sample iptables rules. It should be located at:
+#   /etc/sysconfig/iptables
+#
+# Shipped within iRedMail project:
+#   * http://www.iRedMail.org/
+#
+
+*filter
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT ACCEPT [0:0]
+
+# Keep state.
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Loop device.
+-A INPUT -i lo -j ACCEPT
+
+# ssh
+-A INPUT -p tcp --dport 22 -j ACCEPT
+
+# http, https
+-A INPUT -p tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp --dport 443 -j ACCEPT
+
+# smtp, submission
+-A INPUT -p tcp --dport 25 -j ACCEPT
+-A INPUT -p tcp --dport 587 -j ACCEPT
+
+# pop3, pop3s
+-A INPUT -p tcp --dport 110 -j ACCEPT
+-A INPUT -p tcp --dport 995 -j ACCEPT
+#-A INPUT -p tcp --dport 10110 -j ACCEPT
+
+# imap, imaps
+-A INPUT -p tcp --dport 143 -j ACCEPT
+-A INPUT -p tcp --dport 993 -j ACCEPT
+#-A INPUT -p tcp --dport 10143 -j ACCEPT
+
+# lmtp
+#-A INPUT -p tcp --dport 24 -j ACCEPT
+#-A INPUT -p tcp --dport 1024 -j ACCEPT
+
+# managesieve
+#-A INPUT -p tcp --dport 4190 -j ACCEPT
+#-A INPUT -p tcp --dport 10419 -j ACCEPT
+
+# Dovecot SASL AUTH service for HAProxy
+#-A INPUT -p tcp --dport 12346 -j ACCEPT
+
+# ldap/ldaps
+#-A INPUT -p tcp --dport 389 -j ACCEPT
+#-A INPUT -p tcp --dport 636 -j ACCEPT
+
+# MySQL service and cluster.
+#   - the regular MySQL port (default 3306)
+#   - port for group (Galera) communication (default 4567)
+#   - port for State Transfer (default 4444)
+#   - port for Incremental State Transfer (default is: port for group communication (4567) + 1 = 4568)
+#
+# Note: Please make sure MySQL service is not binding to localhost with
+#       'bind-address=127.0.0.1'.
+#-A INPUT -p tcp --dport 3306 -j ACCEPT
+#-A INPUT -p tcp --dport 4444 -j ACCEPT
+#-A INPUT -p tcp --dport 4567 -j ACCEPT
+#-A INPUT -p tcp --dport 4568 -j ACCEPT
+
+# PostgreSQL service.
+#-A INPUT -p tcp --dport 5432 -j ACCEPT
+
+# Amavisd
+#-A INPUT -p tcp --dport 10024 -j ACCEPT
+#-A INPUT -p tcp --dport 10025 -j ACCEPT
+#-A INPUT -p tcp --dport 10026 -j ACCEPT
+#-A INPUT -p tcp --dport 9998 -j ACCEPT
+
+# iRedAPD
+#-A INPUT -p tcp --dport 7777 -j ACCEPT
+
+# ftp.
+#-A INPUT -p tcp --dport 20 -j ACCEPT
+#-A INPUT -p tcp --dport 21 -j ACCEPT
+
+# ejabberd
+#-A INPUT -p tcp --dport 5222 -j ACCEPT
+#-A INPUT -p tcp --dport 5223 -j ACCEPT
+#-A INPUT -p tcp --dport 5280 -j ACCEPT
+
+COMMIT

@@ -6,6 +6,7 @@ iRedMail-0.9.9:
           NOT RECOMMENDED FOR PRODUCTION SERVER.
 
     * Improvements:
+        + Add rc script and rules for ip6tables on Debian/Ubuntu.
         + iRedAdmin is now running as a standalone uwsgi instance (service
           name 'iredadmin'), not controlled by 'uwsgi' service anymore.
         + Use /opt/www to store web applications on all Linux distros and
@@ -18,6 +19,8 @@ iRedMail-0.9.9:
           (was /var/log/openldap.log).
 
     * Fixed issues:
+        - Not correctly generate/update firewall rules if ssh is listening on
+          2 network ports.
         - Not index ldap attribute `mobile`.
         - Not always specify a plain text footer file for altermime to update
           email sent to mlmmj mailing list.

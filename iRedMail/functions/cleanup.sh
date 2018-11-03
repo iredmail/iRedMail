@@ -104,21 +104,24 @@ cleanup_remove_mod_python()
 
 cleanup_replace_firewall_rules()
 {
-    # Get SSH listen port, replace default port number in iptable rule file.
-    if [ X"${SSHD_PORT}" != X'22' ]; then
-        # Replace port number in iptable, pf and Fail2ban.
-        [ X"${USE_FIREWALLD}" == X'YES' ] && \
-            perl -pi -e 's#(.*)22(.*)#${1}$ENV{SSHD_PORT}${2}#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
+    set -x
+    # Replace ssh numbers.
+    if [ X"${SSHD_PORT2}" != X'22' ]; then
+        # Append second ssh port number.
+        perl -pi -e 's#(.*22.*)#${1}\n  <port protocol="tcp" port="$ENV{SSHD_PORT2}"/>#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
+        perl -pi -e 's#(.* 22 .*)#${1}\n-A INPUT -p tcp --dport $ENV{SSHD_PORT2} -j ACCEPT#' ${SAMPLE_DIR}/iptables/iptables.rules
+        perl -pi -e 's#(.* 22 .*)#${1}\n-A INPUT -p tcp --dport $ENV{SSHD_PORT2} -j ACCEPT#' ${SAMPLE_DIR}/iptables/ip6tables.rules
 
-        perl -pi -e 's#(.* )22( .*)#${1}$ENV{SSHD_PORT}${2}#' ${SAMPLE_DIR}/iptables/iptables.rules
-        perl -pi -e 's#(.*mail_services=.*)ssh( .*)#${1}$ENV{SSHD_PORT}${2}#' ${SAMPLE_DIR}/openbsd/pf.conf
-
-        [ -f ${FAIL2BAN_JAIL_LOCAL_CONF} ] && \
-            perl -pi -e 's#(.*port=.*)ssh(.*)#${1}$ENV{SSHD_PORT}${2}#' ${FAIL2BAN_JAIL_LOCAL_CONF}
+        # Replace first ssh port number
+        perl -pi -e 's#(.*)"22"(.*)#${1}"$ENV{SSHD_PORT}"${2}#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
+        perl -pi -e 's#(.*) 22 (.*)#${1} $ENV{SSHD_PORT} -j ACCEPT#' ${SAMPLE_DIR}/iptables/iptables.rules
+        perl -pi -e 's#(.*) 22 (.*)#${1} $ENV{SSHD_PORT} -j ACCEPT#' ${SAMPLE_DIR}/iptables/ip6tables.rules
     fi
 
+    perl -pi -e 's#(.*mail_services=.*)ssh(.*)#${1}$ENV{SSHD_PORTS_WITH_COMMA}${2}#' ${SAMPLE_DIR}/openbsd/pf.conf
+
     ECHO_QUESTION "Would you like to use firewall rules provided by iRedMail?"
-    ECHO_QUESTION -n "File: ${FIREWALL_RULE_CONF}, with SSHD port: ${SSHD_PORT}. [Y|n]"
+    ECHO_QUESTION -n "File: ${FIREWALL_RULE_CONF}, with SSHD ports: ${SSHD_PORTS_WITH_COMMA}. [Y|n]"
     read_setting ${AUTO_CLEANUP_REPLACE_FIREWALL_RULES}
     case ${ANSWER} in
         N|n ) ECHO_INFO "Skip firewall rules." ;;
@@ -131,8 +134,7 @@ cleanup_replace_firewall_rules()
                     cp -f ${SAMPLE_DIR}/firewalld/zones/iredmail.xml ${FIREWALL_RULE_CONF}
                     perl -pi -e 's#^(DefaultZone=).*#${1}iredmail#g' ${FIREWALLD_CONF}
 
-                    [ X"${SSHD_PORT}" != X'22' ] && \
-                        cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
+                    cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
 
                     if [ X"${DISTRO}" == X'RHEL' ]; then
                         cd ${ETC_SYSCONFIG_DIR}/network-scripts/
@@ -140,6 +142,7 @@ cleanup_replace_firewall_rules()
                     fi
                 else
                     cp -f ${SAMPLE_DIR}/iptables/iptables.rules ${FIREWALL_RULE_CONF}
+                    cp -f ${SAMPLE_DIR}/iptables/ip6tables.rules ${FIREWALL_RULE_CONF6}
                 fi
 
                 # Replace HTTP port.
@@ -152,24 +155,28 @@ cleanup_replace_firewall_rules()
                     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
                         # Copy sample rc script for Debian.
                         cp -f ${SAMPLE_DIR}/iptables/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
-                        chmod +x ${DIR_RC_SCRIPTS}/iptables
+                        cp -f ${SAMPLE_DIR}/iptables/ip6tables.init.debian ${DIR_RC_SCRIPTS}/ip6tables
+                        chmod +x ${DIR_RC_SCRIPTS}/iptables ${DIR_RC_SCRIPTS}/ip6tables
                     fi
 
                     service_control enable iptables >> ${INSTALL_LOG} 2>&1
+                    service_control enable ip6tables >> ${INSTALL_LOG} 2>&1
                 fi
             elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+                set -x
                 # Enable pf
-                echo 'pf=YES' >> ${RC_CONF_LOCAL}
+                service_control enable pf >> ${INSTALL_LOG} 2>&1
 
                 # Whitelist file required by spamd(8)
                 touch /etc/mail/nospamd
 
                 ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
                 cp -f ${SAMPLE_DIR}/openbsd/pf.conf ${FIREWALL_RULE_CONF}
+                set +x
             fi
 
             # Prompt to restart iptables.
-            ECHO_QUESTION -n "Restart firewall now (with SSHD port ${SSHD_PORT})? [y|N]"
+            ECHO_QUESTION -n "Restart firewall now (with ssh ports: ${SSHD_PORTS_WITH_COMMA})? [y|N]"
             read_setting ${AUTO_CLEANUP_RESTART_IPTABLES}
             case ${ANSWER} in
                 Y|y )
@@ -182,6 +189,7 @@ cleanup_replace_firewall_rules()
                             firewall-cmd --complete-reload >> ${INSTALL_LOG} 2>&1
                         else
                             service_control restart iptables >> ${INSTALL_LOG} 2>&1
+                            service_control restart ip6tables >> ${INSTALL_LOG} 2>&1
                         fi
                     fi
                     ;;
@@ -191,6 +199,7 @@ cleanup_replace_firewall_rules()
             esac
             ;;
     esac
+    set +x
 
     echo 'export status_cleanup_replace_firewall_rules="DONE"' >> ${STATUS_FILE}
 }
