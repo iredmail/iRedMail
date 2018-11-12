@@ -36,7 +36,7 @@ install_all()
     # Preferred package versions. Don't forget to update DEFAULT_VERSIONS below.
     export PREFERRED_OPENLDAP_VER='24'
     export PREFERRED_MYSQL_VER='57'
-    export PREFERRED_MARIADB_VER='55'
+    export PREFERRED_MARIADB_VER='103'
     export PGSQL_VERSION='10'
     export PREFERRED_BDB_VER='5'
     export PREFERRED_PHP_VER='71'

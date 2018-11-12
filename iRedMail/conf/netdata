@@ -49,7 +49,7 @@ export NETDATA_HTTPD_AUTH_FILE="${HTTPD_CONF_ROOT}/netdata.users"
 export NETDATA_DOT_MY_CNF="${NETDATA_CONF_DIR}/my.cnf"
 
 # Install stable release.
-export NETDATA_VERSION='1.10.0'
+export NETDATA_VERSION='1.11.0'
 export NETDATA_PKG_NAME="netdata-${NETDATA_VERSION}.gz.run"
 
 # Modular config files.
@@ -58,6 +58,7 @@ export NETDATA_CONF_HEALTH_ALARM_NOTIFY="${NETDATA_CONF_DIR}/health_alarm_notify
 # Plugin config files.
 export NETDATA_CONF_PLUGIN_MYSQL="${NETDATA_CONF_DIR}/python.d/mysql.conf"
 export NETDATA_CONF_PLUGIN_PGSQL="${NETDATA_CONF_DIR}/python.d/postgres.conf"
+export NETDATA_CONF_PLUGIN_PHPFPM="${NETDATA_CONF_DIR}/python.d/phpfpm.conf"
 
 if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
     export NETDATA_CONF_DIR="/usr/local/etc/netdata"

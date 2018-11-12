@@ -104,7 +104,6 @@ cleanup_remove_mod_python()
 
 cleanup_replace_firewall_rules()
 {
-    set -x
     # Replace ssh numbers.
     if [ X"${SSHD_PORT2}" != X'22' ]; then
         # Append second ssh port number.
@@ -163,7 +162,6 @@ cleanup_replace_firewall_rules()
                     service_control enable ip6tables >> ${INSTALL_LOG} 2>&1
                 fi
             elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-                set -x
                 # Enable pf
                 service_control enable pf >> ${INSTALL_LOG} 2>&1
 
@@ -172,7 +170,6 @@ cleanup_replace_firewall_rules()
 
                 ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
                 cp -f ${SAMPLE_DIR}/openbsd/pf.conf ${FIREWALL_RULE_CONF}
-                set +x
             fi
 
             # Prompt to restart iptables.
@@ -199,7 +196,6 @@ cleanup_replace_firewall_rules()
             esac
             ;;
     esac
-    set +x
 
     echo 'export status_cleanup_replace_firewall_rules="DONE"' >> ${STATUS_FILE}
 }

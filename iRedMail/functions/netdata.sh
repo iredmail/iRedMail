@@ -74,6 +74,10 @@ netdata_config()
 
 netdata_module_config()
 {
+    ECHO_DEBUG "Generate ${NETDATA_CONF_PLUGIN_PHPFPM}."
+    backup_file ${NETDATA_CONF_PLUGIN_PHPFPM}
+    cp -f ${SAMPLE_DIR}/netdata/python.d/phpfpm.conf ${NETDATA_CONF_PLUGIN_PHPFPM} >> ${INSTALL_LOG} 2>&1
+
     # MySQL & PostgreSQL
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         ECHO_DEBUG "Create MySQL user ${NETDATA_DB_USER} with minimal privilege: USAGE."
