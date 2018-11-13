@@ -1,0 +1,184 @@
+# $Id: calresource.schema,v 1.2 2011/04/29 10:54:03 martin$
+#
+# DRAFT only at the time of writing this schema!
+# See: http://tools.ietf.org/html/draft-cal-resource-schema-03
+#
+###
+#
+# This specification defines a schema for representing resources to
+# ease the discovery and scheduling of resources between any calendar
+# client and server.
+# LDAP and vCard mappings of the schema are described in this
+# document. The Object model chosen is the lowest common denominator
+# to adapt for LDAP.
+#
+# This schema depends on:
+#       - calentry.schema
+#
+# New LDAP objectclasses and attributes defined in this document need
+# to be registered by the Internet Assigned Numbers Authority (IANA) as
+# requested in the following template.  Once the assignment is done,
+# this document needs to be updated with the right OID numbers for all
+# the newly defined objectclasses and attributes.
+#
+# Temporary we replace "x" in OIDs with unused "5"
+# Example: 1.3.6.1.1.x.1.1   with   1.3.6.1.1.5.1.1
+
+
+# Attribute Type Definitions
+
+#
+# ERROR in draft!
+# Same OID for 2 attributetypes so I changed 'Kind'
+# to ...0.0 instead of ...0.1
+#
+
+attributetype ( 1.3.6.1.1.5.0.0 NAME 'Kind'
+	      DESC 'Kind of Object'
+	      EQUALITY caseIgnoreMatch
+	      SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	      SINGLE-VALUE )
+
+
+attributetype ( 1.3.6.1.1.5.0.1
+               NAME 'VcardUid'
+               DESC 'VCard UniqueID'
+               EQUALITY caseExactMatch
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+               SINGLE-VALUE )
+
+
+
+attributetype ( 1.3.6.1.1.5.0.2 NAME 'NickName'
+               DESC 'Nick Name'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.3 NAME 'Categories'
+               DESC 'Categories'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.4 NAME 'Restricted'
+               DESC 'Access Restricted'
+               EQUALITY booleanMatch
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( 1.3.6.1.1.5.0.5 NAME 'AdmittanceURL'
+               DESC 'Cal Resource Admittance Info URL'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.6 NAME 'accessibilityURL'
+               DESC 'Cal Resource accessibility Info URL'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.7 NAME 'Capacity'
+               DESC 'Cal Resource Capacity'
+               EQUALITY integerMatch
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+
+attributetype ( 1.3.6.1.1.5.0.8 NAME 'InventoryList'
+               DESC 'Inventory List'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.9 NAME 'InventoryURL'
+               DESC 'Cal Resource Inventory Info URL'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.10 NAME 'ResourceManager'
+               DESC 'Cal Resource Manager Info'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.11 NAME 'TimeZoneID'
+               DESC 'Cal Time Zone ID'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.12 NAME 'Multiplebookings'
+               DESC 'Cal Num Bookings Allowed'
+               EQUALITY integerMatch
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+
+attributetype ( 1.3.6.1.1.5.0.13 NAME 'MaxInstances'
+               DESC 'Cal Maximum Instances allowed'
+               EQUALITY integerMatch
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+
+attributetype ( 1.3.6.1.1.5.0.14 NAME 'BookingWindowStart'
+               DESC 'Cal Booking Window Start'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.15 NAME 'BookingWindowEnd'
+               DESC 'Cal Booking Window End'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.16 NAME 'Autoschedule'
+               DESC 'Cal Scheduling no approval required'
+               EQUALITY booleanMatch
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( 1.3.6.1.1.5.0.17 NAME 'ApprovalInfoURL'
+               DESC 'Cal Sched Approval Info'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.18 NAME 'SchedAdmin'
+               DESC 'Cal Sched Admin Info'
+               EQUALITY caseIgnoreIA5Match
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.1.5.0.19 NAME 'Nocost'
+               DESC 'Free or Priced resource'
+               EQUALITY booleanMatch
+               SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 )
+
+attributetype ( 1.3.6.1.1.5.0.20 NAME 'CostURL'
+                 DESC 'Cal Resource Cost Info'
+                 EQUALITY caseIgnoreIA5Match
+                 SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+# Object Class Definitions
+
+
+objectclass ( 1.3.6.1.1.5.1.1 NAME 'CalendarResource'
+	    DESC 'Calendar Resource Object Class'
+            SUP calEntry
+            AUXILIARY
+            MUST (cn)
+            MAY ( kind $ nickname $ description $ ou $ categories $
+                 member $ uniquemember $ accessibilityurl $ capacity $
+                 owner $ resourcemanager $ timezoneid $
+                 multiplebookings $ maxinstances $
+                 bookingwindowstart $ bookingwindowend $ vcarduid ) )
+
+
+objectclass ( 1.3.6.1.1.5.1.2 NAME 'AdmittanceInfo'
+	    DESC 'Calendar Resource Admittance Info Class'
+	    SUP CalendarResource
+	    AUXILIARY
+	    MAY ( admittanceurl ) )
+
+objectclass ( 1.3.6.1.1.5.1.3 NAME 'InventoryInfo'
+	    DESC 'Calendar Resource Inventory Info Class'
+	    SUP CalendarResource
+	    AUXILIARY
+	    MAY ( inventorylist $ inventoryurl ) )
+
+objectclass ( 1.3.6.1.1.5.1.4 NAME 'SchedApprovalInfo'
+	    DESC 'Calendar Sched Approval Class'
+	    SUP CalendarResource
+	    AUXILIARY
+	    MAY ( autoschedule $ approvalinfourl $ schedadmin ) )
+
+objectclass ( 1.3.6.1.1.5.1.5 NAME 'CalendarResourceCost'
+	    DESC 'Calendar Resource Cost Object Class'
+	    SUP CalendarResource
+	    AUXILIARY
+	    MAY ( nocost $ costurl ) )

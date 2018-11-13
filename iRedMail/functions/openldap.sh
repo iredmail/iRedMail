@@ -55,8 +55,9 @@ slapd_flags="-u ${SYS_USER_LDAP} -f ${OPENLDAP_SLAPD_CONF} -h ldapi:///\ ldap://
 EOF
     fi
 
-    # Copy iRedMail LDAP schema file
+    # Copy extar LDAP schema files
     cp -f ${LDAP_IREDMAIL_SCHEMA} ${OPENLDAP_SCHEMA_DIR}
+    cp -f ${SAMPLE_DIR}/openldap/*.schema ${OPENLDAP_SCHEMA_DIR}
 
     # Copy amavisd schema.
     # - On OpenBSD: package amavisd-new will copy schema file to /etc/openldap/schema

@@ -6,6 +6,7 @@ iRedMail-0.9.9:
           NOT RECOMMENDED FOR PRODUCTION SERVER.
 
     * Improvements:
+        + SOGo now supports resource management with OpenLDAP backend.
         + Add rc script and rules for ip6tables on Debian/Ubuntu.
         + iRedAdmin is now running as a standalone uwsgi instance (service
           name 'iredadmin'), not controlled by 'uwsgi' service anymore.
