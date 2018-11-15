@@ -63,6 +63,10 @@ fi
 
 # Time stamp, will be appended in maildir.
 DATE="$(date +%Y.%m.%d.%H.%M.%S)"
+WC_L='wc -L'
+if [ X"$(uname -s)" == X'OpenBSD' ]; then
+    WC_L='wc -l'
+fi
 
 STORAGE_BASE="$(dirname ${STORAGE_BASE_DIRECTORY})"
 STORAGE_NODE="$(basename ${STORAGE_BASE_DIRECTORY})"
@@ -79,7 +83,7 @@ export CRYPT_PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${p
 
 # Different maildir style: hashed, normal.
 if [ X"${MAILDIR_STYLE}" == X"hashed" ]; then
-    length="$(echo ${username} | wc -L)"
+    length="$(echo ${username} | ${WC_L} )"
     str1="$(echo ${username} | cut -c1)"
     str2="$(echo ${username} | cut -c2)"
     str3="$(echo ${username} | cut -c3)"
