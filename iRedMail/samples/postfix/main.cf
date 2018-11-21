@@ -168,7 +168,7 @@ body_checks = pcre:PH_POSTFIX_FILE_BODY_CHECKS
 # interoperability with the Postfix SMTP server. Other uses involve fault
 # injection to test Postfix's handling of invalid commands.
 # Requires Postfix-2.7+.
-#smtpd_command_filter = pcre:PH_POSTFIX_FILE_SMTPD_COMMAND_FILTER
+smtpd_command_filter = pcre:PH_POSTFIX_FILE_SMTPD_COMMAND_FILTER
 
 # HELO restriction
 smtpd_helo_required = yes

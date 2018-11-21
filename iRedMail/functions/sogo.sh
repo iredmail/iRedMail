@@ -43,7 +43,7 @@ EOF
             cat >> ${tmp_sql} <<EOF
 GRANT SELECT ON ${VMAIL_DB_NAME}.mailbox TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}";
 -- GRANT SELECT ON ${VMAIL_DB_NAME}.mailbox TO ${SOGO_DB_USER}@"${HOSTNAME}";
-CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_VIEW_AUTH} (c_uid, c_name, c_password, c_cn, mail, domain) AS SELECT username, username, password, name, username, domain FROM ${VMAIL_DB_NAME}.mailbox WHERE enablesogo=1 AND active=1;
+CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_VIEW_AUTH} (c_uid, c_name, c_password, c_cn, mail, domain) AS SELECT username, name, password, name, username, domain FROM ${VMAIL_DB_NAME}.mailbox WHERE enablesogo=1 AND active=1;
 EOF
         fi
 
@@ -79,7 +79,7 @@ CREATE VIEW ${SOGO_DB_VIEW_AUTH} AS
                            user=${VMAIL_DB_BIND_USER}
                            password=${VMAIL_DB_BIND_PASSWD}',
                           'SELECT username AS c_uid,
-                                  username AS c_name,
+                                  name     AS c_name,
                                   password AS c_password,
                                   name     AS c_cn,
                                   username AS mail,
