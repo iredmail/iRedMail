@@ -153,7 +153,7 @@ smtp_tls_note_starttls_offer = yes
 # The benefit of non-repeating names is simpler logfile analysis and easier
 # queue migration (there is no need to run "postsuper" to change queue file
 # names that don't match their message file inode number).
-#enable_long_queue_ids = yes
+enable_long_queue_ids = yes
 
 # Reject unlisted sender and recipient
 smtpd_reject_unlisted_recipient = yes
