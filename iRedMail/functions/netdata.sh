@@ -78,6 +78,15 @@ netdata_module_config()
     backup_file ${NETDATA_CONF_PLUGIN_PHPFPM}
     cp -f ${SAMPLE_DIR}/netdata/python.d/phpfpm.conf ${NETDATA_CONF_PLUGIN_PHPFPM} >> ${INSTALL_LOG} 2>&1
 
+    # OpenLDAP
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ECHO_DEBUG "Generate ${NETDATA_CONF_PLUGIN_OPENLDAP}."
+        backup_file ${NETDATA_CONF_PLUGIN_OPENLDAP}
+        cp -f ${SAMPLE_DIR}/netdata/python.d/openldap.conf ${NETDATA_CONF_PLUGIN_OPENLDAP} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#g' ${NETDATA_CONF_PLUGIN_OPENLDAP} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#g' ${NETDATA_CONF_PLUGIN_OPENLDAP} >> ${INSTALL_LOG} 2>&1
+    fi
+
     # MySQL & PostgreSQL
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         ECHO_DEBUG "Create MySQL user ${NETDATA_DB_USER} with minimal privilege: USAGE."
@@ -105,6 +114,9 @@ EOF
         perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
         perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
     fi
+
+    chown ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_CONF_PLUGIN_DIR}/*.conf
+    chmod 0660 ${NETDATA_CONF_PLUGIN_DIR}/*.conf >> ${INSTALL_LOG} 2>&1
 
     echo 'export status_netdata_module_config="DONE"' >> ${STATUS_FILE}
 }
