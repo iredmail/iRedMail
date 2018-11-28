@@ -178,6 +178,8 @@ check_env()
 
     if [ X"${DISTRO}" == X'UBUNTU' ]; then
         # Many packages are in 'universe' apt repo.
+        [ -x /usr/bin/apt-add-repository ] || apt-get install -y software-properties-common
+
         /usr/bin/apt-add-repository -u universe
     fi
 
