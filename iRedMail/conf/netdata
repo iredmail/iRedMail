@@ -62,11 +62,6 @@ export NETDATA_CONF_PLUGIN_PGSQL="${NETDATA_CONF_PLUGIN_DIR}/postgres.conf"
 export NETDATA_CONF_PLUGIN_PHPFPM="${NETDATA_CONF_PLUGIN_DIR}/phpfpm.conf"
 export NETDATA_CONF_PLUGIN_OPENLDAP="${NETDATA_CONF_PLUGIN_DIR}/openldap.conf"
 
-if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-    export NETDATA_CONF_DIR="/usr/local/etc/netdata"
-    export NETDATA_LOG_DIR='/var/log/netdata'
-fi
-
 # Database
 # NETDATA_DB_PASSWD is generated in dialog/optional_components.sh.
 export NETDATA_DB_USER='netdata'
