@@ -49,6 +49,7 @@ ${CONF_MSG}
 
 EOF
 
+    chmod 0600 ${CRON_FILE_MLMMJ}
     ECHO_DEBUG "Enable mlmmj transport in postfix: ${POSTFIX_FILE_MAIN_CF}."
     cat ${SAMPLE_DIR}/postfix/main.cf.mlmmj >> ${POSTFIX_FILE_MAIN_CF}
 

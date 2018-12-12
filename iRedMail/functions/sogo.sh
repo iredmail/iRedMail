@@ -269,6 +269,7 @@ sogo_cron_setup()
 {
     # Add cron jobs
     cp -f ${SAMPLE_DIR}/sogo/sogo.cron ${CRON_FILE_SOGO} &>/dev/null
+    chmod 0600 ${CRON_FILE_SOGO}
     perl -pi -e 's#PH_SOGO_CMD_TOOL#$ENV{SOGO_CMD_TOOL}#g' ${CRON_FILE_SOGO}
     perl -pi -e 's#PH_SOGO_CMD_EALARMS_NOTIFY#$ENV{SOGO_CMD_EALARMS_NOTIFY}#g' ${CRON_FILE_SOGO}
     perl -pi -e 's#PH_SOGO_SIEVE_CREDENTIAL_FILE#$ENV{SOGO_SIEVE_CREDENTIAL_FILE}#g' ${CRON_FILE_SOGO}
