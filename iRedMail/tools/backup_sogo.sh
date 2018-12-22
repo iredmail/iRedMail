@@ -115,7 +115,7 @@ if ls ${BACKUP_DIR} | grep -i '[a-z0-9]' &>/dev/null; then
     cd ${dir_name} &&\
         tar cjf ${base_name}.tar.bz2 ${base_name} && \
         chown root ${base_name}.tar.bz2 && \
-        chmod 0700 ${base_name}.tar.bz2 && \
+        chmod 0400 ${base_name}.tar.bz2 && \
         rm -rf ${base_name}
 
     compressed_size="$(${CMD_DU} ${base_name}.tar.bz2 | awk '{print $1}')"
