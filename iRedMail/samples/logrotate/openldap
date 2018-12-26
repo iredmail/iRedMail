@@ -1,4 +1,4 @@
-PH_OPENLDAP_LOGFILE {
+PH_OPENLDAP_LOG_FILE {
     compress
     weekly
     rotate 10
