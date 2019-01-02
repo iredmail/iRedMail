@@ -129,6 +129,7 @@ fi
 
 # Plugin: stats
 export DOVECOT_SERVICE_STATS_USER="${SYS_USER_VMAIL}"
+export DOVECOT_SERVICE_STATS_GROUP="${SYS_GROUP_VMAIL}"
 export DOVECOT_SERVICE_STATS_PORT='24242'
 
 # Local (Mail) Delivery Agent

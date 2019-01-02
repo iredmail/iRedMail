@@ -127,6 +127,7 @@ dovecot_config()
     # service stats {}
     perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_PORT#$ENV{DOVECOT_SERVICE_STATS_PORT}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_USER#$ENV{DOVECOT_SERVICE_STATS_USER}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_GROUP#$ENV{DOVECOT_SERVICE_STATS_GROUP}#' ${DOVECOT_CONF}
 
     # Virtual mail accounts.
     # Reference: http://wiki2.dovecot.org/AuthDatabase/LDAP
