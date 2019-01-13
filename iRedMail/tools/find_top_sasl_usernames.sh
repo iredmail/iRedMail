@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Author: Zhang Huangbin <zhb@iredmail.org>
 # Purpose: Find usernames used for smtp authentication in Postfix log file,
 #          sorted by login times.
 
@@ -15,12 +16,13 @@ if [ -z ${MAILLOG_FILE} ]; then
 fi
 
 if [ -z ${MAILLOG_FILE} ]; then
-    echo "Please specify the mail log file: $0 /path/to/maillog"
+    echo "Please specify Postfix log file on command line: $0 /path/to/maillog"
     exit 255
 fi
 
-tmpfile="/tmp/sasl_username_${RANDOM}"
-grep 'sasl_username=' ${MAILLOG_FILE} |awk -F'sasl_username=' '{print $2}' > ${tmpfile}
-awk '{print $NF}' ${tmpfile}  | sort | uniq -c | sort -n
-
-rm -f ${tmpfile}
+grep 'sasl_username=' ${MAILLOG_FILE} \
+    | awk -F'sasl_username=' '{print $2}' \
+    | awk '{print $NF}' \
+    | sort \
+    | uniq -c \
+    | sort -nr
