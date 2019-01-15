@@ -1,5 +1,4 @@
-server_host     = PH_LDAP_SERVER_HOST
-server_port     = PH_LDAP_SERVER_PORT
+server_host     = PH_LDAP_SERVER_HOST:PH_LDAP_SERVER_PORT
 version         = PH_LDAP_BIND_VERSION
 bind            = yes
 start_tls       = no
