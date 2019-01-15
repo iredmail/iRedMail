@@ -57,7 +57,7 @@ bayes_auto_expire  1
 # Store bayesian data in PostgreSQL.
 # Please make sure you have correct server address, port and database name.
 #bayes_store_module Mail::SpamAssassin::BayesStore::PgSQL
-#bayes_sql_dsn      DBI:Pg:sa_bayes:127.0.0.1:5432
+#bayes_sql_dsn      DBI:Pg:database=sa_bayes;host=127.0.0.1;port=5432
 
 # SQL username and password.
 #bayes_sql_username db_username
