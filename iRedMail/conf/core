@@ -193,7 +193,7 @@ check_env()
             ECHO_QUESTION -n "Use it for mail server setting? [y|N]"
             read_setting ${AUTO_USE_EXISTING_CONFIG_FILE}
             case ${ANSWER} in
-                Y|y )
+                Y|y|[Yy][Ee][Ss] )
                     ECHO_INFO "Use config file: ${IREDMAIL_CONFIG_FILE} for mail server setting."
                     . ${IREDMAIL_CONFIG_FILE}
 
