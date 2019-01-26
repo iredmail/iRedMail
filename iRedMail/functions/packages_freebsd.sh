@@ -801,7 +801,7 @@ EOF
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER}"
 
-        ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext converters/php${PREFERRED_PHP_VER}-mbstring security/php${PREFERRED_PHP_VER}-mcrypt security/php${PREFERRED_PHP_VER}-openssl www/php${PREFERRED_PHP_VER}-session textproc/php${PREFERRED_PHP_VER}-ctype security/php${PREFERRED_PHP_VER}-hash converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom"
+        ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext security/php${PREFERRED_PHP_VER}-openssl www/php${PREFERRED_PHP_VER}-session textproc/php${PREFERRED_PHP_VER}-ctype security/php${PREFERRED_PHP_VER}-hash converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ALL_PORTS="${ALL_PORTS} net/php${PREFERRED_PHP_VER}-ldap databases/php${PREFERRED_PHP_VER}-mysqli"

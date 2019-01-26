@@ -115,16 +115,16 @@ Note:
     - Leading and trailing Space will be ignored.
 '''
 
-def conv_mail_to_user_dn(email):
+def mail_to_user_dn(mail):
     """Convert email address to ldap dn of normail mail user."""
-    if email.count('@') != 1:
+    if mail.count('@') != 1:
         return ''
 
-    user, domain = email.split('@')
+    user, domain = mail.split('@')
 
     # User DN format.
     # mail=user@domain.ltd,domainName=domain.ltd,[LDAP_BASEDN]
-    dn = 'mail=%s,ou=Users,domainName=%s,%s' % (email, domain, BASEDN)
+    dn = 'mail=%s,ou=Users,domainName=%s,%s' % (mail, domain, BASEDN)
 
     return dn
 
@@ -215,7 +215,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         cn = username
 
     mail = username + '@' + domain
-    dn = conv_mail_to_user_dn(mail)
+    dn = mail_to_user_dn(mail)
 
     # Get group list.
     if groups.strip() != '':
