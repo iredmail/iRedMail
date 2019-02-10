@@ -131,7 +131,7 @@ EOF
     ECHO_DEBUG "Create directory used to store OpenLDAP log file: ${OPENLDAP_LOG_DIR}"
     mkdir -p ${OPENLDAP_LOG_DIR}
     chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${OPENLDAP_LOG_DIR}
-    chmod 0640 ${OPENLDAP_LOG_DIR}
+    chmod 0750 ${OPENLDAP_LOG_DIR}
 
     ECHO_DEBUG "Create empty log file: ${OPENLDAP_LOG_FILE}."
     touch ${OPENLDAP_LOG_FILE}

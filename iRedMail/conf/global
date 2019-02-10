@@ -480,7 +480,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export SYSLOG_CONF='/etc/rsyslog.conf'
 
         if [ X"${DISTRO_VERSION}" == X'9' ]; then
-            export ENABLE_BACKEND_MYSQL='NO'
+            export ENABLE_BACKEND_MYSQL='YES'
             export ENABLE_BACKEND_MARIADB='YES'
         fi
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
