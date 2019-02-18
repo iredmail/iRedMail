@@ -38,6 +38,7 @@ export PHP_DISABLE_FUNCTIONS='posix_uname,eval,pcntl_wexitstatus,posix_getpwuid,
 
 if [ X"${DISTRO}" == X'RHEL' ]; then
     export PHP_INI='/etc/php.ini'
+    export PHP_FPM_PID_FILE='/run/php-fpm/php-fpm.pid'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO_CODENAME}" == X'stretch' -o X"${DISTRO_CODENAME}" == X'xenial' ]; then
@@ -50,6 +51,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
     export PHP_INI="/etc/php/${PHP_VERSION}/fpm/php.ini"
     export PHP_FPM_CONF="/etc/php/${PHP_VERSION}/fpm/php-fpm.conf"
+    export PHP_FPM_PID_FILE='/run/php/php-fpm.pid'
     export PHP_FPM_LOGROTATE_CONF="${LOGROTATE_DIR}/php${PHP_VERSION}-fpm"
     export PHP_FPM_POOL_DIR="/etc/php/${PHP_VERSION}/fpm/pool.d"
     export PHP_FPM_RC_SCRIPT_NAME="php${PHP_VERSION}-fpm"
@@ -62,6 +64,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PHP_FPM_CONF='/usr/local/etc/php-fpm.conf'
     export PHP_FPM_POOL_DIR='/usr/local/etc/php-fpm.d'
     export PHP_FPM_LOGROTATE_CONF="${LOGROTATE_DIR}/php-fpm"
+    export PHP_FPM_PID_FILE='/var/run/php-fpm.pid'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export OB_PHP_VERSION='7.2'
@@ -69,6 +72,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export PHP_BIN="/usr/local/bin/php-${OB_PHP_VERSION}"
     export PHP_INI="/etc/php-${OB_PHP_VERSION}.ini"
     export PHP_FPM_RC_SCRIPT_NAME='php72_fpm'
+    export PHP_FPM_PID_FILE='/var/run/php-fpm.pid'
 fi
 
 # PHP-FPM

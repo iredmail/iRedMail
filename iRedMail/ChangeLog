@@ -1,4 +1,8 @@
 iRedMail-1.0:
+    * Fixed issues:
+        - [Linux] Not send kill signal to php-fpm daemon process to reopen log
+          file after logrotation.
+
     * Updated packages:
         + iRedAdmin -> 0.9.4
         + iRedAPD -> 2.4

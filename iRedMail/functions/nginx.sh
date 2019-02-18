@@ -146,6 +146,8 @@ nginx_config()
         perl -pi -e 's#;(syslog.facility)( =.*)#$1 = $ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${PHP_FPM_CONF}
         perl -pi -e 's#^(syslog.ident)( =.*)#$1 = php-fpm#g' ${PHP_FPM_CONF}
         perl -pi -e 's#;(syslog.ident)( =.*)#$1 = php-fpm#g' ${PHP_FPM_CONF}
+        perl -pi -e 's#^(pid)( =.*)#$1 = $ENV{PHP_FPM_PID_FILE}#g' ${PHP_FPM_CONF}
+        perl -pi -e 's#;(pid)( =.*)#$1 = $ENV{PHP_FPM_PID_FILE}#g' ${PHP_FPM_CONF}
 
         # Create php-fpm conf directory
         mkdir -p ${PHP_FPM_POOL_DIR} >> ${INSTALL_LOG} 2>&1
@@ -191,7 +193,10 @@ nginx_config()
             chmod 0644 ${PHP_FPM_LOGROTATE_CONF}
 
             perl -pi -e 's#PH_PHP_FPM_LOG_DIR#$ENV{PHP_FPM_LOG_DIR}#g' ${PHP_FPM_LOGROTATE_CONF}
-            perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${PHP_FPM_LOGROTATE_CONF}
+            perl -pi -e 's#PH_PHP_FPM_PID_FILE#$ENV{PHP_FPM_PID_FILE}#g' ${PHP_FPM_LOGROTATE_CONF}
+
+            # Remove unused log file to avoid confusion.
+            rm -f /var/log/php*fpm.log 2>/dev/null
 
         elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
             #
@@ -207,6 +212,7 @@ nginx_config()
 
             perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${PHP_FPM_LOGROTATE_CONF}
             perl -pi -e 's#PH_PHP_FPM_LOG_SLOW#$ENV{PHP_FPM_LOG_SLOW}#g' ${PHP_FPM_LOGROTATE_CONF}
+            perl -pi -e 's#PH_PHP_FPM_PID_FILE#$ENV{PHP_FPM_PID_FILE}#g' ${PHP_FPM_LOGROTATE_CONF}
 
             perl -pi -e 's#PH_SYS_USER_SYSLOG#$ENV{SYS_USER_SYSLOG}#g' ${PHP_FPM_LOGROTATE_CONF}
             perl -pi -e 's#PH_SYS_GROUP_SYSLOG#$ENV{SYS_GROUP_SYSLOG}#g' ${PHP_FPM_LOGROTATE_CONF}
@@ -217,18 +223,18 @@ nginx_config()
                 echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${PHP_FPM_LOG_MAIN}" >> ${SYSLOG_CONF}
             fi
 
-            # We don't use this log file, remove it to avoid confusion.
+            # Remove unused log file to avoid confusion.
             rm -f /var/log/php-fpm.log &>/dev/null
 
             if ! grep "${PHP_FPM_LOG_MAIN}" /etc/newsyslog.conf &>/dev/null; then
                 cat >> /etc/newsyslog.conf <<EOF
-${PHP_FPM_LOG_MAIN}    ${HTTPD_USER}:${HTTPD_GROUP}   600  7     *    24    Z
+${PHP_FPM_LOG_MAIN}    ${HTTPD_USER}:${HTTPD_GROUP}   600  7     *    24    Z    ${PHP_FPM_PID_FILE}
 EOF
             fi
 
             if ! grep "${PHP_FPM_LOG_SLOW}" /etc/newsyslog.conf &>/dev/null; then
                 cat >> /etc/newsyslog.conf <<EOF
-${PHP_FPM_LOG_SLOW}    ${HTTPD_USER}:${HTTPD_GROUP}   600  7     *    24    Z
+${PHP_FPM_LOG_SLOW}    ${HTTPD_USER}:${HTTPD_GROUP}   600  7     *    24    Z    ${PHP_FPM_PID_FILE}
 EOF
             fi
         fi

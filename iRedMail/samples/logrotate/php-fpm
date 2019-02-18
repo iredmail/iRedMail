@@ -7,6 +7,6 @@ PH_PHP_FPM_LOG_DIR/*.log {
     notifempty
 
     postrotate
-        PH_SYSLOG_POSTROTATE_CMD
+        /bin/kill -SIGUSR1 `cat PH_PHP_FPM_PID_FILE 2>/dev/null` 2>/dev/null || true
     endscript
 }
