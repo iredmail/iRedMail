@@ -4,7 +4,7 @@ iRedMail-1.0:
           file after logrotation.
 
     * Updated packages:
-        + iRedAdmin -> 0.9.4
+        + iRedAdmin -> 0.9.5
         + iRedAPD -> 2.4
         + mlmmjadmin -> 2.1
         + php -> 7.2 (FreeBSD only)
