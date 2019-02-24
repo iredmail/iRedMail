@@ -34,6 +34,9 @@ netdata_install()
 
     ln -s ${NETDATA_CONF_DIR} /etc/netdata >> ${INSTALL_LOG} 2>&1
 
+    # Disable sending anonymouse statistics to netdata cloud.
+    touch ${NETDATA_CONF_DIR}/.opt-out-from-anonymous-statistics
+
     # netdata will handle logrotate config file automatically.
     ln -s ${NETDATA_LOG_DIR} /var/log/netdata >> ${INSTALL_LOG} 2>&1
 
