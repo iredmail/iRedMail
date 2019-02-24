@@ -1,4 +1,7 @@
 iRedMail-1.0:
+    * Improvements:
+        + netdata: Disable sending anonymous statistics to netdata cloud.
+
     * Fixed issues:
         - [Linux] Not send kill signal to php-fpm daemon process to reopen log
           file after logrotation.
@@ -7,7 +10,7 @@ iRedMail-1.0:
         + iRedAdmin -> 0.9.5
         + iRedAPD -> 2.4
         + mlmmjadmin -> 2.1
-        + netdata -> 1.12.0
+        + netdata -> 1.12.1
         + php -> 7.2 (FreeBSD only)
 
 iRedMail-0.9.9 (Dec 17, 2018):
