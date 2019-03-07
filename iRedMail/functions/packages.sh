@@ -316,7 +316,7 @@ baseurl=${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/rhel/${DISTRO_VERSION}/\
 EOF
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} sogo sogo-activesync"
+            ALL_PKGS="${ALL_PKGS} memcached sogo sogo-activesync"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
