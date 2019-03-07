@@ -254,7 +254,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         ('accountStatus', ['active']),
         ('enabledService', ['internal', 'doveadm', 'lib-storage', 'indexer-worker', 'dsync',
                             'mail',
-                            'smtp', 'smtpsecured', 'smtptls'
+                            'smtp', 'smtpsecured', 'smtptls',
                             'pop3', 'pop3secured', 'pop3tls',
                             'imap', 'imapsecured', 'imaptls',
                             'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',

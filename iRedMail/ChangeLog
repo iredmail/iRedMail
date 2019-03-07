@@ -3,6 +3,10 @@ iRedMail-1.0:
         + netdata: Disable sending anonymous statistics to netdata cloud.
 
     * Fixed issues:
+        - tools/create_mail_user_OpenLDAP.py:
+            - Fix missing comma which causes incorrect value of
+              ldap attribute 'enabledService'.
+              Thanks Michael Chong.
         - Loose Fail2ban filter rules (postfix/dovecot) to reduce negative bans.
         - [Linux] Not send kill signal to php-fpm daemon process to reopen log
           file after logrotation.
