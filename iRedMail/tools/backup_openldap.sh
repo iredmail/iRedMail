@@ -165,15 +165,23 @@ fi
 
 # Log to SQL table `iredadmin.log`, so that global domain admins can
 # check backup status (System -> Admin Log)
+export LOG_BACKUP_STATUS='YES'
 if [[ -n ${MYSQL_USER} ]]; then
     if [[ -n ${MYSQL_PASSWD} ]]; then
         export CMD_MYSQL_ROOT="${CMD_MYSQL} -u${MYSQL_USER} -p${MYSQL_PASSWD}"
     else
         export CMD_MYSQL_ROOT="${CMD_MYSQL} --defaults-file=${MYSQL_DOT_MY_CNF} -u${MYSQL_USER}"
     fi
+
+    ${CMD_MYSQL_ROOT} -e "USE iredadmin;" &>/dev/null
+    if [[ X"$?" != X'0' ]]; then
+        export LOG_BACKUP_STATUS='NO'
+    fi
 fi
 
-${CMD_MYSQL_ROOT} iredadmin -e "${sql_log_msg}" >>${LOGFILE} 2>&1
+if [[ X"${LOG_BACKUP_STATUS}" == X'YES' ]]; then
+    ${CMD_MYSQL_ROOT} iredadmin -e "${sql_log_msg}" >>${LOGFILE} 2>&1
+fi
 
 # Append file size of backup files to log file.
 echo "* File size:" >>${LOGFILE}
@@ -193,7 +201,7 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Suppose to delete: ${REMOVED_BACKUPS}" >> ${LOGFILE}
     rm -rf ${REMOVED_BACKUPS} >> ${LOGFILE} 2>&1
 
-    if [ -n ${MYSQL_USER} ] && [ -n ${MYSQL_PASSWD} -o -n ${MYSQL_DOT_MY_CNF} ]; then
+    if [[ X"${LOG_BACKUP_STATUS}" == X'YES' ]]; then
         sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUPS}.', 'cron_backup_sql', '127.0.0.1', UTC_TIMESTAMP());"
         ${CMD_MYSQL_ROOT} iredadmin -e "${sql_log_msg}"
     fi
