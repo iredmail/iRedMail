@@ -85,6 +85,12 @@ mysql_initialize_db()
         fi
     fi
 
+    if [ X"${USE_SYSTEMD}" == X'YES' ]; then
+        mkdir -p /etc/systemd/system/mariadb.service.d &>/dev/null
+        cp -f ${SAMPLE_DIR}/systemd/mariadb.service.d/override.conf /etc/systemd/system/mariadb.service.d/
+        systemctl daemon-reload
+    fi
+
     ECHO_DEBUG "Restart service: ${MYSQL_RC_SCRIPT_NAME}."
     service_control restart ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 

@@ -423,8 +423,8 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
         export USE_SYSTEMD='YES'
 
         # No MySQL available since RHEL/CentOS 7.
-        ENABLE_BACKEND_MYSQL='NO'
-        ENABLE_BACKEND_MARIADB='YES'
+        export ENABLE_BACKEND_MYSQL='NO'
+        export ENABLE_BACKEND_MARIADB='YES'
 
         # iptables rule file.
         export USE_FIREWALLD='YES'
@@ -488,7 +488,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export SYS_USER_SYSLOG='syslog'
         export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
 
-        # MariaDB support requires Ubuntu >= 14.04
         export ENABLE_BACKEND_MARIADB='YES'
     fi
 
@@ -571,8 +570,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SYS_ROOT_GROUP='wheel'
 
     export ENABLE_BACKEND_LDAPD='YES'
-    export ENABLE_BACKEND_MARIADB='YES'
     export ENABLE_BACKEND_MYSQL='NO'
+    export ENABLE_BACKEND_MARIADB='YES'
 
     # Package management.
     export install_pkg='install_pkg_openbsd'
