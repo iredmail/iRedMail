@@ -107,9 +107,11 @@ postfix_config_basic()
     chmod 0640 ${_files}
     unset _files
 
-    # iRedAPD listen address/port
+    # iRedAPD
     perl -pi -e 's#PH_IREDAPD_SERVER_ADDRESS#$ENV{IREDAPD_SERVER_ADDRESS}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_IREDAPD_LISTEN_PORT#$ENV{IREDAPD_LISTEN_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_IREDAPD_SRS_FORWARD_PORT#$ENV{IREDAPD_SRS_FORWARD_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_IREDAPD_SRS_REVERSE_PORT#$ENV{IREDAPD_SRS_REVERSE_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
 
     #
     # master.cf
