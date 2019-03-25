@@ -160,7 +160,7 @@ iredapd_config()
     perl -pi -e 's#^(srs_reverse_port).*#${1} = "$ENV{IREDAPD_SRS_REVERSE_PORT}"#' ${IREDAPD_CONF}
     perl -pi -e 's#^(srs_domain).*#${1} = "$ENV{HOSTNAME}"#' ${IREDAPD_CONF}
     export _srs_secret="$(${RANDOM_STRING})"
-    perl -pi -e 's#^(srs_srcrets).*#${1} = ["$ENV{_srs_secret}"]#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(srs_secrets).*#${1} = ["$ENV{_srs_secret}"]#' ${IREDAPD_CONF}
 
     [ -d ${IREDAPD_LOG_DIR} ] || mkdir -p ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
     chown -R ${IREDAPD_DB_USER}:${SYS_GROUP_IREDAPD} ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
