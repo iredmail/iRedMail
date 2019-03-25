@@ -394,6 +394,8 @@ export SYS_USER_SYSLOG='root'
 export SYS_GROUP_SYSLOG='root'
 export SYSLOG_POSTROTATE_CMD=''
 export IREDMAIL_SYSLOG_FACILITY='local5'
+# rsyslog
+export SYSLOG_CONF_DIR='/etc/rsyslog.d'
 
 # Use systemd
 export USE_SYSTEMD='NO'
@@ -433,8 +435,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
         export FIREWALL_RULE_CONF="${FIREWALLD_CONF_DIR}/zones/iredmail.xml"
     fi
 
-    # Syslog (rsyslog)
-    export SYSLOG_CONF_DIR='/etc/rsyslog.d'
     # main config file
     export SYSLOG_CONF='/etc/rsyslog.conf'
     export SYSLOG_POSTROTATE_CMD='/bin/kill -HUP $(cat /var/run/syslogd.pid 2>/dev/null) 2>/dev/null || true'
@@ -475,8 +475,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export LIST_ALL_PKGS="dpkg -l |awk '{print $2}'"
     export LIST_FILES_IN_PKG='dpkg -L'
 
-    # Syslog (rsyslog)
-    export SYSLOG_CONF_DIR='/etc/rsyslog.d'
+    # Syslog
     export SYS_GROUP_SYSLOG='adm'
     export SYSLOG_POSTROTATE_CMD='/usr/sbin/service rsyslog restart'
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
@@ -543,7 +542,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Syslog (newsyslog)
     export USE_RSYSLOG='NO'
     export USE_BSD_SYSLOG='YES'
-    export SYS_USER_SYSLOG='root'
     export SYS_GROUP_SYSLOG='wheel'
     export SYSLOG_CONF='/etc/syslog.conf'
     export SYSLOG_CONF_DIR='/usr/local/etc/syslog.d'
@@ -582,7 +580,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     # Syslog (newsyslog)
     export USE_RSYSLOG='NO'
     export USE_BSD_SYSLOG='YES'
-    export SYS_USER_SYSLOG='root'
     export SYS_GROUP_SYSLOG='wheel'
     export SYSLOG_CONF='/etc/syslog.conf'
 

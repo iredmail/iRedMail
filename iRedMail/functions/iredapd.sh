@@ -164,7 +164,6 @@ iredapd_config()
 
     [ -d ${IREDAPD_LOG_DIR} ] || mkdir -p ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
     chown -R ${IREDAPD_DB_USER}:${SYS_GROUP_IREDAPD} ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
-    perl -pi -e 's#^(log_file).*#${1} = "$ENV{IREDAPD_LOG_FILE}"#' ${IREDAPD_CONF}
     perl -pi -e 's#^(log_level).*#${1} = "info"#' ${IREDAPD_CONF}
 
     # Backend.
