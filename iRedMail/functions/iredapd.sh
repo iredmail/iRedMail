@@ -219,6 +219,62 @@ iredapd_config()
     echo 'export status_iredapd_config="DONE"' >> ${STATUS_FILE}
 }
 
+iredapd_syslog_setup()
+{
+    ECHO_DEBUG "Generate modular syslog and log rotate config files for iRedAPD."
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        #
+        # modular syslog config file
+        #
+        cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-iredapd.conf ${SYSLOG_CONF_DIR}
+
+        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/1-iredmail-iredapd.conf
+        perl -pi -e 's#PH_IREDAPD_LOG_FILE#$ENV{IREDAPD_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-iredmail-iredapd.conf
+
+        #
+        # modular logrotate config file
+        #
+        cp -f ${SAMPLE_DIR}/logrotate/iredapd ${IREDAPD_LOGROTATE_FILE}
+        chmod 0644 ${IREDAPD_LOGROTATE_FILE}
+
+        perl -pi -e 's#PH_IREDAPD_LOG_DIR#$ENV{IREDAPD_LOG_DIR}#g' ${IREDAPD_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${IREDAPD_LOGROTATE_FILE}
+    elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        #
+        # modular syslog config file
+        #
+        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/iredapd.conf ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_IREDMAIL_SYSLOG_FACILITY#$ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/iredapd.conf
+        perl -pi -e 's#PH_IREDAPD_LOG_FILE#$ENV{IREDAPD_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/iredapd.conf
+
+        #
+        # modular newsyslog (log rotate) config file
+        #
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/iredapd ${IREDAPD_LOGROTATE_FILE}
+
+        perl -pi -e 's#PH_IREDAPD_LOG_FILE#$ENV{IREDAPD_LOG_FILE}#g' ${IREDAPD_LOGROTATE_FILE}
+        perl -pi -e 's#PH_IREDAPD_PID_FILE#$ENV{IREDAPD_PID_FILE}#g' ${IREDAPD_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYS_USER_SYSLOG#$ENV{SYS_USER_SYSLOG}#g' ${IREDAPD_LOGROTATE_FILE}
+        perl -pi -e 's#PH_SYS_GROUP_SYSLOG#$ENV{SYS_GROUP_SYSLOG}#g' ${IREDAPD_LOGROTATE_FILE}
+
+    elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+        if ! grep "${IREDAPD_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
+            # '!!' means abort further evaluation after first match
+            echo '' >> ${SYSLOG_CONF}
+            echo '!!iredapd' >> ${SYSLOG_CONF}
+            echo "${IREDMAIL_SYSLOG_FACILITY}.*        ${IREDAPD_LOG_FILE}" >> ${SYSLOG_CONF}
+        fi
+
+        if ! grep "${IREDAPD_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
+            cat >> /etc/newsyslog.conf <<EOF
+${IREDAPD_LOG_FILE}    ${SYS_USER_IREDAPD}:${SYS_GROUP_IREDAPD}   600  7     *    24    Z
+EOF
+        fi
+    fi
+    echo 'export status_iredapd_syslog_setup="DONE"' >> ${STATUS_FILE}
+}
+
+
 iredapd_cron_setup()
 {
     # Setup cron job to clean up expired throttle tracking records.
@@ -253,6 +309,7 @@ iredapd_setup()
 
     check_status_before_run iredapd_cron_setup
     check_status_before_run iredapd_config
+    check_status_before_run iredapd_syslog_setup
 
     cat >> ${TIP_FILE} <<EOF
 iRedAPD - Postfix Policy Server:
