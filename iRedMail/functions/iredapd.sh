@@ -163,7 +163,7 @@ iredapd_config()
     perl -pi -e 's#^(srs_secrets).*#${1} = ["$ENV{_srs_secret}"]#' ${IREDAPD_CONF}
 
     [ -d ${IREDAPD_LOG_DIR} ] || mkdir -p ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
-    chown -R ${IREDAPD_DB_USER}:${SYS_GROUP_IREDAPD} ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+    chown -R ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
     perl -pi -e 's#^(log_level).*#${1} = "info"#' ${IREDAPD_CONF}
 
     # Backend.
