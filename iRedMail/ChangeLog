@@ -13,7 +13,7 @@ iRedMail-1.0:
 
     * Updated packages:
         + iRedAdmin -> 0.9.5
-        + iRedAPD -> 2.6
+        + iRedAPD -> 2.7
         + mlmmjadmin -> 2.1
         + netdata -> 1.13.0
         + php -> 7.2 (FreeBSD only)
