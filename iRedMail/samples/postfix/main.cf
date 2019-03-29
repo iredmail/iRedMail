@@ -205,10 +205,10 @@ smtpd_end_of_data_restrictions =
 smtpd_data_restrictions = reject_unauth_pipelining
 
 # SRS (Sender Rewriting Scheme) support
-sender_canonical_maps = tcp:PH_IREDAPD_SERVER_ADDRESS:PH_IREDAPD_SRS_FORWARD_PORT
-sender_canonical_classes = envelope_sender
-recipient_canonical_maps = tcp:PH_IREDAPD_SERVER_ADDRESS:PH_IREDAPD_SRS_REVERSE_PORT
-recipient_canonical_classes= envelope_recipient,header_recipient
+#sender_canonical_maps = tcp:PH_IREDAPD_SERVER_ADDRESS:PH_IREDAPD_SRS_FORWARD_PORT
+#sender_canonical_classes = envelope_sender
+#recipient_canonical_maps = tcp:PH_IREDAPD_SERVER_ADDRESS:PH_IREDAPD_SRS_REVERSE_PORT
+#recipient_canonical_classes= envelope_recipient,header_recipient
 
 proxy_read_maps = $canonical_maps $lmtp_generic_maps $local_recipient_maps $mydestination $mynetworks $recipient_bcc_maps $recipient_canonical_maps $relay_domains $relay_recipient_maps $relocated_maps $sender_bcc_maps $sender_canonical_maps $smtp_generic_maps $smtpd_sender_login_maps $transport_maps $virtual_alias_domains $virtual_alias_maps $virtual_mailbox_domains $virtual_mailbox_maps $smtpd_sender_restrictions $sender_dependent_relayhost_maps
 
