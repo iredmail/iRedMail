@@ -12,7 +12,7 @@ iRedMail-1.0:
           file after logrotation.
 
     * Updated packages:
-        + iRedAdmin -> 0.9.5
+        + iRedAdmin -> 0.9.6
         + iRedAPD -> 2.7
         + mlmmjadmin -> 2.1
         + netdata -> 1.13.0
