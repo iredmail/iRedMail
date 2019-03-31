@@ -129,10 +129,10 @@ EOF
     fi
 
     # Create log directory and empty log file
-    mkdir -p ${MLMMJADMIN_LOG_DIR}
-    touch ${MLMMJADMIN_LOG_FILE}
-    chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${MLMMJADMIN_LOG_DIR} ${MLMMJADMIN_LOG_FILE}
-    chmod 0640 ${MLMMJADMIN_LOG_FILE}
+    mkdir -p ${MLMMJADMIN_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+    touch ${MLMMJADMIN_LOG_FILE} >> ${INSTALL_LOG} 2>&1
+    chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${MLMMJADMIN_LOG_DIR} ${MLMMJADMIN_LOG_FILE} >> ${INSTALL_LOG} 2>&1
+    chmod 0640 ${MLMMJADMIN_LOG_DIR} ${MLMMJADMIN_LOG_FILE} >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Generate modular syslog and log rotate config files for mlmmjadmin."
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then

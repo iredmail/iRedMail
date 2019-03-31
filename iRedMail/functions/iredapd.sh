@@ -162,9 +162,14 @@ iredapd_config()
     export _srs_secret="$(${RANDOM_STRING})"
     perl -pi -e 's#^(srs_secrets).*#${1} = ["$ENV{_srs_secret}"]#' ${IREDAPD_CONF}
 
-    [ -d ${IREDAPD_LOG_DIR} ] || mkdir -p ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
-    chown -R ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+    # Log
     perl -pi -e 's#^(log_level).*#${1} = "info"#' ${IREDAPD_CONF}
+
+    # Create log directory and log file
+    [ -d ${IREDAPD_LOG_DIR} ] || mkdir -p ${IREDAPD_LOG_DIR} >> ${INSTALL_LOG} 2>&1
+    touch ${IREDAPD_LOG_FILE} >> ${INSTALL_LOG} 2>&1
+    chown -R ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${IREDAPD_LOG_DIR} ${IREDAPD_LOG_FILE} >> ${INSTALL_LOG} 2>&1
+    chmod 0640 ${IREDAPD_LOG_DIR} ${IREDAPD_LOG_FILE} >> ${INSTALL_LOG} 2>&1
 
     # Backend.
     [ X"${BACKEND}" == X'OPENLDAP' ] && perl -pi -e 's#^(backend).*#${1} = "ldap"#' ${IREDAPD_CONF}
