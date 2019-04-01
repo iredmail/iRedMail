@@ -12,6 +12,7 @@ iRedMail-1.0:
           file after logrotation.
 
     * Updated packages:
+        + Roundcube webmail -> 1.3.9
         + iRedAdmin -> 0.9.6
         + iRedAPD -> 2.7
         + mlmmjadmin -> 2.1
