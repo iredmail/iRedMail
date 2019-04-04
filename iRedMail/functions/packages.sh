@@ -29,11 +29,18 @@ install_all()
     # OpenBSD only
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         PKG_SCRIPTS=''
-        OB_PKG_PHP_VER='-7.2.10'
 
-        # 6.4
-        OB_PKG_OPENLDAP_SERVER_VER='-2.4.46p0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.46'
+        if [ X"${DISTRO_VERSION}" == X'6.4' ]; then
+            OB_PKG_PHP_VER='-7.2.10'
+            OB_PKG_OPENLDAP_SERVER_VER='-2.4.46p0'
+            OB_PKG_OPENLDAP_CLIENT_VER='-2.4.46'
+        else
+            # 6.5
+            OB_PKG_PHP_VER='-7.2.16'
+            OB_PKG_OPENLDAP_SERVER_VER='-2.4.47p0'
+            OB_PKG_OPENLDAP_CLIENT_VER='-2.4.47p0'
+        fi
+
     fi
 
     # Install PHP if there's a web server running -- php is too popular.
@@ -382,13 +389,13 @@ EOF
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces python-beautifulsoup4 python-lxml python-pycurl python-requests"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces python-pycurl python-requests"
         [ X"${DISTRO_VERSION}" == X'7' ] && ALL_PKGS="${ALL_PKGS} py-bcrypt"
 
         [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python2"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy python-beautifulsoup python-lxml python-pycurl python-requests"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy python-pycurl python-requests"
 
         [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
@@ -396,7 +403,7 @@ EOF
         [ X"${DISTRO}" == X'UBUNTU' ] && ALL_PKGS="${ALL_PKGS} python-bcrypt"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-beautifulsoup4 py-lxml py-curl py-requests py-netifaces"
+        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-curl py-requests py-netifaces"
     fi
 
     # Fail2ban

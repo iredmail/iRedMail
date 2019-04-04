@@ -84,6 +84,9 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DOVECOT_CONF_INCLUDE_DIR='/usr/local/etc/dovecot/iredmail'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    if [ X"${DISTRO_VERSION}" != X'6.4' ]; then
+        export DOVECOT_VERSION='2.3'
+    fi
     export SYS_USER_DOVECOT='_dovecot'
     export SYS_GROUP_DOVECOT='_dovecot'
     export DOVECOT_DELIVER_BIN='/usr/local/libexec/dovecot/deliver'
