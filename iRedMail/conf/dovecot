@@ -100,6 +100,7 @@ export DOVECOT_MYSQL_CONF="${DOVECOT_CONF_DIR}/dovecot-mysql.conf"
 export DOVECOT_PGSQL_CONF="${DOVECOT_CONF_DIR}/dovecot-pgsql.conf"
 export DOVECOT_REALTIME_QUOTA_CONF="${DOVECOT_CONF_DIR}/dovecot-used-quota.conf"
 export DOVECOT_SHARE_FOLDER_CONF="${DOVECOT_CONF_DIR}/dovecot-share-folder.conf"
+export DOVECOT_LAST_LOGIN_CONF="${DOVECOT_CONF_DIR}/dovecot-last-login.conf"
 export DOVECOT_MASTER_USER_PASSWORD_FILE="${DOVECOT_CONF_DIR}/dovecot-master-users"
 export DOVECOT_MASTER_USER_DOMAIN="${DOVECOT_MASTER_USER_DOMAIN:=not-exist.com}"
 
@@ -124,11 +125,9 @@ export DOVECOT_SHARE_FOLDER_ANYONE_DB_TABLE='anyone_shares'
 export DOVECOT_REALTIME_QUOTA_TABLE='used_quota'
 
 if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-    export DOVECOT_SHARE_FOLDER_SQLTYPE='mysql'
-    export DOVECOT_REALTIME_QUOTA_SQLTYPE='mysql'
+    export DOVECOT_SQL_DBN='mysql'
 elif [ X"${BACKEND}" == X'PGSQL' ]; then
-    export DOVECOT_SHARE_FOLDER_SQLTYPE='pgsql'
-    export DOVECOT_REALTIME_QUOTA_SQLTYPE='pgsql'
+    export DOVECOT_SQL_DBN='pgsql'
 fi
 
 # Plugin: stats

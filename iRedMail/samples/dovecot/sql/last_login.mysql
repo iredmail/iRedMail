@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS `last_login` (
+    `username` VARCHAR(255) NOT NULL DEFAULT '',
+    `domain` VARCHAR(255) NOT NULL DEFAULT '',
+    `last_login` INT(11) DEFAULT NULL,
+    PRIMARY KEY (`username`),
+    INDEX (domain),
+    INDEX (`last_login`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -167,7 +167,7 @@ dovecot_config()
     # Quota dict.
     perl -pi -e 's#PH_SERVICE_DICT_USER#$ENV{SYS_USER_VMAIL}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_SERVICE_DICT_GROUP#$ENV{SYS_GROUP_VMAIL}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_DOVECOT_REALTIME_QUOTA_SQLTYPE#$ENV{DOVECOT_REALTIME_QUOTA_SQLTYPE}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_SQL_DBN#$ENV{DOVECOT_SQL_DBN}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_DOVECOT_REALTIME_QUOTA_CONF#$ENV{DOVECOT_REALTIME_QUOTA_CONF}#' ${DOVECOT_CONF}
 
     # Sieve.
@@ -266,7 +266,34 @@ dovecot_config()
         chmod 0550 ${DOVECOT_PGSQL_CONF}
     fi
 
-    # Realtime quota
+    backup_file ${DOVECOT_LAST_LOGIN_CONF} ${DOVECOT_SHARE_FOLDER_CONF}
+
+    # Track last login.
+    cp ${SAMPLE_DIR}/dovecot/dovecot-last-login.conf ${DOVECOT_LAST_LOGIN_CONF}
+    cp ${SAMPLE_DIR}/dovecot/dovecot-used-quota.conf ${DOVECOT_REALTIME_QUOTA_CONF}
+    cp ${SAMPLE_DIR}/dovecot/dovecot-share-folder.conf ${DOVECOT_SHARE_FOLDER_CONF}
+
+    chown ${SYS_USER_DOVECOT}:${SYS_GROUP_DOVECOT} \
+        ${DOVECOT_LAST_LOGIN_CONF} \
+        ${DOVECOT_REALTIME_QUOTA_CONF} \
+        ${DOVECOT_SHARE_FOLDER_CONF}
+
+    chmod 0500 ${DOVECOT_LAST_LOGIN_CONF} \
+        ${DOVECOT_REALTIME_QUOTA_CONF} \
+        ${DOVECOT_SHARE_FOLDER_CONF}
+
+    perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_CONF#$ENV{DOVECOT_SHARE_FOLDER_CONF}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_LAST_LOGIN_CONF#$ENV{DOVECOT_LAST_LOGIN_CONF}#' ${DOVECOT_CONF}
+
+    # Replace place holders in sample config file
+    perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_REALTIME_QUOTA_CONF} \
+        ${DOVECOT_REALTIME_QUOTA_CONF} \
+        ${DOVECOT_LAST_LOGIN_CONF}
+    perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#' ${DOVECOT_REALTIME_QUOTA_CONF} \
+        ${DOVECOT_REALTIME_QUOTA_CONF} \
+        ${DOVECOT_LAST_LOGIN_CONF}
+
+    # Realtime quota and last login
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         export realtime_quota_db_name="${IREDADMIN_DB_NAME}"
         export realtime_quota_db_user="${IREDADMIN_DB_USER}"
@@ -281,21 +308,11 @@ dovecot_config()
         export realtime_quota_db_passwd="${VMAIL_DB_BIND_PASSWD}"
     fi
 
-    # Copy sample config and set file owner/permission
-    cp ${SAMPLE_DIR}/dovecot/dovecot-used-quota.conf ${DOVECOT_REALTIME_QUOTA_CONF}
-    chown ${SYS_USER_DOVECOT}:${SYS_GROUP_DOVECOT} ${DOVECOT_REALTIME_QUOTA_CONF}
-    chmod 0500 ${DOVECOT_REALTIME_QUOTA_CONF}
-
-    # Replace place holders in sample config file
-    perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_REALTIME_QUOTA_CONF}
-    perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#' ${DOVECOT_REALTIME_QUOTA_CONF}
-    perl -pi -e 's#PH_REALTIME_QUOTA_DB_NAME#$ENV{realtime_quota_db_name}#' ${DOVECOT_REALTIME_QUOTA_CONF}
-    perl -pi -e 's#PH_REALTIME_QUOTA_DB_USER#$ENV{realtime_quota_db_user}#' ${DOVECOT_REALTIME_QUOTA_CONF}
-    perl -pi -e 's#PH_REALTIME_QUOTA_DB_PASSWORD#$ENV{realtime_quota_db_passwd}#' ${DOVECOT_REALTIME_QUOTA_CONF}
+    # realtime quota and last login
+    perl -pi -e 's#PH_REALTIME_QUOTA_DB_NAME#$ENV{realtime_quota_db_name}#' ${DOVECOT_REALTIME_QUOTA_CONF} ${DOVECOT_LAST_LOGIN_CONF}
+    perl -pi -e 's#PH_REALTIME_QUOTA_DB_USER#$ENV{realtime_quota_db_user}#' ${DOVECOT_REALTIME_QUOTA_CONF} ${DOVECOT_LAST_LOGIN_CONF}
+    perl -pi -e 's#PH_REALTIME_QUOTA_DB_PASSWORD#$ENV{realtime_quota_db_passwd}#' ${DOVECOT_REALTIME_QUOTA_CONF} ${DOVECOT_LAST_LOGIN_CONF}
     perl -pi -e 's#PH_DOVECOT_REALTIME_QUOTA_TABLE#$ENV{DOVECOT_REALTIME_QUOTA_TABLE}#' ${DOVECOT_REALTIME_QUOTA_CONF}
-
-    # IMAP shared folder
-    backup_file ${DOVECOT_SHARE_FOLDER_CONF}
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         export share_folder_db_name="${IREDADMIN_DB_NAME}"
@@ -306,15 +323,6 @@ dovecot_config()
         export share_folder_db_user="${VMAIL_DB_ADMIN_USER}"
         export share_folder_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
     fi
-
-    # ACL and share folder settings in dovecot.conf
-    perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_SQLTYPE#$ENV{DOVECOT_SHARE_FOLDER_SQLTYPE}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_DOVECOT_SHARE_FOLDER_CONF#$ENV{DOVECOT_SHARE_FOLDER_CONF}#' ${DOVECOT_CONF}
-
-    # Copy sample config and set file owner/permission
-    cp ${SAMPLE_DIR}/dovecot/dovecot-share-folder.conf ${DOVECOT_SHARE_FOLDER_CONF}
-    chown ${SYS_USER_DOVECOT}:${SYS_GROUP_DOVECOT} ${DOVECOT_SHARE_FOLDER_CONF}
-    chmod 0500 ${DOVECOT_SHARE_FOLDER_CONF}
 
     # Replace place holders in sample config file
     perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_SHARE_FOLDER_CONF}
@@ -348,6 +356,13 @@ dovecot_config()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         mkdir -p /etc/systemd/system/dovecot.service.d >> ${INSTALL_LOG} 2>&1
         cp -f ${SAMPLE_DIR}/dovecot/systemd/override.conf /etc/systemd/system/dovecot.service.d >> ${INSTALL_LOG} 2>&1
+    fi
+
+    # Unfortunately, PostgreSQL doesn't support tracking last login.
+    if [ X"${BACKEND}" == X'PGSQL' ]; then
+        perl -pi -e 's/.*# Track user last login//' ${DOVECOT_CONF}
+        perl -pi -e 's#.*last_login_.*##' ${DOVECOT_CONF}
+        perl -pi -e 's#(.*mail_plugins = .*)last_login(.*)#${1}${2}#' ${DOVECOT_CONF}
     fi
 
     cat >> ${TIP_FILE} <<EOF
@@ -490,15 +505,13 @@ CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 CO
 -- Import SQL template.
 USE ${IREDADMIN_DB_NAME};
 
--- used_quota
-SOURCE ${SAMPLE_DIR}/dovecot/used_quota.mysql;
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
+-- used_quota, share_folder, last_login
+SOURCE ${SAMPLE_DIR}/dovecot/sql/used_quota.mysql;
+SOURCE ${SAMPLE_DIR}/dovecot/sql/imap_share_folder.mysql;
+SOURCE ${SAMPLE_DIR}/dovecot/sql/last_login.mysql;
 
--- share_folder
-SOURCE ${SAMPLE_DIR}/dovecot/imap_share_folder.sql;
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
-GRANT SELECT,INSERT,UPDATE,DELETE ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
+GRANT ALL ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
+GRANT ALL ON ${IREDADMIN_DB_NAME}.* TO "${IREDADMIN_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY "${IREDADMIN_DB_PASSWD}";
 
 FLUSH PRIVILEGES;
 EOF

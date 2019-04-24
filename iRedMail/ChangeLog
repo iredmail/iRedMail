@@ -1,5 +1,8 @@
 iRedMail-1.0:
     * Improvements:
+        + Dovecot: Enable tracking user loast login time by default for
+          MySQL/MariaDB and OpenLDAP backends.
+          Note: Dovecot doesn't support this with PostgreSQL yet.
         + netdata: Disable sending anonymous statistics to netdata cloud.
 
     * Fixed issues:
