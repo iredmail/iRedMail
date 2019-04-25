@@ -43,12 +43,12 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Debian 9
     [ X"${DISTRO_CODENAME}" == X'stretch' ] && export PGSQL_VERSION='9.6'
-    # Ubuntu 16.04 -> 9.5, later releases are 10.
+
     if [ X"${DISTRO}" == X'UBUNTU' ]; then
-        if [ X"${DISTRO_CODENAME}" == X'xenial' ]; then
-            export PGSQL_VERSION='9.5'
-        else
+        if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
             export PGSQL_VERSION='10'
+        else
+            export PGSQL_VERSION='11'
         fi
     fi
 

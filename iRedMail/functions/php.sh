@@ -33,10 +33,8 @@ php_config()
         cp -f /usr/local/etc/php.ini-production ${PHP_INI}
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # Enable PHP modules
-        # Get php version number.
-        PHP_VERSION="$(basename /etc/php-${OB_PHP_VERSION} | awk -F'-' '{print $2}')"
-        for i in $(ls -d /etc/php-${PHP_VERSION}.sample/*); do
-            ln -sf ${i} /etc/php-${PHP_VERSION}/$(basename $i)
+        for i in $(ls -d /etc/php-${OB_PHP_VERSION}.sample/*); do
+            ln -sf ${i} /etc/php-${OB_PHP_VERSION}/$(basename $i)
         done
     fi
 

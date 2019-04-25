@@ -266,14 +266,12 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         export DISTRO='UBUNTU'
 
         # Ubuntu version number and code name:
-        #   - 16.04: xenial
         #   - 18.04: bionic
-        #   - 18.10: cosmic
         export DISTRO_VERSION="$(awk -F'=' '/^DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)"
         export DISTRO_CODENAME="$(awk -F'=' '/^DISTRIB_CODENAME/ {print $2}' /etc/lsb-release)"
 
-        # Unsupported releases: 12.x, 13.x, 14.x, 15.x, 16.10, 17.04, 17.04
-        if echo "${DISTRO_VERSION}" | grep -E '^(12|13|14|15\.|16\.10|17)' &>/dev/null ; then
+        # Unsupported releases: 16.x, 17.x, 18.10
+        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18\.10)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then

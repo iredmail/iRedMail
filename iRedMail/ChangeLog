@@ -1,6 +1,10 @@
 iRedMail-1.0:
     * Supports new distribution release:
-        + OpenBSD 6.5. NOTE: 6.4 is not supported anymore.
+        + OpenBSD 6.5
+
+    * Drop support for old distribution releases:
+        - Ubuntu 16.04, 18.10.
+        - OpenBSD 6.4
 
     * Improvements:
         + Dovecot: Enable tracking user loast login time by default for

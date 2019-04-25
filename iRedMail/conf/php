@@ -41,11 +41,11 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PHP_FPM_PID_FILE='/run/php-fpm/php-fpm.pid'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'stretch' -o X"${DISTRO_CODENAME}" == X'xenial' ]; then
-        # Debian 9, Ubuntu 16.04
+    if [ X"${DISTRO_CODENAME}" == X'stretch' ]; then
+        # Debian 9
         export PHP_VERSION='7.0'
     else
-        # Ubuntu 18.04
+        # Ubuntu 18.04, 19.04
         export PHP_VERSION='7.2'
     fi
 
@@ -67,11 +67,11 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PHP_FPM_PID_FILE='/var/run/php-fpm.pid'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export OB_PHP_VERSION='7.2'
+    export OB_PHP_VERSION='7.3'
+    export PHP_FPM_RC_SCRIPT_NAME='php73_fpm'
 
     export PHP_BIN="/usr/local/bin/php-${OB_PHP_VERSION}"
     export PHP_INI="/etc/php-${OB_PHP_VERSION}.ini"
-    export PHP_FPM_RC_SCRIPT_NAME='php72_fpm'
     export PHP_FPM_PID_FILE='/var/run/php-fpm.pid'
 fi
 

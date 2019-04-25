@@ -177,13 +177,8 @@ install_all()
             ALL_PKGS="${ALL_PKGS} php-common php-fpm php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            # Debian 9, Ubuntu 16.04
+            # Debian 9
             ALL_PKGS="${ALL_PKGS} php-cli php-fpm php-json php-gd php-curl mcrypt php-intl php-xml php-mbstring"
-
-            # Ubuntu 18.04 doesn't have php-mcrypt.
-            if [ X"${DISTRO_CODENAME}" == X'stretch' -o X"${DISTRO_CODENAME}" == X'xenial' ]; then
-                ALL_PKGS="${ALL_PKGS} php-mcrypt"
-            fi
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-mysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql"
