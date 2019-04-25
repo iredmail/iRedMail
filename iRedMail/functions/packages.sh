@@ -30,17 +30,10 @@ install_all()
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         PKG_SCRIPTS=''
 
-        if [ X"${DISTRO_VERSION}" == X'6.4' ]; then
-            OB_PKG_PHP_VER='-7.2.10'
-            OB_PKG_OPENLDAP_SERVER_VER='-2.4.46p0'
-            OB_PKG_OPENLDAP_CLIENT_VER='-2.4.46'
-        else
-            # 6.5
-            OB_PKG_PHP_VER='-7.2.16'
-            OB_PKG_OPENLDAP_SERVER_VER='-2.4.47p0'
-            OB_PKG_OPENLDAP_CLIENT_VER='-2.4.47p0'
-        fi
-
+        # OpenBSD-6.5
+        OB_PKG_PHP_VER='-7.3.4'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.4.47p0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.47p0'
     fi
 
     # Install PHP if there's a web server running -- php is too popular.

@@ -1,4 +1,7 @@
 iRedMail-1.0:
+    * Supports new distribution release:
+        + OpenBSD 6.5. NOTE: 6.4 is not supported anymore.
+
     * Improvements:
         + Dovecot: Enable tracking user loast login time by default for
           MySQL/MariaDB and OpenLDAP backends.

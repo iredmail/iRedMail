@@ -189,12 +189,6 @@ sogo_config() {
         if [ X"${DEFAULT_PASSWORD_SCHEME}" == X'SSHA' ]; then
             perl -pi -e 's#= ssha512#= ssha#' ${SOGO_CONF}
         fi
-
-        # SOGo-4.0.6 supports `%d` placeholder in LDAP base dn, but OpenBSD 6.4
-        # ships an older version.
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            perl -pi -e 's#domainName=%d,##g' ${SOGO_CONF}
-        fi
     else
         # Enable LDAP as SOGoUserSources
         perl -pi -e 's#/\* SQL backend##' ${SOGO_CONF}
