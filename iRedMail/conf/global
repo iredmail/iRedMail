@@ -270,8 +270,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         export DISTRO_VERSION="$(awk -F'=' '/^DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)"
         export DISTRO_CODENAME="$(awk -F'=' '/^DISTRIB_CODENAME/ {print $2}' /etc/lsb-release)"
 
-        # Unsupported releases: 16.x, 17.x, 18.10
-        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18\.10)' &>/dev/null ; then
+        # Unsupported releases: 16.x, 17.x, 18.10, 19.04 (missing dependent packages)
+        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18\.10|19\.04)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then

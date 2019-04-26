@@ -33,6 +33,7 @@ dovecot_config()
     # RHEL/CentOS 7:            Dovecot-2.2.32+
     # Debian 9:                 Dovecot-2.2.27
     # Ubuntu 18.04 (bionic):    Dovecot-2.2.33
+    # Ubuntu 19.04 (disco):     Dovecot-2.3.x
     # FreeBSD:                  Dovecot-2.3.0+
     # OpenBSD 6.5:              Dovecot-2.3.5.1
     ECHO_DEBUG "Copy sample Dovecot config file to ${DOVECOT_CONF}."
