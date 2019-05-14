@@ -71,7 +71,7 @@ CREATE TABLE policy (
   spam_tag3_level float default NULL, -- inserts 'blatant spam' header fields
   spam_kill_level float default NULL, -- higher score triggers evasive actions
                                       -- e.g. reject/drop, quarantine, ...
-                                     -- (subject to final_spam_destiny setting)
+                                      -- (subject to final_spam_destiny setting)
   spam_dsn_cutoff_level        float default NULL,
   spam_quarantine_cutoff_level float default NULL,
 

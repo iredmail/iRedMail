@@ -277,7 +277,7 @@ if len(sys.argv) != 2 or len(sys.argv) > 2:
 else:
     CSV = sys.argv[1]
     if not os.path.exists(CSV):
-        print '''Erorr: file not exist:''', CSV
+        print '''Error: file not exist:''', CSV
         sys.exit()
 
 ldif_file = CSV + '.ldif'
