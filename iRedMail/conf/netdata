@@ -23,6 +23,9 @@
 #
 # netdata: https://my-netdata.io
 #
+export NETDATA_VERSION='1.15.0'
+export NETDATA_PKG_NAME="netdata-v${NETDATA_VERSION}.gz.run"
+
 # iRedMail install netdata with the '.bin' package on Linux, it installs
 # netdata application files under '/opt/netdata' by default.
 # Directory contains all config files
@@ -47,10 +50,6 @@ export NETDATA_HTTPD_AUTH_FILE="${HTTPD_CONF_ROOT}/netdata.users"
 
 # .my.cnf used to access MySQL db.
 export NETDATA_DOT_MY_CNF="${NETDATA_CONF_DIR}/my.cnf"
-
-# Install stable release.
-export NETDATA_VERSION='1.13.0'
-export NETDATA_PKG_NAME="netdata-v${NETDATA_VERSION}.gz.run"
 
 # Modular config files.
 export NETDATA_CONF_HEALTH_ALARM_NOTIFY="${NETDATA_CONF_DIR}/health_alarm_notify.conf"
