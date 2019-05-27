@@ -20,6 +20,7 @@ iRedMail-1.0:
             - Fix missing comma which causes incorrect value of
               ldap attribute 'enabledService'.
               Thanks Michael Chong.
+        - Fail2ban jail config file doesn't correctly set sshd port number(s).
         - Loose Fail2ban filter rules (postfix/dovecot) to reduce negative bans.
         - [Linux] Not send kill signal to php-fpm daemon process to reopen log
           file after logrotation.

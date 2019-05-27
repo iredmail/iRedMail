@@ -651,9 +651,10 @@ if [ X"${SSHD_PORT}" == X'' ]; then
     # No port number defined, use default port number (22).
     export SSHD_PORT='22'
     export SSHD_PORT2='22'
-    export SSHD_PORTS_WITH_COMMA="${SSHD_PORT}"
-    export SSHD_PORTS_WITH_SPACE="${SSHD_PORT}"
 fi
+
+export SSHD_PORTS_WITH_COMMA="${SSHD_PORT}"
+export SSHD_PORTS_WITH_SPACE="${SSHD_PORT}"
 
 if [ X"${SSHD_PORT}" != X'' -a X"${SSHD_PORT2}" != X'' -a X"${SSHD_PORT}" != X"${SSHD_PORT2}" ]; then
     export SSHD_PORTS_WITH_COMMA="${SSHD_PORT},${SSHD_PORT2}"
