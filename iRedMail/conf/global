@@ -213,7 +213,8 @@ export SHELL_NOLOGIN='/sbin/nologin'
 export SHELL_BASH='/bin/bash'
 
 # Path to some programs
-export PYTHON_BIN='python'
+export PYTHON2_BIN='python2'
+export PYTHON3_BIN='python3'
 export PERL_BIN='/usr/bin/perl'
 
 # Default password scheme for SQL backends.
@@ -303,7 +304,8 @@ elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
     export DIR_RC_SCRIPTS='/usr/local/etc/rc.d'
     export RC_CONF_LOCAL='/etc/rc.conf.local'
 
-    export PYTHON_BIN='/usr/local/bin/python'
+    export PYTHON2_BIN='/usr/local/bin/python2'
+    export PYTHON3_BIN='/usr/local/bin/python3'
     export PERL_BIN='/usr/local/bin/perl'
 
     # Unsupported releases: 7, 8.
@@ -324,7 +326,8 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DIR_RC_SCRIPTS='/etc/rc.d'
     export RC_CONF_LOCAL='/etc/rc.conf.local'
     export SHELL_BASH='/usr/local/bin/bash'
-    export PYTHON_BIN='/usr/local/bin/python'
+    export PYTHON2_BIN='/usr/local/bin/python2'
+    export PYTHON3_BIN='/usr/local/bin/python3'
 
     # Unsupported release: 6.3 and earlier versions.
     if echo "${DISTRO_VERSION}" | grep '^6.[0123]' &>/dev/null ; then

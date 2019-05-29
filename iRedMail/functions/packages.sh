@@ -484,12 +484,6 @@ EOF
     after_package_installation()
     {
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # Create symbol links for Python.
-            ln -sf /usr/local/bin/python2.7 /usr/local/bin/python >> ${INSTALL_LOG} 2>&1
-            ln -sf /usr/local/bin/python2.7-2to3 /usr/local/bin/2to3 >> ${INSTALL_LOG} 2>&1
-            ln -sf /usr/local/bin/python2.7-config /usr/local/bin/python-config >> ${INSTALL_LOG} 2>&1
-            ln -sf /usr/local/bin/pydoc2.7  /usr/local/bin/pydoc >> ${INSTALL_LOG} 2>&1
-
             # Create symbol links for php.
             if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
                 ln -sf /usr/local/bin/php-${OB_PHP_VERSION} /usr/local/bin/php >> ${INSTALL_LOG} 2>&1
