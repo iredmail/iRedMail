@@ -384,7 +384,7 @@ generate_password_hash()
 {
     scheme="${1}"
     password="${2}"
-    python ${TOOLS_DIR}/generate_password_hash.py ${scheme} ${password}
+    ${PYTHON2_BIN} ${TOOLS_DIR}/generate_password_hash.py ${scheme} ${password}
 }
 
 # Create SSL certs/private files.
