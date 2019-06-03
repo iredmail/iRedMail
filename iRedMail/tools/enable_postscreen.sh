@@ -6,7 +6,7 @@
 
 export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
-export SYS_ROOT_GROUP='root'
+export SYS_GROUP_ROOT='root'
 
 export SYS_USER_POSTFIX='postfix'
 export SYS_GROUP_POSTFIX='postfix'
@@ -15,11 +15,11 @@ export POSTFIX_ROOT_DIR='/etc/postfix'
 export POSTFIX_DATA_DIRECTORY='/var/lib/postfix'   # postconf data_directory
 
 if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-    export SYS_ROOT_GROUP='wheel'
+    export SYS_GROUP_ROOT='wheel'
     export POSTFIX_ROOT_DIR='/usr/local/etc/postfix'
     export POSTFIX_DATA_DIRECTORY='/var/db/postfix'
 elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-    export SYS_ROOT_GROUP='wheel'
+    export SYS_GROUP_ROOT='wheel'
     export SYS_USER_POSTFIX='_postfix'
     export SYS_GROUP_POSTFIX='_postfix'
     export POSTFIX_DATA_DIRECTORY='/var/postfix'
@@ -127,7 +127,7 @@ chrooted_data_directory="${queue_directory}/${data_directory}"
 
 echo "* Create ${chrooted_data_directory}/postscreen_cache.db."
 mkdir -p ${chrooted_data_directory}
-chown ${SYS_USER_POSTFIX}:${SYS_ROOT_GROUP} ${chrooted_data_directory}
+chown ${SYS_USER_POSTFIX}:${SYS_GROUP_ROOT} ${chrooted_data_directory}
 chmod 0700 ${chrooted_data_directory}
 
 # Create db file.

@@ -103,7 +103,7 @@ postfix_config_basic()
     # Create required files and set correct owner + permission
     _files="${POSTFIX_FILE_HELO_ACCESS} ${POSTFIX_FILE_HEADER_CHECKS} ${POSTFIX_FILE_BODY_CHECKS} ${POSTFIX_FILE_SENDER_ACCESS}"
     touch ${_files}
-    chown ${SYS_ROOT_USER}:${SYS_GROUP_POSTFIX} ${_files}
+    chown ${SYS_USER_ROOT}:${SYS_GROUP_POSTFIX} ${_files}
     chmod 0640 ${_files}
     unset _files
 
@@ -177,9 +177,9 @@ postfix_config_basic()
     cp -f ${SAMPLE_DIR}/postfix/command_filter.pcre ${POSTFIX_FILE_SMTPD_COMMAND_FILTER}
 
     # Update Postfix aliases file.
-    add_postfix_alias nobody ${SYS_ROOT_USER}
-    add_postfix_alias ${SYS_USER_VMAIL} ${SYS_ROOT_USER}
-    add_postfix_alias ${SYS_ROOT_USER} ${DOMAIN_ADMIN_EMAIL}
+    add_postfix_alias nobody ${SYS_USER_ROOT}
+    add_postfix_alias ${SYS_USER_VMAIL} ${SYS_USER_ROOT}
+    add_postfix_alias ${SYS_USER_ROOT} ${DOMAIN_ADMIN_EMAIL}
 
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Since `mail.*` is logged to /var/log/mail.log, no need to log
@@ -249,7 +249,7 @@ postfix_config_vhost()
 
     cp -f ${SAMPLE_DIR}/postfix/${POSTFIX_LOOKUP_DB}/*.cf ${POSTFIX_LOOKUP_DIR}
 
-    chown ${SYS_ROOT_USER}:${SYS_GROUP_POSTFIX} ${POSTFIX_LOOKUP_DIR}/*.cf
+    chown ${SYS_USER_ROOT}:${SYS_GROUP_POSTFIX} ${POSTFIX_LOOKUP_DIR}/*.cf
     chmod 0640 ${POSTFIX_LOOKUP_DIR}/*.cf
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
@@ -330,7 +330,7 @@ postfix_config_postscreen()
         ECHO_DEBUG "Create ${_chrooted_data_directory}/postscreen_cache.db."
         if [ ! -d ${_chrooted_data_directory} ]; then
             mkdir -p ${_chrooted_data_directory}
-            chown ${SYS_USER_POSTFIX}:${SYS_ROOT_GROUP} ${_chrooted_data_directory}
+            chown ${SYS_USER_POSTFIX}:${SYS_GROUP_ROOT} ${_chrooted_data_directory}
             chmod 0700 ${_chrooted_data_directory}
         fi
 

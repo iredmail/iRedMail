@@ -206,7 +206,7 @@ pgsql_cron_backup()
 
     backup_file ${pgsql_backup_script}
     cp ${TOOLS_DIR}/${BACKUP_SCRIPT_PGSQL_NAME} ${pgsql_backup_script}
-    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${pgsql_backup_script}
+    chown ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${pgsql_backup_script}
     chmod 0500 ${pgsql_backup_script}
 
     perl -pi -e 's#^(export SYS_USER_PGSQL=).*#${1}"$ENV{SYS_USER_PGSQL}"#' ${pgsql_backup_script}

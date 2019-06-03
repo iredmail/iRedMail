@@ -311,7 +311,7 @@ mysql_cron_backup()
 
     backup_file ${mysql_backup_script}
     cp ${TOOLS_DIR}/${BACKUP_SCRIPT_MYSQL_NAME} ${mysql_backup_script}
-    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${mysql_backup_script}
+    chown ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${mysql_backup_script}
     chmod 0500 ${mysql_backup_script}
 
     export MYSQL_ROOT_PASSWD
@@ -334,7 +334,7 @@ EOF
 Backup MySQL database:
     * Script: ${mysql_backup_script}
     * See also:
-        # crontab -l -u ${SYS_ROOT_USER}
+        # crontab -l -u ${SYS_USER_ROOT}
 
 EOF
 

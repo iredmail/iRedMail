@@ -91,7 +91,7 @@ clamav_config()
     fi
 
     # Add user alias in Postfix
-    add_postfix_alias ${SYS_USER_CLAMAV} ${SYS_ROOT_USER}
+    add_postfix_alias ${SYS_USER_CLAMAV} ${SYS_USER_ROOT}
 
     cat >> ${TIP_FILE} <<EOF
 ClamAV:

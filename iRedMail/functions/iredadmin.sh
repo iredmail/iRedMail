@@ -172,7 +172,7 @@ iredadmin_config() {
     echo "mlmmjadmin_api_auth_token = '${MLMMJADMIN_API_AUTH_TOKEN}'" >> settings.py
 
     # Add postfix alias for user: iredapd
-    add_postfix_alias ${SYS_USER_IREDAPD} ${SYS_ROOT_USER}
+    add_postfix_alias ${SYS_USER_IREDAPD} ${SYS_USER_ROOT}
 
     cat >> ${TIP_FILE} <<EOF
 iRedAdmin - official web-based admin panel:
@@ -197,13 +197,13 @@ iredadmin_cron_setup()
 {
     cat >> ${CRON_FILE_ROOT} <<EOF
 # ${PROG_NAME}: Cleanup Amavisd database
-1   2   *   *   *   ${PYTHON2_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py >/dev/null
+1   2   *   *   *   ${CMD_PYTHON2} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_amavisd_db.py >/dev/null
 
 # iRedAdmin: Clean up sql database.
-1   *   *   *   *   ${PYTHON2_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null 2>&1
+1   *   *   *   *   ${CMD_PYTHON2} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null 2>&1
 
 # iRedAdmin: Delete mailboxes on file system which belong to removed accounts.
-1   *   *   *   *   ${PYTHON2_BIN} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/delete_mailboxes.py
+1   *   *   *   *   ${CMD_PYTHON2} ${IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}/tools/delete_mailboxes.py
 EOF
 
     # Disable cron jobs if we don't need to initialize database on this server.

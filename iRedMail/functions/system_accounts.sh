@@ -11,7 +11,7 @@ add_user_vmail()
     # Create STORAGE_BASE_DIR and set correct owner and permission.
     if [ ! -d ${STORAGE_BASE_DIR} ]; then
         mkdir -p ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
-        chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
+        chown ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
         chmod -R 0755 ${STORAGE_BASE_DIR} >> ${INSTALL_LOG} 2>&1
     fi
 
@@ -72,7 +72,7 @@ add_user_vmail()
 
     # backup directory
     [ -d ${BACKUP_DIR} ] || mkdir -p ${BACKUP_DIR} &>/dev/null
-    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${BACKUP_DIR}
+    chown ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${BACKUP_DIR}
     chmod 0700 ${BACKUP_DIR}
 
     cat >> ${TIP_FILE} <<EOF

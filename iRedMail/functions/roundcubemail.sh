@@ -20,7 +20,7 @@ rcm_install()
         ln -s ${RCM_HTTPD_ROOT} ${RCM_HTTPD_ROOT_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
 
         ECHO_DEBUG "Set correct permission for Roundcubemail: ${RCM_HTTPD_ROOT}."
-        chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${RCM_HTTPD_ROOT}
+        chown -R ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${RCM_HTTPD_ROOT}
         chown -R ${HTTPD_USER}:${HTTPD_GROUP} ${RCM_HTTPD_ROOT}/{temp,logs}
         chmod 0000 ${RCM_HTTPD_ROOT}/{CHANGELOG,INSTALL,LICENSE,README*,UPGRADING,installer,SQL}
     fi
@@ -161,7 +161,7 @@ Roundcube webmail: ${RCM_HTTPD_ROOT}
         - Username: ${RCM_DB_USER}
         - Password: ${RCM_DB_PASSWD}
     * Cron job:
-        - Command: "crontab -l -u ${SYS_ROOT_USER}"
+        - Command: "crontab -l -u ${SYS_USER_ROOT}"
 
 EOF
 

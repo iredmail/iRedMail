@@ -36,7 +36,7 @@ iredapd_install()
     ln -s ${IREDAPD_ROOT_DIR} ${IREDAPD_ROOT_DIR_SYMBOL_LINK} >> ${INSTALL_LOG} 2>&1
 
     # Set file permission.
-    chown -R ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${IREDAPD_ROOT_DIR}
+    chown -R ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${IREDAPD_ROOT_DIR}
     chmod -R 0500 ${IREDAPD_ROOT_DIR}
 
     # Copy init rc script.
@@ -72,7 +72,7 @@ iredapd_install()
     # Copy sample config file.
     cd ${IREDAPD_ROOT_DIR_SYMBOL_LINK}
     cp settings.py.sample settings.py
-    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} settings.py
+    chown ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} settings.py
     chmod -R 0400 settings.py
 
     echo 'export status_iredapd_install="DONE"' >> ${STATUS_FILE}
@@ -286,11 +286,11 @@ iredapd_cron_setup()
     # here, so that we don't need to change cron job after upgrading iRedAPD.
     cat >> ${CRON_FILE_ROOT} <<EOF
 # iRedAPD: Clean up expired tracking records hourly.
-1   *   *   *   *   ${PYTHON2_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null
+1   *   *   *   *   ${CMD_PYTHON2} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null
 
 # iRedAPD: Convert SPF DNS record of specified domain names to IP
 #          addresses/networks hourly.
-2   *   *   *   *   ${PYTHON2_BIN} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py >/dev/null
+2   *   *   *   *   ${CMD_PYTHON2} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py >/dev/null
 
 EOF
 

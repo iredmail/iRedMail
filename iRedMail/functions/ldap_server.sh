@@ -153,7 +153,7 @@ ldap_server_cron_backup()
     backup_file ${ldap_backup_script}
 
     cp ${TOOLS_DIR}/${BACKUP_SCRIPT_LDAP_NAME} ${ldap_backup_script}
-    chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${ldap_backup_script}
+    chown ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${ldap_backup_script}
     chmod 0500 ${ldap_backup_script}
 
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${ldap_backup_script}
@@ -177,7 +177,7 @@ EOF
 Backup LDAP data:
     * Script: ${ldap_backup_script}
     * See also:
-        # crontab -l -u ${SYS_ROOT_USER}
+        # crontab -l -u ${SYS_USER_ROOT}
 
 EOF
 

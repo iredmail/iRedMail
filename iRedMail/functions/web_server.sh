@@ -40,7 +40,7 @@ EOF
     fi
 
     # Add alias for web server daemon user
-    add_postfix_alias ${HTTPD_USER} ${SYS_ROOT_USER}
+    add_postfix_alias ${HTTPD_USER} ${SYS_USER_ROOT}
 
     echo 'export status_web_server_extra="DONE"' >> ${STATUS_FILE}
 }

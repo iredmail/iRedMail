@@ -217,7 +217,7 @@ check_env()
 ${CONF_MSG}
 EOF
 
-                        chown ${SYS_ROOT_USER}:${SYS_ROOT_GROUP} ${TIP_FILE}
+                        chown ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${TIP_FILE}
                         chmod 0400 ${TIP_FILE}
                     fi
                     ;;
@@ -384,7 +384,7 @@ generate_password_hash()
 {
     scheme="${1}"
     password="${2}"
-    ${PYTHON2_BIN} ${TOOLS_DIR}/generate_password_hash.py ${scheme} ${password}
+    ${CMD_PYTHON2} ${TOOLS_DIR}/generate_password_hash.py ${scheme} ${password}
 }
 
 # Create SSL certs/private files.
@@ -616,4 +616,22 @@ update_sysctl_param()
     fi
 
     unset _param _value
+}
+
+write_iredmail_kv()
+{
+    # usage: write_iredmail_kv <param> <value>
+    # Storage value to file /root/.iredmail/kv/<param>.
+    param="$1"
+    value="$2"
+
+    if [[ ! -f ${IREDMAIL_KV_DIR} ]]; then
+        mkdir -p ${IREDMAIL_KV_DIR}
+    fi
+
+    f="${IREDMAIL_KV_DIR}/${param}"
+    echo "${value}" > ${f}
+
+    chown -R ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${IREDMAIL_KV_DIR}
+    chmod -R 0400 ${IREDMAIL_KV_DIR}
 }

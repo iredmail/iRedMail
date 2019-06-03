@@ -63,7 +63,7 @@ php_config()
     perl -pi -e 's#^(session.save_path).*#session.save_path = "$ENV{PHP_SESSION_SAVE_PATH}"#g' ${PHP_INI}
     # Set correct owner and permission
     [ -d ${PHP_SESSION_SAVE_PATH} ] || mkdir -p ${PHP_SESSION_SAVE_PATH} >> ${INSTALL_LOG} 2>&1
-    chown ${SYS_ROOT_USER}:${HTTPD_GROUP} ${PHP_SESSION_SAVE_PATH}
+    chown ${SYS_USER_ROOT}:${HTTPD_GROUP} ${PHP_SESSION_SAVE_PATH}
     chmod 0770 ${PHP_SESSION_SAVE_PATH}
 
     # Set date.timezone. Required by PHP-5.3.

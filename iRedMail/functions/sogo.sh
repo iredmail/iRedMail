@@ -226,7 +226,7 @@ EOF
     service_control restart ${SOGO_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     sleep 3
 
-    add_postfix_alias ${SYS_USER_SOGO} ${SYS_ROOT_USER}
+    add_postfix_alias ${SYS_USER_SOGO} ${SYS_USER_ROOT}
 
     # Enable sieve support if Roundcube is not installed
     # WARNING: Do not enable sieve support in both Roundcube and SOGo, because
