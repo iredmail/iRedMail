@@ -11,7 +11,7 @@
 #
 #   * Run this script:
 #
-#       $ python ldap_assign_user_to_groups.py [options] user@domain.com group@domain.com [group2@domain.com ...]
+#       $ python2 ldap_assign_user_to_groups.py [options] user@domain.com group@domain.com [group2@domain.com ...]
 
 # LDAP server address.
 LDAP_URI = 'ldap://127.0.0.1:389'
@@ -29,7 +29,7 @@ import ldap
 def usage():
     print """Usage:
 
-$ python ldap_assign_user_to_groups.py [options] user@domain.com new_group@domain.com [new_group_2@domain.com ...]
+$ python2 ldap_assign_user_to_groups.py [options] user@domain.com new_group@domain.com [new_group_2@domain.com ...]
 
 Note: Non-existing group will be ignored.
 
@@ -41,13 +41,13 @@ Optional arguments:
 Samples:
 
 *) Remove all memberships:
-    python ldap_assign_user_to_groups.py --remove user@domain.com
+    python2 ldap_assign_user_to_groups.py --remove user@domain.com
 
 *) Remove memberships of specified mailing lists:
-    python ldap_assign_user_to_groups.py --remove user@domain.com group1@domain.com group2@domain.com
+    python2 ldap_assign_user_to_groups.py --remove user@domain.com group1@domain.com group2@domain.com
 
 *) Assign user to new mailing lists:
-    python ldap_assign_user_to_groups.py user@domain.com group1@domain.com group2@domain.com
+    python2 ldap_assign_user_to_groups.py user@domain.com group1@domain.com group2@domain.com
 """
 
 if len(sys.argv) < 3:

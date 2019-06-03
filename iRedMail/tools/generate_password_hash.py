@@ -80,7 +80,7 @@ def generate_password_with_doveadmpw(scheme, plain_password):
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        sys.exit('Usage:\n\t# python ./generate_password_hash.py <scheme> <password>\n')
+        sys.exit('Usage:\n\t# python2 ./generate_password_hash.py <scheme> <password>\n')
 
     scheme = sys.argv[1].upper()
     password = sys.argv[2]

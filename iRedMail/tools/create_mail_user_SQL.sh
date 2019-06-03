@@ -79,7 +79,7 @@ username="$(echo $mail | awk -F'@' '{print $1}')"
 domain="$(echo $mail | awk -F'@' '{print $2}')"
 
 # Cyrpt default password.
-export CRYPT_PASSWD="$(python ./generate_password_hash.py ${PASSWORD_SCHEME} ${plain_password})"
+export CRYPT_PASSWD="$(python2 ./generate_password_hash.py ${PASSWORD_SCHEME} ${plain_password})"
 
 # Different maildir style: hashed, normal.
 if [ X"${MAILDIR_STYLE}" == X"hashed" ]; then

@@ -12,7 +12,7 @@
 #
 #   * Run this script:
 #
-#       $ python ldap_move_members_to_another_group.py [options] old_group@domain.com new_group@domain.com [new_group2@domain.com ...]
+#       $ python2 ldap_move_members_to_another_group.py [options] old_group@domain.com new_group@domain.com [new_group2@domain.com ...]
 
 # LDAP server address.
 LDAP_URI = 'ldap://127.0.0.1:389'
@@ -30,7 +30,7 @@ import ldap
 def usage():
     print """Usage:
 
-$ python ldap_move_members_to_another_group.py [options] old_group@domain.com [new_group@domain.com new_group_2@domain.com ...]
+$ python2 ldap_move_members_to_another_group.py [options] old_group@domain.com [new_group@domain.com new_group_2@domain.com ...]
 
 Available optional options:
 
@@ -44,15 +44,15 @@ Available optional options:
 Samples:
 
 *) Copy all members of old_group@domain.com to new_group@domain.com
-    python ldap_move_members_to_another_group --copy old_group@domain.com new_group@domain.com
+    python2 ldap_move_members_to_another_group --copy old_group@domain.com new_group@domain.com
 
 *) Copy all members of old_group@domain.com to new_group@domain.com, and remove
    ALL members of old_group@domain.com.
-    python ldap_move_members_to_another_group old_group@domain.com new_group@domain.com
+    python2 ldap_move_members_to_another_group old_group@domain.com new_group@domain.com
 
 *) Remove all members (just remove membership, not remove mail accounts) of
    old_group@domain.com.
-    python ldap_move_members_to_another_group old_group@domain.com
+    python2 ldap_move_members_to_another_group old_group@domain.com
 """
 
 if len(sys.argv) < 3:

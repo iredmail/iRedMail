@@ -100,11 +100,11 @@ export BACKUP_FILE="${BACKUP_DIR}/${TIMESTAMP}.ldif"
 
 # Find the old backup which should be removed.
 export REMOVE_OLD_BACKUP='NO'
-if which python &>/dev/null; then
+if which python2 &>/dev/null; then
     export REMOVE_OLD_BACKUP='YES'
 
     py_cmd="import time; import datetime; t=time.localtime(); print datetime.date(t.tm_year, t.tm_mon, t.tm_mday) - datetime.timedelta(days=${KEEP_DAYS})"
-    shift_date=$(python -c "${py_cmd}")
+    shift_date=$(python2 -c "${py_cmd}")
     shift_year="$(echo ${shift_date} | awk -F'-' '{print $1}')"
     shift_month="$(echo ${shift_date} | awk -F'-' '{print $2}')"
     shift_day="$(echo ${shift_date} | awk -F'-' '{print $3}')"

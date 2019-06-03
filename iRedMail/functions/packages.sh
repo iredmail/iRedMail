@@ -497,7 +497,7 @@ EOF
             cd ${PKG_MISC_DIR}
             tar zxf uwsgi-*.tar.gz
             cd uwsgi-*/
-            python setup.py install > ${RUNTIME_DIR}/uwsgi_install.log 2>&1
+            python2 setup.py install > ${RUNTIME_DIR}/uwsgi_install.log 2>&1
 
             # Required by uwsgi applications.
             update_sysctl_param kern.seminfo.semmni 1024

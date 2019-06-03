@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # encoding: utf-8
 
 # Author: Zhang Huangbin <zhb _at_ iredmail.org>
@@ -14,7 +14,7 @@
 # Put your user list in a csv format file, e.g. users.csv, and then
 # import users listed in the file:
 #
-#   $ python create_mail_user_OpenLDAP.py users.csv
+#   $ python2 create_mail_user_OpenLDAP.py users.csv
 #
 # ------------------------------------------------------------------
 
@@ -271,7 +271,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     return dn, ldif
 
 if len(sys.argv) != 2 or len(sys.argv) > 2:
-    print """Usage: $ python %s users.csv""" % sys.argv[0]
+    print """Usage: $ python2 %s users.csv""" % sys.argv[0]
     usage()
     sys.exit()
 else:
