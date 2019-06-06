@@ -304,5 +304,7 @@ rcm_setup() {
     check_status_before_run rcm_plugin_password
     check_status_before_run rcm_plugin_enigma
 
+    write_iredmail_kv roundcube_db_password "${RCM_DB_PASSWD}"
+    write_iredmail_kv roundcube_des_key "${RCM_DES_KEY}"
     echo 'export status_rcm_setup="DONE"' >> ${STATUS_FILE}
 }

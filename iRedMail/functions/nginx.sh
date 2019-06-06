@@ -66,7 +66,7 @@ nginx_config()
         server_tokens.conf
         types_hash_max_size.conf'
 
-    [ X"${IREDMAIL_USE_PHP}" == X'YES' ] && _modular_conf="${_modular_conf} php-fpm.conf"
+    [ X"${IREDMAIL_USE_PHP}" == X'YES' ] && _modular_conf="${_modular_conf} php_fpm.conf"
 
     for cf in ${_modular_conf}; do
         ln -s ${HTTPD_CONF_DIR_AVAILABLE_CONF}/${cf} ${HTTPD_CONF_DIR_ENABLED_CONF}/${cf} >> ${INSTALL_LOG} 2>&1
@@ -100,8 +100,8 @@ nginx_config()
     perl -pi -e 's#PH_HTTPD_LOG_ACCESSLOG#$ENV{HTTPD_LOG_ACCESSLOG}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/log.conf
     perl -pi -e 's#PH_NGINX_MIME_TYPES#$ENV{NGINX_MIME_TYPES}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/mime_types.conf
 
-    perl -pi -e 's#PH_PHP_FPM_BIND_HOST#$ENV{PHP_FPM_BIND_HOST}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php-fpm.conf
-    perl -pi -e 's#PH_PHP_FPM_PORT#$ENV{PHP_FPM_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php-fpm.conf
+    perl -pi -e 's#PH_PHP_FPM_BIND_HOST#$ENV{PHP_FPM_BIND_HOST}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php_fpm.conf
+    perl -pi -e 's#PH_PHP_FPM_PORT#$ENV{PHP_FPM_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php_fpm.conf
 
     #
     # web sites
@@ -139,7 +139,7 @@ nginx_config()
 
     # php-fpm
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
-        # Update php-fpm.conf
+        # Update php-fpm config file.
         perl -pi -e 's#^(error_log)( =.*)#$1 = syslog#g' ${PHP_FPM_CONF}
         perl -pi -e 's#;(error_log)( =.*)#$1 = syslog#g' ${PHP_FPM_CONF}
         perl -pi -e 's#^(syslog.facility)( =.*)#$1 = $ENV{IREDMAIL_SYSLOG_FACILITY}#g' ${PHP_FPM_CONF}

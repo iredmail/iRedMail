@@ -215,5 +215,6 @@ EOF
     service_control enable ${MLMMJADMIN_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     export ENABLED_SERVICES="${ENABLED_SERVICES} ${MLMMJADMIN_RC_SCRIPT_NAME}"
 
+    write_iredmail_kv mlmmjadmin_api_token "${MLMMJADMIN_API_AUTH_TOKEN}"
     echo 'export status_mlmmjadmin_config="DONE"' >> ${STATUS_FILE}
 }

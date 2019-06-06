@@ -244,6 +244,10 @@ OpenLDAP:
 
 EOF
 
+    write_iredmail_kv ldap_root_password "${LDAP_ROOTPW}"
+    write_iredmail_kv ldap_vmail_password "${LDAP_BINDPW}"
+    write_iredmail_kv ldap_vmailadmin_password "${LDAP_ADMIN_PW}"
+
     echo 'export status_openldap_data_initialize="DONE"' >> ${STATUS_FILE}
 }
 

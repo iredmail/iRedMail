@@ -34,6 +34,7 @@ export IREDAPD_CONF="${IREDAPD_ROOT_DIR_SYMBOL_LINK}/settings.py"
 export IREDAPD_LISTEN_PORT='7777'
 export IREDAPD_SRS_FORWARD_PORT='7778'
 export IREDAPD_SRS_REVERSE_PORT='7779'
+export IREDAPD_SRS_SECRET="$(${RANDOM_STRING})"
 
 export IREDAPD_PID_FILE='/var/run/iredapd.pid'
 export IREDAPD_LOG_DIR='/var/log/iredapd'

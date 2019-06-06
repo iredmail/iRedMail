@@ -267,5 +267,6 @@ iredadmin_setup() {
     check_status_before_run iredadmin_config
     check_status_before_run iredadmin_rc_setup
 
+    write_iredmail_kv iredadmin_db_password "${IREDADMIN_DB_PASSWD}"
     echo 'export status_iredadmin_setup="DONE"' >> ${STATUS_FILE}
 }

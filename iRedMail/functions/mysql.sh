@@ -363,5 +363,9 @@ mysql_setup()
 
     check_status_before_run mysql_cron_backup
 
+    write_iredmail_kv mysql_root_password "${MYSQL_ROOT_PASSWD}"
+    write_iredmail_kv vmail_db_password "${VMAIL_DB_BIND_PASSWD}"
+    write_iredmail_kv vmail_db_admin_password "${VMAIL_DB_ADMIN_PASSWD}"
+
     echo 'export status_mysql_setup="DONE"' >> ${STATUS_FILE}
 }

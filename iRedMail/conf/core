@@ -625,9 +625,7 @@ write_iredmail_kv()
     param="$1"
     value="$2"
 
-    if [[ ! -f ${IREDMAIL_KV_DIR} ]]; then
-        mkdir -p ${IREDMAIL_KV_DIR}
-    fi
+    [[ -f ${IREDMAIL_KV_DIR} ]] || mkdir -p ${IREDMAIL_KV_DIR}
 
     f="${IREDMAIL_KV_DIR}/${param}"
     echo "${value}" > ${f}

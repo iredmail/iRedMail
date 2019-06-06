@@ -68,4 +68,6 @@ backend_install()
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         check_status_before_run pgsql_setup
     fi
+
+    write_iredmail_kv first_domain_admin_password "${DOMAIN_ADMIN_PASSWD_PLAIN}"
 }

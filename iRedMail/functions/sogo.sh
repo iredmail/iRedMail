@@ -326,5 +326,7 @@ sogo_setup()
     check_status_before_run memcached_setup
     check_status_before_run sogo_cron_setup
 
+    write_iredmail_kv sogo_db_password "${SOGO_DB_PASSWD}"
+    write_iredmail_kv sogo_sieve_master_password "${SOGO_SIEVE_MASTER_PASSWD}"
     echo 'export status_sogo_setup="DONE"' >> ${STATUS_FILE}
 }
