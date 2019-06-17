@@ -28,7 +28,7 @@
 # Refer to MySQL document for more details:
 # https://dev.mysql.com/doc/refman/5.7/en/socket-authentication-plugin.html
 
-location ~ ^/adminer {
+location ~ ^/adminer$ {
     include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
     include PH_NGINX_CONF_TMPL_DIR/fastcgi_php.tmpl;
 
