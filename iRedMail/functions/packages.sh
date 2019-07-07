@@ -255,7 +255,7 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} clamd spamassassin"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm ripole libmail-spf-perl unrar-free pax lrzip"
+        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm libmail-spf-perl unrar-free pax lrzip"
 
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
@@ -383,7 +383,10 @@ EOF
         [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python2"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-webpy python-pycurl python-requests"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-requests"
+        if [ X"${DISTRO_CODENAME}" == X"bionic" -o X"${DISTRO_CODENAME}" == X"stretch" ]; then
+            ALL_PKGS="${ALL_PKGS} python-webpy"
+        fi
 
         [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 

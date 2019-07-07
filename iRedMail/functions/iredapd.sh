@@ -330,7 +330,7 @@ iRedAPD - Postfix Policy Server:
 
 EOF
 
-    write_iredmail_kv iredapd_db_password "${IREDAPD_DB_PASSWD}"
+    write_iredmail_kv "sql_user_${IREDAPD_DB_USER}" "${IREDAPD_DB_PASSWD}"
     write_iredmail_kv iredapd_srs_secret "${IREDAPD_SRS_SECRET}"
     echo 'export status_iredapd_setup="DONE"' >> ${STATUS_FILE}
 }

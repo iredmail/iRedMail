@@ -230,9 +230,9 @@ pgsql_setup()
     check_status_before_run pgsql_import_vmail_users
     check_status_before_run pgsql_cron_backup
 
-    write_iredmail_kv pgsql_root_password "${PGSQL_ROOT_PASSWD}"
-    write_iredmail_kv vmail_db_password "${VMAIL_DB_BIND_PASSWD}"
-    write_iredmail_kv vmail_db_admin_password "${VMAIL_DB_ADMIN_PASSWD}"
+    write_iredmail_kv "sql_user_${PGSQL_ROOT_USER}" "${PGSQL_ROOT_PASSWD}"
+    write_iredmail_kv "sql_user_${VMAIL_DB_BIND_USER}" "${VMAIL_DB_BIND_PASSWD}"
+    write_iredmail_kv "sql_user_${VMAIL_DB_ADMIN_USER}" "${VMAIL_DB_ADMIN_PASSWD}"
 
     echo 'export status_pgsql_setup="DONE"' >> ${STATUS_FILE}
 }

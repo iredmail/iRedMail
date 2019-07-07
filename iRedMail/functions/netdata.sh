@@ -173,6 +173,6 @@ netdata (monitor):
 
 EOF
 
-    write_iredmail_kv netdata_db_password "${NETDATA_DB_PASSWD}"
+    write_iredmail_kv "sql_user_${NETDATA_DB_USER}" "${NETDATA_DB_PASSWD}"
     echo 'export status_netdata_setup="DONE"' >> ${STATUS_FILE}
 }

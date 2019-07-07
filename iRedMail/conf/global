@@ -289,9 +289,9 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
             grep -i '^stretch' /etc/debian_version &>/dev/null; then
             export DISTRO_VERSION='9'
             export DISTRO_CODENAME='stretch'
-        #elif grep -i '^buster' /etc/debian_version &>/dev/null; then
-        #    export DISTRO_VERSION='10'
-        #    export DISTRO_CODENAME='buster'
+        elif grep -i '^10' /etc/debian_version &>/dev/null; then
+            export DISTRO_VERSION='10'
+            export DISTRO_CODENAME='buster'
         else
             export UNSUPPORTED_RELEASE='YES'
         fi

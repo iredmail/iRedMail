@@ -253,6 +253,6 @@ $(${AMAVISD_BIN} showkeys 2>> ${INSTALL_LOG})
 EOF
     fi
 
-    write_iredmail_kv amavisd_db_password "${AMAVISD_DB_PASSWD}"
+    write_iredmail_kv "sql_user_${AMAVISD_DB_USER}" "${AMAVISD_DB_PASSWD}"
     echo 'export status_amavisd_config="DONE"' >> ${STATUS_FILE}
 }

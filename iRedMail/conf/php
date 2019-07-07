@@ -44,6 +44,9 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO_CODENAME}" == X'stretch' ]; then
         # Debian 9
         export PHP_VERSION='7.0'
+    elif [ X"${DISTRO_CODENAME}" == X'buster' ]; then
+        # Debian 10
+        export PHP_VERSION='7.3'
     else
         # Ubuntu 18.04, 19.04
         export PHP_VERSION='7.2'
