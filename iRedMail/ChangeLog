@@ -1,6 +1,7 @@
 iRedMail-1.0:
     * Supports new distribution release:
         + OpenBSD 6.5
+        + Debian 10
 
     * Drop support for old distribution releases:
         - OpenBSD 6.4
@@ -16,14 +17,16 @@ iRedMail-1.0:
         + netdata: Disable sending anonymous statistics to netdata cloud.
 
     * Fixed issues:
-        - tools/create_mail_user_OpenLDAP.py:
-            - Fix missing comma which causes incorrect value of
-              ldap attribute 'enabledService'.
-              Thanks Michael Chong.
+        - Improper order of restriction rules in Postfix
+          `smtpd_sender_restrictions` setting.
         - Fail2ban jail config file doesn't correctly set sshd port number(s).
         - Loose Fail2ban filter rules (postfix/dovecot) to reduce negative bans.
         - [Linux] Not send kill signal to php-fpm daemon process to reopen log
           file after logrotation.
+        - tools/create_mail_user_OpenLDAP.py:
+            - Fix missing comma which causes incorrect value of
+              ldap attribute 'enabledService'.
+              Thanks Michael Chong.
 
     * Updated packages:
         + Roundcube webmail -> 1.3.9

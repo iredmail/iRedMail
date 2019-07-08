@@ -181,12 +181,12 @@ smtpd_helo_restrictions =
 
 # Sender restrictions
 smtpd_sender_restrictions =
-    reject_unknown_sender_domain
     reject_non_fqdn_sender
     reject_unlisted_sender
     permit_mynetworks
     permit_sasl_authenticated
     check_sender_access pcre:PH_POSTFIX_FILE_SENDER_ACCESS
+    reject_unknown_sender_domain
 
 # Recipient restrictions
 smtpd_recipient_restrictions =

@@ -392,6 +392,10 @@ EOF
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-requests"
         if [ X"${DISTRO_CODENAME}" == X"bionic" -o X"${DISTRO_CODENAME}" == X"stretch" ]; then
             ALL_PKGS="${ALL_PKGS} python-webpy"
+        else
+            # python-webpy is not available, but python3-webpy is fully
+            # compatible with py2+3.
+            ALL_PKGS="${ALL_PKGS} python3-webpy"
         fi
 
         [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
@@ -514,6 +518,11 @@ EOF
             update_sysctl_param kern.seminfo.semmnu 60
             update_sysctl_param kern.seminfo.semmsl 120
             update_sysctl_param kern.seminfo.semopm 200
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            if [ X"${DISTRO_CODENAME}" != X"bionic" -a X"${DISTRO_CODENAME}" != X"stretch" ]; then
+                # Create symbol link
+                cp -rf /usr/lib/python3/dist-packages/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
+            fi
         fi
 
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}
