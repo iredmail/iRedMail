@@ -150,10 +150,6 @@ if [ X"${ENABLE_BACKEND_OPENLDAP}" == X'YES' ]; then
     export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} OpenLDAP An_open_source_implementation_of_LDAP_protocol off"
 fi
 
-if [ X"${ENABLE_BACKEND_MYSQL}" == X'YES' ]; then
-    export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} MySQL Most_popular_open_source_database off"
-fi
-
 if [ X"${ENABLE_BACKEND_MARIADB}" == X'YES' ]; then
     export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} MariaDB An_enhanced,_drop-in_replacement_for_MySQL off"
 fi
@@ -180,7 +176,7 @@ if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
     export BACKEND='OPENLDAP'
 elif [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
     export BACKEND='OPENLDAP'
-elif [ X"${BACKEND_ORIG}" == X'MYSQL' -o X"${BACKEND_ORIG}" == X'MARIADB' ]; then
+elif [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
     export BACKEND='MYSQL'
 elif [ X"${BACKEND_ORIG}" == X'POSTGRESQL' ]; then
     export BACKEND='PGSQL'

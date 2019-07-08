@@ -51,9 +51,8 @@ export STORAGE_NODE="${STORAGE_NODE:=vmail1}"
 
 # Enabled backends.
 export ENABLE_BACKEND_OPENLDAP='YES'
-export ENABLE_BACKEND_MYSQL='YES'
 export ENABLE_BACKEND_PGSQL='YES'
-export ENABLE_BACKEND_MARIADB='NO'
+export ENABLE_BACKEND_MARIADB='YES'
 # OpenBSD built-in LDAP daemon
 export ENABLE_BACKEND_LDAPD='NO'
 
@@ -427,10 +426,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     if [ X"${DISTRO_VERSION}" == X'7' ]; then
         export USE_SYSTEMD='YES'
 
-        # No MySQL available since RHEL/CentOS 7.
-        export ENABLE_BACKEND_MYSQL='NO'
-        export ENABLE_BACKEND_MARIADB='YES'
-
         # iptables rule file.
         export USE_FIREWALLD='YES'
         export FIREWALLD_CONF_DIR='/etc/firewalld'
@@ -483,14 +478,9 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export SYSLOG_POSTROTATE_CMD='/usr/sbin/service rsyslog restart'
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
         export SYSLOG_CONF='/etc/rsyslog.conf'
-
-        export ENABLE_BACKEND_MYSQL='NO'
-        export ENABLE_BACKEND_MARIADB='YES'
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         export SYS_USER_SYSLOG='syslog'
         export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
-
-        export ENABLE_BACKEND_MARIADB='YES'
     fi
 
     # systemd support.
@@ -536,9 +526,6 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         export LIST_FILES_IN_PKG='pkg query "%Fp"'
     fi
 
-    # Enable MariaDB support.
-    export ENABLE_BACKEND_MARIADB='YES'
-
     # Port directory
     export PORT_WRKDIRPREFIX='/usr/ports'
 
@@ -571,8 +558,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SYS_GROUP_ROOT='wheel'
 
     export ENABLE_BACKEND_LDAPD='YES'
-    export ENABLE_BACKEND_MYSQL='NO'
-    export ENABLE_BACKEND_MARIADB='YES'
 
     # Package management.
     export install_pkg='install_pkg_openbsd'

@@ -88,23 +88,9 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} openldap openldap-clients openldap-servers"
-
-            if [ X"${ENABLE_BACKEND_MYSQL}" == X'NO' ]; then
-                ALL_PKGS="${ALL_PKGS} mariadb-server mod_ldap"
-            else
-                ALL_PKGS="${ALL_PKGS} mysql-server"
-            fi
-
+            ALL_PKGS="${ALL_PKGS} openldap openldap-clients openldap-servers mariadb-server mod_ldap"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl libdbd-mysql-perl"
-
-            if [ X"${ENABLE_BACKEND_MYSQL}" == X'NO' ]; then
-                ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client"
-            else
-                ALL_PKGS="${ALL_PKGS} mysql-server mysql-client"
-            fi
-
+            ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
                 ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_SERVER_VER}"
@@ -116,19 +102,16 @@ install_all()
 
             ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client p5-ldap p5-DBD-mysql"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
-
         fi
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         # MySQL server & client.
         ENABLED_SERVICES="${ENABLED_SERVICES} ${MYSQL_RC_SCRIPT_NAME}"
         if [ X"${DISTRO}" == X'RHEL' ]; then
             # Install MySQL client
-            [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql"
-            [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb"
+            ALL_PKGS="${ALL_PKGS} mariadb"
 
             if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-                [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-server"
-                [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-server"
+                ALL_PKGS="${ALL_PKGS} mariadb-server"
             fi
 
             # Perl module
@@ -136,12 +119,10 @@ install_all()
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # MySQL server and client.
-            [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-client"
-            [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-client"
+            ALL_PKGS="${ALL_PKGS} mariadb-client"
 
             if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-                [ X"${BACKEND_ORIG}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} mysql-server"
-                [ X"${BACKEND_ORIG}" == X'MARIADB' ] && ALL_PKGS="${ALL_PKGS} mariadb-server"
+                ALL_PKGS="${ALL_PKGS} mariadb-server"
             fi
 
             ALL_PKGS="${ALL_PKGS} postfix-mysql libdbd-mysql-perl"

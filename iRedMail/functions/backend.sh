@@ -52,11 +52,8 @@ backend_install()
         check_status_before_run ldap_server_cron_backup
 
         # Setup MySQL database server.
-        if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-            ECHO_INFO "Configure MariaDB database server."
-        else
-            ECHO_INFO "Configure MySQL database server."
-        fi
+        ECHO_INFO "Configure MariaDB database server."
+
         check_status_before_run mysql_initialize_db
         check_status_before_run mysql_generate_defaults_file_root
         check_status_before_run mysql_remove_insecure_data

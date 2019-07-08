@@ -98,7 +98,7 @@ mysql_initialize_db()
     sleep 10
 
     if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-        if [ X"${DISTRO}" == X'FREEBSD' ] && [ X"${BACKEND_ORIG}" == X'MYSQL' -o X"${BACKEND}" == X'OPENLDAP' ]; then
+        if [ X"${DISTRO}" == X'FREEBSD' ] && [ X"${BACKEND}" == X'OPENLDAP' ]; then
             # MySQL 5.7
             ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
             if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
@@ -343,11 +343,7 @@ EOF
 
 mysql_setup()
 {
-    if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-        ECHO_INFO "Configure MariaDB database server."
-    else
-        ECHO_INFO "Configure MySQL database server."
-    fi
+    ECHO_INFO "Configure MariaDB database server."
 
     if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
         check_status_before_run mysql_initialize_db

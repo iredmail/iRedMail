@@ -35,7 +35,6 @@ install_all()
 
     # Preferred package versions. Don't forget to update DEFAULT_VERSIONS below.
     export PREFERRED_OPENLDAP_VER='24'
-    export PREFERRED_MYSQL_VER='57'
     export PREFERRED_MARIADB_VER='103'
     export PGSQL_VERSION='10'
     export PREFERRED_BDB_VER='5'
@@ -306,21 +305,15 @@ EOF
     ALL_PORTS="${ALL_PORTS} devel/py-Jinja2 net/py-netifaces security/py-bcrypt"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ALL_PORTS="${ALL_PORTS} net/openldap${PREFERRED_OPENLDAP_VER}-sasl-client net/openldap${PREFERRED_OPENLDAP_VER}-server databases/mysql${PREFERRED_MYSQL_VER}-server"
+        ALL_PORTS="${ALL_PORTS} net/openldap${PREFERRED_OPENLDAP_VER}-sasl-client net/openldap${PREFERRED_OPENLDAP_VER}-server"
+        ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-server"
+
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         # Install client before server.
-        if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-            ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-client"
-        else
-            ALL_PORTS="${ALL_PORTS} databases/mysql${PREFERRED_MYSQL_VER}-client"
-        fi
+        ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-client"
 
         if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-            if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-                ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-server"
-            else
-                ALL_PORTS="${ALL_PORTS} databases/mysql${PREFERRED_MYSQL_VER}-server"
-            fi
+            ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-server"
         fi
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
