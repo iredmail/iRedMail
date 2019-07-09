@@ -298,29 +298,34 @@ baseurl=${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/rhel/${DISTRO_VERSION}/\
 EOF
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} memcached sogo sogo-activesync"
+            ALL_PKGS="${ALL_PKGS} memcached sogo"
 
-            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
-            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
-            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-postgresql"
+            # Debian 9, Ubuntu 18.04
+            if [ X"${DISTRO_CODENAME}" == X"stretch" -o X"${DISTRO_CODENAME}" == X"bionic" ]; then
+                ALL_PKGS="${ALL_PKGS} sogo-activesync"
 
-            ECHO_INFO "Add apt repo for SOGo: ${SOGO_PKG_MIRROR}"
-            if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
-            elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
+                [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
+                [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
+                [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-postgresql"
+
+                ECHO_INFO "Add apt repo for SOGo: ${SOGO_PKG_MIRROR}"
+                if [ X"${DISTRO}" == X'DEBIAN' ]; then
+                    echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
+                elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+                    echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
+                fi
+
+                ECHO_INFO "Import apt key (${SOGO_PKG_MIRROR_APT_KEY}) for SOGo repo (${SOGO_PKG_MIRROR})."
+                apt-key adv --keyserver keyserver.ubuntu.com --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
+
+                # Try another PGP key server if `keyserver.ubuntu.com` failed
+                if [ X"$?" != X'0' ]; then
+                    apt-key adv --keyserver pgp.mit.edu --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
+                fi
+
+                ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."
+                apt-get update
             fi
-
-            ECHO_INFO "Import apt key (${SOGO_PKG_MIRROR_APT_KEY}) for SOGo repo (${SOGO_PKG_MIRROR})."
-            apt-key adv --keyserver keyserver.ubuntu.com --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
-
-            # Try another PGP key server if `keyserver.ubuntu.com` failed
-            if [ X"$?" != X'0' ]; then
-                apt-key adv --keyserver pgp.mit.edu --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
-            fi
-
-            ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."
-            apt-get update
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} sogo memcached--"
