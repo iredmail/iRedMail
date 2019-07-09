@@ -33,7 +33,7 @@ iRedMail-1.0:
         + iRedAdmin -> 0.9.7
         + iRedAPD -> 3.0
         + mlmmjadmin -> 2.1
-        + netdata -> 1.15.0
+        + netdata -> 1.16.0
         + php -> 7.2 (FreeBSD only)
 
 iRedMail-0.9.9 (Dec 17, 2018):
