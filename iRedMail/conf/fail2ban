@@ -49,6 +49,10 @@ export FAIL2BAN_DISABLED_SERVICES="http,https,smtp,submission,465,pop3,pop3s,ima
 # Firewall command (fail2ban/action.d/[NAME].conf)
 if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     export FAIL2BAN_ACTION='iptables-multiport'
+
+    if [ X"${DISTRO_CODENAME}" == X'buster' ]; then
+        export FAIL2BAN_ACTION='nftables-multiport'
+    fi
 elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
     # Use ipfw by default
     export FAIL2BAN_ACTION='ipfw'

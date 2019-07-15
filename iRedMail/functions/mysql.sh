@@ -172,7 +172,6 @@ mysql_generate_defaults_file_root()
     backup_file ${MYSQL_DEFAULTS_FILE_ROOT}
     cat > ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 # NOTE: This file is used by several programs:
-#   - daily SQL backup script: ${BACKUP_DIR}/${BACKUP_SCRIPT_MYSQL_NAME}
 #   - iRedAPD upgrade script
 #   - iRedAdmin upgrade script
 [client]
@@ -360,8 +359,11 @@ mysql_setup()
     check_status_before_run mysql_cron_backup
 
     write_iredmail_kv "sql_user_${MYSQL_ROOT_USER}" "${MYSQL_ROOT_PASSWD}"
-    write_iredmail_kv "sql_user_${VMAIL_DB_BIND_USER}" "${VMAIL_DB_BIND_PASSWD}"
-    write_iredmail_kv "sql_user_${VMAIL_DB_ADMIN_USER}" "${VMAIL_DB_ADMIN_PASSWD}"
+
+    if [ X"${BACKEND}" == X'MYSQL' ]; then
+        write_iredmail_kv "sql_user_${VMAIL_DB_BIND_USER}" "${VMAIL_DB_BIND_PASSWD}"
+        write_iredmail_kv "sql_user_${VMAIL_DB_ADMIN_USER}" "${VMAIL_DB_ADMIN_PASSWD}"
+    fi
 
     echo 'export status_mysql_setup="DONE"' >> ${STATUS_FILE}
 }
