@@ -132,6 +132,8 @@ fi
 export DOVECOT_SERVICE_STATS_USER="${SYS_USER_VMAIL}"
 export DOVECOT_SERVICE_STATS_GROUP="${SYS_GROUP_VMAIL}"
 export DOVECOT_SERVICE_STATS_PORT='24242'
+# FYI: https://wiki.dovecot.org/Quota#Quota_service
+export DOVECOT_SERVICE_QUOTA_STATUS_PORT='12340'
 
 # Local (Mail) Delivery Agent
 #   - dovecot

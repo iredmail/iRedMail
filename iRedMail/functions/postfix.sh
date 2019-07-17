@@ -113,6 +113,9 @@ postfix_config_basic()
     perl -pi -e 's#PH_IREDAPD_SRS_FORWARD_PORT#$ENV{IREDAPD_SRS_FORWARD_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_IREDAPD_SRS_REVERSE_PORT#$ENV{IREDAPD_SRS_REVERSE_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
 
+    # Dovecot quota-status service
+    perl -pi -e 's#PH_DOVECOT_SERVICE_QUOTA_STATUS_PORT#$ENV{DOVECOT_SERVICE_QUOTA_STATUS_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
+
     #
     # master.cf
     #
