@@ -202,6 +202,7 @@ CREATE TABLE mailbox (
     enableinternal INT2 NOT NULL DEFAULT 1,
     enabledoveadm INT2 NOT NULL DEFAULT 1,
     "enablelib-storage" INT2 NOT NULL DEFAULT 1,
+    "enablequota-status" INT2 NOT NULL DEFAULT 1,
     "enableindexer-worker" INT2 NOT NULL DEFAULT 1,
     enablelmtp INT2 NOT NULL DEFAULT 1,
     enabledsync INT2 NOT NULL DEFAULT 1,
@@ -252,6 +253,7 @@ CREATE INDEX idx_mailbox_enabledsync ON mailbox (enabledsync);
 CREATE INDEX idx_mailbox_enableinternal ON mailbox (enableinternal);
 CREATE INDEX idx_mailbox_enabledoveadm ON mailbox (enabledoveadm);
 CREATE INDEX idx_mailbox_enablelib_storage ON mailbox ("enablelib-storage");
+CREATE INDEX idx_mailbox_enablequota_status ON mailbox ("enablequota-status");
 CREATE INDEX idx_mailbox_enableindexer_worker ON mailbox ("enableindexer-worker");
 CREATE INDEX idx_mailbox_enablesogo ON mailbox (enablesogo);
 CREATE INDEX idx_mailbox_passwordlastchange ON mailbox (passwordlastchange);

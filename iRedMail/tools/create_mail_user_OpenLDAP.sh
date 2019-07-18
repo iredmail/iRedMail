@@ -230,6 +230,7 @@ amavisLocal: TRUE
 enabledService: internal
 enabledService: doveadm
 enabledService: lib-storage
+enabledService: quota-status
 enabledService: indexer-worker
 enabledService: dsync
 enabledService: mail
