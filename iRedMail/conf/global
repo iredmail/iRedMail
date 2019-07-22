@@ -22,7 +22,7 @@
 
 export PROG_NAME='iRedMail'
 export PROG_NAME_LOWERCASE='iredmail'
-export PROG_VERSION='0.9.9'
+export PROG_VERSION='1.0-beta1'
 
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
 
@@ -501,6 +501,11 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # iptables rule file.
     export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/iptables"
     export FIREWALL_RULE_CONF6="${ETC_SYSCONFIG_DIR}/ip6tables"
+
+    if [ X"${DISTRO_CODENAME}" == X'buster' ]; then
+        export USE_NFTABLES='YES'
+        export NFTABLES_CONF='/etc/nftables.conf'
+    fi
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"

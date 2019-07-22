@@ -433,6 +433,13 @@ EOF
         ALL_PKGS="${ALL_PKGS} bzip2 lz4"
     fi
 
+    # Firewall
+    if [ X"${DISTRO}" == X'DEBIAN' ]; then
+        if [ X"${DISTRO_CODENAME}" == X'buster' ]; then
+            ALL_PKGS="${ALL_PKGS} nftables"
+        fi
+    fi
+
     # Disable ufw service and use iptables init script and rule file
     # shipped in iRedMail instead.
     [ X"${DISTRO}" == X'UBUNTU' ] && export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
@@ -507,7 +514,9 @@ EOF
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" != X"bionic" -a X"${DISTRO_CODENAME}" != X"stretch" ]; then
                 # Create symbol link
-                cp -rf /usr/lib/python3/dist-packages/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
+                cd ${PKG_MISC_DIR} && \
+                    tar zxf web.py-0.39.tar.gz && \
+                    cp -rf web.py-0.39/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
             fi
         fi
 

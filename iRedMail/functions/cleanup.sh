@@ -25,7 +25,7 @@
 #   AUTO_CLEANUP_REMOVE_SENDMAIL
 #   AUTO_CLEANUP_REMOVE_MOD_PYTHON
 #   AUTO_CLEANUP_REPLACE_FIREWALL_RULES
-#   AUTO_CLEANUP_RESTART_IPTABLES
+#   AUTO_CLEANUP_RESTART_FIREWALL
 #   AUTO_CLEANUP_REPLACE_MYSQL_CONFIG
 #
 # Usage:
@@ -107,14 +107,14 @@ cleanup_replace_firewall_rules()
     # Replace ssh numbers.
     if [ X"${SSHD_PORT2}" != X'22' ]; then
         # Append second ssh port number.
-        perl -pi -e 's#(.*22.*)#${1}\n  <port protocol="tcp" port="$ENV{SSHD_PORT2}"/>#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
-        perl -pi -e 's#(.* 22 .*)#${1}\n-A INPUT -p tcp --dport $ENV{SSHD_PORT2} -j ACCEPT#' ${SAMPLE_DIR}/iptables/iptables.rules
-        perl -pi -e 's#(.* 22 .*)#${1}\n-A INPUT -p tcp --dport $ENV{SSHD_PORT2} -j ACCEPT#' ${SAMPLE_DIR}/iptables/ip6tables.rules
+        perl -pi -e 's#(.*22.*)#${1}\n  <port protocol="tcp" port="$ENV{SSHD_PORT2}"/>#' ${SAMPLE_DIR}/firewall/firewalld/services/ssh.xml
+        perl -pi -e 's#(.* 22 .*)#${1}\n-A INPUT -p tcp --dport $ENV{SSHD_PORT2} -j ACCEPT#' ${SAMPLE_DIR}/firewall/iptables/iptables.rules
+        perl -pi -e 's#(.* 22 .*)#${1}\n-A INPUT -p tcp --dport $ENV{SSHD_PORT2} -j ACCEPT#' ${SAMPLE_DIR}/firewall/iptables/ip6tables.rules
 
         # Replace first ssh port number
-        perl -pi -e 's#(.*)"22"(.*)#${1}"$ENV{SSHD_PORT}"${2}#' ${SAMPLE_DIR}/firewalld/services/ssh.xml
-        perl -pi -e 's#(.*) 22 (.*)#${1} $ENV{SSHD_PORT} -j ACCEPT#' ${SAMPLE_DIR}/iptables/iptables.rules
-        perl -pi -e 's#(.*) 22 (.*)#${1} $ENV{SSHD_PORT} -j ACCEPT#' ${SAMPLE_DIR}/iptables/ip6tables.rules
+        perl -pi -e 's#(.*)"22"(.*)#${1}"$ENV{SSHD_PORT}"${2}#' ${SAMPLE_DIR}/firewall/firewalld/services/ssh.xml
+        perl -pi -e 's#(.*) 22 (.*)#${1} $ENV{SSHD_PORT} -j ACCEPT#' ${SAMPLE_DIR}/firewall/iptables/iptables.rules
+        perl -pi -e 's#(.*) 22 (.*)#${1} $ENV{SSHD_PORT} -j ACCEPT#' ${SAMPLE_DIR}/firewall/iptables/ip6tables.rules
     fi
 
     perl -pi -e 's#(.*mail_services=.*)ssh(.*)#${1}$ENV{SSHD_PORTS_WITH_COMMA}${2}#' ${SAMPLE_DIR}/openbsd/pf.conf
@@ -127,21 +127,23 @@ cleanup_replace_firewall_rules()
         Y|y|* )
             backup_file ${FIREWALL_RULE_CONF}
             if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-                ECHO_INFO "Copy firewall sample rules: ${FIREWALL_RULE_CONF}."
+                ECHO_INFO "Copy firewall sample rules."
 
                 if [ X"${USE_FIREWALLD}" == X'YES' ]; then
-                    cp -f ${SAMPLE_DIR}/firewalld/zones/iredmail.xml ${FIREWALL_RULE_CONF}
+                    cp -f ${SAMPLE_DIR}/firewall/firewalld/zones/iredmail.xml ${FIREWALL_RULE_CONF}
                     perl -pi -e 's#^(DefaultZone=).*#${1}iredmail#g' ${FIREWALLD_CONF}
 
-                    cp -f ${SAMPLE_DIR}/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
+                    cp -f ${SAMPLE_DIR}/firewall/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
 
                     if [ X"${DISTRO}" == X'RHEL' ]; then
                         cd ${ETC_SYSCONFIG_DIR}/network-scripts/
                         perl -pi -e 's#ZONE=public#ZONE=iredmail#g' *
                     fi
+                elif [ X"${USE_NFTABLES}" == X'YES' ]; then
+                    cp -f ${SAMPLE_DIR}/firewall/nftables.conf ${NFTABLES_CONF}
                 else
-                    cp -f ${SAMPLE_DIR}/iptables/iptables.rules ${FIREWALL_RULE_CONF}
-                    cp -f ${SAMPLE_DIR}/iptables/ip6tables.rules ${FIREWALL_RULE_CONF6}
+                    cp -f ${SAMPLE_DIR}/firewall/iptables/iptables.rules ${FIREWALL_RULE_CONF}
+                    cp -f ${SAMPLE_DIR}/firewall/iptables/ip6tables.rules ${FIREWALL_RULE_CONF6}
                 fi
 
                 # Replace HTTP port.
@@ -153,8 +155,8 @@ cleanup_replace_firewall_rules()
                 else
                     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
                         # Copy sample rc script for Debian.
-                        cp -f ${SAMPLE_DIR}/iptables/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
-                        cp -f ${SAMPLE_DIR}/iptables/ip6tables.init.debian ${DIR_RC_SCRIPTS}/ip6tables
+                        cp -f ${SAMPLE_DIR}/firewall/iptables/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
+                        cp -f ${SAMPLE_DIR}/firewall/iptables/ip6tables.init.debian ${DIR_RC_SCRIPTS}/ip6tables
                         chmod +x ${DIR_RC_SCRIPTS}/iptables ${DIR_RC_SCRIPTS}/ip6tables
                     fi
 
@@ -174,7 +176,7 @@ cleanup_replace_firewall_rules()
 
             # Prompt to restart iptables.
             ECHO_QUESTION -n "Restart firewall now (with ssh ports: ${SSHD_PORTS_WITH_COMMA})? [y|N]"
-            read_setting ${AUTO_CLEANUP_RESTART_IPTABLES}
+            read_setting ${AUTO_CLEANUP_RESTART_FIREWALL}
             case ${ANSWER} in
                 Y|y )
                     ECHO_INFO "Restarting firewall ..."
@@ -190,11 +192,8 @@ cleanup_replace_firewall_rules()
                         fi
                     fi
                     ;;
-                N|n|* )
-                    export "RESTART_IPTABLES='NO'"
-                    ;;
+                *) : ;;
             esac
-            ;;
     esac
 
     echo 'export status_cleanup_replace_firewall_rules="DONE"' >> ${STATUS_FILE}
