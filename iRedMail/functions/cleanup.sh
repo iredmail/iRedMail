@@ -141,6 +141,13 @@ cleanup_replace_firewall_rules()
                     fi
                 elif [ X"${USE_NFTABLES}" == X'YES' ]; then
                     cp -f ${SAMPLE_DIR}/firewall/nftables.conf ${NFTABLES_CONF}
+
+                    perl -pi -e 's#(.*) 80 (.*)#${1} $ENV{HTTPD_PORT} ${2}#' ${NFTABLES_CONF}
+                    if [ X"${SSHD_PORT}" == X"${SSHD_PORT2}" ]; then
+                        perl -pi -e 's#(.*) 22 (.*)#${1} $ENV{SSHD_PORT} ${2}#' ${NFTABLES_CONF}
+                    elif [ X"${SSHD_PORT}" != X'' -a X"${SSHD_PORT2}" != X'' -a X"${SSHD_PORT}" != X"${SSHD_PORT2}" ]; then
+                        perl -pi -e 's#(.*) 22 (.*)#${1} {$ENV{SSHD_PORTS_WITH_COMMA}} ${2}#' ${NFTABLES_CONF}
+                    fi
                 else
                     cp -f ${SAMPLE_DIR}/firewall/iptables/iptables.rules ${FIREWALL_RULE_CONF}
                     cp -f ${SAMPLE_DIR}/firewall/iptables/ip6tables.rules ${FIREWALL_RULE_CONF6}

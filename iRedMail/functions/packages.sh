@@ -437,6 +437,7 @@ EOF
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
         if [ X"${DISTRO_CODENAME}" == X'buster' ]; then
             ALL_PKGS="${ALL_PKGS} nftables"
+            ENABLED_SERVICES="${ENABLED_SERVICES} nftables"
         fi
     fi
 
