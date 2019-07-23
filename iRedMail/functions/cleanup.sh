@@ -193,6 +193,8 @@ cleanup_replace_firewall_rules()
                     else
                         if [ X"${USE_FIREWALLD}" == X'YES' ]; then
                             firewall-cmd --complete-reload >> ${INSTALL_LOG} 2>&1
+                        elif [ X"${USE_NFTABLES}" == X'YES' ]; then
+                            service_control restart nftables >> ${INSTALL_LOG} 2>&1
                         else
                             service_control restart iptables >> ${INSTALL_LOG} 2>&1
                             service_control restart ip6tables >> ${INSTALL_LOG} 2>&1
