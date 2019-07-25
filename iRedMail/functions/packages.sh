@@ -378,10 +378,6 @@ EOF
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-requests"
         if [ X"${DISTRO_CODENAME}" == X"bionic" -o X"${DISTRO_CODENAME}" == X"stretch" ]; then
             ALL_PKGS="${ALL_PKGS} python-webpy"
-        else
-            # python-webpy is not available, but python3-webpy is fully
-            # compatible with py2+3.
-            ALL_PKGS="${ALL_PKGS} python3-webpy"
         fi
 
         [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
