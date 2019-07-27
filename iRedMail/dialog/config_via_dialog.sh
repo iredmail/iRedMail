@@ -161,7 +161,7 @@ fi
 while : ; do
     ${DIALOG} \
     --title "Choose preferred backend used to store mail accounts" \
-    --radiolist "It's strongly recommended to choose the one you're farmliar with for easy maintenance. They all use the same webmail (Roundcube) and admin panel (iRedAdmin), and no big feature differences between them.
+    --radiolist "It's strongly recommended to choose the one you're familiar with for easy maintenance. They all use the same webmail (Roundcube) and admin panel (iRedAdmin), and no big feature differences between them.
 
 TIP: Use SPACE key to select item.
 " 20 76 4 ${DIALOG_AVAILABLE_BACKENDS} 2>${RUNTIME_DIR}/.backend
