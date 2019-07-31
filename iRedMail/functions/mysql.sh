@@ -101,12 +101,12 @@ mysql_initialize_db()
         if [ X"${DISTRO}" == X'FREEBSD' ] && [ X"${BACKEND}" == X'OPENLDAP' ]; then
             # MySQL 5.7
             ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
-            if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
-                # Get initial random root password from /root/.mysql-secret
-                export _mysql_root_pw="$(tail -1 /root/.mysql_secret)"
-                mysqladmin -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} -p${_mysql_root_pw} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
-            else
-                # Jail
+            #if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
+            #    # Get initial random root password from /root/.mysql-secret
+            #    export _mysql_root_pw="$(tail -1 /root/.mysql_secret)"
+            #    mysqladmin -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} -p${_mysql_root_pw} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+            #else
+            #    # Jail
                 mysql -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} --connect-expired-password mysql -e "UPDATE user SET host='${LOCAL_ADDRESS}',authentication_string=PASSWORD('${MYSQL_ROOT_PASSWD}'),password_expired='N' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
 
                 ECHO_DEBUG "Remove 'skip_grant_tables'."
@@ -117,7 +117,7 @@ mysql_initialize_db()
 
                 ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
                 sleep 10
-            fi
+            #fi
         else
             # Try to access without password, set a password if it's empty.
             if [ X"${MYSQL_SERVER_ADDRESS}" == X'127.0.0.1' ]; then

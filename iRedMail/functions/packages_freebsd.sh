@@ -1090,6 +1090,10 @@ EOF
     {
         ECHO_DEBUG "Post-install cleanup."
 
+        ECHO_DEBUG "Create symbol links to python2/3."
+        ln -sf /usr/local/bin/python2.7 /usr/local/bin/python2
+        ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3
+
         # Create syslog.d and logrotate.d
         mkdir -p ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
         mkdir -p ${LOGROTATE_DIR} >> ${INSTALL_LOG} 2>&1

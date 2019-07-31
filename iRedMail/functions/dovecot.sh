@@ -43,24 +43,12 @@ dovecot_config()
         cp ${SAMPLE_DIR}/dovecot/dovecot23.conf ${DOVECOT_CONF}
     fi
 
-    # FreeBSD ports tree offers Dovecot 2.3, we need to fix some backward
-    # compatibilites.
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        perl -pi -e 's/^ssl_protocols/#${1}/g' ${DOVECOT_CONF}
-        perl -pi -e 's#^(mail_plugins.*) stats(.*)#${1} old_stats${2}#g' ${DOVECOT_CONF}
-        perl -pi -e 's#imap_stats#imap_old_stats#g' ${DOVECOT_CONF}
-        perl -pi -e 's#service stats#service old-stats#g' ${DOVECOT_CONF}
-        perl -pi -e 's#fifo_listener stats-mail#fifo_listener old-stats-mail#g' ${DOVECOT_CONF}
-        perl -pi -e 's#stats_refresh#old_stats_refresh#g' ${DOVECOT_CONF}
-        perl -pi -e 's#stats_track_cmds#old_stats_track_cmds#g' ${DOVECOT_CONF}
-        echo "ssl_dh = <${SSL_DH1024_PARAM_FILE}" >> ${DOVECOT_CONF}
-    fi
-
     chmod 0664 ${DOVECOT_CONF}
 
     ECHO_DEBUG "Configure dovecot: ${DOVECOT_CONF}."
 
     perl -pi -e 's#PH_DOVECOT_CONF_INCLUDE_DIR#$ENV{DOVECOT_CONF_INCLUDE_DIR}#g' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_SSL_DH1024_PARAM_FILE#$ENV{SSL_DH1024_PARAM_FILE}#g' ${DOVECOT_CONF}
 
     # Listen address
     if [ X"${IREDMAIL_HAS_IPV6}" == X'NO' ]; then
@@ -124,9 +112,11 @@ dovecot_config()
     perl -pi -e 's#PH_AUTH_MASTER_GROUP#$ENV{SYS_GROUP_VMAIL}#' ${DOVECOT_CONF}
 
     # service stats {}
-    perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_PORT#$ENV{DOVECOT_SERVICE_STATS_PORT}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_USER#$ENV{DOVECOT_SERVICE_STATS_USER}#' ${DOVECOT_CONF}
-    perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_GROUP#$ENV{DOVECOT_SERVICE_STATS_GROUP}#' ${DOVECOT_CONF}
+    if [ X"${DOVECOT_VERSION}" == X'2.2' ]; then
+        perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_PORT#$ENV{DOVECOT_SERVICE_STATS_PORT}#' ${DOVECOT_CONF}
+        perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_USER#$ENV{DOVECOT_SERVICE_STATS_USER}#' ${DOVECOT_CONF}
+        perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_GROUP#$ENV{DOVECOT_SERVICE_STATS_GROUP}#' ${DOVECOT_CONF}
+    fi
 
     # Virtual mail accounts.
     # Reference: http://wiki2.dovecot.org/AuthDatabase/LDAP

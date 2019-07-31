@@ -1,4 +1,3 @@
-ssl on;
 ssl_protocols TLSv1.2;
 
 # Fix 'The Logjam Attack'.
@@ -6,7 +5,7 @@ ssl_ciphers PH_SSL_CIPHERS;
 ssl_prefer_server_ciphers on;
 ssl_dhparam PH_SSL_DH1024_PARAM_FILE;
 
-# To use your own ssl cert (e.g. LetsEncrypt), please create symbol link to
+# To use your own ssl cert (e.g. "Let's Encrypt"), please create symbol link to
 # ssl cert/key used below, so that we can manage this config file with Ansible.
 #
 # For example:
@@ -16,5 +15,7 @@ ssl_dhparam PH_SSL_DH1024_PARAM_FILE;
 # ln -s /etc/letsencrypt/live/<domain>/privkey.pem PH_SSL_KEY_FILE
 # ln -s /etc/letsencrypt/live/<domain>/fullchain.pem PH_SSL_CERT_FILE
 #
+# To request free "Let's Encrypt" cert, please check our tutorial:
+# https://docs.iredmail.org/letsencrypt.html
 ssl_certificate PH_SSL_CERT_FILE;
 ssl_certificate_key PH_SSL_KEY_FILE;
