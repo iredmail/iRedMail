@@ -227,7 +227,7 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
     fi
 
-    # Amavisd-new & ClamAV & Altermime.
+    # Amavisd-new, ClamAV, Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_SERVICE_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF unrar pax lz4 clamav clamav-update clamav-server clamav-server-systemd"
@@ -245,6 +245,10 @@ install_all()
         ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-Mail-SpamAssassin clamav unrar altermime"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_SERVICE_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
+
+    # OpenDMARC
+    ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENDMARC_RC_SCRIPT_NAME}"
+    ALL_PKGS="${ALL_PKGS} opendmarc"
 
     # mlmmj: mailing list manager
     ALL_PKGS="${ALL_PKGS} mlmmj"

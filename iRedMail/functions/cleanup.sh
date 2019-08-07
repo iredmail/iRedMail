@@ -269,6 +269,7 @@ cleanup_feedback()
     url="${url}&NETDATA=${USE_NETDATA}"
     url="${url}&FAIL2BAN=${USE_FAIL2BAN}"
     url="${url}&IREDADMIN=${USE_IREDADMIN}"
+    url="${url}&DMARC=${USE_DMARC}"
     [ X"${WEB_SERVER}" == X'NGINX' ] && url="${url}&NGINX=YES"
 
     ECHO_DEBUG "Send info of chosed packages to iRedMail team to help improve iRedMail:"

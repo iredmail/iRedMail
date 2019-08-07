@@ -11,12 +11,19 @@ iRedMail-1.0:
             latest LTS edition will be supported.
 
     * Improvements:
+        + OpenDMARC integration on Linux and FreeBSD.
+
+            Unfortunately the latest OpenBSD release (6.5) doesn't offer
+            binary package for opendmarc, but 6.6 does. We have to wait for
+            OpenBSD 6.6 to enable OpenDMARC integration.
+
         + Dovecot:
             - Enable quota-status service. Postfix can query this service and
               reject email immediately if user's mailbox is over quota.
             - Enable tracking user loast login time by default for
               MySQL/MariaDB and OpenLDAP backends.
               Note: Dovecot doesn't support this with PostgreSQL yet.
+
         + netdata: Disable sending anonymous statistics to netdata cloud.
 
     * Fixed issues:

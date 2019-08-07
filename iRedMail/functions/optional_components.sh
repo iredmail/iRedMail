@@ -10,15 +10,12 @@ optional_components()
     # iRedAPD.
     check_status_before_run iredapd_setup
 
+    # DMARC
+    [ X"${USE_DMARC}" == X'YES' -a X"${DISTRO}" != X'OPENBSD' ] && \
+        check_status_before_run opendmarc_config
+
     # iRedAdmin.
     [ X"${USE_IREDADMIN}" == X'YES' ] && check_status_before_run iredadmin_setup
-
-    # Fail2ban.
-    [ X"${USE_FAIL2BAN}" == X'YES' \
-        -a X"${DISTRO}" != X'OPENBSD' \
-        -a X"${DISTRO}" != X'FREEBSD' \
-        ] && \
-        check_status_before_run fail2ban_config
 
     # Roundcubemail.
     [ X"${USE_ROUNDCUBE}" == X'YES' ] && check_status_before_run rcm_setup
@@ -28,4 +25,11 @@ optional_components()
 
     # netdata.
     [ X"${USE_NETDATA}" == X'YES' ] && check_status_before_run netdata_setup
+
+    # Fail2ban.
+    [ X"${USE_FAIL2BAN}" == X'YES' \
+        -a X"${DISTRO}" != X'OPENBSD' \
+        -a X"${DISTRO}" != X'FREEBSD' \
+        ] && \
+        check_status_before_run fail2ban_config
 }

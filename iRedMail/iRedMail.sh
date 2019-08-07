@@ -89,6 +89,7 @@ export DOMAIN_ADMIN_EMAIL="${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}"
 . ${CONF_DIR}/postfix
 . ${CONF_DIR}/mlmmj
 . ${CONF_DIR}/amavisd
+. ${CONF_DIR}/opendmarc
 . ${CONF_DIR}/iredapd
 . ${CONF_DIR}/memcached
 . ${CONF_DIR}/sogo
@@ -120,6 +121,7 @@ fi
 . ${FUNCTIONS_DIR}/dovecot.sh
 . ${FUNCTIONS_DIR}/mlmmj.sh
 . ${FUNCTIONS_DIR}/amavisd.sh
+. ${FUNCTIONS_DIR}/opendmarc.sh
 . ${FUNCTIONS_DIR}/iredapd.sh
 . ${FUNCTIONS_DIR}/clamav.sh
 . ${FUNCTIONS_DIR}/spamassassin.sh

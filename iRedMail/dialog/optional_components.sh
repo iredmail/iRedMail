@@ -28,6 +28,17 @@
 # Note: item_descrition must be concatenated by '_'.
 export LIST_OF_OPTIONAL_COMPONENTS=''
 
+# OpenDMARC
+export DIALOG_SELECTABLE_OPENDMARC='YES'
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    # OpenBSD 6.5 doesn't have binary package for opendmarc, but 6.6 does.
+    export DIALOG_SELECTABLE_OPENDMARC='NO'
+fi
+
+if [ X"${DIALOG_SELECTABLE_OPENDMARC}" == X'YES' ]; then
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} DMARC Domain-based_Message_Authentication,_Reporting_and_Conformance on"
+fi
+
 # Fail2ban
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
 if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
@@ -66,6 +77,11 @@ ${LIST_OF_OPTIONAL_COMPONENTS} \
 
     OPTIONAL_COMPONENTS="$(cat ${tmp_config_optional_components})"
     rm -f ${tmp_config_optional_components} &>/dev/null
+fi
+
+if echo ${OPTIONAL_COMPONENTS} | grep -i 'dmarc' &>/dev/null; then
+    export USE_DMARC='YES'
+    echo "export USE_DMARC='YES'" >> ${IREDMAIL_CONFIG_FILE}
 fi
 
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' &>/dev/null; then
