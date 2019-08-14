@@ -268,13 +268,23 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     check_pkg ${BIN_PERL} ${PKG_PERL}
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    _missing_pkgs=''
+
+    if [ ! -e /usr/sbin/update-ca-certificates ]; then
+        _missing_pkgs="${_missing_pkgs} ca-certificates"
+    fi
+
     if [ ! -e /usr/lib/apt/methods/https ]; then
-        eval ${install_pkg} ${PKG_APT_TRANSPORT_HTTPS}
+        _missing_pkgs="${_missing_pkgs} ${PKG_APT_TRANSPORT_HTTPS}"
     fi
 
     # dirmngr is required by apt-key
     if [ ! -e /usr/bin/dirmngr ]; then
-        eval ${install_pkg} dirmngr
+        _missing_pkgs="${_missing_pkgs} dirmngr"
+    fi
+
+    if [ X"${_missing_pkgs}" != X'' ]; then
+        eval ${install_pkg} ${_missing_pkgs}
     fi
 
     # Force update.

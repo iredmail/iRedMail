@@ -30,6 +30,12 @@ export DMARC_DB_USER="${DMARC_DB_USER:=dmarc}"
 export OPENDMARC_CONF='/etc/opendmarc.conf'
 export OPENDMARC_CONF_DIR='/etc/opendmarc'
 export OPENDMARC_SPOOL_DIR='/var/spool/opendmarc'
+
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export OPENDMARC_CONF='/usr/local/etc/opendmarc.conf'
+    export OPENDMARC_CONF_DIR='/usr/local/etc/opendmarc'
+fi
+
 export OPENDMARC_CONF_IGNORE_HOSTS="${OPENDMARC_CONF_DIR}/ignore.hosts"
 export OPENDMARC_CONF_PUBLIC_SUFFIX_LIST="${OPENDMARC_CONF_DIR}/public_suffix_list.dat"
 export OPENDMARC_CONF_HISTORY_FILE="${OPENDMARC_SPOOL_DIR}/opendmarc.dat"

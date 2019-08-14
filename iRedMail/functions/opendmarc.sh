@@ -44,11 +44,11 @@ opendmarc_config()
     perl -pi -e 's#PH_OPENDMARC_CONF_PUBLIC_SUFFIX_LIST#$ENV{OPENDMARC_CONF_PUBLIC_SUFFIX_LIST}#g' ${OPENDMARC_CONF}
     perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${OPENDMARC_CONF}
 
-    ECHO_DEBUG "Download public_suffix_list.dat."
+    ECHO_DEBUG "Copy public_suffix_list.dat."
     cd ${OPENDMARC_CONF_DIR}
     rm -f public_suffix_list.dat &>/dev/null
-    ${FETCH_CMD} https://publicsuffix.org/list/public_suffix_list.dat && \
-        chown ${SYS_USER_OPENDMARC}:${SYS_GROUP_OPENDMARC} public_suffix_list.dat
+    cp -f ${SAMPLE_DIR}/opendmarc/public_suffix_list.dat.bz2 .
+    bunzip2 public_suffix_list.dat.bz2
 
     ECHO_DEBUG "Generate ${OPENDMARC_CONF_IGNORE_HOSTS}."
     touch ${OPENDMARC_CONF_IGNORE_HOSTS}

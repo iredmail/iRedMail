@@ -476,7 +476,7 @@ EOF
 
     # Amavisd-new. REQUIRED.
     cat > /var/db/ports/security_amavisd-new/options <<EOF
-OPTIONS_FILE_SET+=ALTERMIME
+OPTIONS_FILE_UNSET+=ALTERMIME
 OPTIONS_FILE_SET+=ARC
 OPTIONS_FILE_SET+=ARJ
 OPTIONS_FILE_SET+=BDB
