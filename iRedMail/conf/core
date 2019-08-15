@@ -600,18 +600,18 @@ add_sys_user_group()
     ECHO_DEBUG "Create system account: ${_user}:${_group}."
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd ${_arg_g} -n ${_group} >> ${INSTALL_LOG} 2>&1
-        pw useradd ${_arg_u} -n ${_user} >> ${INSTALL_LOG} 2>&1
+        pw groupadd ${_args_g} -n ${_group} >> ${INSTALL_LOG} 2>&1
+        pw useradd ${_args_u} -n ${_user} >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        groupadd ${_arg_g} ${_user} >> ${INSTALL_LOG} 2>&1
+        groupadd ${_args_g} ${_user} >> ${INSTALL_LOG} 2>&1
         useradd \
-            -u ${SYS_USER_VMAIL_UID} \
-            -g ${SYS_GROUP_VMAIL} \
-            -s ${SHELL_NOLOGIN} \
-            ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
+            -u ${_uid} \
+            -g ${_group} \
+            -s ${_shell} \
+            ${_user} >> ${INSTALL_LOG} 2>&1
     else
-        groupadd ${_arg_g} ${_group} >> ${INSTALL_LOG} 2>&1
-        useradd ${_arg_u} ${_user} >> ${INSTALL_LOG} 2>&1
+        groupadd ${_args_g} ${_group} >> ${INSTALL_LOG} 2>&1
+        useradd ${_args_u} ${_user} >> ${INSTALL_LOG} 2>&1
     fi
 }
 
