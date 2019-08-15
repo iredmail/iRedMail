@@ -321,7 +321,12 @@ hash_maildir()
     echo ${maildir}
 }
 
-# Service control: enable, disable, [start | stop | restart]
+# All Linux/BSD distributions: for one service:
+#   service_control [enable|disable|start|stop|restart] <service>
+# Linux: for multiple services:
+#   service_control [enable|disable|start|stop|restart] <service1> <service2> <service3> ...
+# FreeBSD: for one service:
+#   service_control enable '<service>_enable' 'YES'
 service_control()
 {
     action="$1"     # enable, disable, start, stop, restart
@@ -573,32 +578,40 @@ add_sys_user_group()
     _home="$5"
     _shell="$6"
 
+    _args_u="-m -g ${_group}"
+    _args_g=''
+    if [ X"${_uid}" != X'' ]; then
+        _args_u="${_args_u} -u ${_uid}"
+    fi
+
+    if [ X"${_gid}" != X'' ]; then
+        _args_g="${_args_g} -g ${_gid}"
+    fi
+
     if [ X"${_home}" == X'' ]; then
-        _home="/home/${_user}"
+        _args_u="${_args_u} -d ${_home}"
     fi
 
     if [ X"${_shell}" == X'' ]; then
         _shell="${SHELL_NOLOGIN}"
+        _args_u="${_args_u} -s ${_shell}"
     fi
 
-    ECHO_DEBUG "Create system account: ${_user}:${_group} (${_uid}:${_gid})."
+    ECHO_DEBUG "Create system account: ${_user}:${_group}."
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${_gid} -n ${_group} >> ${INSTALL_LOG} 2>&1
-        pw useradd -m \
-            -u ${_gid} \
-            -g ${_group} \
-            -s ${_shell} \
-            -d ${_home} \
-            -n ${_user} >> ${INSTALL_LOG} 2>&1
+        pw groupadd ${_arg_g} -n ${_group} >> ${INSTALL_LOG} 2>&1
+        pw useradd ${_arg_u} -n ${_user} >> ${INSTALL_LOG} 2>&1
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        groupadd ${_arg_g} ${_user} >> ${INSTALL_LOG} 2>&1
+        useradd \
+            -u ${SYS_USER_VMAIL_UID} \
+            -g ${SYS_GROUP_VMAIL} \
+            -s ${SHELL_NOLOGIN} \
+            ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
     else
-        groupadd -g ${_gid} ${_group} >> ${INSTALL_LOG} 2>&1
-        useradd -m \
-            -u ${_uid} \
-            -g ${_group} \
-            -s ${_shell} \
-            -d ${_home} \
-            ${_user} >> ${INSTALL_LOG} 2>&1
+        groupadd ${_arg_g} ${_group} >> ${INSTALL_LOG} 2>&1
+        useradd ${_arg_u} ${_user} >> ${INSTALL_LOG} 2>&1
     fi
 }
 

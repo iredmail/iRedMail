@@ -32,7 +32,7 @@ export OPENDMARC_CONF_DIR='/etc/opendmarc'
 export OPENDMARC_SPOOL_DIR='/var/spool/opendmarc'
 
 if [ X"${DISTRO}" == X'FREEBSD' ]; then
-    export OPENDMARC_CONF='/usr/local/etc/opendmarc.conf'
+    export OPENDMARC_CONF='/usr/local/etc/mail/opendmarc.conf'
     export OPENDMARC_CONF_DIR='/usr/local/etc/opendmarc'
 fi
 

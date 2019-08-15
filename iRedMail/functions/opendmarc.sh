@@ -24,6 +24,10 @@ opendmarc_config()
 {
     ECHO_INFO "Configure OpenDMARC."
 
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        add_sys_user_group ${SYS_USER_OPENDMARC} ${SYS_GROUP_OPENDMARC}
+    fi
+
     backup_file ${OPENDMARC_CONF}
     mkdir -p ${OPENDMARC_CONF_DIR} >> ${INSTALL_LOG} 2>&1
 
@@ -70,6 +74,10 @@ opendmarc_config()
     cat ${SAMPLE_DIR}/postfix/main.cf.opendmarc >> ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_OPENDMARC_PORT#$ENV{OPENDMARC_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_OPENDMARC_BIND_HOST#$ENV{OPENDMARC_BIND_HOST}#g' ${POSTFIX_FILE_MAIN_CF}
+
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        service_control enable 'opendmarc_enable' 'YES' >> ${INSTALL_LOG} 2>&1
+    fi
 
     echo 'export status_opendmarc_config="DONE"' >> ${STATUS_FILE}
 }

@@ -20,29 +20,11 @@ add_user_vmail()
 
     # vmail/vmail must has the same UID/GID on all supported Linux/BSD
     # distributions, required by cluster environment. e.g. GlusterFS.
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        pw groupadd -g ${SYS_GROUP_VMAIL_GID} -n ${SYS_GROUP_VMAIL}
-        pw useradd -m \
-            -u ${SYS_USER_VMAIL_UID} \
-            -g ${SYS_GROUP_VMAIL} \
-            -s ${SHELL_NOLOGIN} \
-            -n ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        groupadd -g ${SYS_GROUP_VMAIL_GID} ${SYS_GROUP_VMAIL} >> ${INSTALL_LOG} 2>&1
-        # Don't use -m to create new home directory
-        useradd \
-            -u ${SYS_USER_VMAIL_UID} \
-            -g ${SYS_GROUP_VMAIL} \
-            -s ${SHELL_NOLOGIN} \
-            ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
-    else
-        groupadd -g ${SYS_GROUP_VMAIL_GID} ${SYS_GROUP_VMAIL} >> ${INSTALL_LOG} 2>&1
-        useradd -m \
-            -u ${SYS_USER_VMAIL_UID} \
-            -g ${SYS_GROUP_VMAIL} \
-            -s ${SHELL_NOLOGIN} \
-            ${SYS_USER_VMAIL} >> ${INSTALL_LOG} 2>&1
-    fi
+    add_sys_user_group \
+        ${SYS_USER_VMAIL} \
+        ${SYS_GROUP_VMAIL} \
+        ${SYS_USER_VMAIL_UID} \
+        ${SYS_GROUP_VMAIL_GID} >> ${INSTALL_LOG} 2>&1
 
     if [ -n "${MAILBOX_INDEX_DIR}" ]; then
         if [ ! -d ${MAILBOX_INDEX_DIR} ]; then
