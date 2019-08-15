@@ -143,9 +143,6 @@ echo "export WEB_SERVER='${WEB_SERVER}'" >>${IREDMAIL_CONFIG_FILE}
 # --------------------- Backends --------------------
 # --------------------------------------------------
 export DIALOG_AVAILABLE_BACKENDS=''
-if [ X"${ENABLE_BACKEND_LDAPD}" == X'YES' ]; then
-    export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} ldapd The_OpenBSD_built-in_LDAP_server off"
-fi
 if [ X"${ENABLE_BACKEND_OPENLDAP}" == X'YES' ]; then
     export DIALOG_AVAILABLE_BACKENDS="${DIALOG_AVAILABLE_BACKENDS} OpenLDAP An_open_source_implementation_of_LDAP_protocol off"
 fi
@@ -172,9 +169,7 @@ TIP: Use SPACE key to select item.
 done
 
 rm -f ${RUNTIME_DIR}/.backend &>/dev/null
-if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-    export BACKEND='OPENLDAP'
-elif [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
+if [ X"${BACKEND_ORIG}" == X'OPENLDAP' ]; then
     export BACKEND='OPENLDAP'
 elif [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
     export BACKEND='MYSQL'

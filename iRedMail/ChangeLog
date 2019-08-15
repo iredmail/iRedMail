@@ -10,6 +10,7 @@ iRedMail-1.0:
             NOTE: We have no plan to support non-LTS edition anymore, only the
             latest LTS edition will be supported.
 
+    * Drop support for OpenBSD ldapd backend.
     * Improvements:
         + OpenDMARC integration on Linux and FreeBSD.
 

@@ -82,7 +82,6 @@ export DOMAIN_ADMIN_EMAIL="${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}"
 # Import global variables in specified order.
 . ${CONF_DIR}/web_server
 . ${CONF_DIR}/openldap
-. ${CONF_DIR}/ldapd
 . ${CONF_DIR}/mysql
 . ${CONF_DIR}/postgresql
 . ${CONF_DIR}/dovecot

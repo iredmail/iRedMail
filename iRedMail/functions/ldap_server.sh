@@ -126,25 +126,15 @@ ldap_server_config()
     # SSHA512, BCRYPT is not supported by OpenLDAP.
     export LDAP_ROOTPW_SSHA="$(generate_password_hash SSHA ${LDAP_ROOTPW})"
 
-    if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-        . ${FUNCTIONS_DIR}/ldapd.sh
+    . ${FUNCTIONS_DIR}/openldap.sh
 
-        check_status_before_run ldapd_config
-    else
-        . ${FUNCTIONS_DIR}/openldap.sh
-
-        check_status_before_run openldap_config && \
-        check_status_before_run openldap_data_initialize
-    fi
+    check_status_before_run openldap_config && \
+    check_status_before_run openldap_data_initialize
 }
 
 ldap_server_cron_backup()
 {
-    if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-        ldap_backup_script="${BACKUP_DIR}/${BACKUP_SCRIPT_LDAPD_NAME}"
-    else
-        ldap_backup_script="${BACKUP_DIR}/${BACKUP_SCRIPT_LDAP_NAME}"
-    fi
+    ldap_backup_script="${BACKUP_DIR}/${BACKUP_SCRIPT_LDAP_NAME}"
 
     ECHO_INFO "Setup daily cron job to backup LDAP data with ${ldap_backup_script}"
 
@@ -159,12 +149,6 @@ ldap_server_cron_backup()
     perl -pi -e 's#^(export BACKUP_ROOTDIR=).*#${1}"$ENV{BACKUP_DIR}"#' ${ldap_backup_script}
     perl -pi -e 's#^(export MYSQL_USER=).*#${1}"$ENV{IREDADMIN_DB_USER}"#' ${ldap_backup_script}
     perl -pi -e 's#^(export MYSQL_PASSWD=).*#${1}"$ENV{IREDADMIN_DB_PASSWD}"#' ${ldap_backup_script}
-
-    if [ X"${BACKEND_ORIG}" == X'LDAPD' ]; then
-        perl -pi -e 's#(export LDAP_BASE_DN=).*#${1}"$ENV{LDAP_SUFFIX}"#g' ${ldap_backup_script}
-        perl -pi -e 's#(export LDAP_BIND_DN=).*#${1}"$ENV{LDAP_ROOTDN}"#g' ${ldap_backup_script}
-        perl -pi -e 's#(export LDAP_BIND_PASSWORD=).*#${1}"$ENV{LDAP_ROOTPW}"#g' ${ldap_backup_script}
-    fi
 
     # Add cron job
     cat >> ${CRON_FILE_ROOT} <<EOF

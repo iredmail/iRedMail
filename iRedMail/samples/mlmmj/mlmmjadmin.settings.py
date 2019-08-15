@@ -28,7 +28,7 @@ log_level = 'info'
 #
 # Available backends:
 #
-#   - bk_iredmail_ldap: for iRedMail with LDAP backends (OpenLDAP, OpenBSD ldapd)
+#   - bk_iredmail_ldap: for iRedMail with OpenLDAP backend
 #   - bk_iredmail_sql: for iRedMail with SQL backends (MySQL, MariaDB, PostgreSQL)
 #   - bk_none: pure mlmmj, no SQL/LDAP database.
 #
