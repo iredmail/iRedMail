@@ -588,14 +588,14 @@ add_sys_user_group()
         _args_g="${_args_g} -g ${_gid}"
     fi
 
-    if [ X"${_home}" == X'' ]; then
+    if [ X"${_home}" != X'' ]; then
         _args_u="${_args_u} -d ${_home}"
     fi
 
     if [ X"${_shell}" == X'' ]; then
         _shell="${SHELL_NOLOGIN}"
-        _args_u="${_args_u} -s ${_shell}"
     fi
+    _args_u="${_args_u} -s ${_shell}"
 
     ECHO_DEBUG "Create system account: ${_user}:${_group}."
 
