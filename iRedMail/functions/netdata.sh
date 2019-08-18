@@ -34,9 +34,6 @@ netdata_install()
 
     ln -s ${NETDATA_CONF_DIR} /etc/netdata >> ${INSTALL_LOG} 2>&1
 
-    # Disable sending anonymouse statistics to netdata cloud.
-    touch ${NETDATA_CONF_DIR}/.opt-out-from-anonymous-statistics
-
     # netdata will handle logrotate config file automatically.
     ln -s ${NETDATA_LOG_DIR} /var/log/netdata >> ${INSTALL_LOG} 2>&1
 
@@ -45,6 +42,11 @@ netdata_install()
 
 netdata_config()
 {
+    ECHO_INFO "Configure netdata."
+
+    # Disable sending anonymouse statistics to netdata cloud.
+    touch ${NETDATA_CONF_DIR}/.opt-out-from-anonymous-statistics
+
     # Enable service.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         service_control enable 'netdata_enable' 'YES' >> ${INSTALL_LOG} 2>&1
@@ -57,6 +59,10 @@ netdata_config()
     ECHO_DEBUG "Generate netdata config file: ${SAMPLE_DIR}/netdata/netdata.conf -> ${NETDATA_CONF}."
     cp -f ${SAMPLE_DIR}/netdata/netdata.conf ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
     chown ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
+
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        perl -pi -e 's#( *memory mode =).*#${1} save#g' ${NETDATA_CONF}
+    fi
 
     perl -pi -e 's#PH_NETDATA_PORT#$ENV{NETDATA_PORT}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
     perl -pi -e 's#PH_SYS_USER_NETDATA#$ENV{SYS_USER_NETDATA}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
