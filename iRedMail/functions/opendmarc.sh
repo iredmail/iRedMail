@@ -72,8 +72,8 @@ opendmarc_config()
     ECHO_DEBUG "Enable OpenDMARC integration."
 
     cat ${SAMPLE_DIR}/postfix/main.cf.opendmarc >> ${POSTFIX_FILE_MAIN_CF}
-    perl -pi -e 's#PH_OPENDMARC_PORT#$ENV{OPENDMARC_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_OPENDMARC_BIND_HOST#$ENV{OPENDMARC_BIND_HOST}#g' ${POSTFIX_FILE_MAIN_CF}
+    perl -pi -e 's#PH_OPENDMARC_PORT#$ENV{OPENDMARC_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         service_control enable 'opendmarc_enable' 'YES' >> ${INSTALL_LOG} 2>&1
