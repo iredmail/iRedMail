@@ -112,11 +112,9 @@ dovecot_config()
     perl -pi -e 's#PH_AUTH_MASTER_GROUP#$ENV{SYS_GROUP_VMAIL}#' ${DOVECOT_CONF}
 
     # service stats {}
-    if [ X"${DOVECOT_VERSION}" == X'2.2' ]; then
-        perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_PORT#$ENV{DOVECOT_SERVICE_STATS_PORT}#' ${DOVECOT_CONF}
-        perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_USER#$ENV{DOVECOT_SERVICE_STATS_USER}#' ${DOVECOT_CONF}
-        perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_GROUP#$ENV{DOVECOT_SERVICE_STATS_GROUP}#' ${DOVECOT_CONF}
-    fi
+    perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_PORT#$ENV{DOVECOT_SERVICE_STATS_PORT}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_USER#$ENV{DOVECOT_SERVICE_STATS_USER}#' ${DOVECOT_CONF}
+    perl -pi -e 's#PH_DOVECOT_SERVICE_STATS_GROUP#$ENV{DOVECOT_SERVICE_STATS_GROUP}#' ${DOVECOT_CONF}
 
     # Virtual mail accounts.
     # Reference: http://wiki2.dovecot.org/AuthDatabase/LDAP
