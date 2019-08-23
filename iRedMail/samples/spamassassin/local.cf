@@ -180,4 +180,7 @@ ok_locales          all
 # https://wiki.apache.org/spamassassin/Rules/RP_MATCHES_RCVD
 score RP_MATCHES_RCVD 0
 
+# SPF mismatch
+score SPF_FAIL 5
+
 razor_config PH_SA_PLUGIN_RAZOR_CONF
