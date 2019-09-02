@@ -93,7 +93,7 @@ export PHP_FPM_POOL_START_SERVERS=5
 export PHP_FPM_POOL_MIN_SPARE_SERVERS=5
 export PHP_FPM_POOL_MAX_SPARE_SERVERS=10
 export PHP_FPM_POOL_MAX_REQUESTS=100
-export PHP_FPM_POOL_REQUEST_TERMINATE_TIMEOUT='10s'
+export PHP_FPM_POOL_REQUEST_TERMINATE_TIMEOUT='60s'
 
 # connection type: mysql, mysqli (recommended for MySQL/MariaDB), pgsql.
 export PHP_CONN_TYPE='mysqli'
