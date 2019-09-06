@@ -41,7 +41,7 @@ iRedMail-1.0:
 
     * Updated packages:
         + Roundcube webmail -> 1.3.10
-        + iRedAdmin -> 0.9.7
+        + iRedAdmin -> 0.9.8
         + iRedAPD -> 3.1
         + mlmmjadmin -> 2.1
         + netdata -> 1.17.0
