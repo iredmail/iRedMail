@@ -1,4 +1,8 @@
-iRedMail-1.0:
+iRedMail-1.0-beta2:
+    * Fixed issues:
+        - Improper postrotate command for log files on Linux.
+
+iRedMail-1.0-beta1:
     * Supports new distribution release:
         + OpenBSD 6.5
         + Debian 10

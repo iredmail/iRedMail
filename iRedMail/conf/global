@@ -480,12 +480,19 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
     # Syslog
     export SYS_GROUP_SYSLOG='adm'
-    export SYSLOG_POSTROTATE_CMD='/usr/sbin/service rsyslog restart'
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
         export SYSLOG_CONF='/etc/rsyslog.conf'
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         export SYS_USER_SYSLOG='syslog'
         export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
+    fi
+
+    if [ X"${DISTRO_CODENAME}" == X'stretch' ]; then
+        # Debian 9
+        export SYSLOG_POSTROTATE_CMD='/usr/sbin/service rsyslog restart'
+    else
+        # Debian 10, Ubuntu 18.04
+        export SYSLOG_POSTROTATE_CMD='/usr/lib/rsyslog/rsyslog-rotate'
     fi
 
     # systemd support.
