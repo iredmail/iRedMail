@@ -523,9 +523,6 @@ EOF
 
     ALL_PORTS="${ALL_PORTS} security/amavisd-new"
 
-    # OpenDMARC
-    ALL_PORTS="${ALL_PORTS} mail/opendmarc"
-
     # Postfix. REQUIRED.
     cat > /var/db/ports/mail_postfix/options <<EOF
 OPTIONS_FILE_SET+=BDB

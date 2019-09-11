@@ -241,13 +241,6 @@ install_all()
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_SERVICE_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
 
-    # OpenDMARC
-    if [ X"${DISTRO}" != X'OPENBSD' ]; then
-        # OpenBSD 6.5 doesn't have opendmarc package yet, but 6.6 does.
-        ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENDMARC_RC_SCRIPT_NAME}"
-        ALL_PKGS="${ALL_PKGS} opendmarc"
-    fi
-
     # mlmmj: mailing list manager
     ALL_PKGS="${ALL_PKGS} mlmmj"
     if [ X"${DISTRO}" == X'RHEL' ]; then

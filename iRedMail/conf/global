@@ -111,9 +111,6 @@ export MLMMJADMIN_BIND_HOST="${LOCAL_ADDRESS}"
 export MLMMJADMIN_SERVER_ADDRESS="${MLMMJADMIN_SERVER_ADDRESS:=${MLMMJADMIN_BIND_HOST}}"
 # For managesieve service and software.
 export USE_MANAGESIEVE='YES'
-# OpenDMARC
-export OPENDMARC_BIND_HOST="${LOCAL_ADDRESS}"
-export OPENDMARC_PORT="${OPENDMARC_PORT:=8893}"
 
 # vmail user/group name, uid and gid.
 export SYS_USER_VMAIL='vmail'
@@ -122,10 +119,6 @@ export SYS_GROUP_VMAIL='vmail'
 # netdata
 export SYS_USER_NETDATA='netdata'
 export SYS_GROUP_NETDATA='netdata'
-
-# dmarc
-export SYS_USER_DMARC='opendmarc'
-export SYS_GROUP_DMARC='opendmarc'
 
 # Specify UID/GID for system accounts. Required if you have multiple LDA/LMTP
 # servers access same mailbox storage. e.g. cluster environment.

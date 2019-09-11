@@ -10,10 +10,6 @@ optional_components()
     # iRedAPD.
     check_status_before_run iredapd_setup
 
-    # DMARC
-    [ X"${USE_DMARC}" == X'YES' -a X"${DISTRO}" != X'OPENBSD' ] && \
-        check_status_before_run opendmarc_config
-
     # iRedAdmin.
     [ X"${USE_IREDADMIN}" == X'YES' ] && check_status_before_run iredadmin_setup
 

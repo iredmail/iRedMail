@@ -1,4 +1,8 @@
 iRedMail-1.0-beta2:
+    * Removed OpenDMARC integration due to internal bug which caused incorrect
+      email rejection. Bug reported to upstream:
+      https://github.com/trusteddomainproject/OpenDMARC/issues/50
+
     * Fixed issues:
         - Improper postrotate command for log files on Linux.
 
@@ -16,12 +20,6 @@ iRedMail-1.0-beta1:
 
     * Drop support for OpenBSD ldapd backend.
     * Improvements:
-        + OpenDMARC integration on Linux and FreeBSD.
-
-            Unfortunately the latest OpenBSD release (6.5) doesn't offer
-            binary package for opendmarc, but 6.6 does. We have to wait for
-            OpenBSD 6.6 to enable OpenDMARC integration.
-
         + Dovecot:
             - Enable quota-status service. Postfix can query this service and
               reject email immediately if user's mailbox is over quota.

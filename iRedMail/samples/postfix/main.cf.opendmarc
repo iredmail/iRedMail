@@ -1,6 +1,0 @@
-#
-# OpenDMARC integration
-#
-smtpd_milters = inet:PH_OPENDMARC_BIND_HOST:PH_OPENDMARC_PORT
-non_smtpd_milters = inet:PH_OPENDMARC_BIND_HOST:PH_OPENDMARC_PORT
-
