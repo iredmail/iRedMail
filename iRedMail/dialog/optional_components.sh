@@ -68,11 +68,6 @@ ${LIST_OF_OPTIONAL_COMPONENTS} \
     rm -f ${tmp_config_optional_components} &>/dev/null
 fi
 
-if echo ${OPTIONAL_COMPONENTS} | grep -i 'dmarc' &>/dev/null; then
-    export USE_DMARC='YES'
-    echo "export USE_DMARC='YES'" >> ${IREDMAIL_CONFIG_FILE}
-fi
-
 if echo ${OPTIONAL_COMPONENTS} | grep -i 'iredadmin' &>/dev/null; then
     export USE_IREDADMIN='YES'
     echo "export USE_IREDADMIN='YES'" >> ${IREDMAIL_CONFIG_FILE}
