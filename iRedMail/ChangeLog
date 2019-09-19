@@ -4,7 +4,11 @@ iRedMail-1.0-beta2:
       https://github.com/trusteddomainproject/OpenDMARC/issues/50
 
     * Fixed issues:
+        - Incorect SSL CA file path on FreeBSD.
         - Improper postrotate command for log files on Linux.
+
+    * Updated packages:
+        + netdata -> 1.17.1
 
 iRedMail-1.0-beta1:
     * Supports new distribution release:
