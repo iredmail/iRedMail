@@ -93,7 +93,7 @@ postfix_config_basic()
     perl -pi -e 's#PH_SSL_KEY_FILE#$ENV{SSL_KEY_FILE}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_SSL_CERT_DIR#$ENV{SSL_CERT_DIR}#g' ${POSTFIX_FILE_MAIN_CF}
 
-    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
         perl -pi -e 's#^(smtpd_tls_CAfile =).*#${1} /etc/ssl/cert.pem#g' ${POSTFIX_FILE_MAIN_CF}
         perl -pi -e 's#^(smtpd_tls_CApath=).*#${1}#g' ${POSTFIX_FILE_MAIN_CF}
     fi
