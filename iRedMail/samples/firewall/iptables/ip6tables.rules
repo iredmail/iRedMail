@@ -27,6 +27,8 @@
 # Loop device.
 -A INPUT -i lo -j ACCEPT
 
+-A INPUT -p ipv6-icmp -j ACCEPT
+
 # ssh
 -A INPUT -p tcp --dport 22 -j ACCEPT
 
