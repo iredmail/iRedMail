@@ -500,10 +500,9 @@ EOF
             update_sysctl_param kern.seminfo.semopm 200
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" != X"bionic" -a X"${DISTRO_CODENAME}" != X"stretch" ]; then
-                # Create symbol link
                 cd ${PKG_MISC_DIR} && \
-                    tar zxf web.py-0.39.tar.gz && \
-                    cp -rf web.py-0.39/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
+                    tar zxf web.py-0.40.tar.gz && \
+                    cp -rf web.py-0.40/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
             fi
         fi
 
