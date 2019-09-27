@@ -85,9 +85,13 @@ for r in records:
         _type = 'mail user'
 
     account = str(r.address).lower()
-    members = [i.lower() for i in set(r.goto.strip(' ').split(','))]
     active = int(r.active)
     domain = str(r.domain).lower()
+
+    goto = r.goto.strip(' ')
+    goto = goto.replace(' ', '')
+    goto = goto.replace(';', ',')
+    members = list(set([i.strip().lower() for i in goto.strip(' ').split(',')]))
 
     # Migrating forwardings
     print "* [%d/%d] Migrating %s %s" % (counter, total, _type, account)
