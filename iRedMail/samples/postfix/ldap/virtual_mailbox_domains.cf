@@ -6,6 +6,6 @@ bind_dn         = PH_LDAP_BINDDN
 bind_pw         = PH_LDAP_BINDPW
 search_base     = PH_LDAP_BASEDN
 scope           = one
-query_filter    = (&(objectClass=mailDomain)(|(domainName=%s)(&(enabledService=domainalias)(domainAliasName=%s)))(!(domainBackupMX=yes))(accountStatus=active)(enabledService=mail))
+query_filter    = (&(objectClass=mailDomain)(|(domainName=%d)(&(enabledService=domainalias)(domainAliasName=%d)))(!(domainBackupMX=yes))(accountStatus=active)(enabledService=mail))
 result_attribute= domainName
 debuglevel      = 0
