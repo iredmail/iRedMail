@@ -142,12 +142,6 @@ rcm_config()
         perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#g' ${RCM_CONF}
     fi
 
-    # Attachment size.
-    if [ -f ${RCM_HTTPD_ROOT}/.htaccess ]; then
-        perl -pi -e 's#(.*upload_max_filesize.*)5M#${1}10M#' ${RCM_HTTPD_ROOT}/.htaccess
-        perl -pi -e 's#(.*post_max_size.*)6M#${1}12M#' ${RCM_HTTPD_ROOT}/.htaccess
-    fi
-
     cat >> ${TIP_FILE} <<EOF
 Roundcube webmail: ${RCM_HTTPD_ROOT}
     * Config file: ${RCM_CONF_DIR}
