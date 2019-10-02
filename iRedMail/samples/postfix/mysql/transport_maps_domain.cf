@@ -2,4 +2,4 @@ hosts       = PH_SQL_SERVER_ADDRESS:PH_SQL_SERVER_PORT
 user        = PH_VMAIL_DB_BIND_USER
 password    = PH_VMAIL_DB_BIND_PASSWD
 dbname      = PH_VMAIL_DB_NAME
-query       = SELECT transport FROM domain WHERE domain='%s' AND active=1
+query       = SELECT transport FROM domain WHERE domain='%d' AND active=1
