@@ -116,7 +116,7 @@ for user in qr:
     try:
         print "* (%d of %d) Updating object: %s" % (count, total, dn)
         conn.modify_s(dn, mod_attrs)
-    except Exception, e:
+    except Exception as e:
         print '<<< ERROR >>> %s' % str(e)
 
     count += 1

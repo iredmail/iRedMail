@@ -49,7 +49,7 @@ try:
                           use_unicode=False)
 
     db.supports_multiple_insert = True
-except Exception, e:
+except Exception as e:
     print "<< ERROR >> Cannot connecting to SQL server:", e
     sys.exit()
 
@@ -57,7 +57,7 @@ except Exception, e:
 for tbl in ['forwardings', 'alias_moderators']:
     try:
         db.select(tbl, limit=1)
-    except Exception, e:
+    except Exception as e:
         print "<<< ERROR >>> SQL table '%s' doesn't exist. Please create it first." % tbl
         sys.exit()
 
@@ -110,7 +110,7 @@ for r in records:
                           is_alias=is_alias,
                           is_forwarding=is_forwarding)
 
-            except Exception, e:
+            except Exception as e:
                 if e[0] == 1062 or 'duplicate' in repr(e):
                     # Duplicate record
                     pass
@@ -133,7 +133,7 @@ for r in records:
                           moderator=m,
                           domain=domain,
                           dest_domain=dest_domain)
-            except Exception, e:
+            except Exception as e:
                 if e[0] == 1062 or 'duplicate' in repr(e):
                     # Duplicate record
                     pass

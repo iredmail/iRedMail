@@ -146,5 +146,5 @@ try:
     # Unbind connection.
     print "* Unbind LDAP server."
     conn.unbind()
-except Exception, e:
+except Exception as e:
     print '<<< ERROR >>> %s' % str(e)

@@ -29,7 +29,7 @@ def generate_ssha512_password(p):
         pw = sha512(p)
         pw.update(salt)
         return '{SSHA512}' + b64encode(pw.digest() + salt)
-    except ImportError, e:
+    except ImportError as e:
         print e
         # Use SSHA password instead if python is older than 2.5.
         return generate_ssha_password(p)
