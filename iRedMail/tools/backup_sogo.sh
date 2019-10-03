@@ -86,6 +86,8 @@ if which python2 &>/dev/null; then
     shift_month="$(echo ${shift_date} | awk -F'-' '{print $2}')"
     shift_day="$(echo ${shift_date} | awk -F'-' '{print $3}')"
     export REMOVED_BACKUP="${BACKUP_ROOTDIR}/sogo/${shift_year}/${shift_month}/${shift_day}.tar.bz2"
+    export REMOVED_BACKUP_MONTH_DIR="${BACKUP_ROOTDIR}/sogo/${shift_year}/${shift_month}"
+    export REMOVED_BACKUP_YEAR_DIR="${BACKUP_ROOTDIR}/sogo/${shift_year}"
 fi
 
 # Check and create directories.
@@ -131,4 +133,8 @@ fi
 if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -f ${REMOVED_BACKUP} ]; then
     echo -e "* Old backup found. Deleting: ${REMOVED_BACKUP}."
     rm -rf ${REMOVED_BACKUP} &>/dev/null
+
+    # Try to remove empty directory.
+    rmdir ${REMOVED_BACKUP_MONTH_DIR} 2>/dev/null
+    rmdir ${REMOVED_BACKUP_YEAR_DIR} 2>/dev/null
 fi

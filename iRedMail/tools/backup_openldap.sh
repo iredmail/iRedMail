@@ -118,6 +118,8 @@ if which python2 &>/dev/null; then
     shift_month="$(echo ${shift_date} | awk -F'-' '{print $2}')"
     shift_day="$(echo ${shift_date} | awk -F'-' '{print $3}')"
     export REMOVED_BACKUP_DIR="${BACKUP_ROOTDIR}/ldap/${shift_year}/${shift_month}"
+    export REMOVED_BACKUP_MONTH_DIR="${BACKUP_ROOTDIR}/ldap/${shift_year}/${shift_month}"
+    export REMOVED_BACKUP_YEAR_DIR="${BACKUP_ROOTDIR}/ldap/${shift_year}"
     export REMOVED_BACKUPS="${BACKUP_ROOTDIR}/ldap/${shift_year}/${shift_month}/${shift_date}*"
 fi
 
@@ -200,6 +202,10 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     echo -e "* Delete old backup under ${REMOVED_BACKUP_DIR}." >> ${LOGFILE}
     echo -e "* Suppose to delete: ${REMOVED_BACKUPS}" >> ${LOGFILE}
     rm -rf ${REMOVED_BACKUPS} >> ${LOGFILE} 2>&1
+
+    # Try to remove empty directory.
+    rmdir ${REMOVED_BACKUP_MONTH_DIR} 2>/dev/null
+    rmdir ${REMOVED_BACKUP_YEAR_DIR} 2>/dev/null
 
     if [[ X"${LOG_BACKUP_STATUS}" == X'YES' ]]; then
         sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUPS}.', 'cron_backup_sql', '127.0.0.1', UTC_TIMESTAMP());"
