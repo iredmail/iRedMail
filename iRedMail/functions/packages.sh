@@ -501,8 +501,8 @@ EOF
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" != X"bionic" -a X"${DISTRO_CODENAME}" != X"stretch" ]; then
                 cd ${PKG_MISC_DIR} && \
-                    tar zxf web.py-0.40.tar.gz && \
-                    cp -rf web.py-0.40/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
+                    tar zxf webpy-0.40.tar.gz && \
+                    cp -rf webpy-0.40/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
             fi
         fi
 
