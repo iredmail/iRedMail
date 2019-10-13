@@ -11,7 +11,8 @@ iRedMail-1.0-beta2:
         - Improper postrotate command for log files on Linux.
 
     * Updated packages:
-        + netdata -> 1.17.1
+        + iRedAPD -> 3.2
+        + netdata -> 1.18.0
 
 iRedMail-1.0-beta1:
     * Supports new distribution release:
