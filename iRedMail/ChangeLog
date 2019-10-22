@@ -1,3 +1,7 @@
+iRedMail-1.0:
+    * Updated packages:
+        + netdata -> 1.18.1
+
 iRedMail-1.0-beta2:
     * Removed OpenDMARC integration due to internal bug which caused incorrect
       email rejection. Bug reported to upstream:
