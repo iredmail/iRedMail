@@ -328,8 +328,8 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export CMD_PYTHON2='/usr/local/bin/python2'
     export CMD_PYTHON3='/usr/local/bin/python3'
 
-    # Unsupported release: 6.3 and earlier versions.
-    if echo "${DISTRO_VERSION}" | grep '^6.[0123]' &>/dev/null ; then
+    # Unsupported release: 6.5 and earlier versions.
+    if echo "${DISTRO_VERSION}" | grep '^6.[012345]' &>/dev/null ; then
         export UNSUPPORTED_RELEASE='YES'
     fi
 

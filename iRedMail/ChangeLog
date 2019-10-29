@@ -1,4 +1,7 @@
 iRedMail-1.0:
+    * Supports new distribution release:
+        + OpenBSD 6.6
+
     * Updated packages:
         + netdata -> 1.18.1
 

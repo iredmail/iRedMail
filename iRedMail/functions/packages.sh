@@ -30,10 +30,20 @@ install_all()
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         PKG_SCRIPTS=''
 
-        # OpenBSD-6.5
+        # OpenBSD-6.6
         OB_PKG_PHP_VER='%7.3'
-        OB_PKG_OPENLDAP_SERVER_VER='-2.4.47p0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.47p0'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.4.48'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.48'
+
+        # Check required syspatch for LDAP backend.
+        if [ X"${DISTRO_VERSION}" == X'6.6' -a X"${BACKEND}" == X'OPENLDAP' ]; then
+            if [ ! -f /var/syspatch/66-002_ber/002_ber.patch.sig ]; then
+                echo "Please run 'syspatch' and reboot system to apply required patch for LDAP backend first."
+                echo "                          ^^^^^^"
+                echo "FYI: https://www.openbsd.org/errata66.html#p002_ber".
+                exit 255
+            fi
+        fi
     fi
 
     # Install PHP if there's a web server running -- php is too popular.
