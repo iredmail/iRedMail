@@ -5,6 +5,7 @@ PH_DOVECOT_LOG_DIR/*.log {
     compress
     delaycompress
     notifempty
+    sharedscripts
 
     postrotate
         PH_SYSLOG_POSTROTATE_CMD

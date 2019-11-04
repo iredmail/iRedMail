@@ -5,6 +5,7 @@ PH_IREDAPD_LOG_DIR/*.log {
     compress
     delaycompress
     notifempty
+    sharedscripts
 
     postrotate
         PH_SYSLOG_POSTROTATE_CMD

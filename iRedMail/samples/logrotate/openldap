@@ -5,6 +5,7 @@ PH_OPENLDAP_LOG_FILE {
     create 0600 PH_SYS_USER_LDAP PH_SYS_GROUP_LDAP
     missingok
     notifempty
+    sharedscripts
 
     # Use bzip2 for compress.
     #compresscmd bzip2

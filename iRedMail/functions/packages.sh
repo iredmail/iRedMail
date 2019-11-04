@@ -38,9 +38,13 @@ install_all()
         # Check required syspatch for LDAP backend.
         if [ X"${DISTRO_VERSION}" == X'6.6' -a X"${BACKEND}" == X'OPENLDAP' ]; then
             if [ ! -f /var/syspatch/66-002_ber/002_ber.patch.sig ]; then
+                echo ""
+                echo "============ ERROR ============"
                 echo "Please run 'syspatch' and reboot system to apply required patch for LDAP backend first."
                 echo "                          ^^^^^^"
                 echo "FYI: https://www.openbsd.org/errata66.html#p002_ber".
+                echo "============ ERROR ============"
+                echo ""
                 exit 255
             fi
         fi
