@@ -103,6 +103,7 @@
 
 # bypass some HELOs which contains IP address
 /^o\d{1,3}-\d{1,3}-\d{1,3}-\d{1,3}\.outbound-mail\.sendgrid\.net$/ DUNNO
+/^\d{1,3}-\d{1,3}-\d{1,3}-\d{1,3}\.mail-mail\.facebook\.com$/ DUNNO
 
 # reject HELO which contains IP address
 /(\d{1,3}[\.-]\d{1,3}[\.-]\d{1,3}[\.-]\d{1,3})/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})
