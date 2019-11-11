@@ -2,6 +2,10 @@ iRedMail-1.0:
     * Supports new distribution release:
         + OpenBSD 6.6
 
+    * Fixed issues:
+        - Rejects the new Facebook servers which contain IP address in their
+          HELO identities.
+
     * Updated packages:
         + netdata -> 1.18.1
 
