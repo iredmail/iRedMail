@@ -24,3 +24,6 @@ CREATE TRIGGER `maddr_email_raw`
     END;
 //
 DELIMITER ;
+
+-- Update all existing records.
+UPDATE maddr SET email_raw=email WHERE email_raw='';

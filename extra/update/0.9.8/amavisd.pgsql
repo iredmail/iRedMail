@@ -34,3 +34,6 @@ CREATE TRIGGER maddr_email_raw
     BEFORE INSERT ON maddr
     FOR EACH ROW
     EXECUTE PROCEDURE strip_addr_extension();
+
+-- Update all existing records.
+UPDATE maddr SET email_raw=email WHERE email_raw='';
