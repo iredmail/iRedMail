@@ -74,6 +74,11 @@ clamav_config()
         if [ X"${DISTRO_VERSION}" == X'7' ]; then
             # Enable freshclam
             perl -pi -e 's/^(FRESHCLAM_DELAY.*)/#${1}/g' ${ETC_SYSCONFIG_DIR}/freshclam
+
+            # Increase clamd timeout.
+            mkdir -p /etc/systemd/system/${CLAMAV_CLAMD_SERVICE_NAME}.service.d >> ${INSTALL_LOG} 2>&1
+            cp -f ${SAMPLE_DIR}/systemd/clamd.service.d/override.conf /etc/systemd/system/${CLAMAV_CLAMD_SERVICE_NAME}.service.d/ >> ${INSTALL_LOG} 2>&1
+            systemctl daemon-reload
         fi
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Add clamav user to amavid group."

@@ -3,6 +3,8 @@ iRedMail-1.0:
         + OpenBSD 6.6
 
     * Fixed issues:
+        - Timeout for clamd service to load virus database is too short on
+          CentOS 7.
         - Rejects the new Facebook servers which contain IP address in their
           HELO identities.
 
