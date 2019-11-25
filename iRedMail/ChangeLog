@@ -9,7 +9,7 @@ iRedMail-1.0:
           HELO identities.
 
     * Updated packages:
-        + Roundcube webmail -> 1.4.0
+        + Roundcube webmail -> 1.4.1
         + netdata -> 1.18.1
 
 iRedMail-1.0-beta2:
