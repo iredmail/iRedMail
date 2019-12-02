@@ -58,7 +58,10 @@ netdata_config()
 
     ECHO_DEBUG "Generate netdata config file: ${SAMPLE_DIR}/netdata/netdata.conf -> ${NETDATA_CONF}."
     cp -f ${SAMPLE_DIR}/netdata/netdata.conf ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
-    chown ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
+    cp -f ${SAMPLE_DIR}/netdata/python.d.conf ${NETDATA_PYTHON_D_CONF} >> ${INSTALL_LOG} 2>&1
+    cp -f ${SAMPLE_DIR}/netdata/go.d.conf ${NETDATA_GO_D_CONF} >> ${INSTALL_LOG} 2>&1
+
+    chown ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_CONF} ${NETDATA_PYTHON_D_CONF} ${NETDATA_GO_D_CONF} >> ${INSTALL_LOG} 2>&1
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         perl -pi -e 's#( *memory mode =).*#${1} save#g' ${NETDATA_CONF}

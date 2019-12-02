@@ -10,7 +10,7 @@ iRedMail-1.0:
 
     * Updated packages:
         + Roundcube webmail -> 1.4.1
-        + netdata -> 1.18.1
+        + netdata -> 1.19.0.
 
 iRedMail-1.0-beta2:
     * Removed OpenDMARC integration due to internal bug which caused incorrect
