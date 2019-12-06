@@ -87,8 +87,12 @@ netdata_config()
 netdata_module_config()
 {
     ECHO_DEBUG "Generate ${NETDATA_CONF_PLUGIN_PHPFPM}."
-    backup_file ${NETDATA_CONF_PLUGIN_PHPFPM}
-    cp -f ${SAMPLE_DIR}/netdata/python.d/phpfpm.conf ${NETDATA_CONF_PLUGIN_PHPFPM} >> ${INSTALL_LOG} 2>&1
+
+    mkdir -p ${NETDATA_GO_D_CONF_DIR} &>/dev/null
+
+    # go.d modules: phpfpm, nginx.
+    cp -f ${SAMPLE_DIR}/netdata/go.d/phpfpm.conf ${NETDATA_GO_D_CONF_PHPFPM} >> ${INSTALL_LOG} 2>&1
+    cp -f ${SAMPLE_DIR}/netdata/go.d/nginx.conf ${NETDATA_GO_D_CONF_NGINX} >> ${INSTALL_LOG} 2>&1
 
     # OpenLDAP
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
@@ -107,9 +111,9 @@ GRANT USAGE ON *.* TO ${NETDATA_DB_USER}@${MYSQL_GRANT_HOST} IDENTIFIED BY '${NE
 FLUSH PRIVILEGES;
 EOF
 
-        ECHO_DEBUG "Generate ${NETDATA_CONF_PLUGIN_MYSQL}."
-        backup_file ${NETDATA_CONF_PLUGIN_MYSQL}
-        cp -f ${SAMPLE_DIR}/netdata/python.d/mysql.conf ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
+        ECHO_DEBUG "Generate ${NETDATA_GO_D_CONF_MYSQL}."
+        cp -f ${SAMPLE_DIR}/netdata/go.d/mysql.conf ${NETDATA_GO_D_CONF_MYSQL} >> ${INSTALL_LOG} 2>&1
+
         perl -pi -e 's#PH_MYSQL_SERVER_ADDRESS#$ENV{MYSQL_SERVER_ADDRESS}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
         perl -pi -e 's#PH_MYSQL_SERVER_PORT#$ENV{MYSQL_SERVER_PORT}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
         perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
@@ -127,8 +131,8 @@ EOF
         perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
     fi
 
-    chown ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_CONF_PLUGIN_DIR}/*.conf
-    chmod 0660 ${NETDATA_CONF_PLUGIN_DIR}/*.conf >> ${INSTALL_LOG} 2>&1
+    chown -R ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_GO_D_CONF_DIR} ${NETDATA_PYTHON_D_CONF_DIR}
+    chmod -R 0660 ${NETDATA_GO_D_CONF_DIR} ${NETDATA_PYTHON_D_CONF_DIR}
 
     echo 'export status_netdata_module_config="DONE"' >> ${STATUS_FILE}
 }

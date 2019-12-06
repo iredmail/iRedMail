@@ -56,12 +56,15 @@ export NETDATA_DOT_MY_CNF="${NETDATA_CONF_DIR}/my.cnf"
 # Modular config files.
 export NETDATA_CONF_HEALTH_ALARM_NOTIFY="${NETDATA_CONF_DIR}/health_alarm_notify.conf"
 
+export NETDATA_GO_D_CONF_DIR="${NETDATA_CONF_DIR}/go.d"
+export NETDATA_GO_D_CONF_PHPFPM="${NETDATA_GO_D_CONF_DIR}/phpfpm.conf"
+export NETDATA_GO_D_CONF_NGINX="${NETDATA_GO_D_CONF_DIR}/nginx.conf"
+export NETDATA_GO_D_CONF_MYSQL="${NETDATA_GO_D_CONF_DIR}/mysql.conf"
+
 # Plugin config files.
-export NETDATA_CONF_PLUGIN_DIR="${NETDATA_CONF_DIR}/python.d"
-export NETDATA_CONF_PLUGIN_MYSQL="${NETDATA_CONF_PLUGIN_DIR}/mysql.conf"
-export NETDATA_CONF_PLUGIN_PGSQL="${NETDATA_CONF_PLUGIN_DIR}/postgres.conf"
-export NETDATA_CONF_PLUGIN_PHPFPM="${NETDATA_CONF_PLUGIN_DIR}/phpfpm.conf"
-export NETDATA_CONF_PLUGIN_OPENLDAP="${NETDATA_CONF_PLUGIN_DIR}/openldap.conf"
+export NETDATA_PYTHON_D_CONF_DIR="${NETDATA_CONF_DIR}/python.d"
+export NETDATA_PYTHON_D_CONF_PGSQL="${NETDATA_PYTHON_D_CONF_DIR}/postgres.conf"
+export NETDATA_PYTHON_D_CONF_OPENLDAP="${NETDATA_PYTHON_D_CONF_DIR}/openldap.conf"
 
 # Database
 # NETDATA_DB_PASSWD is generated in dialog/optional_components.sh.
