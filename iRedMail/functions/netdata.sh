@@ -86,9 +86,9 @@ netdata_config()
 
 netdata_module_config()
 {
-    ECHO_DEBUG "Generate ${NETDATA_CONF_PLUGIN_PHPFPM}."
+    ECHO_DEBUG "Generate config files for plugins."
 
-    mkdir -p ${NETDATA_GO_D_CONF_DIR} &>/dev/null
+    mkdir -p ${NETDATA_GO_D_CONF_DIR} ${NETDATA_PYTHON_D_CONF_DIR} &>/dev/null
 
     # go.d modules: phpfpm, nginx.
     cp -f ${SAMPLE_DIR}/netdata/go.d/phpfpm.conf ${NETDATA_GO_D_CONF_PHPFPM} >> ${INSTALL_LOG} 2>&1
@@ -96,11 +96,11 @@ netdata_module_config()
 
     # OpenLDAP
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ECHO_DEBUG "Generate ${NETDATA_CONF_PLUGIN_OPENLDAP}."
-        backup_file ${NETDATA_CONF_PLUGIN_OPENLDAP}
-        cp -f ${SAMPLE_DIR}/netdata/python.d/openldap.conf ${NETDATA_CONF_PLUGIN_OPENLDAP} >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#g' ${NETDATA_CONF_PLUGIN_OPENLDAP} >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#g' ${NETDATA_CONF_PLUGIN_OPENLDAP} >> ${INSTALL_LOG} 2>&1
+        ECHO_DEBUG "Generate ${NETDATA_PYTHON_D_CONF_OPENLDAP}."
+
+        cp -f ${SAMPLE_DIR}/netdata/python.d/openldap.conf ${NETDATA_PYTHON_D_CONF_OPENLDAP} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#g' ${NETDATA_PYTHON_D_CONF_OPENLDAP} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#g' ${NETDATA_PYTHON_D_CONF_OPENLDAP} >> ${INSTALL_LOG} 2>&1
     fi
 
     # MySQL & PostgreSQL
@@ -114,25 +114,27 @@ EOF
         ECHO_DEBUG "Generate ${NETDATA_GO_D_CONF_MYSQL}."
         cp -f ${SAMPLE_DIR}/netdata/go.d/mysql.conf ${NETDATA_GO_D_CONF_MYSQL} >> ${INSTALL_LOG} 2>&1
 
-        perl -pi -e 's#PH_MYSQL_SERVER_ADDRESS#$ENV{MYSQL_SERVER_ADDRESS}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's#PH_MYSQL_SERVER_PORT#$ENV{MYSQL_SERVER_PORT}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_CONF_PLUGIN_MYSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_MYSQL_SERVER_ADDRESS#$ENV{MYSQL_SERVER_ADDRESS}#g' ${NETDATA_GO_D_CONF_MYSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_MYSQL_SERVER_PORT#$ENV{MYSQL_SERVER_PORT}#g' ${NETDATA_GO_D_CONF_MYSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_GO_D_CONF_MYSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_GO_D_CONF_MYSQL} >> ${INSTALL_LOG} 2>&1
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         su - ${SYS_USER_PGSQL} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 CREATE USER ${NETDATA_DB_USER} WITH ENCRYPTED PASSWORD '${NETDATA_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 EOF
 
-        ECHO_DEBUG "Generate ${NETDATA_CONF_PLUGIN_PGSQL}."
-        backup_file ${NETDATA_CONF_PLUGIN_PGSQL}
-        cp -f ${SAMPLE_DIR}/netdata/python.d/postgres.conf ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
-        perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_CONF_PLUGIN_PGSQL} >> ${INSTALL_LOG} 2>&1
+        ECHO_DEBUG "Generate ${NETDATA_PYTHON_D_CONF_PGSQL}."
+        backup_file ${NETDATA_PYTHON_D_CONF_PGSQL}
+        cp -f ${SAMPLE_DIR}/netdata/python.d/postgres.conf ${NETDATA_PYTHON_D_CONF_PGSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_NETDATA_DB_USER#$ENV{NETDATA_DB_USER}#g' ${NETDATA_PYTHON_D_CONF_PGSQL} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_NETDATA_DB_PASSWD#$ENV{NETDATA_DB_PASSWD}#g' ${NETDATA_PYTHON_D_CONF_PGSQL} >> ${INSTALL_LOG} 2>&1
     fi
 
     chown -R ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_GO_D_CONF_DIR} ${NETDATA_PYTHON_D_CONF_DIR}
-    chmod -R 0660 ${NETDATA_GO_D_CONF_DIR} ${NETDATA_PYTHON_D_CONF_DIR}
+    chmod 0755 ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_GO_D_CONF_DIR} ${NETDATA_PYTHON_D_CONF_DIR}
+    chmod 0640 ${NETDATA_GO_D_CONF_DIR}/*.conf &>/dev/null
+    chmod 0640 ${NETDATA_PYTHON_D_CONF_DIR}/*.conf &>/dev/null
 
     echo 'export status_netdata_module_config="DONE"' >> ${STATUS_FILE}
 }
@@ -173,8 +175,8 @@ netdata (monitor):
         - All config files: ${NETDATA_CONF_DIR}
         - Main config file: ${NETDATA_CONF}
         - Modified modular config files:
-            - ${NETDATA_CONF_PLUGIN_MYSQL}
-            - ${NETDATA_CONF_PLUGIN_PGSQL}
+            - ${NETDATA_GO_D_CONF_DIR}
+            - ${NETDATA_PYTHON_D_CONF_DIR}
     - HTTP auth file (if you need a new account to access netdata, please
       update this file with command like 'htpasswd' or edit manually):
         - ${NETDATA_HTTPD_AUTH_FILE}
