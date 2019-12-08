@@ -35,7 +35,9 @@ netdata_install()
     ln -s ${NETDATA_CONF_DIR} /etc/netdata >> ${INSTALL_LOG} 2>&1
 
     # netdata will handle logrotate config file automatically.
-    ln -s ${NETDATA_LOG_DIR} /var/log/netdata >> ${INSTALL_LOG} 2>&1
+    if [[ ! -d /var/log/netdata ]]; then
+        ln -s ${NETDATA_LOG_DIR} /var/log/netdata >> ${INSTALL_LOG} 2>&1
+    fi
 
     echo 'export status_netdata_install="DONE"' >> ${STATUS_FILE}
 }
@@ -58,10 +60,15 @@ netdata_config()
 
     ECHO_DEBUG "Generate netdata config file: ${SAMPLE_DIR}/netdata/netdata.conf -> ${NETDATA_CONF}."
     cp -f ${SAMPLE_DIR}/netdata/netdata.conf ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
+    cp -f ${SAMPLE_DIR}/netdata/health_alarm_notify.conf ${NETDATA_HEALTH_ALARM_NOTIFY_CONF} >> ${INSTALL_LOG} 2>&1
     cp -f ${SAMPLE_DIR}/netdata/python.d.conf ${NETDATA_PYTHON_D_CONF} >> ${INSTALL_LOG} 2>&1
     cp -f ${SAMPLE_DIR}/netdata/go.d.conf ${NETDATA_GO_D_CONF} >> ${INSTALL_LOG} 2>&1
 
-    chown ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_CONF} ${NETDATA_PYTHON_D_CONF} ${NETDATA_GO_D_CONF} >> ${INSTALL_LOG} 2>&1
+    chown ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} \
+        ${NETDATA_CONF} \
+        ${NETDATA_HEALTH_ALARM_NOTIFY_CONF} \
+        ${NETDATA_PYTHON_D_CONF} \
+        ${NETDATA_GO_D_CONF} >> ${INSTALL_LOG} 2>&1
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         perl -pi -e 's#( *memory mode =).*#${1} save#g' ${NETDATA_CONF}
@@ -93,6 +100,10 @@ netdata_module_config()
     # go.d modules: phpfpm, nginx.
     cp -f ${SAMPLE_DIR}/netdata/go.d/phpfpm.conf ${NETDATA_GO_D_CONF_PHPFPM} >> ${INSTALL_LOG} 2>&1
     cp -f ${SAMPLE_DIR}/netdata/go.d/nginx.conf ${NETDATA_GO_D_CONF_NGINX} >> ${INSTALL_LOG} 2>&1
+
+    # Make sure netdata daemon user can access Nginx log directory and read `access.log`.
+    chmod o+rx ${NGINX_LOG_DIR}
+    chmod o+r ${NGINX_LOG_ACCESSLOG}
 
     # OpenLDAP
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
@@ -132,9 +143,9 @@ EOF
     fi
 
     chown -R ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_GO_D_CONF_DIR} ${NETDATA_PYTHON_D_CONF_DIR}
-    chmod 0755 ${SYS_USER_NETDATA}:${SYS_GROUP_NETDATA} ${NETDATA_GO_D_CONF_DIR} ${NETDATA_PYTHON_D_CONF_DIR}
-    chmod 0640 ${NETDATA_GO_D_CONF_DIR}/*.conf &>/dev/null
-    chmod 0640 ${NETDATA_PYTHON_D_CONF_DIR}/*.conf &>/dev/null
+    chmod 0755 ${NETDATA_GO_D_CONF_DIR} ${NETDATA_PYTHON_D_CONF_DIR}
+    chmod 0400 ${NETDATA_GO_D_CONF_DIR}/*.conf &>/dev/null
+    chmod 0400 ${NETDATA_PYTHON_D_CONF_DIR}/*.conf &>/dev/null
 
     echo 'export status_netdata_module_config="DONE"' >> ${STATUS_FILE}
 }

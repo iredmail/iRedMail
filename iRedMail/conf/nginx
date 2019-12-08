@@ -26,9 +26,8 @@ export NGINX_RC_SCRIPT_NAME='nginx'
 # Configuration files
 export HTTPD_CONF_ROOT='/etc/nginx'
 
-# Log files
-export HTTPD_LOG_ACCESSLOG='/var/log/nginx/access.log'
-export HTTPD_LOG_ERRORLOG='/var/log/nginx/error.log'
+# Log directory.
+export NGINX_LOG_DIR='/var/log/nginx'
 
 # PID file
 export NGINX_PID='/var/run/nginx.pid'
@@ -45,10 +44,13 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export HTTPD_CONF_ROOT="/usr/local/etc/nginx"
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export HTTPD_LOG_ACCESSLOG='logs/access.log'
-    export HTTPD_LOG_ERRORLOG='logs/error.log'
+    export NGINX_LOG_DIR='/var/www/logs'
 
 fi
+
+# Log files.
+export NGINX_LOG_ACCESSLOG="${NGINX_LOG_DIR}/access.log"
+export NGINX_LOG_ERRORLOG="${NGINX_LOG_DIR}/error.log"
 
 export HTTPD_CONF_DIR_AVAILABLE_CONF="${HTTPD_CONF_ROOT}/conf-available"
 export HTTPD_CONF_DIR_ENABLED_CONF="${HTTPD_CONF_ROOT}/conf-enabled"

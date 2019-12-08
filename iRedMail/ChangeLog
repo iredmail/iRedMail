@@ -3,8 +3,10 @@ iRedMail-1.0:
         + OpenBSD 6.6
 
     * Improvements:
-        - Netdata: Use Go instead of Python modules to collect data for better
-          performance.
+        - Netdata: Replace few Python modules by Go modules to collect data
+          for better performance.
+        - Disable email notification since netdata is too sensitive and the
+          notification message is "useless".
 
     * Fixed issues:
         - Timeout for clamd service to load virus database is too short on
@@ -14,7 +16,9 @@ iRedMail-1.0:
 
     * Updated packages:
         + Roundcube webmail -> 1.4.1
-        + netdata -> 1.19.0.
+        + iRedAPD -> 3.3
+        + iRedAdmin -> 0.9.9
+        + netdata -> 1.19.0
 
 iRedMail-1.0-beta2:
     * Removed OpenDMARC integration due to internal bug which caused incorrect

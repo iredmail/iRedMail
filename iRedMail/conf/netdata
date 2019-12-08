@@ -44,6 +44,7 @@ export NETDATA_RC_SCRIPT_NAME='netdata'
 
 # Main config file.
 export NETDATA_CONF="${NETDATA_CONF_DIR}/netdata.conf"
+export NETDATA_HEALTH_ALARM_NOTIFY_CONF="${NETDATA_CONF_DIR}/health_alarm_notify.conf"
 export NETDATA_PYTHON_D_CONF="${NETDATA_CONF_DIR}/python.d.conf"
 export NETDATA_GO_D_CONF="${NETDATA_CONF_DIR}/go.d.conf"
 

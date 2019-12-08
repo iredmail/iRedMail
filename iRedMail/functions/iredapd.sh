@@ -159,7 +159,7 @@ iredapd_config()
     perl -pi -e 's#^(srs_forward_port).*#${1} = "$ENV{IREDAPD_SRS_FORWARD_PORT}"#' ${IREDAPD_CONF}
     perl -pi -e 's#^(srs_reverse_port).*#${1} = "$ENV{IREDAPD_SRS_REVERSE_PORT}"#' ${IREDAPD_CONF}
     perl -pi -e 's#^(srs_domain).*#${1} = "$ENV{HOSTNAME}"#' ${IREDAPD_CONF}
-    perl -pi -e 's#^(srs_secrets).*#${1} = ["$ENV{IREDAPD_SRS_SECRET}"]#' ${IREDAPD_CONF}
+    perl -pi -e 's#^(srs_secrets).*#${1} = []#' ${IREDAPD_CONF}
 
     # Log
     perl -pi -e 's#^(log_level).*#${1} = "info"#' ${IREDAPD_CONF}
