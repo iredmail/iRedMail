@@ -72,6 +72,12 @@ netdata_config()
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         perl -pi -e 's#( *memory mode =).*#${1} save#g' ${NETDATA_CONF}
+
+        # FreeBSD doesn't have Go plugins, have to use Python plugins instead.
+        perl -pi -e 's/^(web_log: no)/#${1}/' ${NETDATA_PYTHON_D_CONF}
+        perl -pi -e 's/^(nginx: no)/#${1}/' ${NETDATA_PYTHON_D_CONF}
+        perl -pi -e 's/^(phpfpm: no)/#${1}/' ${NETDATA_PYTHON_D_CONF}
+        perl -pi -e 's/^(mysql: no)/#${1}/' ${NETDATA_PYTHON_D_CONF}
     fi
 
     perl -pi -e 's#PH_NETDATA_PORT#$ENV{NETDATA_PORT}#g' ${NETDATA_CONF} >> ${INSTALL_LOG} 2>&1
