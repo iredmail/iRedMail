@@ -101,10 +101,6 @@ netdata_module_config()
     cp -f ${SAMPLE_DIR}/netdata/go.d/phpfpm.conf ${NETDATA_GO_D_CONF_PHPFPM} >> ${INSTALL_LOG} 2>&1
     cp -f ${SAMPLE_DIR}/netdata/go.d/nginx.conf ${NETDATA_GO_D_CONF_NGINX} >> ${INSTALL_LOG} 2>&1
 
-    # Make sure netdata daemon user can access Nginx log directory and read `access.log`.
-    chmod o+rx ${NGINX_LOG_DIR}
-    chmod o+r ${NGINX_LOG_ACCESSLOG}
-
     # OpenLDAP
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ECHO_DEBUG "Generate ${NETDATA_PYTHON_D_CONF_OPENLDAP}."
