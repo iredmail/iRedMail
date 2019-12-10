@@ -97,7 +97,7 @@ elif [[ X"${KERNEL}" == X'FreeBSD' ]]; then
     shift_day=$(date -j -v-${KEEP_DAYS}d "+%d")
 elif [[ X"${KERNEL}" == X'OpenBSD' ]]; then
     epoch_seconds_now="$(date +%s)"
-    epoch_shift="$((${KEEP_DAYS} * 3600))"
+    epoch_shift="$((${KEEP_DAYS} * 86400))"
     epoch_seconds_old="$((epoch_seconds_now - epoch_shift))"
 
     shift_year=$(date -r ${epoch_seconds_old} "+%Y")
