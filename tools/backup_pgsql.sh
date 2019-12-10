@@ -84,18 +84,32 @@ export BACKUP_SUCCESS='YES'
 export BACKUP_DIR="${BACKUP_ROOTDIR}/pgsql/${YEAR}/${MONTH}/${DAY}"
 
 # Find the old backup which should be removed.
-export REMOVE_OLD_BACKUP='NO'
-if which python2 &>/dev/null; then
-    export REMOVE_OLD_BACKUP='YES'
-    py_cmd="import time; import datetime; t=time.localtime(); print datetime.date(t.tm_year, t.tm_mon, t.tm_mday) - datetime.timedelta(days=${KEEP_DAYS})"
-    shift_date=$(python2 -c "${py_cmd}")
-    shift_year="$(echo ${shift_date} | awk -F'-' '{print $1}')"
-    shift_month="$(echo ${shift_date} | awk -F'-' '{print $2}')"
-    shift_day="$(echo ${shift_date} | awk -F'-' '{print $3}')"
-    export REMOVED_BACKUP_DIR="${BACKUP_ROOTDIR}/pgsql/${shift_year}/${shift_month}/${shift_day}"
-    export REMOVED_BACKUP_MONTH_DIR="${BACKUP_ROOTDIR}/pgsql/${shift_year}/${shift_month}"
-    export REMOVED_BACKUP_YEAR_DIR="${BACKUP_ROOTDIR}/pgsql/${shift_year}"
+export REMOVE_OLD_BACKUP='YES'
+
+export KERNEL="$(uname -s)"
+if [[ X"${KERNEL}" == X'Linux' ]]; then
+    shift_year=$(date --date="${KEEP_DAYS} days ago" "+%Y")
+    shift_month=$(date --date="${KEEP_DAYS} days ago" "+%m")
+    shift_day=$(date --date="${KEEP_DAYS} days ago" "+%d")
+elif [[ X"${KERNEL}" == X'FreeBSD' ]]; then
+    shift_year=$(date -j -v-${KEEP_DAYS}d "+%Y")
+    shift_month=$(date -j -v-${KEEP_DAYS}d "+%m")
+    shift_day=$(date -j -v-${KEEP_DAYS}d "+%d")
+elif [[ X"${KERNEL}" == X'OpenBSD' ]]; then
+    epoch_seconds_now="$(date +%s)"
+    epoch_shift="$((${KEEP_DAYS} * 3600))"
+    epoch_seconds_old="$((epoch_seconds_now - epoch_shift))"
+
+    shift_year=$(date -r ${epoch_seconds_old} "+%Y")
+    shift_month=$(date -r ${epoch_seconds_old} "+%m")
+    shift_day=$(date -r ${epoch_seconds_old} "+%d")
+else
+    export REMOVE_OLD_BACKUP='NO'
 fi
+
+export REMOVED_BACKUP_DIR="${BACKUP_ROOTDIR}/pgsql/${shift_year}/${shift_month}/${shift_day}"
+export REMOVED_BACKUP_MONTH_DIR="${BACKUP_ROOTDIR}/pgsql/${shift_year}/${shift_month}"
+export REMOVED_BACKUP_YEAR_DIR="${BACKUP_ROOTDIR}/pgsql/${shift_year}"
 
 # Log file
 export LOGFILE="${BACKUP_DIR}/${TIMESTAMP}.log"

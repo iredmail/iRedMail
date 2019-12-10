@@ -1,3 +1,7 @@
+iRedMail-1.1:
+    * Improvements:
+        - tools/backup_*.sh: do not rely on Python.
+
 iRedMail-1.0:
     * Supports new distribution release:
         + OpenBSD 6.6
