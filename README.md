@@ -17,8 +17,11 @@ More info:
 - Community, bug report, feature requests:
   [online support forum](https://forum.iredmail.org/)
 - We offer [paid support services](https://www.iredmail.org/support.html)
+- Source packages patched or modified for RHEL/CentOS can be found
+  [here](https://dl.iredmail.org/yum/srpms/), other RPM packages are all
+  installed from official yum repository and
+  [EPEL](http://fedoraproject.org/wiki/EPEL).
 
-Source packages patched or modified for RHEL/CentOS can be found
-[here](https://dl.iredmail.org/yum/srpms/), other RPM packages are all
-installed from official yum repository and
-[EPEL](http://fedoraproject.org/wiki/EPEL).
+We recommend to deploy iRedMail server with the [iRedMail Easy platform](https://www.iredmail.org/easy.html),
+it offers easy deployment, one-click upgrade, and tech support via the ticket
+system. Check our [website](https://www.iredmail.org/easy.html) for more details.
