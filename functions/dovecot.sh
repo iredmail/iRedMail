@@ -173,7 +173,8 @@ dovecot_config()
     perl -pi -e 's#PH_SSL_KEY#$ENV{SSL_KEY_FILE}#' ${DOVECOT_CONF}
     perl -pi -e 's#PH_SSL_CIPHERS#$ENV{SSL_CIPHERS}#' ${DOVECOT_CONF}
 
-    if [ X"${DISTRO_CODENAME}" == X'stretch' ]; then
+    # Distros ships newer openssl which doesn't support SSLv2 anymore.
+    if [[ X"${DISTRO_CODENAME}" == X'stretch' ]] || [[ X"${DISTRO_CODENAME}" == X'bionic' ]]; then
         perl -pi -e 's#^(ssl_protocols).*#ssl_protocols = !SSLv3#' ${DOVECOT_CONF}
     fi
 

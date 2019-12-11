@@ -2,6 +2,10 @@ iRedMail-1.1:
     * Improvements:
         - tools/backup_*.sh: do not rely on Python.
 
+    * Fixed issues:
+        - Not remove `!SSLv2` in Dovecot on Ubuntu 18.04.
+          Note: SSLv2 is actually disabled by OpenSSL.
+
 iRedMail-1.0:
     * Supports new distribution release:
         + OpenBSD 6.6
