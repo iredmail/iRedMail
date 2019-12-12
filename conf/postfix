@@ -71,8 +71,9 @@ export TRANSPORT="${TRANSPORT:=${DOVECOT_LDA_DELIVER}}"
 
 # Set 'message_size_limit', in 'byte' and 'kilobytes'.
 # Default is 15M (final message will be slight larger after encoding).
-export MESSAGE_SIZE_LIMIT_BYTES='15728640'
-export MESSAGE_SIZE_LIMIT_KB='15360'
+export MESSAGE_SIZE_LIMIT_MB="${MESSAGE_SIZE_LIMIT_MB:=15}"
+export MESSAGE_SIZE_LIMIT_BYTES="$((MESSAGE_SIZE_LIMIT_MB * 1024 * 1024))"
+export MESSAGE_SIZE_LIMIT_KB="$((MESSAGE_SIZE_LIMIT_MB * 1024))"
 
 # LDAP/MYSQL/PGSQL lookup configuration files.
 if [ X"${BACKEND}" == X'OPENLDAP' ]; then

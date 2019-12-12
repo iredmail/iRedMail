@@ -124,6 +124,7 @@ rcm_config()
 
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${RCM_CONF}
     perl -pi -e 's#PH_RCM_DES_KEY#$ENV{RCM_DES_KEY}#g' ${RCM_CONF}
+    perl -pi -e 's#PH_MESSAGE_SIZE_LIMIT_MB#$ENV{MESSAGE_SIZE_LIMIT_MB}#g' ${RCM_CONF}
     perl -pi -e 's#PH_FIRST_DOMAIN#$ENV{FIRST_DOMAIN}#g' ${RCM_CONF}
 
     # Enable mime.types on Linux
