@@ -3,8 +3,9 @@ iRedMail-1.1:
         - tools/backup_*.sh: do not rely on Python.
 
     * Fixed issues:
-        - Not set message size limit in Roundcube ($config['max_message_size']).
-        - Not remove `!SSLv2` in Dovecot on Ubuntu 18.04.
+        - Installer: not correctly set Nginx log file path in Fail2ban.
+        - Installer: Not set message size limit in Roundcube ($config['max_message_size']).
+        - Installer: Not remove `!SSLv2` in Dovecot on Ubuntu 18.04.
           Note: SSLv2 is actually disabled by OpenSSL.
 
 iRedMail-1.0:
