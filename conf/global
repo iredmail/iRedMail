@@ -196,7 +196,7 @@ export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 30)'
 else
-    export RANDOM_STRING='eval echo $RANDOM | md5'
+    export RANDOM_STRING='eval echo $RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM | md5'
 fi
 
 # command: dialog.
