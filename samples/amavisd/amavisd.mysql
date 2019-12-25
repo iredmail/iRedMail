@@ -3,7 +3,7 @@
 
 -- used in @lookup_sql_dsn
 -- local users
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id         int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,  -- unique id
   priority   integer      NOT NULL DEFAULT '7',  -- sort field, 0 is low prior.
   policy_id  integer unsigned NOT NULL DEFAULT '1',  -- JOINs with policy.id
@@ -15,7 +15,7 @@ CREATE TABLE users (
 -- used in @lookup_sql_dsn
 -- any e-mail address (non- rfc2822-quoted), external or local,
 -- used as senders in wblist
-CREATE TABLE mailaddr (
+CREATE TABLE IF NOT EXISTS mailaddr (
   id         int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
   priority   integer      NOT NULL DEFAULT '7',  -- 0 is low priority
   email      varbinary(255) NOT NULL UNIQUE
@@ -25,7 +25,7 @@ CREATE TABLE mailaddr (
 -- per-recipient whitelist and/or blacklist,
 -- puts sender and recipient in relation wb  (white or blacklisted sender)
 -- White/blacklist for inbound message
-CREATE TABLE wblist (
+CREATE TABLE IF NOT EXISTS wblist (
   rid        integer unsigned NOT NULL,  -- recipient: users.id
   sid        integer unsigned NOT NULL,  -- sender: mailaddr.id
   wb         varchar(10)  NOT NULL,  -- W or Y / B or N / space=neutral / score
@@ -34,7 +34,7 @@ CREATE TABLE wblist (
 
 -- White/blacklist for outbound message
 -- Note: it's used by iRedAPD plugin `amavisd_wblist`, not by Amavisd.
-CREATE TABLE outbound_wblist (
+CREATE TABLE IF NOT EXISTS outbound_wblist (
   rid        integer unsigned NOT NULL,  -- recipient: mailaddr.id
   sid        integer unsigned NOT NULL,  -- sender: users.id
   wb         varchar(10)  NOT NULL,  -- W or Y / B or N / space=neutral / score
@@ -42,7 +42,7 @@ CREATE TABLE outbound_wblist (
 );
 
 -- used in @lookup_sql_dsn
-CREATE TABLE policy (
+CREATE TABLE IF NOT EXISTS policy (
   id  int unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                     -- 'id' this is the _only_ required field
   policy_name      varchar(32),     -- not used by amavisd-new, a comment
@@ -71,7 +71,7 @@ CREATE TABLE policy (
   spam_tag3_level float default NULL, -- inserts 'blatant spam' header fields
   spam_kill_level float default NULL, -- higher score triggers evasive actions
                                       -- e.g. reject/drop, quarantine, ...
-                                      -- (subject to final_spam_destiny setting)
+                                     -- (subject to final_spam_destiny setting)
   spam_dsn_cutoff_level        float default NULL,
   spam_quarantine_cutoff_level float default NULL,
 
@@ -102,7 +102,7 @@ CREATE TABLE policy (
 
 -- Required by iRedMail
 ALTER TABLE policy MODIFY COLUMN policy_name VARCHAR(255) NOT NULL DEFAULT '';
-CREATE UNIQUE INDEX policy_idx_policy_name ON policy (policy_name);
+CREATE UNIQUE INDEX IF NOT EXISTS policy_idx_policy_name ON policy (policy_name);
 
 -- Read-write part of the dataset (optional) - @storage_sql_dsn.
 --   May reside in the same or in a separate database as lookups database;
@@ -134,7 +134,7 @@ CREATE UNIQUE INDEX policy_idx_policy_name ON policy (policy_name);
 
 -- used in @storage_sql_dsn
 -- provide unique id for each e-mail address, avoids storing copies
-CREATE TABLE maddr (
+CREATE TABLE IF NOT EXISTS maddr (
   partition_tag integer      DEFAULT 0, -- see $partition_tag
   id         bigint unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
   email      varbinary(255)  NOT NULL,  -- full mail address
@@ -145,14 +145,14 @@ CREATE TABLE maddr (
   CONSTRAINT part_email UNIQUE (partition_tag,email)
 ) ENGINE=InnoDB;
 
-CREATE INDEX maddr_idx_email ON maddr (email);
-CREATE INDEX maddr_idx_email_raw ON maddr (email_raw);
-CREATE INDEX maddr_idx_domain ON maddr (domain);
+CREATE INDEX IF NOT EXISTS maddr_idx_email ON maddr (email);
+CREATE INDEX IF NOT EXISTS maddr_idx_email_raw ON maddr (email_raw);
+CREATE INDEX IF NOT EXISTS maddr_idx_domain ON maddr (domain);
 
 -- Create trigger to save email address withou address extension
 -- user+abc@domain.com -> user@domain.com
 DELIMITER //
-CREATE TRIGGER `maddr_email_raw`
+CREATE TRIGGER IF NOT EXISTS `maddr_email_raw`
     BEFORE INSERT
     ON `maddr`
     FOR EACH ROW
@@ -173,7 +173,7 @@ DELIMITER ;
 -- NOTE: instead of a character field time_iso, one might prefer:
 --   time_iso TIMESTAMP NOT NULL DEFAULT 0,
 --   but the following MUST then be set in amavisd.conf: $timestamp_fmt_mysql=1
-CREATE TABLE msgs (
+CREATE TABLE IF NOT EXISTS msgs (
   partition_tag integer     DEFAULT 0,   -- see $partition_tag
   mail_id     varbinary(16) NOT NULL,    -- long-term unique mail id, dflt 12 ch
   secret_id   varbinary(16) DEFAULT '',  -- authorizes release of mail_id, 12 ch
@@ -206,30 +206,32 @@ CREATE TABLE msgs (
   dsn_sent   char(1),                   -- was DSN sent? Y/N/q (q=quenched)
   spam_level float,                     -- SA spam level (no boosts)
   message_id varchar(255)  DEFAULT '',  -- mail Message-ID header field
-  from_addr  varbinary(255) DEFAULT '', -- mail From header field
-  subject    varbinary(255) DEFAULT '', -- mail Subject header field
+  from_addr  varchar(255)  CHARACTER SET utf8 COLLATE utf8_bin  DEFAULT '',
+                                        -- mail From header field,    UTF8
+  subject    varchar(255)  CHARACTER SET utf8 COLLATE utf8_bin  DEFAULT '',
+                                        -- mail Subject header field, UTF8
   host       varchar(255)  NOT NULL,    -- hostname where amavisd is running
   PRIMARY KEY (partition_tag,mail_id)
 -- FOREIGN KEY (sid) REFERENCES maddr(id) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
-CREATE INDEX msgs_idx_sid      ON msgs (sid);
-CREATE INDEX msgs_idx_mess_id  ON msgs (message_id); -- useful with pen pals
-CREATE INDEX msgs_idx_time_num ON msgs (time_num);
+CREATE INDEX IF NOT EXISTS msgs_idx_sid      ON msgs (sid);
+CREATE INDEX IF NOT EXISTS msgs_idx_mess_id  ON msgs (message_id); -- useful with pen pals
+CREATE INDEX IF NOT EXISTS msgs_idx_time_num ON msgs (time_num);
 
-CREATE INDEX msgs_idx_mail_id   ON msgs (mail_id);
-CREATE INDEX msgs_idx_content   ON msgs (content);
-CREATE INDEX msgs_idx_quar_type ON msgs (quar_type);
-CREATE INDEX msgs_idx_content_time_num ON msgs (content, time_num);
-CREATE INDEX msgs_idx_spam_level ON msgs (spam_level);
+CREATE INDEX IF NOT EXISTS msgs_idx_mail_id   ON msgs (mail_id);
+CREATE INDEX IF NOT EXISTS msgs_idx_content   ON msgs (content);
+CREATE INDEX IF NOT EXISTS msgs_idx_quar_type ON msgs (quar_type);
+CREATE INDEX IF NOT EXISTS msgs_idx_content_time_num ON msgs (content, time_num);
+CREATE INDEX IF NOT EXISTS msgs_idx_spam_level ON msgs (spam_level);
 
 -- alternatively when purging based on time_iso (instead of msgs_idx_time_num):
--- CREATE INDEX msgs_idx_time_iso ON msgs (time_iso);
+-- CREATE INDEX IF NOT EXISTS msgs_idx_time_iso ON msgs (time_iso);
 
 -- used in @storage_sql_dsn
 -- per-recipient information related to each processed message;
 -- NOTE: records in msgrcpt without corresponding msgs.mail_id record are
 --  orphaned and should be ignored and eventually deleted by external utilities
-CREATE TABLE msgrcpt (
+CREATE TABLE IF NOT EXISTS msgrcpt (
   partition_tag integer    DEFAULT 0,    -- see $partition_tag
   mail_id    varbinary(16) NOT NULL,     -- (must allow duplicates)
   rseqnum    integer  DEFAULT 0   NOT NULL, -- recip's enumeration within msg
@@ -247,14 +249,14 @@ CREATE TABLE msgrcpt (
 -- FOREIGN KEY (rid)     REFERENCES maddr(id)     ON DELETE RESTRICT,
 -- FOREIGN KEY (mail_id) REFERENCES msgs(mail_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-CREATE INDEX msgrcpt_idx_mail_id  ON msgrcpt (mail_id);
-CREATE INDEX msgrcpt_idx_rid      ON msgrcpt (rid);
+CREATE INDEX IF NOT EXISTS msgrcpt_idx_mail_id  ON msgrcpt (mail_id);
+CREATE INDEX IF NOT EXISTS msgrcpt_idx_rid      ON msgrcpt (rid);
 
 -- used in @storage_sql_dsn
 -- mail quarantine in SQL, enabled by $*_quarantine_method='sql:'
 -- NOTE: records in quarantine without corresponding msgs.mail_id record are
 --  orphaned and should be ignored and eventually deleted by external utilities
-CREATE TABLE quarantine (
+CREATE TABLE IF NOT EXISTS quarantine (
   partition_tag integer    DEFAULT 0,    -- see $partition_tag
   mail_id    varbinary(16) NOT NULL,     -- long-term unique mail id
   chunk_ind  integer unsigned NOT NULL,  -- chunk number, starting with 1
@@ -263,7 +265,7 @@ CREATE TABLE quarantine (
 -- FOREIGN KEY (mail_id) REFERENCES msgs(mail_id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
-CREATE INDEX quar_idx_mail_id   ON quarantine (mail_id);
+CREATE INDEX IF NOT EXISTS quar_idx_mail_id   ON quarantine (mail_id);
 
 -- field msgrcpt.rs is primarily intended for use by quarantine management
 -- software; the value assigned by amavisd is a space;
