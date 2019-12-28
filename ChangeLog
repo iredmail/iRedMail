@@ -1,15 +1,20 @@
 iRedMail-1.1:
     * Improvements:
-        - tools/backup_*.sh: do not rely on Python.
+        - tools/backup_*.sh: do not rely on Python to calculate dates.
 
     * Fixed issues:
-        - netdata: not disable checks for energid. It uses port 9998, but it's
-          used by Amavisd-new on iRedMail server, this causes error message in
-          Amavisd log file each time netdata starts.
+        - Installer: not disable checks for energid in netdata.
+          Port 9998 is used by Amavisd and energid (not installed by iRedMail)
+          by default, netdata will try to send http request to this port,
+          hence it causes error message in Amavisd log file each time netdata
+          starts.
         - Installer: not correctly set Nginx log file path in Fail2ban.
         - Installer: Not set message size limit in Roundcube ($config['max_message_size']).
         - Installer: Not remove `!SSLv2` in Dovecot on Ubuntu 18.04.
           Note: SSLv2 is actually disabled by OpenSSL.
+
+    * Updated packages:
+        + iRedAdmin -> 1.0. Fixes 'internal server error' while logging out.
 
 iRedMail-1.0:
     * Supports new distribution release:
