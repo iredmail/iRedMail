@@ -14,6 +14,7 @@ iRedMail-1.1:
           Note: SSLv2 is actually disabled by OpenSSL.
 
     * Updated packages:
+        + Roundcube -> 1.4.2.
         + iRedAdmin -> 1.0. Fixes 'internal server error' while logging out.
 
 iRedMail-1.0:
