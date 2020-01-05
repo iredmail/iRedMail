@@ -1,11 +1,11 @@
 iRedMail is a full-featured mail server solution. It supports few mainstream
 Linux/BSD distributions:
 
-- CentOS
-- Debian
-- Ubuntu
-- FreeBSD
-- OpenBSD
+- CentOS 7
+- Debian 10 (recommended), 9
+- Ubuntu 18.04
+- FreeBSD 12.x
+- OpenBSD 6.6
 
 More info:
 
