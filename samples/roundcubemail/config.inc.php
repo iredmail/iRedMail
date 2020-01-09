@@ -47,7 +47,7 @@ $config['cipher_method'] = 'AES-256-CBC';
 $config['useragent'] = 'Roundcube Webmail'; // Hide version number
 //$config['username_domain'] = 'PH_FIRST_DOMAIN';
 //$config['mime_types'] = '/etc/mime.types';
-$config['max_message_size'] = 'PH_MESSAGE_SIZE_LIMIT_MB';
+$config['max_message_size'] = 'PH_MESSAGE_SIZE_LIMIT_MBM';
 
 // USER INTERFACE
 $config['create_default_folders'] = true;
