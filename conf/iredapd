@@ -20,11 +20,11 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-export IREDAPD_VERSION='3.3'
+export IREDAPD_VERSION='3.4'
 export SYS_USER_IREDAPD='iredapd'
 export SYS_GROUP_IREDAPD='iredapd'
 
-export IREDAPD_TARBALL="iRedAPD-${IREDAPD_VERSION}.tar.bz2"
+export IREDAPD_TARBALL="iRedAPD-${IREDAPD_VERSION}.tar.gz"
 export IREDAPD_PARENT_DIR='/opt'
 export IREDAPD_ROOT_DIR="${IREDAPD_PARENT_DIR}/iRedAPD-${IREDAPD_VERSION}"
 export IREDAPD_ROOT_DIR_SYMBOL_LINK="${IREDAPD_PARENT_DIR}/iredapd"

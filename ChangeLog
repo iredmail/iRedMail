@@ -18,7 +18,8 @@ iRedMail-1.1:
 
     * Updated packages:
         + Roundcube -> 1.4.2.
-        + iRedAdmin -> 1.0. Fixes 'internal server error' while logging out.
+        + iRedAdmin -> 1.0
+        + iRedAPD -> 3.4.
 
 iRedMail-1.0:
     * Supports new distribution release:
