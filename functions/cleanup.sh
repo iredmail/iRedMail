@@ -142,7 +142,7 @@ cleanup_replace_firewall_rules()
                 elif [ X"${USE_NFTABLES}" == X'YES' ]; then
                     cp -f ${SAMPLE_DIR}/firewall/nftables.conf ${NFTABLES_CONF}
 
-                    perl -pi -e 's#(.*) 80 (.*)#${1} $ENV{HTTPD_PORT} ${2}#' ${NFTABLES_CONF}
+                    perl -pi -e 's#(.*) 80 (.*)#${1} $ENV{PORT_HTTP} ${2}#' ${NFTABLES_CONF}
                     if [ X"${SSHD_PORT}" == X"${SSHD_PORT2}" ]; then
                         perl -pi -e 's#(.*) 22 (.*)#${1} $ENV{SSHD_PORT} ${2}#' ${NFTABLES_CONF}
                     elif [ X"${SSHD_PORT}" != X'' -a X"${SSHD_PORT2}" != X'' -a X"${SSHD_PORT}" != X"${SSHD_PORT2}" ]; then
@@ -154,8 +154,8 @@ cleanup_replace_firewall_rules()
                 fi
 
                 # Replace HTTP port.
-                [ X"${HTTPD_PORT}" != X"80" ]&& \
-                    perl -pi -e 's#(.*)80(,.*)#${1}$ENV{HTTPD_PORT}${2}#' ${FIREWALL_RULE_CONF}
+                [ X"${PORT_HTTP}" != X"80" ]&& \
+                    perl -pi -e 's#(.*)80(,.*)#${1}$ENV{PORT_HTTP}${2}#' ${FIREWALL_RULE_CONF}
 
                 if [ X"${USE_FIREWALLD}" == X'YES' ]; then
                     service_control enable firewalld >> ${INSTALL_LOG} 2>&1

@@ -6,6 +6,7 @@ iRedMail-1.1:
         - Backup MX doesn't work.
         - rsyslog config file `/etc/rsyslog.d/1-iredmail-iredapd.conf` doesn't
           work on CentOS.
+        - Installer: not enable IPv6 in Nginx.
         - Installer: not disable checks for energid in netdata.
           Port 9998 is used by Amavisd and energid (not installed by iRedMail)
           by default, netdata will try to send http request to this port,

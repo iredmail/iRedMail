@@ -103,14 +103,21 @@ nginx_config()
     perl -pi -e 's#PH_PHP_FPM_BIND_HOST#$ENV{PHP_FPM_BIND_HOST}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php_fpm.conf
     perl -pi -e 's#PH_PHP_FPM_PORT#$ENV{PHP_FPM_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_CONF}/php_fpm.conf
 
+    # Ports
+    perl -pi -e 's#PH_HTTPS_PORT#$ENV{HTTPS_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
+    perl -pi -e 's#PH_PORT_HTTP#$ENV{PORT_HTTP}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
+
+    # Enable IPv6.
+    if [[ X"${IREDMAIL_HAS_IPV6}" == X'YES' ]]; then
+        perl -pi -e 's/#(listen .*::.*)/${1}/g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
+    fi
+
     #
     # web sites
     #
-    perl -pi -e 's#PH_HTTPD_PORT#$ENV{HTTPD_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
     perl -pi -e 's#PH_HTTPD_DOCUMENTROOT#$ENV{HTTPD_DOCUMENTROOT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
 
     # ssl
-    perl -pi -e 's#PH_HTTPS_PORT#$ENV{HTTPS_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
     perl -pi -e 's#PH_SSL_CERT_FILE#$ENV{SSL_CERT_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
     perl -pi -e 's#PH_SSL_KEY_FILE#$ENV{SSL_KEY_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
     perl -pi -e 's#PH_SSL_CIPHERS#$ENV{SSL_CIPHERS}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
