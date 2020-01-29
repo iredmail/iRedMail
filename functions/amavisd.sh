@@ -200,7 +200,6 @@ amavisd_config()
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${POSTFIX_FILE_MAIN_CF}
 
     # Add postfix alias for user: amavis.
-    add_postfix_alias 'virusalert' ${SYS_USER_ROOT}
     add_postfix_alias ${SYS_USER_AMAVISD} ${SYS_USER_ROOT}
 
     #
