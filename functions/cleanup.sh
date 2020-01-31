@@ -347,8 +347,12 @@ For more details, please check detailed documentations:
 https://docs.iredmail.org/#mua
 EOF
 
-    chown -R ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${DOMAIN_ADMIN_MAILDIR_INBOX}
-    chmod -R 0700 ${DOMAIN_ADMIN_MAILDIR_INBOX}
+    for f in ${FILE_IREDMAIL_INSTALLATION_DETAILS} \
+        ${FILE_IREDMAIL_LINKS} \
+        ${FILE_IREDMAIL_MUA_SETTINGS}; do
+        chown -R ${SYS_USER_VMAIL}:${SYS_GROUP_VMAIL} ${f}
+        chmod -R 0700 ${f}
+    done
 
     check_status_before_run cleanup_set_cron_file_permission
     check_status_before_run cleanup_disable_selinux
