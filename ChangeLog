@@ -3,6 +3,9 @@ iRedMail-1.1:
         - tools/backup_*.sh: do not rely on Python to calculate dates.
 
     * Fixed issues:
+        - LDAP backend: improper filter which causes missing external members
+          while querying (not-subscribeable) mailing list with alias domain.
+          Thanks to Alyssa Hullinger for the report.
         - Backup MX doesn't work.
         - rsyslog config file `/etc/rsyslog.d/1-iredmail-iredapd.conf` doesn't
           work on CentOS.
