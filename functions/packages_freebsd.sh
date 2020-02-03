@@ -37,7 +37,7 @@ install_all()
     export PREFERRED_OPENLDAP_VER='24'
     export PREFERRED_MARIADB_VER='104'
     export PREFERRED_BDB_VER='5'
-    export PREFERRED_PHP_VER='73'
+    export PREFERRED_PHP_VER='74'
 
     if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
         export PREFERRED_MYSQL_VER='55m'
@@ -48,10 +48,9 @@ install_all()
     fi
 
     freebsd_make_conf_add 'WANT_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
-    freebsd_make_conf_add 'WANT_MYSQL' "${PREFERRED_MYSQL_VER}"
     freebsd_make_conf_add 'WANT_PGSQL_VER' "${PGSQL_VERSION}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_make_conf_add 'DEFAULT_VERSIONS' 'ssl=libressl python=2.7 python2=2.7 python3=3.7 pgsql=11 php=7.3'
+    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=2.7 python2=2.7 python3=3.8 pgsql=${PGSQL_VERSION} php=7.4"
 
     freebsd_make_conf_plus_option 'OPTIONS_SET' 'SASL'
     freebsd_make_conf_plus_option 'OPTIONS_UNSET' 'X11'
@@ -319,7 +318,7 @@ EOF
         ALL_PORTS="${ALL_PORTS} databases/postgresql${PGSQL_VERSION}-server databases/postgresql${PGSQL_VERSION}-contrib"
     fi
 
-    # Dovecot v2.0.x. REQUIRED.
+    # Dovecot.
     cat > /var/db/ports/mail_dovecot/options <<EOF
 OPTIONS_FILE_SET+=DOCS
 OPTIONS_FILE_SET+=EXAMPLES
@@ -825,7 +824,7 @@ EOF
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER}"
 
-        ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext security/php${PREFERRED_PHP_VER}-openssl www/php${PREFERRED_PHP_VER}-session textproc/php${PREFERRED_PHP_VER}-ctype security/php${PREFERRED_PHP_VER}-hash converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom"
+        ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext security/php${PREFERRED_PHP_VER}-openssl www/php${PREFERRED_PHP_VER}-session converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ALL_PORTS="${ALL_PORTS} net/php${PREFERRED_PHP_VER}-ldap databases/php${PREFERRED_PHP_VER}-mysqli"
@@ -1089,9 +1088,9 @@ EOF
     {
         ECHO_DEBUG "Post-install cleanup."
 
-        ECHO_DEBUG "Create symbol links to python2/3."
+        ECHO_DEBUG "Create symbol links for python2/3."
         ln -sf /usr/local/bin/python2.7 /usr/local/bin/python2
-        ln -sf /usr/local/bin/python3.7 /usr/local/bin/python3
+        ln -sf /usr/local/bin/python3.8 /usr/local/bin/python3
 
         # Create syslog.d and logrotate.d
         mkdir -p ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1

@@ -24,6 +24,7 @@ iRedMail-1.1:
         + Roundcube -> 1.4.2.
         + iRedAdmin -> 1.0
         + iRedAPD -> 3.4.
+        + FreeBSD: postgresql-12, python-3.8, php-7.4
 
 iRedMail-1.0:
     * Supports new distribution release:
