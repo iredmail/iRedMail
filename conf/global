@@ -509,6 +509,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO_CODENAME}" == X'buster' ]; then
         export USE_NFTABLES='YES'
         export NFTABLES_CONF='/etc/nftables.conf'
+        export FIREWALL_RULE_CONF="${NFTABLES_CONF}"
     fi
 
     # Directory used to store SSL/TLS key/cert file.
