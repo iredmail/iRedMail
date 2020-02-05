@@ -43,28 +43,19 @@ export SHASUM_CHECK_FILE='pkgs.sha256'
 # Linux/FreeBSD use 'shasum -c'
 export CMD_SHASUM_CHECK='sha256sum -c'
 
-if [ X"${DISTRO}" == X"RHEL" ]; then
-    # Special package.
-    # command: which.
-    export BIN_WHICH='which'
-    export PKG_WHICH='which'
-    # command: wget.
-    export BIN_WGET='wget'
-    export PKG_WGET='wget'
-    # command: perl
-    export BIN_PERL='perl'
-    export PKG_PERL='perl'
-elif [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
-    # Special package.
-    # command: which.
-    export BIN_WHICH='which'
+# Special package.
+# command: which.
+export BIN_WHICH='which'
+export PKG_WHICH='which'
+# command: wget.
+export BIN_WGET='wget'
+export PKG_WGET='wget'
+# command: perl
+export BIN_PERL='perl'
+export PKG_PERL='perl'
+
+if [ X"${DISTRO}" == X"DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
     export PKG_WHICH="debianutils"
-    # command: wget.
-    export BIN_WGET='wget'
-    export PKG_WGET="wget"
-    # command: perl
-    export BIN_PERL='perl'
-    export PKG_PERL='perl'
 
     export PKG_APT_TRANSPORT_HTTPS="apt-transport-https"
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
@@ -292,6 +283,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     ${APTGET} update
 
     check_pkg ${BIN_PERL} ${PKG_PERL}
+    check_pkg ${BIN_WGET} ${PKG_WGET}
 fi
 
 check_status_before_run fetch_misc && \
