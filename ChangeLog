@@ -3,6 +3,7 @@ iRedMail-1.1:
         - tools/backup_*.sh: do not rely on Python to calculate dates.
 
     * Fixed issues:
+        - PostgreSQL backend: improper index for table `vmail.sender_relayhost`.
         - LDAP backend: improper filter which causes missing external members
           while querying (not-subscribeable) mailing list with alias domain.
           Thanks to Alyssa Hullinger for the report.

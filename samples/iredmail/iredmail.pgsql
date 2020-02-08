@@ -362,7 +362,7 @@ CREATE TABLE sender_relayhost (
     account VARCHAR(255) NOT NULL DEFAULT '',
     relayhost VARCHAR(255) NOT NULL DEFAULT ''
 );
-CREATE INDEX idx_sender_relayhost_account ON sender_relayhost (account);
+CREATE UNIQUE INDEX idx_sender_relayhost_account ON sender_relayhost (account);
 
 -- Used to store basic info of deleted mailboxes.
 CREATE TABLE deleted_mailboxes (
