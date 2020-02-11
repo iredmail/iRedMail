@@ -10,16 +10,17 @@ iRedMail-1.1:
         - Backup MX doesn't work.
         - rsyslog config file `/etc/rsyslog.d/1-iredmail-iredapd.conf` doesn't
           work on CentOS.
-        - Installer: not enable IPv6 in Nginx.
-        - Installer: not disable checks for energid in netdata.
-          Port 9998 is used by Amavisd and energid (not installed by iRedMail)
-          by default, netdata will try to send http request to this port,
-          hence it causes error message in Amavisd log file each time netdata
-          starts.
-        - Installer: not correctly set Nginx log file path in Fail2ban.
-        - Installer: Not set message size limit in Roundcube ($config['max_message_size']).
-        - Installer: Not remove `!SSLv2` in Dovecot on Ubuntu 18.04.
-          Note: SSLv2 is actually disabled by OpenSSL.
+        - Installer:
+            - Not enable IPv6 in Nginx.
+            - Not disable checks for energid in netdata.
+              Port 9998 is used by Amavisd and energid (not installed by
+              iRedMail) by default, netdata will try to send http request to
+              this port, hence it causes error message in Amavisd log file each
+              time netdata starts.
+            - Not correctly set Nginx log file path in Fail2ban.
+            - Not set message size limit in Roundcube ($config['max_message_size']).
+            - Not remove `!SSLv2` in Dovecot on Ubuntu 18.04.
+              Note: SSLv2 is actually disabled by OpenSSL.
 
     * Updated packages:
         + Roundcube -> 1.4.2.
