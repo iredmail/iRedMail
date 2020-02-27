@@ -165,6 +165,18 @@ gpgcheck=0
 EOF
     fi
 
+    # For OpenLDAP server on RHEL/CentOS 8.
+    if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X'8' -a X"${BACKEND}" == X'OPENLDAP' ]; then
+        cat > ${YUM_REPOS_DIR}/sympa-openldap.repo <<EOF
+        [sympa-openldap]
+name=Symas OpenLDAP for Linux RPM repository
+baseurl=https://repo.symas.com/repo/rpm/SOFL/rhel8
+gpgkey=https://repo.symas.com/repo/gpg/RPM-GPG-KEY-symas-com-signing-key
+gpgcheck=1
+enabled=1
+EOF
+    fi
+
     eval ${install_pkg} epel-release
 
     if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then

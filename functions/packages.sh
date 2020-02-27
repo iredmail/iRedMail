@@ -57,12 +57,9 @@ install_all()
 
     # Enable syslog service (rsyslog).
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} rsyslog"
-
-        [ X"${DISTRO_VERSION}" == X'7' ] && ALL_PKGS="${ALL_PKGS} firewalld"
-
+        ALL_PKGS="${ALL_PKGS} rsyslog firewalld"
         ENABLED_SERVICES="${ENABLED_SERVICES} rsyslog firewalld"
-        DISABLED_SERVICES="${DISABLED_SERVICES} exim"
+        DISABLED_SERVICES="${DISABLED_SERVICES} exim sendmail"
     elif [ X"${DISTRO}" == X'DEBIAN' ]; then
         # Debian.
         ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
@@ -84,6 +81,13 @@ install_all()
                     perl -pi -e 's/^#(exclude=postfix.*)/${1}/' ${LOCAL_REPO_FILE}
                 fi
             fi
+        elif [ X"${DISTRO_VERSION}" == X'8' ]; then
+            # pcre support is required and available in iRedMail yum repo.
+            ALL_PKGS="${ALL_PKGS} postfix-pcre"
+
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix-ldap"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix-mysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} postfix-pgsql"
         fi
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -102,7 +106,12 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} openldap openldap-clients openldap-servers mariadb-server mod_ldap"
+            if [ X"${DISTRO_VERSION}" == X'7' ]; then
+                ALL_PKGS="${ALL_PKGS} openldap openldap-clients openldap-servers mariadb-server mod_ldap"
+            elif [ X"${DISTRO_VERSION}" == X'8' ]; then
+                # Install packages from Symas yum repo.
+                ALL_PKGS="${ALL_PKGS} symas-openldap-servers symas-openldap-clients mariadb-server"
+            fi
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then

@@ -52,6 +52,7 @@ $config['max_message_size'] = 'PH_MESSAGE_SIZE_LIMIT_MBM';
 // USER INTERFACE
 $config['create_default_folders'] = true;
 $config['quota_zero_as_unlimited'] = true;
+$config['spellcheck_engine'] = 'pspell';
 
 // USER PREFERENCES
 $config['default_charset'] = 'UTF-8';

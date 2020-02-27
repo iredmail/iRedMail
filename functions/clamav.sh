@@ -65,8 +65,12 @@ clamav_config()
     fi
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ECHO_DEBUG "Add clamav user to amavid group."
+        ECHO_DEBUG "Add clamav and freshclam daemon users to amavid group."
         usermod ${SYS_USER_CLAMAV} -G ${SYS_GROUP_AMAVISD}
+        usermod clamupdate -G ${SYS_GROUP_AMAVISD} 2>/dev/null
+
+        ECHO_DEBUG "Set correct permission for database directory."
+        chmod 0775 /var/lib/clamav 2>/dev/null
 
         ECHO_DEBUG "Set permission to 750: ${AMAVISD_TEMP_DIR}, ${AMAVISD_QUARANTINE_DIR},"
         chmod -R 750 ${AMAVISD_TEMP_DIR} ${AMAVISD_QUARANTINE_DIR}
