@@ -75,6 +75,7 @@ export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
 if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER_BIN='/usr/lib/dovecot/deliver'
 
+    # Debian 10
     [ X"${DISTRO_CODENAME}" == X'buster' ] && export DOVECOT_VERSION='2.3'
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DOVECOT_VERSION='2.3'

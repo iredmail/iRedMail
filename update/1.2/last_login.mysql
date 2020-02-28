@@ -1,0 +1,16 @@
+-- For MySQL/MariaDB backends, please update database `vmail`.
+-- For OpenLDAP backend, please update database `iredadmin`.
+DROP TABLE `last_login`;
+
+CREATE TABLE `last_login` (
+    `username` VARCHAR(255) NOT NULL DEFAULT '',
+    `domain` VARCHAR(255) NOT NULL DEFAULT '',
+    `imap` INT(11) DEFAULT NULL,
+    `pop3` INT(11) DEFAULT NULL,
+    `lda` INT(11) DEFAULT NULL,
+    PRIMARY KEY (`username`),
+    INDEX last_login_domain (`domain`),
+    INDEX last_login_imap (`imap`),
+    INDEX last_login_pop3 (`pop3`),
+    INDEX last_login_lda (`lda`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
