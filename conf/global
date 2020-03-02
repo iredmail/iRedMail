@@ -240,9 +240,12 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         export DISTRO='RHEL'
 
         # Get distribution version
-        if grep '\ 7' /etc/redhat-release &>/dev/null; then
+        if grep '\ 7\.' /etc/redhat-release &>/dev/null; then
             # version 7.x
             export DISTRO_VERSION='7'
+        elif grep '\ 8\.' /etc/redhat-release &>/dev/null; then
+            # version 8.x
+            export DISTRO_VERSION='8'
         else
             export UNSUPPORTED_RELEASE='YES'
         fi

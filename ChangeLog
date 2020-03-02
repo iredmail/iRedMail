@@ -9,6 +9,7 @@ iRedMail-1.2:
 
     * Updated packages:
         + iRedAPD -> 3.5
+        + netdata -> 1.20.0
 
 iRedMail-1.1:
     * Improvements:

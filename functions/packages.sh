@@ -173,7 +173,8 @@ install_all()
     # PHP
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} php-common php-fpm php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
+            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} php-common php-fpm php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} php-common php-fpm php-gd php-xml php-mysqlnd php-ldap php-pgsql php-mbstring php-pecl-apcu php-intl"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # Debian 9
@@ -248,7 +249,8 @@ install_all()
     # Amavisd-new, ClamAV, Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_SERVICE_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF unrar pax lz4 clamav clamav-update clamav-server clamav-server-systemd"
+        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF lz4 clamav clamav-update clamav-server clamav-server-systemd"
+        [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} unrar pax"
 
         # RHEL uses service name 'clamd@amavisd' instead of clamd.
         DISABLED_SERVICES="${DISABLED_SERVICES} clamd spamassassin"
@@ -267,13 +269,13 @@ install_all()
     # mlmmj: mailing list manager
     ALL_PKGS="${ALL_PKGS} mlmmj"
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} uwsgi-logger-syslog"
+        [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} uwsgi-logger-syslog"
     fi
 
     # Roundcube
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} php-pear-Net-IDNA2"
+            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} php-pear-Net-IDNA2"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${BACKEND}" == X'OPENLDAP' ]; then
                 if [ X"${DISTRO_CODENAME}" == X"bionic" -o X"${DISTRO_CODENAME}" == X"stretch" ]; then
@@ -355,10 +357,23 @@ EOF
     # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
     # RC script ready in early stage.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} python-sqlalchemy python-setuptools python-dns"
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap MySQL-python"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} MySQL-python"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
+        [ X"${DISTRO_VERSION}" == X'7' ] && ALL_PKGS="${ALL_PKGS} python-sqlalchemy python-setuptools python-dns"
+        [ X"${DISTRO_VERSION}" == X'8' ] && ALL_PKGS="${ALL_PKGS} python2-sqlalchemy python2-setuptools python2-dns"
+
+        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} python-ldap MySQL-python"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python2-PyMySQL"
+        fi
+
+        if [ X"${BACKEND}" == X'MYSQL' ]; then
+            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} MySQL-python"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python2-PyMySQL"
+        fi
+
+        if [ X"${BACKEND}" == X'PGSQL' ]; then
+            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python2-psycopg2"
+        fi
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python-sqlalchemy python-dnspython"
@@ -382,11 +397,12 @@ EOF
     # iRedAdmin.
     # Force install all dependence to help customers install iRedAdmin-Pro.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces python-pycurl python-requests"
-        [ X"${DISTRO_VERSION}" == X'7' ] && ALL_PKGS="${ALL_PKGS} py-bcrypt"
+        if [ X"${DISTRO_VERSION}" == X'7' ]; then
+            ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces python-pycurl python-requests py-bcrypt"
+            [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python2"
+        fi
 
-        [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python2"
-
+        [ X"${DISTRO_VERSION}" == X'8' ] && ALL_PKGS="${ALL_PKGS} python2-jinja2 python2-requests"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-requests"
         if [ X"${DISTRO_CODENAME}" == X"bionic" -o X"${DISTRO_CODENAME}" == X"stretch" ]; then
@@ -422,7 +438,10 @@ EOF
     #       service automatically.
     if [ X"${USE_NETDATA}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} curl libmnl libuuid lm_sensors nc PyYAML zlib iproute"
+            ALL_PKGS="${ALL_PKGS} curl libmnl libuuid lm_sensors nc zlib iproute"
+
+            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} PyYAML"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python2-pyyaml"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors netcat"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -433,7 +452,9 @@ EOF
 
     # Misc packages & services.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} unzip bzip2 acl patch tmpwatch crontabs dos2unix logwatch lz4 lrzip"
+        ALL_PKGS="${ALL_PKGS} unzip bzip2 acl patch tmpwatch crontabs dos2unix logwatch lz4"
+        [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} lrzip"
+
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch unzip bsdutils liblz4-tool"
