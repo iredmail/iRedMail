@@ -46,7 +46,6 @@ openldap_config()
             cp -rf ${SAMPLE_DIR}/systemd/slapd.service.d /etc/systemd/system/
             systemctl daemon-reload
         fi
-    fi
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # Add openldap daemon user to 'ssl-cert' group, so that slapd can read SSL key.
