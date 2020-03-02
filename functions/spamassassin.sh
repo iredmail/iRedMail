@@ -19,11 +19,15 @@ sa_config()
 
     ECHO_DEBUG "Enable crontabs for SpamAssassin update."
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        [ -f ${ETC_SYSCONFIG_DIR}/sa-update ] && \
+        if [ -f ${ETC_SYSCONFIG_DIR}/sa-update ]; then
             perl -pi -e 's/^#(SAUPDATE=yes)/${1}/' ${ETC_SYSCONFIG_DIR}/sa-update
+        fi
 
-        chmod 0644 /etc/cron.d/sa-update
-        perl -pi -e 's/#(10.*)/${1}/' /etc/cron.d/sa-update
+        # CentOS 7.
+        if [ -f /etc/cron.d/sa-update ]; then
+            chmod 0644 /etc/cron.d/sa-update
+            perl -pi -e 's/#(10.*)/${1}/' /etc/cron.d/sa-update
+        fi
     elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
         perl -pi -e 's#^(CRON=)0#${1}1#' /etc/default/spamassassin
     fi

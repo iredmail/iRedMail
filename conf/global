@@ -401,7 +401,7 @@ export IREDMAIL_SYSLOG_FACILITY='local5'
 export SYSLOG_CONF_DIR='/etc/rsyslog.d'
 
 # Use systemd
-export USE_SYSTEMD='NO'
+export USE_SYSTEMD='YES'
 export SYSTEMD_SERVICE_DIR='/lib/systemd/system'
 
 # install_pkg: function used to install packages without confirm.
@@ -424,15 +424,11 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     # Directory /etc/sysconfig/ on RHEL/CentOS.
     export ETC_SYSCONFIG_DIR='/etc/sysconfig'
 
-    if [ X"${DISTRO_VERSION}" == X'7' ]; then
-        export USE_SYSTEMD='YES'
-
-        # iptables rule file.
-        export USE_FIREWALLD='YES'
-        export FIREWALLD_CONF_DIR='/etc/firewalld'
-        export FIREWALLD_CONF='/etc/firewalld/firewalld.conf'
-        export FIREWALL_RULE_CONF="${FIREWALLD_CONF_DIR}/zones/iredmail.xml"
-    fi
+    # Firewalld
+    export USE_FIREWALLD='YES'
+    export FIREWALLD_CONF_DIR='/etc/firewalld'
+    export FIREWALLD_CONF='/etc/firewalld/firewalld.conf'
+    export FIREWALL_RULE_CONF="${FIREWALLD_CONF_DIR}/zones/iredmail.xml"
 
     # main config file
     export SYSLOG_CONF='/etc/rsyslog.conf'
@@ -491,11 +487,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export SYSLOG_POSTROTATE_CMD='/usr/lib/rsyslog/rsyslog-rotate'
     fi
 
-    # systemd support.
-    if which systemctl &>/dev/null; then
-        export USE_SYSTEMD='YES'
-    fi
-
     # SSHD log file
     export SSHD_LOGFILE='/var/log/auth.log'
 
@@ -519,6 +510,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export SSL_FILE_DIR="/etc/ssl"
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export USE_SYSTEMD='NO'
     export SYS_GROUP_ROOT='wheel'
 
     # sysrc: safely edit system rc files
@@ -569,6 +561,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export LOGROTATE_DIR='/usr/local/etc/newsyslog.conf.d'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export USE_SYSTEMD='NO'
     export SYS_GROUP_ROOT='wheel'
 
     # Package management.
@@ -702,3 +695,7 @@ fi
 export BACKUP_SCRIPT_LDAP_NAME='backup_openldap.sh'
 export BACKUP_SCRIPT_MYSQL_NAME='backup_mysql.sh'
 export BACKUP_SCRIPT_PGSQL_NAME='backup_pgsql.sh'
+
+# pip mirror.
+export PIP_MIRROR_SITE="${PIP_MIRROR_SITE:=''}"
+export PIP_TRUSTED_HOST="${PIP_TRUSTED_HOST:=''}"

@@ -23,6 +23,7 @@
 install_all()
 {
     ALL_PKGS=''
+    PIP2_MODULES=''
     ENABLED_SERVICES=''
     DISABLED_SERVICES=''
 
@@ -58,6 +59,7 @@ install_all()
     # Enable syslog service (rsyslog).
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} rsyslog firewalld"
+        PIP2_MODULES="${PIP2_MODULES} web.py==0.40 pycurl uwsgi netifaces"
         ENABLED_SERVICES="${ENABLED_SERVICES} rsyslog firewalld"
         DISABLED_SERVICES="${DISABLED_SERVICES} exim sendmail"
     elif [ X"${DISTRO}" == X'DEBIAN' ]; then
@@ -111,6 +113,7 @@ install_all()
             elif [ X"${DISTRO_VERSION}" == X'8' ]; then
                 # Install packages from Symas yum repo.
                 ALL_PKGS="${ALL_PKGS} symas-openldap-servers symas-openldap-clients mariadb-server"
+                PIP2_MODULES="${PIP2_MODULES} python-ldap==3.2.0"
             fi
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"
@@ -353,6 +356,13 @@ EOF
         fi
     fi
 
+    # Install few Python modules with `pip` for Python-2.
+    # We still have few Python applications not ported to Py3.
+    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
+        ALL_PKGS="${ALL_PKGS} gcc libcurl-devel openssl-devel python2-devel python2-pip"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} openldap-devel"
+    fi
+
     # iRedAPD.
     # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
     # RC script ready in early stage.
@@ -548,6 +558,15 @@ EOF
                     tar zxf webpy-0.40.tar.gz && \
                     cp -rf webpy-0.40/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
             fi
+        elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
+            ECHO_INFO "Installing required Python-2 modules with pip."
+
+            pip_args=''
+            if [ X"${PIP_MIRROR_SITE}" != X'' -a X"${PIP_TRUSTED_HOST}" != X'' ]; then
+                pip_args="-i ${PIP_MIRROR_SITE} --trusted-host ${PIP_TRUSTED_HOST}"
+            fi
+
+            PYCURL_SSL_LIBRARY=openssl pip2 install ${pip_args} -U ${PIP2_MODULES}
         fi
 
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}

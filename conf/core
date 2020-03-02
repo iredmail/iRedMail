@@ -332,37 +332,19 @@ service_control()
     action="$1"     # enable, disable, start, stop, restart
     shift 1
     service="$1"    # first service name
-    services="$@"   # extra service names
+    services="$@"   # all service names
 
     if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-        for srv in ${services}; do
-            ECHO_DEBUG "Service control: $action $srv."
+        ECHO_DEBUG "Service control: ${action} ${services}."
 
-            if [ X"${USE_SYSTEMD}" == X'YES' ]; then
-                systemctl $action $srv
-            else
+        if [ X"${USE_SYSTEMD}" == X'YES' ]; then
+            systemctl ${action} ${services}
+        else
+            for srv in ${services}; do
                 rc_script="${DIR_RC_SCRIPTS}/$srv"
-
-                if [ X"${DISTRO}" == X'RHEL' ]; then
-                    if [ X"${action}" == X'enable' ]; then
-                        /sbin/chkconfig --level 345 $srv on
-                    elif [ X"${action}" == X'disable' ]; then
-                        /sbin/chkconfig --level 345 $srv off
-                    else
-                        # start, stop, restart
-                        ${rc_script} $action
-                    fi
-                elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-                    if [ X"${action}" == X'enable' ]; then
-                        update-rc.d $srv defaults
-                    elif [ X"${action}" == X'disable' ]; then
-                        update-rc.d -f $srv remove
-                    else
-                        ${rc_script} $action
-                    fi
-                fi
-            fi
-        done
+                ${rc_script} $action
+            done
+        fi
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
         if [ X"${action}" == X'enable' ]; then
             if [ X"$#" == X'2' ]; then
@@ -375,13 +357,9 @@ service_control()
             ${DIR_RC_SCRIPTS}/${service} $action >/dev/null
         fi
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-        if [ X"${action}" == X'enable' ]; then
-            rcctl enable ${service} >> ${INSTALL_LOG} 2>&1
-        elif [ X"${action}" == X'disable' ]; then
-            rcctl disable ${service} >> ${INSTALL_LOG} 2>&1
-        else
-            ${DIR_RC_SCRIPTS}/${service} $action
-        fi
+        for srv in ${services}; do
+            rcctl ${action} ${srv} >> ${INSTALL_LOG} 2>&1
+        done
     fi
 }
 
