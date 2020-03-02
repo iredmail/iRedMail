@@ -115,7 +115,9 @@ install_all()
                 ALL_PKGS="${ALL_PKGS} symas-openldap-servers symas-openldap-clients mariadb-server"
                 PIP2_MODULES="${PIP2_MODULES} python-ldap==3.2.0"
 
-                cp -f ${SAMPLE_DIR}/yum/symas-openldap.repo ${YUM_REPOS_DIR}/
+                if [ ! -f ${YUM_REPOS_DIR}/symas-openldap.repo ]; then
+                    cp -f ${SAMPLE_DIR}/yum/symas-openldap.repo ${YUM_REPOS_DIR}/
+                fi
             fi
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"
