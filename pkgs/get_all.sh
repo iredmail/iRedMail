@@ -168,41 +168,17 @@ EOF
     # RHEL/CentOS 8.
     if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X'8' ]; then
         # repo PowerTools is required.
-        if [ -f /etc/yum.repos.d/CentOS-PowerTools.repo ]; then
-            yum config-manager --set-enabled PowerTools
-        else
-            # TODO Create repo file.
-            :
-        fi
-
-        # For OpenLDAP server.
-        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            cat > ${YUM_REPOS_DIR}/sympa-openldap.repo <<EOF
-        [sympa-openldap]
-name=Symas OpenLDAP for Linux RPM repository
-baseurl=https://repo.symas.com/repo/rpm/SOFL/rhel8
-gpgkey=https://repo.symas.com/repo/gpg/RPM-GPG-KEY-symas-com-signing-key
-gpgcheck=1
-enabled=1
-EOF
-        fi
+        for repo in AppStream PowerTools; do
+            if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
+                cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
+            fi
+        done
     fi
 
     eval ${install_pkg} epel-release
 
     if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then
         rm -f ${YUM_REPOS_DIR}/tmp_epel.repo
-    fi
-
-    # Use specified EPEL local mirror site (url doesn't end with slash)
-    epel_repo="${YUM_REPOS_DIR}/epel.repo"
-    if [ -n "${IREDMAIL_EPEL_MIRROR}" -a -f ${epel_repo} ]; then
-        # comment out all 'mirrorlist=' and 'baseurl='
-        perl -pi -e 's/^(mirrorlist=.*)/#${1}/g' ${epel_repo}
-        perl -pi -e 's/^(baseurl=.*)/#${1}/g' ${epel_repo}
-        # Add a new 'baseurl='
-        export IREDMAIL_EPEL_MIRROR
-        perl -pi -e 's/^(\[epel\])$/${1}\nbaseurl=$ENV{IREDMAIL_EPEL_MIRROR}\/$ENV{DISTRO_VERSION}\/\$basearch/g' ${epel_repo}
     fi
 
     echo 'export status_create_repo_rhel="DONE"' >> ${STATUS_FILE}
@@ -273,14 +249,13 @@ fi
 prepare_dirs
 
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    # Create yum repository.
-    check_status_before_run create_repo_rhel
-
     # Check required commands, install related package if command doesn't exist.
     check_pkg ${BIN_WHICH} ${PKG_WHICH}
     check_pkg ${BIN_WGET} ${PKG_WGET}
     check_pkg ${BIN_PERL} ${PKG_PERL}
 
+    # Create yum repository.
+    check_status_before_run create_repo_rhel
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     _missing_pkgs=''
 

@@ -37,7 +37,7 @@ install_all()
         OB_PKG_OPENLDAP_CLIENT_VER='-2.4.48'
 
         # Check required syspatch for LDAP backend.
-        if [ X"${DISTRO_VERSION}" == X'6.6' -a X"${BACKEND}" == X'OPENLDAP' ]; then
+        if [ X"${DISTRO}" == X'OPENBSD' -a X"${DISTRO_VERSION}" == X'6.6' -a X"${BACKEND}" == X'OPENLDAP' ]; then
             if [ ! -f /var/syspatch/66-002_ber/002_ber.patch.sig ]; then
                 echo ""
                 echo "============ ERROR ============"
@@ -114,6 +114,8 @@ install_all()
                 # Install packages from Symas yum repo.
                 ALL_PKGS="${ALL_PKGS} symas-openldap-servers symas-openldap-clients mariadb-server"
                 PIP2_MODULES="${PIP2_MODULES} python-ldap==3.2.0"
+
+                cp -f ${SAMPLE_DIR}/yum/symas-openldap.repo ${YUM_REPOS_DIR}/
             fi
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"

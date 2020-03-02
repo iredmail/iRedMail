@@ -1,0 +1,6 @@
+[symas-openldap]
+name=Symas OpenLDAP for Linux RPM repository
+baseurl=https://repo.symas.com/repo/rpm/SOFL/rhel8
+gpgkey=https://repo.symas.com/repo/gpg/RPM-GPG-KEY-symas-com-signing-key
+gpgcheck=1
+enabled=1
