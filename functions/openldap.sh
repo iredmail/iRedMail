@@ -34,10 +34,11 @@ openldap_config()
     backup_file ${OPENLDAP_SLAPD_CONF} ${OPENLDAP_LDAP_CONF}
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        # Run slapd with slapd.conf, not slapd.d.
-        perl -pi -e 's/#(SLAPD_OPTIONS=).*/${1}"-f $ENV{OPENLDAP_SLAPD_CONF}"/' ${OPENLDAP_SYSCONFIG_CONF}
+        # Run slapd with `slapd.conf` instead of `slapd.d`.
+        if [ X"${DISTRO_VERSION}" == X'7' ]; then
+            perl -pi -e 's/#(SLAPD_OPTIONS=).*/${1}"-f $ENV{OPENLDAP_SLAPD_CONF}"/' ${OPENLDAP_SYSCONFIG_CONF}
 
-        if [ X"${DISTRO_VERSION}" == X'8' ]; then
+        elif [ X"${DISTRO_VERSION}" == X'8' ]; then
             perl -pi -e 's#PH_SYS_USER_LDAP#$ENV{SYS_USER_LDAP}#g' ${SAMPLE_DIR}/systemd/slapd.service.d/override.conf
             perl -pi -e 's#PH_LDAP_SERVER_HOST#$ENV{LDAP_SERVER_HOST}#g' ${SAMPLE_DIR}/systemd/slapd.service.d/override.conf
             perl -pi -e 's#PH_LDAP_SERVER_PORT#$ENV{LDAP_SERVER_PORT}#g' ${SAMPLE_DIR}/systemd/slapd.service.d/override.conf
