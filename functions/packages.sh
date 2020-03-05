@@ -181,7 +181,7 @@ install_all()
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} php-common php-fpm php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} php-common php-fpm php-gd php-xml php-mysqlnd php-ldap php-pgsql php-mbstring php-pecl-apcu php-intl"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} php-common php-fpm php-gd php-xml php-mysqlnd php-ldap php-pgsql php-mbstring php-pecl-apcu php-intl php-json"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # Debian 9
