@@ -139,16 +139,15 @@ mysql_initialize_db()
                 #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
                 #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
 
-                #ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
+                ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
                 #mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
 
-                ${_mysql_cmd} -e "DESC mysql.user" | grep '\<Password\>' >> ${INSTALL_LOG} 2>&1
-                if [ X"$?" == X'0' ]; then
-                    # MySQL 5.6 and earlier
-                    ${_mysqladmin_cmd} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
-                else
-                    # MySQL 5.7 and later.
+                if ${_mysql_cmd} -e "DESC mysql.user" | grep '\<authentication_string\>' >> ${INSTALL_LOG} 2>&1; then
                     ${_mysql_cmd} -e "UPDATE mysql.user SET authentication_string = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
+                fi
+
+                if ${_mysql_cmd} -e "DESC mysql.user" | grep '\<Password\>' >> ${INSTALL_LOG} 2>&1; then
+                    ${_mysqladmin_cmd} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
                 fi
             else
                 ECHO_DEBUG "MySQL root password is not empty, not reset."
@@ -175,16 +174,19 @@ mysql_generate_defaults_file_root()
 {
     ECHO_DEBUG "Generate defauts file for MySQL client option --defaults-file: ${MYSQL_DEFAULTS_FILE_ROOT}."
     backup_file ${MYSQL_DEFAULTS_FILE_ROOT}
+
     cat > ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
-# NOTE: This file is used by several programs:
-#   - iRedAPD upgrade script
-#   - iRedAdmin upgrade script
 [client]
-host=${MYSQL_SERVER_ADDRESS}
-port=${MYSQL_SERVER_PORT}
 user=${MYSQL_ROOT_USER}
 password="${MYSQL_ROOT_PASSWD}"
 EOF
+
+    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' -o X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
+        cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+EOF
+    fi
 
     chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT}
 
@@ -229,13 +231,7 @@ mysql_remove_insecure_data()
     ECHO_DEBUG "Delete anonymous database user."
     ${MYSQL_CLIENT_ROOT} -e "SOURCE ${SAMPLE_DIR}/mysql/sql/delete_anonymous_user.sql;"
 
-    # Delete root access with empty passwords
-    ${MYSQL_CLIENT_ROOT} -e "DESC mysql.user" | grep '\<Password\>' &>/dev/null
-    if [ X"$?" == X'0' ]; then
-        ECHO_DEBUG "Delete root access with empty passwords."
-        ${MYSQL_CLIENT_ROOT} -e "DELETE FROM mysql.user WHERE User='root' AND Password=''"
-    fi
-
+    # Delete root accounts with empty passwords
     ${MYSQL_CLIENT_ROOT} -e "DESC mysql.user" | grep '\<Password\>' &>/dev/null
     if [ X"$?" == X'0' ]; then
         ECHO_DEBUG "Delete root access with empty passwords."
