@@ -6,6 +6,7 @@ iRedMail-1.2:
     * Fixed issues:
         - Use 'pspell' spell check engine instead of default 'googie' which
           sends data to Roundcube website.
+        - Not install package `libclamunrar9` for unpacking rar file on Ubuntu.
 
     * Updated packages:
         + Roundcube webmail -> 1.4.3

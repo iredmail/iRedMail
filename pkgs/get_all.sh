@@ -272,6 +272,12 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         _missing_pkgs="${_missing_pkgs} dirmngr"
     fi
 
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+        if [ ! -e /usr/bin/apt-add-repository ]; then
+            _missing_pkgs="${_missing_pkgs} software-properties-common"
+        fi
+    fi
+
     if [ X"${_missing_pkgs}" != X'' ]; then
         eval ${install_pkg} ${_missing_pkgs}
     fi
@@ -279,6 +285,12 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Force update.
     ECHO_INFO "apt-get update ..."
     ${APTGET} update
+
+    # Enable 'multiverse' repo for package `libclamunrar9`.
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+        ECHO_DEBUG "Enable apt repo 'multiverse'."
+        apt-add-repository multiverse
+    fi
 
     check_pkg ${BIN_PERL} ${PKG_PERL}
     check_pkg ${BIN_WGET} ${PKG_WGET}
