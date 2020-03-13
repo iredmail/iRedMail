@@ -217,6 +217,13 @@ EOF
 iredadmin_rc_setup()
 {
     if [ X"${DISTRO}" == X'RHEL' ]; then
+        if [ X"${DISTRO_VERSION}" == X'8' ]; then
+            # Fix path to uwsgi.
+            perl -pi -e 's#/usr/sbin/uwsgi#/usr/bin/uwsgi#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/rhel.service
+            # Disable plugins. They're all builtin.
+            perl -pi -e 's/^(plugins.*)/#${1}/g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel.ini
+        fi
+
         cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/rhel.service ${SYSTEMD_SERVICE_DIR}/iredadmin.service
         chmod 0644 ${SYSTEMD_SERVICE_DIR}/iredadmin.service
 

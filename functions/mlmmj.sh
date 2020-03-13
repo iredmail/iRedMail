@@ -188,6 +188,13 @@ EOF
     # Copy rc script file
     if [ X"${USE_SYSTEMD}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
+            if [ X"${DISTRO_VERSION}" == X'8' ]; then
+                # Fix path to uwsgi.
+                perl -pi -e 's#/usr/sbin/uwsgi#/usr/bin/uwsgi#g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/systemd/rhel.service
+                # Disable plugins. They're all builtin.
+                perl -pi -e 's/^(plugins.*)/#${1}/g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/uwsgi/rhel.ini
+            fi
+
             cp -f ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/systemd/rhel.service ${SYSTEMD_SERVICE_DIR}/${MLMMJADMIN_RC_SCRIPT_NAME}.service >> ${INSTALL_LOG} 2>&1
             chmod 0644 ${SYSTEMD_SERVICE_DIR}/${MLMMJADMIN_RC_SCRIPT_NAME}.service
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
