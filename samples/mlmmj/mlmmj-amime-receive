@@ -31,16 +31,10 @@ fi
 # WARNING: both `footer_text` and `footer_html` must exist.
 export FILE_FOOTER_TEXT='footer_text'
 export FILE_FOOTER_HTML='footer_html'
-#export FILE_FOOTER_BASE64='footer_base64'
 
-# Make sure programs exist and executable
+# Make sure command `mlmmj-receive` exist and executable
 if [ ! -x ${CMD_MLMMJ_RECEIVE} ]; then
     echo "Command ${CMD_MLMMJ_RECEIVE} doesn't exist or not executable, mail delivery aborted"
-    exit 1
-fi
-
-if [ ! -x ${CMD_ALTERMIME} ]; then
-    echo "Command ${CMD_ALTERMIME} doesn't exist or not executable, mail delivery aborted"
     exit 1
 fi
 
@@ -83,8 +77,8 @@ PATH_FOOTER_HTML="${ML_SUBDIR_CONTROL}/${FILE_FOOTER_HTML}"
 # go to a dir where altermime can write it's tmp-files safely
 cd ${ML_DIR}
 
-if [[ -f ${PATH_FOOTER_TEXT} ]] && [[ -f ${PATH_FOOTER_HTML} ]]; then
-    # pipe to altermime, then pipe to mlmmj-receive
+if [[ -x ${CMD_ALTERMIME} ]] && [[ -f ${PATH_FOOTER_TEXT} ]] && [[ -f ${PATH_FOOTER_HTML} ]]; then
+    # pipe to altermime for MIME modification, then pipe to mlmmj-receive for final delivery.
     ${CMD_ALTERMIME} --input=- \
         --altersigned \
         --log-syslog \
@@ -93,5 +87,6 @@ if [[ -f ${PATH_FOOTER_TEXT} ]] && [[ -f ${PATH_FOOTER_HTML} ]]; then
         --htmltoo \
         --force-for-bad-html | ${CMD_MLMMJ_RECEIVE} "$@"
 else
+    echo "Mail delivered without modificaiton."
     ${CMD_MLMMJ_RECEIVE} "$@"
 fi
