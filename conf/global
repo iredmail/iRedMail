@@ -193,10 +193,11 @@ export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 
 # Command used to genrate a random string.
 # Usage: str="$(${RANDOM_STRING})"
-if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
-    export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 30)'
+if [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+    export RANDOM_STRING='eval </dev/random tr -cd [:alnum:] | fold -w 30 | head -1'
 else
-    export RANDOM_STRING='eval echo $RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM$RANDOM | md5'
+    # Linux/FreeBSD
+    export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 30)'
 fi
 
 # command: dialog.
