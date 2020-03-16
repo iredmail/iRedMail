@@ -41,6 +41,9 @@ export PKG_MISC_DIR="${ROOTDIR}/pkgs/misc"
 export SAMPLE_DIR="${ROOTDIR}/samples"
 export PATCH_DIR="${ROOTDIR}/patches"
 export TOOLS_DIR="${ROOTDIR}/tools"
+export RUNTIME_DIR="${ROOTDIR}/runtime"
+
+[[ -d ${RUNTIME_DIR} ]] || mkdir -p ${RUNTIME_DIR}
 
 . ${CONF_DIR}/global
 . ${CONF_DIR}/core
