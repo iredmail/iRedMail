@@ -7,6 +7,8 @@ iRedMail-1.2:
         - Use 'pspell' spell check engine instead of default 'googie' which
           sends data to Roundcube website.
         - Not install package `libclamunrar9` for unpacking rar file on Ubuntu.
+        - installer: not correctly update allowed_clients in php-fpm pool
+          config file for FreeBSD Jail.
 
     * Updated packages:
         + Roundcube webmail -> 1.4.3

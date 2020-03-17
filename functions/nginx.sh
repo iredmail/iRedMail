@@ -177,6 +177,10 @@ nginx_config()
         perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${PHP_FPM_POOL_WWW_CONF}
         perl -pi -e 's#PH_PHP_FPM_LOG_SLOW#$ENV{PHP_FPM_LOG_SLOW}#g' ${PHP_FPM_POOL_WWW_CONF}
 
+        if [[ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]] && [[ X"${LOCAL_ADDRESS}" != X'localhost' ]]; then
+            perl -pi -e 's#^(listen.allowed_clients = 127.0.0.1)$#${1},$ENV{LOCAL_ADDRESS}#g' ${PHP_FPM_POOL_WWW_CONF}
+        fi
+
         # Create log directory
         mkdir -p ${PHP_FPM_LOG_DIR} >> ${INSTALL_LOG} 2>&1
         touch ${PHP_FPM_LOG_MAIN} ${PHP_FPM_LOG_SLOW}
