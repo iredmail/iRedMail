@@ -461,7 +461,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${APTGET}" != X"" ]; then
         export APTGET="${APTGET}"
     else
-        export APTGET='apt'
+        # "WARNING: apt does not have a stable CLI interface. Use with caution in scripts."
+        export APTGET='apt-get'
     fi
 
     # Package management.
