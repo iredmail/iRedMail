@@ -461,7 +461,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${APTGET}" != X"" ]; then
         export APTGET="${APTGET}"
     else
-        export APTGET='apt-get'
+        export APTGET='apt'
     fi
 
     # Package management.

@@ -283,7 +283,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     fi
 
     # Force update.
-    ECHO_INFO "apt-get update ..."
+    ECHO_INFO "apt update ..."
     ${APTGET} update
 
     # Enable 'multiverse' repo for package `libclamunrar9`.

@@ -81,7 +81,7 @@ except ImportError:
 
     - On Debian & Ubuntu:
 
-        $ sudo apt-get install python-ldap
+        $ sudo apt install python-ldap
     '''
     sys.exit()
 

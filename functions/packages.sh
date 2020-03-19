@@ -350,8 +350,8 @@ EOF
                 apt-key adv --keyserver pgp.mit.edu --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
             fi
 
-            ECHO_INFO "Resynchronizing the package index files (apt-get update) ..."
-            apt-get update
+            ECHO_INFO "Resynchronizing the package index files (apt update) ..."
+            ${APTGET} update
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} sogo memcached--"
