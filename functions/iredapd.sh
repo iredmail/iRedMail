@@ -216,6 +216,9 @@ iredapd_config()
     perl -pi -e 's#^(iredapd_db_user).*#${1} = "$ENV{IREDAPD_DB_USER}"#' ${IREDAPD_CONF}
     perl -pi -e 's#^(iredapd_db_password).*#${1} = "$ENV{IREDAPD_DB_PASSWD}"#' ${IREDAPD_CONF}
 
+    # mlmmjadmin integration.
+    perl -pi -e 's#^(mlmmjadmin_api_auth_token).*#${1} = "$ENV{MLMMJADMIN_API_AUTH_TOKEN}"#' ${IREDAPD_CONF}
+
     if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
         echo "MYNETWORKS = ['${LOCAL_ADDRESS}']" >> ${IREDAPD_CONF}
     fi
