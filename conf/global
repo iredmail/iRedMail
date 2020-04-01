@@ -22,7 +22,7 @@
 
 export PROG_NAME='iRedMail'
 export PROG_NAME_LOWERCASE='iredmail'
-export PROG_VERSION='1.1'
+export PROG_VERSION='1.2'
 
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
 
@@ -697,6 +697,6 @@ export BACKUP_SCRIPT_LDAP_NAME='backup_openldap.sh'
 export BACKUP_SCRIPT_MYSQL_NAME='backup_mysql.sh'
 export BACKUP_SCRIPT_PGSQL_NAME='backup_pgsql.sh'
 
-# pip mirror.
-export PIP_MIRROR_SITE="${PIP_MIRROR_SITE:=''}"
-export PIP_TRUSTED_HOST="${PIP_TRUSTED_HOST:=''}"
+# pip mirror. Read from env variables by default.
+export PIP_MIRROR_SITE="${PIP_MIRROR_SITE:=}"
+export PIP_TRUSTED_HOST="${PIP_TRUSTED_HOST:=}"

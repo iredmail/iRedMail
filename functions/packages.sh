@@ -59,7 +59,7 @@ install_all()
     # Enable syslog service (rsyslog).
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} rsyslog firewalld"
-        PIP2_MODULES="${PIP2_MODULES} web.py==0.40 pycurl uwsgi netifaces"
+        PIP2_MODULES="${PIP2_MODULES} web.py==0.51 pycurl uwsgi netifaces"
         ENABLED_SERVICES="${ENABLED_SERVICES} rsyslog firewalld"
         DISABLED_SERVICES="${DISABLED_SERVICES} exim sendmail"
     elif [ X"${DISTRO}" == X'DEBIAN' ]; then
@@ -563,8 +563,8 @@ EOF
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" != X"bionic" -a X"${DISTRO_CODENAME}" != X"stretch" ]; then
                 cd ${PKG_MISC_DIR} && \
-                    tar zxf webpy-0.40.tar.gz && \
-                    cp -rf webpy-0.40/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
+                    tar zxf webpy-0.51.tar.gz && \
+                    cp -rf webpy-0.51/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
             fi
         elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
             ECHO_INFO "Installing required Python-2 modules with pip."

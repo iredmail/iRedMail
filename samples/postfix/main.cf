@@ -267,3 +267,8 @@ recipient_delimiter = +
 # The time after which the sender receives a copy of the message headers of
 # mail that is still queued. Default setting is disabled (0h) by Postfix.
 #delay_warning_time = 1h
+
+# Do not display the name of the recipient table in the "User unknown" responses.
+# The extra detail makes trouble shooting easier but also reveals information
+# that is nobody elses business.
+show_user_unknown_table_name = no
