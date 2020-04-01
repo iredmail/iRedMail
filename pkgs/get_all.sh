@@ -149,6 +149,7 @@ baseurl=${IREDMAIL_MIRROR}/yum/rpms/${DISTRO_VERSION}/
 enabled=1
 gpgcheck=0
 #exclude=postfix*
+priority=99
 EOF
 
     # For Red Hat Enterprise Linux
