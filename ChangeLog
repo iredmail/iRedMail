@@ -12,6 +12,7 @@ iRedMail-1.2:
         - Not install package `libclamunrar9` for unpacking rar file on Ubuntu.
         - installer: not correctly update allowed_clients in php-fpm pool
           config file for FreeBSD Jail.
+        - Amavisd can not store mail subject with emoji characters.
 
     * Updated packages:
         + Roundcube webmail -> 1.4.3
