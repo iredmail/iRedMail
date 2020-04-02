@@ -219,6 +219,12 @@ iredapd_config()
     # mlmmjadmin integration.
     perl -pi -e 's#^(mlmmjadmin_api_auth_token).*#${1} = "$ENV{MLMMJADMIN_API_AUTH_TOKEN}"#' ${IREDAPD_CONF}
 
+    if [[ X"${DISTRO}" == X'RHEL' ]] && [[ X"${DISTRO_VERSION}" == X'8' ]]; then
+        if [[ X"${BACKEND}" == X'OPENLDAP' ]] || [[ X"${BACKEND}" == X'MYSQL' ]]; then
+            echo "SQL_DB_DRIVER = 'pymysql'" >> ${IREDAPD_CONF}
+        fi
+    fi
+
     if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
         echo "MYNETWORKS = ['${LOCAL_ADDRESS}']" >> ${IREDAPD_CONF}
     fi
