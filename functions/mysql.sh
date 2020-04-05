@@ -136,9 +136,6 @@ mysql_initialize_db()
 
             ${_mysql_cmd} -e "show databases" >> ${INSTALL_LOG} 2>&1
             if [ X"$?" == X'0' ]; then
-                #ECHO_DEBUG "Disable plugin 'unix_socket' to force all users to login with a password."
-                #mysql -u${MYSQL_ROOT_USER} mysql -e "UPDATE user SET plugin='' WHERE User='root'" >> ${INSTALL_LOG} 2>&1
-
                 ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
                 #mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
 
