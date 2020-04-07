@@ -214,6 +214,8 @@ export SHELL_BASH='/bin/bash'
 # Path to some programs
 export CMD_PYTHON2='python2'
 export CMD_PYTHON3='python3'
+export CMD_PIP2='pip2'
+export CMD_PIP3='pip3'
 export PERL_BIN='/usr/bin/perl'
 
 # Default password scheme for SQL backends.
@@ -270,11 +272,12 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
 
         # Ubuntu version number and code name:
         #   - 18.04: bionic
+        #   - 20.04: focal
         export DISTRO_VERSION="$(awk -F'=' '/^DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)"
         export DISTRO_CODENAME="$(awk -F'=' '/^DISTRIB_CODENAME/ {print $2}' /etc/lsb-release)"
 
-        # Unsupported releases: 16.x, 17.x, 18.10, 19.04 (missing dependent packages)
-        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18\.10|19\.04)' &>/dev/null ; then
+        # Unsupported releases: 16.x, 17.x, 18.10, 19.x
+        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18\.10|19\.)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then
@@ -324,21 +327,22 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DISTRO='OPENBSD'
     export DISTRO_VERSION="$(uname -r)"
 
+    # Default password scheme.
+    export DEFAULT_PASSWORD_SCHEME='BCRYPT'
+
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/etc/rc.d'
     export RC_CONF_LOCAL='/etc/rc.conf.local'
     export SHELL_BASH='/usr/local/bin/bash'
     export CMD_PYTHON2='/usr/local/bin/python2'
     export CMD_PYTHON3='/usr/local/bin/python3'
+    export CMD_PIP2='pip2.7'
+    export CMD_PIP3='pip3.7'
 
     # Unsupported release: 6.5 and earlier versions.
     if echo "${DISTRO_VERSION}" | grep '^6.[012345]' &>/dev/null ; then
         export UNSUPPORTED_RELEASE='YES'
     fi
-
-    # Default password scheme.
-    export DEFAULT_PASSWORD_SCHEME='BCRYPT'
-
 else
     # Not support *BSD and other distrobutions yet.
     echo "Error: Your OS is not supported yet."
@@ -396,6 +400,7 @@ export USE_BSD_SYSLOG='NO'
 export SYS_USER_SYSLOG='root'
 export SYS_GROUP_SYSLOG='root'
 export SYSLOG_POSTROTATE_CMD=''
+export SYSLOG_SOCKET='/dev/log'
 export IREDMAIL_SYSLOG_FACILITY='local5'
 # rsyslog
 export SYSLOG_CONF_DIR='/etc/rsyslog.d'
@@ -513,6 +518,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export USE_SYSTEMD='NO'
     export SYS_GROUP_ROOT='wheel'
+    export SYSLOG_SOCKET='/var/run/log'
 
     # sysrc: safely edit system rc files
     export SYSRC='/usr/sbin/sysrc'

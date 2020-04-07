@@ -24,15 +24,18 @@ fail2ban_config()
 {
     ECHO_INFO "Configure Fail2ban (authentication failure monitor)."
 
-    ECHO_DEBUG "Log into syslog instead of log file."
-    perl -pi -e 's#^(logtarget).*#${1} = $ENV{FAIL2BAN_LOGTARGET}#' ${FAIL2BAN_MAIN_CONF}
-
     ECHO_DEBUG "Disable all default filters in ${FAIL2BAN_JAIL_CONF}."
     perl -pi -e 's#^(enabled).*=.*#${1} = false#' ${FAIL2BAN_JAIL_CONF}
 
+    ECHO_DEBUG "Create main Fail2ban config file: ${FAIL2BAN_MAIN_CONF}."
+    backup_file ${FAIL2BAN_MAIN_CONF}
+    cp -f ${SAMPLE_DIR}/fail2ban/fail2ban.local ${FAIL2BAN_MAIN_CONF}
+    perl -pi -e 's#PH_SYSLOG_SOCKET#$ENV{SYSLOG_SOCKET}#' ${FAIL2BAN_MAIN_CONF}
+
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        ECHO_DEBUG "Set proper socket path: ${FAIL2BAN_SOCKET}"
         perl -pi -e 's#^(socket).*#${1} = $ENV{FAIL2BAN_SOCKET}#' ${FAIL2BAN_MAIN_CONF}
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        perl -pi -e 's/^#(syslogsocket.*)/${1}/' ${FAIL2BAN_MAIN_CONF}
     fi
 
     ECHO_DEBUG "Create Fail2ban config file: ${FAIL2BAN_JAIL_LOCAL_CONF}."

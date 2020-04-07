@@ -2,8 +2,12 @@ iRedMail-1.2:
     * Supports new distribution release:
         + CentOS 8
 
+    * Dropped distribution release:
+        - OpenBSD 6.5. Please use the latest stable release 6.6 instead.
+
     * Improvements:
-        - Track last login of both POP3/IMAP logins, also when new (last one)
+        + Fail2ban now works on OpenBSD.
+        + Track last login of both POP3/IMAP logins, also when new (last one)
           email was delivered via LMTP/LDA.
 
     * Fixed issues:

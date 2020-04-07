@@ -23,14 +23,13 @@
 # Variables for Fail2ban and related.
 
 export FAIL2BAN_CONF_ROOT='/etc/fail2ban'
-export FAIL2BAN_RC_SCRIPT_NAME='fail2ban'
 
 if [ X"${DISTRO}" == X"FREEBSD" ]; then
     export FAIL2BAN_CONF_ROOT='/usr/local/etc/fail2ban'
     export FAIL2BAN_SOCKET='/var/run/fail2ban.sock'
 fi
 
-export FAIL2BAN_MAIN_CONF="${FAIL2BAN_CONF_ROOT}/fail2ban.conf"
+export FAIL2BAN_MAIN_CONF="${FAIL2BAN_CONF_ROOT}/fail2ban.local"
 export FAIL2BAN_JAIL_CONF="${FAIL2BAN_CONF_ROOT}/jail.conf"
 export FAIL2BAN_JAIL_LOCAL_CONF="${FAIL2BAN_CONF_ROOT}/jail.local"
 export FAIL2BAN_JAIL_CONF_DIR="${FAIL2BAN_CONF_ROOT}/jail.d"
@@ -41,9 +40,6 @@ export FAIL2BAN_FILTER_POSTFIX="postfix.iredmail"
 export FAIL2BAN_FILTER_ROUNDCUBE="roundcube.iredmail"
 export FAIL2BAN_FILTER_DOVECOT="dovecot.iredmail"
 
-# Fail2ban logtarget: STDOUT STDERR SYSLOG file.
-# Default log file is /var/log/fail2ban.log.
-export FAIL2BAN_LOGTARGET='SYSLOG'
 export FAIL2BAN_DISABLED_SERVICES="${PORT_HTTP},${HTTPS_PORT},25,587,465,110,995,143,993,${MANAGESIEVE_PORT}"
 
 # Firewall command (fail2ban/action.d/[NAME].conf)

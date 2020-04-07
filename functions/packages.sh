@@ -24,6 +24,7 @@ install_all()
 {
     ALL_PKGS=''
     PIP2_MODULES=''
+    PIP3_MODULES=''
     ENABLED_SERVICES=''
     DISABLED_SERVICES=''
 
@@ -433,17 +434,19 @@ EOF
         [ X"${DISTRO}" == X'UBUNTU' ] && ALL_PKGS="${ALL_PKGS} python-bcrypt"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py-jinja2 py-webpy py-flup py-bcrypt py-curl py-requests py-netifaces"
+        ALL_PKGS="${ALL_PKGS} py-pip py-jinja2 py-webpy py-flup py-bcrypt py-curl py-requests py-netifaces"
     fi
 
     # Fail2ban
     if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
+        ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
+
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            # No port available.
-            :
+            # No port for fail2ban. Install from source tarball with pip later.
+            # rc script will be generated from sample file later.
+            ALL_PKGS="${ALL_PKGS} py-pip py3-pip"
         else
             ALL_PKGS="${ALL_PKGS} fail2ban"
-            ENABLED_SERVICES="${ENABLED_SERVICES} ${FAIL2BAN_RC_SCRIPT_NAME}"
 
             if [ X"${DISTRO}" == X'RHEL' ]; then
                 DISABLED_SERVICES="${DISABLED_SERVICES} shorewall gamin gamin-python"
@@ -549,10 +552,17 @@ EOF
 
             # uwsgi. Required by iRedAdmin.
             ECHO_INFO "Installing uWSGI from source tarball, please wait."
-            cd ${PKG_MISC_DIR}
-            tar zxf uwsgi-*.tar.gz
-            cd uwsgi-*/
-            python2 setup.py install > ${RUNTIME_DIR}/uwsgi_install.log 2>&1
+            ${CMD_PIP2} install ${PKG_MISC_DIR}/uwsgi-*.tar.gz &> ${RUNTIME_DIR}/uwsgi_install.log
+
+            # Fail2ban.
+            if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
+                ECHO_INFO "Installing Fail2ban from source tarball, please wait."
+                ${CMD_PIP3} install ${PKG_MISC_DIR}/fail2ban-*.tar.gz &> ${RUNTIME_DIR}/fail2ban_install.log
+
+                # Copy rc script.
+                cp ${SAMPLE_DIR}/fail2ban/openbsd/rc /etc/rc.d/fail2ban
+                chmod 0755 /etc/rc.d/fail2ban
+            fi
 
             # Required by uwsgi applications.
             update_sysctl_param kern.seminfo.semmni 1024
@@ -574,7 +584,9 @@ EOF
                 pip_args="-i ${PIP_MIRROR_SITE} --trusted-host ${PIP_TRUSTED_HOST}"
             fi
 
-            PYCURL_SSL_LIBRARY=openssl pip2 install ${pip_args} -U ${PIP2_MODULES}
+            # Install py2 modules.
+            # pycurl requires specified ssl library.
+            PYCURL_SSL_LIBRARY=openssl ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES}
         fi
 
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}

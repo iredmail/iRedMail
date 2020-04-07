@@ -231,7 +231,7 @@ iredapd_config()
 
     # FreeBSD uses different path for syslog socket.
     if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-        echo "SYSLOG_SERVER = '/var/run/log'" >> ${IREDAPD_CONF}
+        echo "SYSLOG_SERVER = '${SYSLOG_SOCKET}'" >> ${IREDAPD_CONF}
     fi
 
     echo 'export status_iredapd_config="DONE"' >> ${STATUS_FILE}

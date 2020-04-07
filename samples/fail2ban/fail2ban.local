@@ -1,0 +1,14 @@
+[Definition]
+
+# Option: loglevel. Default is ERROR
+# Available options: CRITICAL, ERROR, WARNING, NOTICE, INFO, DEBUG
+loglevel = INFO
+
+# Set the log target
+logtarget = SYSLOG
+
+# Syslog socket. Required on FreeBSD and OpenBSD.
+#syslogsocket = PH_SYSLOG_SOCKET
+
+# Fail2ban socket. Required on FreeBSD.
+#socket = /var/run/fail2ban/fail2ban.sock

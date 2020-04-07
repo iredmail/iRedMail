@@ -23,9 +23,6 @@ optional_components()
     [ X"${USE_NETDATA}" == X'YES' ] && check_status_before_run netdata_setup
 
     # Fail2ban.
-    [ X"${USE_FAIL2BAN}" == X'YES' \
-        -a X"${DISTRO}" != X'OPENBSD' \
-        -a X"${DISTRO}" != X'FREEBSD' \
-        ] && \
+    [ X"${USE_FAIL2BAN}" == X'YES' -a X"${DISTRO}" != X'FREEBSD' ] && \
         check_status_before_run fail2ban_config
 }

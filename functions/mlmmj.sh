@@ -125,7 +125,7 @@ EOF
 
     # FreeBSD uses different path for syslog socket.
     if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-        echo "SYSLOG_SERVER = '/var/run/log'" >> ${MLMMJADMIN_CONF}
+        echo "SYSLOG_SERVER = '${SYSLOG_SOCKET}'" >> ${MLMMJADMIN_CONF}
     fi
 
     # Create log directory and empty log file
