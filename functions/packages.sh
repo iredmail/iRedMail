@@ -57,18 +57,15 @@ install_all()
         export IREDMAIL_USE_PHP='YES'
     fi
 
-    # Enable syslog service (rsyslog).
-    if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} rsyslog firewalld"
-        PIP2_MODULES="${PIP2_MODULES} web.py==0.51 pycurl uwsgi netifaces"
+    # Enable rsyslog on Linux.
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} rsyslog firewalld"
         DISABLED_SERVICES="${DISABLED_SERVICES} exim sendmail"
-    elif [ X"${DISTRO}" == X'DEBIAN' ]; then
-        # Debian.
-        ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
-    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-        # Ubuntu >= 9.10.
-        ENABLED_SERVICES="rsyslog ${ENABLED_SERVICES}"
+
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            ALL_PKGS="${ALL_PKGS} rsyslog firewalld"
+            PIP2_MODULES="${PIP2_MODULES} web.py==0.51 pycurl uwsgi netifaces"
+        fi
     fi
 
     # Postfix.
@@ -423,12 +420,14 @@ EOF
 
         [ X"${DISTRO_VERSION}" == X'8' ] && ALL_PKGS="${ALL_PKGS} python2-jinja2 python2-requests"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-requests"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-requests uwsgi uwsgi-plugin-python"
+
         if [ X"${DISTRO_CODENAME}" == X"bionic" -o X"${DISTRO_CODENAME}" == X"stretch" ]; then
             ALL_PKGS="${ALL_PKGS} python-webpy"
+        else
+            # Install webpy with pip
+            ALL_PKGS="${ALL_PKGS} python-pip"
         fi
-
-        [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python"
 
         # Ubuntu
         [ X"${DISTRO}" == X'UBUNTU' ] && ALL_PKGS="${ALL_PKGS} python-bcrypt"
@@ -572,9 +571,7 @@ EOF
             update_sysctl_param kern.seminfo.semopm 200
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" != X"bionic" -a X"${DISTRO_CODENAME}" != X"stretch" ]; then
-                cd ${PKG_MISC_DIR} && \
-                    tar zxf webpy-0.51.tar.gz && \
-                    cp -rf webpy-0.51/web /usr/lib/python2.7/dist-packages/ >> ${INSTALL_LOG} 2>&1
+                ${CMD_PIP2} install --no-deps ${PKG_MISC_DIR}/webpy-0.51.tar.gz &> ${RUNTIME_DIR}/uwsgi_install.log
             fi
         elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
             ECHO_INFO "Installing required Python-2 modules with pip."
