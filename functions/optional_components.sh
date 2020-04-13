@@ -11,18 +11,22 @@ optional_components()
     check_status_before_run iredapd_setup
 
     # iRedAdmin.
-    [ X"${USE_IREDADMIN}" == X'YES' ] && check_status_before_run iredadmin_setup
+    [ X"${USE_IREDADMIN}" == X'YES' ] && \
+        check_status_before_run iredadmin_setup
 
     # Roundcubemail.
-    [ X"${USE_ROUNDCUBE}" == X'YES' ] && check_status_before_run rcm_setup
+    [ X"${USE_ROUNDCUBE}" == X'YES' ] && \
+        check_status_before_run rcm_setup
 
     # SOGo
-    [ X"${USE_SOGO}" == X'YES' ] && check_status_before_run sogo_setup
-
-    # netdata.
-    [ X"${USE_NETDATA}" == X'YES' ] && check_status_before_run netdata_setup
+    [ X"${USE_SOGO}" == X'YES' ] && \
+        check_status_before_run sogo_setup
 
     # Fail2ban.
     [ X"${USE_FAIL2BAN}" == X'YES' -a X"${DISTRO}" != X'FREEBSD' ] && \
-        check_status_before_run fail2ban_config
+        check_status_before_run fail2ban_setup
+
+    # netdata.
+    [ X"${USE_NETDATA}" == X'YES' ] && \
+        check_status_before_run netdata_setup
 }

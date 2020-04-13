@@ -1,0 +1,199 @@
+#!/usr/bin/env bash
+# Author: Zhang Huangbin <zhb@iredmail.org>
+# Puprpose:
+#   - Store banned IP address in SQL db while it's banned.
+#   - Remove unbanned IP address from SQL db while it's unbanned.
+#   - Unban IP addresses which have column `remove=1`.
+
+# Usage:
+#
+#   *) Store a banned IP address:
+#
+#       banned_db ban <ip> <ports> <protocol> <jail>
+#
+#       - <ip>: One IP address each time.
+#       - <ports>: Network ports. Multiple ports must be separated by comma.
+#       - <protocol>: `tcp` or `udp`.
+#       - <jail>: Fail2ban jail name.
+#
+#   *) Remove an one or multiple unbanned IP addresses. Notes:
+#
+#       - it removes IP from all jails.
+#       - multiple IP addresses must be separated by space.
+#
+#       banned_db unban <ip> [ip] [ip]
+#
+#   *) Cleanup a jail. When Fail2ban is stopping or restarting, `cleanup` will
+#      be executed. Cleanup manually is supported too:
+#
+#       banned_db cleanup <jail>
+#
+#   *) Query SQL db and remove IP addresses which have `remove=1`.
+#
+#       banned_db unban_db
+#
+# Examples:
+#
+#   banned_db ban   192.168.0.1 110,143,993,995 tcp dovecot-iredmail
+#   banned_db unban 192.168.0.1
+#   banned_db cleanup dovecot-iredmail
+#   banned_db unban_db
+
+#
+# Sample Fail2ban jail config file (/etc/fail2ban/jail.d/xx.local):
+#
+#   [jail-name]
+#   ...
+#   action = ...[your other actions here]...
+#            banned_db[name=jail-name, port="80", protocol=tcp]
+#
+# WARNING: the name set in `banned_db[name=]` must be same as the jail name.
+
+export DB_NAME="fail2ban"
+export DB_TABLE="banned"
+export DB_USER="fail2ban"
+
+# GeoIP
+export CMD_GEOIPLOOKUP="$(which geoiplookup)"
+export CMD_GEOIPLOOKUP6="$(which geoiplookup6)"
+
+if [ -f /root/.my.cnf-fail2ban ]; then
+    export CMD_SQL="mysql --defaults-file=/root/.my.cnf-fail2ban ${DB_NAME}"
+    export DB_TYPE="mysql"
+elif [ -f /root/.my.cnf ]; then
+    export CMD_SQL="mysql --defaults-file=/root/.my.cnf ${DB_NAME}"
+    export DB_TYPE="mysql"
+else
+    # Absolute path to ~/.pgpass
+    #   - RHEL:             /var/lib/pgsql/.pgpass
+    #   - Debian/Ubuntu:    /var/lib/postgresql/.pgpass
+    #   - FreeBSD:          /var/db/postgres/.pgpass
+    #   - OpenBSD:          /var/postgresql/.pgpass
+    for dir in \
+        /var/lib/pgsql \
+        /var/lib/postgresql \
+        /var/db/postgres \
+        /var/postgresql; do
+        if [ -f ${dir}/.pgpass ]; then
+            export PGPASSFILE="${dir}/.pgpass"
+            export CMD_SQL="psql -U ${DB_USER} -d ${DB_NAME}"
+            export DB_TYPE="pgsql"
+        fi
+    done
+fi
+
+if [ X"${CMD_SQL}" == X'' ]; then
+    echo "No MySQL or PostgreSQL related config file found. Abort."
+    echo " - MySQL: /root/.my.cnf-fail2ban (or /root/.my.cnf)"
+    echo " - PostgreSQL: ~/.pgpass (under PostgreSQL daemon user's home directory)"
+    exit 255
+fi
+
+export _action="$1"
+
+if [[ X"${_action}" == X"ban" ]]; then
+    _ip="${2}"
+    _ports="${3}"
+    _protocol="${4}"
+    _jail="${5}"
+
+    if [[ X"${_ip}" == X'' ]] || \
+        [[ X"${_ports}" == X'' ]] || \
+        [[ X"${_protocol}" == X'' ]] || \
+        [[ X"${_jail}" == X'' ]]; then
+        echo "IP, ports, protocol, or jail name is empty. Abort."
+        exit 255
+    fi
+
+    _hostname="$(hostname)"
+
+    # Lookup for country name.
+    _country=''
+    if echo ${_ip} | grep ':' &>/dev/null; then
+        if [[ -x ${CMD_GEOIPLOOKUP6} ]]; then
+            _country="$(${CMD_GEOIPLOOKUP6} ${_ip} | grep '^GeoIP Country Edition:' | awk -F': ' '{print $2}')"
+        fi
+    else
+        if [[ -x ${CMD_GEOIPLOOKUP} ]]; then
+            _country="$(${CMD_GEOIPLOOKUP} ${_ip} | grep '^GeoIP Country Edition:' | awk -F': ' '{print $2}')"
+        fi
+    fi
+
+    if [ X"${DB_TYPE}" == X'mysql' ]; then
+        ${CMD_SQL} <<EOF
+INSERT IGNORE INTO ${DB_TABLE} (ip, ports, protocol, jail, hostname, country) VALUES ('${_ip}', '${_ports}', '${_protocol}', '${_jail}', '${_hostname}', '${_country}');
+EOF
+    else
+        # CentOS 7 ships PostgreSQL-9.2 which doesn't support `ON CONFLICT DO NOTHING`,
+        # so we query it first, insert it if not existing.
+        (${CMD_SQL} <<EOF
+SELECT id FROM ${DB_TABLE} WHERE ip='${_ip}' AND ports='${_ports}' AND protocol='${_protocol}' AND jail='${_jail}' LIMIT 1;
+EOF
+) | grep '1 row' &>/dev/null
+
+        if [[ X"$?" == X'0' ]]; then
+            echo "Already banned."
+        else
+            ${CMD_SQL} >/dev/null <<EOF
+INSERT INTO ${DB_TABLE} (ip, ports, protocol, jail, hostname, country) VALUES ('${_ip}', '${_ports}', '${_protocol}', '${_jail}', '${_hostname}', '${_country}');
+EOF
+            echo "Stored."
+        fi
+    fi
+
+elif [[ X"${_action}" == X"unban" ]]; then
+    shift 1
+    _ips="$@"
+
+    if [[ X"${_ips}" == X'' ]]; then
+        echo "No IP address(es) specified."
+    else
+        for _ip in ${_ips}; do
+            ${CMD_SQL} <<EOF
+DELETE FROM ${DB_TABLE} WHERE ip='${_ip}';
+EOF
+        done
+
+        [[ X"$?" == X'0' ]] && echo "Removed."
+    fi
+
+elif [[ X"${_action}" == X"cleanup" ]]; then
+    _jail="$2"
+
+    if [[ X"${_jail}" != X'' ]]; then
+        ${CMD_SQL} <<EOF
+DELETE FROM ${DB_TABLE} WHERE jail='${_jail}';
+EOF
+    fi
+
+    [[ X"$?" == X'0' ]] && echo "All IP addresses have been removed."
+elif [[ X"${_action}" == X"unban_db" ]]; then
+    # Call fail2ban-client to unban given IP address(es).
+    tmp_file="$(mktemp)"
+
+    # Exclude extra info on output, just leave jail/ip.
+    (${CMD_SQL} <<EOF
+SELECT jail, ip FROM ${DB_TABLE} WHERE remove=1;
+EOF
+) | grep -Ev '(jail.*ip|\--|\(|^$)' | tr -d '|' >> ${tmp_file}
+
+    while read jail ip; do
+        # Avoid SQL injection: don't allow whitespace, ';', quotes in
+        # jail name and IP address.
+        if echo ${jail} | grep "[ ;\"\']" &>/dev/null; then
+            echo "[WARNING] Invalid jail name: '${jail}'."
+            continue
+        fi
+
+        if echo ${ip} | grep "[ ;\"\']" &>/dev/null; then
+            echo "[WARNING] Invalid IP address: '${ip}'."
+            continue
+        fi
+
+        # fail2ban-client returns number of processed rows on command line,
+        # let's discard it to avoid noise/confusion.
+        fail2ban-client set ${jail} unbanip ${ip} >/dev/null
+        [[ X"$?" == X'0' ]] && echo "Unbanned ${ip} from jail [${jail}]."
+    done < ${tmp_file}
+    rm -f ${tmp_file} &>/dev/null
+fi

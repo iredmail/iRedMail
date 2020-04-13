@@ -436,20 +436,21 @@ EOF
         ALL_PKGS="${ALL_PKGS} py-pip py-jinja2 py-webpy py-flup py-bcrypt py-curl py-requests py-netifaces"
     fi
 
-    # Fail2ban
+    # Fail2ban. Install fail2ban and geoip.
     if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
         ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
 
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} fail2ban GeoIP GeoIP-data"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} fail2ban GeoIP GeoIP-GeoLite-data"
+
+            DISABLED_SERVICES="${DISABLED_SERVICES} shorewall gamin gamin-python"
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            ALL_PKGS="${ALL_PKGS} fail2ban geoip-bin geoip-database"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # No port for fail2ban. Install from source tarball with pip later.
             # rc script will be generated from sample file later.
-            ALL_PKGS="${ALL_PKGS} py-pip py3-pip"
-        else
-            ALL_PKGS="${ALL_PKGS} fail2ban"
-
-            if [ X"${DISTRO}" == X'RHEL' ]; then
-                DISABLED_SERVICES="${DISABLED_SERVICES} shorewall gamin gamin-python"
-            fi
+            ALL_PKGS="${ALL_PKGS} py-pip py3-pip GeoIP geolite-country"
         fi
     fi
 

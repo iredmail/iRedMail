@@ -19,11 +19,75 @@
 # You should have received a copy of the GNU General Public License
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
+_enable_jail() {
+    _jail_conf="${FAIL2BAN_JAIL_CONF_DIR}/${1}"
 
-fail2ban_config()
-{
-    ECHO_INFO "Configure Fail2ban (authentication failure monitor)."
+    if [ -e ${_jail_conf} ]; then
+        perl -pi -e 's#(enabled.*=.*)false#${1}true#' ${_jail_conf}
+    fi
+}
 
+fail2ban_initialize_db() {
+    ECHO_DEBUG "Import Fail2ban database and grant privileges."
+
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        ${MYSQL_CLIENT_ROOT} <<EOF
+-- Create database
+CREATE DATABASE ${FAIL2BAN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- Grant privileges
+GRANT ALL ON ${FAIL2BAN_DB_NAME}.* TO '${FAIL2BAN_DB_USER}'@'${MYSQL_GRANT_HOST}' IDENTIFIED BY '${FAIL2BAN_DB_PASSWD}';
+
+-- Import Amavisd SQL template
+USE ${FAIL2BAN_DB_NAME};
+SOURCE ${SAMPLE_DIR}/fail2ban/sql/fail2ban.mysql;
+FLUSH PRIVILEGES;
+EOF
+
+        cat > /root/.my.cnf-${FAIL2BAN_DB_USER} <<EOF
+[client]
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+user=${FAIL2BAN_DB_USER}
+password="${FAIL2BAN_DB_PASSWD}"
+EOF
+
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        cp -f ${SAMPLE_DIR}/fail2ban/sql/fail2ban.pgsql /tmp/fail2ban.pgsql
+        chmod 0755 /tmp/fail2ban.pgsql
+
+        su - ${SYS_USER_PGSQL} -c "psql -d template1" >> ${INSTALL_LOG} <<EOF
+-- Create database
+CREATE DATABASE ${FAIL2BAN_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
+
+-- Create user
+CREATE USER ${FAIL2BAN_DB_USER} WITH ENCRYPTED PASSWORD '${FAIL2BAN_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
+
+ALTER DATABASE ${FAIL2BAN_DB_NAME} OWNER TO ${FAIL2BAN_DB_USER};
+EOF
+
+        su - ${SYS_USER_PGSQL} -c "psql -U ${FAIL2BAN_DB_USER} -d ${FAIL2BAN_DB_NAME}" >> ${INSTALL_LOG} <<EOF
+\i /tmp/fail2ban.pgsql;
+EOF
+        rm -f /tmp/fail2ban.pgsql
+
+        su - ${SYS_USER_PGSQL} -c "psql -U ${FAIL2BAN_DB_USER} -d ${FAIL2BAN_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
+ALTER DATABASE ${FAIL2BAN_DB_NAME} SET bytea_output TO 'escape';
+EOF
+    fi
+
+    # Copy action config file.
+    cp -f ${SAMPLE_DIR}/fail2ban/action.d/banned_db.conf ${FAIL2BAN_ACTION_DIR}/
+    chmod 0755 ${FAIL2BAN_ACTION_DIR}/banned_db.conf
+
+    # Copy script used to handle sql data.
+    cp -f ${SAMPLE_DIR}/fail2ban/bin/fail2ban_banned_db /usr/local/bin/
+    chmod 0550 /usr/local/bin/fail2ban_banned_db
+
+    echo 'export status_fail2ban_initialize_db="DONE"' >> ${STATUS_FILE}
+}
+
+fail2ban_config() {
     ECHO_DEBUG "Disable all default filters in ${FAIL2BAN_JAIL_CONF}."
     perl -pi -e 's#^(enabled).*=.*#${1} = false#' ${FAIL2BAN_JAIL_CONF}
 
@@ -66,18 +130,19 @@ fail2ban_config()
     ECHO_DEBUG "Copy sample Fail2ban filter config files."
     cp -f ${SAMPLE_DIR}/fail2ban/filter.d/*.conf ${FAIL2BAN_FILTER_DIR}
 
-    # Enable Nginx
-    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
-        perl -pi -e 's#(enabled.*=.*)false#${1}true#' ${FAIL2BAN_JAIL_CONF_DIR}/nginx-http-auth.local
-    fi
+    # Enable jail for optional components.
+    [ X"${WEB_SERVER}" == X'NGINX' ]    && _enable_jail nginx-http-auth.local
+    [ X"${USE_ROUNDCUBE}" == X'YES' ]   && _enable_jail roundcube.local
+    [ X"${USE_SOGO}" == X'YES' ]        && _enable_jail sogo.local
 
-    if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
-        perl -pi -e 's#(enabled.*=.*)false#${1}true#' ${FAIL2BAN_JAIL_CONF_DIR}/roundcube.local
-    fi
-
-    if [ X"${USE_SOGO}" == X'YES' ]; then
-        perl -pi -e 's#(enabled.*=.*)false#${1}true#' ${FAIL2BAN_JAIL_CONF_DIR}/sogo.local
-    fi
+    [ X"${DISTRO}" == X'OPENBSD' ] && service_control enable fail2ban >> ${INSTALL_LOG} 2>&1
 
     echo 'export status_fail2ban_config="DONE"' >> ${STATUS_FILE}
+}
+
+fail2ban_setup() {
+    ECHO_INFO "Configure Fail2ban (authentication failure monitor)."
+
+    check_status_before_run fail2ban_initialize_db
+    check_status_before_run fail2ban_config
 }

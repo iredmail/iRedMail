@@ -44,7 +44,7 @@ netdata_install()
 
 netdata_config()
 {
-    ECHO_INFO "Configure netdata."
+    ECHO_INFO "Configure netdata (system and application monitor)."
 
     # Disable sending anonymouse statistics to netdata cloud.
     touch ${NETDATA_CONF_DIR}/.opt-out-from-anonymous-statistics

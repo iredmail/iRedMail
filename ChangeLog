@@ -6,6 +6,9 @@ iRedMail-1.2:
         - OpenBSD 6.5. Please use the latest stable release 6.6 instead.
 
     * Improvements:
+        + Able to store banned IP addresses in SQL db.
+          iRedAdmin-Pro customers can view banned addresses and unban them on
+          web UI directly.
         + Fail2ban now works on OpenBSD.
         + Track last login of both POP3/IMAP logins, also when new (last one)
           email was delivered via LMTP/LDA.

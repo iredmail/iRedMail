@@ -26,7 +26,7 @@
 
 amavisd_initialize_db()
 {
-    ECHO_DEBUG "Import Amavisd database and privileges."
+    ECHO_DEBUG "Import Amavisd database and grant privileges."
 
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         ${MYSQL_CLIENT_ROOT} <<EOF
@@ -59,7 +59,7 @@ EOF
         cp -f ${SAMPLE_DIR}/amavisd/default_spam_policy.sql ${PGSQL_USER_HOMEDIR}/default_spam_policy.sql >> ${INSTALL_LOG} 2>&1
         chmod 0777 ${PGSQL_USER_HOMEDIR}/amavisd.sql >/dev/null
 
-        su - ${SYS_USER_PGSQL} -c "psql -d template1" >> ${INSTALL_LOG}  <<EOF
+        su - ${SYS_USER_PGSQL} -c "psql -d template1" >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create database
 CREATE DATABASE ${AMAVISD_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 

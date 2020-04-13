@@ -1,6 +1,7 @@
 [roundcube-iredmail]
 enabled     = false
-filter      = roundcube.iredmail
-action      = PH_FAIL2BAN_ACTION[name=roundcube, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
-logpath     = PH_RCM_LOGFILE
 findtime    = 3600
+filter      = roundcube.iredmail
+logpath     = PH_RCM_LOGFILE
+action      = PH_FAIL2BAN_ACTION[name=roundcube, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
+              banned_db[name=roundcube, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]

@@ -60,3 +60,7 @@ elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
 elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export FAIL2BAN_ACTION='pf'
 fi
+
+# SQL db.
+export FAIL2BAN_DB_NAME='fail2ban'
+export FAIL2BAN_DB_USER='fail2ban'

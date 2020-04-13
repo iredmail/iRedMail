@@ -27,8 +27,6 @@
 export SYS_USER_PGSQL='postgres'
 export SYS_GROUP_PGSQL='postgres'
 
-export PGSQL_USER_HOMEDIR='/var/lib/postgresql'
-
 export PGSQL_RC_SCRIPT_NAME='postgresql'
 
 export PGSQL_INIT_SQL_SAMPLE="${RUNTIME_DIR}/pgsql_init.pgsql"
@@ -52,6 +50,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export PGSQL_VERSION='11'
     fi
 
+    export PGSQL_USER_HOMEDIR='/var/lib/postgresql'
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"
     export PGSQL_CONF_DIR="/etc/postgresql/${PGSQL_VERSION}/main"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_CONF_DIR}/postgresql.conf"

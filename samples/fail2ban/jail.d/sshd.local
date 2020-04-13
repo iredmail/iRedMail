@@ -1,5 +1,6 @@
 [sshd]
 enabled     = true
 filter      = sshd
-action      = PH_FAIL2BAN_ACTION[name=sshd, port="PH_SSHD_PORT", protocol=tcp]
 logpath     = PH_SSHD_LOGFILE
+action      = PH_FAIL2BAN_ACTION[name=sshd, port="PH_SSHD_PORT", protocol=tcp]
+              banned_db[name=sshd, port="PH_SSHD_PORT", protocol=tcp]

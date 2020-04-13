@@ -1,0 +1,28 @@
+--
+-- Used to store banned/unbanned clients
+--
+CREATE TABLE IF NOT EXISTS `banned` (
+    `id` BIGINT(20) UNSIGNED AUTO_INCREMENT,
+    -- Banned client IP address
+    `ip` VARCHAR(46) NOT NULL DEFAULT '',
+    -- A list of banned network ports, separated by comma
+    `ports` VARCHAR(50) NOT NULL DEFAULT '',
+    -- protocol: tcp, udp, ...
+    `protocol` VARCHAR(10) NOT NULL DEFAULT 'tcp',
+    -- Fail2ban jail name
+    `jail` VARCHAR(30) NOT NULL DEFAULT 'INPUT',
+    -- The server hostname which the ban/unban happens
+    `hostname` VARCHAR(255) NOT NULL DEFAULT '',
+    `country` VARCHAR(255) NOT NULL DEFAULT '',
+    -- When the ban happens
+    `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    -- if `remove=1`, `ip` will be removed by cron job.
+    `remove` TINYINT(1) DEFAULT 0,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX (`ip`, `ports`, `protocol`),
+    INDEX (`hostname`),
+    INDEX (`jail`),
+    INDEX (`country`),
+    INDEX (`timestamp`),
+    INDEX (`remove`)
+) ENGINE=InnoDB;
