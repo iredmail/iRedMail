@@ -171,6 +171,17 @@ iredadmin_config() {
     echo "DEFAULT_PASSWORD_SCHEME = '${DEFAULT_PASSWORD_SCHEME}'" >> settings.py
     echo "mlmmjadmin_api_auth_token = '${MLMMJADMIN_API_AUTH_TOKEN}'" >> settings.py
 
+    if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
+        ECHO_DEBUG "Configure Fail2ban integration."
+
+        echo "fail2ban_enabled = True" >> settings.py
+        echo "fail2ban_db_host = '${SQL_SERVER_ADDRESS}'" >> settings.py
+        echo "fail2ban_db_port = '${SQL_SERVER_PORT}'" >> settings.py
+        echo "fail2ban_db_name = '${FAIL2BAN_DB_NAME}'" >> settings.py
+        echo "fail2ban_db_user = '${FAIL2BAN_DB_USER}'" >> settings.py
+        echo "fail2ban_db_password = '${FAIL2BAN_DB_PASSWD}'" >> settings.py
+    fi
+
     # Add postfix alias for user: iredapd
     add_postfix_alias ${SYS_USER_IREDAPD} ${SYS_USER_ROOT}
 
