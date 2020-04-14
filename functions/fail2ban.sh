@@ -84,6 +84,11 @@ EOF
     cp -f ${SAMPLE_DIR}/fail2ban/bin/fail2ban_banned_db /usr/local/bin/
     chmod 0550 /usr/local/bin/fail2ban_banned_db
 
+    cat >> ${CRON_FILE_ROOT} <<EOF
+# Fail2ban: Unban IP addresses pending for removal (stored in SQL db).
+* * * * * ${SHELL_BASH} /usr/local/bin/fail2ban_banned_db unban_db
+EOF
+
     echo 'export status_fail2ban_initialize_db="DONE"' >> ${STATUS_FILE}
 }
 
