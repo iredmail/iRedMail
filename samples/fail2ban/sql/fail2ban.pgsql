@@ -6,11 +6,11 @@ CREATE TABLE banned (
     -- Banned client IP address
     ip VARCHAR(46) NOT NULL DEFAULT '',
     -- A list of banned network ports, separated by comma
-    ports VARCHAR(50) NOT NULL DEFAULT '',
+    ports VARCHAR(255) NOT NULL DEFAULT '',
     -- protocol: tcp, udp, ...
     protocol VARCHAR(10) NOT NULL DEFAULT 'tcp',
     -- Fail2ban jail name
-    jail VARCHAR(30) NOT NULL DEFAULT '',
+    jail VARCHAR(50) NOT NULL DEFAULT '',
     -- The server hostname which the ban/unban happens
     hostname VARCHAR(255) NOT NULL DEFAULT '',
     country VARCHAR(255) NOT NULL DEFAULT '',

@@ -78,6 +78,7 @@ else
             export PGPASSFILE="${dir}/.pgpass"
             export CMD_SQL="psql -U ${DB_USER} -d ${DB_NAME}"
             export DB_TYPE="pgsql"
+            break
         fi
     done
 fi
