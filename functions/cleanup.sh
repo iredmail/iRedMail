@@ -23,7 +23,6 @@
 # Available variables for automate installation (value should be 'y' or 'n'):
 #
 #   AUTO_CLEANUP_REMOVE_SENDMAIL
-#   AUTO_CLEANUP_REMOVE_MOD_PYTHON
 #   AUTO_CLEANUP_REPLACE_FIREWALL_RULES
 #   AUTO_CLEANUP_RESTART_FIREWALL
 #   AUTO_CLEANUP_REPLACE_MYSQL_CONFIG
@@ -81,25 +80,6 @@ cleanup_remove_sendmail()
     fi
 
     echo 'export status_cleanup_remove_sendmail="DONE"' >> ${STATUS_FILE}
-}
-
-cleanup_remove_mod_python()
-{
-    # Remove mod_python.
-    eval ${LIST_ALL_PKGS} | grep 'mod_python' &>/dev/null
-
-    if [ X"$?" == X"0" ]; then
-        ECHO_QUESTION -n "iRedAdmin doesn't work with mod_python, *REMOVE* it now? [Y|n]"
-        read_setting ${AUTO_CLEANUP_REMOVE_MOD_PYTHON}
-        case ${ANSWER} in
-            N|n ) : ;;
-            Y|y|* ) eval ${remove_pkg} mod_python ;;
-        esac
-    else
-        :
-    fi
-
-    echo 'export status_cleanup_remove_mod_python="DONE"' >> ${STATUS_FILE}
 }
 
 cleanup_replace_firewall_rules()
@@ -357,7 +337,6 @@ EOF
     check_status_before_run cleanup_set_cron_file_permission
     check_status_before_run cleanup_disable_selinux
     check_status_before_run cleanup_remove_sendmail
-    check_status_before_run cleanup_remove_mod_python
 
     [ X"${KERNEL_NAME}" == X'LINUX' -o X"${KERNEL_NAME}" == X'OPENBSD' ] && \
         check_status_before_run cleanup_replace_firewall_rules
