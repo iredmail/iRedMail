@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Author: Zhang Huangbin <zhb@iredmail.org>
 # Puprpose:
-#   - Store banned IP address in SQL db while it's banned.
-#   - Remove unbanned IP address from SQL db while it's unbanned.
+#   - Store banned IP address in SQL db while it's banned by Fail2ban.
+#   - Remove unbanned IP address from SQL db while it's unbanned by Fail2ban.
 #   - Unban IP addresses which have column `remove=1`.
 
 # Usage:
