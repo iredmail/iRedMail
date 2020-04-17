@@ -31,7 +31,7 @@ INSERT INTO policy (policy_name,
             VALUES ('@.',
                     'Y',
                     'N',
-                    'Y',
+                    'N',
                     'Y',
                     'N',
                     'N',
@@ -39,7 +39,7 @@ INSERT INTO policy (policy_name,
                     'N',
                     '',
                     'virus-quarantine',
-                    '',
+                    'banned-quarantine',
                     '');
 
 INSERT INTO users (priority, email) VALUES (0, '@.');

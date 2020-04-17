@@ -145,7 +145,7 @@ create_repo_rhel()
     cat > ${LOCAL_REPO_FILE} <<EOF
 [${LOCAL_REPO_NAME}]
 name=${LOCAL_REPO_NAME}
-baseurl=${IREDMAIL_MIRROR}/yum/rpms/${DISTRO_VERSION}/
+baseurl=${IREDMAIL_MIRROR}/yum/rpms/\$releasever/
 enabled=1
 gpgcheck=0
 #exclude=postfix*
