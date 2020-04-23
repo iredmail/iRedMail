@@ -102,8 +102,8 @@ amavisd_config()
 
     # Create DKIM key if not exists.
     if [ ! -f ${AMAVISD_FIRST_DOMAIN_DKIM_KEY} ]; then
-        # Not all DNS vendor supports key length >= 2048, so we stick to 1024.
-        ${AMAVISD_BIN} genrsa ${AMAVISD_FIRST_DOMAIN_DKIM_KEY} 1024 &>/dev/null
+        # Not all DNS vendor supports key length >= 2048, so we stick to 2048.
+        ${AMAVISD_BIN} genrsa ${AMAVISD_FIRST_DOMAIN_DKIM_KEY} 2048 &>/dev/null
     fi
 
     chown -R ${SYS_USER_AMAVISD}:${SYS_GROUP_AMAVISD} ${AMAVISD_FIRST_DOMAIN_DKIM_KEY}

@@ -633,7 +633,7 @@ export TLS_HOSTNAME="${HOSTNAME}"
 export TLS_ADMIN="root@${HOSTNAME}"
 
 # Default SSL key size in bits
-export SSL_KEY_SIZE='2048'
+export SSL_KEY_SIZE='4096'
 default_ssl_key_size="$(awk '/^default_bits/ {print $3}' ${OPENSSL_CONF} 2>/dev/null)"
 if [ -z ${default_ssl_key_size} ]; then
     :

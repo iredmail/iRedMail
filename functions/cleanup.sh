@@ -318,9 +318,9 @@ Date: ${msg_date}
 Subject: How to configure your mail client applications (MUA)
 
 
-* POP3 service: port 110 over TLS (recommended), or port 995 with SSL.
-* IMAP service: port 143 over TLS (recommended), or port 993 with SSL.
-* SMTP service: port 587 over TLS.
+* POP3 service: port 110 over STARTTLS (recommended), or port 995 with SSL.
+* IMAP service: port 143 over STARTTLS (recommended), or port 993 with SSL.
+* SMTP service: port 587 over STARTTLS.
 * CalDAV and CardDAV server addresses: https://<server>/SOGo/dav/<full email address>
 
 For more details, please check detailed documentations:
