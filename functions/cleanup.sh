@@ -321,6 +321,8 @@ Subject: How to configure your mail client applications (MUA)
 * POP3 service: port 110 over STARTTLS (recommended), or port 995 with SSL.
 * IMAP service: port 143 over STARTTLS (recommended), or port 993 with SSL.
 * SMTP service: port 587 over STARTTLS.
+  If you need to support old mail clients with SMTP over SSL (port 465),
+  please check our tutorial: https://docs.iredmail.org/enable.smtps.html
 * CalDAV and CardDAV server addresses: https://<server>/SOGo/dav/<full email address>
 
 For more details, please check detailed documentations:
