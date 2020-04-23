@@ -173,6 +173,10 @@ EOF
             if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
                 cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
             fi
+
+            # Although repo file exists, still need to make sure it is enabled.
+            ECHO_INFO "Enable yum repo: ${repo}"
+            yum config-manager --enable ${repo}
         done
     fi
 
