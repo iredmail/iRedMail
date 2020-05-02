@@ -160,6 +160,17 @@ postfix_config_basic()
     perl -pi -e 's#PH_POSTFIX_MAIL_REINJECT_PORT#$ENV{POSTFIX_MAIL_REINJECT_PORT}#g' ${POSTFIX_FILE_MASTER_CF}
     perl -pi -e 's#PH_AMAVISD_ORIGINATING_PORT#$ENV{AMAVISD_ORIGINATING_PORT}#g' ${POSTFIX_FILE_MASTER_CF}
 
+    # Enable `content_filter` for `pickup` transport:
+    #   - Treat all emails generated locally as outbound
+    #   - sign DKIM signature
+    #   - do spam/virus scanning
+    _pickup_orig="$(postconf -M |grep '^pickup')"
+    echo ${_pickup_orig} | grep 'content_filter=' &>/dev/null
+    if [ X"$?" != X'0' ]; then
+        postconf -M "pickup/unix=${_pickup_orig}"
+        postconf -P "pickup/unix/content_filter=smtp-amavis:[${SMTP_SERVER}]:${AMAVISD_ORIGINATING_PORT}"
+    fi
+
     # mlmmj integration.
     perl -pi -e 's#PH_POSTFIX_MLMMJ_REINJECT_PORT#$ENV{POSTFIX_MLMMJ_REINJECT_PORT}#g' ${POSTFIX_FILE_MASTER_CF}
 
