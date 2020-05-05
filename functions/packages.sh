@@ -24,7 +24,7 @@ install_all()
 {
     ALL_PKGS=''
     PIP2_MODULES=''
-    ENABLED_SERVICES=''
+    NABLED_SERVICES=''
     DISABLED_SERVICES=''
 
     # Specify version numbers while installing Python modules with pip.
@@ -616,20 +616,21 @@ EOF
             fi
 
             if [ X"${DISTRO_CODENAME}" == X'focal' ]; then
-                ECHO_INFO "Install pip for Python 2."
+                ECHO_INFO "Installing pip for Python 2."
                 cd /tmp
                 ${FETCH_CMD} https://bootstrap.pypa.io/get-pip.py
                 python2 get-pip.py ${pip_args}
                 rm -f get-pip.py
 
-                ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES}
+                ECHO_INFO "Installing required Python-2 modules with pip2."
+                ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES} > ${RUNTIME_DIR}/pip2.log
             fi
         elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
-            ECHO_INFO "Installing required Python-2 modules with pip."
+            ECHO_INFO "Installing required Python-2 modules with pip2."
 
             # Install py2 modules.
             # pycurl requires specified ssl library.
-            PYCURL_SSL_LIBRARY=openssl ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES}
+            PYCURL_SSL_LIBRARY=openssl ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES} > ${RUNTIME_DIR}/pip2.log
         fi
 
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}
