@@ -266,6 +266,10 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
 
+        if [ X"${DISTRO_VERSION}" == X'8' ]; then
+            # CentOS 8: Installed with pip2.
+            export CMD_UWSGI='/usr/bin/uwsgi'
+        fi
     elif [ -f /etc/lsb-release ] && grep -i 'DISTRIB_ID=Ubuntu' /etc/lsb-release &>/dev/null; then
         # Ubuntu
         export DISTRO='UBUNTU'
@@ -279,6 +283,11 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Unsupported releases: 16.x, 17.x, 18.10, 19.x
         if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18\.10|19\.)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
+        fi
+
+        if [ X"${DISTRO_CODENAME}" == X'focal' ]; then
+            # Ubuntu 20.04: Installed with pip2.
+            export CMD_UWSGI='/usr/local/bin/uwsgi'
         fi
     elif [ -f /etc/debian_version ]; then
         # Debian

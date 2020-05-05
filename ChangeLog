@@ -1,6 +1,7 @@
 iRedMail-1.2.2:
     * Supports new distribution release:
-        + Ubuntu 20.04
+        + Ubuntu 20.04.
+          All 3 backends are supported: MariaDB, PostgreSQL, OpenLDAP.
 
 iRedMail-1.2.1:
     * Switch self-signed ssl cert key length to 4096.

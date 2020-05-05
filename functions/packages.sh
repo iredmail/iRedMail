@@ -28,6 +28,13 @@ install_all()
     ENABLED_SERVICES=''
     DISABLED_SERVICES=''
 
+    # Specify version numbers while installing Python modules with pip.
+    PIP_VERSION_PYTHON_LDAP='>=3.2.0'
+    PIP_VERSION_WEBPY='>=0.51'
+    PIP_VERSION_UWSGI='>=2.0.18'
+    PIP_VERSION_REQUESTS='>=2.23.0'
+    PIP_VERSION_PYMYSQL='>=0.9.3'
+
     # OpenBSD only
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         PKG_SCRIPTS=''
@@ -64,9 +71,11 @@ install_all()
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} rsyslog firewalld"
-            PIP2_MODULES="${PIP2_MODULES} web.py==0.51 pycurl uwsgi netifaces"
+            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} uwsgi${PIP_VERSION_UWSGI} pycurl netifaces"
         elif [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'focal' ]; then
-            PIP2_MODULES="${PIP2_MODULES} web.py==0.51 uwsgi netifaces"
+            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} uwsgi${PIP_VERSION_UWSGI} netifaces"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} uwsgi${PIP_VERSION_UWSGI}"
         fi
     fi
 
@@ -113,23 +122,21 @@ install_all()
             elif [ X"${DISTRO_VERSION}" == X'8' ]; then
                 # Install packages from Symas yum repo.
                 ALL_PKGS="${ALL_PKGS} symas-openldap-servers symas-openldap-clients mariadb-server"
-                PIP2_MODULES="${PIP2_MODULES} python-ldap==3.2.0"
+                PIP2_MODULES="${PIP2_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP}"
 
                 if [ ! -f ${YUM_REPOS_DIR}/symas-openldap.repo ]; then
                     cp -f ${SAMPLE_DIR}/yum/symas-openldap.repo ${YUM_REPOS_DIR}/
                 fi
             fi
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} slapd ldap-utils libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"
+            ALL_PKGS="${ALL_PKGS} slapd ldap-utils postfix-ldap libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"
 
-            if [ X"${DISTRO_CODENAME}" == X'stretch' \
-                -o X"${DISTRO_CODENAME}" == X'buster' \
-                -o X"${DISTRO_CODENAME}" == X'bionic' ]; then
-                # Debian, Ubuntu 18.04
-                ALL_PKGS="${ALL_PKGS} postfix-ldap"
-            else
+            if [ X"${DISTRO_CODENAME}" != X'stretch' \
+                -a X"${DISTRO_CODENAME}" != X'buster' \
+                -a X"${DISTRO_CODENAME}" != X'bionic' ]; then
                 # Ubuntu 20.04+
-                PIP2_MODULES="${PIP2_MODULES} python-ldap==3.2.0"
+                ALL_PKGS="${ALL_PKGS} libldap2-dev libsasl2-dev"
+                PIP2_MODULES="${PIP2_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP}"
             fi
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_SERVER_VER}"
@@ -419,8 +426,8 @@ EOF
                 [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
                 [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
             else
-                [ X"${BACKEND}" == X'OPENLDAP' ] && PIP2_MODULES="${PIP2_MODULES} python-ldap PyMySQL"
-                [ X"${BACKEND}" == X'MYSQL' ] && PIP2_MODULES="${PIP2_MODULES} PyMySQL"
+                [ X"${BACKEND}" == X'OPENLDAP' ] && PIP2_MODULES="${PIP2_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP} PyMySQL${PIP_VERSION_PYMYSQL}"
+                [ X"${BACKEND}" == X'MYSQL' ] && PIP2_MODULES="${PIP2_MODULES} PyMySQL${PIP_VERSION_PYMYSQL}"
                 if [ X"${BACKEND}" == X'PGSQL' ]; then
                     ALL_PKGS="${ALL_PKGS} postgresql-server-dev-12"
                     PIP2_MODULES="${PIP2_MODULES} psycopg2"
@@ -459,7 +466,7 @@ EOF
                 ALL_PKGS="${ALL_PKGS} python-pip"
             fi
 
-            PIP2_MODULES="${PIP2_MODULES} requests uwsgi"
+            PIP2_MODULES="${PIP2_MODULES} requests${PIP_VERSION_REQUESTS} uwsgi${PIP_VERSION_UWSGI}"
         fi
 
         # Ubuntu
@@ -484,6 +491,7 @@ EOF
             # No port for fail2ban. Install from source tarball with pip later.
             # rc script will be generated from sample file later.
             ALL_PKGS="${ALL_PKGS} py-pip py3-pip GeoIP geolite-country"
+            PIP3_MODULES="${PIP3_MODULES} uwsgi${PIP_VERSION_UWSGI}"
         fi
     fi
 
@@ -589,17 +597,11 @@ EOF
             fi
 
             # uwsgi. Required by iRedAdmin.
-            ECHO_INFO "Installing uWSGI from source tarball, please wait."
-            ${CMD_PIP2} install ${PKG_MISC_DIR}/uwsgi-*.tar.gz &> ${RUNTIME_DIR}/uwsgi_install.log
+            ECHO_INFO "Installing uWSGI from source tarballwait."
+            ${CMD_PIP2} install ${pip_args} uwsgi${PIP_VERSION_UWSGI}
 
-            # Fail2ban.
-            if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
-                ECHO_INFO "Installing Fail2ban from source tarball, please wait."
-                ${CMD_PIP3} install ${PKG_MISC_DIR}/fail2ban-*.tar.gz &> ${RUNTIME_DIR}/fail2ban_install.log
-
-                # Copy rc script.
-                cp ${SAMPLE_DIR}/fail2ban/openbsd/rc /etc/rc.d/fail2ban
-                chmod 0755 /etc/rc.d/fail2ban
+            if [ X"${PIP3_MODULES}" != X'' ]; then
+                ${CMD_PIP3} install ${pip_args} ${PIP3_MODULES}
             fi
 
             # Required by uwsgi applications.

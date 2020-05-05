@@ -140,7 +140,12 @@ fail2ban_config() {
     [ X"${USE_ROUNDCUBE}" == X'YES' ]   && _enable_jail roundcube.local
     [ X"${USE_SOGO}" == X'YES' ]        && _enable_jail sogo.local
 
-    [ X"${DISTRO}" == X'OPENBSD' ] && service_control enable fail2ban >> ${INSTALL_LOG} 2>&1
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Copy rc script and enable service.
+        cp ${SAMPLE_DIR}/fail2ban/openbsd/rc /etc/rc.d/fail2ban
+        chmod 0755 /etc/rc.d/fail2ban
+        service_control enable fail2ban >> ${INSTALL_LOG} 2>&1
+    fi
 
     echo 'export status_fail2ban_config="DONE"' >> ${STATUS_FILE}
 }
