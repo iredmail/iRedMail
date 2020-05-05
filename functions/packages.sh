@@ -622,11 +622,11 @@ EOF
                 python2 get-pip.py ${pip_args}
                 rm -f get-pip.py
 
-                ECHO_INFO "Installing required Python-2 modules with pip2."
+                ECHO_INFO "Installing required Python-2 modules with pip2:${PIP2_MODULES}"
                 ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES} > ${RUNTIME_DIR}/pip2.log
             fi
         elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
-            ECHO_INFO "Installing required Python-2 modules with pip2."
+            ECHO_INFO "Installing required Python-2 modules with pip2:${PIP2_MODULES}"
 
             # Install py2 modules.
             # pycurl requires specified ssl library.
