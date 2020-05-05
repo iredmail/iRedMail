@@ -24,7 +24,6 @@ install_all()
 {
     ALL_PKGS=''
     PIP2_MODULES=''
-    PIP3_MODULES=''
     ENABLED_SERVICES=''
     DISABLED_SERVICES=''
 
@@ -491,7 +490,6 @@ EOF
             # No port for fail2ban. Install from source tarball with pip later.
             # rc script will be generated from sample file later.
             ALL_PKGS="${ALL_PKGS} py-pip py3-pip GeoIP geolite-country"
-            PIP3_MODULES="${PIP3_MODULES} uwsgi${PIP_VERSION_UWSGI}"
         fi
     fi
 
@@ -596,12 +594,14 @@ EOF
                 ln -sf /usr/local/bin/php-fpm-${OB_PHP_VERSION} /usr/local/bin/php-fpm >> ${INSTALL_LOG} 2>&1
             fi
 
-            # uwsgi. Required by iRedAdmin.
-            ECHO_INFO "Installing uWSGI from source tarballwait."
-            ${CMD_PIP2} install ${pip_args} uwsgi${PIP_VERSION_UWSGI}
+            # uwsgi. Required by mlmmjadmin and iRedAdmin.
+            ECHO_INFO "Installing uWSGI from source tarball, please wait for a moment."
+            ${CMD_PIP2} install ${PKG_MISC_DIR}/uwsgi-*.tar.gz &> ${RUNTIME_DIR}/uwsgi_install.log
 
-            if [ X"${PIP3_MODULES}" != X'' ]; then
-                ${CMD_PIP3} install ${pip_args} ${PIP3_MODULES}
+            # Fail2ban.
+            if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
+                ECHO_INFO "Installing Fail2ban from source tarball, please wait for a moment."
+                ${CMD_PIP3} install ${PKG_MISC_DIR}/fail2ban-*.tar.gz &> ${RUNTIME_DIR}/fail2ban_install.log
             fi
 
             # Required by uwsgi applications.
