@@ -65,6 +65,8 @@ install_all()
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} rsyslog firewalld"
             PIP2_MODULES="${PIP2_MODULES} web.py==0.51 pycurl uwsgi netifaces"
+        elif [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'focal' ]; then
+            PIP2_MODULES="${PIP2_MODULES} web.py==0.51 uwsgi netifaces"
         fi
     fi
 
@@ -118,7 +120,17 @@ install_all()
                 fi
             fi
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} postfix-ldap slapd ldap-utils libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"
+            ALL_PKGS="${ALL_PKGS} slapd ldap-utils libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"
+
+            if [ X"${DISTRO_CODENAME}" == X'stretch' \
+                -o X"${DISTRO_CODENAME}" == X'buster' \
+                -o X"${DISTRO_CODENAME}" == X'bionic' ]; then
+                # Debian, Ubuntu 18.04
+                ALL_PKGS="${ALL_PKGS} postfix-ldap"
+            else
+                # Ubuntu 20.04+
+                PIP2_MODULES="${PIP2_MODULES} python-ldap==3.2.0"
+            fi
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_SERVER_VER}"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
@@ -367,6 +379,8 @@ EOF
     if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
         ALL_PKGS="${ALL_PKGS} gcc libcurl-devel openssl-devel python2-devel python2-pip"
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} openldap-devel"
+    elif [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" != X'bionic' ]; then
+        ALL_PKGS="${ALL_PKGS} python2-dev curl libcurl4-openssl-dev python-setuptools"
     fi
 
     # iRedAPD.
@@ -393,11 +407,26 @@ EOF
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python-sqlalchemy python-dnspython"
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
 
-        [ X"${DISTRO}" == X'UBUNTU' ] && ALL_PKGS="${ALL_PKGS} python-pymysql"
+        if [ X"${DISTRO}" == X'DEBIAN' ]; then
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
+        else
+            if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
+                # Ubuntu 18.04
+                [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb"
+                [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
+                [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
+            else
+                [ X"${BACKEND}" == X'OPENLDAP' ] && PIP2_MODULES="${PIP2_MODULES} python-ldap PyMySQL"
+                [ X"${BACKEND}" == X'MYSQL' ] && PIP2_MODULES="${PIP2_MODULES} PyMySQL"
+                if [ X"${BACKEND}" == X'PGSQL' ]; then
+                    ALL_PKGS="${ALL_PKGS} postgresql-server-dev-12"
+                    PIP2_MODULES="${PIP2_MODULES} psycopg2"
+                fi
+            fi
+        fi
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py-sqlalchemy py-dnspython"
@@ -420,13 +449,17 @@ EOF
 
         [ X"${DISTRO_VERSION}" == X'8' ] && ALL_PKGS="${ALL_PKGS} python2-jinja2 python2-requests"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-requests uwsgi uwsgi-plugin-python"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl"
 
         if [ X"${DISTRO_CODENAME}" == X"bionic" -o X"${DISTRO_CODENAME}" == X"stretch" ]; then
-            ALL_PKGS="${ALL_PKGS} python-webpy"
+            ALL_PKGS="${ALL_PKGS} python-webpy python-requests uwsgi uwsgi-plugin-python"
         else
             # Install webpy with pip
-            ALL_PKGS="${ALL_PKGS} python-pip"
+            if [ X"${DISTRO_CODENAME}" == X"buster" ]; then
+                ALL_PKGS="${ALL_PKGS} python-pip"
+            fi
+
+            PIP2_MODULES="${PIP2_MODULES} requests uwsgi"
         fi
 
         # Ubuntu
@@ -541,6 +574,11 @@ EOF
 
     after_package_installation()
     {
+        pip_args=''
+        if [ X"${PIP_MIRROR_SITE}" != X'' -a X"${PIP_TRUSTED_HOST}" != X'' ]; then
+            pip_args="-i ${PIP_MIRROR_SITE} --trusted-host ${PIP_TRUSTED_HOST}"
+        fi
+
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
             # Create symbol links for php.
             if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
@@ -574,13 +612,18 @@ EOF
             if [ X"${DISTRO_CODENAME}" != X"bionic" -a X"${DISTRO_CODENAME}" != X"stretch" ]; then
                 ${CMD_PIP2} install --no-deps ${PKG_MISC_DIR}/webpy-0.51.tar.gz &> ${RUNTIME_DIR}/uwsgi_install.log
             fi
+
+            if [ X"${DISTRO_CODENAME}" == X'focal' ]; then
+                ECHO_INFO "Install pip for Python 2."
+                cd /tmp
+                ${FETCH_CMD} https://bootstrap.pypa.io/get-pip.py
+                python2 get-pip.py ${pip_args}
+                rm -f get-pip.py
+
+                ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES}
+            fi
         elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
             ECHO_INFO "Installing required Python-2 modules with pip."
-
-            pip_args=''
-            if [ X"${PIP_MIRROR_SITE}" != X'' -a X"${PIP_TRUSTED_HOST}" != X'' ]; then
-                pip_args="-i ${PIP_MIRROR_SITE} --trusted-host ${PIP_TRUSTED_HOST}"
-            fi
 
             # Install py2 modules.
             # pycurl requires specified ssl library.

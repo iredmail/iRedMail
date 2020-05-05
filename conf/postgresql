@@ -45,9 +45,12 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     elif [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
         # Ubuntu 18.04
         export PGSQL_VERSION='10'
-    else
-        # Debian 10, Ubuntu 19.04
+    elif [ X"${DISTRO_CODENAME}" == X'buster' ]; then
+        # Debian 10
         export PGSQL_VERSION='11'
+    else
+        # Ubuntu 20.04
+        export PGSQL_VERSION='12'
     fi
 
     export PGSQL_USER_HOMEDIR='/var/lib/postgresql'

@@ -145,9 +145,43 @@ fail2ban_config() {
     echo 'export status_fail2ban_config="DONE"' >> ${STATUS_FILE}
 }
 
+fail2ban_syslog_setup() {
+    ECHO_DEBUG "Generate modular syslog and log rotate config files for Fail2ban."
+    if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+        cp ${SAMPLE_DIR}/rsyslog.d/1-iredmail-fail2ban.conf ${SYSLOG_CONF_DIR}
+        perl -pi -e 's#PH_FAIL2BAN_LOG_FILE#$ENV{FAIL2BAN_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/1-iredmail-fail2ban.conf
+
+        touch ${FAIL2BAN_LOG_FILE}
+        chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${FAIL2BAN_LOG_FILE}
+        chmod 0640 ${FAIL2BAN_LOG_FILE}
+    elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        cp -f ${SAMPLE_DIR}/freebsd/syslog.d/fail2ban.conf ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
+        perl -pi -e 's#PH_FAIL2BAN_SYSLOG_FACILITY#$ENV{FAIL2BAN_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/fail2ban.conf
+        perl -pi -e 's#PH_FAIL2BAN_LOG_FILE#$ENV{FAIL2BAN_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/fail2ban.conf
+    elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+        if ! grep "${FAIL2BAN_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
+            # '!!' means abort further evaluation after first match
+            echo '' >> ${SYSLOG_CONF}
+            echo '!!fail2ban' >> ${SYSLOG_CONF}
+            echo "${FAIL2BAN_SYSLOG_FACILITY}.*        ${FAIL2BAN_LOG_FILE}" >> ${SYSLOG_CONF}
+        fi
+
+        if ! grep "${FAIL2BAN_LOG_FILE}" /etc/newsyslog.conf &>/dev/null; then
+            cat >> /etc/newsyslog.conf <<EOF
+${FAIL2BAN_LOG_FILE}    ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG}   640  7     *    24    Z
+EOF
+        fi
+    fi
+
+    echo 'export status_fail2ban_syslog_setup="DONE"' >> ${STATUS_FILE}
+}
+
 fail2ban_setup() {
     ECHO_INFO "Configure Fail2ban (authentication failure monitor)."
 
     check_status_before_run fail2ban_initialize_db
     check_status_before_run fail2ban_config
+    check_status_before_run fail2ban_syslog_setup
+
+    echo 'export status_fail2ban_setup="DONE"' >> ${STATUS_FILE}
 }

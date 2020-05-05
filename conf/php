@@ -47,9 +47,12 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     elif [ X"${DISTRO_CODENAME}" == X'buster' ]; then
         # Debian 10
         export PHP_VERSION='7.3'
-    else
-        # Ubuntu 18.04, 19.04
+    elif [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
+        # Ubuntu 18.04
         export PHP_VERSION='7.2'
+    else
+        # Ubuntu 20.04
+        export PHP_VERSION='7.4'
     fi
 
     export PHP_INI="/etc/php/${PHP_VERSION}/fpm/php.ini"

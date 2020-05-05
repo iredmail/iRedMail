@@ -1,4 +1,4 @@
-[roundcube-iredmail]
+[roundcube]
 enabled     = false
 findtime    = 3600
 filter      = roundcube.iredmail

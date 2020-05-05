@@ -1,4 +1,4 @@
-[postfix-iredmail]
+[postfix]
 enabled     = true
 filter      = postfix.iredmail
 logpath     = PH_MAILLOG

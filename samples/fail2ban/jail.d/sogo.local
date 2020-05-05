@@ -1,4 +1,4 @@
-[sogo-iredmail]
+[sogo]
 enabled     = false
 filter      = sogo-auth
 logpath     = PH_SOGO_LOG_FILE

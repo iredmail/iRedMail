@@ -1,4 +1,4 @@
-[dovecot-iredmail]
+[dovecot]
 enabled     = true
 filter      = dovecot.iredmail
 logpath     = PH_DOVECOT_LOG_FILE

@@ -1,7 +1,7 @@
-[postfix-pregreet-iredmail]
+[postfix-pregreet]
 enabled     = true
 maxretry    = 1
 filter      = postfix-pregreet.iredmail
 logpath     = PH_MAILLOG
-action      = PH_FAIL2BAN_ACTION[name=postfix, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
-              banned_db[name=postfix, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
+action      = PH_FAIL2BAN_ACTION[name=postfix-pregreet, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
+              banned_db[name=postfix-pregreet, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]

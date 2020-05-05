@@ -219,7 +219,9 @@ iredapd_config()
     # mlmmjadmin integration.
     perl -pi -e 's#^(mlmmjadmin_api_auth_token).*#${1} = "$ENV{MLMMJADMIN_API_AUTH_TOKEN}"#' ${IREDAPD_CONF}
 
-    if [[ X"${DISTRO}" == X'RHEL' ]] && [[ X"${DISTRO_VERSION}" == X'8' ]]; then
+    # Use pymysql on CentOS 8, Ubuntu 20.04
+    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ] || \
+        [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'focal' ]; then
         if [[ X"${BACKEND}" == X'OPENLDAP' ]] || [[ X"${BACKEND}" == X'MYSQL' ]]; then
             echo "SQL_DB_DRIVER = 'pymysql'" >> ${IREDAPD_CONF}
         fi
