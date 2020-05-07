@@ -48,9 +48,10 @@ install_all()
     fi
 
     freebsd_make_conf_add 'WANT_OPENLDAP_VER' "${PREFERRED_OPENLDAP_VER}"
+    freebsd_make_conf_add 'WANT_OPENLDAP_SASL' "YES"
     freebsd_make_conf_add 'WANT_PGSQL_VER' "${PGSQL_VERSION}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=2.7 python2=2.7 python3=3.8 pgsql=${PGSQL_VERSION} php=7.4"
+    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=2.7 python2=2.7 python3=3.8 pgsql=${PGSQL_VERSION} php=7.4 mysql=10.4m"
 
     freebsd_make_conf_plus_option 'OPTIONS_SET' 'SASL'
     freebsd_make_conf_plus_option 'OPTIONS_UNSET' 'X11'
