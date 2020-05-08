@@ -422,7 +422,7 @@ EOF
             if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
                 # Ubuntu 18.04
                 [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb"
-                [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
+                [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb python-pymysql"
                 [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
             else
                 [ X"${BACKEND}" == X'OPENLDAP' ] && PIP2_MODULES="${PIP2_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP} PyMySQL${PIP_VERSION_PYMYSQL}"
