@@ -148,6 +148,7 @@ postfix_config_basic()
 
     # set smtp server
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${POSTFIX_FILE_MASTER_CF}
+    perl -pi -e 's#PH_AMAVISD_CONTENT_FILTER_ORIGINATING#$ENV{AMAVISD_CONTENT_FILTER_ORIGINATING}#g' ${POSTFIX_FILE_MASTER_CF}
 
     # set mailbox owner: user/group
     perl -pi -e 's#PH_SYS_USER_VMAIL#$ENV{SYS_USER_VMAIL}#g' ${POSTFIX_FILE_MASTER_CF}
@@ -167,8 +168,13 @@ postfix_config_basic()
     _pickup_orig="$(postconf -M |grep '^pickup')"
     echo ${_pickup_orig} | grep 'content_filter=' &>/dev/null
     if [ X"$?" != X'0' ]; then
-        postconf -M "pickup/unix=${_pickup_orig}"
-        postconf -P "pickup/unix/content_filter=smtp-amavis:[${SMTP_SERVER}]:${AMAVISD_ORIGINATING_PORT}"
+        if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'7' ]; then
+            # CentOS 7 ships old Postfix which doesn't support `postconf -P`.
+            perl -pi -e 's#^(pickup.*)#${1}\n    -o content_filter=$ENV{AMAVISD_CONTENT_FILTER_ORIGINATING}#' ${POSTFIX_FILE_MASTER_CF}
+        else
+            postconf -M "pickup/unix=${_pickup_orig}"
+            postconf -P "pickup/unix/content_filter=${AMAVISD_CONTENT_FILTER_ORIGINATING}"
+        fi
     fi
 
     # mlmmj integration.

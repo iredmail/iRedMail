@@ -118,6 +118,9 @@ export AMAVISD_SOCKET_FILE="${AMAVISD_VAR_RUN_DIR}/amavisd.socket"
 export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.mysql"
 export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.pgsql"
 
+# Value of Postfix parameter `content_filter=`.
+export AMAVISD_CONTENT_FILTER_ORIGINATING="smtp-amavis:[${SMTP_SERVER}]:${AMAVISD_ORIGINATING_PORT}"
+
 # mynetworks, inet_acl
 export AMAVISD_MYNETWORKS='127.0.0.0/8'
 export AMAVISD_INET_ACL='127.0.0.1 [::1]'
