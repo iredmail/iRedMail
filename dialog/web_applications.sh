@@ -33,12 +33,6 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
         export DIALOG_SELECTABLE_SOGO='YES'
     fi
 
-    # SOGo team doesn't offer binary packages for CentOS 8 and Ubuntu 20.04 (yet).
-    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ] ||
-        [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'focal' ]; then
-        export DIALOG_SELECTABLE_SOGO='NO'
-    fi
-
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # OpenBSD doesn't have 'libuuid' which required by netdata
         export DIALOG_SELECTABLE_NETDATA='NO'
