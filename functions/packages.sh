@@ -327,6 +327,12 @@ install_all()
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope49-gdl1-mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope49-gdl1-postgresql"
 
+            if [ X"${DISTRO_VERSION}" == X'8' ]; then
+                if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+                    ALL_PKGS="${ALL_PKGS} mysql-libs"
+                fi
+            fi
+
             # Copy yum repo file
             ECHO_INFO "Add yum repo for SOGo: ${YUM_REPOS_DIR}/sogo.repo."
             cat > ${YUM_REPOS_DIR}/sogo.repo <<EOF
