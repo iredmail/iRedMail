@@ -56,7 +56,7 @@ export BACKUP_ROOTDIR='/var/vmail/backup'
 # Multiple databases MUST be seperated by SPACE.
 # Your iRedMail server might have below databases:
 # vmail, roundcubemail, cluebringer, amavisd, iredadmin.
-export DATABASES='vmail roundcubemail amavisd iredadmin sogo iredapd'
+export DATABASES='vmail roundcubemail amavisd iredadmin sogo iredapd sa_bayes'
 
 #########################################################
 # You do *NOT* need to modify below lines.
