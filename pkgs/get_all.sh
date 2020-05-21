@@ -138,10 +138,18 @@ create_repo_rhel()
 {
     ECHO_INFO "Preparing yum repositories ..."
 
+    _required_pkgs="epel-release"
+    if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X'8' ]; then
+        # required by command `yum config-manager --enable <repo>`.
+        _required_pkgs="${_required_pkgs} dnf-plugins-core"
+    fi
+
+    eval ${install_pkg} ${_required_pkgs}
+
     # Backup old repo file.
     backup_file ${LOCAL_REPO_FILE}
 
-    # Generate new repo file.
+    # Generate iRedMail repo file.
     cat > ${LOCAL_REPO_FILE} <<EOF
 [${LOCAL_REPO_NAME}]
 name=${LOCAL_REPO_NAME}
@@ -151,20 +159,6 @@ gpgcheck=0
 #exclude=postfix*
 priority=99
 EOF
-
-    # For Red Hat Enterprise Linux
-    if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then
-        # repo to install epel-release without GPG check.
-        cat > ${YUM_REPOS_DIR}/tmp_epel.repo <<EOF
-[tmp_epel]
-name=Extra Packages for Enterprise Linux ${DISTRO_VERSION} - \$basearch
-#baseurl=http://download.fedoraproject.org/pub/epel/${DISTRO_VERSION}/\$basearch
-mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-${DISTRO_VERSION}&arch=\$basearch
-failovermethod=priority
-enabled=1
-gpgcheck=0
-EOF
-    fi
 
     # RHEL/CentOS 8.
     if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X'8' ]; then
@@ -179,8 +173,6 @@ EOF
             yum config-manager --enable ${repo}
         done
     fi
-
-    eval ${install_pkg} epel-release
 
     if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then
         rm -f ${YUM_REPOS_DIR}/tmp_epel.repo

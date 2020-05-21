@@ -38,24 +38,10 @@ install_all()
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         PKG_SCRIPTS=''
 
-        # OpenBSD-6.6
-        OB_PKG_PHP_VER='%7.3'
-        OB_PKG_OPENLDAP_SERVER_VER='-2.4.48'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.48'
-
-        # Check required syspatch for LDAP backend.
-        if [ X"${DISTRO}" == X'OPENBSD' -a X"${DISTRO_VERSION}" == X'6.6' -a X"${BACKEND}" == X'OPENLDAP' ]; then
-            if [ ! -f /var/syspatch/66-002_ber/002_ber.patch.sig ]; then
-                echo ""
-                echo "============ ERROR ============"
-                echo "Please run 'syspatch' and reboot system to apply required patch for LDAP backend first."
-                echo "                          ^^^^^^"
-                echo "FYI: https://www.openbsd.org/errata66.html#p002_ber".
-                echo "============ ERROR ============"
-                echo ""
-                exit 255
-            fi
-        fi
+        # OpenBSD-6.7
+        OB_PKG_PHP_VER='%7.4'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.4.49'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.49'
     fi
 
     # Install PHP if there's a web server running -- php is too popular.
@@ -272,7 +258,7 @@ install_all()
     # Amavisd-new, ClamAV, Altermime.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_SERVICE_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-LDAP perl-Mail-SPF lz4 clamav clamav-update clamav-server clamav-server-systemd"
+        ALL_PKGS="${ALL_PKGS} amavisd-new spamassassin altermime perl-Mail-SPF lz4 clamav clamav-update clamav-server clamav-server-systemd"
         [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} unrar pax"
 
         # RHEL uses service name 'clamd@amavisd' instead of clamd.
@@ -282,7 +268,11 @@ install_all()
         ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm libmail-spf-perl unrar-free pax lrzip"
 
         if [ X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} libclamunrar9"
+            if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
+                ALL_PKGS="${ALL_PKGS} libclamunrar7"
+            else
+                ALL_PKGS="${ALL_PKGS} libclamunrar9"
+            fi
         fi
 
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
@@ -495,7 +485,7 @@ EOF
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # No port for fail2ban. Install from source tarball with pip later.
             # rc script will be generated from sample file later.
-            ALL_PKGS="${ALL_PKGS} py-pip py3-pip GeoIP geolite-country"
+            ALL_PKGS="${ALL_PKGS} py-pip py3-pip geolite2-country geolite2-city"
         fi
     fi
 
