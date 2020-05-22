@@ -164,10 +164,14 @@ fail2ban_syslog_setup() {
         perl -pi -e 's#PH_FAIL2BAN_SYSLOG_FACILITY#$ENV{FAIL2BAN_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/fail2ban.conf
         perl -pi -e 's#PH_FAIL2BAN_LOG_FILE#$ENV{FAIL2BAN_LOG_FILE}#g' ${SYSLOG_CONF_DIR}/fail2ban.conf
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+        touch ${FAIL2BAN_LOG_FILE}
+        chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${FAIL2BAN_LOG_FILE}
+        chmod 0640 ${FAIL2BAN_LOG_FILE}
+
         if ! grep "${FAIL2BAN_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
             # '!!' means abort further evaluation after first match
             echo '' >> ${SYSLOG_CONF}
-            echo '!!fail2ban' >> ${SYSLOG_CONF}
+            echo '!!fail2ban*' >> ${SYSLOG_CONF}
             echo "${FAIL2BAN_SYSLOG_FACILITY}.*        ${FAIL2BAN_LOG_FILE}" >> ${SYSLOG_CONF}
         fi
 
