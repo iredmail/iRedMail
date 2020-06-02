@@ -1,4 +1,6 @@
 [sshd]
+backend     = polling
+journalmatch=
 enabled     = true
 filter      = sshd
 logpath     = PH_SSHD_LOGFILE

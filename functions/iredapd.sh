@@ -159,7 +159,9 @@ iredapd_config()
     perl -pi -e 's#^(srs_forward_port).*#${1} = "$ENV{IREDAPD_SRS_FORWARD_PORT}"#' ${IREDAPD_CONF}
     perl -pi -e 's#^(srs_reverse_port).*#${1} = "$ENV{IREDAPD_SRS_REVERSE_PORT}"#' ${IREDAPD_CONF}
     perl -pi -e 's#^(srs_domain).*#${1} = "$ENV{HOSTNAME}"#' ${IREDAPD_CONF}
-    perl -pi -e 's#^(srs_secrets).*#${1} = []#' ${IREDAPD_CONF}
+
+    _srs_secret="$(${RANDOM_STRING})"
+    perl -pi -e 's#^(srs_secrets).*#${1} = ["$ENV{_srs_secret}"]#' ${IREDAPD_CONF}
 
     # Log
     perl -pi -e 's#^(log_level).*#${1} = "info"#' ${IREDAPD_CONF}
@@ -219,12 +221,9 @@ iredapd_config()
     # mlmmjadmin integration.
     perl -pi -e 's#^(mlmmjadmin_api_auth_token).*#${1} = "$ENV{MLMMJADMIN_API_AUTH_TOKEN}"#' ${IREDAPD_CONF}
 
-    # Use pymysql on CentOS 8, Ubuntu 20.04
-    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ] || \
-        [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'focal' ]; then
-        if [[ X"${BACKEND}" == X'OPENLDAP' ]] || [[ X"${BACKEND}" == X'MYSQL' ]]; then
-            echo "SQL_DB_DRIVER = 'pymysql'" >> ${IREDAPD_CONF}
-        fi
+    # Use pymysql.
+    if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        echo "SQL_DB_DRIVER = 'pymysql'" >> ${IREDAPD_CONF}
     fi
 
     if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
@@ -302,11 +301,11 @@ iredapd_cron_setup()
     # here, so that we don't need to change cron job after upgrading iRedAPD.
     cat >> ${CRON_FILE_ROOT} <<EOF
 # iRedAPD: Clean up expired tracking records hourly.
-1   *   *   *   *   ${CMD_PYTHON2} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null
+1   *   *   *   *   ${CMD_PYTHON3} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/cleanup_db.py >/dev/null
 
 # iRedAPD: Convert SPF DNS record of specified domain names to IP
 #          addresses/networks hourly.
-2   *   *   *   *   ${CMD_PYTHON2} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py >/dev/null
+2   *   *   *   *   ${CMD_PYTHON3} ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/tools/spf_to_greylist_whitelists.py >/dev/null
 
 EOF
 

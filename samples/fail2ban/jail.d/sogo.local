@@ -1,4 +1,6 @@
 [sogo]
+backend     = polling
+journalmatch=
 enabled     = false
 filter      = sogo-auth
 logpath     = PH_SOGO_LOG_FILE

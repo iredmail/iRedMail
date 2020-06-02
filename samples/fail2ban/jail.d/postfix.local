@@ -1,4 +1,6 @@
 [postfix]
+backend     = polling
+journalmatch=
 enabled     = true
 filter      = postfix.iredmail
 logpath     = PH_MAILLOG

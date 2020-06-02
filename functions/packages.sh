@@ -24,6 +24,7 @@ install_all()
 {
     ALL_PKGS=''
     PIP2_MODULES=''
+    PIP3_MODULES=''
     NABLED_SERVICES=''
     DISABLED_SERVICES=''
 
@@ -33,6 +34,10 @@ install_all()
     PIP_VERSION_UWSGI='>=2.0.18'
     PIP_VERSION_REQUESTS='>=2.23.0'
     PIP_VERSION_PYMYSQL='>=0.9.3'
+    PIP_VERSION_PSYCOPG2='>=2.8.5'
+    PIP_VERSION_PYCURL='>=7.43.0.5'
+    # more-itertools-5.0.0 is the last version which supports Python-2.7.
+    PIP2_VERSION_MORE_ITERTOOLS='==5.0.0'
 
     # OpenBSD only
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -56,11 +61,12 @@ install_all()
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} rsyslog firewalld"
-            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} uwsgi${PIP_VERSION_UWSGI} pycurl netifaces"
+            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS}"
         elif [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'focal' ]; then
-            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} uwsgi${PIP_VERSION_UWSGI} netifaces"
+            # Ubuntu 20.04
+            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS} uwsgi${PIP_VERSION_UWSGI} netifaces"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} uwsgi${PIP_VERSION_UWSGI}"
+            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS} uwsgi${PIP_VERSION_UWSGI}"
         fi
     fi
 
@@ -285,8 +291,67 @@ install_all()
 
     # mlmmj: mailing list manager
     ALL_PKGS="${ALL_PKGS} mlmmj"
+
+    # mlmmjadmin: RESTful API server used to manage mlmmj.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} uwsgi-logger-syslog"
+        PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
+
+        [ X"${DISTRO_VERSION}" == X'7' ] \
+            && ALL_PKGS="${ALL_PKGS} python36 python3-pip python36-requests uwsgi uwsgi-logger-syslog uwsgi-plugin-python36"
+        [ X"${DISTRO_VERSION}" == X'8' ] \
+            && ALL_PKGS="${ALL_PKGS} python36 python3-requests"
+
+        if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+            if [[ X"${DISTRO_VERSION}" == X'7' ]]; then
+                # `gcc`, `python3-devel`, `openldap-devel` are required to compile `python-ldap`.
+                ALL_PKGS="${ALL_PKGS} python36-PyMySQL gcc python3-devel openldap-devel"
+                PIP3_MODULES="${PIP3_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP}"
+            fi
+
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python3-ldap python3-PyMySQL"
+        fi
+
+        if [ X"${BACKEND}" == X'MYSQL' ]; then
+            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} python36-PyMySQL"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python3-PyMySQL"
+        fi
+
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
+
+    elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        ALL_PKGS="${ALL_PKGS} python3-requests python3-pip uwsgi uwsgi-plugin-python3"
+        PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
+
+        if [ X"${DISTRO}" == X'DEBIAN' ]; then
+            if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+                if [ X"${DISTRO_VERSION}" == X'9' ]; then
+                    # pyldap is a fork of python-ldap.
+                    ALL_PKGS="${ALL_PKGS} python3-pyldap python3-pymysql"
+                else
+                    ALL_PKGS="${ALL_PKGS} python3-ldap python3-pymysql"
+                fi
+            fi
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python3-pymysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
+        else
+            if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
+                # Ubuntu 18.04
+                [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python3-ldap python3-pymysql"
+                [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python3-pymysql"
+                [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
+            else
+                [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python3-ldap python3-pymysql"
+                [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python3-pymysql"
+                [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
+            fi
+        fi
+
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} py3-psycopg2"
+        PKG_SCRIPTS="${PKG_SCRIPTS} mlmmjadmin"
     fi
 
     # Roundcube
@@ -378,97 +443,154 @@ EOF
 
     # Install few Python modules with `pip` for Python-2.
     # We still have few Python applications not ported to Py3.
-    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
-        ALL_PKGS="${ALL_PKGS} gcc libcurl-devel openssl-devel python2-devel python2-pip"
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} openldap-devel"
+    if [ X"${DISTRO}" == X'RHEL' ]; then
+        if [ X"${DISTRO_VERSION}" == X'7' ]; then
+            ALL_PKGS="${ALL_PKGS} python2-pip"
+        elif [ X"${DISTRO_VERSION}" == X'8' ]; then
+            ALL_PKGS="${ALL_PKGS} gcc libcurl-devel openssl-devel python2-devel python2-pip"
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} openldap-devel"
+        fi
     elif [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" != X'bionic' ]; then
         ALL_PKGS="${ALL_PKGS} python2-dev curl libcurl4-openssl-dev python-setuptools"
     fi
 
-    # iRedAPD.
-    # Don't append 'iredapd' to ${ENABLED_SERVICES} since we don't have
-    # RC script ready in early stage.
+    # iRedAPD. Requires Python-3.
+    # Don't append service name 'iredapd' to ${ENABLED_SERVICES} since we don't
+    # have RC script ready in this stage.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        [ X"${DISTRO_VERSION}" == X'7' ] && ALL_PKGS="${ALL_PKGS} python-sqlalchemy python-setuptools python-dns"
-        [ X"${DISTRO_VERSION}" == X'8' ] && ALL_PKGS="${ALL_PKGS} python2-sqlalchemy python2-setuptools python2-dns"
+        PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
+
+        [ X"${DISTRO_VERSION}" == X'7' ] \
+            && ALL_PKGS="${ALL_PKGS} python36 python3-pip python36-sqlalchemy python36-setuptools python36-dns python36-requests python36-six"
+        [ X"${DISTRO_VERSION}" == X'8' ] \
+            && ALL_PKGS="${ALL_PKGS} python36 python3-sqlalchemy python3-setuptools python3-dns python3-requests python3-six"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} python-ldap MySQL-python"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python2-PyMySQL"
+            if [[ X"${DISTRO_VERSION}" == X'7' ]]; then
+                # `gcc`, `python3-devel`, `openldap-devel` are required to compile `python-ldap`.
+                ALL_PKGS="${ALL_PKGS} python36-PyMySQL gcc python3-devel openldap-devel"
+                PIP3_MODULES="${PIP3_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP}"
+            fi
+
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python3-ldap python3-PyMySQL"
         fi
 
         if [ X"${BACKEND}" == X'MYSQL' ]; then
-            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} MySQL-python"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python2-PyMySQL"
+            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} python36-PyMySQL"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python3-PyMySQL"
         fi
 
-        if [ X"${BACKEND}" == X'PGSQL' ]; then
-            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python2-psycopg2"
-        fi
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python-sqlalchemy python-dnspython"
+        ALL_PKGS="${ALL_PKGS} python3-sqlalchemy python3-dnspython python3-requests python3-pip"
+        PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
 
+        set -x
         if [ X"${DISTRO}" == X'DEBIAN' ]; then
-            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb"
-            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb"
-            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
-        else
+            if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+                if [ X"${DISTRO_VERSION}" == X'9' ]; then
+                    # pyldap is a fork of python-ldap.
+                    ALL_PKGS="${ALL_PKGS} python3-pyldap python3-pymysql"
+                else
+                    ALL_PKGS="${ALL_PKGS} python3-ldap python3-pymysql"
+                fi
+            fi
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python3-pymysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
+
+        elif [ X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
                 # Ubuntu 18.04
-                [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb"
-                [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb python-pymysql"
-                [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
+                [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python3-ldap python3-pymysql"
+                [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python3-pymysql"
+                [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
             else
-                [ X"${BACKEND}" == X'OPENLDAP' ] && PIP2_MODULES="${PIP2_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP} PyMySQL${PIP_VERSION_PYMYSQL}"
-                [ X"${BACKEND}" == X'MYSQL' ] && PIP2_MODULES="${PIP2_MODULES} PyMySQL${PIP_VERSION_PYMYSQL}"
+                [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python3-ldap python3-pymysql"
+                [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python3-pymysql"
+
                 if [ X"${BACKEND}" == X'PGSQL' ]; then
-                    ALL_PKGS="${ALL_PKGS} postgresql-server-dev-12"
+                    # `postgresql-server-dev-12` is used to compile `psycopg2` for py2.
+                    ALL_PKGS="${ALL_PKGS} python3-psycopg2 postgresql-server-dev-12"
                     PIP2_MODULES="${PIP2_MODULES} psycopg2"
                 fi
             fi
         fi
+        set +x
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py-sqlalchemy py-dnspython"
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py-ldap py-mysql"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py-mysql"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} py-psycopg2"
+        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} py3-psycopg2"
         PKG_SCRIPTS="${PKG_SCRIPTS} iredapd"
     fi
 
     # OpenBSD: List postfix as last startup script.
     export PKG_SCRIPTS="${PKG_SCRIPTS} ${POSTFIX_RC_SCRIPT_NAME}"
 
-    # iRedAdmin.
-    # Force install all dependence to help customers install iRedAdmin-Pro.
+    # iRedAdmin. Still runs with py2.
+    # Force install all dependent packages to help customers install iRedAdmin-Pro.
+    # web.py, dnspython, requests, jinja2, mysqldb or pymysql.
     if [ X"${DISTRO}" == X'RHEL' ]; then
         if [ X"${DISTRO_VERSION}" == X'7' ]; then
-            ALL_PKGS="${ALL_PKGS} python-jinja2 python-webpy python-netifaces python-pycurl python-requests py-bcrypt"
-            [ X"${WEB_SERVER}" == X'NGINX' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python2"
-        fi
+            ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-requests py-bcrypt python2-PyMySQL uwsgi-plugin-python2 python-dns uwsgi-plugin-python uwsgi-plugin-syslog"
+            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS}"
 
-        [ X"${DISTRO_VERSION}" == X'8' ] && ALL_PKGS="${ALL_PKGS} python2-jinja2 python2-requests"
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python2-pymysql"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python2-pymysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
+
+        elif [ X"${DISTRO_VERSION}" == X'8' ]; then
+            ALL_PKGS="${ALL_PKGS} python2-jinja2 python2-PyMySQL python2-requests python2-dns"
+            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS} uwsgi${PIP_VERSION_UWSGI} pycurl${PIP_VERSION_PYCURL}"
+
+            if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+                PIP2_MODULES="${PIP2_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP} PyMySQL${PIP_VERSION_PYMYSQL}"
+            elif [ X"${BACKEND}" == X'MYSQL' ]; then
+                PIP2_MODULES="${PIP2_MODULES} PyMySQL${PIP_VERSION_PYMYSQL}"
+            elif [ X"${BACKEND}" == X'PGSQL' ]; then
+                ALL_PKGS="${ALL_PKGS} python2-psycopg2"
+            fi
+        fi
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-bcrypt"
 
         if [ X"${DISTRO_CODENAME}" == X"bionic" -o X"${DISTRO_CODENAME}" == X"stretch" ]; then
-            ALL_PKGS="${ALL_PKGS} python-webpy python-requests uwsgi uwsgi-plugin-python"
-        else
-            # Install webpy with pip
-            if [ X"${DISTRO_CODENAME}" == X"buster" ]; then
-                ALL_PKGS="${ALL_PKGS} python-pip"
+            # Ubuntu 18.04 and Debian 9.
+            ALL_PKGS="${ALL_PKGS} python-webpy python-dnspython python-mysqldb python-requests uwsgi uwsgi-plugin-python"
+
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb python-pymysql"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb python2-pymysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
+        elif [ X"${DISTRO_CODENAME}" == X"buster" ]; then
+            # Debian 10
+            ALL_PKGS="${ALL_PKGS} python-pip python-requests uwsgi-plugin-python"
+            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS}"
+
+            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb python-pymysql"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb python2-pymysql"
+            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
+        elif [ X"${DISTRO_CODENAME}" == X"focal" ]; then
+            # Ubuntu 20.04
+            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS} requests${PIP_VERSION_REQUESTS} uwsgi${PIP_VERSION_UWSGI}"
+
+            if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+                PIP2_MODULES="${PIP2_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP}"
+            elif [ X"${BACKEND}" == X'MYSQL' ]; then
+                ALL_PKGS="${ALL_PKGS} PyMySQL${PIP_VERSION_PYMYSQL}"
+            elif [ X"${BACKEND}" == X'PGSQL' ]; then
+                # `postgresql-server-dev-12` is used to compile `psycopg2` for py2.
+                ALL_PKGS="${ALL_PKGS} python3-psycopg2 postgresql-server-dev-12"
+                PIP2_MODULES="${PIP2_MODULES} psycopg2${PIP_VERSION_PSYCOPG2}"
             fi
-
-            PIP2_MODULES="${PIP2_MODULES} requests${PIP_VERSION_REQUESTS} uwsgi${PIP_VERSION_UWSGI}"
         fi
-
-        # Ubuntu
-        [ X"${DISTRO}" == X'UBUNTU' ] && ALL_PKGS="${ALL_PKGS} python-bcrypt"
-
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py-pip py-jinja2 py-webpy py-flup py-bcrypt py-curl py-requests py-netifaces"
+
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py-ldap py-mysql py-mysqlclient"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py-mysql py-mysqlclient"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} py-psycopg2"
     fi
 
     # Fail2ban. Install fail2ban and geoip.
@@ -581,7 +703,38 @@ EOF
             pip_args="-i ${PIP_MIRROR_SITE} --trusted-host ${PIP_TRUSTED_HOST}"
         fi
 
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        if [ X"${DISTRO}" == X'RHEL' ]; then
+            if [ X"${PIP3_MODULES}" != X'' ]; then
+                ECHO_INFO "Installing required Python-3 modules with pip3:${PIP3_MODULES}"
+                ${CMD_PIP3} install ${pip_args} -U ${PIP3_MODULES} 2>&1 | tee ${RUNTIME_DIR}/pip3.log
+            fi
+
+            if [ X"${PIP2_MODULES}" != X'' ]; then
+                ECHO_INFO "Installing required Python-2 modules with pip2:${PIP2_MODULES}"
+
+                # Install py2 modules.
+                # pycurl requires specified ssl library.
+                PYCURL_SSL_LIBRARY=openssl ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES} 2>&1 | tee ${RUNTIME_DIR}/pip2.log
+            fi
+        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+            if [ X"${PIP2_MODULES}" != X'' ]; then
+                if [ X"${DISTRO_CODENAME}" == X'focal' ]; then
+                    ECHO_INFO "Installing pip for Python 2."
+                    cd /tmp
+                    ${FETCH_CMD} https://bootstrap.pypa.io/get-pip.py
+                    python2 get-pip.py ${pip_args}
+                    rm -f get-pip.py
+                fi
+
+                ECHO_INFO "Installing required Python-2 modules with pip2:${PIP2_MODULES}"
+                ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES} > ${RUNTIME_DIR}/pip2.log
+            fi
+
+            if [ X"${PIP3_MODULES}" != X'' ]; then
+                ECHO_INFO "Installing required Python-3 modules with pip3:${PIP3_MODULES}"
+                ${CMD_PIP3} install ${pip_args} -U ${PIP3_MODULES}
+            fi
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # Create symbol links for php.
             if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
                 ln -sf /usr/local/bin/php-${OB_PHP_VERSION} /usr/local/bin/php >> ${INSTALL_LOG} 2>&1
@@ -590,7 +743,15 @@ EOF
                 ln -sf /usr/local/bin/php-fpm-${OB_PHP_VERSION} /usr/local/bin/php-fpm >> ${INSTALL_LOG} 2>&1
             fi
 
-            # uwsgi. Required by mlmmjadmin and iRedAdmin.
+            for v in 3.9 3.8 3.7 3.6 3.5 3.4; do
+                if [ -x /usr/local/bin/python${v} ]; then
+                    ECHO_DEBUG "Create symbol link: /usr/local/bin/python${v} -> /usr/local/bin/python3"
+                    ln -sf /usr/local/bin/python${v} /usr/local/bin/python3
+                    break
+                fi
+            done
+
+            # uwsgi. Required by iRedAdmin.
             ECHO_INFO "Installing uWSGI from source tarball, please wait for a moment."
             ${CMD_PIP2} install ${PKG_MISC_DIR}/uwsgi-*.tar.gz &> ${RUNTIME_DIR}/uwsgi_install.log
 
@@ -606,27 +767,6 @@ EOF
             update_sysctl_param kern.seminfo.semmnu 60
             update_sysctl_param kern.seminfo.semmsl 120
             update_sysctl_param kern.seminfo.semopm 200
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            if [ X"${DISTRO_CODENAME}" != X"bionic" -a X"${DISTRO_CODENAME}" != X"stretch" ]; then
-                ${CMD_PIP2} install --no-deps ${PKG_MISC_DIR}/webpy-0.51.tar.gz &> ${RUNTIME_DIR}/uwsgi_install.log
-            fi
-
-            if [ X"${DISTRO_CODENAME}" == X'focal' ]; then
-                ECHO_INFO "Installing pip for Python 2."
-                cd /tmp
-                ${FETCH_CMD} https://bootstrap.pypa.io/get-pip.py
-                python2 get-pip.py ${pip_args}
-                rm -f get-pip.py
-
-                ECHO_INFO "Installing required Python-2 modules with pip2:${PIP2_MODULES}"
-                ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES} > ${RUNTIME_DIR}/pip2.log
-            fi
-        elif [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
-            ECHO_INFO "Installing required Python-2 modules with pip2:${PIP2_MODULES}"
-
-            # Install py2 modules.
-            # pycurl requires specified ssl library.
-            PYCURL_SSL_LIBRARY=openssl ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES} > ${RUNTIME_DIR}/pip2.log
         fi
 
         echo 'export status_after_package_installation="DONE"' >> ${STATUS_FILE}

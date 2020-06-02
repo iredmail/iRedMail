@@ -52,7 +52,7 @@ HASHED_MAILDIR = True
 # Default password schemes.
 # Multiple passwords are supported if you separate schemes with '+'.
 # For example: 'SSHA+NTLM', 'CRAM-MD5+SSHA', 'CRAM-MD5+SSHA+MD5'.
-DEFAULT_PASSWORD_SCHEME = 'SSHA'
+DEFAULT_PASSWORD_SCHEME = 'SSHA512'
 
 # Do not prefix password scheme name in password hash.
 HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME = ['NTLM']

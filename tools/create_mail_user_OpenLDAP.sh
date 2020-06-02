@@ -92,8 +92,8 @@ QUOTA='1048576000'
 # Default MTA Transport (Defined in postfix master.cf).
 TRANSPORT='dovecot'
 
-# Password setting.
-PASSWORD_SCHEME='SSHA'   # MD5, SSHA. SSHA is recommended.
+# Password scheme. Support schemes: BCRYPT, SSHA512, SSHA, PLAIN.
+PASSWORD_SCHEME='SSHA'
 DEFAULT_PASSWD='888888'
 USE_DEFAULT_PASSWD='NO'
 

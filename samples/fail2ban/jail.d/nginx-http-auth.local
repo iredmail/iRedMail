@@ -1,4 +1,6 @@
 [nginx-http-auth]
+backend     = polling
+journalmatch=
 enabled     = false
 filter      = nginx-http-auth
 logpath     = PH_NGINX_LOG_ERRORLOG

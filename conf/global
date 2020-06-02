@@ -193,10 +193,10 @@ export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 # Command used to genrate a random string.
 # Usage: str="$(${RANDOM_STRING})"
 if [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
-    export RANDOM_STRING='eval </dev/random tr -cd [:alnum:] | fold -w 30 | head -1'
+    export RANDOM_STRING='eval </dev/random tr -cd [:alnum:] | fold -w 32 | head -1'
 else
     # Linux/FreeBSD
-    export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 30)'
+    export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 32)'
 fi
 
 # command: dialog.
@@ -466,6 +466,9 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PKG_DIALOG="dialog"
     export PKG_BZIP2="bzip2"
 
+    if [ X"${DISTRO_VERSION}" == X'7' ]; then
+        export UWSGI_PY3_PLUGIN_NAME='python36'
+    fi
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Ubuntu & Debian.
     export DEBIAN_FRONTEND='noninteractive'
@@ -494,9 +497,9 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
     fi
 
-    if [ X"${DISTRO_CODENAME}" == X'stretch' ]; then
-        # Debian 9
+    if [ X"${DISTRO_VERSION}" == X'9' ]; then
         export SYSLOG_POSTROTATE_CMD='/usr/sbin/service rsyslog restart'
+        export UWSGI_PY3_PLUGIN_NAME='python35'
     else
         # Debian 10, Ubuntu 18.04
         export SYSLOG_POSTROTATE_CMD='/usr/lib/rsyslog/rsyslog-rotate'

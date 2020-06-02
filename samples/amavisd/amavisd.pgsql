@@ -161,7 +161,7 @@ CREATE TABLE msgs (
   am_id       varchar(20)   NOT NULL,   -- id used in the log
   time_num    integer NOT NULL CHECK (time_num >= 0),
                                         -- rx_time: seconds since Unix epoch
-  time_iso timestamp WITH TIME ZONE NOT NULL,-- rx_time: ISO8601 UTC ascii time
+  time_iso    timestamp WITH TIME ZONE NOT NULL,-- rx_time: ISO8601 UTC ascii time
   sid         integer NOT NULL CHECK (sid >= 0), -- sender: maddr.id
   policy      varchar(255)  DEFAULT '', -- policy bank path (like macro %p)
   client_addr varchar(255)  DEFAULT '', -- SMTP client IP address (IPv4 or v6)

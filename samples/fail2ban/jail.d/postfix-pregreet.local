@@ -1,4 +1,6 @@
 [postfix-pregreet]
+backend     = polling
+journalmatch=
 enabled     = true
 maxretry    = 1
 filter      = postfix-pregreet.iredmail

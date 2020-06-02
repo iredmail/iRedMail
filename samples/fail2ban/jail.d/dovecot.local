@@ -1,4 +1,6 @@
 [dovecot]
+backend     = polling
+journalmatch=
 enabled     = true
 filter      = dovecot.iredmail
 logpath     = PH_DOVECOT_LOG_FILE

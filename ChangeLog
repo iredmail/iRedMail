@@ -10,6 +10,10 @@ iRedMail-1.2.2:
     * Improvements:
         + Enable SOGo for CentOS 8 and Ubuntu 20.04. Thanks to SOGo team.
 
+    * Fixed issues:
+        - Add missing INDEX for SQL column `msgs.time_iso` in `amavisd`
+          database.
+
     * Updated packages:
         + netdata -> 1.22.1
 

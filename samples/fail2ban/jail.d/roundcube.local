@@ -1,4 +1,6 @@
 [roundcube]
+backend     = polling
+journalmatch=
 enabled     = false
 findtime    = 3600
 filter      = roundcube.iredmail

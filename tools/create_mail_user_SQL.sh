@@ -35,7 +35,7 @@ STORAGE_BASE_DIRECTORY="/var/vmail/vmail1"
 ###########
 # Password
 #
-# Password scheme. Available schemes: BCRYPT, SSHA512, SSHA, MD5, NTLM, PLAIN.
+# Password scheme. Available schemes: BCRYPT, SSHA512, SSHA, PLAIN.
 # Check file Available
 PASSWORD_SCHEME='SSHA512'
 

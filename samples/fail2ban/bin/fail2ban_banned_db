@@ -9,12 +9,14 @@
 #
 #   *) Store a banned IP address:
 #
-#       banned_db ban <ip> <ports> <protocol> <jail>
+#       banned_db ban <ip> <ports> <protocol> <jail> <failures> [loglines]
 #
 #       - <ip>: One IP address each time.
 #       - <ports>: Network ports. Multiple ports must be separated by comma.
 #       - <protocol>: `tcp` or `udp`.
 #       - <jail>: Fail2ban jail name.
+#       - <failures>: number of times the failure occurred in the log file.
+#       - [loglines]: matched log lines. OPTIONAL.
 #
 #   *) Remove an one or multiple unbanned IP addresses. Notes:
 #
@@ -34,7 +36,7 @@
 #
 # Examples:
 #
-#   banned_db ban   192.168.0.1 110,143,993,995 tcp dovecot-iredmail
+#   banned_db ban   192.168.0.1 110,143,993,995 tcp dovecot-iredmail 3
 #   banned_db unban 192.168.0.1
 #   banned_db cleanup dovecot-iredmail
 #   banned_db unban_db
@@ -49,13 +51,15 @@
 #
 # WARNING: the name set in `banned_db[name=]` must be same as the jail name.
 
+export PATH="/usr/bin:/usr/local/bin:$PATH"
+
 export DB_NAME="fail2ban"
 export DB_TABLE="banned"
 export DB_USER="fail2ban"
 
 # GeoIP
-export CMD_GEOIPLOOKUP="$(which geoiplookup)"
-export CMD_GEOIPLOOKUP6="$(which geoiplookup6)"
+export CMD_GEOIPLOOKUP="$(which geoiplookup 2>/dev/null)"
+export CMD_GEOIPLOOKUP6="$(which geoiplookup6 2>/dev/null)"
 
 if [ -f /root/.my.cnf-fail2ban ]; then
     export CMD_SQL="mysql --defaults-file=/root/.my.cnf-fail2ban ${DB_NAME}"
@@ -97,6 +101,12 @@ if [[ X"${_action}" == X"ban" ]]; then
     _ports="${3}"
     _protocol="${4}"
     _jail="${5}"
+    _failures="${6}"
+
+    shift 6
+    _rest="$@"
+    # Avoid SQL injection.
+    printf -v _loglines "${_rest}"
 
     if [[ X"${_ip}" == X'' ]] || \
         [[ X"${_ports}" == X'' ]] || \
@@ -121,8 +131,16 @@ if [[ X"${_action}" == X"ban" ]]; then
     fi
 
     if [ X"${DB_TYPE}" == X'mysql' ]; then
+        # MySQL stores local time with time zone info, we expect UTC time.
         ${CMD_SQL} <<EOF
-INSERT IGNORE INTO ${DB_TABLE} (ip, ports, protocol, jail, hostname, country) VALUES ('${_ip}', '${_ports}', '${_protocol}', '${_jail}', '${_hostname}', '${_country}');
+INSERT IGNORE INTO ${DB_TABLE} (
+        ip, ports, protocol, jail,
+        hostname, country, timestamp,
+        failures, loglines)
+    VALUES (
+        '${_ip}', '${_ports}', '${_protocol}', '${_jail}',
+        '${_hostname}', '${_country}', UTC_TIMESTAMP(),
+        '${_failures}', '${_loglines}');
 EOF
     else
         # CentOS 7 ships PostgreSQL-9.2 which doesn't support `ON CONFLICT DO NOTHING`,
@@ -136,7 +154,14 @@ EOF
             echo "Already banned."
         else
             ${CMD_SQL} >/dev/null <<EOF
-INSERT INTO ${DB_TABLE} (ip, ports, protocol, jail, hostname, country) VALUES ('${_ip}', '${_ports}', '${_protocol}', '${_jail}', '${_hostname}', '${_country}');
+INSERT INTO ${DB_TABLE} (
+        ip, ports, protocol, jail,
+        hostname, country,
+        failures, loglines)
+    VALUES (
+        '${_ip}', '${_ports}', '${_protocol}', '${_jail}',
+        '${_hostname}', '${_country}',
+        '${_failures}', '${_loglines}');
 EOF
             echo "Stored."
         fi
