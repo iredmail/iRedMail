@@ -216,7 +216,6 @@ export CMD_PYTHON2='python2'
 export CMD_PYTHON3='python3'
 export CMD_PIP2='pip2'
 export CMD_PIP3='pip3'
-export PERL_BIN='/usr/bin/perl'
 
 # Default password scheme for SQL backends.
 # LDAP backend will use SSHA instead (defined in file
@@ -269,6 +268,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         if [ X"${DISTRO_VERSION}" == X'8' ]; then
             # CentOS 8: Installed with pip2.
             export CMD_UWSGI='/usr/bin/uwsgi'
+            # Installed with pip3.
+            export CMD_UWSGI_PY3='/usr/local/bin/uwsgi'
         fi
     elif [ -f /etc/lsb-release ] && grep -i 'DISTRIB_ID=Ubuntu' /etc/lsb-release &>/dev/null; then
         # Ubuntu
@@ -288,22 +289,21 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         if [ X"${DISTRO_CODENAME}" == X'focal' ]; then
             # Ubuntu 20.04: Installed with pip2.
             export CMD_UWSGI='/usr/local/bin/uwsgi'
+            export UWSGI_PY3_PLUGIN_NAME='python38'
         fi
     elif [ -f /etc/debian_version ]; then
         # Debian
         export DISTRO='DEBIAN'
 
-        # Get major release version number
-        export DISTRO_VERSION="$(cat /etc/debian_version)"
-
         # Set distro code name and unsupported releases.
-        if grep '^9' /etc/debian_version &>/dev/null || \
+        if grep -i '^10' /etc/debian_version &>/dev/null; then
+            export DISTRO_VERSION='10'
+            export DISTRO_CODENAME='buster'
+            export UWSGI_PY3_PLUGIN_NAME='python37'
+        elif grep '^9' /etc/debian_version &>/dev/null || \
             grep -i '^stretch' /etc/debian_version &>/dev/null; then
             export DISTRO_VERSION='9'
             export DISTRO_CODENAME='stretch'
-        elif grep -i '^10' /etc/debian_version &>/dev/null; then
-            export DISTRO_VERSION='10'
-            export DISTRO_CODENAME='buster'
         else
             export UNSUPPORTED_RELEASE='YES'
         fi
@@ -320,7 +320,6 @@ elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
 
     export CMD_PYTHON2='/usr/local/bin/python2'
     export CMD_PYTHON3='/usr/local/bin/python3'
-    export PERL_BIN='/usr/local/bin/perl'
 
     # Unsupported releases: 7, 8.
     if echo "${DISTRO_VERSION}" | grep '^[78]' &>/dev/null ; then
@@ -348,8 +347,8 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export CMD_PIP2='pip2.7'
     export CMD_PIP3='pip3.7'
 
-    # Unsupported release: 6.5 and earlier versions.
-    if echo "${DISTRO_VERSION}" | grep '^6.[012345]' &>/dev/null ; then
+    # Unsupported release: 6.6 and earlier versions.
+    if echo "${DISTRO_VERSION}" | grep '^6.[0123456]' &>/dev/null ; then
         export UNSUPPORTED_RELEASE='YES'
     fi
 else

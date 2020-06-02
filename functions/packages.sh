@@ -298,8 +298,11 @@ install_all()
 
         [ X"${DISTRO_VERSION}" == X'7' ] \
             && ALL_PKGS="${ALL_PKGS} python36 python3-pip python36-requests uwsgi uwsgi-logger-syslog uwsgi-plugin-python36"
-        [ X"${DISTRO_VERSION}" == X'8' ] \
-            && ALL_PKGS="${ALL_PKGS} python36 python3-requests"
+
+        if [ X"${DISTRO_VERSION}" == X'8' ]; then
+            ALL_PKGS="${ALL_PKGS} python36 python3-requests python3-devel"
+            PIP3_MODULES="${PIP3_MODULES} uwsgi${PIP_VERSION_UWSGI}"
+        fi
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             if [[ X"${DISTRO_VERSION}" == X'7' ]]; then
@@ -512,7 +515,7 @@ EOF
                 if [ X"${BACKEND}" == X'PGSQL' ]; then
                     # `postgresql-server-dev-12` is used to compile `psycopg2` for py2.
                     ALL_PKGS="${ALL_PKGS} python3-psycopg2 postgresql-server-dev-12"
-                    PIP2_MODULES="${PIP2_MODULES} psycopg2"
+                    PIP2_MODULES="${PIP2_MODULES} psycopg2${PIP_VERSION_PSYCOPG2}"
                 fi
             fi
         fi
@@ -554,11 +557,11 @@ EOF
             fi
         fi
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-bcrypt"
+        ALL_PKGS="${ALL_PKGS} python-jinja2 python-netifaces python-pycurl python-bcrypt python-dnspython"
 
         if [ X"${DISTRO_CODENAME}" == X"bionic" -o X"${DISTRO_CODENAME}" == X"stretch" ]; then
             # Ubuntu 18.04 and Debian 9.
-            ALL_PKGS="${ALL_PKGS} python-webpy python-dnspython python-mysqldb python-requests uwsgi uwsgi-plugin-python"
+            ALL_PKGS="${ALL_PKGS} python-webpy python-mysqldb python-requests uwsgi uwsgi-plugin-python"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb python-pymysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb python2-pymysql"
@@ -727,7 +730,7 @@ EOF
                 fi
 
                 ECHO_INFO "Installing required Python-2 modules with pip2:${PIP2_MODULES}"
-                ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES} > ${RUNTIME_DIR}/pip2.log
+                ${CMD_PIP2} install ${pip_args} -U ${PIP2_MODULES} 2>&1 | tee ${RUNTIME_DIR}/pip2.log
             fi
 
             if [ X"${PIP3_MODULES}" != X'' ]; then

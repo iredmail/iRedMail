@@ -186,6 +186,7 @@ rcm_plugin_managesieve()
     cd ${RCM_HTTPD_ROOT}/plugins/managesieve/ && \
     cp config.inc.php.dist config.inc.php && \
     perl -pi -e 's#(.*managesieve_host.*=).*#${1} "$ENV{MANAGESIEVE_SERVER}";#' config.inc.php
+    perl -pi -e 's#(.*managesieve_auth_type.*=).*#${1} "LOGIN";#' config.inc.php
     perl -pi -e 's#(.*managesieve_port.*=).*#${1} $ENV{MANAGESIEVE_PORT};#' config.inc.php
     perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} true;#' config.inc.php
     perl -pi -e 's#(.*managesieve_default.*=).*#${1} "";#' config.inc.php

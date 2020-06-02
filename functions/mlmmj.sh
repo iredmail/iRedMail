@@ -192,7 +192,7 @@ EOF
                 perl -pi -e 's#(^plugins.*)python,(.*)#${1}$ENV{UWSGI_PY3_PLUGIN_NAME},${2}#g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/uwsgi/rhel.ini
             elif [ X"${DISTRO_VERSION}" == X'8' ]; then
                 # Fix path to uwsgi.
-                perl -pi -e 's#/usr/sbin/uwsgi#$ENV{CMD_UWSGI}#g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/systemd/rhel.service
+                perl -pi -e 's#/usr/sbin/uwsgi#$ENV{CMD_UWSGI_PY3}#g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/systemd/rhel.service
                 # Disable plugins. They're all builtin.
                 perl -pi -e 's/^(plugins.*)/#${1}/g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/uwsgi/rhel.ini
             fi
@@ -201,9 +201,12 @@ EOF
             chmod 0644 ${SYSTEMD_SERVICE_DIR}/${MLMMJADMIN_RC_SCRIPT_NAME}.service
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            if [ X"${DISTRO_VERSION}" == X'9' ]; then
+            if [ X"${DISTRO_CODENAME}" == X'stretch' ]; then
+                # Debian 9
                 perl -pi -e 's#(^plugins.*)python,(.*)#${1}$ENV{UWSGI_PY3_PLUGIN_NAME},${2}#g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/uwsgi/debian.ini
             elif [ X"${DISTRO_CODENAME}" == X'focal' ]; then
+                # Debian 20.04
+                perl -pi -e 's#(^plugins.*)python,(.*)#${1}$ENV{UWSGI_PY3_PLUGIN_NAME},${2}#g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/uwsgi/debian.ini
                 # Fix path to uwsgi.
                 perl -pi -e 's#/usr/bin/uwsgi#$ENV{CMD_UWSGI}#g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/systemd/debian.service
             fi
