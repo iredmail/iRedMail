@@ -119,6 +119,9 @@ cleanup_replace_firewall_rules()
                         cd ${ETC_SYSCONFIG_DIR}/network-scripts/
                         perl -pi -e 's#ZONE=public#ZONE=iredmail#g' *
                     fi
+
+                    service_control enable firewalld >> ${INSTALL_LOG} 2>&1
+
                 elif [ X"${USE_NFTABLES}" == X'YES' ]; then
                     cp -f ${SAMPLE_DIR}/firewall/nftables.conf ${NFTABLES_CONF}
 
@@ -128,28 +131,20 @@ cleanup_replace_firewall_rules()
                     elif [ X"${SSHD_PORT}" != X'' -a X"${SSHD_PORT2}" != X'' -a X"${SSHD_PORT}" != X"${SSHD_PORT2}" ]; then
                         perl -pi -e 's#(.*) 22 (.*)#${1} {$ENV{SSHD_PORTS_WITH_COMMA}} ${2}#' ${NFTABLES_CONF}
                     fi
+
+                    service_control enable nftables >> ${INSTALL_LOG} 2>&1
                 else
                     cp -f ${SAMPLE_DIR}/firewall/iptables/iptables.rules ${FIREWALL_RULE_CONF}
                     cp -f ${SAMPLE_DIR}/firewall/iptables/ip6tables.rules ${FIREWALL_RULE_CONF6}
+
+                    service_control enable iptables >> ${INSTALL_LOG} 2>&1
+                    service_control enable ip6tables >> ${INSTALL_LOG} 2>&1
                 fi
 
                 # Replace HTTP port.
                 [ X"${PORT_HTTP}" != X"80" ]&& \
                     perl -pi -e 's#(.*)80(,.*)#${1}$ENV{PORT_HTTP}${2}#' ${FIREWALL_RULE_CONF}
 
-                if [ X"${USE_FIREWALLD}" == X'YES' ]; then
-                    service_control enable firewalld >> ${INSTALL_LOG} 2>&1
-                else
-                    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-                        # Copy sample rc script for Debian.
-                        cp -f ${SAMPLE_DIR}/firewall/iptables/iptables.init.debian ${DIR_RC_SCRIPTS}/iptables
-                        cp -f ${SAMPLE_DIR}/firewall/iptables/ip6tables.init.debian ${DIR_RC_SCRIPTS}/ip6tables
-                        chmod +x ${DIR_RC_SCRIPTS}/iptables ${DIR_RC_SCRIPTS}/ip6tables
-                    fi
-
-                    service_control enable iptables >> ${INSTALL_LOG} 2>&1
-                    service_control enable ip6tables >> ${INSTALL_LOG} 2>&1
-                fi
             elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
                 # Enable pf
                 service_control enable pf >> ${INSTALL_LOG} 2>&1
