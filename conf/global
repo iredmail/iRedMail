@@ -699,9 +699,6 @@ else
     fi
 fi
 
-# Where to fetch/store binary packages and source tarball.
-export IREDMAIL_MIRROR="${IREDMAIL_MIRROR:=https://dl.iredmail.org}"
-
 # Detect IPv6 support with `ping6`.
 export IREDMAIL_HAS_IPV6='NO'
 ping6 -c 1 ::1 &>/dev/null
@@ -714,6 +711,17 @@ export BACKUP_SCRIPT_LDAP_NAME='backup_openldap.sh'
 export BACKUP_SCRIPT_MYSQL_NAME='backup_mysql.sh'
 export BACKUP_SCRIPT_PGSQL_NAME='backup_pgsql.sh'
 
-# pip mirror. Read from env variables by default.
+#
+# Mirror sites
+#
+# Where to fetch/store binary packages and source tarball.
+export IREDMAIL_MIRROR="${IREDMAIL_MIRROR:=https://dl.iredmail.org}"
+
+# Ubuntu mirror site. For example: https://archive.ubuntu.com/ubuntu
+export UBUNTU_MIRROR_SITE="${UBUNTU_MIRROR_SITE:=}"
+
+# pip mirror site. Use `pypi.org` if not set.
 export PIP_MIRROR_SITE="${PIP_MIRROR_SITE:=}"
 export PIP_TRUSTED_HOST="${PIP_TRUSTED_HOST:=}"
+# URL to download `get-pip.py`, used to install `pip2`.
+export URL_GET_PIP_PY="${URL_GET_PIP_PY:=https://bootstrap.pypa.io/get-pip.py}"

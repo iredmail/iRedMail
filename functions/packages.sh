@@ -64,9 +64,9 @@ install_all()
             PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS}"
         elif [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'focal' ]; then
             # Ubuntu 20.04
-            PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS} uwsgi${PIP_VERSION_UWSGI} netifaces"
-        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS} uwsgi${PIP_VERSION_UWSGI}"
+        elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+            PIP2_MODULES="${PIP2_MODULES} uwsgi${PIP_VERSION_UWSGI}"
         fi
     fi
 
@@ -722,7 +722,7 @@ EOF
                 if [ X"${DISTRO_CODENAME}" == X'focal' ]; then
                     ECHO_INFO "Installing pip for Python 2."
                     cd /tmp
-                    ${FETCH_CMD} https://bootstrap.pypa.io/get-pip.py
+                    ${FETCH_CMD} ${URL_GET_PIP_PY}
                     python2 get-pip.py ${pip_args}
                     rm -f get-pip.py
                 fi

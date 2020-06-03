@@ -284,10 +284,16 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     ${APTGET} update
 
     # Enable 'multiverse' repo for package `libclamunrar9`.
+    set -x
     if [ X"${DISTRO}" == X'UBUNTU' ]; then
         ECHO_DEBUG "Enable apt repo 'multiverse'."
-        apt-add-repository multiverse
+        if [ X"${UBUNTU_MIRROR_SITE}" != X'' ]; then
+            apt-add-repository "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME} multiverse"
+        else
+            apt-add-repository multiverse
+        fi
     fi
+    set +x
 
     check_pkg ${BIN_PERL} ${PKG_PERL}
     check_pkg ${BIN_WGET} ${PKG_WGET}
