@@ -489,7 +489,6 @@ EOF
         ALL_PKGS="${ALL_PKGS} python3-sqlalchemy python3-dnspython python3-requests python3-pip"
         PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
 
-        set -x
         if [ X"${DISTRO}" == X'DEBIAN' ]; then
             if [ X"${BACKEND}" == X'OPENLDAP' ]; then
                 if [ X"${DISTRO_VERSION}" == X'9' ]; then
@@ -519,7 +518,6 @@ EOF
                 fi
             fi
         fi
-        set +x
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy"
@@ -581,7 +579,7 @@ EOF
             if [ X"${BACKEND}" == X'OPENLDAP' ]; then
                 PIP2_MODULES="${PIP2_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP}"
             elif [ X"${BACKEND}" == X'MYSQL' ]; then
-                ALL_PKGS="${ALL_PKGS} PyMySQL${PIP_VERSION_PYMYSQL}"
+                PIP2_MODULES="${PIP2_MODULES} PyMySQL${PIP_VERSION_PYMYSQL}"
             elif [ X"${BACKEND}" == X'PGSQL' ]; then
                 # `postgresql-server-dev-12` is used to compile `psycopg2` for py2.
                 ALL_PKGS="${ALL_PKGS} python3-psycopg2 postgresql-server-dev-12"
