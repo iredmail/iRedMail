@@ -61,6 +61,9 @@ export DB_USER="fail2ban"
 export CMD_GEOIPLOOKUP="$(which geoiplookup 2>/dev/null)"
 export CMD_GEOIPLOOKUP6="$(which geoiplookup6 2>/dev/null)"
 
+# `dig`. Used to query reverse hostname.
+export CMD_DIG="/usr/bin/dig"
+
 if [ -f /root/.my.cnf-fail2ban ]; then
     export CMD_SQL="mysql --defaults-file=/root/.my.cnf-fail2ban ${DB_NAME}"
     export DB_TYPE="mysql"
@@ -130,16 +133,24 @@ if [[ X"${_action}" == X"ban" ]]; then
         fi
     fi
 
+    # Lookup reverse DNS name.
+    _rdns=''
+    if [[ -x "${CMD_DIG}" ]]; then
+        _rdns_orig="$(${CMD_DIG} +short +timeout=3 -x ${_ip} 2>/dev/null)"
+        _rdns_strip="${_rdns_orig%\.}"
+        printf -v _rdns "${_rdns_strip}"
+    fi
+
     if [ X"${DB_TYPE}" == X'mysql' ]; then
         # MySQL stores local time with time zone info, we expect UTC time.
         ${CMD_SQL} <<EOF
 INSERT IGNORE INTO ${DB_TABLE} (
         ip, ports, protocol, jail,
-        hostname, country, timestamp,
+        hostname, country, rdns, timestamp,
         failures, loglines)
     VALUES (
         '${_ip}', '${_ports}', '${_protocol}', '${_jail}',
-        '${_hostname}', '${_country}', UTC_TIMESTAMP(),
+        '${_hostname}', '${_country}', '${_rdns}', UTC_TIMESTAMP(),
         '${_failures}', '${_loglines}');
 EOF
     else
@@ -156,11 +167,11 @@ EOF
             ${CMD_SQL} >/dev/null <<EOF
 INSERT INTO ${DB_TABLE} (
         ip, ports, protocol, jail,
-        hostname, country,
+        hostname, country, rdns,
         failures, loglines)
     VALUES (
         '${_ip}', '${_ports}', '${_protocol}', '${_jail}',
-        '${_hostname}', '${_country}',
+        '${_hostname}', '${_country}', '${_rdns}',
         '${_failures}', '${_loglines}');
 EOF
             echo "Stored."

@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS `banned` (
     -- The server hostname which the ban/unban happens
     `hostname` VARCHAR(255) NOT NULL DEFAULT '',
     `country` VARCHAR(255) NOT NULL DEFAULT '',
+    -- reverse DNS name of banned IP address.
+    `rdns` VARCHAR(255) NOT NULL DEFAULT '',
     -- number of times the failure occurred in the log file.
     -- we use Fail2ban action tag `ipjailfailures` here.
     `failures` INT(2) NOT NULL DEFAULT 0,
@@ -27,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `banned` (
     PRIMARY KEY (`id`),
     UNIQUE INDEX (`ip`, `ports`, `protocol`),
     INDEX (`hostname`),
+    INDEX (`rdns`),
     INDEX (`jail`),
     INDEX (`country`),
     INDEX (`timestamp`),

@@ -254,6 +254,22 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     # Create yum repository.
     check_status_before_run create_repo_rhel
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+        # Some required packages are in `universe` and `multiverse` apt repos.
+        [ -x /usr/bin/apt-add-repository ] || ${APTGET} install -y software-properties-common
+
+        for repo in multiverse universe; do
+            if [ X"${UBUNTU_MIRROR_SITE}" != X'' ]; then
+                apt-add-repository -n "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME} $repo"
+                apt-add-repository -n "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME}-security $repo"
+                apt-add-repository -n "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME}-updates $repo"
+            else
+                apt-add-repository -n $repo
+            fi
+        done
+        apt-get update
+    fi
+
     _missing_pkgs=''
 
     if [ ! -e /usr/sbin/update-ca-certificates ]; then
@@ -282,18 +298,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Force update.
     ECHO_INFO "apt update ..."
     ${APTGET} update
-
-    # Enable 'multiverse' repo for package `libclamunrar9`.
-    set -x
-    if [ X"${DISTRO}" == X'UBUNTU' ]; then
-        ECHO_DEBUG "Enable apt repo 'multiverse'."
-        if [ X"${UBUNTU_MIRROR_SITE}" != X'' ]; then
-            apt-add-repository "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME} multiverse"
-        else
-            apt-add-repository multiverse
-        fi
-    fi
-    set +x
 
     check_pkg ${BIN_PERL} ${PKG_PERL}
     check_pkg ${BIN_WGET} ${PKG_WGET}
