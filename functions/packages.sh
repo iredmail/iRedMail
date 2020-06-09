@@ -562,7 +562,7 @@ EOF
             ALL_PKGS="${ALL_PKGS} python-webpy python-mysqldb python-requests uwsgi uwsgi-plugin-python"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb python-pymysql"
-            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb python2-pymysql"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb python-pymysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
         elif [ X"${DISTRO_CODENAME}" == X"buster" ]; then
             # Debian 10
@@ -570,15 +570,17 @@ EOF
             PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS}"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} python-ldap python-mysqldb python-pymysql"
-            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb python2-pymysql"
+            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python-mysqldb python-pymysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
         elif [ X"${DISTRO_CODENAME}" == X"focal" ]; then
             # Ubuntu 20.04
             PIP2_MODULES="${PIP2_MODULES} web.py${PIP_VERSION_WEBPY} more-itertools${PIP2_VERSION_MORE_ITERTOOLS} requests${PIP_VERSION_REQUESTS} uwsgi${PIP_VERSION_UWSGI}"
 
             if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+                ALL_PKGS="${ALL_PKGS} python3-ldap python3-pymysql"
                 PIP2_MODULES="${PIP2_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP}"
             elif [ X"${BACKEND}" == X'MYSQL' ]; then
+                ALL_PKGS="${ALL_PKGS} python3-pymysql"
                 PIP2_MODULES="${PIP2_MODULES} PyMySQL${PIP_VERSION_PYMYSQL}"
             elif [ X"${BACKEND}" == X'PGSQL' ]; then
                 # `postgresql-server-dev-12` is used to compile `psycopg2` for py2.

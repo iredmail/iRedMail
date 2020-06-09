@@ -180,6 +180,11 @@ dovecot_config()
         perl -pi -e 's#^(ssl_protocols).*#ssl_protocols = !SSLv3#' ${DOVECOT_CONF}
     fi
 
+    # PHP on CentOS 7 doesn't support TLSv1.
+    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'7' ]; then
+        perl -pi -e 's#^(ssl_protocols.*) !TLSv1( .*)#${1}${2}#' ${DOVECOT_CONF}
+    fi
+
     perl -pi -e 's#PH_POSTFIX_CHROOT_DIR#$ENV{POSTFIX_CHROOT_DIR}#' ${DOVECOT_CONF}
 
     # Generate dovecot quota warning script.

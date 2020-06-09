@@ -158,7 +158,7 @@ fail2ban_syslog_setup() {
 
         touch ${FAIL2BAN_LOG_FILE}
         chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${FAIL2BAN_LOG_FILE}
-        chmod 0640 ${FAIL2BAN_LOG_FILE}
+        chmod 0755 ${FAIL2BAN_LOG_FILE}
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
         cp -f ${SAMPLE_DIR}/freebsd/syslog.d/fail2ban.conf ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
         perl -pi -e 's#PH_FAIL2BAN_SYSLOG_FACILITY#$ENV{FAIL2BAN_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/fail2ban.conf
@@ -166,7 +166,7 @@ fail2ban_syslog_setup() {
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         touch ${FAIL2BAN_LOG_FILE}
         chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${FAIL2BAN_LOG_FILE}
-        chmod 0640 ${FAIL2BAN_LOG_FILE}
+        chmod 0755 ${FAIL2BAN_LOG_FILE}
 
         if ! grep "${FAIL2BAN_LOG_FILE}" ${SYSLOG_CONF} &>/dev/null; then
             # '!!' means abort further evaluation after first match
