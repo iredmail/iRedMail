@@ -350,7 +350,7 @@ install_all()
         fi
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy"
+        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy py3-requests"
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} py3-psycopg2"
@@ -589,7 +589,7 @@ EOF
             fi
         fi
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py-pip py-jinja2 py-webpy py-flup py-bcrypt py-curl py-requests py-netifaces"
+        ALL_PKGS="${ALL_PKGS} py-pip py-jinja2 py-webpy py-flup py-bcrypt py-curl py-requests py-netifaces py-dnspython"
 
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py-ldap py-mysql py-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py-mysql py-mysqlclient"
