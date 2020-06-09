@@ -3,9 +3,9 @@ Linux/BSD distributions:
 
 - CentOS 7, 8
 - Debian 10 (recommended), 9
-- Ubuntu 18.04
+- Ubuntu 18.04, 20.04
 - FreeBSD 12.x
-- OpenBSD 6.6
+- OpenBSD 6.7
 
 More info:
 
