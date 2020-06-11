@@ -158,6 +158,7 @@ enabled=1
 gpgcheck=0
 #exclude=postfix*
 priority=99
+module_hotfixes=1
 EOF
 
     # RHEL/CentOS 8.
