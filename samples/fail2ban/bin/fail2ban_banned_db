@@ -125,11 +125,11 @@ if [[ X"${_action}" == X"ban" ]]; then
     _country=''
     if echo ${_ip} | grep ':' &>/dev/null; then
         if [[ -x ${CMD_GEOIPLOOKUP6} ]]; then
-            _country="$(${CMD_GEOIPLOOKUP6} ${_ip} | grep '^GeoIP Country Edition:' | awk -F': ' '{print $2}')"
+            _country="$(${CMD_GEOIPLOOKUP6} ${_ip} | grep '^GeoIP Country Edition:' | awk -F': ' '{print $2}' | grep -iv 'not found')"
         fi
     else
         if [[ -x ${CMD_GEOIPLOOKUP} ]]; then
-            _country="$(${CMD_GEOIPLOOKUP} ${_ip} | grep '^GeoIP Country Edition:' | awk -F': ' '{print $2}')"
+            _country="$(${CMD_GEOIPLOOKUP} ${_ip} | grep '^GeoIP Country Edition:' | awk -F': ' '{print $2}' | grep -iv 'not found')"
         fi
     fi
 
