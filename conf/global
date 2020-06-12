@@ -555,7 +555,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     fi
 
     # Port directory
-    export PORT_WRKDIRPREFIX='/usr/ports'
+    export PORT_WORKDIRPREFIX='/usr/ports'
 
     # Syslog (newsyslog)
     export USE_RSYSLOG='NO'

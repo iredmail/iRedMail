@@ -24,6 +24,9 @@ install_all()
 {
     # Port name under /usr/ports/. e.g. mail/dovecot.
     ALL_PORTS=''
+    # Ports which are going to be bulit with Python 2.
+    # Installed with command `make USES=python2.7 install clean`.
+    PY2_PORTS=''
 
     # Extension used for backup file during in-place editing.
     SED_EXTENSION="iredmail"
@@ -38,10 +41,7 @@ install_all()
     export PREFERRED_MARIADB_VER='104'
     export PREFERRED_BDB_VER='5'
     export PREFERRED_PHP_VER='74'
-
-    if [ X"${BACKEND_ORIG}" == X'MARIADB' ]; then
-        export PREFERRED_MYSQL_VER='55m'
-    fi
+    export PREFERRED_PY3_VER='3.8'
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         export IREDMAIL_USE_PHP='YES'
@@ -51,7 +51,7 @@ install_all()
     freebsd_make_conf_add 'WANT_OPENLDAP_SASL' "YES"
     freebsd_make_conf_add 'WANT_PGSQL_VER' "${PGSQL_VERSION}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=2.7 python2=2.7 python3=3.8 pgsql=${PGSQL_VERSION} php=7.4 mysql=10.4m"
+    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=${PREFERRED_PY3_VER} python2=2.7 python3=${PREFERRED_PY3_VER} pgsql=${PGSQL_VERSION} php=7.4 mysql=10.4m"
 
     freebsd_make_conf_plus_option 'OPTIONS_SET' 'SASL'
     freebsd_make_conf_plus_option 'OPTIONS_UNSET' 'X11'
@@ -301,7 +301,7 @@ EOF
 
     # Install Python and some modules first, otherwise they may be installed as
     # package dependencies and cause port installation conflict.
-    ALL_PORTS="${ALL_PORTS} devel/py-Jinja2 net/py-netifaces security/py-bcrypt"
+    PY2_PORTS="${PY2_PORTS} devel/py-Jinja2 net/py-netifaces security/py-bcrypt"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PORTS="${ALL_PORTS} net/openldap${PREFERRED_OPENLDAP_VER}-sasl-client net/openldap${PREFERRED_OPENLDAP_VER}-server"
@@ -882,7 +882,8 @@ EOF
     ALL_PORTS="${ALL_PORTS} mail/mlmmj"
 
     # dependencies for mlmmjadmin: a RESTful API server used to manage mlmmj
-    #ALL_PORTS="${ALL_PORTS} www/py-requests"
+    ALL_PORTS="${ALL_PORTS} www/py-requests"
+    PY2_PORTS="${PY2_PORTS} www/py-requests"
 
     # Roundcube.
     cat > /var/db/ports/mail_roundcube/options <<EOF
@@ -954,7 +955,8 @@ EOF
 
     # Python database interfaces
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ALL_PORTS="${ALL_PORTS} net/py-ldap databases/py-MySQLdb"
+        ALL_PORTS="${ALL_PORTS} net/py-ldap databases/py-pymysql"
+        PY2_PORTS="${PY2_PORTS} net/py-ldap databases/py-MySQLdb"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         ALL_PORTS="${ALL_PORTS} databases/py-MySQLdb"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
@@ -1006,16 +1008,16 @@ EOF
     fetch_all_src_tarballs()
     {
         # Fetch all source tarballs.
-        ECHO_INFO "Ports tree: ${PORT_WRKDIRPREFIX}"
+        ECHO_INFO "Ports tree: ${PORT_WORKDIRPREFIX}"
         ECHO_INFO "Fetching all distfiles for required ports (make fetch-recursive)"
 
-        for i in ${ALL_PORTS}; do
+        for i in ${ALL_PORTS} ${PY2_PORTS}; do
             if [ X"${i}" != X'' ]; then
                 portname="$( echo ${i} | tr '/' '_' | tr -d '[-\.]')"
                 status="\$status_fetch_port_$portname"
                 if [ X"$(eval echo ${status})" != X"DONE" ]; then
                     ECHO_INFO "Fetching all distfiles for port: ${i}"
-                    cd ${PORT_WRKDIRPREFIX}/${i}
+                    cd ${PORT_WORKDIRPREFIX}/${i}
 
                     # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
                     port_start_time="$(date +%s)"
@@ -1038,46 +1040,70 @@ EOF
         echo "export status_fetch_all_src_tarballs='DONE'" >> ${STATUS_FILE}
     }
 
+    install_port() {
+        # Usage: install_port <port> [make_flags]
+        _port="${1}"
+        shift 1
+        _flags="$@"
+
+        ECHO_INFO "Install port: ${_port}"
+
+        start_time="$(date +%s)"
+        if [ X"${_port}" != X'' ]; then
+            # Remove special characters in port name: -, /, '.'.
+            _portname="$( echo ${_port} | tr '/' '_' | tr -d '[-\.]')"
+
+            status="\$status_install_port_${IREDMAIL_PORT_PKG_NAME_PREFIX}_${_portname}"
+            if [ X"$(eval echo ${status})" != X"DONE" ]; then
+                _port_dir="${PORT_WORKDIRPREFIX}/${_port}"
+                if [[ ! -d ${_port_dir} ]]; then
+                    echo "Port directory ${_port_dir} doesn't exist."
+                    exit 255
+                fi
+
+                cd ${_port_dir}
+                ECHO_INFO "Installing port: ${_port} ($(date '+%Y-%m-%d %H:%M:%S')) ..."
+                echo "export status_install_port_${IREDMAIL_PORT_PKG_NAME_PREFIX}_${_portname}='processing'" >> ${STATUS_FILE}
+
+                # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
+                port_start_time="$(date +%s)"
+
+                # Clean up and compile
+                make clean
+                make \
+                    DISABLE_MAKE_JOBS=yes \
+                    ${_flags} \
+                    install clean
+
+                if [ X"$?" == X"0" ]; then
+                    # Log used time
+                    used_time="$(($(date +%s)-port_start_time))"
+
+                    echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s)." >> ${STATUS_FILE}
+                else
+                    ECHO_ERROR "Port was not successfully installed, please fix it manually and then re-execute this script."
+                    exit 255
+                fi
+            else
+                ECHO_SKIP "Installing port: ${_port}."
+            fi
+        fi
+    }
+
     # Install all packages.
     install_all_ports()
     {
-        ECHO_INFO "Install packages."
-
         start_time="$(date +%s)"
-        for i in ${ALL_PORTS}; do
-            if [ X"${i}" != X'' ]; then
-                # Remove special characters in port name: -, /, '.'.
-                portname="$( echo ${i} | tr '/' '_' | tr -d '[-\.]')"
-
-                status="\$status_install_port_$portname"
-                if [ X"$(eval echo ${status})" != X"DONE" ]; then
-                    cd ${PORT_WRKDIRPREFIX}/${i} && \
-                        ECHO_INFO "Installing port: ${i} ($(date '+%Y-%m-%d %H:%M:%S')) ..."
-                        echo "export status_install_port_${portname}='processing'" >> ${STATUS_FILE}
-
-                        # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
-                        port_start_time="$(date +%s)"
-
-                        # Clean up and compile
-                        make clean && make DISABLE_MAKE_JOBS=yes install clean
-
-                        if [ X"$?" == X"0" ]; then
-                            # Log used time
-                            used_time="$(($(date +%s)-port_start_time))"
-
-                            # Recent all used time
-                            recent_all_used_time="$(($(date +%s)-start_time))"
-
-                            echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s). Recent ~= $((recent_all_used_time/60)) minutes" >> ${STATUS_FILE}
-                        else
-                            ECHO_ERROR "Port was not successfully installed, please fix it manually and then re-execute this script."
-                            exit 255
-                        fi
-                else
-                    ECHO_SKIP "Installing port: ${i}."
-                fi
-            fi
+        export IREDMAIL_PORT_PKG_NAME_PREFIX='py3'
+        for _port in ${ALL_PORTS}; do
+            install_port ${_port} USES=python:${PREFERRED_PY3_VER}
         done
+
+        export IREDMAIL_PORT_PKG_NAME_PREFIX='py2'
+        for _port in ${PY2_PORTS}; do
+            install_port ${_port} USES=python:2.7
+        done
+        unset IREDMAIL_PORT_PKG_NAME_PREFIX
 
         # Log and print used time
         all_used_time="$(($(date +%s)-start_time))"
@@ -1091,7 +1117,7 @@ EOF
 
         ECHO_DEBUG "Create symbol links for python2/3."
         ln -sf /usr/local/bin/python2.7 /usr/local/bin/python2
-        ln -sf /usr/local/bin/python3.8 /usr/local/bin/python3
+        ln -sf /usr/local/bin/python${PREFERRED_PY3_VER} /usr/local/bin/python3
 
         # Create syslog.d and logrotate.d
         mkdir -p ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
