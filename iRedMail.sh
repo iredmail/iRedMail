@@ -150,10 +150,10 @@ EOF
 
 check_status_before_run generate_ssl_keys
 check_status_before_run add_required_users
-check_status_before_run web_server_config
 check_status_before_run backend_install
 check_status_before_run postfix_setup
 check_status_before_run dovecot_setup
+check_status_before_run web_server_config
 check_status_before_run mlmmj_config
 check_status_before_run mlmmjadmin_config
 check_status_before_run clamav_config

@@ -300,7 +300,7 @@ install_all()
             && ALL_PKGS="${ALL_PKGS} python36 python3-pip python36-requests uwsgi uwsgi-logger-syslog uwsgi-plugin-python36"
 
         if [ X"${DISTRO_VERSION}" == X'8' ]; then
-            ALL_PKGS="${ALL_PKGS} python36 python3-requests python3-devel"
+            ALL_PKGS="${ALL_PKGS} python38 python3-requests python3-devel"
             PIP3_MODULES="${PIP3_MODULES} uwsgi${PIP_VERSION_UWSGI}"
         fi
 

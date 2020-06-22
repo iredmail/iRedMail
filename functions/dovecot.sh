@@ -30,12 +30,14 @@ dovecot_config()
 
     backup_file ${DOVECOT_CONF}
 
-    # RHEL/CentOS 7:            Dovecot-2.2.36+
-    # Debian 9:                 Dovecot-2.2.27
-    # Debian 10:                Dovecot-2.3.4+
-    # Ubuntu 18.04 (bionic):    Dovecot-2.2.33
-    # FreeBSD:                  Dovecot-2.3.0+
-    # OpenBSD 6.5:              Dovecot-2.3.7+
+    # CentOS 7:     Dovecot-2.2.36+
+    # CentOS 8:     Dovecot-2.3.8+
+    # Debian 9:     Dovecot-2.2.27
+    # Debian 10:    Dovecot-2.3.4+
+    # Ubuntu 18.04: Dovecot-2.2.33
+    # Ubuntu 20.04: Dovecot-2.3.7+
+    # FreeBSD:      Dovecot-2.3.0+
+    # OpenBSD 6.7:  Dovecot-2.3.10+
     ECHO_DEBUG "Copy sample Dovecot config file to ${DOVECOT_CONF}."
     if [ X"${DOVECOT_VERSION}" == X'2.2' ]; then
         cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
@@ -524,6 +526,9 @@ dovecot_setup()
     check_status_before_run dovecot_initialize_db_for_ldap
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # Remove the temporary sample config files copied in `functions/backend.sh`.
+        rm -rf /usr/local/etc/dovecot/conf.d &>/dev/null
+
         # It seems there's a bug in Dovecot port, it will try to invoke '/usr/lib/sendmail'
         # to send vacation response which should be '/usr/sbin/mailwrapper'.
         [ ! -e /usr/lib/sendmail ] && ln -s /usr/sbin/mailwrapper /usr/lib/sendmail >> ${INSTALL_LOG} 2>&1

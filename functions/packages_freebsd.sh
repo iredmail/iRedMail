@@ -51,7 +51,7 @@ install_all()
     freebsd_make_conf_add 'WANT_OPENLDAP_SASL' "YES"
     freebsd_make_conf_add 'WANT_PGSQL_VER' "${PGSQL_VERSION}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=${PREFERRED_PY3_VER} python2=2.7 python3=${PREFERRED_PY3_VER} pgsql=${PGSQL_VERSION} php=7.4 mysql=10.4m"
+    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=${PREFERRED_PY3_VER} python2=2.7 python3=${PREFERRED_PY3_VER} pgsql=${PGSQL_VERSION} php=7.4 mysql=10.4m ruby=2.7"
 
     freebsd_make_conf_plus_option 'OPTIONS_SET' 'SASL'
     freebsd_make_conf_plus_option 'OPTIONS_UNSET' 'X11'
@@ -68,7 +68,6 @@ install_all()
         databases_postgresql${PGSQL_VERSION}-server \
         databases_mariadb${PREFERRED_MARIADB_VER}-server \
         databases_mariadb${PREFERRED_MARIADB_VER}-client \
-        databases_py-MySQLdb \
         databases_py-sqlalchemy10 \
         devel_cmake \
         devel_apr1 \
@@ -97,6 +96,7 @@ install_all()
         net_openldap${PREFERRED_OPENLDAP_VER}-server \
         net_openslp \
         net_py-ldap \
+        net-mgmt_netdata \
         security_amavisd-new \
         security_ca_root_nss \
         security_clamav \
@@ -271,8 +271,8 @@ EOF
 
     cat > /var/db/ports/databases_mariadb${PREFERRED_MARIADB_VER}-server/options <<EOF
 OPTIONS_FILE_SET+=CONNECT_EXTRA
-OPTIONS_FILE_SET+=DOCS
-OPTIONS_FILE_SET+=WSREP
+OPTIONS_FILE_UNSET+=DOCS
+OPTIONS_FILE_UNSET+=WSREP
 OPTIONS_FILE_UNSET+=GSSAPI_BASE
 OPTIONS_FILE_UNSET+=GSSAPI_HEIMDAL
 OPTIONS_FILE_UNSET+=GSSAPI_MIT
@@ -285,8 +285,8 @@ OPTIONS_FILE_SET+=INNOBASE
 OPTIONS_FILE_UNSET+=MROONGA
 OPTIONS_FILE_UNSET+=OQGRAPH
 OPTIONS_FILE_UNSET+=ROCKSDB
-OPTIONS_FILE_SET+=SPHINX
-OPTIONS_FILE_SET+=SPIDER
+OPTIONS_FILE_UNSET+=SPHINX
+OPTIONS_FILE_UNSET+=SPIDER
 OPTIONS_FILE_UNSET+=TOKUDB
 OPTIONS_FILE_UNSET+=ZMQ
 OPTIONS_FILE_UNSET+=MSGPACK
@@ -908,12 +908,6 @@ EOF
     fi
     rm -f /var/db/ports/mail_roundcube/options${SED_EXTENSION} &>/dev/null
 
-    # Python-MySQLdb
-    cat > /var/db/ports/databases_py-MySQLdb/options <<EOF
-OPTIONS_FILE_UNSET+=DOCS
-OPTIONS_FILE_SET+=MYSQLCLIENT_R
-EOF
-
     cat > /var/db/ports/devel_py-Jinja2/options <<EOF
 OPTIONS_FILE_SET+=BABEL
 OPTIONS_FILE_UNSET+=EXAMPLES
@@ -956,9 +950,10 @@ EOF
     # Python database interfaces
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PORTS="${ALL_PORTS} net/py-ldap databases/py-pymysql"
-        PY2_PORTS="${PY2_PORTS} net/py-ldap databases/py-MySQLdb"
+        PY2_PORTS="${PY2_PORTS} net/py-ldap databases/py-pymysql"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        ALL_PORTS="${ALL_PORTS} databases/py-MySQLdb"
+        ALL_PORTS="${ALL_PORTS} databases/py-pymysql"
+        PY2_PORTS="${PY2_PORTS} databases/py-pymysql"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ALL_PORTS="${ALL_PORTS} databases/py-psycopg2"
     fi
@@ -996,6 +991,16 @@ EOF
 
     cat > /var/db/ports/net_py-ldap/options <<EOF
 OPTIONS_FILE_SET+=SASL
+EOF
+
+    cat > /var/db/ports/net-mgmt_netdata/options <<EOF
+_FILE_COMPLETE_OPTIONS_LIST=CLOUD CUPS DBENGINE FREEIPMI GOPLUGIN LTO
+OPTIONS_FILE_UNSET+=CLOUD
+OPTIONS_FILE_UNSET+=CUPS
+OPTIONS_FILE_SET+=DBENGINE
+OPTIONS_FILE_UNSET+=FREEIPMI
+OPTIONS_FILE_SET+=GOPLUGIN
+OPTIONS_FILE_SET+=LTO
 EOF
 
     if [ X"${USE_NETDATA}" == X'YES' ]; then
@@ -1053,8 +1058,9 @@ EOF
             # Remove special characters in port name: -, /, '.'.
             _portname="$( echo ${_port} | tr '/' '_' | tr -d '[-\.]')"
 
-            status="\$status_install_port_${IREDMAIL_PORT_PKG_NAME_PREFIX}_${_portname}"
-            if [ X"$(eval echo ${status})" != X"DONE" ]; then
+            _status="\$status_install_port_${IREDMAIL_PORT_PKG_NAME_PREFIX}${_portname}"
+            _status_name="$(echo ${_status} | tr -d '$')"
+            if [ X"$(eval echo ${_status})" != X"DONE" ]; then
                 _port_dir="${PORT_WORKDIRPREFIX}/${_port}"
                 if [[ ! -d ${_port_dir} ]]; then
                     echo "Port directory ${_port_dir} doesn't exist."
@@ -1063,7 +1069,14 @@ EOF
 
                 cd ${_port_dir}
                 ECHO_INFO "Installing port: ${_port} ($(date '+%Y-%m-%d %H:%M:%S')) ..."
-                echo "export status_install_port_${IREDMAIL_PORT_PKG_NAME_PREFIX}_${_portname}='processing'" >> ${STATUS_FILE}
+                echo "export ${_status_name}='processing'" >> ${STATUS_FILE}
+
+                if echo "${_port}" | grep '/py' &>/dev/null; then
+                    # Some ports use zip archive instead of default `.tar.gz`.
+                    if grep '^USES' ${_port_dir}/Makefile | grep '\<zip\>' &>/dev/null; then
+                        _flags="${_flags} USES+=zip"
+                    fi
+                fi
 
                 # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
                 port_start_time="$(date +%s)"
@@ -1079,7 +1092,7 @@ EOF
                     # Log used time
                     used_time="$(($(date +%s)-port_start_time))"
 
-                    echo "export status_install_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s)." >> ${STATUS_FILE}
+                    echo "export ${_status_name}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s)." >> ${STATUS_FILE}
                 else
                     ECHO_ERROR "Port was not successfully installed, please fix it manually and then re-execute this script."
                     exit 255
@@ -1093,14 +1106,22 @@ EOF
     # Install all packages.
     install_all_ports()
     {
+        ECHO_INFO "All ports: ${ALL_PORTS}"
+        ECHO_INFO "All ports for Python 2: ${PY2_PORTS}"
+
         start_time="$(date +%s)"
-        export IREDMAIL_PORT_PKG_NAME_PREFIX='py3'
         for _port in ${ALL_PORTS}; do
-            install_port ${_port} USES=python:${PREFERRED_PY3_VER}
+            if echo "${_port}" | grep '/py' &>/dev/null; then
+                # Install modules for Python 3.
+                install_port ${_port} USES=python:${PREFERRED_PY3_VER}
+            else
+                install_port ${_port}
+            fi
         done
 
-        export IREDMAIL_PORT_PKG_NAME_PREFIX='py2'
+        export IREDMAIL_PORT_PKG_NAME_PREFIX='py27_'
         for _port in ${PY2_PORTS}; do
+            # Install for Python 2.
             install_port ${_port} USES=python:2.7
         done
         unset IREDMAIL_PORT_PKG_NAME_PREFIX

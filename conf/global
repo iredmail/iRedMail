@@ -289,7 +289,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         export UWSGI_PY2_PLUGIN_NAME='python27'
         if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
             # Ubuntu 18.04
-            export UWSGI_PY3_PLUGIN_NAME='python38'
+            export UWSGI_PY3_PLUGIN_NAME='python36'
         elif [ X"${DISTRO_CODENAME}" == X'focal' ]; then
             # Ubuntu 20.04: Installed with pip2.
             export CMD_UWSGI='/usr/local/bin/uwsgi'

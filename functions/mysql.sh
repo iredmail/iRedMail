@@ -43,7 +43,11 @@ mysql_initialize_db()
         # 'mysql_enable=YES' is required to start service immediately.
         ECHO_DEBUG "Enable mysql service when system start up."
         service_control enable 'mysql_enable' 'YES'
-        service_control enable 'mysql_optfile' "${MYSQL_MY_CNF}"
+
+        # rc script `mysql-server` doesn't create required directory.
+        mkdir -p /var/run/mysql &>/dev/null
+        chown mysql:mysql /var/run/mysql
+        chmod 0755 /var/run/mysql
     fi
 
     if [ ! -e ${MYSQL_MY_CNF} ]; then
@@ -103,26 +107,18 @@ mysql_initialize_db()
     sleep 10
 
     if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-        if [ X"${DISTRO}" == X'FREEBSD' ] && [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            # MySQL 5.7
-            ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
-            #if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
-            #    # Get initial random root password from /root/.mysql-secret
-            #    export _mysql_root_pw="$(tail -1 /root/.mysql_secret)"
-            #    mysqladmin -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} -p${_mysql_root_pw} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
-            #else
-            #    # Jail
-                mysql -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} --connect-expired-password mysql -e "UPDATE user SET host='${LOCAL_ADDRESS}',authentication_string=PASSWORD('${MYSQL_ROOT_PASSWD}'),password_expired='N' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
+        if [ X"${DISTRO}" == X'FREEBSD' -a X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+            # Jail
+            mysql -h ${MYSQL_SERVER_ADDRESS} -u${MYSQL_ROOT_USER} --connect-expired-password mysql -e "UPDATE user SET host='${LOCAL_ADDRESS}',Password=PASSWORD('${MYSQL_ROOT_PASSWD}'),password_expired='N' WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
 
-                ECHO_DEBUG "Remove 'skip_grant_tables'."
-                perl -pi -e 's#^(skip_grant_tables.*)##g' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+            ECHO_DEBUG "Remove 'skip_grant_tables'."
+            perl -pi -e 's#^(skip_grant_tables.*)##g' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
 
-                ECHO_DEBUG "Restart service: ${MYSQL_RC_SCRIPT_NAME}."
-                service_control restart ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+            ECHO_DEBUG "Restart service: ${MYSQL_RC_SCRIPT_NAME}."
+            service_control restart ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
 
-                ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
-                sleep 10
-            #fi
+            ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
+            sleep 10
         else
             # Try to access without password, set a password if it's empty.
             if [ X"${MYSQL_SERVER_ADDRESS}" == X'127.0.0.1' ]; then
@@ -137,15 +133,16 @@ mysql_initialize_db()
             ${_mysql_cmd} -e "show databases" >> ${INSTALL_LOG} 2>&1
             if [ X"$?" == X'0' ]; then
                 ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
-                #mysqladmin -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+                ${_mysqladmin_cmd} -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+                ${_mysql_cmd} -e "FLUSH PRIVILEGES" 2>&1
 
-                if ${_mysql_cmd} -e "DESC mysql.user" | grep '\<authentication_string\>' >> ${INSTALL_LOG} 2>&1; then
-                    ${_mysql_cmd} -e "UPDATE mysql.user SET authentication_string = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
-                fi
+                #if ${_mysql_cmd} -e "DESC mysql.user" | grep '\<authentication_string\>' >> ${INSTALL_LOG} 2>&1; then
+                #    ${_mysql_cmd} -e "UPDATE mysql.user SET authentication_string = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
+                #fi
 
-                if ${_mysql_cmd} -e "DESC mysql.user" | grep '\<Password\>' >> ${INSTALL_LOG} 2>&1; then
-                    ${_mysqladmin_cmd} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
-                fi
+                #if ${_mysql_cmd} -e "DESC mysql.user" | grep '\<Password\>' >> ${INSTALL_LOG} 2>&1; then
+                #    ${_mysqladmin_cmd} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
+                #fi
             else
                 ECHO_DEBUG "MySQL root password is not empty, not reset."
             fi
@@ -174,18 +171,11 @@ mysql_generate_defaults_file_root()
 
     cat > ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 [client]
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
 user=${MYSQL_ROOT_USER}
 password="${MYSQL_ROOT_PASSWD}"
 EOF
-
-    if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' -o X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
-        cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
-host=${MYSQL_SERVER_ADDRESS}
-port=${MYSQL_SERVER_PORT}
-EOF
-    fi
-
-    chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT}
 
     cat > /root/.my.cnf-${VMAIL_DB_BIND_USER} <<EOF
 [client]
@@ -202,6 +192,8 @@ port=${MYSQL_SERVER_PORT}
 user=${VMAIL_DB_ADMIN_USER}
 password="${VMAIL_DB_ADMIN_PASSWD}"
 EOF
+
+    chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT} /root/.my.cnf-{${VMAIL_DB_BIND_USER},${VMAIL_DB_ADMIN_USER}}
 
     echo 'export status_mysql_generate_defaults_file_root="DONE"' >> ${STATUS_FILE}
 }

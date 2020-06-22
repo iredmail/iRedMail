@@ -12,12 +12,16 @@
 #
 #   * Run this script to generate SQL command used to create new user.
 #
-#       # bash create_mail_user_SQL.sh user@domain.ltd plain_password
+#       bash create_mail_user_SQL.sh <new-email> <plain-password>
+#
+#     For example:
+#
+#       bash create_mail_user_SQL.sh user@domain.ltd plain_password
 #
 #     It will print SQL commands on console directly, you can redirect the
 #     output to a file for further use like this:
 #
-#       # bash create_mail_user_SQL.sh user@domain.ltd plain_password > output.sql
+#       bash create_mail_user_SQL.sh user@domain.ltd plain_password > output.sql
 #
 #   * Import output.sql into SQL database like below:
 #
@@ -71,6 +75,19 @@ fi
 STORAGE_BASE="$(dirname ${STORAGE_BASE_DIRECTORY})"
 STORAGE_NODE="$(basename ${STORAGE_BASE_DIRECTORY})"
 
+generate_password_hash()
+{
+    # Usage: generate_password_hash <password-scheme> <plain-password>
+    _scheme="${1}"
+    _password="${2}"
+
+    if [ X"${_scheme}" == X'BCRYPT' ]; then
+        _scheme='BLF-CRYPT'
+    fi
+
+    doveadm pw -s "${_scheme}" -p "${_password}"
+}
+
 # Read input
 mail="$1"
 plain_password="$2"
@@ -79,7 +96,7 @@ username="$(echo $mail | awk -F'@' '{print $1}')"
 domain="$(echo $mail | awk -F'@' '{print $2}')"
 
 # Cyrpt default password.
-export CRYPT_PASSWD="$(python2 ./generate_password_hash.py ${PASSWORD_SCHEME} ${plain_password})"
+export CRYPT_PASSWD="$(generate_password_hash ${PASSWORD_SCHEME} ${plain_password})"
 
 # Different maildir style: hashed, normal.
 if [ X"${MAILDIR_STYLE}" == X"hashed" ]; then

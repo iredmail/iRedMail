@@ -358,9 +358,14 @@ service_control()
 
 generate_password_hash()
 {
-    scheme="${1}"
-    password="${2}"
-    ${CMD_PYTHON2} ${TOOLS_DIR}/generate_password_hash.py ${scheme} ${password}
+    _scheme="${1}"
+    _password="${2}"
+
+    if [ X"${_scheme}" == X'BCRYPT' ]; then
+        _scheme='BLF-CRYPT'
+    fi
+
+    doveadm pw -s "${_scheme}" -p "${_password}"
 }
 
 # Create SSL certs/private files.

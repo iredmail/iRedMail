@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 # Author: Zhang Huangbin <zhb _at_ iredmail.org>
@@ -12,7 +12,7 @@
 #
 #   * Run this script:
 #
-#       $ python2 ldap_move_members_to_another_group.py [options] old_group@domain.com new_group@domain.com [new_group2@domain.com ...]
+#       $ python3 ldap_move_members_to_another_group.py [options] old_group@domain.com new_group@domain.com [new_group2@domain.com ...]
 
 # LDAP server address.
 LDAP_URI = 'ldap://127.0.0.1:389'
@@ -28,9 +28,9 @@ import sys
 import ldap
 
 def usage():
-    print """Usage:
+    print("""Usage:
 
-$ python2 ldap_move_members_to_another_group.py [options] old_group@domain.com [new_group@domain.com new_group_2@domain.com ...]
+$ python3 ldap_move_members_to_another_group.py [options] old_group@domain.com [new_group@domain.com new_group_2@domain.com ...]
 
 Available optional options:
 
@@ -44,16 +44,17 @@ Available optional options:
 Samples:
 
 *) Copy all members of old_group@domain.com to new_group@domain.com
-    python2 ldap_move_members_to_another_group --copy old_group@domain.com new_group@domain.com
+    python3 ldap_move_members_to_another_group --copy old_group@domain.com new_group@domain.com
 
 *) Copy all members of old_group@domain.com to new_group@domain.com, and remove
    ALL members of old_group@domain.com.
-    python2 ldap_move_members_to_another_group old_group@domain.com new_group@domain.com
+    python3 ldap_move_members_to_another_group old_group@domain.com new_group@domain.com
 
 *) Remove all members (just remove membership, not remove mail accounts) of
    old_group@domain.com.
-    python2 ldap_move_members_to_another_group old_group@domain.com
-"""
+    python3 ldap_move_members_to_another_group old_group@domain.com
+""")
+
 
 if len(sys.argv) < 3:
     usage()
@@ -71,15 +72,15 @@ old_group = args.pop(0)
 new_groups = args
 
 # Initialize LDAP connection.
-print "* Connecting to LDAP server: %s" % LDAP_URI
+print("* Connecting to LDAP server: %s" % LDAP_URI)
 conn = ldap.initialize(uri=LDAP_URI, trace_level=0)
 conn.bind_s(BINDDN, BINDPW)
 
 # Get all members of old mailing list.
-print "* Get all members of old mailing list: %s" % old_group
+print("* Get all members of old mailing list: %s" % old_group)
 
 qr_filter = '(&(objectClass=mailUser)(memberOfGroup=%s))' % old_group
-print "* Query filter:", qr_filter
+print("* Query filter:", qr_filter)
 
 qr = conn.search_s(BASEDN,
                    ldap.SCOPE_SUBTREE,
@@ -89,7 +90,7 @@ qr = conn.search_s(BASEDN,
 total = len(qr)
 
 if total:
-    print "* Old mailing list has %d member(s)." % (total)
+    print("* Old mailing list has %d member(s)." % total)
 else:
     sys.exit("* Old mailing list doesn't have any member. Exit.")
 
@@ -114,15 +115,15 @@ for user in qr:
     mod_attrs = [(ldap.MOD_REPLACE, 'memberOfGroup', groups)]
 
     try:
-        print "* (%d of %d) Updating object: %s" % (count, total, dn)
+        print("* (%d of %d) Updating object: %s" % (count, total, dn))
         conn.modify_s(dn, mod_attrs)
     except Exception as e:
-        print '<<< ERROR >>> %s' % str(e)
+        print("<<< ERROR >>> %s" % repr(e))
 
     count += 1
 
 # Unbind connection.
-print "* Unbind LDAP server."
+print("* Unbind LDAP server.")
 conn.unbind()
 
-print "* Done."
+print("* Done.")

@@ -1,14 +1,14 @@
 iRedMail-1.3:
     * Supports new distribution release:
-        + Ubuntu 20.04.
-          All 3 backends are supported: MariaDB, PostgreSQL, OpenLDAP.
-        + OpenBSD 6.7.
+        + Ubuntu 20.04. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.
+        + OpenBSD 6.7. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.
 
-    * Dropped distribution release:
+    * DROPPED distribution release:
         - OpenBSD 6.6. Please use the latest stable release 6.7 instead.
 
     * Improvements:
         + Enable SOGo for CentOS 8 and Ubuntu 20.04. Thanks to SOGo team.
+        + Port scripts `tools/*.py` to Python 3.
 
     * Fixed issues:
         - Enable TLSv1 on CentOS 7 due to the php package doesn't support TLSv1.2.
@@ -19,6 +19,8 @@ iRedMail-1.3:
 
     * Updated packages:
         + Roundcube webmail -> 1.4.6, it includes few security fixes.
+        + iRedAPD -> 4.0. WARNING: Python 3.5+ is required, Python 2 support
+          has been completely dropped.
         + netdata -> 1.22.1
 
 iRedMail-1.2.1:

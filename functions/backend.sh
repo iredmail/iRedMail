@@ -43,6 +43,14 @@ backend_install()
         SQL_SERVER_ADDRESS_IS_IPV6='YES'
     fi
 
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        # Generate sample Dovecot config files first to use `doveadm pw`.
+        # `dovecot.conf` will be re-generated, `conf.d/` will be removed.
+        if [ ! -f ${DOVECOT_CONF} ]; then
+            cp -rf /usr/local/etc/dovecot/example-config/{dovecot.conf,conf.d} /usr/local/etc/dovecot/
+        fi
+    fi
+
     # Hashed admin password. It requies Python.
     export DOMAIN_ADMIN_PASSWD_HASH="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${DOMAIN_ADMIN_PASSWD_PLAIN})"
 

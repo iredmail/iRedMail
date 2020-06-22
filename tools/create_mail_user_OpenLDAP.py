@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # encoding: utf-8
 
 # Author: Zhang Huangbin <zhb _at_ iredmail.org>
@@ -14,7 +14,7 @@
 # Put your user list in a csv format file, e.g. users.csv, and then
 # import users listed in the file:
 #
-#   $ python2 create_mail_user_OpenLDAP.py users.csv
+#   $ python3 create_mail_user_OpenLDAP.py users.csv
 #
 # ------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ try:
     #import ldap
     import ldif
 except ImportError:
-    print '''
+    print("""
     Error: You don't have python-ldap installed, Please install it first.
 
     You can install it like this:
@@ -82,12 +82,12 @@ except ImportError:
     - On Debian & Ubuntu:
 
         $ sudo apt install python-ldap
-    '''
+    """)
     sys.exit()
 
 
 def usage():
-    print '''
+    print("""
 CSV file format:
 
     domain name, username, password, [common name], [quota_in_bytes], [groups]
@@ -113,7 +113,7 @@ Note:
               appended automaticly.
             * Multiple groups must be seperated by colon.
     - Leading and trailing Space will be ignored.
-'''
+    """)
 
 def mail_to_user_dn(mail):
     """Convert email address to ldap dn of normail mail user."""
@@ -271,21 +271,22 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
 
     return dn, ldif
 
+
 if len(sys.argv) != 2 or len(sys.argv) > 2:
-    print """Usage: $ python2 %s users.csv""" % sys.argv[0]
+    print("""Usage: $ python3 %s users.csv""" % sys.argv[0])
     usage()
     sys.exit()
 else:
     CSV = sys.argv[1]
     if not os.path.exists(CSV):
-        print '''Error: file not exist:''', CSV
+        print("Error: file not exist:", CSV)
         sys.exit()
 
 ldif_file = CSV + '.ldif'
 
 # Remove exist LDIF file.
 if os.path.exists(ldif_file):
-    print '''< INFO > Remove exist file:''', ldif_file
+    print("< INFO > Remove exist file:", ldif_file)
     os.remove(ldif_file)
 
 # Read user list.
@@ -294,7 +295,7 @@ userList = open(CSV, 'rb')
 # Convert to LDIF format.
 for entry in userList.readlines():
     entry = entry.rstrip()
-    domain, username, passwd, cn, quota, groups = re.split('\s?,\s?', entry)
+    domain, username, passwd, cn, quota, groups = re.split(r'\s?,\s?', entry)
     dn, data = ldif_mailuser(domain, username, passwd, cn, quota, groups)
 
     # Write LDIF data.
@@ -304,12 +305,12 @@ for entry in userList.readlines():
 
 
 ldif_file_path = os.path.abspath(ldif_file)
-print "< INFO > User data are stored in %s, you can verify it before importing it." % ldif_file_path
-print "< INFO > You can import it with below command:"
-print "ldapadd -x -D %s -W -f %s" % (BINDDN, ldif_file_path)
+print("< INFO > User data are stored in %s, you can verify it before importing it." % ldif_file_path)
+print("< INFO > You can import it with below command:")
+print("ldapadd -x -D %s -W -f %s" % (BINDDN, ldif_file_path))
 
 # Prompt to import user data.
-'''
+"""
 answer = raw_input("Would you like to import them now? [y|N]").lower().strip()
 
 if answer == 'y':
@@ -320,4 +321,4 @@ if answer == 'y':
     conn.unbind()
 else:
     pass
-'''
+"""

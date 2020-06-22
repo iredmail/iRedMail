@@ -129,6 +129,19 @@ STORAGE_NODE="$(basename ${STORAGE_BASE_DIRECTORY})"
 EPOCH_SECONDS="$(date +%s)"
 DAYS_SINCE_EPOCH="$((EPOCH_SECONDS / 24 / 60 / 60))"
 
+generate_password_hash()
+{
+    # Usage: generate_password_hash <password-scheme> <plain-password>
+    _scheme="${1}"
+    _password="${2}"
+
+    if [ X"${_scheme}" == X'BCRYPT' ]; then
+        _scheme='BLF-CRYPT'
+    fi
+
+    doveadm pw -s "${_scheme}" -p "${_password}"
+}
+
 add_new_domain()
 {
     domain="$(echo ${1} | tr '[A-Z]' '[a-z]')"
@@ -187,9 +200,9 @@ add_new_user()
 
     # Generate user password.
     if [ X"${USE_DEFAULT_PASSWD}" == X'YES' ]; then
-        PASSWD="$(python2 ./generate_password_hash.py ${PASSWORD_SCHEME} ${DEFAULT_PASSWD})"
+        PASSWD="$(generate_password_hash ${PASSWORD_SCHEME} ${DEFAULT_PASSWD})"
     else
-        PASSWD="$(python2 ./generate_password_hash.py ${PASSWORD_SCHEME} ${USERNAME})"
+        PASSWD="$(generate_password_hash ${PASSWORD_SCHEME} ${USERNAME})"
     fi
 
     if [ X"${PUREFTPD_INTEGRATION}" == X'YES' ]; then
