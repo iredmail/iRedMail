@@ -29,7 +29,7 @@ install_all()
     DISABLED_SERVICES=''
 
     # Specify version numbers while installing Python modules with pip.
-    PIP_VERSION_PYTHON_LDAP='>=3.2.0'
+    PIP_VERSION_PYTHON_LDAP='>=3.3.0'
     PIP_VERSION_WEBPY='>=0.51'
     PIP_VERSION_UWSGI='>=2.0.18'
     PIP_VERSION_REQUESTS='>=2.23.0'

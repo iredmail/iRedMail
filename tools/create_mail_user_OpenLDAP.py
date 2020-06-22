@@ -63,7 +63,6 @@ import sys
 import time
 import datetime
 from subprocess import Popen, PIPE
-from base64 import b64encode
 import re
 
 try:
@@ -129,65 +128,25 @@ def mail_to_user_dn(mail):
     return dn
 
 
-def generate_password_hash(p, pwscheme=None):
-    """Generate password for LDAP mail user and admin."""
-    p = str(p).strip()
-
-    if not pwscheme:
-        pwscheme = DEFAULT_PASSWORD_SCHEME
-
-    # Supports returning multiple passwords.
-    pw_schemes = pwscheme.split('+')
-    pws = []
-
-    for scheme in pw_schemes:
-        if scheme == 'PLAIN':
-            pws.append(p)
-        else:
-            pw = generate_password_with_doveadmpw(scheme, p)
-
-            if scheme in HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME:
-                pw = pw.lstrip('{' + scheme + '}')
-
-            pws.append(pw)
-
-    return pws
-
-
-def generate_ssha_password(p):
-    p = str(p).strip()
-    salt = os.urandom(8)
-    try:
-        from hashlib import sha1
-        pw = sha1(p)
-    except ImportError:
-        import sha
-        pw = sha.new(p)
-    pw.update(salt)
-    return "{SSHA}" + b64encode(pw.digest() + salt)
-
-
-def generate_password_with_doveadmpw(scheme, plain_password):
+def generate_password_with_doveadmpw(plain_password, scheme=None):
     """Generate password hash with `doveadm pw` command.
     Return SSHA instead if no 'doveadm' command found or other error raised."""
-    # scheme: CRAM-MD5, NTLM
+    if not scheme:
+        scheme = DEFAULT_PASSWORD_SCHEME
+
     scheme = scheme.upper()
     p = str(plain_password).strip()
 
-    try:
-        pp = Popen(['doveadm', 'pw', '-s', scheme, '-p', p],
-                   stdout=PIPE)
-        pw = pp.communicate()[0]
+    pp = Popen(['doveadm', 'pw', '-s', scheme, '-p', p], stdout=PIPE)
+    pw = pp.communicate()[0]
 
-        if scheme in HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME:
-            pw.lstrip('{' + scheme + '}')
+    if scheme in HASHES_WITHOUT_PREFIXED_PASSWORD_SCHEME:
+        pw.lstrip('{' + scheme + '}')
 
-        # remove '\n'
-        pw = pw.strip()
+    # remove '\n'
+    pw = pw.strip()
 
-        return pw
-    except:
-        return generate_ssha_password(p)
+    return pw
 
 def get_days_of_today():
     """Return number of days since 1970-01-01."""
@@ -243,7 +202,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     ldif = [
         ('objectClass', ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount']),
         ('mail', [mail]),
-        ('userPassword', generate_password_hash(passwd)),
+        ('userPassword', generate_password_with_doveadmpw(passwd)),
         ('mailQuota', [quota]),
         ('cn', [cn]),
         ('sn', [username]),
