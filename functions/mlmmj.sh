@@ -208,11 +208,7 @@ EOF
 
         systemctl daemon-reload >> ${INSTALL_LOG} 2>&1
     else
-        if [ X"${DISTRO}" == X'RHEL' ]; then
-            cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/${MLMMJADMIN_RC_SCRIPT_NAME}.rhel ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
-        elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/${MLMMJADMIN_RC_SCRIPT_NAME}.debian ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
-        elif [ X"${DISTRO}" == X'FREEBSD' ]; then
+        if [ X"${DISTRO}" == X'FREEBSD' ]; then
             cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/${MLMMJADMIN_RC_SCRIPT_NAME}.freebsd ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
             service_control enable 'mlmmjadmin_enable' 'YES' >> ${INSTALL_LOG} 2>&1
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -222,7 +218,7 @@ EOF
         fi
     fi
 
-    ECHO_DEBUG "Make mlmmjadmin starting after system startup."
+    ECHO_DEBUG "Enable mlmmjadmin service."
     service_control enable ${MLMMJADMIN_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
     export ENABLED_SERVICES="${ENABLED_SERVICES} ${MLMMJADMIN_RC_SCRIPT_NAME}"
 

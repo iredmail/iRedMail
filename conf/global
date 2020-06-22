@@ -308,6 +308,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
             grep -i '^stretch' /etc/debian_version &>/dev/null; then
             export DISTRO_VERSION='9'
             export DISTRO_CODENAME='stretch'
+            export UWSGI_PY3_PLUGIN_NAME='python35'
         else
             export UNSUPPORTED_RELEASE='YES'
         fi
@@ -504,6 +505,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export SYSLOG_POSTROTATE_CMD='/usr/sbin/service rsyslog restart'
         export UWSGI_PY3_PLUGIN_NAME='python35'
     else
+        export UWSGI_PY3_PLUGIN_NAME='python37'
         # Debian 10, Ubuntu 18.04
         export SYSLOG_POSTROTATE_CMD='/usr/lib/rsyslog/rsyslog-rotate'
     fi

@@ -1,5 +1,5 @@
 iRedMail-1.3:
-    * Supports new distribution release:
+    * Supports new distribution releases:
         + Ubuntu 20.04. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.
         + OpenBSD 6.7. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.
 
