@@ -21,6 +21,8 @@ iRedMail-1.3:
         + Roundcube webmail -> 1.4.6, it includes few security fixes.
         + iRedAPD -> 4.0. WARNING: Python 3.5+ is required, Python 2 support
           has been completely dropped.
+        + mlmmjadmin -> 3.0. WARNING: Python 3.5+ is required, Python 2
+          support has been completely dropped.
         + netdata -> 1.22.1
 
 iRedMail-1.2.1:
