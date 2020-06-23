@@ -134,7 +134,7 @@ mysql_initialize_db()
             if [ X"$?" == X'0' ]; then
                 ECHO_DEBUG "Setting password for MySQL root user: ${MYSQL_ROOT_USER}."
                 ${_mysqladmin_cmd} -u${MYSQL_ROOT_USER} password ${MYSQL_ROOT_PASSWD} >> ${INSTALL_LOG} 2>&1
-                ${_mysql_cmd} -e "FLUSH PRIVILEGES" 2>&1
+                ${_mysql_cmd} -e "FLUSH PRIVILEGES" &>/dev/null
 
                 #if ${_mysql_cmd} -e "DESC mysql.user" | grep '\<authentication_string\>' >> ${INSTALL_LOG} 2>&1; then
                 #    ${_mysql_cmd} -e "UPDATE mysql.user SET authentication_string = PASSWORD('${MYSQL_ROOT_PASSWD}') WHERE User='root' AND Host='localhost'; FLUSH PRIVILEGES;" >> ${INSTALL_LOG} 2>&1
@@ -171,11 +171,18 @@ mysql_generate_defaults_file_root()
 
     cat > ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
 [client]
-host=${MYSQL_SERVER_ADDRESS}
-port=${MYSQL_SERVER_PORT}
 user=${MYSQL_ROOT_USER}
 password="${MYSQL_ROOT_PASSWD}"
 EOF
+
+    if [ X"${DISTRO}" == X'FREEBSD' \
+        -o X"${LOCAL_ADDRESS}" != X'127.0.0.1' \
+        -o X"${MYSQL_SERVER_ADDRESS}" != X'127.0.0.1' ]; then
+        cat >> ${MYSQL_DEFAULTS_FILE_ROOT} <<EOF
+host=${MYSQL_SERVER_ADDRESS}
+port=${MYSQL_SERVER_PORT}
+EOF
+    fi
 
     cat > /root/.my.cnf-${VMAIL_DB_BIND_USER} <<EOF
 [client]
