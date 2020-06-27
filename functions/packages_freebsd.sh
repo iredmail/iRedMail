@@ -106,6 +106,7 @@ install_all()
         security_p5-Authen-SASL \
         security_p5-IO-Socket-SSL \
         www_nginx \
+        www_uwsgi \
         www_sogo4; do
         mkdir -p /var/db/ports/${p} >> ${INSTALL_LOG} 2>&1
     done
@@ -710,6 +711,15 @@ EOF
         ALL_PORTS="${ALL_PORTS} www/nginx www/uwsgi"
     fi
 
+    cat > /var/db/ports/www_uwsgi/options <<EOF
+OPTIONS_FILE_UNSET+=DEBUG
+OPTIONS_FILE_SET+=JSON
+OPTIONS_FILE_SET+=PCRE
+OPTIONS_FILE_SET+=SSL
+OPTIONS_FILE_SET+=XML
+OPTIONS_FILE_UNSET+=PSGI
+EOF
+
     # PHP. REQUIRED.
     cat > /var/db/ports/lang_php${PREFERRED_PHP_VER}/options <<EOF
 OPTIONS_FILE_SET+=CLI
@@ -982,6 +992,7 @@ EOF
 
     # iRedAdmin: dependencies. webpy, Jinja2, bcrypt
     ALL_PORTS="${ALL_PORTS} www/webpy ftp/py-pycurl"
+    PY2_PORTS="${PY2_PORTS} www/py-cheroot www/webpy ftp/py-pycurl"
 
     # Fail2ban.
     #if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
@@ -1111,7 +1122,7 @@ EOF
 
         start_time="$(date +%s)"
         for _port in ${ALL_PORTS}; do
-            if echo "${_port}" | grep '/py' &>/dev/null; then
+            if echo "${_port}" | grep -E '(/py|uwsgi)' &>/dev/null; then
                 # Install modules for Python 3.
                 install_port ${_port} USES=python:${PREFERRED_PY3_VER}
             else
