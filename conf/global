@@ -501,15 +501,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export SYSLOG_CONF='/etc/rsyslog.d/iredmail.conf'
     fi
 
-    if [ X"${DISTRO_VERSION}" == X'9' ]; then
-        export SYSLOG_POSTROTATE_CMD='/usr/sbin/service rsyslog restart'
-        export UWSGI_PY3_PLUGIN_NAME='python35'
-    else
-        export UWSGI_PY3_PLUGIN_NAME='python37'
-        # Debian 10, Ubuntu 18.04
-        export SYSLOG_POSTROTATE_CMD='/usr/lib/rsyslog/rsyslog-rotate'
-    fi
-
     # SSHD log file
     export SSHD_LOGFILE='/var/log/auth.log'
 

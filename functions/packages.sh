@@ -322,7 +322,7 @@ install_all()
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python3-requests python3-pip uwsgi uwsgi-plugin-python3"
+        ALL_PKGS="${ALL_PKGS} python3-setuptools python3-pip python3-requests uwsgi uwsgi-plugin-python3"
         PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
 
         if [ X"${DISTRO}" == X'DEBIAN' ]; then
