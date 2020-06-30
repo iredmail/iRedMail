@@ -25,3 +25,5 @@ More info:
 We recommend to deploy iRedMail server with the [iRedMail Easy platform](https://www.iredmail.org/easy.html),
 it offers easy deployment, one-click upgrade, and tech support via the ticket
 system. Check our [website](https://www.iredmail.org/easy.html) for more details.
+
+There's also an all-in-one Docker edition here: [iredmail/dockerized](https://github.com/iredmail/dockerized).
