@@ -152,3 +152,5 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -f ${REMOVED_BACKUP} ]; then
     rmdir ${REMOVED_BACKUP_MONTH_DIR} 2>/dev/null
     rmdir ${REMOVED_BACKUP_YEAR_DIR} 2>/dev/null
 fi
+
+exit 0
