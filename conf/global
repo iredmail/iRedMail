@@ -266,10 +266,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         fi
 
         if [ X"${DISTRO_VERSION}" == X'8' ]; then
-            # CentOS 8: Installed with pip2.
-            export CMD_UWSGI='/usr/bin/uwsgi'
             # Installed with pip3.
-            export CMD_UWSGI_PY3='/usr/local/bin/uwsgi'
+            export CMD_UWSGI='/usr/local/bin/uwsgi'
         fi
     elif [ -f /etc/lsb-release ] && grep -i 'DISTRIB_ID=Ubuntu' /etc/lsb-release &>/dev/null; then
         # Ubuntu
@@ -286,14 +284,9 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
 
-        export UWSGI_PY2_PLUGIN_NAME='python27'
-        if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
-            # Ubuntu 18.04
-            export UWSGI_PY3_PLUGIN_NAME='python36'
-        elif [ X"${DISTRO_CODENAME}" == X'focal' ]; then
+        if [ X"${DISTRO_CODENAME}" == X'focal' ]; then
             # Ubuntu 20.04: Installed with pip2.
             export CMD_UWSGI='/usr/local/bin/uwsgi'
-            export UWSGI_PY3_PLUGIN_NAME='python38'
         fi
     elif [ -f /etc/debian_version ]; then
         # Debian
@@ -303,12 +296,10 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         if grep -i '^10' /etc/debian_version &>/dev/null; then
             export DISTRO_VERSION='10'
             export DISTRO_CODENAME='buster'
-            export UWSGI_PY3_PLUGIN_NAME='python37'
         elif grep '^9' /etc/debian_version &>/dev/null || \
             grep -i '^stretch' /etc/debian_version &>/dev/null; then
             export DISTRO_VERSION='9'
             export DISTRO_CODENAME='stretch'
-            export UWSGI_PY3_PLUGIN_NAME='python35'
         else
             export UNSUPPORTED_RELEASE='YES'
         fi
@@ -523,6 +514,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
 
+    # `python3` is a symbol link to `python3X`.
+    export UWSGI_PY3_PLUGIN_NAME='python3'
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export USE_SYSTEMD='NO'
     export SYS_GROUP_ROOT='wheel'
@@ -720,5 +713,3 @@ export UBUNTU_MIRROR_SITE="${UBUNTU_MIRROR_SITE:=}"
 # pip mirror site. Use `pypi.org` if not set.
 export PIP_MIRROR_SITE="${PIP_MIRROR_SITE:=}"
 export PIP_TRUSTED_HOST="${PIP_TRUSTED_HOST:=}"
-# URL to download `get-pip.py`, used to install `pip2`.
-export URL_GET_PIP_PY="${URL_GET_PIP_PY:=https://bootstrap.pypa.io/get-pip.py}"

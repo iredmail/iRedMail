@@ -202,7 +202,7 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     ldif = [
         ('objectClass', ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount']),
         ('mail', [mail]),
-        ('userPassword', generate_password_with_doveadmpw(passwd)),
+        ('userPassword', [generate_password_with_doveadmpw(passwd)]),
         ('mailQuota', [quota]),
         ('cn', [cn]),
         ('sn', [username]),

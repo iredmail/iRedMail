@@ -991,7 +991,7 @@ EOF
     ALL_PORTS="${ALL_PORTS} dns/py-dnspython"
 
     # iRedAdmin: dependencies. webpy, Jinja2, bcrypt
-    ALL_PORTS="${ALL_PORTS} www/webpy ftp/py-pycurl"
+    ALL_PORTS="${ALL_PORTS} www/webpy ftp/py-pycurl devel/py-simplejson"
     PY2_PORTS="${PY2_PORTS} www/py-cheroot www/webpy ftp/py-pycurl"
 
     # Fail2ban.

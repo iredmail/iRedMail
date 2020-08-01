@@ -51,12 +51,12 @@ fi
 
 # Roundcube
 if [ X"${DIALOG_SELECTABLE_ROUNDCUBE}" == X'YES' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Roundcubemail Popular_webmail_built_with_PHP_and_AJAX on"
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} Roundcubemail Fast_and_lightweight_webmail on"
 fi
 
 # SOGo
 if [ X"${DIALOG_SELECTABLE_SOGO}" == X'YES' ]; then
-    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} SOGo Webmail,_Calendar,_Address_book off"
+    LIST_OF_OPTIONAL_COMPONENTS="${LIST_OF_OPTIONAL_COMPONENTS} SOGo Webmail,_Calendar,_Address_book,_ActiveSync off"
 fi
 
 # netdata

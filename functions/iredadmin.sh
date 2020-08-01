@@ -228,34 +228,23 @@ EOF
 iredadmin_rc_setup()
 {
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        if [ X"${DISTRO_VERSION}" == X'8' ]; then
-            # Fix path to uwsgi.
-            perl -pi -e 's#/usr/sbin/uwsgi#$ENV{CMD_UWSGI}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/rhel.service
-            # Disable plugins. They're all builtin.
-            perl -pi -e 's/^(plugins.*)/#${1}/g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel.ini
-        fi
-
-        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/rhel.service ${SYSTEMD_SERVICE_DIR}/iredadmin.service
+        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/rhel${DISTRO_VERSION}.service ${SYSTEMD_SERVICE_DIR}/iredadmin.service
         chmod 0644 ${SYSTEMD_SERVICE_DIR}/iredadmin.service
 
-        perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel.ini
-        perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel.ini
+        perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel${DISTRO_VERSION}.ini
+        perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel${DISTRO_VERSION}.ini
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        if [ X"${DISTRO_CODENAME}" == X'focal' ]; then
-            # Fix path to uwsgi.
-            perl -pi -e 's#/usr/bin/uwsgi#$ENV{CMD_UWSGI}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/debian.service
-        fi
+        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/debian.service ${SYSTEMD_SERVICE_DIR}/iredadmin.service
+        chmod 0644 ${SYSTEMD_SERVICE_DIR}/iredadmin.service
 
         perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/debian.ini
         perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/debian.ini
 
-        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/debian.service ${SYSTEMD_SERVICE_DIR}/iredadmin.service
-        chmod 0644 ${SYSTEMD_SERVICE_DIR}/iredadmin.service
-
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/iredadmin.freebsd ${DIR_RC_SCRIPTS}/iredadmin
         chmod 0755 ${DIR_RC_SCRIPTS}/iredadmin
+
         perl -pi -e 's#(.*)(/opt/www/iredadmin)(.*)#${1}$ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}${3}#g' ${DIR_RC_SCRIPTS}/iredadmin
 
         perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/freebsd.ini
