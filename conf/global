@@ -212,9 +212,7 @@ export SHELL_NOLOGIN='/sbin/nologin'
 export SHELL_BASH='/bin/bash'
 
 # Path to some programs
-export CMD_PYTHON2='python2'
 export CMD_PYTHON3='python3'
-export CMD_PIP2='pip2'
 export CMD_PIP3='pip3'
 
 # Default password scheme for SQL backends.
@@ -314,7 +312,6 @@ elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
     export DIR_RC_SCRIPTS='/usr/local/etc/rc.d'
     export RC_CONF_LOCAL='/etc/rc.conf.local'
 
-    export CMD_PYTHON2='/usr/local/bin/python2'
     export CMD_PYTHON3='/usr/local/bin/python3'
 
     # Unsupported releases: 7, 8.
@@ -338,9 +335,7 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DIR_RC_SCRIPTS='/etc/rc.d'
     export RC_CONF_LOCAL='/etc/rc.conf.local'
     export SHELL_BASH='/usr/local/bin/bash'
-    export CMD_PYTHON2='/usr/local/bin/python2'
     export CMD_PYTHON3='/usr/local/bin/python3'
-    export CMD_PIP2='pip2.7'
     export CMD_PIP3='pip3.7'
 
     # Unsupported release: 6.6 and earlier versions.
