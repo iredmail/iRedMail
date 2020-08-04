@@ -1,6 +1,9 @@
 iRedMail-1.3.2:
     * Improvements:
-        + Enable http2 support in Nginx by default.
+        + [Nginx] Enable http2 support by default.
+        + [Roundcube] Enable plugin `zipdownload` by default. It adds an
+          option to download all attachments in a message to one zip file,
+          when the message has multiple attachments.
 
     * Fixed issues:
         - Not catch all Roundcube login failures in Fail2ban.
