@@ -116,14 +116,14 @@ Note:
 
 def mail_to_user_dn(mail):
     """Convert email address to ldap dn of normail mail user."""
-    if mail.count('@') != 1:
+    if mail.count(b'@') != 1:
         return ''
 
-    user, domain = mail.split('@')
+    user, domain = mail.split(b'@')
 
     # User DN format.
     # mail=user@domain.ltd,domainName=domain.ltd,[LDAP_BASEDN]
-    dn = 'mail=%s,ou=Users,domainName=%s,%s' % (mail, domain, BASEDN)
+    dn = 'mail=%s,ou=Users,domainName=%s,%s' % (mail, domain.decode('utf-8'), BASEDN)
 
     return dn
 
@@ -168,21 +168,21 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         quota = '0'
 
     # Remove SPACE in username.
-    username = str(username).lower().strip().replace(' ', '')
+    username = username.decode('utf-8').lower().strip().replace(' ', '').encode('utf-8')
 
     if cn == '':
         cn = username
 
-    mail = username + '@' + domain
+    mail = username + b'@' + domain
     dn = mail_to_user_dn(mail)
 
     # Get group list.
     if groups.strip() != '':
-        groups = groups.strip().split(':')
+        groups = groups.strip().split(b':')
         for i in range(len(groups)):
-            groups[i] = groups[i] + '@' + domain
+            groups[i] = groups[i] + b'@' + domain
 
-    maildir_domain = str(domain).lower()
+    maildir_domain = domain.lower()
     if HASHED_MAILDIR is True:
         str1 = str2 = str3 = username[0]
         if len(username) >= 3:
@@ -191,42 +191,42 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         elif len(username) == 2:
             str2 = str3 = username[1]
 
-        maildir_user = "%s/%s/%s/%s%s/" % (str1, str2, str3, username, TIMESTAMP_IN_MAILDIR, )
-        mailMessageStore = maildir_domain + '/' + maildir_user
+        maildir_user = bytes("%s/%s/%s/%s%s/" % (str1, str2, str3, username.decode('utf-8'), TIMESTAMP_IN_MAILDIR, ), 'utf-8')
+        mailMessageStore = maildir_domain + b'/' + maildir_user
     else:
-        mailMessageStore = "%s/%s%s/" % (domain, username, TIMESTAMP_IN_MAILDIR)
+        mailMessageStore = bytes("%s/%s%s/" % (domain, username.decode('utf-8'), TIMESTAMP_IN_MAILDIR), 'utf-8')
 
-    homeDirectory = STORAGE_BASE_DIRECTORY + '/' + mailMessageStore
-    mailMessageStore = STORAGE_NODE + '/' + mailMessageStore
+    homeDirectory = STORAGE_BASE_DIRECTORY.encode('utf-8') + b'/' + mailMessageStore
+    mailMessageStore = STORAGE_NODE.encode('utf-8') + b'/' + mailMessageStore
 
-    ldif = [
-        ('objectClass', ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount']),
-        ('mail', [mail]),
-        ('userPassword', [generate_password_with_doveadmpw(passwd)]),
-        ('mailQuota', [quota]),
-        ('cn', [cn]),
-        ('sn', [username]),
-        ('uid', [username]),
-        ('storageBaseDirectory', [STORAGE_BASE]),
-        ('mailMessageStore', [mailMessageStore]),
-        ('homeDirectory', [homeDirectory]),
-        ('accountStatus', ['active']),
-        ('enabledService', ['internal', 'doveadm', 'lib-storage',
-                            'indexer-worker', 'dsync', 'quota-status',
-                            'mail',
-                            'smtp', 'smtpsecured', 'smtptls',
-                            'pop3', 'pop3secured', 'pop3tls',
-                            'imap', 'imapsecured', 'imaptls',
-                            'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',
-                            'managesieve', 'managesievesecured',
-                            'sieve', 'sievesecured', 'lmtp', 'sogo',
-                            'shadowaddress',
-                            'displayedInGlobalAddressBook']),
-        ('memberOfGroup', groups),
+    ldif = {
+        'objectClass': [b'inetOrgPerson', b'mailUser', b'shadowAccount', b'amavisAccount'],
+        'mail': [mail],
+        'userPassword': [generate_password_with_doveadmpw(passwd)],
+        'mailQuota': [quota],
+        'cn': [cn],
+        'sn': [username],
+        'uid': [username],
+        'storageBaseDirectory': [STORAGE_BASE.encode('utf-8')],
+        'mailMessageStore': [mailMessageStore],
+        'homeDirectory': [homeDirectory],
+        'accountStatus': [b'active'],
+        'enabledService': [b'internal', b'doveadm', b'lib-storage',
+                            b'indexer-worker', b'dsync', b'quota-status',
+                            b'mail',
+                            b'smtp', b'smtpsecured', b'smtptls',
+                            b'pop3', b'pop3secured', b'pop3tls',
+                            b'imap', b'imapsecured', b'imaptls',
+                            b'deliver', b'lda', b'forward', b'senderbcc', b'recipientbcc',
+                            b'managesieve', b'managesievesecured',
+                            b'sieve', b'sievesecured', b'lmtp', b'sogo',
+                            b'shadowaddress',
+                            b'displayedInGlobalAddressBook'],
+        'memberOfGroup': groups,
         # shadowAccount integration.
-        ('shadowLastChange', [str(get_days_of_today())]),
+        'shadowLastChange': [str(get_days_of_today()).encode('utf-8')],
         # Amavisd integration.
-        ('amavisLocal', ['TRUE'])]
+        'amavisLocal': [b'TRUE']}
 
     return dn, ldif
 
@@ -254,7 +254,7 @@ userList = open(CSV, 'rb')
 # Convert to LDIF format.
 for entry in userList.readlines():
     entry = entry.rstrip()
-    domain, username, passwd, cn, quota, groups = re.split(r'\s?,\s?', entry)
+    domain, username, passwd, cn, quota, groups = re.split(b'\\s?,\\s?', entry)
     dn, data = ldif_mailuser(domain, username, passwd, cn, quota, groups)
 
     # Write LDIF data.
