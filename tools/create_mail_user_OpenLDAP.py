@@ -63,10 +63,10 @@ import sys
 import time
 import datetime
 from subprocess import Popen, PIPE
+from typing import List, Dict
 import re
 
 try:
-    #import ldap
     import ldif
 except ImportError:
     print("""
@@ -114,6 +114,59 @@ Note:
     - Leading and trailing Space will be ignored.
     """)
 
+
+def __str2bytes(s) -> bytes:
+    """Convert `s` from string to bytes."""
+    if isinstance(s, bytes):
+        return s
+    elif isinstance(s, str):
+        return s.encode()
+    elif isinstance(s, (int, float)):
+        return str(s).encode()
+    else:
+        return bytes(s)
+
+def __attr_ldif(attr, value, default=None) -> List:
+    """Generate a list of LDIF data with given attribute name and value.
+    Returns empty list if no valid value.
+
+    Value is properly handled with str/bytes/list/tuple/set types, and
+    converted to list of bytes at the end.
+
+    To generate ldif list with ldap modification like `ldap.MOD_REPLACE`,
+    please use function `mod_replace()` instead.
+    """
+    _ldif = []
+    v = value or default
+    if v:
+        if isinstance(value, (list, tuple, set)):
+            lst = []
+            for i in v:
+                # Avoid duplicate element.
+                if i in lst:
+                    continue
+
+                if isinstance(i, bytes):
+                    lst.append(i)
+                else:
+                    lst.append(__str2bytes(i))
+
+            _ldif = [(attr, lst)]
+        else:
+            _ldif = [(attr, [__str2bytes(v)])]
+
+    return _ldif
+
+
+def __attrs_ldif(kvs: Dict) -> List:
+    lst = []
+    for (k, v) in kvs.items():
+        lst += __attr_ldif(k, v)
+
+    return lst
+
+
+# Return list of modification operation.
 def mail_to_user_dn(mail):
     """Convert email address to ldap dn of normail mail user."""
     if mail.count('@') != 1:
@@ -199,36 +252,37 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
     homeDirectory = STORAGE_BASE_DIRECTORY + '/' + mailMessageStore
     mailMessageStore = STORAGE_NODE + '/' + mailMessageStore
 
-    ldif = [
-        ('objectClass', ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount']),
-        ('mail', [mail]),
-        ('userPassword', [generate_password_with_doveadmpw(passwd)]),
-        ('mailQuota', [quota]),
-        ('cn', [cn]),
-        ('sn', [username]),
-        ('uid', [username]),
-        ('storageBaseDirectory', [STORAGE_BASE]),
-        ('mailMessageStore', [mailMessageStore]),
-        ('homeDirectory', [homeDirectory]),
-        ('accountStatus', ['active']),
-        ('enabledService', ['internal', 'doveadm', 'lib-storage',
-                            'indexer-worker', 'dsync', 'quota-status',
-                            'mail',
-                            'smtp', 'smtpsecured', 'smtptls',
-                            'pop3', 'pop3secured', 'pop3tls',
-                            'imap', 'imapsecured', 'imaptls',
-                            'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',
-                            'managesieve', 'managesievesecured',
-                            'sieve', 'sievesecured', 'lmtp', 'sogo',
-                            'shadowaddress',
-                            'displayedInGlobalAddressBook']),
-        ('memberOfGroup', groups),
+    _ldif = __attrs_ldif({
+        'objectClass': ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount'],
+        'mail': mail,
+        'userPassword': generate_password_with_doveadmpw(passwd),
+        'mailQuota': quota,
+        'cn': cn,
+        'sn': username,
+        'uid': username,
+        'storageBaseDirectory': STORAGE_BASE,
+        'mailMessageStore': mailMessageStore,
+        'homeDirectory': homeDirectory,
+        'accountStatus': 'active',
+        'enabledService': ['internal', 'doveadm', 'lib-storage',
+                           'indexer-worker', 'dsync', 'quota-status',
+                           'mail',
+                           'smtp', 'smtpsecured', 'smtptls',
+                           'pop3', 'pop3secured', 'pop3tls',
+                           'imap', 'imapsecured', 'imaptls',
+                           'deliver', 'lda', 'forward', 'senderbcc', 'recipientbcc',
+                           'managesieve', 'managesievesecured',
+                           'sieve', 'sievesecured', 'lmtp', 'sogo',
+                           'shadowaddress',
+                           'displayedInGlobalAddressBook'],
+        'memberOfGroup': groups,
         # shadowAccount integration.
-        ('shadowLastChange', [str(get_days_of_today())]),
+        'shadowLastChange': get_days_of_today(),
         # Amavisd integration.
-        ('amavisLocal', ['TRUE'])]
+        'amavisLocal': 'TRUE',
+    })
 
-    return dn, ldif
+    return dn, _ldif
 
 
 if len(sys.argv) != 2 or len(sys.argv) > 2:
@@ -253,7 +307,7 @@ userList = open(CSV, 'rb')
 
 # Convert to LDIF format.
 for entry in userList.readlines():
-    entry = entry.rstrip()
+    entry = entry.decode().rstrip()
     domain, username, passwd, cn, quota, groups = re.split(r'\s?,\s?', entry)
     dn, data = ldif_mailuser(domain, username, passwd, cn, quota, groups)
 
