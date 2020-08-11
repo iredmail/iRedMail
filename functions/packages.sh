@@ -217,7 +217,7 @@ install_all()
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # Debian 9
-            ALL_PKGS="${ALL_PKGS} php-cli php-fpm php-json php-gd php-curl mcrypt php-intl php-xml php-mbstring"
+            ALL_PKGS="${ALL_PKGS} php-cli php-fpm php-json php-gd php-curl mcrypt php-intl php-xml php-mbstring php-zip"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap php-mysql"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql"
@@ -402,12 +402,7 @@ name=Inverse SOGo Repository
 enabled=1
 gpgcheck=0
 
-# SOGo v3 stable release.
-# WARNING: A proper support contract from Inverse is required:
-# https://sogo.nu/support/index.html#support-plans
-#baseurl=${SOGO_PKG_MIRROR}/SOGo/release/${SOGO_VERSION}/rhel/${DISTRO_VERSION}/\$basearch
-
-# SOGo v3 nightly builds
+# SOGo v5 nightly builds
 baseurl=${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/rhel/${DISTRO_VERSION}/\$basearch
 EOF
 

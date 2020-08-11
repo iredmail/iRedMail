@@ -9,7 +9,8 @@ iRedMail-1.3.2:
         - Not catch all Roundcube login failures in Fail2ban.
 
     * Updated packages:
-        + netdata -> 1.23.2.
+        + Roundcube webmail -> 1.4.8
+        + netdata -> 1.24.0.
         + uwsgi -> 2.0.19.1. OpenBSD only.
         + mlmmjadmin -> 3.0.1. Fix an issue in upgrade script.
         + iRedAPD-4.4.
