@@ -192,7 +192,7 @@ EOF
                 perl -pi -e 's#(^plugins.*)python,(.*)#${1}$ENV{UWSGI_PY3_PLUGIN_NAME},${2}#g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/uwsgi/rhel.ini
             elif [ X"${DISTRO_VERSION}" == X'8' ]; then
                 # Fix path to uwsgi.
-                perl -pi -e 's#/usr/sbin/uwsgi#$ENV{CMD_UWSGI_PY3}#g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/systemd/rhel.service
+                perl -pi -e 's#/usr/sbin/uwsgi#$ENV{CMD_UWSGI}#g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/systemd/rhel.service
                 # Disable plugins. They're all builtin.
                 perl -pi -e 's/^(plugins.*)/#${1}/g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/uwsgi/rhel.ini
             fi

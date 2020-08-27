@@ -281,11 +281,6 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18\.10|19\.)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
-
-        if [ X"${DISTRO_CODENAME}" == X'focal' ]; then
-            # Ubuntu 20.04: Installed with pip2.
-            export CMD_UWSGI='/usr/local/bin/uwsgi'
-        fi
     elif [ -f /etc/debian_version ]; then
         # Debian
         export DISTRO='DEBIAN'
