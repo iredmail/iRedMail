@@ -6,7 +6,8 @@ iRedMail-1.3.2:
           when the message has multiple attachments.
 
     * Fixed issues:
-        - Not catch all Roundcube login failures in Fail2ban.
+        + [Amavisd] Log matched virus database name.
+        - [Fail2ban] Not catch all Roundcube login failures.
 
     * Updated packages:
         + Roundcube webmail -> 1.4.8
