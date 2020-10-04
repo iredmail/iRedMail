@@ -258,8 +258,10 @@ enabledService: smtpsecured
 enabledService: smtptls
 enabledService: managesieve
 enabledService: managesievesecured
+enabledService: managesievetls
 enabledService: sieve
 enabledService: sievesecured
+enabledService: sievetls
 enabledService: deliver
 enabledService: lda
 enabledService: lmtp
