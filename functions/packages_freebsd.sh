@@ -39,7 +39,7 @@ install_all()
     export PREFERRED_BDB_VER='5'
     export PREFERRED_PHP_VER='74'
     export PREFERRED_PY3_VER='3.8'
-    export PREFERRED_PY3_FLAVOR='py38'
+    export PREFERRED_PY_FLAVOR='py38'
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         export IREDMAIL_USE_PHP='YES'
@@ -49,7 +49,7 @@ install_all()
     freebsd_make_conf_add 'WANT_OPENLDAP_SASL' "YES"
     freebsd_make_conf_add 'WANT_PGSQL_VER' "${PGSQL_VERSION}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=${PREFERRED_PY3_VER} python3=${PREFERRED_PY3_VER} pgsql=${PGSQL_VERSION} php=7.4 mysql=10.5m ruby=2.7"
+    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=${PREFERRED_PY3_VER} python3=${PREFERRED_PY3_VER} pgsql=${PGSQL_VERSION} php=7.4 mysql=10.5m"
 
     freebsd_make_conf_plus_option 'OPTIONS_SET' 'SASL'
     freebsd_make_conf_plus_option 'OPTIONS_UNSET' 'X11'
@@ -1073,7 +1073,7 @@ EOF
                 make clean
                 make \
                     DISABLE_MAKE_JOBS=yes \
-                    PY_FLAVOR=${PREFERRED_PY3_FLAVOR} \
+                    PY_FLAVOR=${PREFERRED_PY_FLAVOR} \
                     ${_flags} \
                     install clean
 
