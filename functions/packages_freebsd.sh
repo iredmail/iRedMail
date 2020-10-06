@@ -39,6 +39,7 @@ install_all()
     export PREFERRED_BDB_VER='5'
     export PREFERRED_PHP_VER='74'
     export PREFERRED_PY3_VER='3.8'
+    export PREFERRED_PY3_FLAVOR='py38'
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         export IREDMAIL_USE_PHP='YES'
@@ -1075,6 +1076,7 @@ EOF
                 make clean
                 make \
                     DISABLE_MAKE_JOBS=yes \
+                    PY_FLAVOR=${PREFERRED_PY3_FLAVOR} \
                     ${_flags} \
                     install clean
 
