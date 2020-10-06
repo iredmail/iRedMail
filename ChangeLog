@@ -9,7 +9,7 @@ iRedMail-1.3.2:
     * Fixed issues:
         - [Fail2ban] Not catch all Roundcube login failures.
         - tools/create_mail_user_OpenLDAP.*: missing required ldap attr/value
-          paris: `enabledService=managesievetls` and `enabledService=sievetls`.
+          pairs: `enabledService=managesievetls` and `enabledService=sievetls`.
 
     * Updated packages:
         + Roundcube webmail -> 1.4.9

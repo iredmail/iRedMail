@@ -63,7 +63,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SYS_USER_PGSQL='postgres'
     export SYS_GROUP_PGSQL='postgres'
     export PGSQL_USER_HOMEDIR='/var/db/postgres'
-    export PGSQL_VERSION='12'
+    export PGSQL_VERSION='13'
 
     export PGSQL_DATA_DIR="${PGSQL_USER_HOMEDIR}/data${PGSQL_VERSION}"
     export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"

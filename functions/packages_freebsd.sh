@@ -24,9 +24,6 @@ install_all()
 {
     # Port name under /usr/ports/. e.g. mail/dovecot.
     ALL_PORTS=''
-    # Ports which are going to be bulit with Python 2.
-    # Installed with command `make USES=python2.7 install clean`.
-    PY2_PORTS=''
 
     # Extension used for backup file during in-place editing.
     SED_EXTENSION="iredmail"
@@ -38,7 +35,7 @@ install_all()
 
     # Preferred package versions. Don't forget to update DEFAULT_VERSIONS below.
     export PREFERRED_OPENLDAP_VER='24'
-    export PREFERRED_MARIADB_VER='104'
+    export PREFERRED_MARIADB_VER='105'
     export PREFERRED_BDB_VER='5'
     export PREFERRED_PHP_VER='74'
     export PREFERRED_PY3_VER='3.8'
@@ -51,7 +48,7 @@ install_all()
     freebsd_make_conf_add 'WANT_OPENLDAP_SASL' "YES"
     freebsd_make_conf_add 'WANT_PGSQL_VER' "${PGSQL_VERSION}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=${PREFERRED_PY3_VER} python2=2.7 python3=${PREFERRED_PY3_VER} pgsql=${PGSQL_VERSION} php=7.4 mysql=10.4m ruby=2.7"
+    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=libressl python=${PREFERRED_PY3_VER} python3=${PREFERRED_PY3_VER} pgsql=${PGSQL_VERSION} php=7.4 mysql=10.5m ruby=2.7"
 
     freebsd_make_conf_plus_option 'OPTIONS_SET' 'SASL'
     freebsd_make_conf_plus_option 'OPTIONS_UNSET' 'X11'
@@ -87,7 +84,6 @@ install_all()
         graphics_php${PREFERRED_PHP_VER}-gd \
         graphics_cairo \
         www_pecl-APC \
-        lang_python27 \
         mail_dovecot \
         mail_postfix \
         mail_roundcube \
@@ -302,7 +298,7 @@ EOF
 
     # Install Python and some modules first, otherwise they may be installed as
     # package dependencies and cause port installation conflict.
-    PY2_PORTS="${PY2_PORTS} devel/py-Jinja2 net/py-netifaces security/py-bcrypt"
+    ALL_PORTS="${ALL_PORTS} devel/py-Jinja2 net/py-netifaces security/py-bcrypt"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PORTS="${ALL_PORTS} net/openldap${PREFERRED_OPENLDAP_VER}-sasl-client net/openldap${PREFERRED_OPENLDAP_VER}-server"
@@ -588,19 +584,6 @@ EOF
         ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/devel_apr1/options
     fi
     rm -f /var/db/ports/devel_apr1/options${SED_EXTENSION} &>/dev/null
-
-    # Python v2.7
-    cat > /var/db/ports/lang_python27/options <<EOF
-OPTIONS_FILE_UNSET+=DEBUG
-OPTIONS_FILE_SET+=IPV6
-OPTIONS_FILE_SET+=LIBFFI
-OPTIONS_FILE_SET+=NLS
-OPTIONS_FILE_SET+=PYMALLOC
-OPTIONS_FILE_UNSET+=SEM
-OPTIONS_FILE_SET+=THREADS
-OPTIONS_FILE_UNSET+=UCS2
-OPTIONS_FILE_SET+=UCS4
-EOF
 
     # Nginx
     cat > /var/db/ports/www_nginx/options <<EOF
@@ -893,7 +876,6 @@ EOF
 
     # dependencies for mlmmjadmin: a RESTful API server used to manage mlmmj
     ALL_PORTS="${ALL_PORTS} www/py-requests"
-    PY2_PORTS="${PY2_PORTS} www/py-requests"
 
     # Roundcube.
     cat > /var/db/ports/mail_roundcube/options <<EOF
@@ -960,10 +942,8 @@ EOF
     # Python database interfaces
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PORTS="${ALL_PORTS} net/py-ldap databases/py-pymysql"
-        PY2_PORTS="${PY2_PORTS} net/py-ldap databases/py-pymysql"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         ALL_PORTS="${ALL_PORTS} databases/py-pymysql"
-        PY2_PORTS="${PY2_PORTS} databases/py-pymysql"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ALL_PORTS="${ALL_PORTS} databases/py-psycopg2"
     fi
@@ -992,7 +972,6 @@ EOF
 
     # iRedAdmin: dependencies. webpy, Jinja2, bcrypt
     ALL_PORTS="${ALL_PORTS} www/webpy ftp/py-pycurl devel/py-simplejson"
-    PY2_PORTS="${PY2_PORTS} www/py-cheroot www/webpy ftp/py-pycurl"
 
     # Fail2ban.
     #if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
@@ -1027,7 +1006,7 @@ EOF
         ECHO_INFO "Ports tree: ${PORT_WORKDIRPREFIX}"
         ECHO_INFO "Fetching all distfiles for required ports (make fetch-recursive)"
 
-        for i in ${ALL_PORTS} ${PY2_PORTS}; do
+        for i in ${ALL_PORTS}; do
             if [ X"${i}" != X'' ]; then
                 portname="$( echo ${i} | tr '/' '_' | tr -d '[-\.]')"
                 status="\$status_fetch_port_$portname"
@@ -1118,24 +1097,11 @@ EOF
     install_all_ports()
     {
         ECHO_INFO "All ports: ${ALL_PORTS}"
-        ECHO_INFO "All ports for Python 2: ${PY2_PORTS}"
 
         start_time="$(date +%s)"
         for _port in ${ALL_PORTS}; do
-            if echo "${_port}" | grep -E '(/py|uwsgi)' &>/dev/null; then
-                # Install modules for Python 3.
-                install_port ${_port} USES=python:${PREFERRED_PY3_VER}
-            else
-                install_port ${_port}
-            fi
+            install_port ${_port}
         done
-
-        export IREDMAIL_PORT_PKG_NAME_PREFIX='py27_'
-        for _port in ${PY2_PORTS}; do
-            # Install for Python 2.
-            install_port ${_port} USES=python:2.7
-        done
-        unset IREDMAIL_PORT_PKG_NAME_PREFIX
 
         # Log and print used time
         all_used_time="$(($(date +%s)-start_time))"
@@ -1147,8 +1113,7 @@ EOF
     {
         ECHO_DEBUG "Post-install cleanup."
 
-        ECHO_DEBUG "Create symbol links for python2/3."
-        ln -sf /usr/local/bin/python2.7 /usr/local/bin/python2
+        ECHO_DEBUG "Create symbol links for python3."
         ln -sf /usr/local/bin/python${PREFERRED_PY3_VER} /usr/local/bin/python3
 
         # Create syslog.d and logrotate.d

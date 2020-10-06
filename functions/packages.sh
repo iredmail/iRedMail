@@ -558,7 +558,7 @@ EOF
             ALL_PKGS="${ALL_PKGS} curl libmnl libuuid lm_sensors nc zlib iproute"
 
             [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} PyYAML"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python2-pyyaml"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python3-pyyaml"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors netcat"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
