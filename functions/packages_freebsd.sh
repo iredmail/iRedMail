@@ -435,9 +435,8 @@ OPTIONS_FILE_UNSET+=SSHFP
 EOF
 
     cat > /var/db/ports/dns_py-dnspython/options <<EOF
-OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_UNSET+=EXAMPLES
-OPTIONS_FILE_SET+=PYCRYPTO
+OPTIONS_FILE_SET+=PYCRYPTODOME
 EOF
 
     # SpamAssassin. REQUIRED.
@@ -1042,8 +1041,6 @@ EOF
         shift 1
         _flags="$@"
 
-        ECHO_INFO "Install port: ${_port}"
-
         start_time="$(date +%s)"
         if [ X"${_port}" != X'' ]; then
             # Remove special characters in port name: -, /, '.'.
@@ -1062,12 +1059,12 @@ EOF
                 ECHO_INFO "Installing port: ${_port} ($(date '+%Y-%m-%d %H:%M:%S')) ..."
                 echo "export ${_status_name}='processing'" >> ${STATUS_FILE}
 
-                if echo "${_port}" | grep '/py' &>/dev/null; then
-                    # Some ports use zip archive instead of default `.tar.gz`.
-                    if grep '^USES' ${_port_dir}/Makefile | grep '\<zip\>' &>/dev/null; then
-                        _flags="${_flags} USES+=zip"
-                    fi
-                fi
+                #if echo "${_port}" | grep '/py' &>/dev/null; then
+                #    # Some ports use zip archive instead of default `.tar.gz`.
+                #    if grep '^USES' ${_port_dir}/Makefile | grep '\<zip\>' &>/dev/null; then
+                #        _flags="${_flags} USES+=zip"
+                #    fi
+                #fi
 
                 # Get time as a UNIX timestamp (seconds elapsed since Jan 1, 1970 0:00 UTC)
                 port_start_time="$(date +%s)"

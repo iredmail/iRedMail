@@ -48,10 +48,15 @@ backend_install()
         # `dovecot.conf` will be re-generated, `conf.d/` will be removed.
         if [ ! -f ${DOVECOT_CONF} ]; then
             cp -rf /usr/local/etc/dovecot/example-config/{dovecot.conf,conf.d} /usr/local/etc/dovecot/
+
+            # Disable ssl in sample config file. it loads non-existing ssl
+            # cert/key files, this caused `doveadm pw` command failed to run,
+            # hence no password hash generated for postmaster@<first-domain>.
+            echo 'ssl = no' >> /usr/local/etc/dovecot/conf.d/10-ssl.conf
         fi
     fi
 
-    # Hashed admin password. It requies Python.
+    # Hashed admin password with command `doveadm pw`. It requires dovecot package.
     export DOMAIN_ADMIN_PASSWD_HASH="$(generate_password_hash ${DEFAULT_PASSWORD_SCHEME} ${DOMAIN_ADMIN_PASSWD_PLAIN})"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
