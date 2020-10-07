@@ -241,18 +241,18 @@ EOF
     # PostgreSQL
     cat > /var/db/ports/databases_postgresql${PGSQL_VERSION}-server/options <<EOF
 OPTIONS_FILE_UNSET+=DEBUG
+OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_UNSET+=DTRACE
 OPTIONS_FILE_UNSET+=GSSAPI
-OPTIONS_FILE_UNSET+=ICU
 OPTIONS_FILE_SET+=INTDATE
 OPTIONS_FILE_UNSET+=LDAP
+OPTIONS_FILE_SET+=LLVM
 OPTIONS_FILE_SET+=NLS
 OPTIONS_FILE_UNSET+=OPTIMIZED_CFLAGS
 OPTIONS_FILE_UNSET+=PAM
 OPTIONS_FILE_SET+=SSL
 OPTIONS_FILE_SET+=TZDATA
-OPTIONS_FILE_UNSET+=MIT_KRB5
-OPTIONS_FILE_UNSET+=HEIMDAL_KRB5
+OPTIONS_FILE_UNSET+=XML
 EOF
 
     cat > /var/db/ports/databases_postgresql${PGSQL_VERSION}-client/options <<EOF
@@ -299,7 +299,7 @@ EOF
 
     # Install Python and some modules first, otherwise they may be installed as
     # package dependencies and cause port installation conflict.
-    ALL_PORTS="${ALL_PORTS} devel/py-Jinja2 net/py-netifaces security/py-bcrypt"
+    ALL_PORTS="${ALL_PORTS} devel/py-Jinja2 net/py-netifaces security/py-bcrypt www/py-requests"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PORTS="${ALL_PORTS} net/openldap${PREFERRED_OPENLDAP_VER}-sasl-client net/openldap${PREFERRED_OPENLDAP_VER}-server"
@@ -873,9 +873,6 @@ EOF
 
     # mlmmj: mailing list manager
     ALL_PORTS="${ALL_PORTS} mail/mlmmj"
-
-    # dependencies for mlmmjadmin: a RESTful API server used to manage mlmmj
-    ALL_PORTS="${ALL_PORTS} www/py-requests"
 
     # Roundcube.
     cat > /var/db/ports/mail_roundcube/options <<EOF
