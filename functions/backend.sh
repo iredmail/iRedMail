@@ -52,7 +52,7 @@ backend_install()
             # Disable ssl in sample config file. it loads non-existing ssl
             # cert/key files, this caused `doveadm pw` command failed to run,
             # hence no password hash generated for postmaster@<first-domain>.
-            echo 'ssl = no' >> /usr/local/etc/dovecot/conf.d/10-ssl.conf
+            rm -f /usr/local/etc/dovecot/conf.d/10-ssl.conf
         fi
     fi
 
