@@ -495,7 +495,7 @@ EOF
     # web.py, dnspython, requests, jinja2, mysqldb or pymysql, simplejson.
     if [ X"${DISTRO}" == X'RHEL' ]; then
         if [ X"${DISTRO_VERSION}" == X'7' ]; then
-            ALL_PKGS="${ALL_PKGS} python36-jinja2 python36-netifaces python36-pycurl python36-bcrypt python36-dns python36-simplejson"
+            ALL_PKGS="${ALL_PKGS} python36-jinja2 python36-netifaces python36-bcrypt python36-dns python36-simplejson"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] \
                 && ALL_PKGS="${ALL_PKGS} python36-PyMySQL" \
@@ -505,10 +505,10 @@ EOF
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
 
         elif [ X"${DISTRO_VERSION}" == X'8' ]; then
-            ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-pycurl python3-simplejson"
+            ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-simplejson"
         fi
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-netifaces python3-pycurl python3-bcrypt python3-dnspython python3-simplejson"
+        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-netifaces python3-bcrypt python3-dnspython python3-simplejson"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             if [ X"${DISTRO}" == X'DEBIAN' -a X"${DISTRO_VERSION}" == X'9' ]; then
