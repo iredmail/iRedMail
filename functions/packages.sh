@@ -80,9 +80,6 @@ install_all()
     # web.py.
     PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
 
-    # python-ldap.
-    # gcc python3-devel openldap-devel
-
     # uwsgi.
     # Required by mlmmjadmin, iredadmin.
     if [ X"${DISTRO}" == X'RHEL' ]; then
@@ -527,7 +524,7 @@ EOF
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py3-jinja2 py3-flup py3-bcrypt py3-curl py3-netifaces py3-dnspython py3-simplejson"
 
-        [ X"${BACKEND}" == X'OPENLDAP' ]    && ALL_PKGS="${ALL_PKGS} py3-ldap py-mysqlclient"
+        [ X"${BACKEND}" == X'OPENLDAP' ]    && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ]       && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
         [ X"${BACKEND}" == X'PGSQL' ]       && ALL_PKGS="${ALL_PKGS} py3-psycopg2"
     fi
@@ -546,7 +543,7 @@ EOF
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # No port for fail2ban. Install from source tarball with pip later.
             # rc script will be generated from sample file later.
-            ALL_PKGS="${ALL_PKGS} py-pip py3-pip geolite2-country geolite2-city"
+            ALL_PKGS="${ALL_PKGS} py3-pip geolite2-country geolite2-city"
         fi
     fi
 

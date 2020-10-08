@@ -28,24 +28,28 @@ postfix_config_basic()
 {
     ECHO_INFO "Configure Postfix (MTA)."
 
-    # Reset `inet_interfaces` to avoid invalid value which may cause fatal
-    # error while getting value with command `postconf <var>`.
-    postconf -e inet_interfaces='all'
-
     #
     # main.cf
     #
-    # Get values with default main.cf before we modify it.
-    export queue_directory="$(postconf queue_directory | awk '{print $NF}')"
-    export command_directory="$(postconf command_directory | awk '{print $NF}')"
-    export daemon_directory="$(postconf daemon_directory | awk '{print $NF}')"
-    export data_directory="$(postconf data_directory | awk '{print $NF}')"
+    export queue_directory="$(postconf -d queue_directory | awk '{print $NF}')"
+    export command_directory="$(postconf -d command_directory | awk '{print $NF}')"
+    export daemon_directory="$(postconf -d daemon_directory | awk '{print $NF}')"
+    export data_directory="$(postconf -d data_directory | awk '{print $NF}')"
 
-    export sendmail_path="$(postconf sendmail_path | awk '{print $NF}')"
-    export newaliases_path="$(postconf newaliases_path | awk '{print $NF}')"
-    export mailq_path="$(postconf mailq_path | awk '{print $NF}')"
-    export mail_owner="$(postconf mail_owner | awk '{print $NF}')"
-    export setgid_group="$(postconf setgid_group | awk '{print $NF}')"
+    export sendmail_path="$(postconf -d sendmail_path | awk '{print $NF}')"
+    export newaliases_path="$(postconf -d newaliases_path | awk '{print $NF}')"
+    export mailq_path="$(postconf -d mailq_path | awk '{print $NF}')"
+    export mail_owner="$(postconf -d mail_owner | awk '{print $NF}')"
+    export setgid_group="$(postconf -d setgid_group | awk '{print $NF}')"
+
+    if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+        export setgid_group='maildrop'
+    elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+        export command_directory='/usr/local/sbin'
+        export daemon_directory='/usr/local/libexec/postfix'
+        export mail_owner='_postfix'
+        export setgid_group='_postdrop'
+    fi
 
     # Copy sample main.cf and update values.
     backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
@@ -124,7 +128,7 @@ postfix_config_basic()
     #
     # master.cf
     #
-    _postfix_version="$(postconf mail_version | awk '{print $NF}')"
+    _postfix_version="$(postconf -d mail_version | awk '{print $NF}')"
     if echo ${_postfix_version} | grep '^3' &>/dev/null; then
         # Postfix v3
         postconf -e compatibility_level=2
