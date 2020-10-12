@@ -6,7 +6,7 @@ CREATE TABLE banned (
     -- Banned client IP address
     ip VARCHAR(46) NOT NULL DEFAULT '',
     -- A list of banned network ports, separated by comma
-    ports VARCHAR(255) NOT NULL DEFAULT '',
+    ports VARCHAR(100) NOT NULL DEFAULT '',
     -- protocol: tcp, udp, ...
     protocol VARCHAR(10) NOT NULL DEFAULT 'tcp',
     -- Fail2ban jail name
