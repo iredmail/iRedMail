@@ -231,6 +231,12 @@ export UNSUPPORTED_RELEASE='NO'
 
 # Detect distro name and release version.
 if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
+    export DISTRO_VERSION=$(awk -F'"' '/^VERSION_ID=/ {print $2}' /etc/os-release)
+
+    # Debian: 9: stretch, 10: buster
+    # Ubuntu: 18.04: bionic, 20.04: focal
+    export DISTRO_CODENAME=$(awk -F'=' '/^VERSION_CODENAME=/ {print $2}' /etc/os-release)
+
     # Directory of RC scripts.
     export DIR_RC_SCRIPTS='/etc/init.d'
 
@@ -239,28 +245,16 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         export DISTRO='RHEL'
 
         # Get distribution version
-        if grep '\ 7\.' /etc/redhat-release &>/dev/null; then
-            # version 7.x
-            export DISTRO_VERSION='7'
-        elif grep '\ 8\.' /etc/redhat-release &>/dev/null; then
-            # version 8.x
-            export DISTRO_VERSION='8'
-        else
+        if [[ X"${DISTRO_VERSION}" != X'7' ]] && [[ X"${DISTRO_VERSION}" != X'8' ]]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
 
         # Get distribution name as DISTRO_CODENAME
-        if grep '^Red' /etc/redhat-release &>/dev/null; then
+        if [ -x /etc/centos-release ]; then
+            export DISTRO_CODENAME='centos'
+        else
             # RHEL
             export DISTRO_CODENAME='rhel'
-        elif grep '^CentOS' /etc/redhat-release &>/dev/null; then
-            # CentOS
-            export DISTRO_CODENAME='centos'
-        elif grep '^Scientific' /etc/redhat-release &>/dev/null; then
-            # Scientific Linux
-            export DISTRO_CODENAME='scientific'
-        else
-            export UNSUPPORTED_RELEASE='YES'
         fi
 
         if [ X"${DISTRO_VERSION}" == X'8' ]; then
@@ -271,29 +265,15 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Ubuntu
         export DISTRO='UBUNTU'
 
-        # Ubuntu version number and code name:
-        #   - 18.04: bionic
-        #   - 20.04: focal
-        export DISTRO_VERSION="$(awk -F'=' '/^DISTRIB_RELEASE/ {print $2}' /etc/lsb-release)"
-        export DISTRO_CODENAME="$(awk -F'=' '/^DISTRIB_CODENAME/ {print $2}' /etc/lsb-release)"
-
         # Unsupported releases: 16.x, 17.x, 18.10, 19.x
-        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18\.10|19\.)' &>/dev/null ; then
+        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18\.10|19\.|21\.)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then
         # Debian
         export DISTRO='DEBIAN'
 
-        # Set distro code name and unsupported releases.
-        if grep -i '^10' /etc/debian_version &>/dev/null; then
-            export DISTRO_VERSION='10'
-            export DISTRO_CODENAME='buster'
-        elif grep '^9' /etc/debian_version &>/dev/null || \
-            grep -i '^stretch' /etc/debian_version &>/dev/null; then
-            export DISTRO_VERSION='9'
-            export DISTRO_CODENAME='stretch'
-        else
+        if [[ X"${DISTRO_VERSION}" != X'9' ]] && [[ X"${DISTRO_VERSION}" != X'10' ]]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     else
