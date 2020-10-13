@@ -178,6 +178,7 @@ pgsql_import_vmail_users()
     su - ${SYS_USER_PGSQL} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/init_vmail_db.sql" >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Create tables in ${VMAIL_DB_NAME} database."
+    export PGPASSFILE="${PGSQL_DOT_PGPASS}"
     su - ${SYS_USER_PGSQL} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/iredmail.sql" >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Grant permissions."
