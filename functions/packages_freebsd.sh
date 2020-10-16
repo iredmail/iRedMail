@@ -1090,13 +1090,14 @@ EOF
     {
         ECHO_INFO "All ports: ${ALL_PORTS}"
 
-        start_time="$(date +%s)"
+        all_start_time="$(date +%s)"
         for _port in ${ALL_PORTS}; do
             install_port ${_port}
         done
+        all_end_time="$(date +%s)"
 
         # Log and print used time
-        all_used_time="$(($(date +%s)-start_time))"
+        all_used_time="$((all_end_time - all_start_time))"
         ECHO_INFO "Total time of ports compiling: ${all_used_time} seconds, ~= $((all_used_time/60)) minute(s)"
     }
 
