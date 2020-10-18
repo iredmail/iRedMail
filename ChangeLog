@@ -7,6 +7,8 @@ iRedMail-1.3.2:
         + [Amavisd] Log matched virus database name.
 
     * Fixed issues:
+        - [FreeBSD] Can not correctly generate random password on FreeBSD
+          12.1-RELEASE-p10.
         - [Fail2ban] Not catch all Roundcube login failures.
         - tools/create_mail_user_OpenLDAP.*: missing required ldap attr/value
           pairs: `enabledService=managesievetls` and `enabledService=sievetls`.
