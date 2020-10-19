@@ -97,9 +97,6 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     export SYS_USER_LDAP='_openldap'
     export SYS_GROUP_LDAP='_openldap'
 
-    # mdb is not available on OpenBSD.
-    export OPENLDAP_DEFAULT_DBTYPE='hdb'
-
     export OPENLDAP_DB_CONFIG_SAMPLE='/usr/local/share/examples/openldap/DB_CONFIG'
 
     # Module related.

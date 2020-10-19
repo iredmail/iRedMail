@@ -73,8 +73,7 @@ install_all()
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python3-setuptools python3-pip python3-wheel python3-requests"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # 3.8 is default Python version on OpenBSD 6.8.
-        ALL_PKGS="${ALL_PKGS} py3-setuptools py3-pip py3-requests"
+        ALL_PKGS="${ALL_PKGS} py3-setuptools py3-pip py3-wheel py3-requests"
     fi
 
     # web.py.
@@ -655,13 +654,10 @@ EOF
                 ln -sf /usr/local/bin/php-fpm-${OB_PHP_VERSION} /usr/local/bin/php-fpm >> ${INSTALL_LOG} 2>&1
             fi
 
-            for v in 3.9 3.8 3.7 3.6 3.5 3.4; do
-                if [ -x /usr/local/bin/python${v} ]; then
-                    ECHO_DEBUG "Create symbol link: /usr/local/bin/python${v} -> /usr/local/bin/python3"
-                    ln -sf /usr/local/bin/python${v} /usr/local/bin/python3
-                    break
-                fi
-            done
+            ECHO_DEBUG "Create symbol link: /usr/local/bin/python${PYTHON_VERSION} -> /usr/local/bin/python3"
+            if [ ! -e /usr/local/bin/python3 ]; then
+                ln -sf /usr/local/bin/python${PYTHON_VERSION} /usr/local/bin/python3
+            fi
 
             # Fail2ban.
             if [ X"${USE_FAIL2BAN}" == X'YES' ]; then

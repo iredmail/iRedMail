@@ -108,19 +108,13 @@ EOF
     perl -pi -e 's#PH_LDAP_ROOTDN#$ENV{LDAP_ROOTDN}#g' ${OPENLDAP_SLAPD_CONF}
     perl -pi -e 's#PH_LDAP_ROOTPW_SSHA#$ENV{LDAP_ROOTPW_SSHA}#g' ${OPENLDAP_SLAPD_CONF}
 
-    if [ X"${OPENLDAP_DEFAULT_DBTYPE}" == X'mdb' ]; then
-        # maxsize is required by mdb
-        perl -pi -e 's/^#(maxsize.*)/${1}/g' ${OPENLDAP_SLAPD_CONF}
-    elif [ X"${OPENLDAP_DEFAULT_DBTYPE}" == X'bdb' \
-        -o X"${OPENLDAP_DEFAULT_DBTYPE}" == X'hdb' ]; then
-        # cachesize is required by hdb and bdb.
-        perl -pi -e 's/^#(cachesize.*)//g' ${OPENLDAP_SLAPD_CONF}
-    fi
-
-    # use slapd.conf insteald of slapd.d
     if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        # use slapd.conf insteald of slapd.d
         perl -pi -e 's#^(SLAPD_CONF=).*#${1}"$ENV{OPENLDAP_SLAPD_CONF}"#' ${OPENLDAP_SYSCONFIG_CONF}
         perl -pi -e 's#^(SLAPD_PIDFILE=).*#${1}"$ENV{OPENLDAP_PID_FILE}"#' ${OPENLDAP_SYSCONFIG_CONF}
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # Required on OpenBSD for mdb backend.
+        perl -pi -e 's/^#(envflags.*)/${1}/' ${OPENLDAP_SLAPD_CONF}
     fi
 
     # Password verification with sha2.
@@ -207,11 +201,6 @@ openldap_data_initialize()
     ECHO_DEBUG "Create instance directory for openldap tree: ${LDAP_DATA_DIR}."
     mkdir -p ${LDAP_DATA_DIR}
 
-    # Get DB_CONFIG.example.
-    if [ X"${OPENLDAP_DEFAULT_DBTYPE}" == X'hdb' ]; then
-        cp -f ${OPENLDAP_DB_CONFIG_SAMPLE} ${LDAP_DATA_DIR}/DB_CONFIG
-    fi
-
     chown -R ${SYS_USER_LDAP}:${SYS_GROUP_LDAP} ${OPENLDAP_DATA_DIR}
     chmod -R 0700 ${OPENLDAP_DATA_DIR}
 
@@ -244,7 +233,6 @@ OpenLDAP:
     * Data dir and files:
         - ${OPENLDAP_DATA_DIR}
         - ${LDAP_DATA_DIR}
-        - ${LDAP_DATA_DIR}/DB_CONFIG (available if backend is bdb or hdb)
     * RC script:
         - ${OPENLDAP_RC_SCRIPT}
     * See also:

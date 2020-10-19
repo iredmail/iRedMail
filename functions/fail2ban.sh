@@ -27,6 +27,13 @@ _enable_jail() {
     fi
 }
 
+fail2ban_post_installation() {
+    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+        # pip doesn't generate `/etc/fail2an/*` correctly.
+        cp -rf /usr/local/lib/python${PYTHON_VERSION}/site-packages/etc/fail2ban /etc/
+    fi
+}
+
 fail2ban_initialize_db() {
     ECHO_DEBUG "Import Fail2ban database and grant privileges."
 
@@ -188,6 +195,7 @@ EOF
 fail2ban_setup() {
     ECHO_INFO "Configure Fail2ban (authentication failure monitor)."
 
+    check_status_before_run fail2ban_post_installation
     check_status_before_run fail2ban_initialize_db
     check_status_before_run fail2ban_config
     check_status_before_run fail2ban_syslog_setup
