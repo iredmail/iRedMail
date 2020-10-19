@@ -120,7 +120,7 @@ cleanup_replace_firewall_rules()
                         perl -pi -e 's#ZONE=public#ZONE=iredmail#g' *
                     fi
 
-                    service_control enable firewalld >> ${INSTALL_LOG} 2>&1
+                    service_control enable firewalld
 
                 elif [ X"${USE_NFTABLES}" == X'YES' ]; then
                     cp -f ${SAMPLE_DIR}/firewall/nftables.conf ${NFTABLES_CONF}
@@ -132,13 +132,13 @@ cleanup_replace_firewall_rules()
                         perl -pi -e 's#(.*) 22 (.*)#${1} {$ENV{SSHD_PORTS_WITH_COMMA}} ${2}#' ${NFTABLES_CONF}
                     fi
 
-                    service_control enable nftables >> ${INSTALL_LOG} 2>&1
+                    service_control enable nftables
                 else
                     cp -f ${SAMPLE_DIR}/firewall/iptables/iptables.rules ${FIREWALL_RULE_CONF}
                     cp -f ${SAMPLE_DIR}/firewall/iptables/ip6tables.rules ${FIREWALL_RULE_CONF6}
 
-                    service_control enable iptables >> ${INSTALL_LOG} 2>&1
-                    service_control enable ip6tables >> ${INSTALL_LOG} 2>&1
+                    service_control enable iptables
+                    service_control enable ip6tables
                 fi
 
                 # Replace HTTP port.
@@ -147,7 +147,7 @@ cleanup_replace_firewall_rules()
 
             elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
                 # Enable pf
-                service_control enable pf >> ${INSTALL_LOG} 2>&1
+                service_control enable pf
 
                 # Whitelist file required by spamd(8)
                 touch /etc/mail/nospamd
@@ -169,10 +169,10 @@ cleanup_replace_firewall_rules()
                         if [ X"${USE_FIREWALLD}" == X'YES' ]; then
                             firewall-cmd --complete-reload >> ${INSTALL_LOG} 2>&1
                         elif [ X"${USE_NFTABLES}" == X'YES' ]; then
-                            service_control restart nftables >> ${INSTALL_LOG} 2>&1
+                            service_control restart nftables
                         else
-                            service_control restart iptables >> ${INSTALL_LOG} 2>&1
-                            service_control restart ip6tables >> ${INSTALL_LOG} 2>&1
+                            service_control restart iptables
+                            service_control restart ip6tables
                         fi
                     fi
                     ;;

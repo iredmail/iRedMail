@@ -32,7 +32,7 @@ mysql_initialize_db()
     backup_file ${MYSQL_MY_CNF}
 
     ECHO_DEBUG "Stop MySQL service before initializing database or updating my.cnf."
-    service_control stop ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    service_control stop ${MYSQL_RC_SCRIPT_NAME}
     sleep 3
 
     # Initial MySQL database first
@@ -101,7 +101,7 @@ mysql_initialize_db()
     fi
 
     ECHO_DEBUG "Restart service: ${MYSQL_RC_SCRIPT_NAME}."
-    service_control restart ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    service_control restart ${MYSQL_RC_SCRIPT_NAME}
 
     ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
     sleep 10
@@ -115,7 +115,7 @@ mysql_initialize_db()
             perl -pi -e 's#^(skip_grant_tables.*)##g' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
 
             ECHO_DEBUG "Restart service: ${MYSQL_RC_SCRIPT_NAME}."
-            service_control restart ${MYSQL_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+            service_control restart ${MYSQL_RC_SCRIPT_NAME}
 
             ECHO_DEBUG "Sleep 10 seconds for MySQL daemon initialization ..."
             sleep 10

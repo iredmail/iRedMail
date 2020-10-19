@@ -54,6 +54,8 @@ backend_install()
             # hence no password hash generated for postmaster@<first-domain>.
             rm -f /usr/local/etc/dovecot/conf.d/10-ssl.conf
         fi
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        rm -f /etc/dovecot/conf.d/10-ssl.conf
     fi
 
     # Hashed admin password with command `doveadm pw`. It requires dovecot package.

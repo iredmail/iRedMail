@@ -144,7 +144,7 @@ fail2ban_config() {
         # Copy rc script and enable service.
         cp ${SAMPLE_DIR}/fail2ban/openbsd/rc /etc/rc.d/fail2ban
         chmod 0755 /etc/rc.d/fail2ban
-        service_control enable fail2ban >> ${INSTALL_LOG} 2>&1
+        service_control enable fail2ban
     fi
 
     echo 'export status_fail2ban_config="DONE"' >> ${STATUS_FILE}

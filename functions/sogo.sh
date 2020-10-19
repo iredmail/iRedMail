@@ -223,7 +223,7 @@ EOF
     chmod 0400 ${SOGO_SIEVE_CREDENTIAL_FILE}
 
     # Start SOGo service to avoid cron job error.
-    service_control restart ${SOGO_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    service_control restart ${SOGO_RC_SCRIPT_NAME}
     sleep 3
 
     add_postfix_alias ${SYS_USER_SOGO} ${SYS_USER_ROOT}

@@ -331,11 +331,11 @@ service_control()
         ECHO_DEBUG "Service control: ${action} ${services}."
 
         if [ X"${USE_SYSTEMD}" == X'YES' ]; then
-            systemctl ${action} ${services}
+            systemctl ${action} ${services} >> ${INSTALL_LOG} 2>&1
         else
             for srv in ${services}; do
                 rc_script="${DIR_RC_SCRIPTS}/$srv"
-                ${rc_script} $action
+                ${rc_script} $action >> ${INSTALL_LOG} 2>&1
             done
         fi
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then

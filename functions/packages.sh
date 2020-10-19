@@ -42,8 +42,8 @@ install_all()
 
         # OpenBSD-6.7
         OB_PKG_PHP_VER='%7.4'
-        OB_PKG_OPENLDAP_SERVER_VER='-2.4.49'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.49'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.4.53'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.53'
     fi
 
     # Install PHP if there's a web server running -- php is too popular.
@@ -73,12 +73,14 @@ install_all()
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python3-setuptools python3-pip python3-wheel python3-requests"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        # 3.7 is default Python version on OpenBSD 6.7.
-        ALL_PKGS="${ALL_PKGS} python%3.7 py3-setuptools py3-pip py3-requests"
+        # 3.8 is default Python version on OpenBSD 6.8.
+        ALL_PKGS="${ALL_PKGS} py3-setuptools py3-pip py3-requests"
     fi
 
     # web.py.
-    PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
+    if [ X"${DISTRO}" != X'OPENBSD' ]; then
+        PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
+    fi
 
     # uwsgi.
     # Required by mlmmjadmin, iredadmin.
@@ -348,7 +350,7 @@ install_all()
         [ X"${BACKEND}" == X'PGSQL' ]   && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython"
+        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy"
 
         [ X"${BACKEND}" == X'OPENLDAP' ]    && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ]       && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
@@ -477,7 +479,7 @@ EOF
         [ X"${BACKEND}" == X'PGSQL' ]    && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython"
+        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy"
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} py3-psycopg2"
@@ -522,7 +524,7 @@ EOF
         [ X"${BACKEND}" == X'PGSQL' ]   && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py3-jinja2 py3-flup py3-bcrypt py3-curl py3-netifaces py3-dnspython py3-simplejson"
+        ALL_PKGS="${ALL_PKGS} py3-jinja2 py3-flup py3-bcrypt py3-curl py3-netifaces py3-dnspython py3-simplejson py3-webpy"
 
         [ X"${BACKEND}" == X'OPENLDAP' ]    && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ]       && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
@@ -619,11 +621,11 @@ EOF
         # Enable/Disable services.
         if [ X"${DISTRO}" == X'OPENBSD' ]; then
             for srv in ${PKG_SCRIPTS}; do
-                service_control enable ${srv} >> ${INSTALL_LOG} 2>&1
+                service_control enable ${srv}
             done
         else
-            service_control enable ${ENABLED_SERVICES} >> ${INSTALL_LOG} 2>&1
-            service_control disable ${DISABLED_SERVICES} >> ${INSTALL_LOG} 2>&1
+            service_control enable ${ENABLED_SERVICES}
+            service_control disable ${DISABLED_SERVICES}
         fi
 
         cat >> ${TIP_FILE} <<EOF

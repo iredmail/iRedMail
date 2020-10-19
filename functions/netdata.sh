@@ -51,9 +51,9 @@ netdata_config()
 
     # Enable service.
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
-        service_control enable 'netdata_enable' 'YES' >> ${INSTALL_LOG} 2>&1
+        service_control enable 'netdata_enable' 'YES'
     else
-        service_control enable ${NETDATA_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+        service_control enable ${NETDATA_RC_SCRIPT_NAME}
     fi
 
     backup_file ${NETDATA_CONF}

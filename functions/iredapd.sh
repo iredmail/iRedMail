@@ -55,7 +55,7 @@ iredapd_install()
             cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.debian ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
         elif [ X"${DISTRO}" == X'FREEBSD' ]; then
             cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.freebsd ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
-            service_control enable 'iredapd_enable' 'YES' >> ${INSTALL_LOG} 2>&1
+            service_control enable 'iredapd_enable' 'YES'
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
         else
@@ -66,7 +66,7 @@ iredapd_install()
     fi
 
     ECHO_DEBUG "Make iredapd starting after system startup."
-    service_control enable iredapd >> ${INSTALL_LOG} 2>&1
+    service_control enable iredapd
     export ENABLED_SERVICES="${ENABLED_SERVICES} iredapd"
 
     # Copy sample config file.

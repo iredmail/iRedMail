@@ -250,7 +250,7 @@ iredadmin_rc_setup()
         perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/freebsd.ini
         perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/freebsd.ini
 
-        service_control enable 'iredadmin_enable' 'YES' >> ${INSTALL_LOG} 2>&1
+        service_control enable 'iredadmin_enable' 'YES'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/iredadmin.openbsd ${DIR_RC_SCRIPTS}/iredadmin
         chmod 0755 ${DIR_RC_SCRIPTS}/iredadmin
@@ -260,7 +260,7 @@ iredadmin_rc_setup()
     fi
 
     ECHO_DEBUG "Make sure iredadmin starting after system startup."
-    service_control enable iredadmin >> ${INSTALL_LOG} 2>&1
+    service_control enable iredadmin
     export ENABLED_SERVICES="${ENABLED_SERVICES} iredadmin"
 
     cat >> ${TIP_FILE} <<EOF

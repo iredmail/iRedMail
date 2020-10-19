@@ -210,7 +210,7 @@ EOF
     else
         if [ X"${DISTRO}" == X'FREEBSD' ]; then
             cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/${MLMMJADMIN_RC_SCRIPT_NAME}.freebsd ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
-            service_control enable 'mlmmjadmin_enable' 'YES' >> ${INSTALL_LOG} 2>&1
+            service_control enable 'mlmmjadmin_enable' 'YES'
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.openbsd ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
             chmod 0755 ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
@@ -219,7 +219,7 @@ EOF
     fi
 
     ECHO_DEBUG "Enable mlmmjadmin service."
-    service_control enable ${MLMMJADMIN_RC_SCRIPT_NAME} >> ${INSTALL_LOG} 2>&1
+    service_control enable ${MLMMJADMIN_RC_SCRIPT_NAME}
     export ENABLED_SERVICES="${ENABLED_SERVICES} ${MLMMJADMIN_RC_SCRIPT_NAME}"
 
     write_iredmail_kv mlmmjadmin_api_token "${MLMMJADMIN_API_AUTH_TOKEN}"
