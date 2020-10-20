@@ -347,7 +347,7 @@ service_control()
             # Already handled in functions/*.sh.
             :
         else
-            ${DIR_RC_SCRIPTS}/${service} $action >/dev/null
+            ${DIR_RC_SCRIPTS}/${service} $action >> ${INSTALL_LOG} 2>&1
         fi
     elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
         for srv in ${services}; do
