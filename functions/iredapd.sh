@@ -160,7 +160,7 @@ iredapd_config()
     perl -pi -e 's#^(srs_reverse_port).*#${1} = "$ENV{IREDAPD_SRS_REVERSE_PORT}"#' ${IREDAPD_CONF}
     perl -pi -e 's#^(srs_domain).*#${1} = "$ENV{HOSTNAME}"#' ${IREDAPD_CONF}
 
-    _srs_secret="$(${RANDOM_STRING})"
+    export _srs_secret="$(${RANDOM_STRING})"
     perl -pi -e 's#^(srs_secrets).*#${1} = ["$ENV{_srs_secret}"]#' ${IREDAPD_CONF}
 
     # Log
@@ -220,6 +220,22 @@ iredapd_config()
 
     # mlmmjadmin integration.
     perl -pi -e 's#^(mlmmjadmin_api_auth_token).*#${1} = "$ENV{MLMMJADMIN_API_AUTH_TOKEN}"#' ${IREDAPD_CONF}
+
+    if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X'MYSQL' ]; then
+        # Set correct SQL driver for SQLAlchemy. Defaults to `MySQLdb`.
+        # OpenBSD 6.7 and earlier releases doesn't have binary package `py3-pymysql`.
+        if [ X"${DISTRO}" == X'OPENBSD' ]; then
+            if [ X"${DISTRO_VERSION}" == X'6.8' ]; then
+                export SQL_DB_DRIVER='pymysql'
+            fi
+        else
+            export SQL_DB_DRIVER='pymysql'
+        fi
+
+        if [ X"${SQL_DB_DRIVER}" != X'' ]; then
+            echo "SQL_DB_DRIVER = '${SQL_DB_DRIVER}'" >> ${IREDAPD_CONF}
+        fi
+    fi
 
     if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
         echo "MYNETWORKS = ['${LOCAL_ADDRESS}']" >> ${IREDAPD_CONF}
