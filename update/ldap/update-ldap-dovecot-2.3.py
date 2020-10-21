@@ -39,15 +39,15 @@ for (dn, entry) in allUsers:
 
     _update = False
     if 'imaptls' not in enabledService:
-        enabledService += ['imaptls']
+        enabledService += [b'imaptls']
         _update = True
 
     if 'pop3tls' not in enabledService:
-        enabledService += ['pop3tls']
+        enabledService += [b'pop3tls']
         _update = True
 
     if 'smtptls' not in enabledService:
-        enabledService += ['smtptls']
+        enabledService += [b'smtptls']
         _update = True
 
     if _update:
