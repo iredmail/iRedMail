@@ -32,6 +32,9 @@ export LIST_OF_OPTIONAL_COMPONENTS=''
 export DIALOG_SELECTABLE_FAIL2BAN='YES'
 if [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DIALOG_SELECTABLE_FAIL2BAN='NO'
+elif [ X"${DISTRO}" == X'OpenBSD' -a X"${DISTRO_VERSION}" == X'6.8' ]; then
+    # Fail2ban-0.11.1 doesn't support Python 3.8.
+    export DIALOG_SELECTABLE_FAIL2BAN='NO'
 fi
 
 # Web applications
