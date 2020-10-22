@@ -19,10 +19,12 @@ conn.bind_s(bind_dn, bind_pw)
 
 # Get all mail users.
 print("* Get mail accounts ...")
-allUsers = conn.search_s(basedn,
-                         ldap.SCOPE_SUBTREE,
-                         "(&(objectClass=mailUser)(|(enabledService=imapsecured)(enabledService=pop3secured)(enabledService=smtpsecured)))",
-                         ['mail', 'enabledService'])
+allUsers = conn.search_s(
+    basedn,
+    ldap.SCOPE_SUBTREE,
+    "(&(objectClass=mailUser)(|(enabledService=imapsecured)(enabledService=pop3secured)(enabledService=smtpsecured)(enabledService=sievesecured)(enabledService=managesievesecured)))",
+    ['mail', 'enabledService'],
+)
 
 total = len(allUsers)
 print("* Updating {} user(s).".format(total))
@@ -32,22 +34,26 @@ count = 1
 
 for (dn, entry) in allUsers:
     mail = entry['mail'][0]
-    if 'enabledService' not in entry:
+    if b'enabledService' not in entry:
         continue
 
     enabledService = entry['enabledService']
 
     _update = False
-    if 'imaptls' not in enabledService:
+    if b'imaptls' not in enabledService:
         enabledService += [b'imaptls']
         _update = True
 
-    if 'pop3tls' not in enabledService:
+    if b'pop3tls' not in enabledService:
         enabledService += [b'pop3tls']
         _update = True
 
-    if 'smtptls' not in enabledService:
+    if b'smtptls' not in enabledService:
         enabledService += [b'smtptls']
+        _update = True
+
+    if b'sievetls' not in enabledService:
+        enabledService += [b'sievetls']
         _update = True
 
     if _update:
