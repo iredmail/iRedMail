@@ -21,7 +21,7 @@
 #---------------------------------------------------------------------
 
 export IREDADMIN_VERSION='1.1'
-export IREDADMIN_TARBALL="iRedAdmin-${IREDADMIN_VERSION}.tar.bz2"
+export IREDADMIN_TARBALL="iRedAdmin-${IREDADMIN_VERSION}.tar.gz"
 export IREDADMIN_HTTPD_ROOT="${HTTPD_SERVERROOT}/iRedAdmin-${IREDADMIN_VERSION}"
 export IREDADMIN_HTTPD_ROOT_SYMBOL_LINK="${HTTPD_SERVERROOT}/iredadmin"
 
