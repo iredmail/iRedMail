@@ -3,6 +3,9 @@ iRedMail-1.4:
         - Fail2ban can not store banned IP address when its country name
           contains quotes.
 
+    * Updated packages:
+        + mlmmjadmin -> 3.0.5
+
 iRedMail-1.3.2:
     * Supports new distribution releases:
         + OpenBSD 6.8. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.
