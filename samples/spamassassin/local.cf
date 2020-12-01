@@ -102,7 +102,7 @@ bayes_auto_expire  1
 # Turn off ALL DNSBL (DNS Blocklists)
 #skip_rbl_checks  1
 # Turn off DNSBL: rhsbl.ahbl.org.
-# Check /usr/share/spamassassin/20_dnsbl_teest.cf to see the rule name.
+# Check /usr/share/spamassassin/20_dnsbl_test.cf to see the rule name.
 score DNS_FROM_AHBL_RHSBL 0
 
 score URIBL_AB_SURBL 0 0.3306 0 0.3812
