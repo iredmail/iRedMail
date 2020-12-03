@@ -109,7 +109,7 @@ if [[ X"${_action}" == X"ban" ]]; then
     shift 6
     _rest="$@"
     # Avoid SQL injection.
-    printf -v _loglines "${_rest}"
+    printf -v _loglines "${_rest//\'/\'\'}"
 
     if [[ X"${_ip}" == X'' ]] || \
         [[ X"${_ports}" == X'' ]] || \
