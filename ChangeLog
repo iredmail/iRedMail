@@ -4,7 +4,7 @@ iRedMail-1.4:
           contains quotes.
 
     * Updated packages:
-        + mlmmjadmin -> 3.0.6
+        + mlmmjadmin -> 3.0.7
 
 iRedMail-1.3.2:
     * Supports new distribution releases:
