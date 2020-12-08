@@ -5,6 +5,7 @@ iRedMail-1.4:
 
     * Updated packages:
         + mlmmjadmin -> 3.0.7
+        + iRedAPD -> 4.7
 
 iRedMail-1.3.2:
     * Supports new distribution releases:
