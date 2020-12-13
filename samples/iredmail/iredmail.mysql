@@ -75,6 +75,38 @@ CREATE TABLE IF NOT EXISTS moderators (
     INDEX (dest_domain)
 ) ENGINE=InnoDB;
 
+-- (mlmmj) mailing list owners.
+CREATE TABLE IF NOT EXISTS maillist_owners (
+    id BIGINT(20) UNSIGNED AUTO_INCREMENT,
+    -- email address of mailing list
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    -- email address of owner
+    owner VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    -- domain part of owner email address
+    owner_domain VARCHAR(255) NOT NULL DEFAULT '',
+    PRIMARY KEY (id),
+    UNIQUE INDEX (address, owner),
+    INDEX (domain),
+    INDEX (owner_domain)
+) ENGINE=InnoDB;
+
+-- (mlmmj) mailing list members.
+CREATE TABLE IF NOT EXISTS maillist_members (
+    id BIGINT(20) UNSIGNED AUTO_INCREMENT,
+    -- email address of mailing list
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    -- email address of owner
+    member VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    -- domain part of member email address
+    member_domain VARCHAR(255) NOT NULL DEFAULT '',
+    PRIMARY KEY (id),
+    UNIQUE INDEX (address, member),
+    INDEX (domain),
+    INDEX (member_domain)
+) ENGINE=InnoDB;
+
 -- Forwardings. it contains
 --  - members of mail alias account
 --  - per-account alias addresses

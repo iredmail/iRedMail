@@ -72,6 +72,32 @@ CREATE UNIQUE INDEX idx_moderators_address_moderator ON moderators (address, mod
 CREATE INDEX idx_moderators_domain ON moderators (domain);
 CREATE INDEX idx_moderators_dest_domain ON moderators (dest_domain);
 
+CREATE TABLE maillist_owners (
+    id SERIAL PRIMARY KEY,
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    owner VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    owner_domain VARCHAR(255) NOT NULL DEFAULT ''
+);
+CREATE UNIQUE INDEX idx_maillist_owners_address_owner ON maillist_owners (address, owner);
+CREATE INDEX idx_maillist_owners_address ON maillist_owners (address);
+CREATE INDEX idx_maillist_owners_owner ON maillist_owners (owner);
+CREATE INDEX idx_maillist_owners_domain ON maillist_owners (domain);
+CREATE INDEX idx_maillist_owners_owner_domain ON maillist_owners (owner_domain);
+
+CREATE TABLE maillist_members (
+    id SERIAL PRIMARY KEY,
+    address VARCHAR(255) NOT NULL DEFAULT '',
+    member VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    member_domain VARCHAR(255) NOT NULL DEFAULT ''
+);
+CREATE UNIQUE INDEX idx_maillist_members_address_member ON maillist_members (address, member);
+CREATE INDEX idx_maillist_members_address ON maillist_members (address);
+CREATE INDEX idx_maillist_members_member ON maillist_members (member);
+CREATE INDEX idx_maillist_members_domain ON maillist_members (domain);
+CREATE INDEX idx_maillist_members_member_domain ON maillist_members (member_domain);
+
 -- Forwardings. it contains
 --  - members of mail alias account
 --  - per-account alias addresses
