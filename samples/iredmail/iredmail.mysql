@@ -84,11 +84,11 @@ CREATE TABLE IF NOT EXISTS maillist_owners (
     owner VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     -- domain part of owner email address
-    owner_domain VARCHAR(255) NOT NULL DEFAULT '',
+    dest_domain VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (id),
     UNIQUE INDEX (address, owner),
     INDEX (domain),
-    INDEX (owner_domain)
+    INDEX (dest_domain)
 ) ENGINE=InnoDB;
 
 -- (mlmmj) mailing list members.
@@ -100,11 +100,11 @@ CREATE TABLE IF NOT EXISTS maillist_members (
     member VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     -- domain part of member email address
-    member_domain VARCHAR(255) NOT NULL DEFAULT '',
+    dest_domain VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (id),
     UNIQUE INDEX (address, member),
     INDEX (domain),
-    INDEX (member_domain)
+    INDEX (dest_domain)
 ) ENGINE=InnoDB;
 
 -- Forwardings. it contains
