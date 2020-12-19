@@ -4,6 +4,7 @@ iRedMail-1.4:
           contains quotes.
 
     * Updated packages:
+        + netdata -> 1.28.0
         + mlmmjadmin -> 3.0.7
         + iRedAPD -> 4.7
 
