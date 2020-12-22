@@ -247,6 +247,9 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # RHEL/CentOS
         export DISTRO='RHEL'
 
+        # RedHat has minor version number in `VERSION_ID` line, e.g. `VERSION_ID="8.3"`.
+        export DISTRO_VERSION="$(echo ${DISTRO_VERSION} | awk -F'.' '{print $1}')"
+
         # Get distribution version
         if [[ X"${DISTRO_VERSION}" != X'7' ]] && [[ X"${DISTRO_VERSION}" != X'8' ]]; then
             export UNSUPPORTED_RELEASE='YES'
