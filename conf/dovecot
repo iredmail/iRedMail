@@ -79,8 +79,8 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER_BIN='/usr/lib/dovecot/deliver'
 
-    # Debian 9, Ubuntu 18.04.
-    if [ X"${DISTRO_CODENAME}" == X'stretch' -o X"${DISTRO_CODENAME}" == X'bionic' ]; then
+    # Ubuntu 18.04.
+    if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
         export DOVECOT_VERSION='2.2'
     fi
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then

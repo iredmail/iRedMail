@@ -236,7 +236,7 @@ export UNSUPPORTED_RELEASE='NO'
 if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     export DISTRO_VERSION=$(awk -F'"' '/^VERSION_ID=/ {print $2}' /etc/os-release)
 
-    # Debian: 9: stretch, 10: buster
+    # Debian: 10: buster
     # Ubuntu: 18.04: bionic, 20.04: focal
     export DISTRO_CODENAME=$(awk -F'=' '/^VERSION_CODENAME=/ {print $2}' /etc/os-release)
 
@@ -478,15 +478,9 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Directory /etc/default/ on Debian/Ubuntu.
     export ETC_SYSCONFIG_DIR='/etc/default'
 
-    # iptables rule file.
-    export FIREWALL_RULE_CONF="${ETC_SYSCONFIG_DIR}/iptables"
-    export FIREWALL_RULE_CONF6="${ETC_SYSCONFIG_DIR}/ip6tables"
-
-    if [ X"${DISTRO_CODENAME}" == X'buster' ]; then
-        export USE_NFTABLES='YES'
-        export NFTABLES_CONF='/etc/nftables.conf'
-        export FIREWALL_RULE_CONF="${NFTABLES_CONF}"
-    fi
+    export USE_NFTABLES='YES'
+    export NFTABLES_CONF='/etc/nftables.conf'
+    export FIREWALL_RULE_CONF="${NFTABLES_CONF}"
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"

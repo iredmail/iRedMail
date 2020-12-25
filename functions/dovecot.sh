@@ -176,8 +176,7 @@ dovecot_config()
     perl -pi -e 's#PH_SSL_CIPHERS#$ENV{SSL_CIPHERS}#' ${DOVECOT_CONF}
 
     # Distros ships newer openssl which doesn't support SSLv2 anymore.
-    if [ X"${DISTRO}" == X'DEBIAN' -a X"${DISTRO_CODENAME}" == X'stretch' ] \
-        || [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'bionic' ] \
+    if [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'bionic' ] \
         || [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
         perl -pi -e 's#^(ssl_protocols).*#ssl_protocols = !SSLv3#' ${DOVECOT_CONF}
     fi

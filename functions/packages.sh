@@ -364,7 +364,7 @@ install_all()
             [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} php-pear-Net-IDNA2"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-                if [ X"${DISTRO_CODENAME}" == X"bionic" -o X"${DISTRO_CODENAME}" == X"stretch" ]; then
+                if [ X"${DISTRO_CODENAME}" == X"bionic" ]; then
                     ALL_PKGS="${ALL_PKGS} php-net-ldap3"
                 else
                     ALL_PKGS="${ALL_PKGS} php-ldap"
