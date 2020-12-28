@@ -7,6 +7,7 @@ iRedMail-1.4:
           contains quotes.
 
     * Updated packages:
+        + Roundcube webmail -> 1.4.10. Security and bug fixes.
         + netdata -> 1.28.0
         + mlmmjadmin -> 3.0.7
         + iRedAPD -> 4.7
