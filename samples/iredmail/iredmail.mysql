@@ -101,6 +101,7 @@ CREATE TABLE IF NOT EXISTS maillist_members (
     domain VARCHAR(255) NOT NULL DEFAULT '',
     -- domain part of member email address
     dest_domain VARCHAR(255) NOT NULL DEFAULT '',
+    subscription VARCHAR(30) NOT NULL DEFAULT 'normal',
     PRIMARY KEY (id),
     UNIQUE INDEX (address, member),
     INDEX (domain),

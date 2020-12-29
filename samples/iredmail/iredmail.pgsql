@@ -90,7 +90,8 @@ CREATE TABLE maillist_members (
     address VARCHAR(255) NOT NULL DEFAULT '',
     member VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
-    dest_domain VARCHAR(255) NOT NULL DEFAULT ''
+    dest_domain VARCHAR(255) NOT NULL DEFAULT '',
+    subscription VARCHAR(30) NOT NULL DEFAULT 'normal'
 );
 CREATE UNIQUE INDEX idx_maillist_members_address_member ON maillist_members (address, member);
 CREATE INDEX idx_maillist_members_address ON maillist_members (address);
