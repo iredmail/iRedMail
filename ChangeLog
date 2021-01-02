@@ -2,6 +2,9 @@ iRedMail-1.4:
     * DROPPED distribution release:
         - Debian 9 (stretch). Please use Debian 10 instead.
 
+    * Improvements:
+        - Enable long queue id support in logwatch.
+
     * Fixed issues:
         - Fail2ban can not store banned IP address when its country name
           contains quotes.

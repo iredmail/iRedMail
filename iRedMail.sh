@@ -100,6 +100,7 @@ export DOMAIN_ADMIN_EMAIL="${DOMAIN_ADMIN_NAME}@${FIRST_DOMAIN}"
 . ${CONF_DIR}/netdata
 . ${CONF_DIR}/fail2ban
 . ${CONF_DIR}/iredadmin
+. ${CONF_DIR}/logwatch
 
 # Import functions in specified order.
 if [ X"${DISTRO}" == X'FREEBSD' ]; then

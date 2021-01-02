@@ -375,12 +375,29 @@ postfix_config_postscreen()
     echo 'export status_postfix_config_postscreen="DONE"' >> ${STATUS_FILE}
 }
 
+postfix_config_logwatch()
+{
+    # Enable long queue ID.
+    if [ -n ${LOGWATCH_SERVICES_DIR} ] && [ -d ${LOGWATCH_SERVICES_DIR} ]; then
+        f="${LOGWATCH_SERVICES_DIR}/postfix.conf"
+
+        if ! grep '\$postfix_Enable_Long_Queue_Ids' ${f} &>/dev/null; then
+            cat >> ${f} <<EOF
+\$postfix_Enable_Long_Queue_Ids = Yes
+EOF
+        fi
+    fi
+
+    echo 'export status_postfix_config_logwatch="DONE"' >> ${STATUS_FILE}
+}
+
 postfix_setup()
 {
     # Include all sub-steps
     check_status_before_run postfix_config_basic && \
     check_status_before_run postfix_config_vhost && \
-    check_status_before_run postfix_config_postscreen
+    check_status_before_run postfix_config_postscreen && \
+    check_status_before_run postfix_config_logwatch
 
     cat >> ${TIP_FILE} <<EOF
 Postfix:
