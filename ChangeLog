@@ -6,6 +6,7 @@ iRedMail-1.4:
         - Enable long queue id support in logwatch.
 
     * Fixed issues:
+        - [OpenBSD] Used wrong Python MySQL driver name in iRedAPD.
         - Fail2ban can not store banned IP address when its country name
           contains quotes.
 
