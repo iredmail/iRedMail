@@ -223,11 +223,9 @@ iredapd_config()
 
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X'MYSQL' ]; then
         # Set correct SQL driver for SQLAlchemy. Defaults to `MySQLdb`.
-        # OpenBSD 6.7 and earlier releases doesn't have binary package `py3-pymysql`.
-        if [ X"${DISTRO}" == X'OPENBSD' ]; then
-            if [ X"${DISTRO_VERSION}" == X'6.8' ]; then
-                export SQL_DB_DRIVER='pymysql'
-            fi
+        # OpenBSD 6.8 uses `py3-mysqlclient`, its module name is `MySQLdb`.
+        if [ X"${DISTRO}" == X'OPENBSD' ] && [ X"${DISTRO_VERSION}" == X'6.8' ]; then
+            :
         else
             export SQL_DB_DRIVER='pymysql'
         fi

@@ -20,6 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
+# OpenBSD doesn't have logwatch.
 if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     export LOGWATCH_SERVICES_DIR='/etc/logwatch/conf/services'
 elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
