@@ -68,7 +68,7 @@ export CMD_DATE='/bin/date'
 export CMD_DU='du -sh'
 export CMD_COMPRESS='bzip2 -9'
 export COMPRESS_SUFFIX='bz2'
-export CMD_PG_DUMP='pg_dump'
+export CMD_PG_DUMP='pg_dump --clean'
 
 # Date.
 export YEAR="$(${CMD_DATE} +%Y)"

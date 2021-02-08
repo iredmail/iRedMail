@@ -34,7 +34,7 @@ count = 1
 
 for (dn, entry) in allUsers:
     mail = entry['mail'][0]
-    if b'enabledService' not in entry:
+    if 'enabledService' not in entry:
         continue
 
     enabledService = entry['enabledService']

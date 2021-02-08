@@ -378,7 +378,14 @@ postfix_config_postscreen()
 postfix_config_logwatch()
 {
     # Enable long queue ID.
-    if [ -n ${LOGWATCH_SERVICES_DIR} ] && [ -d ${LOGWATCH_SERVICES_DIR} ]; then
+    if [ -n ${LOGWATCH_SERVICES_DIR} ]; then
+        # Create the directory if not present.
+        #
+        # logwatch package may be missing on the server, continue adding the
+        # modular config file to avoid the issue if sysadmin installs logwatch
+        # someday in the future.
+        [[ -d ${LOGWATCH_SERVICES_DIR} ]] || mkdir -p ${LOGWATCH_SERVICES_DIR}
+
         f="${LOGWATCH_SERVICES_DIR}/postfix.conf"
 
         if ! grep '\$postfix_Enable_Long_Queue_Ids' ${f} &>/dev/null; then

@@ -85,20 +85,6 @@ CREATE INDEX idx_maillist_owners_owner ON maillist_owners (owner);
 CREATE INDEX idx_maillist_owners_domain ON maillist_owners (domain);
 CREATE INDEX idx_maillist_owners_dest_domain ON maillist_owners (dest_domain);
 
-CREATE TABLE maillist_members (
-    id SERIAL PRIMARY KEY,
-    address VARCHAR(255) NOT NULL DEFAULT '',
-    member VARCHAR(255) NOT NULL DEFAULT '',
-    domain VARCHAR(255) NOT NULL DEFAULT '',
-    dest_domain VARCHAR(255) NOT NULL DEFAULT '',
-    subscription VARCHAR(30) NOT NULL DEFAULT 'normal'
-);
-CREATE UNIQUE INDEX idx_maillist_members_address_member ON maillist_members (address, member);
-CREATE INDEX idx_maillist_members_address ON maillist_members (address);
-CREATE INDEX idx_maillist_members_member ON maillist_members (member);
-CREATE INDEX idx_maillist_members_domain ON maillist_members (domain);
-CREATE INDEX idx_maillist_members_dest_domain ON maillist_members (dest_domain);
-
 -- Forwardings. it contains
 --  - members of mail alias account
 --  - per-account alias addresses

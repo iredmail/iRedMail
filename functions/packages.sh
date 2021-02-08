@@ -580,17 +580,19 @@ EOF
 
     # Firewall
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
-        if [ X"${DISTRO_CODENAME}" == X'buster' ]; then
+        ALL_PKGS="${ALL_PKGS} nftables"
+        ENABLED_SERVICES="${ENABLED_SERVICES} nftables"
+    elif [ X"${DISTRO}" == X'UBUNTU' ]; then
+        # Disable ufw service.
+        export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
+
+        if [ X"${DISTRO_CODENAME}" == X"focal" ]; then
             ALL_PKGS="${ALL_PKGS} nftables"
             ENABLED_SERVICES="${ENABLED_SERVICES} nftables"
         fi
     fi
 
-    # Disable ufw service and use iptables init script and rule file
-    # shipped in iRedMail instead.
-    [ X"${DISTRO}" == X'UBUNTU' ] && export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
-
-    export ALL_PKGS ENABLED_SERVICES PKG_SCRIPTS
+    export ALL_PKGS ENABLED_SERVICES DISABLED_SERVICES PKG_SCRIPTS
 
     # Install all packages.
     install_all_pkgs()

@@ -6,7 +6,7 @@
 
 If you're restoring from an old iRedMail release, you need to add missing LDAP
 attribute/values, which are introduced in new iRedMail releases, by running
-Python scripts below: <https://github.com/iredmail/iredmail/tree/master/update/>.
+Python scripts below: <https://github.com/iredmail/iRedMail/tree/1.3.1/update/ldap/>.
 
 For example:
 
@@ -36,5 +36,5 @@ Please update them with the correct LDAP prefix (`dc=xx,dc=xx`) and bind
 password, then run it with `python` command:
 
 ```
-python updateLDAPValues_094_to_095.py
+python2 updateLDAPValues_094_to_095.py
 ```

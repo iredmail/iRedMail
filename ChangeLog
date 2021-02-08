@@ -6,13 +6,15 @@ iRedMail-1.4:
         - Enable long queue id support in logwatch.
 
     * Fixed issues:
+        - tools/backup_pgsql.sh: Not dump databases with `--clean` argument.
+        - Not install nftables package on Ubuntu 20.04.
         - [OpenBSD] Used wrong Python MySQL driver name in iRedAPD.
         - Fail2ban can not store banned IP address when its country name
           contains quotes.
 
     * Updated packages:
         + Roundcube webmail -> 1.4.10. Security and bug fixes.
-        + netdata -> 1.28.0
+        + netdata -> 1.29.0
         + mlmmjadmin -> 3.0.7
         + iRedAPD -> 4.7
 

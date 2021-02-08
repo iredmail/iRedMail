@@ -5,7 +5,7 @@ Linux/BSD distributions:
 - Debian 10
 - Ubuntu 18.04, 20.04
 - FreeBSD 12.x
-- OpenBSD 6.7
+- OpenBSD 6.8
 
 More info:
 

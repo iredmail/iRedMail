@@ -91,23 +91,6 @@ CREATE TABLE IF NOT EXISTS maillist_owners (
     INDEX (dest_domain)
 ) ENGINE=InnoDB;
 
--- (mlmmj) mailing list members.
-CREATE TABLE IF NOT EXISTS maillist_members (
-    id BIGINT(20) UNSIGNED AUTO_INCREMENT,
-    -- email address of mailing list
-    address VARCHAR(255) NOT NULL DEFAULT '',
-    -- email address of owner
-    member VARCHAR(255) NOT NULL DEFAULT '',
-    domain VARCHAR(255) NOT NULL DEFAULT '',
-    -- domain part of member email address
-    dest_domain VARCHAR(255) NOT NULL DEFAULT '',
-    subscription VARCHAR(30) NOT NULL DEFAULT 'normal',
-    PRIMARY KEY (id),
-    UNIQUE INDEX (address, member),
-    INDEX (domain),
-    INDEX (dest_domain)
-) ENGINE=InnoDB;
-
 -- Forwardings. it contains
 --  - members of mail alias account
 --  - per-account alias addresses
