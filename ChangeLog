@@ -1,4 +1,7 @@
 iRedMail-1.4:
+    * Supports new distribution releases:
+        + CentOS 8 Stream. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.
+
     * DROPPED distribution release:
         - Debian 9 (stretch). Please use Debian 10 instead.
 

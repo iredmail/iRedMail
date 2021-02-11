@@ -166,6 +166,12 @@ fail2ban_syslog_setup() {
         touch ${FAIL2BAN_LOG_FILE}
         chown ${SYS_USER_SYSLOG}:${SYS_GROUP_SYSLOG} ${FAIL2BAN_LOG_FILE}
         chmod 0755 ${FAIL2BAN_LOG_FILE}
+
+        if [ X"${DISTRO}" == X'UBUNTU' ]; then
+            if [ -f /etc/logrotate.d/fail2ban ]; then
+                perl -pi -e 's#create 640 root adm#create 640 $ENV{SYS_USER_SYSLOG} adm#g' /etc/logrotate.d/fail2ban
+            fi
+        fi
     elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
         cp -f ${SAMPLE_DIR}/freebsd/syslog.d/fail2ban.conf ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
         perl -pi -e 's#PH_FAIL2BAN_SYSLOG_FACILITY#$ENV{FAIL2BAN_SYSLOG_FACILITY}#g' ${SYSLOG_CONF_DIR}/fail2ban.conf

@@ -163,16 +163,28 @@ EOF
 
     # RHEL/CentOS 8.
     if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X'8' ]; then
-        # repo PowerTools is required.
-        for repo in AppStream PowerTools; do
-            if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
-                cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
-            fi
+        # AppStream and PowerTools are required.
+        if [ X"${DISTRO_CODENAME}" == X'stream' ]; then
+            for repo in Stream-AppStream Stream-PowerTools; do
+                if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
+                    cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
+                fi
+            done
 
             # Although repo file exists, still need to make sure it is enabled.
-            ECHO_INFO "Enable yum repo: ${repo}"
-            yum config-manager --enable ${repo}
-        done
+            ECHO_INFO "Enable yum repos: appstream, powertools."
+            yum config-manager --enable appstream powertools
+        else
+            for repo in AppStream PowerTools; do
+                if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
+                    cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
+                fi
+            done
+
+            # Although repo file exists, still need to make sure it is enabled.
+            ECHO_INFO "Enable yum repos: AppStream, PowerTools."
+            yum config-manager --enable AppStream PowerTools
+        fi
     fi
 
     if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then
