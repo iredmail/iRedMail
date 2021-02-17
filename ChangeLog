@@ -6,6 +6,10 @@ iRedMail-1.4:
         - Debian 9 (stretch). Please use Debian 10 instead.
 
     * Improvements:
+        - SQL backends: New sql table `maillist_owners`. Used to store owners
+          of subscribeable mailing lists.
+        - OpenLDAP backend: New attributes `listModerator` and `listOwner`.
+          Used to to store moderator and owner of subscribeable mailing lists.
         - Enable long queue id support in logwatch.
 
     * Fixed issues:

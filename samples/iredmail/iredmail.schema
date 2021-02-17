@@ -375,7 +375,12 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.3.4 NAME 'listModerator'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
-attributetype ( 1.3.6.1.4.1.32349.1.2.3.5 NAME 'mailingListID'
+attributetype ( 1.3.6.1.4.1.32349.1.2.3.5 NAME 'listOwner'
+    DESC 'Owner of mailing list'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
+attributetype ( 1.3.6.1.4.1.32349.1.2.3.6 NAME 'mailingListID'
     DESC 'A server-wide unique id for each (mlmmj) mailing list'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
@@ -443,6 +448,7 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.5 NAME 'mailList'
         enabledService $ disabledService $ memberOfGroup $ hasMember $
         listAllowedUser $ expiredDate $ accountSetting $ mailHost $
         member $ uniqueMember $ memberUid $ gidNumber $ domainStatus $
+        listModerator $ listOwner $
         mtaTransport $ mailinglistID $ maxMessageSize ) )
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.6 NAME 'mailExternalUser'
     DESC 'Mail External User' SUP top STRUCTURAL
