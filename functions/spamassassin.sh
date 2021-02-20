@@ -19,10 +19,10 @@ sa_config()
 
     ECHO_DEBUG "Enable crontabs for SpamAssassin update."
     case "${DISTRO}" in
-        "")
-            echo "ERROR: cannot define distro"
-            exit 255
-            ;;
+        # "")
+        #     echo "ERROR: cannot define distro"
+        #     exit 255
+        #     ;;
         RHEL)
             [[ -f "${ETC_SYSCONFIG_DIR}"/sa-update ]] && \
                 perl -pi -e 's/^#(SAUPDATE=yes)/${1}/' "${ETC_SYSCONFIG_DIR}"/sa-update
@@ -38,10 +38,10 @@ sa_config()
             ECHO_DEBUG "Compile SpamAssassin ruleset into native code."
             sa-compile >> "${INSTALL_LOG}" 2>&1
             ;;
-        *)
-            echo "ERROR: unsupported distro"
-            exit 255
-            ;;
+        # *)
+        #     echo "ERROR: unsupported distro"
+        #     exit 255
+        #     ;;
     esac
 
     printf '%s\n' \
