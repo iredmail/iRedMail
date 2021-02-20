@@ -23,44 +23,43 @@
 web_server_extra()
 {
     # Create robots.txt.
-    if [ ! -e ${HTTPD_DOCUMENTROOT}/robots.txt ]; then
-        cat >> ${HTTPD_DOCUMENTROOT}/robots.txt <<EOF
-User-agent: *
-Disallow: /
-EOF
-    fi
+    [[ ! -r ${HTTPD_DOCUMENTROOT}/robots.txt ]] && \
+      printf '%s\n' 'User-agent: *' 'Disallow: /' >> "${HTTPD_DOCUMENTROOT}"/robots.txt
 
     # Redirect home page to webmail by default
-    if [ ! -e ${HTTPD_DOCUMENTROOT}/index.html ]; then
-        if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
-            echo '<html><head><meta HTTP-EQUIV="REFRESH" content="0; url=/mail/"></head></html>' > ${HTTPD_DOCUMENTROOT}/index.html
-        elif [ X"${USE_SOGO}" == X'YES' ]; then
-            echo '<html><head><meta HTTP-EQUIV="REFRESH" content="0; url=/SOGo/"></head></html>' > ${HTTPD_DOCUMENTROOT}/index.html
+    if [[ ! -r ${HTTPD_DOCUMENTROOT}/index.html ]]; then
+        local HTTPD_DOCUMENTROOT_INDEX="${HTTPD_DOCUMENTROOT}"/index.html
+        if [[ "${USE_ROUNDCUBE}" == "YES" ]]; then
+            echo '<html><head><meta HTTP-EQUIV="REFRESH" content="0; url=/mail/"></head></html>' > "$HTTPD_DOCUMENTROOT_INDEX"
+        elif [[ "${USE_SOGO}" == "YES" ]]; then
+            echo '<html><head><meta HTTP-EQUIV="REFRESH" content="0; url=/SOGo/"></head></html>' > "$HTTPD_DOCUMENTROOT_INDEX"
         fi
     fi
 
     # Add alias for web server daemon user
-    add_postfix_alias ${HTTPD_USER} ${SYS_USER_ROOT}
+    add_postfix_alias "${HTTPD_USER}" "${SYS_USER_ROOT}"
 
-    echo 'export status_web_server_extra="DONE"' >> ${STATUS_FILE}
+    echo 'export status_web_server_extra="DONE"' >> "${STATUS_FILE}"
 }
 
 web_server_config()
 {
     # Create required directories
-    [ -d ${HTTPD_SERVERROOT} ] || mkdir -p ${HTTPD_SERVERROOT} >> ${INSTALL_LOG} 2>&1
-    [ -d ${HTTPD_DOCUMENTROOT} ] || mkdir -p ${HTTPD_DOCUMENTROOT} >> ${INSTALL_LOG} 2>&1
+    [[ -d "${HTTPD_SERVERROOT}" ]] || mkdir -p "${HTTPD_SERVERROOT}" >> "${INSTALL_LOG}" 2>&1
+    [[ -d "${HTTPD_DOCUMENTROOT}" ]] || mkdir -p "${HTTPD_DOCUMENTROOT}" >> "${INSTALL_LOG}" 2>&1
 
-    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
-        . ${FUNCTIONS_DIR}/nginx.sh
+    if [[ "${WEB_SERVER}" == "NGINX" ]]; then
+        # shellcheck source=nginx.sh
+        . "${FUNCTIONS_DIR}"/nginx.sh
         check_status_before_run nginx_config
         check_status_before_run web_server_extra
     fi
 
-    if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
-        . ${FUNCTIONS_DIR}/php.sh
+    if [[ "${IREDMAIL_USE_PHP}" == "YES" ]]; then
+        # shellcheck source=php.sh
+        . "${FUNCTIONS_DIR}"/php.sh
         check_status_before_run php_config
     fi
 
-    echo 'export status_web_server_config="DONE"' >> ${STATUS_FILE}
+    echo 'export status_web_server_config="DONE"' >> "${STATUS_FILE}"
 }
