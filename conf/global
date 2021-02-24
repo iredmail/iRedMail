@@ -263,8 +263,12 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
                 export DISTRO_CODENAME='centos'
             fi
         else
-            # RHEL
-            export DISTRO_CODENAME='rhel'
+            if grep -i 'Red Hat Enterprise Linux' /etc/redhat-release &>/dev/null; then
+                # RHEL
+                export DISTRO_CODENAME='rhel'
+            else
+                export UNSUPPORTED_RELEASE='YES'
+            fi
         fi
 
         if [ X"${DISTRO_VERSION}" == X'8' ]; then

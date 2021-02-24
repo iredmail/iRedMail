@@ -1,4 +1,4 @@
-[PowerTools]
+[powertools]
 name=CentOS-$releasever - PowerTools
 baseurl=http://mirror.centos.org/$contentdir/$releasever/PowerTools/$basearch/os/
 gpgcheck=1

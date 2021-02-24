@@ -1,4 +1,4 @@
-[AppStream]
+[appstream]
 name=CentOS-$releasever - AppStream
 baseurl=http://mirror.centos.org/$contentdir/$releasever/AppStream/$basearch/os/
 gpgcheck=1
