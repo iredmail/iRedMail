@@ -235,12 +235,6 @@ CREATE TABLE IF NOT EXISTS mailbox (
     lastloginipv4 INT(4) UNSIGNED NOT NULL DEFAULT 0,
     lastloginprotocol CHAR(255) NOT NULL DEFAULT '',
     disclaimer TEXT,
-    -- Below 4 columns are deprecated and will be removed in future release.
-    -- Don't use them.
-    allowedsenders TEXT,
-    rejectedsenders TEXT,
-    allowedrecipients TEXT,
-    rejectedrecipients TEXT,
     -- Store per-user settings. Used in iRedAdmin-Pro.
     settings TEXT,
     passwordlastchange DATETIME NOT NULL DEFAULT '1970-01-01 01:01:01',

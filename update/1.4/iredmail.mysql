@@ -13,3 +13,9 @@ CREATE TABLE IF NOT EXISTS maillist_owners (
     INDEX (domain),
     INDEX (dest_domain)
 ) ENGINE=InnoDB;
+
+-- Drop unused SQL columns
+ALTER TABLE mailbox DROP COLUMN `allowedsenders`;
+ALTER TABLE mailbox DROP COLUMN `rejectedsenders`;
+ALTER TABLE mailbox DROP COLUMN `allowedrecipients`;
+ALTER TABLE mailbox DROP COLUMN `rejectedrecipients`;

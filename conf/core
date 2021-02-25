@@ -127,8 +127,7 @@ check_openbsd_install_url()
     fi
 }
 
-check_pkg()
-{
+check_pkg() {
     # Usage: check_pkg <command> <package>
     # It means: <package> owns <command>
     cmd="$1"
@@ -139,14 +138,19 @@ check_pkg()
     done
 
     if [ X"${HAS_CMD}" != X'YES' ]; then
-        ECHO_INFO "Install package: ${pkg}"
-        eval ${install_pkg} ${pkg}
-        if [ X"$?" != X"0" ]; then
-            ECHO_ERROR "Please install package ${pkg} first." && exit 255
-        fi
+        export MISSING_PKGS="${MISSING_PKGS} ${pkg}"
     fi
 
     unset HAS_CMD
+}
+
+install_missing_pkg() {
+    if [ X"${MISSING_PKGS}" != X"" ]; then
+        eval ${install_pkg} ${MISSING_PKGS}
+        if [ X"$?" != X"0" ]; then
+            ECHO_ERROR "Please install missing package(s) ${MISSING_PKGS} first." && exit 255
+        fi
+    fi
 }
 
 check_runtime_dir() {

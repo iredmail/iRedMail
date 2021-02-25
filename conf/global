@@ -202,6 +202,10 @@ else
     export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 32)'
 fi
 
+# Global variable to store missing packages before installing all mail
+# services related packages.
+export MISSING_PKGS=""
+
 # command: dialog.
 export BIN_DIALOG="dialog"
 export PKG_DIALOG="dialog"
@@ -263,7 +267,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
                 export DISTRO_CODENAME='centos'
             fi
         else
-            if grep -i 'Red Hat Enterprise Linux' /etc/redhat-release &>/dev/null; then
+            if grep -i '^Red Hat Enterprise Linux' /etc/redhat-release &>/dev/null; then
                 # RHEL
                 export DISTRO_CODENAME='rhel'
             else

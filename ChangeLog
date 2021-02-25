@@ -11,6 +11,11 @@ iRedMail-1.4:
         - OpenLDAP backend: New attributes `listModerator` and `listOwner`.
           Used to to store moderator and owner of subscribeable mailing lists.
         - Enable long queue id support in logwatch.
+        - SQL backends: Drop 4 unused SQL columns in `vmail.mailbox` table:
+            - allowedsenders
+            - rejectedsenders
+            - allowedrecipients
+            - rejectedrecipients
 
     * Fixed issues:
         - tools/backup_pgsql.sh: Not dump databases with `--clean` argument.

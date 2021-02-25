@@ -271,19 +271,34 @@ fi
 
 prepare_dirs
 
+# Check required commands, and install packages which offer the commands.
 if [ X"${DISTRO}" == X"RHEL" ]; then
-    # Check required commands, install related package if command doesn't exist.
     check_pkg ${BIN_WHICH} ${PKG_WHICH}
     check_pkg ${BIN_WGET} ${PKG_WGET}
     check_pkg ${BIN_PERL} ${PKG_PERL}
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+    [ ! -e /usr/sbin/update-ca-certificates ] || export MISSING_PKGS="${MISSING_PKGS} ca-certificates"
+    [ ! -e /usr/lib/apt/methods/https ] || export MISSING_PKGS="${MISSING_PKGS} ${PKG_APT_TRANSPORT_HTTPS}"
+    # dirmngr is required by apt-key
+    [ ! -e /usr/bin/dirmngr ] || export MISSING_PKGS="${MISSING_PKGS} dirmngr"
 
+    if [ X"${DISTRO}" == X'UBUNTU' ]; then
+        # Some required packages are in `universe` and `multiverse` apt repos.
+        [ -x /usr/bin/apt-add-repository ] || export MISSING_PKGS="${MISSING_PKGS} software-properties-common"
+    fi
+
+    check_pkg ${BIN_PERL} ${PKG_PERL}
+    check_pkg ${BIN_WGET} ${PKG_WGET}
+fi
+
+check_pkg ${BIN_DIALOG} ${PKG_DIALOG}
+install_missing_pkg
+
+if [ X"${DISTRO}" == X"RHEL" ]; then
     # Create yum repository.
     check_status_before_run create_repo_rhel
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO}" == X'UBUNTU' ]; then
-        # Some required packages are in `universe` and `multiverse` apt repos.
-        [ -x /usr/bin/apt-add-repository ] || ${APTGET} install -y software-properties-common
-
         for repo in multiverse universe; do
             if [ X"${UBUNTU_MIRROR_SITE}" != X'' ]; then
                 apt-add-repository -n "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME} $repo"
@@ -293,44 +308,14 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
                 apt-add-repository -n $repo
             fi
         done
-        apt-get update
-    fi
-
-    _missing_pkgs=''
-
-    if [ ! -e /usr/sbin/update-ca-certificates ]; then
-        _missing_pkgs="${_missing_pkgs} ca-certificates"
-    fi
-
-    if [ ! -e /usr/lib/apt/methods/https ]; then
-        _missing_pkgs="${_missing_pkgs} ${PKG_APT_TRANSPORT_HTTPS}"
-    fi
-
-    # dirmngr is required by apt-key
-    if [ ! -e /usr/bin/dirmngr ]; then
-        _missing_pkgs="${_missing_pkgs} dirmngr"
-    fi
-
-    if [ X"${DISTRO}" == X'UBUNTU' ]; then
-        if [ ! -e /usr/bin/apt-add-repository ]; then
-            _missing_pkgs="${_missing_pkgs} software-properties-common"
-        fi
-    fi
-
-    if [ X"${_missing_pkgs}" != X'' ]; then
-        eval ${install_pkg} ${_missing_pkgs}
     fi
 
     # Force update.
     ECHO_INFO "apt update ..."
     ${APTGET} update
-
-    check_pkg ${BIN_PERL} ${PKG_PERL}
-    check_pkg ${BIN_WGET} ${PKG_WGET}
 fi
 
 check_status_before_run fetch_misc && \
 check_status_before_run verify_downloaded_packages && \
-check_pkg ${BIN_DIALOG} ${PKG_DIALOG} && \
 echo_end_msg && \
 echo 'export status_get_all="DONE"' >> ${STATUS_FILE}
