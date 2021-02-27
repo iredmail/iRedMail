@@ -105,6 +105,8 @@
 /^o\d{1,3}-\d{1,3}-\d{1,3}-\d{1,3}\.outbound-mail\.sendgrid\.net$/ OK
 /^\d{1,3}-\d{1,3}-\d{1,3}-\d{1,3}\.mail-(mail|campmail)\.facebook\.com$/ OK
 /^outbound-\d{1,3}-\d{1,3}-\d{1,3}-\d{1,3}\.pinterestmail\.com$/ OK
+/\.outbound\.protection\.outlook\.com$/ OK
+
 
 # reject HELO which contains IP address
 /(\d{1,3}[\.-]\d{1,3}[\.-]\d{1,3}[\.-]\d{1,3})/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server appears to be on a dynamic IP address that should not be doing direct mail delivery (${1})

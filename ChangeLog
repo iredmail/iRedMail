@@ -18,6 +18,7 @@ iRedMail-1.4:
             - rejectedrecipients
 
     * Fixed issues:
+        - Whitelist HELO hostname used by Microsoft Outlook/Hotmail servers.
         - tools/backup_pgsql.sh: Not dump databases with `--clean` argument.
         - Not install nftables package on Ubuntu 20.04.
         - [OpenBSD] Used wrong Python MySQL driver name in iRedAPD.
