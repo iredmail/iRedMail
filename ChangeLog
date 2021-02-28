@@ -7,15 +7,21 @@ iRedMail-1.4:
 
     * Improvements:
         - SQL backends: New sql table `maillist_owners`. Used to store owners
-          of subscribeable mailing lists.
-        - OpenLDAP backend: New attributes `listModerator` and `listOwner`.
-          Used to to store moderator and owner of subscribeable mailing lists.
-        - Enable long queue id support in logwatch.
+          of subscribeable mailing lists. With this new table, if self-service
+          is enabled in iRedAdmin-Pro, mailing list owner is able to login to
+          iRedAdmin-Pro and manage profile and members of owned mailing lists.
         - SQL backends: Drop 4 unused SQL columns in `vmail.mailbox` table:
             - allowedsenders
             - rejectedsenders
             - allowedrecipients
             - rejectedrecipients
+        - OpenLDAP backend: New attributes `listModerator` and `listOwner`.
+          Used to to store moderator and owner of subscribeable mailing lists.
+          With these new attributes, if self-service is enabled in
+          iRedAdmin-Pro, mailing list owner is able to login to iRedAdmin-Pro
+          and manage profile and members of owned mailing lists.
+        - Fail2ban now stores (base64) encoded log lines in SQL database.
+        - Enable long queue id support in logwatch.
 
     * Fixed issues:
         - Whitelist HELO hostname used by Microsoft Outlook/Hotmail servers.
