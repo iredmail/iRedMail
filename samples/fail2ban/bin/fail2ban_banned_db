@@ -107,9 +107,17 @@ if [[ X"${_action}" == X"ban" ]]; then
     _failures="${6}"
 
     shift 6
-    _rest="$@"
-    # Avoid SQL injection.
-    printf -v _loglines "${_rest//\'/\'\'}"
+
+    # (base64) Encode log lines to avoid possible SQL injection.
+    if [[ -x /usr/bin/base64 ]]; then
+        # Linux
+        _loglines="$(echo $@ | base64)"
+    elif [[ -x /usr/bin/b64encode ]]; then
+        # OpenBSD and FreeBSD.
+        _loglines="$(echo $@ | b64encode - |grep -Ev '^(begin-base64 |====$)')"
+    else
+        _loglines=""
+    fi
 
     if [[ X"${_ip}" == X'' ]] || \
         [[ X"${_ports}" == X'' ]] || \

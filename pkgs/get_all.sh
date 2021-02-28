@@ -143,6 +143,11 @@ create_repo_rhel()
         # Require registration of Red Hat subscription.
         ECHO_INFO "RHEL: Enable repo: codeready-builder-for-rhel-8-x86_64-rpms"
         subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms
+        if [[ X"$?" != X'0' ]]; then
+            echo 'Failed to enable yum repository `codeready-builder-for-rhel-8-x86_64-rpms`. Please'
+            echo -e 'try to enable it manually with command below:\n'
+            echo 'subscription-manager repos --enable codeready-builder-for-rhel-8-x86_64-rpms'
+        fi
 
         # Install epel-release.
         ECHO_INFO "RHEL: Install package epel-release."
