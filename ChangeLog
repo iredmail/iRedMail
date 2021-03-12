@@ -1,4 +1,4 @@
-iRedMail-1.4:
+iRedMail-1.4.0:
     * Supports new distribution releases:
         + CentOS 8 Stream. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.
 
@@ -20,7 +20,8 @@ iRedMail-1.4:
           With these new attributes, if self-service is enabled in
           iRedAdmin-Pro, mailing list owner is able to login to iRedAdmin-Pro
           and manage profile and members of owned mailing lists.
-        - Fail2ban now stores (base64) encoded log lines in SQL database.
+        - Fail2ban now stores (base64) encoded log lines in SQL database to
+          avoid possible SQL injection.
         - Enable long queue id support in logwatch.
 
     * Fixed issues:
@@ -35,7 +36,7 @@ iRedMail-1.4:
         + Roundcube webmail -> 1.4.11. Security and bug fixes.
         + netdata -> 1.29.3
         + mlmmjadmin -> 3.0.7
-        + iRedAPD -> 4.8
+        + iRedAPD -> 5.0
 
 iRedMail-1.3.2:
     * Supports new distribution releases:
