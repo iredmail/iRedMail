@@ -362,6 +362,7 @@ install_all()
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
             [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} php-pear-Net-IDNA2"
+            [[ X"${DISTRO_CODENAME}" == X'rhel' ]] && ALL_PKGS="${ALL_PKGS} php-enchant"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${BACKEND}" == X'OPENLDAP' ]; then
                 if [ X"${DISTRO_CODENAME}" == X"bionic" ]; then

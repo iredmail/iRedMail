@@ -30,6 +30,11 @@ rcm_install()
     chown ${HTTPD_USER}:${HTTPD_GROUP} ${RCM_CONF}
     chmod 0600 ${RCM_CONF}
 
+    if [ X"${DISTRO_CODENAME}" == X'rhel' ]; then
+        # RHEL doesn't offer php-pspell package, use enchant spell engine instead.
+        perl -pi -e 's#pspell#enchant#g' ${RCM_CONF}
+    fi
+
     echo 'export status_rcm_install="DONE"' >> ${STATUS_FILE}
 }
 
