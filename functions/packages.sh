@@ -288,6 +288,7 @@ install_all()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} amavis spamassassin altermime perl-Mail-SPF lz4 clamav clamav-update clamav-server clamav-server-systemd"
         [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} unrar pax"
+        [[ X"${DISTRO_VERSION}" == X'8' ]] && ENABLED_SERVICES="${ENABLED_SERVICES} clamav-freshclam"
 
         # RHEL uses service name 'clamd@amavisd' instead of clamd.
         DISABLED_SERVICES="${DISABLED_SERVICES} clamd spamassassin"
