@@ -49,7 +49,7 @@ export FAIL2BAN_SYSLOG_FACILITY='daemon'
 if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     export FAIL2BAN_ACTION='iptables-multiport'
 
-    if [ X"${DISTRO_CODENAME}" == X'buster' ]; then
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export FAIL2BAN_ACTION='nftables-multiport'
     fi
 elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
