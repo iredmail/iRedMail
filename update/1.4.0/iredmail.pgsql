@@ -12,7 +12,7 @@ CREATE INDEX idx_maillist_owners_domain ON maillist_owners (domain);
 CREATE INDEX idx_maillist_owners_dest_domain ON maillist_owners (dest_domain);
 
 -- Drop unused SQL columns
-ALTER TABLE mailbox DROP COLUMN `allowedsenders`;
-ALTER TABLE mailbox DROP COLUMN `rejectedsenders`;
-ALTER TABLE mailbox DROP COLUMN `allowedrecipients`;
-ALTER TABLE mailbox DROP COLUMN `rejectedrecipients`;
+ALTER TABLE mailbox DROP COLUMN "allowedsenders";
+ALTER TABLE mailbox DROP COLUMN "rejectedsenders";
+ALTER TABLE mailbox DROP COLUMN "allowedrecipients";
+ALTER TABLE mailbox DROP COLUMN "rejectedrecipients";
