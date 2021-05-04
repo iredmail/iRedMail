@@ -196,7 +196,7 @@ postfix_config_basic()
     ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
     mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ >> ${INSTALL_LOG} 2>&1
     for i in /etc/hosts /etc/resolv.conf /etc/localtime /etc/services; do
-        [ -f $i ] && cp ${i} ${POSTFIX_CHROOT_DIR}/etc/
+        [[ -f $i ]] && cp ${i} ${POSTFIX_CHROOT_DIR}/etc/
     done
 
     backup_file ${POSTFIX_FILE_HELO_ACCESS}
@@ -271,7 +271,7 @@ postfix_config_vhost()
     ECHO_DEBUG "Configure Postfix for SQL/LDAP lookup."
 
     # Create directory which used to store sql/ldap lookup files.
-    [ -d ${POSTFIX_LOOKUP_DIR} ] || mkdir -p ${POSTFIX_LOOKUP_DIR}
+    [[ -d ${POSTFIX_LOOKUP_DIR} ]] || mkdir -p ${POSTFIX_LOOKUP_DIR}
 
     cat ${SAMPLE_DIR}/postfix/main.cf.${POSTFIX_LOOKUP_DB} >> ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_POSTFIX_LOOKUP_DIR#$ENV{POSTFIX_LOOKUP_DIR}#g' ${POSTFIX_FILE_MAIN_CF}
@@ -378,7 +378,7 @@ postfix_config_postscreen()
 postfix_config_logwatch()
 {
     # Enable long queue ID.
-    if [ -n ${LOGWATCH_SERVICES_DIR} ]; then
+    if [[ -n ${LOGWATCH_SERVICES_DIR} ]]; then
         # Create the directory if not present.
         #
         # logwatch package may be missing on the server, continue adding the

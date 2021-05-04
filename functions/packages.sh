@@ -44,6 +44,12 @@ install_all()
         OB_PKG_PHP_VER='%7.4'
         OB_PKG_OPENLDAP_SERVER_VER='-2.4.53'
         OB_PKG_OPENLDAP_CLIENT_VER='-2.4.53'
+
+        if [ X"${DISTRO_VERSION}" == X'6.9' ]; then
+            OB_PKG_PHP_VER='%8.0'
+            OB_PKG_OPENLDAP_SERVER_VER='-2.4.58'
+            OB_PKG_OPENLDAP_CLIENT_VER='-2.4.58'
+        fi
     fi
 
     # Install PHP if there's a web server running -- php is too popular.

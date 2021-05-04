@@ -196,6 +196,9 @@ EOF
             # Make sure they're enabled.
             ECHO_INFO "Enable yum repos: appstream, powertools."
             yum config-manager --enable appstream powertools
+        elif [ X"${DISTRO_CODENAME}" == X'rocky' ]; then
+            ECHO_INFO "Enable yum repos: appstream, powertools."
+            dnf config-manager --enable appstream powertools
         elif [ X"${DISTRO_CODENAME}" == X'stream' ]; then
             for repo in Stream-AppStream Stream-PowerTools; do
                 if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
