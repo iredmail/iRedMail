@@ -1,6 +1,7 @@
 iRedMail-1.4.0:
     * Supports new distribution releases:
         + CentOS 8 Stream. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.
+        + AlmaLinux 8. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.
         + Rocky Linux 8. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.
           Tested with Rocky Linux 8.3 rc1.
         + OpenBSD 6.9. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.

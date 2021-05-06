@@ -262,6 +262,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Get distribution name as DISTRO_CODENAME
         if [ -e /etc/rocky-release ]; then
             export DISTRO_CODENAME='rocky'
+        elif [ -e /etc/almalinux-release ]; then
+            export DISTRO_CODENAME='alma'
         elif [ -e /etc/centos-release ]; then
             if grep -i 'CentOS Stream release' /etc/centos-release &>/dev/null; then
                 export DISTRO_CODENAME='stream'
