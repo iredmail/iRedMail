@@ -1,4 +1,8 @@
 iRedMail-1.4.1:
+    * Fixed issues:
+        - Allow more sendgrid HELO hostnames.
+          Thanks to Jim Nelin for the feedback.
+
     * Updated packages:
         + netdata -> 1.31.0
         + mlmmjadmin -> 3.1.1
