@@ -28,6 +28,12 @@ postfix_config_basic()
 {
     ECHO_INFO "Configure Postfix (MTA)."
 
+    if [ X"${DISTRO}" == "DEBIAN" -o X"${DISTRO}" == X"UBUNTU" ]; then
+        # Store FQDN in /etc/mailname.
+        # FYI: https://wiki.debian.org/EtcMailName
+        echo "${HOSTNAME}" > /etc/mailname
+    fi
+
     #
     # main.cf
     #

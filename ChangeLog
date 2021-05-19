@@ -1,5 +1,6 @@
 iRedMail-1.4.1:
     * Updated packages:
+        + netdata -> 1.31.0
         + mlmmjadmin -> 3.1.1
     
 iRedMail-1.4.0:
