@@ -28,10 +28,6 @@
 #       * DEFAULT_PASSWD
 #       * USE_DEFAULT_PASSWD
 #
-#   - Pure-FTPd integration:
-#       * PUREFTPD_INTEGRATION      # <- set to 'YES' if you want to integrate it.
-#       * FTP_BASE_DIRECTORY        # <- directory used to store FTP data.
-#
 #   - Optional variables:
 #       * SEND_WELCOME_MSG
 #
@@ -96,14 +92,6 @@ TRANSPORT='dovecot'
 PASSWORD_SCHEME='SSHA'
 DEFAULT_PASSWD='888888'
 USE_DEFAULT_PASSWD='NO'
-
-# ------------------------------------------------------------------
-# -------------------- Pure-FTPd Integration -----------------------
-# ------------------------------------------------------------------
-# Add objectClass and attributes for pure-ftpd integration.
-# Note: You must inlucde pureftpd.schema in OpenLDAP slapd.conf first.
-PUREFTPD_INTEGRATION='NO'
-FTP_BASE_DIRECTORY='/home/ftp'
 
 # ------------------------------------------------------------------
 # ------------------------- Welcome Msg ----------------------------
@@ -205,21 +193,6 @@ add_new_user()
         PASSWD="$(generate_password_hash ${PASSWORD_SCHEME} ${USERNAME})"
     fi
 
-    if [ X"${PUREFTPD_INTEGRATION}" == X'YES' ]; then
-        LDIF_PUREFTPD_USER="objectClass: PureFTPdUser
-FTPStatus: enabled
-FTPQuotaFiles: 50
-FTPQuotaMBytes: 10
-FTPDownloadBandwidth: 50
-FTPUploadBandwidth: 50
-FTPDownloadRatio: 5
-FTPUploadRatio: 1
-FTPHomeDir: ${FTP_BASE_DIRECTORY}/${DOMAIN_NAME}/${USERNAME}/
-"
-    else
-        LDIF_PUREFTPD_USER=''
-    fi
-
     ldapadd -x -D "${BINDDN}" -w "${BINDPW}" <<EOF
 dn: mail=${MAIL},${OU_USER_DN},${DOMAIN_DN},${BASE_DN}
 objectClass: inetOrgPerson
@@ -271,7 +244,6 @@ enabledService: recipientbcc
 enabledService: shadowaddress
 enabledService: displayedInGlobalAddressBook
 enabledService: sogo
-${LDIF_PUREFTPD_USER}
 EOF
 }
 
