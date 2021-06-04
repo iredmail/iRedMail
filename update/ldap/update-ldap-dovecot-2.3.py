@@ -40,21 +40,15 @@ for (dn, entry) in allUsers:
     enabledService = entry['enabledService']
 
     _update = False
-    if b'imaptls' not in enabledService:
-        enabledService += [b'imaptls']
-        _update = True
 
-    if b'pop3tls' not in enabledService:
-        enabledService += [b'pop3tls']
-        _update = True
-
-    if b'smtptls' not in enabledService:
-        enabledService += [b'smtptls']
-        _update = True
-
-    if b'sievetls' not in enabledService:
-        enabledService += [b'sievetls']
-        _update = True
+    # If old service is disabled for the user, then no need to add the new one.
+    for old, new in [(b'imapsecured', b'imaptls'),
+                     (b'pop3secured', b'pop3tls'),
+                     (b'smtpsecured', b'smtptls'),
+                     (b'sievesecured', b'sievetls')]:
+        if (old in enabledService) and (new not in enabledService):
+            enabledService.append(new)
+            _update = True
 
     if _update:
         print("* ({} of {}) Updating user: {}".format(count, total, mail))
