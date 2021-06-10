@@ -1,12 +1,12 @@
-"""
-This file is used to migrate SQL table `vmail.alias` for SQL backends.
-
-Requirements:
-
-* Make sure you have new SQL tables ready: alias_moderators, forwardings.
-* For PostgreSQL, please make sure SQL user 'vmail' has 'SELECT' privilege on
-  newly created sql tables.
-"""
+#!/usr/bin/env python3
+# This file is used to migrate SQL table `vmail.alias` for SQL backends.
+#
+# Requirements:
+#
+# * Python 3
+# * Make sure you have new SQL tables ready: alias_moderators, forwardings.
+# * For PostgreSQL, please make sure SQL user 'vmail' has 'SELECT' privilege on
+#   newly created sql tables.
 
 import sys
 import web
@@ -20,8 +20,8 @@ sys.path.insert(0, '/var/www/iredadmin')            # CentOS/OpenBSD
 sys.path.insert(0, '/usr/share/apache2/iredadmin')  # Debian/Ubuntu (old iRedMail releases)
 
 import settings
-print "* Read SQL username/password from iRedAdmin config file:", settings.__file__
-print "* Backend:", settings.backend
+print("* Read SQL username/password from iRedAdmin config file:", settings.__file__)
+print("* Backend:", settings.backend)
 
 if settings.backend in ['ldap', 'mysql']:
     sql_dbn = 'mysql'
@@ -50,15 +50,47 @@ try:
 
     db.supports_multiple_insert = True
 except Exception as e:
-    print "<< ERROR >> Cannot connecting to SQL server:", e
+    print("<< ERROR >> Cannot connecting to SQL server:", e)
     sys.exit()
+
+def __bytes2str(b) -> str:
+    """Convert object `b` to string."""
+    if isinstance(b, str):
+        return b
+
+    if isinstance(b, (bytes, bytearray)):
+        return b.decode()
+    elif isinstance(b, memoryview):
+        return b.tobytes().decode()
+    else:
+        return repr(b)
+
+
+def bytes2str(b):
+    """Convert `b` from bytes-like type to string."""
+    if isinstance(b, (list, web.db.ResultSet)):
+        s = [bytes2str(i) for i in b]
+    elif isinstance(b, tuple):
+        s = tuple([bytes2str(i) for i in b])
+    elif isinstance(b, set):
+        s = {bytes2str(i) for i in b}
+    elif isinstance(b, (dict, web.utils.Storage)):
+        new_dict = {}
+        for (k, v) in list(b.items()):
+            new_dict[k] = bytes2str(v)  # v could be list/tuple/dict
+        s = new_dict
+    else:
+        s = __bytes2str(b)
+
+    return s
+
 
 # Check required tables
 for tbl in ['forwardings', 'alias_moderators']:
     try:
         db.select(tbl, limit=1)
-    except Exception as e:
-        print "<<< ERROR >>> SQL table '%s' doesn't exist. Please create it first." % tbl
+    except:
+        print("<<< ERROR >>> SQL table '%s' doesn't exist. Please create it first." % tbl)
         sys.exit()
 
 # Get all existing accounts
@@ -84,17 +116,17 @@ for r in records:
         is_forwarding = 1
         _type = 'mail user'
 
-    account = str(r.address).lower()
+    account = bytes2str(r.address).lower()
     active = int(r.active)
-    domain = str(r.domain).lower()
+    domain = bytes2str(r.domain).lower()
 
-    goto = r.goto.strip(' ')
+    goto = bytes2str(r.goto).strip(' ')
     goto = goto.replace(' ', '')
     goto = goto.replace(';', ',')
     members = list(set([i.strip().lower() for i in goto.strip(' ').split(',')]))
 
     # Migrating forwardings
-    print "* [%d/%d] Migrating %s %s" % (counter, total, _type, account)
+    print("* [%d/%d] Migrating %s %s" % (counter, total, _type, account))
     for m in members:
         if m:
             try:
@@ -115,7 +147,7 @@ for r in records:
                     # Duplicate record
                     pass
                 else:
-                    print "Error while migrating %s %s: %s" % (_type, m, repr(e))
+                    print("Error while migrating %s %s: %s" % (_type, m, repr(e)))
 
     # Migrating moderators of mail alias account
     moderators = []
@@ -138,8 +170,8 @@ for r in records:
                     # Duplicate record
                     pass
                 else:
-                    print "Error while migrating moderators of alias account %s: %s" % (m, repr(e))
+                    print("Error while migrating moderators of alias account %s: %s" % (m, repr(e)))
 
     counter += 1
 
-print "* DONE."
+print("* DONE.")
