@@ -4,6 +4,7 @@ iRedMail-1.4.1:
           Thanks to Jim Nelin for the feedback.
 
     * Updated packages:
+        + iRedAPD -> 5.0.2
         + netdata -> 1.31.0
         + mlmmjadmin -> 3.1.2
     
