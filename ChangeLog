@@ -1,4 +1,14 @@
 iRedMail-1.4.1:
+    * Supports new distribution releases:
+        + FreeBSD 13.0
+
+    * Improvements:
+        + Add some ban rules in Amavisd:
+            + ALLOW_MS_OFFICE: Allow all Microsoft Office documents.
+            + ALLOW_MS_WORD: Allow Microsoft Word documents (.doc, .docx).
+            + ALLOW_MS_EXCEL: Allow Microsoft Excel documents (.xls, .xlsx).
+            + ALLOW_MS_PPT: Allow Microsoft PowerPoint documents (.ppt, .pptx).
+
     * Fixed issues:
         - Allow more sendgrid HELO hostnames.
           Thanks to Jim Nelin for the feedback.
