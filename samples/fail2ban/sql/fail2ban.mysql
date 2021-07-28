@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `banned` (
     `jail` VARCHAR(50) NOT NULL DEFAULT '',
     -- The server hostname which the ban/unban happens
     `hostname` VARCHAR(255) NOT NULL DEFAULT '',
-    `country` VARCHAR(255) NOT NULL DEFAULT '',
+    `country` VARCHAR(50) NOT NULL DEFAULT '',
     -- reverse DNS name of banned IP address.
     `rdns` VARCHAR(255) NOT NULL DEFAULT '',
     -- number of times the failure occurred in the log file.
