@@ -89,7 +89,6 @@ install_all()
         mail_postfix \
         mail_roundcube \
         net_openldap${PREFERRED_OPENLDAP_VER}-client \
-        net_openldap${PREFERRED_OPENLDAP_VER}-sasl-client \
         net_openldap${PREFERRED_OPENLDAP_VER}-server \
         net_openslp \
         net_py-ldap \
@@ -234,13 +233,6 @@ OPTIONS_FILE_UNSET+=FETCH
 OPTIONS_FILE_UNSET+=GSSAPI
 EOF
 
-    cat > /var/db/ports/net_openldap${PREFERRED_OPENLDAP_VER}-sasl-client/options <<EOF
-OPTIONS_FILE_UNSET+=DEBUG
-OPTIONS_FILE_UNSET+=DOCS
-OPTIONS_FILE_UNSET+=FETCH
-OPTIONS_FILE_UNSET+=GSSAPI
-EOF
-
     # No options for MySQL server.
     # PostgreSQL
     cat > /var/db/ports/databases_postgresql${PGSQL_VERSION}-server/options <<EOF
@@ -308,7 +300,7 @@ EOF
     ALL_PORTS="${ALL_PORTS} devel/py-Jinja2 net/py-netifaces security/py-bcrypt www/py-requests"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ALL_PORTS="${ALL_PORTS} net/openldap${PREFERRED_OPENLDAP_VER}-sasl-client net/openldap${PREFERRED_OPENLDAP_VER}-server"
+        ALL_PORTS="${ALL_PORTS} net/openldap${PREFERRED_OPENLDAP_VER}-server"
         ALL_PORTS="${ALL_PORTS} databases/mariadb${PREFERRED_MARIADB_VER}-server"
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
