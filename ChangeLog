@@ -1,5 +1,6 @@
 iRedMail-1.4.1:
     * Supports new distribution releases:
+        + Debian 11 (bullseye)
         + FreeBSD 13.0
 
     * Improvements:

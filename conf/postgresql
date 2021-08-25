@@ -45,6 +45,9 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     elif [ X"${DISTRO_CODENAME}" == X'buster' ]; then
         # Debian 10
         export PGSQL_VERSION='11'
+    elif [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
+        # Debian 11
+        export PGSQL_VERSION='13'
     else
         # Ubuntu 20.04
         export PGSQL_VERSION='12'

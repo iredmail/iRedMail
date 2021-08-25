@@ -240,8 +240,12 @@ export UNSUPPORTED_RELEASE='NO'
 if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     export DISTRO_VERSION=$(awk -F'"' '/^VERSION_ID=/ {print $2}' /etc/os-release)
 
-    # Debian: 10: buster
-    # Ubuntu: 18.04: bionic, 20.04: focal
+    # Debian:
+    #   - 10: buster
+    #   - 11: bullseye
+    # Ubuntu:
+    #   - 18.04: bionic
+    #   - 20.04: focal
     export DISTRO_CODENAME=$(awk -F'=' '/^VERSION_CODENAME=/ {print $2}' /etc/os-release)
 
     # Directory of RC scripts.
@@ -295,7 +299,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Debian
         export DISTRO='DEBIAN'
 
-        if [[ X"${DISTRO_VERSION}" != X'9' ]] && [[ X"${DISTRO_VERSION}" != X'10' ]]; then
+        echo "${DISTRO_VERSION}" | grep -E '^(10|11)$' &>/dev/null
+        if [[ $? != 0 ]]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     else
