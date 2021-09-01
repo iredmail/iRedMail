@@ -95,9 +95,9 @@ CREATE VIEW ${SOGO_DB_VIEW_AUTH} AS
                                   c_cn          VARCHAR(255),
                                   mail          VARCHAR(255),
                                   domain        VARCHAR(255),
-                                  c_webmail     INT2,
-                                  c_calendar    INT2,
-                                  c_activesync  INT2);
+                                  c_webmail     CHAR(1),
+                                  c_calendar    CHAR(1),
+                                  c_activesync  CHAR(1);
 
 ALTER TABLE ${SOGO_DB_VIEW_AUTH} OWNER TO ${SOGO_DB_USER};
 EOF
