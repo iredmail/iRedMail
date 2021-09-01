@@ -1,0 +1,11 @@
+DROP VIEW users;
+
+CREATE VIEW users (
+            c_uid, c_name, c_password, c_cn,
+            mail, domain,
+            c_webmail, c_calendar, c_activesync)
+  AS SELECT username, username, password, name,
+            username, domain,
+            enablesogowebmail, enablesogocalendar, enablesogoactivesync
+       FROM vmail.mailbox
+      WHERE enablesogo=1 AND active=1;

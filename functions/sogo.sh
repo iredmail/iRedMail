@@ -84,9 +84,9 @@ CREATE VIEW ${SOGO_DB_VIEW_AUTH} AS
                                   name     AS c_cn,
                                   username AS mail,
                                   domain   AS domain,
-                                  enablesogowebmail AS c_webmail,
-                                  enablesogocalendar AS c_calendar,
-                                  enablesogoactivesync AS c_activesync
+                                  enablesogowebmail     AS c_webmail,
+                                  enablesogocalendar    AS c_calendar,
+                                  enablesogoactivesync  AS c_activesync
                              FROM mailbox
                             WHERE enablesogo=1 AND active=1')
          AS ${SOGO_DB_VIEW_AUTH} (c_uid         VARCHAR(255),
@@ -97,7 +97,7 @@ CREATE VIEW ${SOGO_DB_VIEW_AUTH} AS
                                   domain        VARCHAR(255),
                                   c_webmail     CHAR(1),
                                   c_calendar    CHAR(1),
-                                  c_activesync  CHAR(1);
+                                  c_activesync  CHAR(1));
 
 ALTER TABLE ${SOGO_DB_VIEW_AUTH} OWNER TO ${SOGO_DB_USER};
 EOF
