@@ -230,9 +230,12 @@ CREATE TABLE IF NOT EXISTS mailbox (
     enablelmtp TINYINT(1) NOT NULL DEFAULT 1,
     enabledsync TINYINT(1) NOT NULL DEFAULT 1,
     enablesogo TINYINT(1) NOT NULL DEFAULT 1,
-    enablesogowebmail TINYINT(1) NOT NULL DEFAULT 1,
-    enablesogocalendar TINYINT(1) NOT NULL DEFAULT 1,
-    enablesogoactivesync TINYINT(1) NOT NULL DEFAULT 1,
+
+    -- character is required, not int.
+    enablesogowebmail VARCHAR(1) NOT NULL DEFAULT 'y',
+    enablesogocalendar VARCHAR(1) NOT NULL DEFAULT 'y',
+    enablesogoactivesync VARCHAR(1) NOT NULL DEFAULT 'y',
+
     -- Must be set to NULL if it's not restricted.
     allow_nets TEXT DEFAULT NULL,
     lastlogindate DATETIME NOT NULL DEFAULT '1970-01-01 01:01:01',
