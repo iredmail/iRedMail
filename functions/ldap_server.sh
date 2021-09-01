@@ -114,6 +114,9 @@ enabledService: indexer-worker
 enabledService: dsync
 enabledService: domainadmin
 enabledService: sogo
+enabledService: sogowebmail
+enabledService: sogocalendar
+enabledService: sogoactivesync
 domainGlobalAdmin: yes
 EOF
 }
