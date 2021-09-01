@@ -43,7 +43,7 @@ EOF
             cat >> ${tmp_sql} <<EOF
 GRANT SELECT ON ${VMAIL_DB_NAME}.mailbox TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}";
 -- GRANT SELECT ON ${VMAIL_DB_NAME}.mailbox TO ${SOGO_DB_USER}@"${HOSTNAME}";
-CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_VIEW_AUTH} (c_uid, c_name, c_password, c_cn, mail, domain) AS SELECT username, username, password, name, username, domain FROM ${VMAIL_DB_NAME}.mailbox WHERE enablesogo=1 AND active=1;
+CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_VIEW_AUTH} (c_uid, c_name, c_password, c_cn, mail, domain, c_webmail, c_calendar, c_activesync) AS SELECT username, username, password, name, username, domain, enablesogowebmail, enablesogocalendar, enablesogoactivesync FROM ${VMAIL_DB_NAME}.mailbox WHERE enablesogo=1 AND active=1;
 EOF
         fi
 
@@ -83,7 +83,10 @@ CREATE VIEW ${SOGO_DB_VIEW_AUTH} AS
                                   password AS c_password,
                                   name     AS c_cn,
                                   username AS mail,
-                                  domain   AS domain
+                                  domain   AS domain,
+                                  enablesogowebmail AS c_webmail,
+                                  enablesogocalendar AS c_calendar,
+                                  enablesogoactivesync AS c_activesync
                              FROM mailbox
                             WHERE enablesogo=1 AND active=1')
          AS ${SOGO_DB_VIEW_AUTH} (c_uid         VARCHAR(255),
@@ -91,7 +94,10 @@ CREATE VIEW ${SOGO_DB_VIEW_AUTH} AS
                                   c_password    VARCHAR(255),
                                   c_cn          VARCHAR(255),
                                   mail          VARCHAR(255),
-                                  domain        VARCHAR(255));
+                                  domain        VARCHAR(255),
+                                  c_webmail     INT2,
+                                  c_calendar    INT2,
+                                  c_activesync  INT2);
 
 ALTER TABLE ${SOGO_DB_VIEW_AUTH} OWNER TO ${SOGO_DB_USER};
 EOF
