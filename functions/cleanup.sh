@@ -198,11 +198,6 @@ cleanup_replace_mysql_config()
                     backup_file ${MYSQL_MY_CNF}
                     ECHO_INFO "Copy MySQL sample file: ${MYSQL_MY_CNF}."
                     cp -f ${SAMPLE_DIR}/mysql/my.cnf ${MYSQL_MY_CNF}
-
-                    ECHO_INFO "Enable SSL support for MySQL server."
-                    perl -pi -e 's/^#(ssl-cert.*=)(.*)/${1} $ENV{SSL_CERT_FILE}/' ${MYSQL_MY_CNF}
-                    perl -pi -e 's/^#(ssl-key.*=)(.*)/${1} $ENV{SSL_KEY_FILE}/' ${MYSQL_MY_CNF}
-                    perl -pi -e 's/^#(ssl-cipher.*)/${1}/' ${MYSQL_MY_CNF}
                     ;;
             esac
         fi
