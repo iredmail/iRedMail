@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # Author:   Zhang Huangbin <zhb _at_ iredmail.org>
 # Purpose:  Add new attribute/value pairs introduced in iRedMail-1.4.1:
-#           enabledService=enablesogowebmail
-#           enabledService=enablesogocalendar
-#           enabledService=enablesogoactivesync
+#           enabledService=sogowebmail
+#           enabledService=sogocalendar
+#           enabledService=sogoactivesync
 # Date:     Sep 1, 2021.
 
 import ldap
@@ -42,7 +42,7 @@ for (dn, entry) in allUsers:
     enabledService = entry['enabledService']
 
     _update = False
-    for srv in [b"enablesogowebmail", b"enablesogocalendar", b"enablesogoactivesync"]:
+    for srv in [b"sogowebmail", b"sogocalendar", b"sogoactivesync"]:
         if srv not in enabledService:
             enabledService.append(srv)
             _update = True
