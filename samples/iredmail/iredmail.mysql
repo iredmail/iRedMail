@@ -238,9 +238,7 @@ CREATE TABLE IF NOT EXISTS mailbox (
 
     -- Must be set to NULL if it's not restricted.
     allow_nets TEXT DEFAULT NULL,
-    lastlogindate DATETIME NOT NULL DEFAULT '1970-01-01 01:01:01',
-    lastloginipv4 INT(4) UNSIGNED NOT NULL DEFAULT 0,
-    lastloginprotocol CHAR(255) NOT NULL DEFAULT '',
+
     disclaimer TEXT,
     -- Store per-user settings. Used in iRedAdmin-Pro.
     settings TEXT,

@@ -1,0 +1,9 @@
+-- Fix incorrect column types.
+ALTER TABLE mailbox MODIFY COLUMN `enablesogowebmail` VARCHAR(1) NOT NULL DEFAULT 'y';
+ALTER TABLE mailbox MODIFY COLUMN `enablesogocalendar` VARCHAR(1) NOT NULL DEFAULT 'y';
+ALTER TABLE mailbox MODIFY COLUMN `enablesogoactivesync` VARCHAR(1) NOT NULL DEFAULT 'y';
+
+-- Drop unused columns.
+ALTER TABLE mailbox DROP COLUMN `lastlogindate`;
+ALTER TABLE mailbox DROP COLUMN `lastloginipv4`;
+ALTER TABLE mailbox DROP COLUMN `lastloginprotocol`;

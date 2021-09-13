@@ -1,3 +1,18 @@
+iRedMail-1.4.2:
+    * Improvements:
+        - Remove unused LDAP attribute in iredmail.schema:
+            - lastLoginDate
+            - lastLoginIP
+            - lastLoginProtocol
+
+        - Remove unused sql columns in `vmail` database:
+            - mailbox.lastlogindate
+            - mailbox.lastloginipv4
+            - mailbox.lastloginprotocol
+
+    * Fixed issues:
+        - Incorrect PostgreSQL column types in `vmail` and `sogo` databases.
+
 iRedMail-1.4.1:
     * Supports new distribution releases:
         + Debian 11 (bullseye)

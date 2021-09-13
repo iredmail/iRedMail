@@ -253,23 +253,6 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.2.14 NAME 'memberOfGroup'
     EQUALITY caseIgnoreIA5Match
     SUBSTR caseIgnoreSubstringsMatch
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320} )
-attributetype ( 1.3.6.1.4.1.32349.1.2.2.15 NAME 'lastLoginDate'
-    DESC 'Last login date.'
-    EQUALITY generalizedTimeMatch
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
-    SINGLE-VALUE )
-attributetype ( 1.3.6.1.4.1.32349.1.2.2.16 NAME 'lastLoginIP'
-    DESC 'Last login ip address.'
-    EQUALITY caseIgnoreIA5Match
-    SUBSTR caseIgnoreSubstringsMatch
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
-    SINGLE-VALUE )
-attributetype ( 1.3.6.1.4.1.32349.1.2.2.17 NAME 'lastLoginProtocol'
-    DESC 'Mail protocol used in last login: pop3, imap'
-    EQUALITY caseIgnoreIA5Match
-    SUBSTR caseIgnoreSubstringsMatch
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
-    SINGLE-VALUE )
 attributetype ( 1.3.6.1.4.1.32349.1.2.2.18 NAME 'expiredDate'
     DESC 'Account expired date in YYYYMMDDHHMMSSZ format. Sample: 20180323142122Z'
     EQUALITY generalizedTimeMatch
@@ -413,7 +396,7 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.2 NAME 'mailAdmin'
         enabledService $ disabledService $
         userPassword $ accountStatus $ cn $ sn $
         preferredLanguage $ givenName $ expiredDate $
-        mailHost $ lastLoginDate $ accountSetting $ shadowLastChange ) )
+        mailHost $ accountSetting $ shadowLastChange ) )
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
     DESC 'Mail User' SUP top AUXILIARY
     MUST ( mail $ uid )
@@ -425,7 +408,6 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
         enabledService $ disabledService $
         telephoneNumber $ backupMailAddress $
         mtaTransport $ memberOfGroup $ expiredDate $
-        lastLoginDate $ lastLoginIP $ lastLoginProtocol $
         preferredLanguage $ disclaimer $ accountSetting $
         title $ userManager $
         mailWhitelistRecipient $ mailBlacklistRecipient $

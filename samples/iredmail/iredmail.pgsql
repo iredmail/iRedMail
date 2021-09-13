@@ -227,9 +227,7 @@ CREATE TABLE mailbox (
 
     -- Must be set to NULL if it's not restricted.
     allow_nets TEXT DEFAULT NULL,
-    lastlogindate TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
-    lastloginipv4 INET NOT NULL DEFAULT '0.0.0.0',
-    lastloginprotocol CHAR(255) NOT NULL DEFAULT '',
+
     disclaimer TEXT NOT NULL DEFAULT '',
     -- Store per-user settings. Used in iRedAdmin-Pro.
     settings TEXT NOT NULL DEFAULT '',
