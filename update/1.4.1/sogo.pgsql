@@ -23,6 +23,8 @@ CREATE VIEW users AS
                                   c_cn          VARCHAR(255),
                                   mail          VARCHAR(255),
                                   domain        VARCHAR(255),
-                                  c_webmail     CHAR(1),
-                                  c_calendar    CHAR(1),
-                                  c_activesync  CHAR(1));
+                                  c_webmail     VARCHAR(1),
+                                  c_calendar    VARCHAR(1),
+                                  c_activesync  VARCHAR(1));
+
+ALTER TABLE users OWNER TO sogo;
