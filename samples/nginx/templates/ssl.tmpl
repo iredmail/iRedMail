@@ -5,6 +5,11 @@ ssl_ciphers PH_SSL_CIPHERS;
 ssl_prefer_server_ciphers on;
 ssl_dhparam PH_SSL_DH1024_PARAM_FILE;
 
+# Greatly improve the performance of keep-alive connections over SSL.
+# With this enabled, client is not necessary to do a full SSL-handshake for
+# every request, thus saving time and cpu-resources.
+ssl_session_cache shared:SSL:10m;
+
 # To use your own ssl cert (e.g. "Let's Encrypt"), please create symbol link to
 # ssl cert/key used below, so that we can manage this config file with Ansible.
 #
