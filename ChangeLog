@@ -1,3 +1,7 @@
+iRedMail-1.4.3:
+    * Improvements:
+        + Enable TLSv1.3 in Nginx by default.
+
 iRedMail-1.4.2:
     * Improvements:
         - Remove unused LDAP attribute in iredmail.schema:
