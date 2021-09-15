@@ -1,6 +1,12 @@
 iRedMail-1.4.3:
     * Improvements:
-        + Enable TLSv1.3 in Nginx by default.
+        + Nginx: Greatly improve the performance of keep-alive connections over
+          SSL by enabling `ssl_session_cache`.
+          See also #136, thanks to @ludovicandrieux.
+        + Nginx: Enable TLSv1.3 by default.
+          See also #137, thanks to @ludovicandrieux.
+        + Nginx/Dovecot: Add new ssl cipher: EECDH+CHACHA20, remove weak one: AES256+EDH.
+          See also #138, thanks to @ludovicandrieux.
 
 iRedMail-1.4.2:
     * Improvements:
