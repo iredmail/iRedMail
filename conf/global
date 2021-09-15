@@ -611,7 +611,7 @@ export SSL_DH1024_PARAM_FILE="${SSL_FILE_DIR}/dh2048_param.pem"
 
 # use of the most secure ciphers first and gradually fall back to
 # less-preferred ciphers should the client not support them.
-export SSL_CIPHERS='EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH'
+export SSL_CIPHERS='EECDH+CHACHA20:EECDH+AESGCM:EDH+AESGCM:AES256+EECDH'
 
 # SSL key.
 export OPENSSL_CONF="${SSL_FILE_DIR}/openssl.cnf"
