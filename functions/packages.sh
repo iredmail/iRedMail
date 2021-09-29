@@ -24,7 +24,7 @@ install_all()
 {
     ALL_PKGS=''
     PIP3_MODULES=''
-    NABLED_SERVICES=''
+    ENABLED_SERVICES=''
     DISABLED_SERVICES=''
 
     # Specify version numbers while installing Python modules with pip.
