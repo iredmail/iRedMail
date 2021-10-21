@@ -22,7 +22,7 @@ rcm_install()
         ECHO_DEBUG "Set correct permission for Roundcubemail: ${RCM_HTTPD_ROOT}."
         chown -R ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${RCM_HTTPD_ROOT}
         chown -R ${HTTPD_USER}:${HTTPD_GROUP} ${RCM_HTTPD_ROOT}/{temp,logs}
-        chmod 0000 ${RCM_HTTPD_ROOT}/{CHANGELOG,INSTALL,LICENSE,README*,UPGRADING,installer,SQL}
+        chmod 0000 ${RCM_HTTPD_ROOT}/{CHANGELOG.md,INSTALL,LICENSE,README*,UPGRADING,installer,SQL}
     fi
 
     # Copy sample config files.
@@ -44,9 +44,13 @@ rcm_initialize_db()
 
     # Initial roundcube db.
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+        if [[ X"${DISTRO}" == X'RHEL' ]] && [[ X"${DISTRO_VERSION}" == X'7' ]]; then
+            perl -pi -e 's#(ENGINE=INNODB )(.*)#${1} ROW_FORMAT=DYNAMIC${2}#g' ${RCM_HTTPD_ROOT}/SQL/mysql.initial.sql
+        fi
+
         ${MYSQL_CLIENT_ROOT} <<EOF
 -- Create database and grant privileges
-CREATE DATABASE ${RCM_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE ${RCM_DB_NAME} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 GRANT ALL ON ${RCM_DB_NAME}.* TO "${RCM_DB_USER}"@"${MYSQL_GRANT_HOST}" IDENTIFIED BY '${RCM_DB_PASSWD}';
 -- GRANT ALL ON ${RCM_DB_NAME}.* TO "${RCM_DB_USER}"@"${HOSTNAME}" IDENTIFIED BY '${RCM_DB_PASSWD}';
 

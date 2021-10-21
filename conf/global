@@ -252,7 +252,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     export DIR_RC_SCRIPTS='/etc/init.d'
 
     if [ -f /etc/redhat-release ]; then
-        # RHEL/CentOS
+        # RHEL/CentOS/Rocky/Alma
         export DISTRO='RHEL'
 
         # RedHat has minor version number in `VERSION_ID` line, e.g. `VERSION_ID="8.3"`.

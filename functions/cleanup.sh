@@ -185,7 +185,7 @@ cleanup_replace_firewall_rules()
 
 cleanup_replace_mysql_config()
 {
-    if [ X"${DISTRO}" == X'RHEL' ]; then
+    if [[ X"${DISTRO}" == X'RHEL' ]]; then
         if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'OPENLDAP' ]; then
             # Both MySQL and OpenLDAP backend need MySQL database server, so prompt
             # this config file replacement.
