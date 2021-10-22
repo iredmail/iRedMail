@@ -7,6 +7,7 @@ iRedMail-1.4.3:
           See also #137, thanks to @ludovicandrieux.
         + Nginx/Dovecot: Add new ssl cipher: EECDH+CHACHA20, remove weak one: AES256+EDH.
           See also #138, thanks to @ludovicandrieux.
+        + Fail2ban: Add one more rule to catch auth error in Postfix log file.
 
     * Updated packages:
         + Roundcube webmail -> 1.5.0. Note: PHP 5.5 or later is required.
