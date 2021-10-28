@@ -8,6 +8,7 @@ iRedMail-1.4.3:
         + Nginx/Dovecot: Add new ssl cipher: EECDH+CHACHA20, remove weak one: AES256+EDH.
           See also #138, thanks to @ludovicandrieux.
         + Fail2ban: Add one more rule to catch auth error in Postfix log file.
+        + SOGo is now available on Debian 11 (bullseye). Thanks to SOGo team.
 
     * Updated packages:
         + Roundcube webmail -> 1.5.0. Note: PHP 5.5 or later is required.

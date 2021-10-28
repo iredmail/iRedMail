@@ -33,9 +33,6 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
         export DIALOG_SELECTABLE_SOGO='YES'
     fi
 
-    # No binary packages for Debian 11 (bullseye) yet.
-    [[ X"${DISTRO_CODENAME}" == X"bullseye" ]] && export DIALOG_SELECTABLE_SOGO="NO"
-
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         # OpenBSD doesn't have 'libuuid' which required by netdata
         export DIALOG_SELECTABLE_NETDATA='NO'
