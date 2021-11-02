@@ -26,11 +26,11 @@
 if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
     export DIALOG_SELECTABLE_ROUNDCUBE='YES'
     export DIALOG_SELECTABLE_NETDATA='YES'
-    export DIALOG_SELECTABLE_SOGO='NO'
+    export DIALOG_SELECTABLE_SOGO='YES'
 
     # SOGo team doesn't offer binary packages for arm platform.
-    if [ X"${OS_ARCH}" == X'i386' -o X"${OS_ARCH}" == X'x86_64' ]; then
-        export DIALOG_SELECTABLE_SOGO='YES'
+    if [[ X"${OS_ARCH}" != X'i386' ]] && [[ X"${OS_ARCH}" == X'x86_64' ]]; then
+        export DIALOG_SELECTABLE_SOGO='NO'
     fi
 
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
