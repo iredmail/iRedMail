@@ -1,4 +1,7 @@
 iRedMail-1.4.3:
+    * DROPPED distribution release:
+        - CentOS 7, CentOS 8. Please use CentOS Stream or Rocky Linux instead.
+
     * Improvements:
         + Nginx: Greatly improve the performance of keep-alive connections over
           SSL by enabling `ssl_session_cache`.
