@@ -29,8 +29,8 @@ install_all()
 
     # Specify version numbers while installing Python modules with pip.
     PIP_VERSION_PYTHON_LDAP='>=3.3.1'
-    PIP_VERSION_WEBPY='>=0.61'
-    PIP_VERSION_UWSGI='>=2.0.19.1'
+    PIP_VERSION_WEBPY='>=0.62'
+    PIP_VERSION_UWSGI='>=2.0.20'
     PIP_VERSION_REQUESTS='>=2.24.0'
     PIP_VERSION_PYMYSQL='>=0.10.0'
     PIP_VERSION_PSYCOPG2='>=2.8.5'
@@ -40,16 +40,9 @@ install_all()
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         PKG_SCRIPTS=''
 
-        # OpenBSD-6.7
-        OB_PKG_PHP_VER='%7.4'
-        OB_PKG_OPENLDAP_SERVER_VER='-2.4.53'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.53'
-
-        if [ X"${DISTRO_VERSION}" == X'6.9' ]; then
-            OB_PKG_PHP_VER='%8.0'
-            OB_PKG_OPENLDAP_SERVER_VER='-2.4.58'
-            OB_PKG_OPENLDAP_CLIENT_VER='-2.4.58'
-        fi
+        OB_PKG_PHP_VER='%8.0'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.4.59v0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.59v0'
     fi
 
     # Install PHP if there's a web server running -- php is too popular.

@@ -1,4 +1,7 @@
-iRedMail-1.4.3:
+iRedMail-1.5.0:
+    * Supports new distribution releases:
+        + OpenBSD 7.0
+
     * DROPPED distribution release:
         - CentOS 7, CentOS 8. Please use CentOS Stream or Rocky Linux instead.
 
@@ -13,9 +16,16 @@ iRedMail-1.4.3:
         + Fail2ban: Add one more rule to catch auth error in Postfix log file.
         + SOGo is now available on Debian 11 (bullseye). Thanks to SOGo team.
 
+    * Fixed issues:
+        - Updating password in Roundcube may fail with error
+          `Encryption function missing`.
+
     * Updated packages:
-        + Roundcube webmail -> 1.5.0. Note: PHP 5.5 or later is required.
+        + Roundcube webmail -> 1.5.1. Note: PHP 5.5 or later is required.
         + mlmmjadmin -> 3.1.3
+        + netdata -> 1.32.1
+        + [OpenBSD] fail2ban -> 0.11.2
+        + [OpenBSD] uwsgi -> 2.0.20
 
 iRedMail-1.4.2:
     * Improvements:

@@ -226,6 +226,7 @@ rcm_plugin_password()
     # Require the new password to contain a letter and punctuation character
     perl -pi -e 's#(.*password_require_nonalpha.*=).*#${1} true;#' config.inc.php
     perl -pi -e 's#(.*password_log.*=).*#${1} true;#' config.inc.php
+    perl -pi -e 's#(.*password_algorithm.*=).*#${1} "dovecot";#' config.inc.php
 
     # Roundcube uses scheme name in lower cases
     export default_password_scheme="$(echo ${DEFAULT_PASSWORD_SCHEME} | tr '[A-Z]' '[a-z]')"
@@ -254,7 +255,7 @@ rcm_plugin_password()
         perl -pi -e 's#(.*password_driver.*=).*#${1} "sql";#' config.inc.php
         perl -pi -e 's#(.*password_db_dsn.*= )(.*)#${1}"$ENV{PHP_CONN_TYPE}://$ENV{RCM_DB_USER}:$ENV{RCM_DB_PASSWD}\@$ENV{SQL_SERVER_ADDRESS}/$ENV{VMAIL_DB_NAME}";#' config.inc.php
 
-        perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE mailbox SET password=%D,passwordlastchange=NOW() WHERE username=%u";#' config.inc.php
+        perl -pi -e 's#(.*password_query.*=).*#${1} "UPDATE mailbox SET password=%P,passwordlastchange=NOW() WHERE username=%u";#' config.inc.php
 
     elif [ X"${BACKEND}" == X'OPENLDAP' ]; then
         perl -pi -e 's#(.*password_confirm_current.*=).*#${1} true;#' config.inc.php
