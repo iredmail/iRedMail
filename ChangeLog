@@ -24,6 +24,8 @@ iRedMail-1.5.0:
         + Roundcube webmail -> 1.5.1. Note: PHP 5.5 or later is required.
         + mlmmjadmin -> 3.1.3
         + netdata -> 1.32.1
+        + iRedAPD -> 5.0.4
+        + iRedAdmin -> 1.6
         + [OpenBSD] fail2ban -> 0.11.2
         + [OpenBSD] uwsgi -> 2.0.20
 
