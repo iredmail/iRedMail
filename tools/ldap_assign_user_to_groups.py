@@ -116,14 +116,14 @@ except ldap.NO_SUCH_OBJECT:
 # Get existing, assigned mailing lists.
 existing_groups = entry.get('memberOfGroup', [])
 if existing_groups:
-    print("* Existing membership: %s" % ', '.join(existing_groups))
+    print("* Existing membership: %s" % existing_groups,sep = ',')
 else:
     print("* User is not member of any mailing list.")
 
 # New groups
 if is_remove:
     if groups:
-        print("* Remove membership: %s" % ', '.join(groups))
+        print("* Remove membership: %s" % groups,sep = ',')
         new_groups = list(set(existing_groups) - set(groups))
     else:
         print("* Remove ALL memberships.")
@@ -135,7 +135,7 @@ if is_remove:
         new_groups = None
 else:
     new_groups = list(set(existing_groups + groups))
-    print("* New membership: %s" % ', '.join(new_groups))
+    print("* New membership: %s" % new_groups,sep = ',')
 
 mod_attrs = [(ldap.MOD_REPLACE, 'memberOfGroup', new_groups)]
 
