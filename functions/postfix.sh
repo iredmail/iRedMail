@@ -178,13 +178,8 @@ postfix_config_basic()
     _pickup_orig="$(postconf -M |grep '^pickup')"
     echo ${_pickup_orig} | grep 'content_filter=' &>/dev/null
     if [ X"$?" != X'0' ]; then
-        if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'7' ]; then
-            # CentOS 7 ships old Postfix which doesn't support `postconf -P`.
-            perl -pi -e 's#^(pickup.*)#${1}\n    -o content_filter=$ENV{AMAVISD_CONTENT_FILTER_ORIGINATING}#' ${POSTFIX_FILE_MASTER_CF}
-        else
-            postconf -M "pickup/unix=${_pickup_orig}"
-            postconf -P "pickup/unix/content_filter=${AMAVISD_CONTENT_FILTER_ORIGINATING}"
-        fi
+        postconf -M "pickup/unix=${_pickup_orig}"
+        postconf -P "pickup/unix/content_filter=${AMAVISD_CONTENT_FILTER_ORIGINATING}"
     fi
 
     # mlmmj integration.

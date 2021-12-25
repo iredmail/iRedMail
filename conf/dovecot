@@ -24,7 +24,7 @@
 # For Dovecot and dovecot-sieve.
 # ----------------------------------------
 
-# Major version number of Dovecot package: 2.2, 2.3.
+# Major version number of Dovecot package: 2.3.
 export DOVECOT_VERSION='2.3'
 
 # Dovecot user & group.
@@ -72,17 +72,8 @@ export DOVECOT_SYSLOG_FILE_SIEVE="${DOVECOT_LOG_DIR}/sieve.log"
 # Log rotate config file
 export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
 
-if [ X"${DISTRO}" == X'RHEL' ]; then
-    if [ X"${DISTRO_VERSION}" == X'7' ]; then
-        export DOVECOT_VERSION='2.2'
-    fi
-elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER_BIN='/usr/lib/dovecot/deliver'
-
-    # Ubuntu 18.04.
-    if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
-        export DOVECOT_VERSION='2.2'
-    fi
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DOVECOT_CONF_DIR='/usr/local/etc/dovecot'
     export DOVECOT_DELIVER_BIN='/usr/local/libexec/dovecot/deliver'

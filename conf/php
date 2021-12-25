@@ -41,15 +41,9 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PHP_FPM_PID_FILE='/run/php-fpm/php-fpm.pid'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'buster' ]; then
-        # Debian 10
-        export PHP_VERSION='7.3'
-    elif [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
+    if [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
         # Debian 11
         export PHP_VERSION='7.4'
-    elif [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
-        # Ubuntu 18.04
-        export PHP_VERSION='7.2'
     else
         # Ubuntu 20.04
         export PHP_VERSION='7.4'

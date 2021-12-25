@@ -57,9 +57,7 @@ clamav_config()
 
     # Enable AllowSupplementaryGroups
     perl -pi -e 's/^(AllowSupplementaryGroups.*)/#${1}/' ${CLAMD_CONF}
-    if [ X"${DISTRO_CODENAME}" != X'bionic' \
-        -a X"${DISTRO_CODENAME}" != X'disco' \
-        -a X"${DISTRO}" != X'FREEBSD' ]; then
+    if [ X"${DISTRO_CODENAME}" != X'disco' -a X"${DISTRO}" != X'FREEBSD' ]; then
         echo 'AllowSupplementaryGroups true' >> ${CLAMD_CONF}
     fi
 
@@ -74,15 +72,6 @@ clamav_config()
         ECHO_DEBUG "Set permission to 750: ${AMAVISD_TEMP_DIR}, ${AMAVISD_QUARANTINE_DIR},"
         chmod -R 750 ${AMAVISD_TEMP_DIR} ${AMAVISD_QUARANTINE_DIR}
 
-        if [ X"${DISTRO_VERSION}" == X'7' ]; then
-            # Enable freshclam
-            perl -pi -e 's/^(FRESHCLAM_DELAY.*)/#${1}/g' ${ETC_SYSCONFIG_DIR}/freshclam
-
-            # Increase clamd timeout.
-            mkdir -p /etc/systemd/system/${CLAMAV_CLAMD_SERVICE_NAME}.service.d >> ${INSTALL_LOG} 2>&1
-            cp -f ${SAMPLE_DIR}/systemd/clamd.service.d/override.conf /etc/systemd/system/${CLAMAV_CLAMD_SERVICE_NAME}.service.d/ >> ${INSTALL_LOG} 2>&1
-            systemctl daemon-reload
-        fi
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then
         ECHO_DEBUG "Add clamav user to amavid group."
         pw usermod ${SYS_USER_CLAMAV} -G ${SYS_GROUP_AMAVISD}

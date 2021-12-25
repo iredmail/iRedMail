@@ -138,6 +138,7 @@ create_repo_rhel()
 {
     ECHO_INFO "Preparing yum repositories ..."
 
+    # Red Hat Enterprise Linux 8.
     if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X'8' -a X"${DISTRO_CODENAME}" == X'rhel' ]; then
         # Enable repo (same as AppStream + PowerTools on CentOS).
         # Require registration of Red Hat subscription.
@@ -156,10 +157,8 @@ create_repo_rhel()
         _required_pkgs="epel-release"
     fi
 
-    if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X'8' ]; then
-        # required by command `yum config-manager --enable <repo>`.
-        _required_pkgs="${_required_pkgs} dnf-plugins-core"
-    fi
+    # required by command `yum config-manager --enable <repo>`.
+    _required_pkgs="${_required_pkgs} dnf-plugins-core"
 
     eval ${install_pkg} ${_required_pkgs}
 
@@ -179,36 +178,34 @@ module_hotfixes=1
 EOF
 
     # RHEL/CentOS 8.
-    if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X'8' ]; then
-        # appstream and powertools are required on CentOS Linux and CentOS Stream.
-        if [ X"${DISTRO_CODENAME}" == X'centos' ]; then
-            # Remove repo files with old/deprecated names.
-            rm -f ${YUM_REPOS_DIR}/CentOS-AppStream.repo &>/dev/null
-            rm -f ${YUM_REPOS_DIR}/CentOS-PowerTools.repo &>/dev/null
+    # appstream and powertools are required on CentOS Linux and CentOS Stream.
+    if [ X"${DISTRO_CODENAME}" == X'centos' ]; then
+        # Remove repo files with old/deprecated names.
+        rm -f ${YUM_REPOS_DIR}/CentOS-AppStream.repo &>/dev/null
+        rm -f ${YUM_REPOS_DIR}/CentOS-PowerTools.repo &>/dev/null
 
-            # Create if not present.
-            for repo in Linux-AppStream Linux-PowerTools; do
-                if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
-                    cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
-                fi
-            done
-        elif [ X"${DISTRO_CODENAME}" == X'stream' ]; then
-            for repo in Stream-AppStream Stream-PowerTools; do
-                if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
-                    cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
-                fi
-            done
-        fi
+        # Create if not present.
+        for repo in Linux-AppStream Linux-PowerTools; do
+            if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
+                cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
+            fi
+        done
+    elif [ X"${DISTRO_CODENAME}" == X'stream' ]; then
+        for repo in Stream-AppStream Stream-PowerTools; do
+            if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
+                cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
+            fi
+        done
+    fi
 
-        if [ X"${DISTRO_CODENAME}" == X'centos' \
-            -o X"${DISTRO_CODENAME}" == X'stream' \
-            -o X"${DISTRO_CODENAME}" == X'rocky' \
-            -o X"${DISTRO_CODENAME}" == X'alma' \
-            ]; then
-            # Make sure required repos are enabled.
-            ECHO_INFO "Enable yum repos: appstream, powertools."
-            yum config-manager --enable appstream powertools
-        fi
+    if [ X"${DISTRO_CODENAME}" == X'centos' \
+        -o X"${DISTRO_CODENAME}" == X'stream' \
+        -o X"${DISTRO_CODENAME}" == X'rocky' \
+        -o X"${DISTRO_CODENAME}" == X'alma' \
+        ]; then
+        # Make sure required repos are enabled.
+        ECHO_INFO "Enable yum repos: appstream, powertools."
+        yum config-manager --enable appstream powertools
     fi
 
     echo 'export status_create_repo_rhel="DONE"' >> ${STATUS_FILE}

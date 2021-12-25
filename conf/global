@@ -241,10 +241,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     export DISTRO_VERSION=$(awk -F'"' '/^VERSION_ID=/ {print $2}' /etc/os-release)
 
     # Debian:
-    #   - 10: buster
     #   - 11: bullseye
     # Ubuntu:
-    #   - 18.04: bionic
     #   - 20.04: focal
     export DISTRO_CODENAME=$(awk -F'=' '/^VERSION_CODENAME=/ {print $2}' /etc/os-release)
 
@@ -292,8 +290,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Ubuntu
         export DISTRO='UBUNTU'
 
-        # Unsupported releases: 16.x, 17.x, 18.10, 19.x
-        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18\.10|19\.|21\.)' &>/dev/null ; then
+        # Unsupported releases: 16.x, 17.x, 18.x, 19.x
+        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18|19\.|21\.)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then
@@ -460,9 +458,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PKG_DIALOG="dialog"
     export PKG_BZIP2="bzip2"
 
-    if [ X"${DISTRO_VERSION}" == X'7' ]; then
-        export UWSGI_PY3_PLUGIN_NAME='python36'
-    fi
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Ubuntu & Debian.
     export DEBIAN_FRONTEND='noninteractive'

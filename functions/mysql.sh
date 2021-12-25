@@ -74,19 +74,6 @@ mysql_initialize_db()
         perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
     fi
 
-    # Set `innodb_large_prefix` and `innodb_file_format` for MySQL < 5.7.7 and MariaDB < 10.2.2.
-    if [[ X"${DISTRO}" == X'RHEL' ]] && [[ X"${DISTRO_VERSION}" == X'7' ]]; then
-        grep '^innodb_large_prefix' ${MYSQL_MY_CNF} &>/dev/null
-        if [ X"$?" != X'0' ]; then
-            ECHO_DEBUG "Set 'innodb_large_prefix' in my.cnf."
-            perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_large_prefix = on#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
-            perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_format = Barracuda#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
-
-            perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_large_prefix = on#' ${SAMPLE_DIR}/mysql/my.cnf >> ${INSTALL_LOG} 2>&1
-            perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_format = Barracuda#' ${SAMPLE_DIR}/mysql/my.cnf >> ${INSTALL_LOG} 2>&1
-        fi
-    fi
-
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'OPENLDAP' ]; then
             if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then

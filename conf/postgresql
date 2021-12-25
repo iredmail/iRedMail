@@ -39,13 +39,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
-        # Ubuntu 18.04
-        export PGSQL_VERSION='10'
-    elif [ X"${DISTRO_CODENAME}" == X'buster' ]; then
-        # Debian 10
-        export PGSQL_VERSION='11'
-    elif [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
+    if [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
         # Debian 11
         export PGSQL_VERSION='13'
     else

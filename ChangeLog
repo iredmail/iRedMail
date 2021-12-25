@@ -4,6 +4,8 @@ iRedMail-1.5.0:
 
     * DROPPED distribution release:
         - CentOS 7, CentOS 8. Please use CentOS Stream or Rocky Linux instead.
+        - Ubuntu 18.04. Please use Ubuntu 20.04 instead.
+        - Debian 10. Please use Debian 11 instead.
 
     * Improvements:
         + Nginx: Greatly improve the performance of keep-alive connections over

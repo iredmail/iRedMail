@@ -89,11 +89,7 @@ EOF
     perl -pi -e 's/^(local.*)/#${1}/g' ${PGSQL_CONF_PG_HBA}
     perl -pi -e 's/^(host.*)/#${1}/g' ${PGSQL_CONF_PG_HBA}
 
-    if [ X"${PGSQL_VERSION}" == X'8' ]; then
-        echo "local all     ${SYS_USER_PGSQL}   ident" >> ${PGSQL_CONF_PG_HBA}
-    else
-        echo "local all     ${SYS_USER_PGSQL}   peer" >> ${PGSQL_CONF_PG_HBA}
-    fi
+    echo "local all     ${SYS_USER_PGSQL}   peer" >> ${PGSQL_CONF_PG_HBA}
     echo 'local all     all                 md5' >> ${PGSQL_CONF_PG_HBA}
     echo 'host  all     all     0.0.0.0/0   md5' >> ${PGSQL_CONF_PG_HBA}
 
@@ -161,10 +157,6 @@ pgsql_import_vmail_users()
     perl -pi -e 's#PH_DOMAIN_ADMIN_PASSWD_HASH#$ENV{DOMAIN_ADMIN_PASSWD_HASH}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_DOMAIN_ADMIN_MAILDIR_HASH_PART#$ENV{DOMAIN_ADMIN_MAILDIR_HASH_PART}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_DOMAIN_ADMIN_NAME#$ENV{DOMAIN_ADMIN_NAME}#g' ${PGSQL_DATA_DIR}/*.sql
-
-    if [ X"${PGSQL_VERSION}" == X'8' ]; then
-        perl -pi -e 's#^(-- )(CREATE LANGUAGE plpgsql)#${2}#g' ${PGSQL_DATA_DIR}/iredmail.sql
-    fi
 
     perl -pi -e 's#^-- \\c#\\c#g' ${PGSQL_DATA_DIR}/iredmail.sql
 

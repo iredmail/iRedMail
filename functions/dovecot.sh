@@ -30,20 +30,14 @@ dovecot_config()
 
     backup_file ${DOVECOT_CONF}
 
-    # CentOS 7:     Dovecot-2.2.36+
     # CentOS 8:     Dovecot-2.3.8+
-    # Debian 9:     Dovecot-2.2.27
     # Debian 10:    Dovecot-2.3.4+
-    # Ubuntu 18.04: Dovecot-2.2.33
+    # Debian 11:    Dovecot-2.3.13+
     # Ubuntu 20.04: Dovecot-2.3.7+
     # FreeBSD:      Dovecot-2.3.0+
-    # OpenBSD 6.7:  Dovecot-2.3.10+
+    # OpenBSD 7.0:  Dovecot-2.3.16+
     ECHO_DEBUG "Copy sample Dovecot config file to ${DOVECOT_CONF}."
-    if [ X"${DOVECOT_VERSION}" == X'2.2' ]; then
-        cp ${SAMPLE_DIR}/dovecot/dovecot22.conf ${DOVECOT_CONF}
-    else
-        cp ${SAMPLE_DIR}/dovecot/dovecot23.conf ${DOVECOT_CONF}
-    fi
+    cp ${SAMPLE_DIR}/dovecot/dovecot.conf ${DOVECOT_CONF}
 
     chmod 0664 ${DOVECOT_CONF}
 
@@ -176,14 +170,8 @@ dovecot_config()
     perl -pi -e 's#PH_SSL_CIPHERS#$ENV{SSL_CIPHERS}#' ${DOVECOT_CONF}
 
     # Distros ships newer openssl which doesn't support SSLv2 anymore.
-    if [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'bionic' ] \
-        || [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
+    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
         perl -pi -e 's#^(ssl_protocols).*#ssl_protocols = !SSLv3#' ${DOVECOT_CONF}
-    fi
-
-    # PHP on CentOS 7 doesn't support TLSv1.
-    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'7' ]; then
-        perl -pi -e 's#^(ssl_protocols.*) !TLSv1( .*)#${1}${2}#' ${DOVECOT_CONF}
     fi
 
     perl -pi -e 's#PH_POSTFIX_CHROOT_DIR#$ENV{POSTFIX_CHROOT_DIR}#' ${DOVECOT_CONF}

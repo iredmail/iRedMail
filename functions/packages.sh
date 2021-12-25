@@ -63,12 +63,8 @@ install_all()
 
     # Python 3.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        if [ X"${DISTRO_VERSION}" == X'7' ]; then
-            ALL_PKGS="${ALL_PKGS} python36 python3-pip python36-requests"
-        elif [ X"${DISTRO_VERSION}" == X'8' ]; then
-            # `python3` is 3.6. `python3-*` packages are bulit for Python 3.6.
-            ALL_PKGS="${ALL_PKGS} python3 python3-pip python3-pip-wheel python3-requests"
-        fi
+        # `python3` is 3.6. `python3-*` packages are bulit for Python 3.6.
+        ALL_PKGS="${ALL_PKGS} python3 python3-pip python3-pip-wheel python3-requests"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python3-setuptools python3-pip python3-wheel python3-requests"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -83,10 +79,8 @@ install_all()
     # uwsgi.
     # Required by mlmmjadmin, iredadmin.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        [ X"${DISTRO_VERSION}" == X'7' ] && ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-logger-syslog uwsgi-plugin-python36"
-        [ X"${DISTRO_VERSION}" == X'8' ] \
-            && ALL_PKGS="${ALL_PKGS} gcc python3-devel" \
-            && PIP3_MODULES="${PIP3_MODULES} uwsgi${PIP_VERSION_UWSGI}"
+        ALL_PKGS="${ALL_PKGS} gcc python3-devel"
+        PIP3_MODULES="${PIP3_MODULES} uwsgi${PIP_VERSION_UWSGI}"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python3"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -98,22 +92,12 @@ install_all()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} postfix"
 
-        # Exclude postfix package from iRedMail repo.
-        # Postfix in iRedMail repo was rebuilt to support PostgreSQL.
-        if [ X"${DISTRO_VERSION}" == X'7' ]; then
-            if [ X"${BACKEND}" == X'OPENLDAP' ] || [ X"${BACKEND}" == X'MYSQL' ]; then
-                if [ -f ${LOCAL_REPO_FILE} ]; then
-                    perl -pi -e 's/^#(exclude=postfix.*)/${1}/' ${LOCAL_REPO_FILE}
-                fi
-            fi
-        elif [ X"${DISTRO_VERSION}" == X'8' ]; then
-            # pcre support is required and available in iRedMail yum repo.
-            ALL_PKGS="${ALL_PKGS} postfix-pcre"
+        # pcre support is required and available in iRedMail yum repo.
+        ALL_PKGS="${ALL_PKGS} postfix-pcre"
 
-            [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix-ldap"
-            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix-mysql"
-            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} postfix-pgsql"
-        fi
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix-ldap"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix-mysql"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} postfix-pgsql"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         # libsasl2-modules is required for sasl auth (used by relay host which
@@ -131,23 +115,15 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            if [ X"${DISTRO_VERSION}" == X'7' ]; then
-                ALL_PKGS="${ALL_PKGS} openldap openldap-clients openldap-servers mariadb-server mod_ldap"
+            # Install packages from Symas yum repo.
+            ALL_PKGS="${ALL_PKGS} symas-openldap-servers symas-openldap-clients mariadb-server"
 
-                # `gcc`, `python3-devel`, `openldap-devel` are required to compile `python-ldap`.
-                ALL_PKGS="${ALL_PKGS} gcc python3-devel openldap-devel"
-                PIP3_MODULES="${PIP3_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP}"
-            elif [ X"${DISTRO_VERSION}" == X'8' ]; then
-                # Install packages from Symas yum repo.
-                ALL_PKGS="${ALL_PKGS} symas-openldap-servers symas-openldap-clients mariadb-server"
-
-                if [ ! -f ${YUM_REPOS_DIR}/symas-openldap.repo ]; then
-                    cp -f ${SAMPLE_DIR}/yum/symas-openldap.repo ${YUM_REPOS_DIR}/
-                fi
-
-                # Python driver.
-                ALL_PKGS="${ALL_PKGS} python3-ldap"
+            if [ ! -f ${YUM_REPOS_DIR}/symas-openldap.repo ]; then
+                cp -f ${SAMPLE_DIR}/yum/symas-openldap.repo ${YUM_REPOS_DIR}/
             fi
+
+            # Python driver.
+            ALL_PKGS="${ALL_PKGS} python3-ldap"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} slapd ldap-utils postfix-ldap libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -209,8 +185,7 @@ install_all()
     # PHP
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} php-common php-fpm php-gd php-xml php-mysql php-ldap php-pgsql php-imap php-mbstring php-pecl-apc php-intl php-mcrypt"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} php-cli php-common php-fpm php-gd php-xml php-mysqlnd php-ldap php-pgsql php-mbstring php-pecl-apcu php-intl php-json php-pecl-zip"
+            ALL_PKGS="${ALL_PKGS} php-cli php-common php-fpm php-gd php-xml php-mysqlnd php-ldap php-pgsql php-mbstring php-pecl-apcu php-intl php-json php-pecl-zip"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # Debian 9
@@ -286,8 +261,7 @@ install_all()
     ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_CLAMD_SERVICE_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} amavis spamassassin altermime perl-Mail-SPF lz4 clamav clamav-update clamav-server clamav-server-systemd"
-        [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} unrar pax"
-        [[ X"${DISTRO_VERSION}" == X'8' ]] && ENABLED_SERVICES="${ENABLED_SERVICES} clamav-freshclam"
+        ENABLED_SERVICES="${ENABLED_SERVICES} clamav-freshclam"
 
         # RHEL uses service name 'clamd@amavisd' instead of clamd.
         DISABLED_SERVICES="${DISABLED_SERVICES} clamd spamassassin"
@@ -296,11 +270,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm libmail-spf-perl unrar-free pax lrzip gpg-agent"
 
         if [ X"${DISTRO}" == X'UBUNTU' ]; then
-            if [ X"${DISTRO_CODENAME}" == X'bionic' ]; then
-                ALL_PKGS="${ALL_PKGS} libclamunrar7"
-            else
-                ALL_PKGS="${ALL_PKGS} libclamunrar9"
-            fi
+            ALL_PKGS="${ALL_PKGS} libclamunrar9"
         fi
 
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
@@ -317,18 +287,11 @@ install_all()
     # mlmmjadmin: RESTful API server used to manage mlmmj.
     if [ X"${DISTRO}" == X'RHEL' ]; then
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            if [[ X"${DISTRO_VERSION}" == X'7' ]]; then
-                # `gcc`, `python3-devel`, `openldap-devel` are required to compile `python-ldap`.
-                ALL_PKGS="${ALL_PKGS} python36-PyMySQL gcc python3-devel openldap-devel"
-                PIP3_MODULES="${PIP3_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP}"
-            fi
-
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python3-ldap python3-PyMySQL"
+            ALL_PKGS="${ALL_PKGS} python3-ldap python3-PyMySQL"
         fi
 
         if [ X"${BACKEND}" == X'MYSQL' ]; then
-            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} python36-PyMySQL"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python3-PyMySQL"
+            ALL_PKGS="${ALL_PKGS} python3-PyMySQL"
         fi
 
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
@@ -361,15 +324,10 @@ install_all()
     # Roundcube
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} php-pear-Net-IDNA2"
             [[ X"${DISTRO_CODENAME}" == X'rhel' ]] && ALL_PKGS="${ALL_PKGS} php-enchant"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-                if [ X"${DISTRO_CODENAME}" == X"bionic" ]; then
-                    ALL_PKGS="${ALL_PKGS} php-net-ldap3"
-                else
-                    ALL_PKGS="${ALL_PKGS} php-ldap"
-                fi
+                ALL_PKGS="${ALL_PKGS} php-ldap"
             fi
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} php-pspell${OB_PKG_PHP_VER} php-intl${OB_PKG_PHP_VER}"
@@ -387,10 +345,8 @@ install_all()
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope49-gdl1-mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope49-gdl1-postgresql"
 
-            if [ X"${DISTRO_VERSION}" == X'8' ]; then
-                if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-                    ALL_PKGS="${ALL_PKGS} mysql-libs"
-                fi
+            if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+                ALL_PKGS="${ALL_PKGS} mysql-libs"
             fi
 
             # Copy yum repo file
@@ -445,19 +401,14 @@ EOF
     # Don't append service name 'iredapd' to ${ENABLED_SERVICES} since we don't
     # have RC script ready in this stage.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        [ X"${DISTRO_VERSION}" == X'7' ] \
-            && ALL_PKGS="${ALL_PKGS} python36 python3-pip python36-sqlalchemy python36-setuptools python36-dns python36-six"
-        [ X"${DISTRO_VERSION}" == X'8' ] \
-            && ALL_PKGS="${ALL_PKGS} python36 python3-sqlalchemy python3-setuptools python3-dns python3-six"
+        ALL_PKGS="${ALL_PKGS} python36 python3-sqlalchemy python3-setuptools python3-dns python3-six"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} python36-PyMySQL"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python3-ldap python3-PyMySQL"
+            ALL_PKGS="${ALL_PKGS} python3-ldap python3-PyMySQL"
         fi
 
         if [ X"${BACKEND}" == X'MYSQL' ]; then
-            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} python36-PyMySQL"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python3-PyMySQL"
+            ALL_PKGS="${ALL_PKGS} python3-PyMySQL"
         fi
 
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
@@ -493,19 +444,7 @@ EOF
     # Force install all dependent packages to help customers install iRedAdmin-Pro.
     # web.py, dnspython, requests, jinja2, mysqldb or pymysql, simplejson.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        if [ X"${DISTRO_VERSION}" == X'7' ]; then
-            ALL_PKGS="${ALL_PKGS} python36-jinja2 python36-netifaces python36-bcrypt python36-dns python36-simplejson"
-
-            [ X"${BACKEND}" == X'OPENLDAP' ] \
-                && ALL_PKGS="${ALL_PKGS} python36-PyMySQL" \
-                && PIP3_MODULES="${PIP3_MODULES} python-ldap${PIP_VERSION_PYTHON_LDAP}"
-
-            [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} python36-PyMySQL"
-            [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python-psycopg2"
-
-        elif [ X"${DISTRO_VERSION}" == X'8' ]; then
-            ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-simplejson"
-        fi
+        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-simplejson"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-netifaces python3-bcrypt python3-dnspython python3-simplejson"
 
@@ -536,8 +475,7 @@ EOF
         ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} fail2ban GeoIP GeoIP-data"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} fail2ban GeoIP GeoIP-GeoLite-data"
+            ALL_PKGS="${ALL_PKGS} fail2ban GeoIP GeoIP-GeoLite-data"
 
             DISABLED_SERVICES="${DISABLED_SERVICES} shorewall gamin gamin-python"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -556,8 +494,7 @@ EOF
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} curl libmnl libuuid lm_sensors nc zlib iproute"
 
-            [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} PyYAML"
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} python3-pyyaml"
+            ALL_PKGS="${ALL_PKGS} python3-pyyaml"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors netcat"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -569,8 +506,6 @@ EOF
     # Misc packages & services.
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} unzip bzip2 acl patch tmpwatch crontabs dos2unix logwatch lz4"
-        [[ X"${DISTRO_VERSION}" == X'7' ]] && ALL_PKGS="${ALL_PKGS} lrzip"
-
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch unzip bsdutils liblz4-tool rsyslog"

@@ -44,10 +44,6 @@ rcm_initialize_db()
 
     # Initial roundcube db.
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-        if [[ X"${DISTRO}" == X'RHEL' ]] && [[ X"${DISTRO_VERSION}" == X'7' ]]; then
-            perl -pi -e 's#(ENGINE=INNODB )(.*)#${1} ROW_FORMAT=DYNAMIC${2}#g' ${RCM_HTTPD_ROOT}/SQL/mysql.initial.sql
-        fi
-
         ${MYSQL_CLIENT_ROOT} <<EOF
 -- Create database and grant privileges
 CREATE DATABASE ${RCM_DB_NAME} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
