@@ -71,7 +71,12 @@ mysql_initialize_db()
     grep '^innodb_file_per_table' ${MYSQL_MY_CNF} &>/dev/null
     if [ X"$?" != X'0' ]; then
         ECHO_DEBUG "Enable 'innodb_file_per_table' in my.cnf."
-        perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+        if grep '^\[mysqld\]' ${MYSQL_MY_CNF} &>/dev/null; then
+            perl -pi -e 's#^(\[mysqld\])#${1}\ninnodb_file_per_table#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+        else
+            echo "[mysqld]" >> ${MYSQL_MY_CNF}
+            echo "innodb_file_per_table = ON" >> ${MYSQL_MY_CNF}
+        fi
     fi
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
