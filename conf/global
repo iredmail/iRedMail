@@ -256,8 +256,9 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # RedHat has minor version number in `VERSION_ID` line, e.g. `VERSION_ID="8.3"`.
         export DISTRO_VERSION="$(echo ${DISTRO_VERSION} | awk -F'.' '{print $1}')"
 
-        # Get distribution version
-        if [[ X"${DISTRO_VERSION}" != X'8' ]]; then
+        if [[ X"${DISTRO_VERSION}" == X'8' ]]; then
+            export CMD_UWSGI='/usr/local/bin/uwsgi'
+        else
             export UNSUPPORTED_RELEASE='YES'
         fi
 
@@ -282,10 +283,6 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
             fi
         fi
 
-        if [ X"${DISTRO_VERSION}" == X'8' ]; then
-            # Installed with pip3.
-            export CMD_UWSGI='/usr/local/bin/uwsgi'
-        fi
     elif [ -f /etc/lsb-release ] && grep -i 'DISTRIB_ID=Ubuntu' /etc/lsb-release &>/dev/null; then
         # Ubuntu
         export DISTRO='UBUNTU'

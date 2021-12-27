@@ -3,9 +3,15 @@ iRedMail-1.5.0:
         + OpenBSD 7.0
 
     * DROPPED distribution release:
-        - CentOS 7, CentOS 8. Please use CentOS Stream or Rocky Linux instead.
-        - Ubuntu 18.04. Please use Ubuntu 20.04 instead.
+        - CentOS 7, CentOS 8. Please use CentOS Stream 8 or Rocky Linux 8 instead.
+            - CentOS 7 is too old.
+            - CentOS 8 is end-of-life after Dec 31, 2021.
         - Debian 10. Please use Debian 11 instead.
+            - Debian 10 enters LTS on July 2022. "Debian LTS is not handled by
+              the Debian security team, but by a separate group of volunteers
+              and companies interested in making it a success."
+        - Ubuntu 18.04. Please use Ubuntu 20.04 instead.
+            - Users chose 20.04 more than 18.04, so better just let it go.
 
     * Improvements:
         + Nginx: Greatly improve the performance of keep-alive connections over
