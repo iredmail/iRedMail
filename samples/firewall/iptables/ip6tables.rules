@@ -36,9 +36,10 @@
 -A INPUT -p tcp --dport 80 -j ACCEPT
 -A INPUT -p tcp --dport 443 -j ACCEPT
 
-# smtp, submission
+# smtp, submission, smtps
 -A INPUT -p tcp --dport 25 -j ACCEPT
 -A INPUT -p tcp --dport 587 -j ACCEPT
+-A INPUT -p tcp --dport 465 -j ACCEPT
 
 # pop3, pop3s
 -A INPUT -p tcp --dport 110 -j ACCEPT

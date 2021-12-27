@@ -6,6 +6,14 @@ submission inet n       -       n       -       -       smtpd
   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
   -o content_filter=PH_AMAVISD_CONTENT_FILTER_ORIGINATING
 
+# smtps, port 465, force SSL connection.
+465 inet  n       -       n       -       -       smtpd
+  -o syslog_name=postfix/smtps
+  -o smtpd_tls_wrappermode=yes
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+  -o content_filter=PH_AMAVISD_CONTENT_FILTER_ORIGINATING
+
 # Use dovecot's `deliver` program as LDA.
 dovecot unix    -       n       n       -       -      pipe
     flags=DRh user=PH_SYS_USER_VMAIL:PH_SYS_GROUP_VMAIL argv=PH_DOVECOT_DELIVER_BIN -f ${sender} -d ${user}@${domain} -m ${extension}

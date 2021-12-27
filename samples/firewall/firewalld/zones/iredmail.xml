@@ -6,6 +6,7 @@
     <service name="https"/>
     <service name="smtp"/>
     <service name="smtp-submission"/>
+    <port port="465" protocol="tcp"/>
     <service name="pop3"/>
     <service name="pop3s"/>
     <service name="imap"/>
