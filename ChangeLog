@@ -1,3 +1,8 @@
+iRedMail-1.5.1:
+    * Updated packages:
+        + Roundcube webmail -> 1.5.2.
+          Addresses one XSS security fix, also fixes some minor issues.
+
 iRedMail-1.5.0:
     * Supports new distribution releases:
         + OpenBSD 7.0
