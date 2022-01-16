@@ -1,5 +1,7 @@
 iRedMail-1.5.2:
     * Fixed issues:
+        - [Amavisd] Override @av_scanners_backup settings in other config
+          snippet files.
         - [MySQL] Can not remove record which contains non-ascii character
           from table `domain_admins` with unexpected collate.
 
