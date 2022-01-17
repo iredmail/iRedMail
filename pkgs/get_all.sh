@@ -281,8 +281,9 @@ if [ X"${DISTRO}" == X"RHEL" ]; then
     check_pkg ${BIN_WGET} ${PKG_WGET}
     check_pkg ${BIN_PERL} ${PKG_PERL}
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    [ ! -e /usr/sbin/update-ca-certificates ] || export MISSING_PKGS="${MISSING_PKGS} ca-certificates"
-    [ ! -e /usr/lib/apt/methods/https ] || export MISSING_PKGS="${MISSING_PKGS} ${PKG_APT_TRANSPORT_HTTPS}"
+    [[ ! -e /usr/sbin/update-ca-certificates ]] || export MISSING_PKGS="${MISSING_PKGS} ca-certificates"
+    [[ ! -e /usr/lib/apt/methods/https ]] || export MISSING_PKGS="${MISSING_PKGS} ${PKG_APT_TRANSPORT_HTTPS}"
+    [[ ! -e /usr/bin/gpg2 ]] || export MISSING_PKGS="${MISSING_PKGS} gnupg2"
     # dirmngr is required by apt-key
     [ ! -e /usr/bin/dirmngr ] || export MISSING_PKGS="${MISSING_PKGS} dirmngr"
 
