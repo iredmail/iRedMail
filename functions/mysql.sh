@@ -79,6 +79,17 @@ mysql_initialize_db()
         fi
     fi
 
+    grep '^log_warnings' ${MYSQL_MY_CNF} &>/dev/null
+    if [ X"$?" != X'0' ]; then
+        ECHO_DEBUG "Set 'log_warnings=1' in my.cnf."
+        if grep '^\[mysqld\]' ${MYSQL_MY_CNF} &>/dev/null; then
+            perl -pi -e 's#^(\[mysqld\])#${1}\nlog_warnings=1#' ${MYSQL_MY_CNF} >> ${INSTALL_LOG} 2>&1
+        else
+            echo "[mysqld]" >> ${MYSQL_MY_CNF}
+            echo "log_warnings = 1" >> ${MYSQL_MY_CNF}
+        fi
+    fi
+
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
         if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'OPENLDAP' ]; then
             if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then

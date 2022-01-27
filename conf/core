@@ -583,7 +583,7 @@ add_sys_user_group()
         pw groupadd ${_args_g} -n ${_group} >> ${INSTALL_LOG} 2>&1
         pw useradd ${_args_u} -n ${_user} >> ${INSTALL_LOG} 2>&1
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        groupadd ${_args_g} ${_user} >> ${INSTALL_LOG} 2>&1
+        groupadd ${_args_g} ${_group} >> ${INSTALL_LOG} 2>&1
         useradd \
             -u ${_uid} \
             -g ${_group} \
