@@ -5,6 +5,9 @@ iRedMail-1.5.2:
         - [MySQL] Can not remove record which contains non-ascii character
           from table `domain_admins` with unexpected collate.
 
+    * Updated packages:
+        + netdata -> 1.33.0.
+
 iRedMail-1.5.1:
     * Updated packages:
         + Roundcube webmail -> 1.5.2.
