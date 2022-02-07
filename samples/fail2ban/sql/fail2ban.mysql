@@ -34,4 +34,4 @@ CREATE TABLE IF NOT EXISTS `banned` (
     INDEX (`country`),
     INDEX (`timestamp`),
     INDEX (`remove`)
-) ENGINE=InnoDB;
+) ROW_FORMAT=DYNAMIC ENGINE=InnoDB;
