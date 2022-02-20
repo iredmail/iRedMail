@@ -6,7 +6,7 @@ iRedMail-1.5.2:
           from table `domain_admins` with unexpected collate.
 
     * Updated packages:
-        + netdata -> 1.33.0.
+        + netdata -> 1.33.1.
 
 iRedMail-1.5.1:
     * Updated packages:

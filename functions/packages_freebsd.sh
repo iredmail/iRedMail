@@ -1058,7 +1058,7 @@ EOF
                         used_time="$(($(date +%s)-port_start_time))"
                         echo "export status_fetch_port_${portname}='DONE'  # ${used_time} seconds, ~= $((used_time/60)) minute(s)" >> ${STATUS_FILE}
                     else
-                        ECHO_ERROR "Tarballs were not downloaded correctly, please fix it manually and then re-execute iRedMail.sh."
+                        ECHO_ERROR "Failed in downloading package(s), please fix it manually and then relaunch iRedMail installer."
                         exit 255
                     fi
                 else
