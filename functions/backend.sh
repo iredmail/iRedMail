@@ -54,7 +54,7 @@ backend_install()
             # hence no password hash generated for postmaster@<first-domain>.
             rm -f /usr/local/etc/dovecot/conf.d/10-ssl.conf
         fi
-    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    else
         rm -f /etc/dovecot/conf.d/10-ssl.conf
     fi
 
