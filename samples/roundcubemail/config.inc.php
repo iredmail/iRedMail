@@ -6,6 +6,7 @@ $config['db_dsnw'] = 'PH_PHP_CONN_TYPE://PH_RCM_DB_USER:PH_RCM_DB_PASSWD@PH_SQL_
 // LOGGING
 $config['log_driver'] = 'syslog';
 $config['syslog_facility'] = LOG_MAIL;
+$config['log_logins'] = true;
 
 // IMAP
 $config['default_host'] = 'PH_IMAP_SERVER';
