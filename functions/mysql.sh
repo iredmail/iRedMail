@@ -218,6 +218,16 @@ EOF
 
     chmod 0400 ${MYSQL_DEFAULTS_FILE_ROOT} /root/.my.cnf-{${VMAIL_DB_BIND_USER},${VMAIL_DB_ADMIN_USER}}
 
+    # Debian/Ubuntu uses /etc/mysql/debian.cnf as the client config file
+    # during installing or upgrading mariadb package.
+    if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+        if [ -f /etc/mysql/debian.cnf ]; then
+            backup_file /etc/mysql/debian.cnf
+            rm -f /etc/mysql/debian.cnf
+            ln -sf /root/.my.cnf /etc/mysql/debian.cnf
+        fi
+    fi
+
     echo 'export status_mysql_generate_defaults_file_root="DONE"' >> ${STATUS_FILE}
 }
 
