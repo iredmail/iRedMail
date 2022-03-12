@@ -1,5 +1,10 @@
 iRedMail-1.5.2:
+    * Improvements:
+        - Roundcube: Log login IPs by default.
+
     * Fixed issues:
+        - Can not login to SOGo webmail.
+          Thanks to Sysadminfromhell for the report in https://forum.iredmail.org/.
         - [Amavisd] Override @av_scanners_backup settings in other config
           snippet files.
         - [MySQL] Can not remove record which contains non-ascii character

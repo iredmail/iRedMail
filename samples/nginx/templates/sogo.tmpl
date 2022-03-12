@@ -26,8 +26,11 @@ location ^~ /SOGo {
     proxy_set_header x-webobjects-server-port $server_port;
     proxy_set_header x-webobjects-server-name $host;
     proxy_set_header x-webobjects-server-url  https://$host;
-
     proxy_set_header x-webobjects-server-protocol HTTP/1.0;
+
+    proxy_busy_buffers_size   64k;
+    proxy_buffers             8 64k;
+    proxy_buffer_size         64k;
 }
 
 location ^~ /Microsoft-Server-ActiveSync {
@@ -36,6 +39,10 @@ location ^~ /Microsoft-Server-ActiveSync {
     proxy_connect_timeout PH_SOGO_PROXY_TIMEOUT;
     proxy_send_timeout PH_SOGO_PROXY_TIMEOUT;
     proxy_read_timeout PH_SOGO_PROXY_TIMEOUT;
+
+    proxy_busy_buffers_size   64k;
+    proxy_buffers             8 64k;
+    proxy_buffer_size         64k;
 }
 
 location ^~ /SOGo/Microsoft-Server-ActiveSync {
@@ -44,6 +51,10 @@ location ^~ /SOGo/Microsoft-Server-ActiveSync {
     proxy_connect_timeout PH_SOGO_PROXY_TIMEOUT;
     proxy_send_timeout PH_SOGO_PROXY_TIMEOUT;
     proxy_read_timeout PH_SOGO_PROXY_TIMEOUT;
+
+    proxy_busy_buffers_size   64k;
+    proxy_buffers             8 64k;
+    proxy_buffer_size         64k;
 }
 
 location /SOGo.woa/WebServerResources/ {
