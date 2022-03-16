@@ -1,6 +1,6 @@
 iRedMail-1.5.2:
     * Improvements:
-        - Roundcube: Log login IPs by default.
+        - Roundcube: Log client IPs by default.
 
     * Fixed issues:
         - Can not login to SOGo webmail due to small (Nginx) proxy buffer size.
