@@ -18,5 +18,7 @@ CREATE VIEW sogo_users AS
       WHERE enablesogo=1 AND active=1;
 
 ALTER TABLE sogo_users OWNER TO vmailadmin;
+
+-- allow end users to change their own passwords.
 GRANT SELECT,UPDATE ON mailbox TO sogo;
 GRANT SELECT,UPDATE ON sogo_users TO sogo;

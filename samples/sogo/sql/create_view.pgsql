@@ -13,5 +13,7 @@ CREATE VIEW sogo_users AS
        FROM mailbox
       WHERE enablesogo=1 AND active=1;
 
+-- allow end users to change their own passwords.
 GRANT SELECT,UPDATE ON mailbox TO sogo;
+
 GRANT SELECT,UPDATE ON sogo_users TO sogo;
