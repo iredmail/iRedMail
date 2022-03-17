@@ -1,3 +1,8 @@
+iRedMail-1.6.0:
+    * Improvements:
+        - [SOGo] Create SQL VIEW in `vmail` database, so that end users can
+          change their own passwords.
+
 iRedMail-1.5.2:
     * Improvements:
         - Roundcube: Log client IPs by default.

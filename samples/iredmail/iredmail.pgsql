@@ -221,9 +221,9 @@ CREATE TABLE mailbox (
     enablesogo              INT2 NOT NULL DEFAULT 1,
 
     -- Character is required, not int.
-    enablesogowebmail       CHAR(1) NOT NULL DEFAULT 'y',
-    enablesogocalendar      CHAR(1) NOT NULL DEFAULT 'y',
-    enablesogoactivesync    CHAR(1) NOT NULL DEFAULT 'y',
+    enablesogowebmail       VARCHAR(1) NOT NULL DEFAULT 'y',
+    enablesogocalendar      VARCHAR(1) NOT NULL DEFAULT 'y',
+    enablesogoactivesync    VARCHAR(1) NOT NULL DEFAULT 'y',
 
     -- Must be set to NULL if it's not restricted.
     allow_nets TEXT DEFAULT NULL,

@@ -66,41 +66,11 @@ EOF
 CREATE DATABASE ${SOGO_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${SOGO_DB_USER} WITH ENCRYPTED PASSWORD '${SOGO_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 ALTER DATABASE ${SOGO_DB_NAME} OWNER TO ${SOGO_DB_USER};
-\c ${SOGO_DB_NAME};
-CREATE EXTENSION dblink;
+\c ${VMAIL_DB_NAME};
 EOF
 
         # Create view for user authentication
-        cat >> ${tmp_sql} <<EOF
-CREATE VIEW ${SOGO_DB_VIEW_AUTH} AS
-     SELECT * FROM dblink('host=${SQL_SERVER_ADDRESS}
-                           port=${SQL_SERVER_PORT}
-                           dbname=${VMAIL_DB_NAME}
-                           user=${VMAIL_DB_BIND_USER}
-                           password=${VMAIL_DB_BIND_PASSWD}',
-                          'SELECT username AS c_uid,
-                                  username AS c_name,
-                                  password AS c_password,
-                                  name     AS c_cn,
-                                  username AS mail,
-                                  domain   AS domain,
-                                  enablesogowebmail     AS c_webmail,
-                                  enablesogocalendar    AS c_calendar,
-                                  enablesogoactivesync  AS c_activesync
-                             FROM mailbox
-                            WHERE enablesogo=1 AND active=1')
-         AS ${SOGO_DB_VIEW_AUTH} (c_uid         VARCHAR(255),
-                                  c_name        VARCHAR(255),
-                                  c_password    VARCHAR(255),
-                                  c_cn          VARCHAR(255),
-                                  mail          VARCHAR(255),
-                                  domain        VARCHAR(255),
-                                  c_webmail     VARCHAR(1),
-                                  c_calendar    VARCHAR(1),
-                                  c_activesync  VARCHAR(1));
-
-ALTER TABLE ${SOGO_DB_VIEW_AUTH} OWNER TO ${SOGO_DB_USER};
-EOF
+        cat ${SAMPLE_DIR}/sogo/sql/create_view.pgsql >> ${tmp_sql}
 
         su - ${SYS_USER_PGSQL} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >> ${INSTALL_LOG} 2>&1
     fi
@@ -199,11 +169,6 @@ sogo_config() {
         # Enable LDAP as SOGoUserSources
         perl -pi -e 's#/\* SQL backend##' ${SOGO_CONF}
         perl -pi -e 's#SQL backend \*/##' ${SOGO_CONF}
-
-        # Enable password change in MySQL backend
-        if [ X"${BACKEND}" == X'PGSQL' ]; then
-            perl -pi -e 's#(.*SOGoPasswordChangeEnabled = )YES;#${1}NO;#g' ${SOGO_CONF}
-        fi
     fi
 
     # SOGo reads some additional config file for certain parameters.
