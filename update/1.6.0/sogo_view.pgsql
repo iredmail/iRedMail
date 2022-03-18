@@ -1,8 +1,11 @@
 \c vmail;
 
-ALTER TABLE mailbox ALTER COLUMN enablesogowebmail VARCHAR(1);
-ALTER TABLE mailbox ALTER COLUMN enablesogocalendar VARCHAR(1);
-ALTER TABLE mailbox ALTER COLUMN enablesogoactivesync VARCHAR(1);
+-- cannot alter type of a column used by a view or rule
+DROP VIEW IF EXISTS sogo_users;
+
+ALTER TABLE mailbox ALTER COLUMN enablesogowebmail TYPE VARCHAR(1);
+ALTER TABLE mailbox ALTER COLUMN enablesogocalendar TYPE VARCHAR(1);
+ALTER TABLE mailbox ALTER COLUMN enablesogoactivesync TYPE VARCHAR(1);
 
 CREATE VIEW sogo_users AS
      SELECT username AS c_uid,
