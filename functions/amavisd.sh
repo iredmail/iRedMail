@@ -74,7 +74,7 @@ EOF
 \i ${PGSQL_USER_HOMEDIR}/amavisd.sql;
 \i ${PGSQL_USER_HOMEDIR}/default_spam_policy.sql;
 EOF
-        rm -f ${PGSQL_USER_HOMEDIR}/{amavisd,bypass}.sql >> ${INSTALL_LOG}
+        rm -f ${PGSQL_USER_HOMEDIR}/{amavisd,default_spam_policy}.sql >> ${INSTALL_LOG}
 
         su - ${SYS_USER_PGSQL} -c "psql -U ${AMAVISD_DB_USER} -d ${AMAVISD_DB_NAME}" >> ${INSTALL_LOG} 2>&1 <<EOF
 ALTER DATABASE ${AMAVISD_DB_NAME} SET bytea_output TO 'escape';
