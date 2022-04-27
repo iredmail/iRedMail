@@ -195,8 +195,7 @@ export KERNEL_NAME="$(uname -s | tr '[a-z]' '[A-Z]')"
 if [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export RANDOM_STRING='eval </dev/random tr -cd [:alnum:] | fold -w 32 | head -1'
 elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
-    # 24 bytes will be 32 chars after base64 encoded.
-    export RANDOM_STRING='openssl rand -base64 24'
+    export RANDOM_STRING='eval </dev/urandom LC_CTYPE=C tr -dc a-zA-Z0-9 | head -c 32'
 else
     # Linux/FreeBSD
     export RANDOM_STRING='eval </dev/urandom tr -dc A-Za-z0-9 | (head -c $1 &>/dev/null || head -c 32)'
