@@ -243,6 +243,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     #   - 11: bullseye
     # Ubuntu:
     #   - 20.04: focal
+    #   - 22.04: jammy
     export DISTRO_CODENAME=$(awk -F'=' '/^VERSION_CODENAME=/ {print $2}' /etc/os-release)
 
     # Directory of RC scripts.
@@ -287,7 +288,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         export DISTRO='UBUNTU'
 
         # Unsupported releases: 16.x, 17.x, 18.x, 19.x
-        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18|19\.|21\.)' &>/dev/null ; then
+        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18|19\.|21\.|20\.10)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then
@@ -665,8 +666,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     FETCH_CMD='ftp -iV'
 else
     # -c: Continue getting a partially-downloaded file.
-    # -q: Turn off Wget's output.
-    FETCH_CMD="wget -cq --timeout=30"
+    FETCH_CMD="wget -c --timeout=30"
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
         FETCH_CMD="${FETCH_CMD} --ca-certificate=${SSL_CERT_DIR}/ca-bundle.crt"

@@ -522,10 +522,9 @@ EOF
         # Disable ufw service.
         export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
 
-        if [ X"${DISTRO_CODENAME}" == X"focal" ]; then
-            ALL_PKGS="${ALL_PKGS} nftables"
-            ENABLED_SERVICES="${ENABLED_SERVICES} nftables"
-        fi
+        # Use nftables since Ubuntu 20.04.
+        ALL_PKGS="${ALL_PKGS} nftables"
+        ENABLED_SERVICES="${ENABLED_SERVICES} nftables"
     fi
 
     export ALL_PKGS ENABLED_SERVICES DISABLED_SERVICES PKG_SCRIPTS

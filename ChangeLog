@@ -1,4 +1,7 @@
 iRedMail-1.6.0:
+    * Supports new distribution release:
+        + Ubuntu 22.04 LTS (jammy)
+
     * Improvements:
         - [SOGo] Create SQL VIEW in `vmail` database, so that end users can
           change their own passwords.

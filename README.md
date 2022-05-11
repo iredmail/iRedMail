@@ -1,8 +1,12 @@
-iRedMail is a full-featured mail server solution. It supports few mainstream
-Linux/BSD distributions:
+iRedMail is a full-featured mail server solution: https://www.iredmail.org/
 
-- [NOT RECOMMENDED] CentOS 7, 8
-- CentOS Steam 8
+> We have an email archiving software too: https://spider-archiver.com/
+
+It supports few mainstream Linux/BSD distributions:
+
+- CentOS Steam 8.
+    - Note: CentOS 7 and 8 are not supported, please use CentOS Stream or
+      Rocky Linux instead.
 - Rocky Linux 8
 - Red Hat Enterprise Linux 8.x
 - Debian 11 (Recommend), 10
