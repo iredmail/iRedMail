@@ -42,9 +42,12 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
         # Debian 11
         export PGSQL_VERSION='13'
-    else
-        # Ubuntu 20.04
+    elif [ X"${DISTRO}" == X"focal" ]; then
+        # Ubuntu 20.04 (focal)
         export PGSQL_VERSION='12'
+    else
+        # Ubuntu 22.04 (jammy)
+        export PGSQL_VERSION='14'
     fi
 
     export PGSQL_USER_HOMEDIR='/var/lib/postgresql'
