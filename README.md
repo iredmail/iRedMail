@@ -10,7 +10,7 @@ It supports few mainstream Linux/BSD distributions:
 - Rocky Linux 8
 - Red Hat Enterprise Linux 8.x
 - Debian 11 (Recommend), 10
-- Ubuntu 20.04 (Recommend), 18.04
+- Ubuntu 22.04 (Recommend), 20.04, 18.04
 - FreeBSD 13.x
 - OpenBSD 6.9
 
