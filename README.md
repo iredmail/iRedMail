@@ -1,6 +1,6 @@
 iRedMail is a full-featured mail server solution: https://www.iredmail.org/
 
-> We have an email archiving software too: https://spider-archiver.com/
+> Don't forget to check out our lightweight email archiving software: https://spiderd.io/
 
 It supports few mainstream Linux/BSD distributions:
 
