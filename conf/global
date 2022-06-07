@@ -222,8 +222,8 @@ export CMD_PYTHON3='python3'
 export CMD_PIP3='pip3'
 
 # Default password scheme for SQL backends.
-# LDAP backend will use SSHA instead (defined in file
-# dialog/config_via_dialog.sh), because many applications need to bind as user.
+# LDAP backend will use SSHA instead (defined in dialog/config_via_dialog.sh)
+# for easier third-party application integrations.
 export DEFAULT_PASSWORD_SCHEME='SSHA512'
 
 # Check distribution.
@@ -256,7 +256,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # RedHat has minor version number in `VERSION_ID` line, e.g. `VERSION_ID="8.3"`.
         export DISTRO_VERSION="$(echo ${DISTRO_VERSION} | awk -F'.' '{print $1}')"
 
-        if [[ X"${DISTRO_VERSION}" == X'8' ]]; then
+        if [[ X"${DISTRO_VERSION}" == X'8' ]] || [[ X"${DISTRO_VERSION}" == X'9' ]]; then
             export CMD_UWSGI='/usr/local/bin/uwsgi'
         else
             export UNSUPPORTED_RELEASE='YES'

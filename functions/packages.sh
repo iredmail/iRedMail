@@ -401,7 +401,7 @@ EOF
     # Don't append service name 'iredapd' to ${ENABLED_SERVICES} since we don't
     # have RC script ready in this stage.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} python36 python3-sqlalchemy python3-setuptools python3-dns python3-six"
+        ALL_PKGS="${ALL_PKGS} python3-sqlalchemy python3-setuptools python3-dns python3-six"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ALL_PKGS="${ALL_PKGS} python3-ldap python3-PyMySQL"
@@ -475,7 +475,10 @@ EOF
         ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            ALL_PKGS="${ALL_PKGS} fail2ban GeoIP GeoIP-GeoLite-data"
+            if [ X"${DISTRO_VERSION}" == X'8' ]; then
+                # GeoIP is available on CentOS 8.
+                ALL_PKGS="${ALL_PKGS} fail2ban GeoIP GeoIP-GeoLite-data"
+            fi
 
             DISABLED_SERVICES="${DISABLED_SERVICES} shorewall gamin gamin-python"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then

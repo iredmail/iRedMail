@@ -33,7 +33,10 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
         export DIALOG_SELECTABLE_SOGO='NO'
     fi
 
-    if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    if [ X"${DISTRO}" == X'UBUNTU' -a X"${DISTRO_CODENAME}" == X'jammy' ]; then
+        # SOGo team doesn't offer binary packages for Ubuntu 22.04 yet.
+        export DIALOG_SELECTABLE_SOGO='NO'
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # OpenBSD doesn't have 'libuuid' which required by netdata
         export DIALOG_SELECTABLE_NETDATA='NO'
     elif [ X"${DISTRO}" == X'FREEBSD' ]; then

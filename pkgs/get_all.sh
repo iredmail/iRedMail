@@ -191,11 +191,13 @@ EOF
             fi
         done
     elif [ X"${DISTRO_CODENAME}" == X'stream' ]; then
-        for repo in Stream-AppStream Stream-PowerTools; do
-            if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
-                cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
-            fi
-        done
+        if [[ X"${DISTRO_VERSION}" == X'8' ]]; then
+            for repo in Stream-AppStream Stream-PowerTools; do
+                if [ ! -f "${YUM_REPOS_DIR}/CentOS-${repo}.repo" ]; then
+                    cp -f "${SAMPLE_DIR}/yum/CentOS-${repo}.repo" ${YUM_REPOS_DIR}/CentOS-${repo}.repo
+                fi
+            done
+        fi
     fi
 
     if [ X"${DISTRO_CODENAME}" == X'centos' \
