@@ -1,3 +1,7 @@
+iRedMail-1.x.x:
+    * Updated packages:
+        + netdata -> 1.35.0
+
 iRedMail-1.6.0:
     * Supports new distribution release:
         + Ubuntu 22.04 LTS (jammy)
