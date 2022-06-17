@@ -376,11 +376,11 @@ EOF
             fi
 
             ECHO_INFO "Import apt key (${SOGO_PKG_MIRROR_APT_KEY}) for SOGo repo (${SOGO_PKG_MIRROR})."
-            apt-key adv --keyserver keyserver.ubuntu.com --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
+            apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
 
             # Try another PGP key server if `keyserver.ubuntu.com` failed
             if [ X"$?" != X'0' ]; then
-                apt-key adv --keyserver pgp.mit.edu --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
+                apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
             fi
 
             ECHO_INFO "Resynchronizing the package index files (apt update) ..."
