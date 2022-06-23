@@ -1,7 +1,11 @@
-iRedMail-1.x.x:
+iRedMail-1.6.1:
     * Improvements:
         - [Postfix] Bypass more facebook mail server HELOs.
           Thanks damiandabrowski5@GitHub for the contribution.
+
+    * Fixed:
+        - SOGo is now disabled on Ubuntu 22.04 due to SOGo team doesn't offer
+          binary packages yet.
 
     * Updated packages:
         + netdata -> 1.35.1
