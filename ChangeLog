@@ -8,6 +8,7 @@ iRedMail-1.6.1:
           binary packages yet.
 
     * Updated packages:
+        + roundcube webmail -> 1.5.3
         + netdata -> 1.35.1
 
 iRedMail-1.6.0:
