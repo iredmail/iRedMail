@@ -181,4 +181,3 @@
 /(\.*terracedrink\.com)$/ REJECT ACCESS DENIED (${1})
 /(\.*sincemessage\.com)$/ REJECT ACCESS DENIED (${1})
 /(\.*ordertranquility\.com)$/ REJECT ACCESS DENIED (${1})
-/(\.*terracedrink\.com)$/ REJECT ACCESS DENIED (${1})
