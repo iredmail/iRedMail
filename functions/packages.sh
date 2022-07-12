@@ -72,15 +72,21 @@ install_all()
     fi
 
     # web.py.
-    if [ X"${DISTRO}" != X'OPENBSD' ]; then
-        PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
+    # Ubuntu 20.04 ships web.py-0.40
+    if [[ X"${DISTRO}" == X'DEBIAN' ]]; then
+        ALL_PKGS="${ALL_PKGS} python3-webpy"
+    elif [[ "${DISTRO}" == "UBUNTU" ]]; then
+        if [[ X"${DISTRO_CODENAME}" == X'focal' ]]; then
+            PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
+        else
+            ALL_PKGS="${ALL_PKGS} python3-webpy"
+        fi
     fi
 
     # uwsgi.
     # Required by mlmmjadmin, iredadmin.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} gcc python3-devel"
-        PIP3_MODULES="${PIP3_MODULES} uwsgi${PIP_VERSION_UWSGI}"
+        ALL_PKGS="${ALL_PKGS} uwsgi-logger-syslog uwsgi-plugin-python3"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python3"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
@@ -444,7 +450,7 @@ EOF
     # Force install all dependent packages to help customers install iRedAdmin-Pro.
     # web.py, dnspython, requests, jinja2, mysqldb or pymysql, simplejson.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-simplejson"
+        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-simplejson python3-webpy"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-netifaces python3-bcrypt python3-dnspython python3-simplejson"
 

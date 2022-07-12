@@ -194,7 +194,7 @@ iredapd_config()
         perl -pi -e 's#^(vmail_db_user).*#${1} = "$ENV{VMAIL_DB_BIND_USER}"#' ${IREDAPD_CONF}
         perl -pi -e 's#^(vmail_db_password).*#${1} = "$ENV{VMAIL_DB_BIND_PASSWD}"#' ${IREDAPD_CONF}
 
-        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "wblist_rdns", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy"]#' ${IREDAPD_CONF}
+        perl -pi -e 's#^(plugins).*#${1} = ["reject_null_sender", "wblist_rdns", "reject_sender_login_mismatch", "greylisting", "throttle", "amavisd_wblist", "sql_alias_access_policy", "sql_ml_access_policy"]#' ${IREDAPD_CONF}
     fi
 
     # Amavisd database

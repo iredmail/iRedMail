@@ -66,11 +66,11 @@ EOF
 CREATE DATABASE ${SOGO_DB_NAME} WITH TEMPLATE template0 ENCODING 'UTF8';
 CREATE USER ${SOGO_DB_USER} WITH ENCRYPTED PASSWORD '${SOGO_DB_PASSWD}' NOSUPERUSER NOCREATEDB NOCREATEROLE;
 ALTER DATABASE ${SOGO_DB_NAME} OWNER TO ${SOGO_DB_USER};
-\c ${VMAIL_DB_NAME};
-EOF
 
-        # Create view for user authentication
-        cat ${SAMPLE_DIR}/sogo/sql/create_view.pgsql >> ${tmp_sql}
+-- Create view for user authentication
+\c ${VMAIL_DB_NAME};
+$(cat ${SAMPLE_DIR}/sogo/sql/create_view.pgsql)
+EOF
 
         su - ${SYS_USER_PGSQL} -c "psql -d template1 -f ${tmp_sql} >/dev/null" >> ${INSTALL_LOG} 2>&1
     fi
@@ -133,6 +133,9 @@ sogo_config() {
     perl -pi -e 's#PH_SOGO_DB_PASSWD#$ENV{SOGO_DB_PASSWD}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_NAME#$ENV{SOGO_DB_NAME}#g' ${SOGO_CONF}
 
+    perl -pi -e 's#PH_SOGO_VIEW_DB_NAME#$ENV{SOGO_VIEW_DB_NAME}#g' ${SOGO_CONF}
+    perl -pi -e 's#PH_SOGO_VIEW_DB_USER#$ENV{SOGO_VIEW_DB_USER}#g' ${SOGO_CONF}
+    perl -pi -e 's#PH_SOGO_VIEW_DB_PASSWORD#$ENV{SOGO_VIEW_DB_PASSWORD}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_VIEW_AUTH#$ENV{SOGO_DB_VIEW_AUTH}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_VIEW_ALIASES#$ENV{SOGO_DB_VIEW_ALIASES}#g' ${SOGO_CONF}
 

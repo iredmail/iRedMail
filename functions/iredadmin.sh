@@ -228,11 +228,35 @@ EOF
 iredadmin_rc_setup()
 {
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/rhel${DISTRO_VERSION}.service ${SYSTEMD_SERVICE_DIR}/iredadmin.service
-        chmod 0644 ${SYSTEMD_SERVICE_DIR}/iredadmin.service
+        _ini_file="${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel${DISTRO_VERSION}.ini"
+        _systemd_file="${SYSTEMD_SERVICE_DIR}/iredadmin.service"
 
-        perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel${DISTRO_VERSION}.ini
-        perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel${DISTRO_VERSION}.ini
+        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/rhel${DISTRO_VERSION}.service ${_systemd_file}
+        chmod 0644 ${_systemd_file}
+
+        perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${_ini_file}
+        perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${_ini_file}
+
+        _has_plugins_line="NO"
+        if grep '^plugins' ${_ini_file} &>/dev/null; then
+            _has_plugins_line="YES"
+        fi
+
+        # Add or update the `plugins =` line.
+        if [[ -x /usr/local/bin/uwsgi ]] && [[ ${_has_plugins_line} == "YES" ]]; then
+            # uwsgi was installed with pip3, remove the `plugins =` line.
+            perl -pi -e 's/^(plugins).*/#${1}/g' ${_ini_file}
+        elif [[ -x /usr/sbin/uwsgi ]]; then
+            # uwsgi was installed with yum/rpm.
+            perl -pi -e 's#/usr/local/bin/uwsgi#/usr/sbin/uwsgi#g' ${_systemd_file}
+
+            if [[ ${_has_plugins_line} == "NO" ]]; then
+                # add the `plugins =` line
+                echo "plugins = python3, syslog" >> ${_ini_file}
+             else
+                perl -pi -e 's#^(plugins).*#${1} = python3, syslog#g' ${_ini_file}
+            fi
+        fi
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/debian.service ${SYSTEMD_SERVICE_DIR}/iredadmin.service

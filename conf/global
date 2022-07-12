@@ -256,11 +256,12 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # RedHat has minor version number in `VERSION_ID` line, e.g. `VERSION_ID="8.3"`.
         export DISTRO_VERSION="$(echo ${DISTRO_VERSION} | awk -F'.' '{print $1}')"
 
-        if [[ X"${DISTRO_VERSION}" == X'8' ]] || [[ X"${DISTRO_VERSION}" == X'9' ]]; then
-            export CMD_UWSGI='/usr/local/bin/uwsgi'
-        else
+        if [[ X"${DISTRO_VERSION}" != X'8' ]] && [[ X"${DISTRO_VERSION}" != X'9' ]]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
+
+        export CMD_UWSGI='/usr/sbin/uwsgi'
+        export UWSGI_PLUGIN_PYTHON="python3"
 
         # Get distribution name as DISTRO_CODENAME
         if [ -e /etc/rocky-release ]; then

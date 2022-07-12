@@ -54,8 +54,6 @@ export SOGO_PROXY_TIMEOUT='3540'
 # SOGo SQL database.
 export SOGO_DB_NAME='sogo'
 export SOGO_DB_USER='sogo'
-export SOGO_DB_VIEW_AUTH='users'
-export SOGO_DB_VIEW_ALIASES='aliases'
 export SOGO_DB_TABLE_USER_PROFILE='sogo_user_profile'
 export SOGO_DB_TABLE_FOLDER_INFO='sogo_folder_info'
 export SOGO_DB_TABLE_SESSIONS_FOLDER='sogo_sessions_folder'
@@ -63,6 +61,11 @@ export SOGO_DB_TABLE_ALARMS='sogo_alarms_folder'
 export SOGO_DB_TABLE_STORE='sogo_store'
 export SOGO_DB_TABLE_ACL='sogo_acl'
 export SOGO_DB_TABLE_CACHE_FOLDER='sogo_cache_folder'
+
+# SQL VIEW used to query user accounts.
+export SOGO_VIEW_DB_NAME="${SOGO_DB_NAME}"
+export SOGO_DB_VIEW_AUTH='users'
+export SOGO_DB_VIEW_ALIASES='aliases'
 
 export SOGO_CMD_TOOL='/usr/sbin/sogo-tool'
 export SOGO_CMD_EALARMS_NOTIFY='/usr/sbin/sogo-ealarms-notify'
@@ -103,6 +106,12 @@ if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
     export SOGO_DB_TYPE='mysql'
 elif [ X"${BACKEND}" == X'PGSQL' ]; then
     export SOGO_DB_TYPE='postgresql'
+
+    # We create SQL VIEW in `vmail` database directly so that end users can
+    # change their own passwords (PGSQL doesn't support updating VIEW which
+    # linked to another database).
+    export SOGO_VIEW_DB_NAME="${VMAIL_DB_NAME}"
+    export SOGO_DB_VIEW_AUTH='sogo_users'
 fi
 
 # Script used to backup SOGo data.
