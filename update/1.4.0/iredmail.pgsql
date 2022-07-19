@@ -11,6 +11,8 @@ CREATE INDEX idx_maillist_owners_owner ON maillist_owners (owner);
 CREATE INDEX idx_maillist_owners_domain ON maillist_owners (domain);
 CREATE INDEX idx_maillist_owners_dest_domain ON maillist_owners (dest_domain);
 
+ALTER TABLE maillist_owners OWNER TO vmailadmin;
+
 -- Drop unused SQL columns
 ALTER TABLE mailbox DROP COLUMN "allowedsenders";
 ALTER TABLE mailbox DROP COLUMN "rejectedsenders";
