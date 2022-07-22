@@ -7,8 +7,10 @@ iRedMail-1.6.1:
         - Not enable iRedAPD plugin 'sql_ml_access_policy' for SQL backends by
           default.
           Thanks Gavin for the feedback.
-        - SOGo is now disabled on Ubuntu 22.04 due to SOGo team doesn't offer
-          binary packages yet.
+        - [SOGo] Not expand mailing list members while inviting a mailing
+          list in event.
+        - [SOGo] It's now disabled on Ubuntu 22.04 due to SOGo team doesn't
+          offer binary packages yet.
 
     * Updated packages:
         + roundcube webmail -> 1.5.3
