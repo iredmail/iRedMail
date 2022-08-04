@@ -215,27 +215,19 @@ EOF
 
 check_new_iredmail()
 {
-    # Check new version and track basic information,
-    # Used to help iRedMail team understand which Linux/BSD distribution
-    # we should take more care of.
-    #
-    #   - PROG_VERSION: iRedMail version number
-    #   - OS_ARCH: arch (i386, x86_64)
-    #   - DISTRO: OS distribution
-    #   - DISTRO_VERSION: distribution release number
-    #   - DISTRO_CODENAME: code name
+    # Check new version.
     ECHO_INFO "Checking new version of iRedMail ..."
-    ${FETCH_CMD} "https://lic.iredmail.org/check_version/iredmail_os?iredmail_version=${PROG_VERSION}&arch=${OS_ARCH}&distro=${DISTRO}&distro_version=${DISTRO_VERSION}&distro_code_name=${DISTRO_CODENAME}" &>/dev/null
+    ${FETCH_CMD} "https://l.iredmail.org/iredmail/new_version?iredmail_version=${PROG_VERSION}" &>/dev/null
 
     UPDATE_AVAILABLE='NO'
-    if ls iredmail_os* &>/dev/null; then
-        info="$(cat iredmail_os*)"
+    if ls new_version* &>/dev/null; then
+        info="$(cat new_version*)"
         if [ X"${info}" == X'UPDATE_AVAILABLE' ]; then
             UPDATE_AVAILABLE='YES'
         fi
-    fi
 
-    rm -f iredmail_os* &>/dev/null
+        rm -f new_version* &>/dev/null
+    fi
 
     if [ X"${UPDATE_AVAILABLE}" == X'YES' ]; then
         echo ''

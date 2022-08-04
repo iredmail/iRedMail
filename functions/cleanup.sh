@@ -231,30 +231,27 @@ cleanup_update_clamav_signatures()
 
 cleanup_feedback()
 {
-    # Send names of chosen package to iRedMail project to help developers
-    # understand which packages are most important to users.
-    url="${BACKEND_ORIG}=YES"
-    url="${url}&ROUNDCUBE=${USE_ROUNDCUBE}"
-    url="${url}&SOGO=${USE_SOGO}"
-    url="${url}&NETDATA=${USE_NETDATA}"
-    url="${url}&FAIL2BAN=${USE_FAIL2BAN}"
-    url="${url}&IREDADMIN=${USE_IREDADMIN}"
-    [ X"${WEB_SERVER}" == X'NGINX' ] && url="${url}&NGINX=YES"
+    # Send package names to iRedMail project to help developers
+    # understand which are most important to users.
+    url="iredmail_version=${PROG_VERSION}&backend=${BACKEND_ORIG}"
 
-    ECHO_DEBUG "Send info of chosed packages to iRedMail team to help improve iRedMail:"
-    ECHO_DEBUG ""
-    ECHO_DEBUG "\t${BACKEND_ORIG}=YES"
-    ECHO_DEBUG "\tWEB_SERVER=${WEB_SERVER}"
-    ECHO_DEBUG "\tROUNDCUBE=${USE_ROUNDCUBE}"
-    ECHO_DEBUG "\tSOGO=${USE_SOGO}"
-    ECHO_DEBUG "\tNETDATA=${USE_NETDATA}"
-    ECHO_DEBUG "\tFAIL2BAN=${USE_FAIL2BAN}"
-    ECHO_DEBUG "\tIREDADMIN=${USE_IREDADMIN}"
-    ECHO_DEBUG ""
+    # Hardware.
+    url="${url}&arch=${OS_ARCH}"
+    url="${url}&distro=${DISTRO}-${DISTRO_VERSION}"
+
+    # Packages.
+    pkgs=""
+    [ X"${USE_ROUNDCUBE}" == X'YES' ]   && pkgs="${pkgs},roundcube"
+    [ X"${USE_SOGO}" == X'YES' ]        && pkgs="${pkgs},sogo"
+    [ X"${USE_NETDATA}" == X'YES' ]     && pkgs="${pkgs},netdata"
+    [ X"${USE_FAIL2BAN}" == X'YES' ]    && pkgs="${pkgs},fail2ban"
+    [ X"${USE_IREDADMIN}" == X'YES' ]   && pkgs="${pkgs},iredadmin"
+    [ X"${WEB_SERVER}" == X'NGINX' ]    && pkgs="${pkgs},nginx"
+    url="${url}&pkgs=${pkgs}"
 
     cd /tmp
-    ${FETCH_CMD} "https://lic.iredmail.org/check_version/iredmail_pkgs?${url}" &>/dev/null
-    rm -f /tmp/iredmail_pkgs* &>/dev/null
+    ${FETCH_CMD} "https://l.iredmail.org/iredmail/pkgs?${url}" &>/dev/null
+    rm -f /tmp/pkgs* &>/dev/null
 
     echo 'export status_cleanup_feedback="DONE"' >> ${STATUS_FILE}
 }
