@@ -13,8 +13,12 @@ iRedMail-1.6.1:
           offer binary packages yet.
 
     * Updated packages:
-        + roundcube webmail -> 1.5.3
+        + Roundcube webmail -> 1.5.3.
+          1.6.0 doesn't work very well with PHP-8, mostly compatibility
+          warnings, to avoid confusion for sysadmins, we decided to postpone it.
         + netdata -> 1.35.1
+        + iRedAPD -> 5.1
+        + iRedAdmin -> 1.8
 
 iRedMail-1.6.0:
     * Supports new distribution release:
