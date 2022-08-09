@@ -40,6 +40,7 @@ $config['smtp_conn_options'] = array(
 $config['mdn_use_from'] = true;
 
 // SYSTEM
+$config['auto_create_user'] = true;
 $config['force_https'] = true;
 $config['login_autocomplete'] = 2;
 $config['ip_check'] = true;
