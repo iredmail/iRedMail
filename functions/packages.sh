@@ -526,7 +526,7 @@ EOF
     # Firewall
     if [ X"${DISTRO}" == X'DEBIAN' ]; then
         ALL_PKGS="${ALL_PKGS} nftables"
-        ENABLED_SERVICES="${ENABLED_SERVICES} nftables"
+        [[ ${USE_NFTABLES} == "YES" ]] && ENABLED_SERVICES="${ENABLED_SERVICES} nftables"
     elif [ X"${DISTRO}" == X'UBUNTU' ]; then
         # Disable ufw service.
         export DISABLED_SERVICES="${DISABLED_SERVICES} ufw"
