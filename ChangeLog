@@ -16,7 +16,7 @@ iRedMail-1.6.1:
         + Roundcube webmail -> 1.5.3.
           1.6.0 doesn't work very well with PHP-8, mostly compatibility
           warnings, to avoid confusion for sysadmins, we decided to postpone it.
-        + netdata -> 1.35.1
+        + netdata -> 1.36.0
         + iRedAPD -> 5.1
         + iRedAdmin -> 1.8
 
