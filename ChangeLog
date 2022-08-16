@@ -11,6 +11,7 @@ iRedMail-1.6.1:
           list in event.
         - [SOGo] It's now disabled on Ubuntu 22.04 due to SOGo team doesn't
           offer binary packages yet.
+        - [SOGo] New official yum/apt repo site.
 
     * Updated packages:
         + Roundcube webmail -> 1.5.3.

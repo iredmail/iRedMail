@@ -355,16 +355,25 @@ install_all()
                 ALL_PKGS="${ALL_PKGS} mysql-libs"
             fi
 
+            ${FETCH_CMD} \
+                -O /etc/pki/rpm-gpg/sogo-nightly \
+                https://keys.openpgp.org/vks/v1/by-fingerprint/74FFC6D72B925A34B5D356BDF8A27B36A6E2EAE9
+
+            if [ X"$?" != X'0' ]; then
+                ECHO_ERROR "Failed in import GPG key for SOGo yum repository."
+                ECHO_ERROR "Please try to import it manually with command below:"
+                ECHO_ERROR "wget -O /etc/pki/rpm-gpg/sogo-nightly https://keys.openpgp.org/vks/v1/by-fingerprint/74FFC6D72B925A34B5D356BDF8A27B36A6E2EAE9"
+            fi
+
             # Copy yum repo file
             ECHO_INFO "Add yum repo for SOGo: ${YUM_REPOS_DIR}/sogo.repo."
             cat > ${YUM_REPOS_DIR}/sogo.repo <<EOF
 [SOGo]
-name=Inverse SOGo Repository
+name=SOGo Groupware
+baseurl=${SOGO_PKG_MIRROR}/nightly/${SOGO_VERSION}/rhel/\$releasever/\$basearch
 enabled=1
-gpgcheck=0
-
-# SOGo v5 nightly builds
-baseurl=${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/rhel/${DISTRO_VERSION}/\$basearch
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/sogo-nightly
 EOF
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
@@ -376,18 +385,16 @@ EOF
 
             ECHO_INFO "Add apt repo for SOGo: ${SOGO_PKG_MIRROR}"
             if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
+                echo "deb ${SOGO_PKG_MIRROR}/nightly/${SOGO_VERSION}/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
             elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                echo "deb ${SOGO_PKG_MIRROR}/SOGo/nightly/${SOGO_VERSION}/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
+                echo "deb ${SOGO_PKG_MIRROR}/nightly/${SOGO_VERSION}/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
             fi
 
-            ECHO_INFO "Import apt key (${SOGO_PKG_MIRROR_APT_KEY}) for SOGo repo (${SOGO_PKG_MIRROR})."
-            apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
-
-            # Try another PGP key server if `keyserver.ubuntu.com` failed
-            if [ X"$?" != X'0' ]; then
-                apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-key ${SOGO_PKG_MIRROR_APT_KEY}
-            fi
+            ECHO_DEBUG "Add GPG key for SOGo apt repo."
+            wget -q -O /tmp/sogo-nightly "https://keys.openpgp.org/vks/v1/by-fingerprint/74FFC6D72B925A34B5D356BDF8A27B36A6E2EAE9" >/dev/null
+            gpg --dearmor /tmp/sogo-nightly
+            mv /tmp/sogo-nightly.gpg /etc/apt/trusted.gpg.d/
+            rm -f /tmp/sogo-nightly
 
             ECHO_INFO "Resynchronizing the package index files (apt update) ..."
             ${APTGET} update
