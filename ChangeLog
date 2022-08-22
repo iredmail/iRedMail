@@ -14,7 +14,7 @@ iRedMail-1.6.1:
         - [SOGo] New official yum/apt repo site.
 
     * Updated packages:
-        + netdata -> 1.36.0
+        + netdata -> 1.36.1
         + iRedAPD -> 5.1
         + iRedAdmin -> 1.8
         + Roundcube webmail -> 1.5.3.
