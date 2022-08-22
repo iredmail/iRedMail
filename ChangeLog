@@ -14,12 +14,14 @@ iRedMail-1.6.1:
         - [SOGo] New official yum/apt repo site.
 
     * Updated packages:
-        + Roundcube webmail -> 1.5.3.
-          1.6.0 doesn't work very well with PHP-8, mostly compatibility
-          warnings, to avoid confusion for sysadmins, we decided to postpone it.
         + netdata -> 1.36.0
         + iRedAPD -> 5.1
         + iRedAdmin -> 1.8
+        + Roundcube webmail -> 1.5.3.
+
+            1.6.0 doesn't work very well with PHP-8, mostly compatibility
+            warnings, to avoid confusion for sysadmins, we decided to postpone
+            it.
 
 iRedMail-1.6.0:
     * Supports new distribution release:
