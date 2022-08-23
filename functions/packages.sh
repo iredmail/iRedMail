@@ -527,7 +527,7 @@ EOF
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch unzip bsdutils liblz4-tool rsyslog"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} bzip2 lz4"
+        ALL_PKGS="${ALL_PKGS} bzip2 lz4 unzip--"
     fi
 
     # Firewall
