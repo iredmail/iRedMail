@@ -277,6 +277,7 @@ iredadmin_rc_setup()
         service_control enable 'iredadmin_enable' 'YES'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/iredadmin.openbsd ${DIR_RC_SCRIPTS}/iredadmin
+        sed -i 's#/bin/sh#/bin/ksh#' ${DIR_RC_SCRIPTS}/iredadmin
         chmod 0755 ${DIR_RC_SCRIPTS}/iredadmin
 
         perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/openbsd.ini

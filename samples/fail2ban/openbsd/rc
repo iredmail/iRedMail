@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/ksh
  
 daemon="/usr/local/bin/fail2ban-client"
  

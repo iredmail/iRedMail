@@ -207,6 +207,7 @@ EOF
             service_control enable 'mlmmjadmin_enable' 'YES'
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             cp ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/mlmmjadmin.openbsd ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
+            sed -i 's#/bin/sh#/bin/ksh#' ${MLMMJADMIN_RC_SCRIPT_PATH}
             chmod 0755 ${MLMMJADMIN_RC_SCRIPT_PATH} >> ${INSTALL_LOG} 2>&1
             rcctl enable mlmmjadmin
         fi

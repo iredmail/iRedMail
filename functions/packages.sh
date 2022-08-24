@@ -40,9 +40,10 @@ install_all()
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         PKG_SCRIPTS=''
 
+        # Stick to 8.0 for better Roundcube compatibility.
         OB_PKG_PHP_VER='%8.0'
-        OB_PKG_OPENLDAP_SERVER_VER='-2.4.59v0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.59v0'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.4.59p1v0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.59p1v0'
     fi
 
     # Install PHP if there's a web server running -- php is too popular.
@@ -318,7 +319,7 @@ install_all()
         [ X"${BACKEND}" == X'PGSQL' ]   && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy"
+        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy py3-pymysql"
 
         [ X"${BACKEND}" == X'OPENLDAP' ]    && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ]       && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
@@ -614,8 +615,15 @@ EOF
 
             # Fail2ban.
             if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
+                # https://github.com/fail2ban/fail2ban/wiki/How-to-install-or-upgrade-fail2ban-manually
                 ECHO_INFO "Installing Fail2ban from source tarball, please wait for a moment."
-                ${CMD_PIP3} install ${PKG_MISC_DIR}/fail2ban-*.tar.gz &> ${RUNTIME_DIR}/fail2ban_install.log
+
+                cd ${PKG_MISC_DIR}
+                tar zxf fail2ban-${FAIL2BAN_VERSION}.tar.gz
+                cd fail2ban-${FAIL2BAN_VERSION}
+                bash fail2ban-2to3 &>${RUNTIME_DIR}/fail2ban-2to3.log
+                python3 setup.py install --without-tests &> ${RUNTIME_DIR}/fail2ban_install.log
+                cd .. && rm -rf fail2ban-${FAIL2BAN_VERSION}
             fi
 
             # Required by uwsgi applications.

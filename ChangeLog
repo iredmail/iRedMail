@@ -1,4 +1,7 @@
 iRedMail-1.6.1:
+    * Supports new distribution release:
+        + OpenBSD 7.1
+
     * Improvements:
         - [Postfix] Bypass more facebook mail server HELOs.
           Thanks damiandabrowski5@GitHub for the contribution.
