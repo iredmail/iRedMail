@@ -237,7 +237,7 @@ cleanup_feedback()
 
     # Hardware.
     url="${url}&arch=${OS_ARCH}"
-    url="${url}&distro=${DISTRO}-${DISTRO_VERSION}"
+    url="${url}&distro=${DISTRO}-${DISTRO_CODENAME}-${DISTRO_VERSION}"
 
     # Packages.
     pkgs=""
