@@ -113,6 +113,7 @@ CREATE TABLE IF NOT EXISTS forwardings (
     active TINYINT(1) NOT NULL DEFAULT 1,
     PRIMARY KEY (id),
     UNIQUE INDEX (address, forwarding),
+    INDEX (forwarding),
     INDEX (domain),
     INDEX (dest_domain),
     INDEX (is_maillist),

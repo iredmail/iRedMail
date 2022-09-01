@@ -1,3 +1,8 @@
+iRedMail-1.7.0:
+    * Fixed:
+        - [CentOS] Not install cyrus-sasl packages which causes Postfix
+          doesn't support PLAIN auth.
+
 iRedMail-1.6.1:
     * Supports new distribution release:
         + OpenBSD 7.1

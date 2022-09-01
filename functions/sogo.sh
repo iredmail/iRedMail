@@ -42,7 +42,6 @@ EOF
         if [ X"${BACKEND}" == X'MYSQL' ]; then
             cat >> ${tmp_sql} <<EOF
 GRANT SELECT ON ${VMAIL_DB_NAME}.mailbox TO ${SOGO_DB_USER}@"${MYSQL_GRANT_HOST}";
--- GRANT SELECT ON ${VMAIL_DB_NAME}.mailbox TO ${SOGO_DB_USER}@"${HOSTNAME}";
 CREATE VIEW ${SOGO_DB_NAME}.${SOGO_DB_VIEW_AUTH} (c_uid, c_name, c_password, c_cn, mail, domain, c_webmail, c_calendar, c_activesync) AS SELECT username, username, password, name, username, domain, enablesogowebmail, enablesogocalendar, enablesogoactivesync FROM ${VMAIL_DB_NAME}.mailbox WHERE enablesogo=1 AND active=1;
 EOF
         fi

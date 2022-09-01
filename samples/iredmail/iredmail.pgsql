@@ -104,9 +104,9 @@ CREATE TABLE forwardings (
     is_alias INT2 NOT NULL DEFAULT 0,
     active INT2 NOT NULL DEFAULT 1
 );
+CREATE UNIQUE INDEX idx_forwardings_address_forwarding ON forwardings (address, forwarding);
 CREATE INDEX idx_forwardings_address ON forwardings (address);
 CREATE INDEX idx_forwardings_forwarding ON forwardings (forwarding);
-CREATE UNIQUE INDEX idx_forwardings_address_forwarding ON forwardings (address, forwarding);
 CREATE INDEX idx_forwardings_domain ON forwardings (domain);
 CREATE INDEX idx_forwardings_dest_domain ON forwardings (dest_domain);
 CREATE INDEX idx_forwardings_is_maillist ON forwardings (is_maillist);

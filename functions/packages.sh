@@ -97,7 +97,7 @@ install_all()
     # Postfix.
     ENABLED_SERVICES="${ENABLED_SERVICES} ${POSTFIX_RC_SCRIPT_NAME}"
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} postfix"
+        ALL_PKGS="${ALL_PKGS} postfix cyrus-sasl cyrus-sasl-lib cyrus-sasl-plain"
 
         # pcre support is required and available in iRedMail yum repo.
         ALL_PKGS="${ALL_PKGS} postfix-pcre"
