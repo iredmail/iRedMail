@@ -189,7 +189,7 @@ EOF
     # Copy rc script file
     if [ X"${USE_SYSTEMD}" == X'YES' ]; then
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            perl -pi -e 's/^(plugins.*)python,(.*)/${1}$ENV{UWSGI_PLUGIN_PYTHON}${2}/g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/uwsgi/rhel.ini
+            perl -pi -e 's/^(plugins.*)python,(.*)/${1}$ENV{UWSGI_PLUGIN_PYTHON},${2}/g' ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/uwsgi/rhel.ini
 
             cp -f ${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/rc_scripts/systemd/rhel.service ${SYSTEMD_SERVICE_DIR}/${MLMMJADMIN_RC_SCRIPT_NAME}.service >> ${INSTALL_LOG} 2>&1
             chmod 0644 ${SYSTEMD_SERVICE_DIR}/${MLMMJADMIN_RC_SCRIPT_NAME}.service

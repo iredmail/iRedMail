@@ -1,1 +1,1 @@
-ALTER TABLE forwardings ADD INDEX forwarding (forwarding);
+ALTER TABLE forwardings ADD INDEX IF NOT EXISTS forwarding (forwarding);
