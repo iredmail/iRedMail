@@ -196,6 +196,7 @@ rcm_plugin_managesieve()
     perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} true;#' config.inc.php
     perl -pi -e 's#(.*managesieve_default.*=).*#${1} "";#' config.inc.php
     perl -pi -e 's#(.*managesieve_vacation.*=).*#${1} 1;#' config.inc.php
+    perl -pi -e 's#(.*managesieve_forward.*=).*#${1} 1;#' config.inc.php
 
     # Disable ssl peer verify
     perl -pi -e 's#(.*managesieve_conn_options.*=.*)(null.*)#${1}array("ssl" => array("verify_peer" => false, "verify_peer_name" => false));#' config.inc.php
