@@ -117,7 +117,9 @@ cleanup_replace_firewall_rules()
 
                     if [ X"${DISTRO}" == X'RHEL' ]; then
                         cd ${ETC_SYSCONFIG_DIR}/network-scripts/
-                        perl -pi -e 's#ZONE=public#ZONE=iredmail#g' *
+                        if ls | grep -E '[0-9a-zA-Z]' &>/dev/null; then
+                            perl -pi -e 's#ZONE=public#ZONE=iredmail#g' *
+                        fi
                     fi
 
                     service_control enable firewalld

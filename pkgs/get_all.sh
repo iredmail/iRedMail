@@ -154,8 +154,11 @@ create_repo_rhel()
         ECHO_INFO "RHEL: Install package epel-release."
         dnf -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
     else
-        _required_pkgs="epel-release"
+        yum -y install epel-release
     fi
+
+    # epel-next-release is avaiable in epel repo, so `epel` must be enabled first.
+    _required_pkgs="epel-next-release"
 
     # required by command `yum config-manager --enable <repo>`.
     _required_pkgs="${_required_pkgs} dnf-plugins-core"
@@ -166,7 +169,8 @@ create_repo_rhel()
     backup_file ${LOCAL_REPO_FILE}
 
     # Generate iRedMail repo file.
-    cat > ${LOCAL_REPO_FILE} <<EOF
+    if [[ X"${DISTRO_VERSION}}" == X"8" ]]; then
+        cat > ${LOCAL_REPO_FILE} <<EOF
 [${LOCAL_REPO_NAME}]
 name=${LOCAL_REPO_NAME}
 baseurl=${IREDMAIL_MIRROR}/yum/rpms/\$releasever/
@@ -176,6 +180,7 @@ gpgcheck=0
 priority=99
 module_hotfixes=1
 EOF
+    fi
 
     # RHEL/CentOS 8.
     # appstream and powertools are required on CentOS Linux and CentOS Stream.
@@ -206,8 +211,18 @@ EOF
         -o X"${DISTRO_CODENAME}" == X'alma' \
         ]; then
         # Make sure required repos are enabled.
-        ECHO_INFO "Enable yum repos: appstream, powertools."
-        yum config-manager --enable appstream powertools
+        if [ X"${DISTRO_VERSION}" == X'8' ]; then
+            ECHO_INFO "Enable yum repos: appstream, powertools."
+            yum config-manager --enable appstream powertools
+        elif [ X"${DISTRO_VERSION}" == X'9' ]; then
+            if [ X"${DISTRO_CODENAME}" == X'alma' -o X"${DISTRO_CODENAME}" == X'stream' ]; then
+                ECHO_INFO "Enable yum repos: baseos, appstream, extras-common, crb."
+                dnf config-manager --enable baseos appstream extras-common crb
+            elif [ X"${DISTRO_CODENAME}" == X'rocky' ]; then
+                ECHO_INFO "Enable yum repos: baseos, appstream, extras, crb."
+                dnf config-manager --enable baseos appstream extras crb
+            fi
+        fi
     fi
 
     echo 'export status_create_repo_rhel="DONE"' >> ${STATUS_FILE}

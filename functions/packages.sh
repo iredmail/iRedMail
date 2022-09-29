@@ -74,7 +74,11 @@ install_all()
 
     # web.py.
     # Ubuntu 20.04 ships web.py-0.40
-    if [[ X"${DISTRO}" == X'DEBIAN' ]]; then
+    if [[ X"${DISTRO}" == X'RHEL' ]]; then
+        if [[ X"${DISTRO_VERSION}" == X'9' ]]; then
+            PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
+        fi
+    elif [[ X"${DISTRO}" == X'DEBIAN' ]]; then
         ALL_PKGS="${ALL_PKGS} python3-webpy"
     elif [[ "${DISTRO}" == "UBUNTU" ]]; then
         if [[ X"${DISTRO_CODENAME}" == X'focal' ]]; then
@@ -122,12 +126,22 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            # Install packages from Symas yum repo.
-            ALL_PKGS="${ALL_PKGS} symas-openldap-servers symas-openldap-clients mariadb-server"
+            if [ X"${DISTRO_VERSION}" == X'8' ]; then
+                # Install packages from Symas yum repo.
+                ALL_PKGS="${ALL_PKGS} symas-openldap-servers symas-openldap-clients mariadb-server"
 
-            if [ ! -f ${YUM_REPOS_DIR}/symas-openldap.repo ]; then
-                cp -f ${SAMPLE_DIR}/yum/symas-openldap.repo ${YUM_REPOS_DIR}/
+                if [ ! -f ${YUM_REPOS_DIR}/symas-openldap.repo ]; then
+                    cp -f ${SAMPLE_DIR}/yum/symas-openldap.repo ${YUM_REPOS_DIR}/
+                fi
+            else
+                # openldap-servers is available in EPEL.
+                # openldap-clients is available in BaseOS repo.
+                ALL_PKGS="${ALL_PKGS} openldap-servers openldap-clients mariadb-server"
             fi
+
+            # Perl module
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} perl-DBD-MySQL"
+            [[ X"${DISTRO_VERSION}" == X'9' ]] && ALL_PKGS="${ALL_PKGS} perl-DBD-mysql"
 
             # Python driver.
             ALL_PKGS="${ALL_PKGS} python3-ldap"
@@ -152,7 +166,8 @@ install_all()
             fi
 
             # Perl module
-            ALL_PKGS="${ALL_PKGS} perl-DBD-MySQL"
+            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} perl-DBD-MySQL"
+            [[ X"${DISTRO_VERSION}" == X'9' ]] && ALL_PKGS="${ALL_PKGS} perl-DBD-mysql"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # MySQL server and client.
@@ -458,7 +473,7 @@ EOF
     # Force install all dependent packages to help customers install iRedAdmin-Pro.
     # web.py, dnspython, requests, jinja2, mysqldb or pymysql, simplejson.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-simplejson python3-webpy"
+        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-simplejson"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-netifaces python3-bcrypt python3-dnspython python3-simplejson"
 
@@ -489,9 +504,11 @@ EOF
         ENABLED_SERVICES="${ENABLED_SERVICES} fail2ban"
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
+            ALL_PKGS="${ALL_PKGS} fail2ban"
+
             if [ X"${DISTRO_VERSION}" == X'8' ]; then
                 # GeoIP is available on CentOS 8.
-                ALL_PKGS="${ALL_PKGS} fail2ban GeoIP GeoIP-GeoLite-data"
+                ALL_PKGS="${ALL_PKGS} GeoIP GeoIP-GeoLite-data"
             fi
 
             DISABLED_SERVICES="${DISABLED_SERVICES} shorewall gamin gamin-python"
