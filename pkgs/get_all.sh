@@ -215,12 +215,13 @@ EOF
             ECHO_INFO "Enable yum repos: appstream, powertools."
             yum config-manager --enable appstream powertools
         elif [ X"${DISTRO_VERSION}" == X'9' ]; then
-            if [ X"${DISTRO_CODENAME}" == X'alma' -o X"${DISTRO_CODENAME}" == X'stream' ]; then
-                ECHO_INFO "Enable yum repos: baseos, appstream, extras-common, crb."
-                dnf config-manager --enable baseos appstream extras-common crb
-            elif [ X"${DISTRO_CODENAME}" == X'rocky' ]; then
-                ECHO_INFO "Enable yum repos: baseos, appstream, extras, crb."
-                dnf config-manager --enable baseos appstream extras crb
+            ECHO_INFO "Enable required yum repos."
+            dnf config-manager --enable baseos appstream crb
+
+            if [ X"${DISTRO_CODENAME}" == X'stream' ]; then
+                dnf config-manager --enable extras-common
+            elif [ X"${DISTRO_CODENAME}" == X'rocky' -o X"${DISTRO_CODENAME}" == X'alma' ]; then
+                dnf config-manager --enable extras
             fi
         fi
     fi
