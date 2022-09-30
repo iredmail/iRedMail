@@ -1,9 +1,17 @@
+iRedMail-1.6.2:
+    * Supports new distribution release:
+        - CentOS Stream 9
+        - Rocky Linux 9
+        - Alma Linux 9
+
+    * Improvements:
+        - [Roundcube] Enables separate management interface for mail forwardings.
+
 iRedMail-1.6.1:
     * Supports new distribution release:
         + OpenBSD 7.1
 
     * Improvements:
-        - [Roundcube] Enables separate management interface for mail forwardings.
         - [Postfix] Bypass more facebook mail server HELOs.
           Thanks damiandabrowski5@GitHub for the contribution.
 
