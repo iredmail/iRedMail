@@ -1,3 +1,10 @@
+iRedMail-1.6.3:
+    * Supports new distribution release:
+        - OpenBSD 7.2
+
+    * Updated packages:
+        + iRedAPD -> 5.1.1
+
 iRedMail-1.6.2:
     * Supports new distribution release:
         - CentOS Stream 9

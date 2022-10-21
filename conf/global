@@ -22,7 +22,7 @@
 
 export PROG_NAME='iRedMail'
 export PROG_NAME_LOWERCASE='iredmail'
-export PROG_VERSION='1.6.2'
+export PROG_VERSION='1.6.3'
 
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
 
@@ -338,8 +338,8 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export CMD_PYTHON3='/usr/local/bin/python3'
     export CMD_PIP3="pip${PYTHON_VERSION}"
 
-    # Supported release: 7.1.
-    echo "${DISTRO_VERSION}" | grep '^7\.1$' &>/dev/null
+    # Supported release: 7.1, 7.2.
+    echo "${DISTRO_VERSION}" | grep '^7\.[12]$' &>/dev/null
     if [[ X"$?" != X"0" ]]; then
         export UNSUPPORTED_RELEASE='YES'
     fi
