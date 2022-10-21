@@ -42,8 +42,8 @@ install_all()
 
         # Stick to 8.0 for better Roundcube compatibility.
         OB_PKG_PHP_VER='%8.0'
-        OB_PKG_OPENLDAP_SERVER_VER='-2.4.59p1v0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.4.59p1v0'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.6.3v0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.3v0'
     fi
 
     # Install PHP if there's a web server running -- php is too popular.
