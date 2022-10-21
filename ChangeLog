@@ -1,6 +1,6 @@
 iRedMail-1.6.3:
     * Supports new distribution release:
-        - OpenBSD 7.2
+        - OpenBSD 7.2. Note: 7.1 has been dropped.
 
     * Updated packages:
         + iRedAPD -> 5.1.1
