@@ -137,7 +137,11 @@ postfix_config_basic()
     _postfix_version="$(postconf -d mail_version | awk '{print $NF}')"
     if echo ${_postfix_version} | grep '^3' &>/dev/null; then
         # Postfix v3
-        postconf -e compatibility_level=2
+        if [[ X"${DISTRO}" == X'OPENBSD' ]]; then
+            postconf -e compatibility_level=3.6
+        else
+            postconf -e compatibility_level=2
+        fi
 
         # The master.cf chroot default value has changed from "y" (yes) to "n" (no).
         for i in $(postconf -Mf | grep '^[0-9a-zA-Z]' | awk '{print $1"/"$2"/chroot=n"}'); do
