@@ -217,12 +217,6 @@ EOF
         elif [ X"${DISTRO_VERSION}" == X'9' ]; then
             ECHO_INFO "Enable required yum repos."
             dnf config-manager --enable baseos appstream crb
-
-            if [ X"${DISTRO_CODENAME}" == X'stream' ]; then
-                dnf config-manager --enable extras-common
-            elif [ X"${DISTRO_CODENAME}" == X'rocky' -o X"${DISTRO_CODENAME}" == X'alma' ]; then
-                dnf config-manager --enable extras
-            fi
         fi
     fi
 
