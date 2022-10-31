@@ -58,7 +58,6 @@ iredapd_install()
             service_control enable 'iredapd_enable' 'YES'
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.openbsd ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
-            sed -i 's#/bin/sh#/bin/ksh#' ${DIR_RC_SCRIPTS}/iredapd
         else
             cp ${IREDAPD_ROOT_DIR_SYMBOL_LINK}/rc_scripts/iredapd.rhel ${DIR_RC_SCRIPTS}/iredapd >> ${INSTALL_LOG} 2>&1
         fi
