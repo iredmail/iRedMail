@@ -29,7 +29,6 @@ install_all()
 
     # Specify version numbers while installing Python modules with pip.
     PIP_VERSION_PYTHON_LDAP='>=3.3.1'
-    PIP_VERSION_WEBPY='>=0.62'
     PIP_VERSION_UWSGI='>=2.0.20'
     PIP_VERSION_REQUESTS='>=2.24.0'
     PIP_VERSION_PYMYSQL='>=0.10.0'
@@ -70,22 +69,6 @@ install_all()
         ALL_PKGS="${ALL_PKGS} python3-setuptools python3-pip python3-wheel python3-requests"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} py3-setuptools py3-pip py3-wheel py3-requests"
-    fi
-
-    # web.py.
-    # Ubuntu 20.04 ships web.py-0.40
-    if [[ X"${DISTRO}" == X'RHEL' ]]; then
-        if [[ X"${DISTRO_VERSION}" == X'9' ]]; then
-            PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
-        fi
-    elif [[ X"${DISTRO}" == X'DEBIAN' ]]; then
-        ALL_PKGS="${ALL_PKGS} python3-webpy"
-    elif [[ "${DISTRO}" == "UBUNTU" ]]; then
-        if [[ X"${DISTRO_CODENAME}" == X'focal' ]]; then
-            PIP3_MODULES="${PIP3_MODULES} web.py${PIP_VERSION_WEBPY}"
-        else
-            ALL_PKGS="${ALL_PKGS} python3-webpy"
-        fi
     fi
 
     # uwsgi.
@@ -334,7 +317,7 @@ install_all()
         [ X"${BACKEND}" == X'PGSQL' ]   && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy py3-pymysql"
+        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-pymysql"
 
         [ X"${BACKEND}" == X'OPENLDAP' ]    && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ]       && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
@@ -459,7 +442,7 @@ EOF
         [ X"${BACKEND}" == X'PGSQL' ]    && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-webpy"
+        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython"
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} py3-psycopg2"
@@ -492,7 +475,7 @@ EOF
         [ X"${BACKEND}" == X'PGSQL' ]   && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py3-jinja2 py3-flup py3-bcrypt py3-curl py3-netifaces py3-dnspython py3-simplejson py3-webpy"
+        ALL_PKGS="${ALL_PKGS} py3-jinja2 py3-flup py3-bcrypt py3-curl py3-netifaces py3-dnspython py3-simplejson"
 
         [ X"${BACKEND}" == X'OPENLDAP' ]    && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ]       && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"

@@ -1002,8 +1002,8 @@ EOF
     # iRedAPD
     ALL_PORTS="${ALL_PORTS} dns/py-dnspython"
 
-    # iRedAdmin: dependencies. webpy, Jinja2, bcrypt
-    ALL_PORTS="${ALL_PORTS} www/webpy devel/py-simplejson"
+    # iRedAdmin dependencies: Jinja2, bcrypt
+    ALL_PORTS="${ALL_PORTS} devel/py-simplejson"
 
     # Fail2ban.
     #if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
