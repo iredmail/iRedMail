@@ -88,8 +88,9 @@ generate_password_hash()
     doveadm pw -s "${_scheme}" -p "${_password}"
 }
 
-# Read input
-mail="$1"
+# Read input.
+# Convert email address to lower cases.
+mail="$(echo $1 | tr '[:upper:]' '[:lower:]')"
 plain_password="$2"
 
 username="$(echo $mail | awk -F'@' '{print $1}')"
