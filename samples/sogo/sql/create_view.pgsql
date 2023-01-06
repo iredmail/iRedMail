@@ -1,17 +1,18 @@
 -- create SQL view in vmail database.
 
 CREATE VIEW sogo_users AS
-     SELECT username AS c_uid,
-            username AS c_name,
-            password AS c_password,
-            name     AS c_cn,
-            username AS mail,
-            domain   AS domain,
-            enablesogowebmail     AS c_webmail,
-            enablesogocalendar    AS c_calendar,
-            enablesogoactivesync  AS c_activesync
-       FROM mailbox
-      WHERE enablesogo=1 AND active=1;
+    SELECT mailbox.username AS c_uid,
+           mailbox.username AS c_name,
+           mailbox.password AS c_password,
+           mailbox.name AS c_cn,
+           mailbox.username AS mail,
+           mailbox.domain,
+           mailbox.enablesogowebmail AS c_webmail,
+           mailbox.enablesogocalendar AS c_calendar,
+           mailbox.enablesogoactivesync AS c_activesync,
+           (SELECT string_agg(forwardings.address, ' ') AS string_agg FROM forwardings WHERE forwardings.forwarding = mailbox.username AND forwardings.address <> mailbox.username) AS alternate_addresses
+     FROM mailbox
+    WHERE mailbox.enablesogo = 1 AND mailbox.active = 1;
 
 -- allow end users to change their own passwords.
 GRANT SELECT,UPDATE ON mailbox TO sogo;
