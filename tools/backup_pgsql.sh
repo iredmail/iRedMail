@@ -126,6 +126,13 @@ export PGSQL_USER_HOMEDIR="$(su - ${SYS_USER_PGSQL} -c 'echo $HOME')"
 echo "* Starting at: ${YEAR}-${MONTH}-${DAY}-${TIME}." >${LOGFILE}
 echo "* Backup directory: ${BACKUP_DIR}." >>${LOGFILE}
 
+# Check whether iredadmin database exists.
+# Used for logging backup status in iredadmin database.
+export has_iredadmin="NO"
+if echo ${DATABASES} | grep 'iredadmin' &>/dev/null; then
+    has_iredadmin="YES"
+fi
+
 # Backup.
 echo "* Backing up databases: ${DATABASES}." >> ${LOGFILE}
 for db in ${DATABASES}; do
@@ -165,11 +172,14 @@ for db in ${DATABASES}; do
             sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Database backup failed: ${db}, check log file ${LOGFILE} for more details.', 'cron_backup_sql', '127.0.0.1', NOW());"
         fi
 
-        su - "${SYS_USER_PGSQL}" >/dev/null <<EOF
+        if [[ ${has_iredadmin} == "YES" ]]; then
+            su - "${SYS_USER_PGSQL}" >/dev/null <<EOF
 psql -d iredadmin <<EOF2
 ${sql_log_msg}
 EOF2
 EOF
+        fi
+
     fi
 done
 
@@ -195,10 +205,12 @@ if [ X"${REMOVE_OLD_BACKUP}" == X'YES' -a -d ${REMOVED_BACKUP_DIR} ]; then
     rmdir ${REMOVED_BACKUP_MONTH_DIR} 2>/dev/null
     rmdir ${REMOVED_BACKUP_YEAR_DIR} 2>/dev/null
 
-    su - ${SYS_USER_PGSQL} -c "psql -d iredadmin" <<EOF
+    if [[ ${has_iredadmin} == "YES" ]]; then
+        su - ${SYS_USER_PGSQL} -c "psql -d iredadmin" <<EOF
 INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES
     ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUP_DIR}.', 'cron_backup_sql', '127.0.0.1', NOW());
 EOF
+    fi
 fi
 
 echo "* Backup log: ${LOGFILE}:"

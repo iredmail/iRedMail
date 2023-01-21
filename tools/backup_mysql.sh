@@ -146,6 +146,13 @@ echo "* Starting backup: ${TIMESTAMP}." >${LOGFILE}
 echo "* Backup directory: ${BACKUP_DIR}." >>${LOGFILE}
 chmod 0400 ${LOGFILE}
 
+# Check whether iredadmin database exists.
+# Used for logging backup status in iredadmin database.
+export has_iredadmin="NO"
+if echo ${DATABASES} | grep 'iredadmin' &>/dev/null; then
+    has_iredadmin="YES"
+fi
+
 # Backup.
 echo "* Backing up databases: ${DATABASES}." >> ${LOGFILE}
 for db in ${DATABASES}; do
@@ -191,7 +198,9 @@ for db in ${DATABASES}; do
 
         # Log to SQL table `iredadmin.log`, so that global domain admins can
         # check backup status (System -> Admin Log)
-        ${CMD_MYSQL} iredadmin -e "${sql_log_msg}"
+        if [[ ${has_iredadmin} == "YES" ]]; then
+            ${CMD_MYSQL} iredadmin -e "${sql_log_msg}"
+        fi
     fi
 done
 
@@ -218,7 +227,10 @@ if [[ X"${REMOVE_OLD_BACKUP}" == X'YES' ]] && [[ -d "${REMOVED_BACKUP_DIR}" ]]; 
     rmdir ${REMOVED_BACKUP_YEAR_DIR} 2>/dev/null
 
     sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'Remove old backup: ${REMOVED_BACKUP_DIR}.', 'cron_backup_sql', '127.0.0.1', UTC_TIMESTAMP());"
-    ${CMD_MYSQL} iredadmin -e "${sql_log_msg}"
+
+    if [[ ${has_iredadmin} == "YES" ]]; then
+        ${CMD_MYSQL} iredadmin -e "${sql_log_msg}"
+    fi
 fi
 
 echo "==> Detailed log (${LOGFILE}):"
