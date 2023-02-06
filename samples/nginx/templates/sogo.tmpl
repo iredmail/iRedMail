@@ -1,7 +1,7 @@
 # Settings for SOGo Groupware
 
 # SOGo
-location ~* ^/sogo { rewrite ^ https://$host/SOGo/; }
+location ~ ^/sogo { rewrite ^ https://$host/SOGo/; }
 
 # Redirect /mail to /SOGo
 #location ~ ^/mail { rewrite ^ https://$host/SOGo/; }

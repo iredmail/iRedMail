@@ -2,6 +2,14 @@ iRedMail-1.6.3:
     * Supports new distribution release:
         - OpenBSD 7.2. Note: 7.1 has been dropped.
 
+    * Fixed issues:
+        - FreeBSD ports tree is now up to date, main packages are updated:
+            - MariaDB 10.6
+            - PostgreSQL 15
+            - OpenLDAP 2.6
+            - PHP 8.1
+            - Python 3.9
+
     * Updated packages:
         + Roundcube -> 1.6.1
         + iRedAPD -> 5.2
