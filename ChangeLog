@@ -9,13 +9,14 @@ iRedMail-1.6.3:
             - OpenLDAP 2.6
             - PHP 8.1
             - Python 3.9
+            - Perl 5.36
 
     * Updated packages:
         + Roundcube -> 1.6.1
         + iRedAPD -> 5.2
         + mlmmjadmin -> 3.1.6
         + iRedAdmin -> 2.1
-        + netdata -> 1.37.1
+        + netdata -> 1.38.1
         + fail2ban -> 1.0.2 (OpenBSD)
 
 iRedMail-1.6.2:
