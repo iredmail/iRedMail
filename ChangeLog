@@ -2,6 +2,8 @@ iRedMail-1.6.3:
     * Supports new distribution release:
         - OpenBSD 7.2. Note: 7.1 has been dropped.
 
+    * SOGo Groupware is now available on Ubuntu 22.04. Thanks to SOGo team.
+
     * Fixed issues:
         - FreeBSD ports tree is now up to date, main packages are updated:
             - MariaDB 10.6

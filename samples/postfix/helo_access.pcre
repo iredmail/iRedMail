@@ -40,12 +40,9 @@
 # This is the real HELO identify of these ISPs:
 #   sohu.com    websmtp.sohu.com relay2nd.mail.sohu.com
 #   126.com     m15-78.126.com
-#   163.com     m31-189.vip.163.com m13-49.163.com
 #   sina.com    mail2-209.sinamail.sina.com.cn
 #   gmail.com   xx-out-NNNN.google.com
 /^(126\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
-/^(163\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
-/^(163\.net)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
 /^(sohu\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
 /^(gmail\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
 /^(google\.com)$/ REJECT ACCESS DENIED. Your email was rejected because the sending mail server seems to be impersonating another mail server (${1})
