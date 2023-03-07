@@ -98,21 +98,28 @@ smtpd_tls_CAfile = PH_SSL_CERT_FILE
 smtpd_tls_CApath = PH_SSL_CERT_DIR
 
 #
-# Disable SSLv2, SSLv3
+# Disable SSLv2, SSLv3, TLSv1
+# Enable Intermediate TLS ciphers
 #
-smtpd_tls_protocols = !SSLv2 !SSLv3
-smtpd_tls_mandatory_protocols = !SSLv2 !SSLv3
+smtpd_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+smtpd_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+smtpd_tls_mandatory_ciphers = medium
 
-smtp_tls_protocols = !SSLv2 !SSLv3
-smtp_tls_mandatory_protocols = !SSLv2 !SSLv3
+smtp_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+smtp_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+smtp_tls_mandatory_ciphers = medium
 
-lmtp_tls_protocols = !SSLv2 !SSLv3
-lmtp_tls_mandatory_protocols = !SSLv2 !SSLv3
+lmpt_tls_mandatory_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+lmpt_tls_protocols = !SSLv2, !SSLv3, !TLSv1, !TLSv1.1
+lmpt_tls_mandatory_ciphers = medium
+
+tls_medium_cipherlist = ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+
+tls_preempt_cipherlist = no
 
 #
 # Fix 'The Logjam Attack'.
 #
-smtpd_tls_exclude_ciphers = aNULL, eNULL, EXPORT, DES, RC4, MD5, PSK, aECDH, EDH-DSS-DES-CBC3-SHA, EDH-RSA-DES-CDC3-SHA, KRB5-DE5, CBC3-SHA
 smtpd_tls_dh512_param_file = PH_SSL_DH512_PARAM_FILE
 smtpd_tls_dh1024_param_file = PH_SSL_DH1024_PARAM_FILE
 
