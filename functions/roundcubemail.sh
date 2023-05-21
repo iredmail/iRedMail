@@ -223,7 +223,6 @@ rcm_plugin_password()
     # Require the new password to contain a letter and punctuation character
     perl -pi -e 's#(.*password_require_nonalpha.*=).*#${1} true;#' config.inc.php
     perl -pi -e 's#(.*password_log.*=).*#${1} true;#' config.inc.php
-    perl -pi -e 's#(.*password_algorithm.*=).*#${1} "dovecot";#' config.inc.php
 
     # Roundcube uses scheme name in lower cases
     export default_password_scheme="$(echo ${DEFAULT_PASSWORD_SCHEME} | tr '[A-Z]' '[a-z]')"
@@ -241,6 +240,9 @@ rcm_plugin_password()
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         export default_password_scheme='ssha'
     fi
+
+    perl -pi -e 's#(.*password_algorithm.*=).*#${1} "$ENV{default_password_scheme}";#' config.inc.php
+    perl -pi -e 's#(.*password_algorithm_prefix.*=).*#${1} "{$ENV{DEFAULT_PASSWORD_SCHEME}}";#' config.inc.php
 
     perl -pi -e 's#(.*password_dovecotpw.*=.*for dovecot-1.*)#//${1}#' config.inc.php
     perl -pi -e 's#// (.*password_dovecotpw.*=).*for dovecot-2.*#${1} "$ENV{DOVECOT_DOVEADM_BIN} pw";#' config.inc.php

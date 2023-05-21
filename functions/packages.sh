@@ -39,10 +39,23 @@ install_all()
     if [ X"${DISTRO}" == X'OPENBSD' ]; then
         PKG_SCRIPTS=''
 
-        # Stick to 8.0 for better Roundcube compatibility.
-        OB_PKG_PHP_VER='%8.0'
-        OB_PKG_OPENLDAP_SERVER_VER='-2.6.3v0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.3v0'
+        OB_PKG_POSTFIX_FLAVOR="stable"
+        if [[ "${BACKEND}" == "PGSQL" ]]; then
+            # Workaround.
+            #
+            # postfix-3.7-sasl2-pgsql doesn't work with PostgreSQL. For example,
+            # `postmap` command always get `core dump` error like this:
+            #
+            # # postmap -q "<email>" pgsql:/etc/postfix/pgsql/virtual_mailbox_maps.cf
+            # postmap(76889) in free(): bogus pointer (double free?) 0x80
+            # Abort trap (core dumped)
+            OB_PKG_POSTFIX_FLAVOR="stable35"
+        fi
+
+        # Stick to PHP-8.1 for better Roundcube compatibility.
+        OB_PKG_PHP_VER="%${OB_PHP_VERSION}"
+        OB_PKG_OPENLDAP_SERVER_VER='-2.6.4v0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.4v0'
     fi
 
     # Install PHP if there's a web server running -- php is too popular.
@@ -98,9 +111,9 @@ install_all()
         # requires sasl auth)
         ALL_PKGS="${ALL_PKGS} postfix postfix-pcre libsasl2-modules"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-ldap%stable"
-        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-mysql%stable"
-        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-pgsql%stable"
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-ldap%${OB_PKG_POSTFIX_FLAVOR}"
+        [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-mysql%${OB_PKG_POSTFIX_FLAVOR}"
+        [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} postfix--sasl2-pgsql%${OB_PKG_POSTFIX_FLAVOR}"
     fi
 
     # Backend: OpenLDAP, MySQL, PGSQL and extra packages.
@@ -524,6 +537,8 @@ EOF
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} unzip bzip2 acl patch tmpwatch crontabs dos2unix logwatch lz4"
         ENABLED_SERVICES="${ENABLED_SERVICES} crond"
+
+        [[ ${DISTRO_VERSION} == X'9' ]] && ALL_PKGS="${ALL_PKGS} rsyslog rsyslog-logrotate"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch unzip bsdutils liblz4-tool rsyslog"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"

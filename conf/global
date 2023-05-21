@@ -334,12 +334,12 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DIR_RC_SCRIPTS='/etc/rc.d'
     export RC_CONF_LOCAL='/etc/rc.conf.local'
     export SHELL_BASH='/usr/local/bin/bash'
-    export PYTHON_VERSION='3.9'
+    export PYTHON_VERSION='3.10'
     export CMD_PYTHON3='/usr/local/bin/python3'
     export CMD_PIP3="pip${PYTHON_VERSION}"
 
-    # Supported release: 7.2.
-    echo "${DISTRO_VERSION}" | grep '^7\.2$' &>/dev/null
+    # Supported release: 7.3.
+    echo "${DISTRO_VERSION}" | grep '^7\.3$' &>/dev/null
     if [[ X"$?" != X"0" ]]; then
         export UNSUPPORTED_RELEASE='YES'
     fi
@@ -466,7 +466,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${APTGET}" != X"" ]; then
         export APTGET="${APTGET}"
     else
-        # "WARNING: apt does not have a stable CLI interface. Use with caution in scripts."
+        # "WARNING: `apt` does not have a stable CLI interface. Use with caution in scripts."
         export APTGET='apt-get'
     fi
 

@@ -1,6 +1,6 @@
 iRedMail-1.6.3:
     * Supports new distribution release:
-        - OpenBSD 7.2. Note: 7.1 has been dropped.
+        - OpenBSD 7.3. Note: 7.1, 7.2 have been dropped.
 
     * SOGo Groupware is now available on Ubuntu 22.04. Thanks to SOGo team.
     * Disable TLSv1 in Postfix.
@@ -16,10 +16,10 @@ iRedMail-1.6.3:
 
     * Updated packages:
         + Roundcube -> 1.6.1
-        + iRedAPD -> 5.2
-        + mlmmjadmin -> 3.1.6
-        + iRedAdmin -> 2.1
-        + netdata -> 1.38.1
+        + iRedAPD -> 5.3
+        + mlmmjadmin -> 3.1.7
+        + iRedAdmin -> 2.3
+        + netdata -> 1.39.1
         + fail2ban -> 1.0.2 (OpenBSD)
 
 iRedMail-1.6.2:
