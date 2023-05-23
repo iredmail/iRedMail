@@ -39,11 +39,6 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # OpenBSD doesn't have 'libuuid' which required by netdata
         export DIALOG_SELECTABLE_NETDATA='NO'
-    elif [ X"${DISTRO}" == X'FREEBSD' ]; then
-        # netdata-1.22.1 doesn't work with libressl, it's marked as broken in
-        # ports tree, but development edition works fine.
-        # Have to wait for next release.
-        export DIALOG_SELECTABLE_NETDATA='NO'
     fi
 fi
 

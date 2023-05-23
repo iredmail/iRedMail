@@ -6,6 +6,7 @@ iRedMail-1.6.3:
     * Disable TLSv1 in Postfix.
 
     * Fixed issues:
+        - Missing Python module web.py on CentOS/Rocky/AlmaLinux.
         - FreeBSD ports tree is now up to date, main packages are updated:
             - MariaDB 10.6
             - PostgreSQL 15
