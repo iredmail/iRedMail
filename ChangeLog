@@ -3,9 +3,11 @@ iRedMail-1.6.3:
         - OpenBSD 7.3. Note: 7.1, 7.2 have been dropped.
 
     * SOGo Groupware is now available on Ubuntu 22.04. Thanks to SOGo team.
-    * Disable TLSv1 in Postfix.
+    * Disable TLSv1 and TLSv1.1 in Postfix. They're also disabled in Nginx
+      and Dovecot.
 
     * Fixed issues:
+        - [MariaDB] Missing index for SQL column `forwardings.forwarding`.
         - Missing Python module web.py on CentOS/Rocky/AlmaLinux.
         - FreeBSD ports tree is now up to date, main packages are updated:
             - MariaDB 10.6
