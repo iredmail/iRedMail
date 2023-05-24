@@ -13,7 +13,7 @@ It supports few mainstream Linux/BSD distributions:
 - Debian 11
 - Ubuntu 22.04 (Recommend), 20.04
 - FreeBSD 13.x
-- OpenBSD 7.2
+- OpenBSD 7.3
 
 More info:
 
