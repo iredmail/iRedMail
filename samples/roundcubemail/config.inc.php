@@ -9,8 +9,7 @@ $config['syslog_facility'] = LOG_MAIL;
 $config['log_logins'] = true;
 
 // IMAP
-$config['default_host'] = 'PH_IMAP_SERVER';
-$config['default_port'] = 143;
+$config['imap_host'] = 'tls://PH_IMAP_SERVER:143';
 $config['imap_auth_type'] = 'LOGIN';
 $config['imap_delimiter'] = '/';
 // Required if you're running PHP 5.6 or later
@@ -22,8 +21,7 @@ $config['imap_conn_options'] = array(
 );
 
 // SMTP
-$config['smtp_server'] = 'tls://PH_SMTP_SERVER';
-$config['smtp_port'] = 587;
+$config['smtp_host'] = 'tls://PH_SMTP_SERVER:587';
 $config['smtp_user'] = '%u';
 $config['smtp_pass'] = '%p';
 $config['smtp_auth_type'] = 'LOGIN';
