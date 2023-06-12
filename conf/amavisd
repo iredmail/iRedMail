@@ -55,14 +55,19 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export AMAVISD_CONF='/etc/amavisd/amavisd.conf'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    export AMAVISD_BIN='/usr/sbin/amavisd-new'
-    export AMAVISD_CONF_DIR='/etc/amavis/conf.d'
-    export AMAVISD_CONF='/etc/amavis/conf.d/50-user'
-    export AMAVISD_RC_SCRIPT_NAME='amavis'
-    export AMAVISD_LDAP_SCHEMA_NAME='amavis.schema'
+    # Debian 12 bookworm uses amavisd instead of amavisd-new
+    if [[ X"${DISTRO_CODENAME}" == X"bookworm" ]]; then
+        export AMAVISD_BIN='/usr/sbin/amavisd'
+    else
+        export AMAVISD_BIN='/usr/sbin/amavisd-new'
+        export AMAVISD_CONF_DIR='/etc/amavis/conf.d'
+        export AMAVISD_CONF='/etc/amavis/conf.d/50-user'
+        export AMAVISD_RC_SCRIPT_NAME='amavis'
+        export AMAVISD_LDAP_SCHEMA_NAME='amavis.schema'
 
-    export AMAVISD_SPOOL_DIR='/var/lib/amavis'
-    export AMAVISD_VAR_RUN_DIR='/var/run/amavis'
+        export AMAVISD_SPOOL_DIR='/var/lib/amavis'
+        export AMAVISD_VAR_RUN_DIR='/var/run/amavis'
+    fi
 
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Override global setting: user/group.
