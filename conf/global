@@ -22,7 +22,7 @@
 
 export PROG_NAME='iRedMail'
 export PROG_NAME_LOWERCASE='iredmail'
-export PROG_VERSION='1.6.3'
+export PROG_VERSION='1.6.4'
 
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
 
@@ -296,7 +296,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Debian
         export DISTRO='DEBIAN'
 
-        echo "${DISTRO_VERSION}" | grep -E '^(10|11)$' &>/dev/null
+        echo "${DISTRO_VERSION}" | grep -E '^(11|12)$' &>/dev/null
         if [[ $? != 0 ]]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
