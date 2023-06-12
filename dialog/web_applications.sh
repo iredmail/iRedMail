@@ -33,6 +33,9 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
         export DIALOG_SELECTABLE_SOGO='NO'
     fi
 
+    # SOGo team doesn't offer binary packages for Debian 12 (bookworm) yet.
+    [[ X"${DISTRO_CODENAME}" == X"bookworm" ]] && export DIALOG_SELECTABLE_SOGO="NO"
+    
     if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X'9' ]; then
         # SOGo team doesn't offer binary packages yet.
         export DIALOG_SELECTABLE_SOGO='NO'
