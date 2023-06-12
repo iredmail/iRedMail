@@ -60,6 +60,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         export AMAVISD_BIN='/usr/sbin/amavisd'
     else
         export AMAVISD_BIN='/usr/sbin/amavisd-new'
+    fi
         export AMAVISD_CONF_DIR='/etc/amavis/conf.d'
         export AMAVISD_CONF='/etc/amavis/conf.d/50-user'
         export AMAVISD_RC_SCRIPT_NAME='amavis'
@@ -67,8 +68,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
         export AMAVISD_SPOOL_DIR='/var/lib/amavis'
         export AMAVISD_VAR_RUN_DIR='/var/run/amavis'
-    fi
-
+    
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     # Override global setting: user/group.
     export SYS_USER_AMAVISD='vscan'
