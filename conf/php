@@ -41,15 +41,18 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PHP_FPM_PID_FILE='/run/php-fpm/php-fpm.pid'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
+    if [ X"${DISTRO_CODENAME}" == X'bookworm' ]; then
+        # Debian 12
+        export PHP_VERSION='8.2' 
+    elif [ X"${DISTRO_CODENAME}" == X'jammy' ]; then
+        # Ubuntu 22.04
+        export PHP_VERSION='8.1'
+    elif [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
         # Debian 11
         export PHP_VERSION='7.4'
     elif [ X"${DISTRO_CODENAME}" == X'focal' ]; then
         # Ubuntu 20.04
         export PHP_VERSION='7.4'
-    elif [ X"${DISTRO_CODENAME}" == X'jammy' ]; then
-        # Ubuntu 22.04
-        export PHP_VERSION='8.1'
     fi
 
     export PHP_INI="/etc/php/${PHP_VERSION}/fpm/php.ini"

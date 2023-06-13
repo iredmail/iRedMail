@@ -63,6 +63,7 @@ install_all()
         archivers_p7zip \
         archivers_rar \
         converters_libiconv \
+        databases_memcached \
         databases_postgresql${PGSQL_VERSION}-client \
         databases_postgresql${PGSQL_VERSION}-contrib \
         databases_postgresql${PGSQL_VERSION}-server \
@@ -80,6 +81,7 @@ install_all()
         dns_py-dnspython \
         ftp_curl \
         mail_spamassassin \
+        lang_gnustep-base \
         lang_perl${PREFERRED_PERL_VER} \
         lang_php${PREFERRED_PHP_VER} \
         lang_php${PREFERRED_PHP_VER}-extensions \
@@ -944,6 +946,20 @@ EOF
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PORTS="${ALL_PORTS} net/pear-Net_LDAP2"
         ALL_PORTS="${ALL_PORTS} mail/roundcube"
     fi
+
+    cat > /var/db/ports/lang_gnustep-base/options <<EOF
+_FILE_COMPLETE_OPTIONS_LIST=GNUTLS ICU AVAHI MDNS
+OPTIONS_FILE_SET+=GNUTLS
+OPTIONS_FILE_SET+=ICU
+OPTIONS_FILE_UNSET+=AVAHI
+OPTIONS_FILE_UNSET+=MDNS
+EOF
+
+    cat > /var/db/ports/databases_memcached/options <<EOF
+OPTIONS_FILE_UNSET+=DOCS
+OPTIONS_FILE_UNSET+=DTRACE
+OPTIONS_FILE_SET+=SASL
+EOF
 
     # LDAP support is required, otherwise www/sogo cannot be built.
     cat > /var/db/ports/devel_sope/options <<EOF

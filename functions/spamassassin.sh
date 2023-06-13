@@ -29,7 +29,8 @@ sa_config()
             perl -pi -e 's/#(10.*)/${1}/' /etc/cron.d/sa-update
         fi
     elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
-        perl -pi -e 's#^(CRON=)0#${1}1#' /etc/default/spamassassin
+        [[ -f /etc/default/spamassassin ]] && \
+            perl -pi -e 's#^(CRON=)0#${1}1#' /etc/default/spamassassin
     fi
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then

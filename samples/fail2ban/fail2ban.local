@@ -12,3 +12,6 @@ logtarget = SYSLOG
 
 # Fail2ban socket. Required on FreeBSD.
 #socket = /var/run/fail2ban/fail2ban.sock
+
+# Allows IPv6 interface.
+allowipv6 = auto

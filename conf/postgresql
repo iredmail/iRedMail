@@ -39,7 +39,10 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
+    if [ X"${DISTRO_CODENAME}" == X'bookworm' ]; then
+        # Debian 12
+        export PGSQL_VERSION='15'
+    elif [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
         # Debian 11
         export PGSQL_VERSION='13'
     elif [ X"${DISTRO_CODENAME}" == X"focal" ]; then

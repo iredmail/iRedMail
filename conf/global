@@ -22,7 +22,7 @@
 
 export PROG_NAME='iRedMail'
 export PROG_NAME_LOWERCASE='iredmail'
-export PROG_VERSION='1.6.3'
+export PROG_VERSION='1.6.4'
 
 export DATE="$(/bin/date +%Y.%m.%d.%H.%M.%S)"
 
@@ -241,6 +241,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
 
     # Debian:
     #   - 11: bullseye
+    #   - 12: bookworm
     # Ubuntu:
     #   - 20.04: focal
     #   - 22.04: jammy
@@ -296,7 +297,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Debian
         export DISTRO='DEBIAN'
 
-        echo "${DISTRO_VERSION}" | grep -E '^(10|11)$' &>/dev/null
+        echo "${DISTRO_VERSION}" | grep -E '^(11|12)' &>/dev/null
         if [[ $? != 0 ]]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
@@ -447,6 +448,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/pki/tls"
+    export SSL_CA_FILE="/etc/pki/tls/certs/ca-bundle.crt"
 
     # Yum repository related.
     export YUM_REPOS_DIR='/etc/yum.repos.d'
@@ -500,6 +502,7 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
+    export SSL_CA_FILE="/etc/ssl/certs/ca-certificates.crt"
 
     # `python3` is a symbol link to `python3X`.
     export UWSGI_PY3_PLUGIN_NAME='python3'
@@ -551,6 +554,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
+    export SSL_CA_FILE="/etc/ssl/cert.pem"
 
     # Logrotate directory.
     export LOGROTATE_DIR='/usr/local/etc/newsyslog.conf.d'
@@ -582,6 +586,7 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
     # Directory used to store SSL/TLS key/cert file.
     export SSL_FILE_DIR="/etc/ssl"
+    export SSL_CA_FILE="/etc/ssl/cert.pem"
 else
     # Not support yet.
     echo "Your distrobution is not supported yet."

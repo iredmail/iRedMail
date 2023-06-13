@@ -526,7 +526,13 @@ EOF
 
             ALL_PKGS="${ALL_PKGS} python3-pyyaml"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors netcat"
+            ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors"
+
+            if [ X"${DISTRO_CODENAME}" == X'bookworm' ]; then
+                ALL_PKGS="${ALL_PKGS} netcat-openbsd"
+            else
+                ALL_PKGS="${ALL_PKGS} netcat"
+            fi
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # netdata doesn't work on OpenBSD
             :

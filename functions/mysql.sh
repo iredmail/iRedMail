@@ -337,7 +337,7 @@ mysql_cron_backup()
 
     # Add cron job
     cat >> ${CRON_FILE_ROOT} <<EOF
-# ${PROG_NAME}: Backup MySQL databases on 03:30 AM
+# ${PROG_NAME}: Backup MySQL databases at 03:30 AM.
 30   3   *   *   *   ${SHELL_BASH} ${mysql_backup_script}
 
 EOF

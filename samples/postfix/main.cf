@@ -94,7 +94,7 @@ inet_interfaces = all
 #
 smtpd_tls_key_file = PH_SSL_KEY_FILE
 smtpd_tls_cert_file = PH_SSL_CERT_FILE
-smtpd_tls_CAfile = PH_SSL_CERT_FILE
+smtpd_tls_CAfile = PH_SSL_CA_FILE
 smtpd_tls_CApath = PH_SSL_CERT_DIR
 
 #
@@ -147,7 +147,7 @@ smtp_tls_security_level = may
 
 # Use the same CA file as smtpd.
 smtp_tls_CApath = PH_SSL_CERT_DIR
-smtp_tls_CAfile = $smtpd_tls_CAfile
+smtp_tls_CAfile = PH_SSL_CA_FILE
 smtp_tls_note_starttls_offer = yes
 
 # Enable long, non-repeating, queue IDs (queue file names).
