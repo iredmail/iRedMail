@@ -33,10 +33,7 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
         export DIALOG_SELECTABLE_SOGO='NO'
     fi
 
-    if [ X"${DISTRO}" == X"RHEL" -a X"${DISTRO_VERSION}" == X'9' ]; then
-        # SOGo team doesn't offer binary packages yet.
-        export DIALOG_SELECTABLE_SOGO='NO'
-    elif [ X"${DISTRO}" == X"DEBIAN" -a X"${DISTRO_VERSION}" == X'12' ]; then
+    if [ X"${DISTRO}" == X"DEBIAN" -a X"${DISTRO_VERSION}" == X'12' ]; then
         # SOGo team doesn't offer binary packages yet.
         export DIALOG_SELECTABLE_SOGO='NO'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then

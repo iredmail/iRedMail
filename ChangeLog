@@ -6,6 +6,8 @@ iRedMail-1.6.4:
             Note: SOGo Groupware is not yet available on Debian 12 because SOGo
             team does not offer binary packages for Debian 12 yet.
 
+    * SOGo Groupware is now available on CentOS Stream 9, Rocky Linux 9,
+      AlmaLinux 9. Thanks to SOGo team.
     * Fixed issues:
         - Incorrect ssl ca file in Postfix.
 
