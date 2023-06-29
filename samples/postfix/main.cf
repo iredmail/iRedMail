@@ -87,6 +87,9 @@ inet_protocols = all
 # Enable all network interfaces.
 inet_interfaces = all
 
+# Disable SMTPUTF8 for IDN Support
+smtputf8_enable = no
+
 #
 # TLS settings.
 #
