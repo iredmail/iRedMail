@@ -9,6 +9,8 @@ iRedMail-1.6.4:
     * SOGo Groupware is now available on CentOS Stream 9, Rocky Linux 9,
       AlmaLinux 9. Thanks to SOGo team.
     * Fixed issues:
+        - Not disable IDN support. Thanks to Anzulo for the fix (#221).
+          <https://github.com/Anzulo1984>
         - Incorrect ssl ca file in Postfix.
 
 iRedMail-1.6.3:
