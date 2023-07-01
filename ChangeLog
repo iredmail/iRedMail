@@ -13,6 +13,9 @@ iRedMail-1.6.4:
           <https://github.com/Anzulo1984>
         - Incorrect ssl ca file in Postfix.
 
+    * Updated packages:
+        + iRedAPD -> 5.3.3
+
 iRedMail-1.6.3:
     * Supports new distribution release:
         - OpenBSD 7.3. Note: 7.1, 7.2 have been dropped.
