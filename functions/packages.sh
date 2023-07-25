@@ -74,6 +74,12 @@ install_all()
         fi
     fi
 
+    # Enable php:8.0 module on CentOS/Rocky/Alma 8.
+    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
+        dnf module enable -y php:8.0
+        dnf module switch-to -y php:8.0
+    fi
+
     # Python 3.
     if [ X"${DISTRO}" == X'RHEL' ]; then
         # `python3` is 3.6. `python3-*` packages are bulit for Python 3.6.
