@@ -76,6 +76,8 @@ install_all()
 
     # Enable php:8.0 module on CentOS/Rocky/Alma 8.
     if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
+        # If `dnf module enable` failed, please follow command output to
+        # remove installed php and reset module 'php'.
         dnf module enable -y php:8.0
         dnf module switch-to -y php:8.0
     fi
