@@ -1,9 +1,7 @@
 iRedMail-1.6.4:
     * Supports new distribution release:
-        - Debian 12 (Bookworm). Notes:
-            - Both Debian 11 and 12 are supported, but 12 is now recommended.
-            - SOGo Groupware is not yet available on Debian 12 because SOGo
-              team does not offer binary packages for Debian 12 yet.
+        - Debian 12 (Bookworm). Note: Both Debian 11 and 12 are supported,
+          but 12 is now recommended.
 
     * Install PHP 8.0 from official AppStream repo on CentOS / Rocky / AlmaLinux 8.
     * SOGo Groupware is now available on CentOS Stream 9, Rocky Linux 9,
