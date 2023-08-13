@@ -1,3 +1,8 @@
+iRedMail-1.x.x:
+
+    * Updated packages:
+        + netdata -> 1.42.0
+
 iRedMail-1.6.4:
     * Supports new distribution release:
         - Debian 12 (Bookworm). Note: Both Debian 11 and 12 are supported,
