@@ -300,7 +300,7 @@ install_all()
         fi
 
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
-        DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin"
+        DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin spamd"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-Mail-SpamAssassin clamav unrar altermime"
