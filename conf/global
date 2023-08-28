@@ -400,7 +400,7 @@ export USE_RSYSLOG='YES'
 export USE_BSD_SYSLOG='NO'
 export SYS_USER_SYSLOG='root'
 export SYS_GROUP_SYSLOG='root'
-export SYSLOG_POSTROTATE_CMD=''
+export SYSLOG_POSTROTATE_CMD='/usr/bin/systemctl -s HUP kill rsyslog.service >/dev/null 2>&1 || true'
 export SYSLOG_SOCKET='/dev/log'
 export IREDMAIL_SYSLOG_FACILITY='local5'
 # rsyslog
@@ -438,7 +438,6 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 
     # main config file
     export SYSLOG_CONF='/etc/rsyslog.conf'
-    export SYSLOG_POSTROTATE_CMD='/bin/kill -HUP $(cat /var/run/syslogd.pid 2>/dev/null) 2>/dev/null || true'
 
     # SSHD log file
     export SSHD_LOGFILE='/var/log/secure'

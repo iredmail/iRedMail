@@ -8,6 +8,6 @@ PH_PHP_FPM_LOG_DIR/*.log {
     sharedscripts
 
     postrotate
-        /bin/kill -SIGUSR1 `cat PH_PHP_FPM_PID_FILE 2>/dev/null` 2>/dev/null || true
+        PH_SYSLOG_POSTROTATE_CMD
     endscript
 }
