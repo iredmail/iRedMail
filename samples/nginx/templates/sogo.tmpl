@@ -1,7 +1,6 @@
 # Settings for SOGo Groupware
 
-location = /SOGo  { rewrite ^ /SOGo/; }
-location ~* ^/sogo { rewrite ^ https://$host/SOGo/; }
+location ~ ^/sogo { rewrite ^ https://$host/SOGo/; }
 
 # Redirect /mail to /SOGo
 #location ~ ^/mail { rewrite ^ https://$host/SOGo/; }
@@ -10,6 +9,11 @@ location ~* ^/sogo { rewrite ^ https://$host/SOGo/; }
 rewrite ^/.well-known/caldav    /SOGo/dav permanent;
 rewrite ^/.well-known/carddav   /SOGo/dav permanent;
 rewrite ^/principals            /SOGo/dav permanent;
+
+# Redirect `/SOGo` to `/SOGo/`.
+location = /SOGo {
+    rewrite ^ /SOGo/;
+}
 
 location ^~ /SOGo/ {
     include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
