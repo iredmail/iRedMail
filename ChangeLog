@@ -1,7 +1,7 @@
 iRedMail-1.x.x:
 
     * Updated packages:
-        + netdata -> 1.42.2
+        + netdata -> 1.42.3
 
 iRedMail-1.6.4:
     * Supports new distribution release:
