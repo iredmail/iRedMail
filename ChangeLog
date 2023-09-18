@@ -1,6 +1,7 @@
 iRedMail-1.x.x:
 
     * Updated packages:
+        + roundcube -> 1.6.3
         + netdata -> 1.42.3
 
 iRedMail-1.6.4:
