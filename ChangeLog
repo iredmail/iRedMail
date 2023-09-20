@@ -1,4 +1,4 @@
-iRedMail-1.x.x:
+iRedMail-1.6.5:
 
     * Updated packages:
         + roundcube -> 1.6.3. Security update.
