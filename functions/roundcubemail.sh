@@ -194,7 +194,7 @@ rcm_plugin_managesieve()
     perl -pi -e 's#(.*managesieve_auth_type.*=).*#${1} "LOGIN";#' config.inc.php
     perl -pi -e 's#(.*managesieve_port.*=).*#${1} $ENV{MANAGESIEVE_PORT};#' config.inc.php
     perl -pi -e 's#(.*managesieve_usetls.*=).*#${1} true;#' config.inc.php
-    perl -pi -e 's#(.*managesieve_default.*=).*#${1} "";#' config.inc.php
+    perl -pi -e 's#(.*managesieve_default.. =).*#${1} "";#' config.inc.php
     perl -pi -e 's#(.*managesieve_vacation.*=).*#${1} 1;#' config.inc.php
     perl -pi -e 's#(.*managesieve_forward.*=).*#${1} 1;#' config.inc.php
 
