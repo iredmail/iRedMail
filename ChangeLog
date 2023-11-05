@@ -1,7 +1,8 @@
-iRedMail-1.x.y:
+iRedMail-1.6.7:
 
 * Updated packages:
     + netdata -> 1.43.1
+    + roundcube -> 1.6.5. SECURITY UPDATE.
 
 iRedMail-1.6.6:
 
