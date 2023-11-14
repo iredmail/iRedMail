@@ -314,9 +314,9 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO}" == X'UBUNTU' ]; then
         for repo in multiverse universe; do
             if [ X"${UBUNTU_MIRROR_SITE}" != X'' ]; then
-                apt-add-repository -n "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME} $repo"
-                apt-add-repository -n "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME}-security $repo"
-                apt-add-repository -n "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME}-updates $repo"
+                apt-add-repository -y -n "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME} $repo"
+                apt-add-repository -y -n "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME}-security $repo"
+                apt-add-repository -y -n "deb ${UBUNTU_MIRROR_SITE} ${DISTRO_CODENAME}-updates $repo"
             else
                 apt-add-repository -n $repo
             fi
