@@ -672,7 +672,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
     FETCH_CMD='ftp -iV'
 else
     # -c: Continue getting a partially-downloaded file.
-    FETCH_CMD="wget -c --timeout=30"
+    # -U: User-Agent string
+    FETCH_CMD="wget -c --timeout=30 -U 'wget, ${DISTRO}-${DISTRO_VERSION}, ${PROG_NAME}-${PROG_VERSION}'"
 
     if [ X"${DISTRO}" == X'RHEL' ]; then
         FETCH_CMD="${FETCH_CMD} --ca-certificate=${SSL_CERT_DIR}/ca-bundle.crt"
