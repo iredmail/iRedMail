@@ -1,5 +1,9 @@
 iRedMail-1.x.y:
 
+* Fixed issues:
+    - CentOS/Rocky: Not enable daily cron job to update SpamAssassin rules.
+      Thanks to forum user `roccoro` for the report.
+
 * Updated packages:
     + mlmmjadmin -> 3.1.9
 

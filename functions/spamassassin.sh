@@ -28,6 +28,11 @@ sa_config()
             chmod 0644 /etc/cron.d/sa-update
             perl -pi -e 's/#(10.*)/${1}/' /etc/cron.d/sa-update
         fi
+
+        # Enable daily cron job to update rules.
+        if [[ ! -x /etc/cron.daily/sa-update ]]; then
+            ln -sf /usr/share/spamassassin/sa-update.cron /etc/cron.daily/sa-update
+        fi
     elif [ X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'DEBIAN' ]; then
         [[ -f /etc/default/spamassassin ]] && \
             perl -pi -e 's#^(CRON=)0#${1}1#' /etc/default/spamassassin
