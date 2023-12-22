@@ -276,3 +276,6 @@ recipient_delimiter = +
 # The extra detail makes trouble shooting easier but also reveals information
 # that is nobody elses business.
 show_user_unknown_table_name = no
+
+# Mitigate Postfix SMTP smuggling attack by rejecting RFC 2920/5321 violations
+smtpd_forbid_unauth_pipelining = yes
