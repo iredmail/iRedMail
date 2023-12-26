@@ -279,3 +279,4 @@ show_user_unknown_table_name = no
 
 # Mitigate Postfix SMTP smuggling attack by rejecting RFC 2920/5321 violations
 smtpd_forbid_unauth_pipelining = yes
+smtpd_discard_ehlo_keywords = chunking
