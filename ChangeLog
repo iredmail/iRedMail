@@ -1,8 +1,12 @@
-iRedMail-1.x.y:
+iRedMail-1.6.8:
 
 * Fixed issues:
-    - [LDAP] Postfix: Can not use (mlmmj) mailing list as member of another
-      mailing list.
+    - Postfix:
+        - Mitigate SMTP smuggling attack by rejecting RFC 2920/5321 violations.
+          Thanks @EsadCetiner for the contribution:
+          https://github.com/iredmail/iRedMail/pull/248
+        - [LDAP Backend] Can not use (mlmmj) mailing list as member of another
+          mailing list.
     - CentOS/Rocky: Not enable daily cron job to update SpamAssassin rules.
       Thanks to forum user `roccoro` for the report.
 

@@ -209,6 +209,10 @@ smtpd_end_of_data_restrictions =
 # Data restrictions
 smtpd_data_restrictions = reject_unauth_pipelining
 
+# Mitigate SMTP smuggling attack by rejecting RFC 2920/5321 violations.
+# https://www.postfix.org/smtp-smuggling.html
+smtpd_discard_ehlo_keywords = chunking
+
 # SRS (Sender Rewriting Scheme) support
 #sender_canonical_maps = tcp:PH_IREDAPD_SERVER_ADDRESS:PH_IREDAPD_SRS_FORWARD_PORT
 #sender_canonical_classes = envelope_sender
@@ -276,6 +280,3 @@ recipient_delimiter = +
 # The extra detail makes trouble shooting easier but also reveals information
 # that is nobody elses business.
 show_user_unknown_table_name = no
-
-# Mitigate Postfix SMTP smuggling attack by rejecting RFC 2920/5321 violations
-smtpd_discard_ehlo_keywords = chunking
