@@ -23,12 +23,6 @@ sa_config()
             perl -pi -e 's/^#(SAUPDATE=yes)/${1}/' ${ETC_SYSCONFIG_DIR}/sa-update
         fi
 
-        # CentOS 7.
-        if [ -f /etc/cron.d/sa-update ]; then
-            chmod 0644 /etc/cron.d/sa-update
-            perl -pi -e 's/#(10.*)/${1}/' /etc/cron.d/sa-update
-        fi
-
         # Enable daily cron job to update rules.
         if [[ ! -x /etc/cron.daily/sa-update ]]; then
             ln -sf /usr/share/spamassassin/sa-update.cron /etc/cron.daily/sa-update
