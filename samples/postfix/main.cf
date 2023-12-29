@@ -209,7 +209,7 @@ smtpd_end_of_data_restrictions =
 # Data restrictions
 smtpd_data_restrictions = reject_unauth_pipelining
 
-# Mitigate SMTP smuggling attack by rejecting RFC 2920/5321 violations.
+# Mitigate SMTP smuggling attack.
 # https://www.postfix.org/smtp-smuggling.html
 smtpd_discard_ehlo_keywords = chunking
 
