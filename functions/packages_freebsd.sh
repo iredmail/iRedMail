@@ -69,7 +69,7 @@ install_all()
         databases_postgresql${PGSQL_VERSION}-server \
         databases_mariadb${PREFERRED_MARIADB_VER}-server \
         databases_mariadb${PREFERRED_MARIADB_VER}-client \
-        databases_py-sqlalchemy10 \
+        databases_py-sqlalchemy14 \
         devel_cmake \
         devel_apr1 \
         devel_dbus \
@@ -1000,8 +1000,8 @@ EOF
     fi
 
     # py-sqlalchemy
-    ALL_PORTS="${ALL_PORTS} databases/py-sqlalchemy10"
-    cat > /var/db/ports/databases_py-sqlalchemy10/options <<EOF
+    ALL_PORTS="${ALL_PORTS} databases/py-sqlalchemy14"
+    cat > /var/db/ports/databases_py-sqlalchemy14/options <<EOF
 OPTIONS_FILE_UNSET+=DOCS
 OPTIONS_FILE_UNSET+=EXAMPLES
 OPTIONS_FILE_UNSET+=TESTS
@@ -1013,9 +1013,9 @@ OPTIONS_FILE_UNSET+=SYBASE
 EOF
 
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/databases_py-sqlalchemy10/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=MYSQL#OPTIONS_FILE_SET+=MYSQL#' /var/db/ports/databases_py-sqlalchemy14/options
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/databases_py-sqlalchemy10/options
+        ${CMD_SED} -e 's#OPTIONS_FILE_UNSET+=PGSQL#OPTIONS_FILE_SET+=PGSQL#' /var/db/ports/databases_py-sqlalchemy14/options
     fi
 
     # iRedAPD
