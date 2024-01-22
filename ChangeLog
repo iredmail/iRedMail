@@ -1,3 +1,8 @@
+iRedMail-1.x:
+
+* Updated packages:
+    + roundcube -> 1.6.6.
+
 iRedMail-1.6.8:
 
 * Fixed issues:
