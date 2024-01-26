@@ -373,7 +373,6 @@ EOF
 * - Username: ${DOMAIN_ADMIN_EMAIL}
 * - Password: ${DOMAIN_ADMIN_PASSWD_PLAIN}
 *
-*
 ********************************************************************
 * Congratulations, mail server setup completed successfully. Please
 * read below file for more information:
