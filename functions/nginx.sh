@@ -205,6 +205,7 @@ nginx_config()
 
             perl -pi -e 's#PH_PHP_FPM_LOG_DIR#$ENV{PHP_FPM_LOG_DIR}#g' ${PHP_FPM_LOGROTATE_CONF}
             perl -pi -e 's#PH_PHP_FPM_PID_FILE#$ENV{PHP_FPM_PID_FILE}#g' ${PHP_FPM_LOGROTATE_CONF}
+            perl -pi -e 's#PH_SYSLOG_POSTROTATE_CMD#$ENV{SYSLOG_POSTROTATE_CMD}#g' ${PHP_FPM_LOGROTATE_CONF}
 
             # Remove unused log file to avoid confusion.
             rm -f /var/log/php*fpm.log 2>/dev/null
