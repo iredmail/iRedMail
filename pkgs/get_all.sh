@@ -224,6 +224,11 @@ EOF
         fi
     fi
 
+    # SOGo relies on the GNUstep and ytnef packages provided by Alinto and must
+    # not use the packages from EPEL.
+    [[ -f /etc/yum.repos.d/epel.repo ]] && \
+        sed -i '/enabled=1/a exclude=gnustep* ytnef*' /etc/yum.repos.d/epel.repo
+
     echo 'export status_create_repo_rhel="DONE"' >> ${STATUS_FILE}
 }
 
