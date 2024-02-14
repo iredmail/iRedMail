@@ -287,8 +287,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Ubuntu
         export DISTRO='UBUNTU'
 
-        # Supported releases: 20.04, 22.04.
-        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18|19\.|21\.|20\.)' &>/dev/null ; then
+        # Supported releases: 22.04.
+        if echo "${DISTRO_VERSION}" | grep -E '^(1|20|21)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then
