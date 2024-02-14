@@ -240,10 +240,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
     export DISTRO_VERSION=$(awk -F'"' '/^VERSION_ID=/ {print $2}' /etc/os-release)
 
     # Debian:
-    #   - 11: bullseye
     #   - 12: bookworm
     # Ubuntu:
-    #   - 20.04: focal
     #   - 22.04: jammy
     export DISTRO_CODENAME=$(awk -F'=' '/^VERSION_CODENAME=/ {print $2}' /etc/os-release)
 
@@ -290,14 +288,14 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         export DISTRO='UBUNTU'
 
         # Supported releases: 20.04, 22.04.
-        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18|19\.|21\.|20\.10)' &>/dev/null ; then
+        if echo "${DISTRO_VERSION}" | grep -E '^(16|17|18|19\.|21\.|20\.)' &>/dev/null ; then
             export UNSUPPORTED_RELEASE='YES'
         fi
     elif [ -f /etc/debian_version ]; then
         # Debian
         export DISTRO='DEBIAN'
 
-        echo "${DISTRO_VERSION}" | grep -E '^(11|12)' &>/dev/null
+        echo "${DISTRO_VERSION}" | grep -E '^(12)' &>/dev/null
         if [[ $? != 0 ]]; then
             export UNSUPPORTED_RELEASE='YES'
         fi

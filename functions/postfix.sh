@@ -131,6 +131,17 @@ postfix_config_basic()
     # Dovecot quota-status service
     perl -pi -e 's#PH_DOVECOT_SERVICE_QUOTA_STATUS_PORT#$ENV{DOVECOT_SERVICE_QUOTA_STATUS_PORT}#g' ${POSTFIX_FILE_MAIN_CF}
 
+    # Distro releases ship Postfix 3.6+.
+    #   - Ubuntu 22.04
+    #   - Debian 12
+    #   - OpenBSD
+    #   - FreeBSD
+    if [[ X"${DISTRO}" == X'RHEL' ]]; then
+        # Postfix 3.5.x
+        postconf -e compatibility_level=2
+    else
+        postconf -e compatibility_level=3.6
+    fi
     #
     # master.cf
     #

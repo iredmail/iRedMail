@@ -1,5 +1,12 @@
 iRedMail-1.x:
 
+* Dropped distribution release:
+    - Debian 11 (bullseye). Please use the latest stable release Debian 12.
+    - Ubuntu 20.04 (focal). Please use the latest stable release Ubuntu 22.04.
+
+* Fixed issues:
+    - Not set correct compatibility_level for Postfix. #233
+
 * Updated packages:
     + roundcube -> 1.6.6.
     + netdata -> 1.44.3

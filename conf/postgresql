@@ -42,12 +42,6 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     if [ X"${DISTRO_CODENAME}" == X'bookworm' ]; then
         # Debian 12
         export PGSQL_VERSION='15'
-    elif [ X"${DISTRO_CODENAME}" == X'bullseye' ]; then
-        # Debian 11
-        export PGSQL_VERSION='13'
-    elif [ X"${DISTRO_CODENAME}" == X"focal" ]; then
-        # Ubuntu 20.04 (focal)
-        export PGSQL_VERSION='12'
     else
         # Ubuntu 22.04 (jammy)
         export PGSQL_VERSION='14'
