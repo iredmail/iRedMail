@@ -4,6 +4,10 @@ iRedMail-1.x:
     - Debian 11 (bullseye). Please use the latest stable release Debian 12.
     - Ubuntu 20.04 (focal). Please use the latest stable release Ubuntu 22.04.
 
+* Improvements:
+    - Add new parameter `OCSAdminURL` in sogo.conf for the new SQL table
+      `sogo_admin` introduced in SOGo v5.10.0.
+
 * Fixed issues:
     - Not set correct compatibility_level for Postfix. #233
 
