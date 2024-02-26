@@ -10,6 +10,8 @@ iRedMail-1.x:
 
 * Fixed issues:
     - Not set correct compatibility_level for Postfix. #233
+    - Not prevent invalid address rewritten in `From:` header in custom
+      Postfix transports.
 
 * Updated packages:
     + roundcube -> 1.6.6.

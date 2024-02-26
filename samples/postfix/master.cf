@@ -37,6 +37,7 @@ PH_LOCAL_ADDRESS:PH_POSTFIX_MAIL_REINJECT_PORT inet n  -   n   -   -  smtpd
     -o content_filter=
     -o mynetworks_style=host
     -o mynetworks=PH_AMAVISD_MYNETWORKS
+    -o local_header_rewrite_clients=
     -o local_recipient_maps=
     -o relay_recipient_maps=
     -o strict_rfc821_envelopes=yes
@@ -63,6 +64,7 @@ PH_LOCAL_ADDRESS:PH_POSTFIX_MLMMJ_REINJECT_PORT inet n  -   n   -   -  smtpd
     -o content_filter=
     -o mynetworks_style=host
     -o mynetworks=PH_AMAVISD_MYNETWORKS
+    -o local_header_rewrite_clients=
     -o local_recipient_maps=
     -o relay_recipient_maps=
     -o strict_rfc821_envelopes=yes
