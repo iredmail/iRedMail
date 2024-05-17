@@ -335,7 +335,11 @@ service_control()
         ECHO_DEBUG "Service control: ${action} ${services}."
 
         if [ X"${USE_SYSTEMD}" == X'YES' ]; then
-            systemctl ${action} ${services} >> ${INSTALL_LOG} 2>&1
+            # Perform action one by one instead of all in one, to prevent
+            # non-zero exit status caused by not existing one.
+            for srv in ${services}; do
+                systemctl ${action} ${srv} >> ${INSTALL_LOG} 2>&1
+            done
         else
             for srv in ${services}; do
                 rc_script="${DIR_RC_SCRIPTS}/$srv"
@@ -446,7 +450,7 @@ add_postfix_alias()
 install_pkg_rhel()
 {
     ECHO_INFO "Installing package(s): $@"
-    ${YUM} -y --disablerepo=rpmforge,ius,remi,remi-php74,remi-safe,atrpms install $@
+    ${YUM} -y --disablerepo=rpmforge,ius,remi,remi-php74,remi-safe,atrpms,epel-next install $@
 
     # Leave a mark if package installation failed.
     if [ X"$?" != X'0' ]; then

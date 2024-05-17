@@ -46,6 +46,8 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
 
     # Ubuntu 22.04
     [[ X"${DISTRO_CODENAME}" == X'jammy' ]] && export PHP_VERSION='8.1'
+    # Ubuntu 24.04
+    [[ X"${DISTRO_CODENAME}" == X'noble' ]] && export PHP_VERSION='8.3'
 
     export PHP_INI="/etc/php/${PHP_VERSION}/fpm/php.ini"
     export PHP_FPM_CONF="/etc/php/${PHP_VERSION}/fpm/php-fpm.conf"
@@ -65,8 +67,8 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export PHP_FPM_PID_FILE='/var/run/php-fpm.pid'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-    export OB_PHP_VERSION='8.1'
-    export PHP_FPM_RC_SCRIPT_NAME='php81_fpm'
+    export OB_PHP_VERSION='8.3'
+    export PHP_FPM_RC_SCRIPT_NAME='php83_fpm'
 
     export PHP_BIN="/usr/local/bin/php-${OB_PHP_VERSION}"
     export PHP_INI="/etc/php-${OB_PHP_VERSION}.ini"

@@ -29,7 +29,6 @@ install_all()
 
     # Specify version numbers while installing Python modules with pip.
     PIP_VERSION_PYTHON_LDAP='>=3.3.1'
-    PIP_VERSION_UWSGI='>=2.0.20'
     PIP_VERSION_REQUESTS='>=2.24.0'
     PIP_VERSION_PYMYSQL='>=0.10.0'
     PIP_VERSION_PSYCOPG2='>=2.8.5'
@@ -49,13 +48,13 @@ install_all()
             # # postmap -q "<email>" pgsql:/etc/postfix/pgsql/virtual_mailbox_maps.cf
             # postmap(76889) in free(): bogus pointer (double free?) 0x80
             # Abort trap (core dumped)
-            OB_PKG_POSTFIX_FLAVOR="stable35"
+            OB_PKG_POSTFIX_FLAVOR="stable"
         fi
 
-        # Stick to PHP-8.1 for better Roundcube compatibility.
         OB_PKG_PHP_VER="%${OB_PHP_VERSION}"
-        OB_PKG_OPENLDAP_SERVER_VER='-2.6.4v0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.4v0'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.6.7v0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.7v0'
+        OB_UWSGI_VERSION='2.0.25.1'
     fi
 
     # Install PHP if there's a web server running -- php is too popular.
@@ -99,7 +98,7 @@ install_all()
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python3"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        PIP3_MODULES="${PIP3_MODULES} uwsgi${PIP_VERSION_UWSGI}"
+        PIP3_MODULES="${PIP3_MODULES} ${PKG_MISC_DIR}/uwsgi-${OB_UWSGI_VERSION}.tar.gz"
     fi
 
     # Postfix.
@@ -269,15 +268,15 @@ install_all()
         fi
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
+        ALL_PKGS="${ALL_PKGS} dovecot--"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${DOVECOT_RC_SCRIPT_NAME}"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot-ldap dovecot-mysql"
+            ALL_PKGS="${ALL_PKGS} dovecot-pigeonhole--ldap dovecot-ldap dovecot-mysql--"
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot-mysql"
+            ALL_PKGS="${ALL_PKGS} dovecot-mysql-- dovecot-pigeonhole--"
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot-postgresql"
+            ALL_PKGS="${ALL_PKGS} dovecot-postgresql-- dovecot-pigeonhole--"
         fi
 
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
@@ -295,15 +294,16 @@ install_all()
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm libmail-spf-perl unrar-free pax lrzip gpg-agent"
 
-        if [ X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} libclamunrar9"
-        fi
+        # Ubuntu 22.04
+        [[ X"${DISTRO_CODENAME}" == X'jammy' ]] && ALL_PKGS="${ALL_PKGS} libclamunrar9"
+        # Ubuntu 24.04
+        [[ X"${DISTRO_CODENAME}" == X'noble' ]] && ALL_PKGS="${ALL_PKGS} libclamunrar11"
 
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
-        DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin spamd"
+        DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin spamd clamav-clamonacc"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-Mail-SpamAssassin clamav unrar altermime"
+        ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-libwww p5-Mail-SpamAssassin clamav unrar altermime"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_SERVICE_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
 
@@ -536,7 +536,9 @@ EOF
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors"
 
-            if [ X"${DISTRO_CODENAME}" == X'bookworm' ]; then
+            # Debian 12
+            # Ubuntu 24.04
+            if [ X"${DISTRO_CODENAME}" == X'bookworm' -o X"${DISTRO_CODENAME}" == X'noble' ]; then
                 ALL_PKGS="${ALL_PKGS} netcat-openbsd"
             else
                 ALL_PKGS="${ALL_PKGS} netcat"
@@ -625,7 +627,7 @@ EOF
 
         if [ X"${PIP3_MODULES}" != X'' ]; then
             ECHO_INFO "Installing required Python-3 modules with pip3:${PIP3_MODULES}"
-            ${CMD_PIP3} install ${pip_args} -U ${PIP3_MODULES} 2>&1 | tee ${RUNTIME_DIR}/pip3.log
+            ${CMD_PIP3} install ${pip_args} -U --break-system-packages ${PIP3_MODULES} 2>&1 | tee ${RUNTIME_DIR}/pip3.log
         fi
 
         if [ X"${DISTRO}" == X'OPENBSD' ]; then

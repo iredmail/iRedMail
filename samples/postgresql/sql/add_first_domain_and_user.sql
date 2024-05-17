@@ -22,7 +22,7 @@ INSERT INTO mailbox (username,
                      'PH_DOMAIN_ADMIN_MAILDIR_HASH_PART',
                      1024,
                      'PH_FIRST_DOMAIN',
-                     1,
+                     0,
                      1,
                      NOW());
 

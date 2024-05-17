@@ -55,12 +55,6 @@ clamav_config()
     # Official database only
     perl -pi -e 's/^#(OfficialDatabaseOnly ).*/${1} yes/' ${CLAMD_CONF}
 
-    # Enable AllowSupplementaryGroups
-    perl -pi -e 's/^(AllowSupplementaryGroups.*)/#${1}/' ${CLAMD_CONF}
-    if [ X"${DISTRO_CODENAME}" != X'disco' -a X"${DISTRO}" != X'FREEBSD' ]; then
-        echo 'AllowSupplementaryGroups true' >> ${CLAMD_CONF}
-    fi
-
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ECHO_DEBUG "Add clamav and freshclam daemon users to amavid group."
         usermod ${SYS_USER_CLAMAV} -G ${SYS_GROUP_AMAVISD}

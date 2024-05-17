@@ -39,13 +39,12 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [ X"${DISTRO_CODENAME}" == X'bookworm' ]; then
-        # Debian 12
-        export PGSQL_VERSION='15'
-    else
-        # Ubuntu 22.04 (jammy)
-        export PGSQL_VERSION='14'
-    fi
+    # Debian 12
+    [[ X"${DISTRO_CODENAME}" == X'bookworm' ]] && export PGSQL_VERSION='15'
+    # Ubuntu 22.04 (jammy)
+    [[ X"${DISTRO_CODENAME}" == X'jammy' ]] && export PGSQL_VERSION='14'
+    # Ubuntu 24.04 (noble)
+    [[ X"${DISTRO_CODENAME}" == X'noble' ]] && export PGSQL_VERSION='16'
 
     export PGSQL_USER_HOMEDIR='/var/lib/postgresql'
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"
