@@ -23,7 +23,7 @@ iRedMail-1.7.0:
 
 * Updated packages:
     + roundcube -> 1.6.7.
-    + netdata -> 1.45.4
+    + netdata -> 1.45.5
     + mlmmjadmin -> 3.2.1
     + iRedAPD -> 5.6.0
     + uwsgi -> 2.0.25.1 (OpenBSD only)
