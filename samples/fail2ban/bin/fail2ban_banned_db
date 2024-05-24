@@ -36,9 +36,10 @@
 #
 # Examples:
 #
+#   banned_db start dovecot-iredmail
 #   banned_db ban   192.168.0.1 110,143,993,995 tcp dovecot-iredmail 3
 #   banned_db unban 192.168.0.1
-#   banned_db cleanup dovecot-iredmail
+#   banned_db stop dovecot-iredmail
 #   banned_db unban_db
 
 #
@@ -54,7 +55,8 @@
 export PATH="/usr/bin:/usr/local/bin:$PATH"
 
 export DB_NAME="fail2ban"
-export DB_TABLE="banned"
+export DB_TABLE_BANNED="banned"
+export DB_TABLE_JAILS="jails"
 export DB_USER="fail2ban"
 
 # GeoIP
@@ -99,7 +101,28 @@ fi
 
 export _action="$1"
 
-if [[ X"${_action}" == X"ban" ]]; then
+if [[ X"${_action}" == X'start' ]]; then
+    _jail="${2}"
+
+    if [[ X"${DB_TYPE}" == X'pgsql' ]]; then
+        # CentOS 7 ships PostgreSQL-9.2 which doesn't support `ON CONFLICT DO NOTHING`,
+        # so we query it first, insert it if not existing.
+        (${CMD_SQL} <<EOF
+SELECT id FROM ${DB_TABLE_JAILS} WHERE name='${_jail}' LIMIT 1;
+EOF
+) | grep '1 row' &>/dev/null
+
+        if [[ X"$?" != X'0' ]]; then
+            ${CMD_SQL} >/dev/null <<EOF
+INSERT INTO ${DB_TABLE_JAILS} (name, enabled) VALUES ('${_jail}', 1);
+EOF
+        fi
+    else
+        ${CMD_SQL} <<EOF
+INSERT IGNORE INTO ${DB_TABLE_JAILS} (name, enabled) VALUES ('${_jail}', 1);
+EOF
+    fi
+elif [[ X"${_action}" == X"ban" ]]; then
     _ip="${2}"
     _ports="${3}"
     _protocol="${4}"
@@ -152,7 +175,7 @@ if [[ X"${_action}" == X"ban" ]]; then
     if [ X"${DB_TYPE}" == X'mysql' ]; then
         # MySQL stores local time with time zone info, we expect UTC time.
         ${CMD_SQL} <<EOF
-INSERT IGNORE INTO ${DB_TABLE} (
+INSERT IGNORE INTO ${DB_TABLE_BANNED} (
         ip, ports, protocol, jail,
         hostname, country, rdns, timestamp,
         failures, loglines)
@@ -165,7 +188,7 @@ EOF
         # CentOS 7 ships PostgreSQL-9.2 which doesn't support `ON CONFLICT DO NOTHING`,
         # so we query it first, insert it if not existing.
         (${CMD_SQL} <<EOF
-SELECT id FROM ${DB_TABLE} WHERE ip='${_ip}' AND ports='${_ports}' AND protocol='${_protocol}' AND jail='${_jail}' LIMIT 1;
+SELECT id FROM ${DB_TABLE_BANNED} WHERE ip='${_ip}' AND ports='${_ports}' AND protocol='${_protocol}' AND jail='${_jail}' LIMIT 1;
 EOF
 ) | grep '1 row' &>/dev/null
 
@@ -173,7 +196,7 @@ EOF
             echo "Already banned."
         else
             ${CMD_SQL} >/dev/null <<EOF
-INSERT INTO ${DB_TABLE} (
+INSERT INTO ${DB_TABLE_BANNED} (
         ip, ports, protocol, jail,
         hostname, country, rdns,
         failures, loglines)
@@ -195,19 +218,20 @@ elif [[ X"${_action}" == X"unban" ]]; then
     else
         for _ip in ${_ips}; do
             ${CMD_SQL} <<EOF
-DELETE FROM ${DB_TABLE} WHERE ip='${_ip}';
+DELETE FROM ${DB_TABLE_BANNED} WHERE ip='${_ip}';
 EOF
         done
 
         [[ X"$?" == X'0' ]] && echo "Removed."
     fi
 
-elif [[ X"${_action}" == X"cleanup" ]]; then
+elif [[ X"${_action}" == X'stop' ]] || [[ X"${_action}" == X"cleanup" ]]; then
     _jail="$2"
 
     if [[ X"${_jail}" != X'' ]]; then
         ${CMD_SQL} <<EOF
-DELETE FROM ${DB_TABLE} WHERE jail='${_jail}';
+DELETE FROM ${DB_TABLE_BANNED} WHERE jail='${_jail}';
+DELETE FROM ${DB_TABLE_JAILS} WHERE jail='${_jail}';
 EOF
     fi
 
@@ -218,7 +242,7 @@ elif [[ X"${_action}" == X"unban_db" ]]; then
 
     # Exclude extra info on output, just leave jail/ip.
     (${CMD_SQL} <<EOF
-SELECT jail, ip FROM ${DB_TABLE} WHERE remove=1;
+SELECT jail, ip FROM ${DB_TABLE_BANNED} WHERE remove=1;
 EOF
 ) | grep -Ev '(jail.*ip|\--|\(|^$)' | tr -d '|' >> ${tmp_file}
 

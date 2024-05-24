@@ -1,4 +1,15 @@
 --
+-- Used to store both enabled and disabled jails.
+--
+CREATE TABLE jails (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL DEFAULT '',
+    enabled INT2 DEFAULT 1
+);
+CREATE UNIQUE INDEX idx_jails_name      ON jails (name);
+CREATE        INDEX idx_jails_enabled   ON jails (enabled);
+
+--
 -- Used to store banned/unbanned clients
 --
 CREATE TABLE banned (
@@ -6,7 +17,7 @@ CREATE TABLE banned (
     -- Banned client IP address
     ip VARCHAR(46) NOT NULL DEFAULT '',
     -- A list of banned network ports, separated by comma
-    ports VARCHAR(100) NOT NULL DEFAULT '',
+    ports VARCHAR(255) NOT NULL DEFAULT '',
     -- protocol: tcp, udp, ...
     protocol VARCHAR(10) NOT NULL DEFAULT 'tcp',
     -- Fail2ban jail name

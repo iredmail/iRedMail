@@ -11,6 +11,7 @@ iRedMail-1.7.0:
     - OpenBSD 7.3, 7.4. Please use 7.5 instead.
 
 * Improvements:
+    - Fail2ban now stores started jail names in SQL table `fail2ban.jails`.
     - Disable multi-threaded database reload in ClamAV (with
       parameter "ConcurrentDatabaseReload no").
     - Add new parameter `OCSAdminURL` in sogo.conf for the new SQL table
