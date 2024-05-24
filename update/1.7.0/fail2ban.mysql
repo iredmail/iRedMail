@@ -1,0 +1,11 @@
+--
+-- Used to store both enabled and disabled jails.
+--
+CREATE TABLE IF NOT EXISTS `jails` (
+    `id` BIGINT(20) UNSIGNED AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL DEFAULT '',
+    `enabled` TINYINT(1) DEFAULT 1,
+    PRIMARY KEY (`id`),
+    UNIQUE INDEX (`name`),
+    INDEX (`enabled`)
+) ENGINE=InnoDB;
