@@ -6,9 +6,9 @@ CREATE TABLE IF NOT EXISTS `jails` (
     `name` VARCHAR(255) NOT NULL DEFAULT '',
     `enabled` TINYINT(1) DEFAULT 1,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX (`jail`),
+    UNIQUE INDEX (`name`),
     INDEX (`enabled`)
-)
+) ENGINE=InnoDB;
 
 --
 -- Used to store banned/unbanned clients
