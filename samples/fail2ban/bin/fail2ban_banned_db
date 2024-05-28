@@ -118,7 +118,7 @@ INSERT INTO ${DB_TABLE_JAILS} (name, enabled) VALUES ('${_jail}', 1);
 EOF
         fi
     else
-        ${CMD_SQL} <<EOF
+        ${CMD_SQL} >/dev/null <<EOF
 INSERT IGNORE INTO ${DB_TABLE_JAILS} (name, enabled) VALUES ('${_jail}', 1);
 EOF
     fi
@@ -174,7 +174,7 @@ elif [[ X"${_action}" == X"ban" ]]; then
 
     if [ X"${DB_TYPE}" == X'mysql' ]; then
         # MySQL stores local time with time zone info, we expect UTC time.
-        ${CMD_SQL} <<EOF
+        ${CMD_SQL} >/dev/null <<EOF
 INSERT IGNORE INTO ${DB_TABLE_BANNED} (
         ip, ports, protocol, jail,
         hostname, country, rdns, timestamp,
@@ -217,7 +217,7 @@ elif [[ X"${_action}" == X"unban" ]]; then
         echo "No IP address(es) specified."
     else
         for _ip in ${_ips}; do
-            ${CMD_SQL} <<EOF
+            ${CMD_SQL} >/dev/null <<EOF
 DELETE FROM ${DB_TABLE_BANNED} WHERE ip='${_ip}';
 EOF
         done
@@ -229,7 +229,7 @@ elif [[ X"${_action}" == X'stop' ]] || [[ X"${_action}" == X"cleanup" ]]; then
     _jail="$2"
 
     if [[ X"${_jail}" != X'' ]]; then
-        ${CMD_SQL} <<EOF
+        ${CMD_SQL} >/dev/null <<EOF
 DELETE FROM ${DB_TABLE_BANNED} WHERE jail='${_jail}';
 DELETE FROM ${DB_TABLE_JAILS} WHERE jail='${_jail}';
 EOF
