@@ -284,21 +284,28 @@ dovecot_config()
         export realtime_quota_db_name="${IREDADMIN_DB_NAME}"
         export realtime_quota_db_user="${IREDADMIN_DB_USER}"
         export realtime_quota_db_passwd="${IREDADMIN_DB_PASSWD}"
-    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        export last_login_db_name="${IREDADMIN_DB_NAME}"
+        export last_login_db_user="${IREDADMIN_DB_USER}"
+        export last_login_db_passwd="${IREDADMIN_DB_PASSWD}"
+    else
         export realtime_quota_db_name="${VMAIL_DB_NAME}"
         export realtime_quota_db_user="${VMAIL_DB_ADMIN_USER}"
         export realtime_quota_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
-    elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        export realtime_quota_db_name="${VMAIL_DB_NAME}"
-        export realtime_quota_db_user="${VMAIL_DB_BIND_USER}"
-        export realtime_quota_db_passwd="${VMAIL_DB_BIND_PASSWD}"
+        export last_login_db_name="${VMAIL_DB_NAME}"
+        export last_login_db_user="${VMAIL_DB_ADMIN_USER}"
+        export last_login_db_passwd="${VMAIL_DB_ADMIN_PASSWD}"
     fi
 
-    # realtime quota and last login
-    perl -pi -e 's#PH_REALTIME_QUOTA_DB_NAME#$ENV{realtime_quota_db_name}#' ${DOVECOT_REALTIME_QUOTA_CONF} ${DOVECOT_LAST_LOGIN_CONF}
-    perl -pi -e 's#PH_REALTIME_QUOTA_DB_USER#$ENV{realtime_quota_db_user}#' ${DOVECOT_REALTIME_QUOTA_CONF} ${DOVECOT_LAST_LOGIN_CONF}
-    perl -pi -e 's#PH_REALTIME_QUOTA_DB_PASSWORD#$ENV{realtime_quota_db_passwd}#' ${DOVECOT_REALTIME_QUOTA_CONF} ${DOVECOT_LAST_LOGIN_CONF}
+    # realtime quota
+    perl -pi -e 's#PH_REALTIME_QUOTA_DB_NAME#$ENV{realtime_quota_db_name}#' ${DOVECOT_REALTIME_QUOTA_CONF}
+    perl -pi -e 's#PH_REALTIME_QUOTA_DB_USER#$ENV{realtime_quota_db_user}#' ${DOVECOT_REALTIME_QUOTA_CONF}
+    perl -pi -e 's#PH_REALTIME_QUOTA_DB_PASSWORD#$ENV{realtime_quota_db_passwd}#' ${DOVECOT_REALTIME_QUOTA_CONF}
     perl -pi -e 's#PH_DOVECOT_REALTIME_QUOTA_TABLE#$ENV{DOVECOT_REALTIME_QUOTA_TABLE}#' ${DOVECOT_REALTIME_QUOTA_CONF}
+
+    # last login
+    perl -pi -e 's#PH_LAST_LOGIN_DB_NAME#$ENV{last_login_db_name}#' ${DOVECOT_LAST_LOGIN_CONF}
+    perl -pi -e 's#PH_LAST_LOGIN_DB_USER#$ENV{last_login_db_user}#' ${DOVECOT_LAST_LOGIN_CONF}
+    perl -pi -e 's#PH_LAST_LOGIN_DB_PASSWORD#$ENV{last_login_db_passwd}#' ${DOVECOT_LAST_LOGIN_CONF}
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         export share_folder_db_name="${IREDADMIN_DB_NAME}"
@@ -342,13 +349,6 @@ dovecot_config()
     if [ X"${DISTRO}" == X'RHEL' ]; then
         mkdir -p /etc/systemd/system/dovecot.service.d >> ${INSTALL_LOG} 2>&1
         cp -f ${SAMPLE_DIR}/dovecot/systemd/override.conf /etc/systemd/system/dovecot.service.d >> ${INSTALL_LOG} 2>&1
-    fi
-
-    # Unfortunately, PostgreSQL doesn't support tracking last login.
-    if [ X"${BACKEND}" == X'PGSQL' ]; then
-        perl -pi -e 's/.*# Track user last login//' ${DOVECOT_CONF}
-        perl -pi -e 's#.*last_login_.*##' ${DOVECOT_CONF}
-        perl -pi -e 's#(.*mail_plugins = .*)last_login(.*)#${1}${2}#' ${DOVECOT_CONF}
     fi
 
     cat >> ${TIP_FILE} <<EOF

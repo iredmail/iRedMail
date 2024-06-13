@@ -56,9 +56,8 @@ pgsql_initialize()
         ECHO_DEBUG "Set client_min_messages to ERROR."
         perl -pi -e 's#.*(client_min_messages =).*#${1} error#' ${PGSQL_CONF_POSTGRESQL}
 
-        # SSL is enabled by default on Ubuntu.
-        [ X"${DISTRO}" == X'FREEBSD' ] && \
-            perl -pi -e 's/^#(ssl.=.)off(.*)/${1}on${2}/' ${PGSQL_CONF_POSTGRESQL}
+        # Disable SSL.
+        perl -pi -e 's/^#(ssl.=.)on(.*)/${1}off${2}/' ${PGSQL_CONF_POSTGRESQL}
     fi
 
     ECHO_DEBUG "Copy iRedMail SSL cert/key with strict permission."

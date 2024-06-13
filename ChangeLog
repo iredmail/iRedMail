@@ -11,6 +11,8 @@ iRedMail-1.7.0:
     - OpenBSD 7.3, 7.4. Please use 7.5 instead.
 
 * Improvements:
+    - Track user last login time with PostgreSQL backend.
+      FYI https://docs.iredmail.org/track.user.last.login.html
     - Fail2ban now stores started jail names in SQL table `fail2ban.jails`.
     - Disable multi-threaded database reload in ClamAV (with
       parameter "ConcurrentDatabaseReload no").

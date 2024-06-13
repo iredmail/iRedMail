@@ -421,6 +421,21 @@ CREATE TABLE anyone_shares (
     PRIMARY KEY (from_user)
 );
 
+-- We need Dovecot inserts both `username` and `domain`, but it uses them
+-- as unique index, so we create them as primary key instead of using a trigger.
+CREATE TABLE last_login (
+    username VARCHAR(255) NOT NULL DEFAULT '',
+    domain VARCHAR(255) NOT NULL DEFAULT '',
+    imap BIGINT DEFAULT NULL,
+    pop3 BIGINT DEFAULT NULL,
+    lda  BIGINT DEFAULT NULL,
+    PRIMARY KEY (username, domain)
+);
+CREATE INDEX idx_last_login_domain ON last_login (domain);
+CREATE INDEX idx_last_login_imap   ON last_login (imap);
+CREATE INDEX idx_last_login_pop3   ON last_login (pop3);
+CREATE INDEX idx_last_login_lda    ON last_login (lda);
+
 -- used_quota
 -- Used to store realtime mailbox quota in Dovecot.
 -- WARNING: Works only with Dovecot 1.2+.
