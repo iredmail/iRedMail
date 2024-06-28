@@ -12,7 +12,7 @@ rc_pre() {
 }
  
 rc_start() {
-    ${rcexec} "${daemon} -x start ${daemon_flags} ${_bg}"
+    ${rcexec} ${daemon} -x start ${daemon_flags} ${_bg}
 }
  
 rc_check() {
@@ -20,7 +20,7 @@ rc_check() {
 }
  
 rc_stop() {
-    ${rcexec} "${daemon} stop"
+    ${rcexec} ${daemon} stop
 }
  
 rc_cmd $1
