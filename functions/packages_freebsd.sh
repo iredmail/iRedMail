@@ -39,9 +39,9 @@ install_all()
     export PREFERRED_BDB_VER='5'
     # Stick to php 8.1 temporarily since Roundcube 1.6.1 doesn't support 8.2 yet.
     export PREFERRED_PHP_VER='81'
-    export PREFERRED_PY3_VER='3.10'
-    export PREFERRED_PY_FLAVOR='py310'
-    export PREFERRED_PERL_VER='5.38'
+    export PREFERRED_PY3_VER='3.11'
+    export PREFERRED_PY_FLAVOR='py311'
+    export PREFERRED_PERL_VER='5.40'
     export PREFERRED_LLVM_VER='17'
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then

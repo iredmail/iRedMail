@@ -20,6 +20,8 @@ iRedMail-1.7.0:
       `sogo_admin` introduced in SOGo v5.10.0.
 
 * Fixed issues:
+    - Fail2ban can not start on OpenBSD after reboot.
+      Thanks to wkatsak: https://forum.iredmail.org/post88970.html#p88970
     - Not set correct compatibility_level for Postfix. #233
     - Not prevent invalid address rewritten in `From:` header in custom
       Postfix transports.
@@ -30,6 +32,7 @@ iRedMail-1.7.0:
     + mlmmjadmin -> 3.2.1
     + iRedAPD -> 5.6.0
     + uwsgi -> 2.0.25.1 (OpenBSD only)
+    + Switch to Perl 5.40 and Python 3.11 on FreeBSD.
 
 iRedMail-1.6.8:
 

@@ -142,6 +142,7 @@ postfix_config_basic()
     else
         postconf -e compatibility_level=3.6
     fi
+
     #
     # master.cf
     #
@@ -208,6 +209,12 @@ postfix_config_basic()
     perl -pi -e 's#PH_SYS_GROUP_MLMMJ#$ENV{SYS_GROUP_MLMMJ}#g' ${POSTFIX_FILE_MASTER_CF}
     perl -pi -e 's#PH_CMD_MLMMJ_AMIME_RECEIVE#$ENV{CMD_MLMMJ_AMIME_RECEIVE}#g' ${POSTFIX_FILE_MASTER_CF}
     perl -pi -e 's#PH_MLMMJ_SPOOL_DIR#$ENV{MLMMJ_SPOOL_DIR}#g' ${POSTFIX_FILE_MASTER_CF}
+
+    # Replace deprecated parameters on newer Postfix.
+    # main.cf
+    perl -pi -e 's#^(smtpd_tls_dh1024_param_file.*)##g' ${POSTFIX_FILE_MAIN_CF}
+    # master.cf
+    perl -pi -e 's#disable_dns_lookups=yes#smtp_dns_support_level=disabled#g' ${POSTFIX_FILE_MASTER_CF}
 
     ECHO_DEBUG "Copy: /etc/{hosts,resolv.conf,localtime,services} -> ${POSTFIX_CHROOT_DIR}/etc/"
     mkdir -p ${POSTFIX_CHROOT_DIR}/etc/ >> ${INSTALL_LOG} 2>&1
