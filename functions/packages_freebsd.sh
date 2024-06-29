@@ -96,7 +96,7 @@ install_all()
         net_openldap${PREFERRED_OPENLDAP_VER}-client \
         net_openldap${PREFERRED_OPENLDAP_VER}-server \
         net_openslp \
-        net_py-ldap \
+        net_py-python-ldap \
         net-mgmt_netdata \
         security_amavisd-new \
         security_ca_root_nss \
@@ -993,7 +993,7 @@ EOF
 
     # Python database interfaces
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ALL_PORTS="${ALL_PORTS} net/py-ldap databases/py-pymysql"
+        ALL_PORTS="${ALL_PORTS} net/py-python-ldap databases/py-pymysql"
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         ALL_PORTS="${ALL_PORTS} databases/py-pymysql"
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
@@ -1030,12 +1030,6 @@ EOF
     #    # python-ldap.
     #    ALL_PORTS="${ALL_PORTS} security/py-fail2ban"
     #fi
-
-    cat > /var/db/ports/net_py-ldap/options <<EOF
-OPTIONS_FILE_UNSET+=DOCS
-OPTIONS_FILE_UNSET+=EXAMPLES
-OPTIONS_FILE_SET+=SASL
-EOF
 
     cat > /var/db/ports/net-mgmt_netdata/options <<EOF
 OPTIONS_FILE_UNSET+=DOCS

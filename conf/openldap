@@ -154,8 +154,15 @@ export LDAP_ATTR_USER_RDN='mail'
 # Password scheme
 #
 # If no pw-sha2 support, use SSHA instead.
-if [ X"${BACKEND}" == X'OPENLDAP' -a X"${OPENLDAP_HAS_SHA2}" != X'YES' ]; then
-    export DEFAULT_PASSWORD_SCHEME='SSHA'
+if [[ X"${BACKEND}" == X'OPENLDAP' ]]; then
+    if [[ X"${OPENLDAP_HAS_SHA2}" != X'YES' ]]; then
+        export DEFAULT_PASSWORD_SCHEME='SSHA'
+    else
+        # Although Dovecot 2.3 supports BCRYPT, but some web applications
+        # perform user auth against LDAP directly, and OpenLDAP doesn't support
+        # auth with BCRYPT hash yet, so have to fall back to SSHA512.
+        export DEFAULT_PASSWORD_SCHEME='SSHA512'
+    fi
 fi
 
 export LDAP_BINDDN="cn=${SYS_USER_VMAIL},${LDAP_SUFFIX}"
