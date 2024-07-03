@@ -48,9 +48,9 @@ postfix_config_basic()
     export mail_owner="$(postconf -d mail_owner | awk '{print $NF}')"
     export setgid_group="$(postconf -d setgid_group | awk '{print $NF}')"
 
-    if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+    if [ X"${DISTRO}" == X'FREEBSD' ]; then
         export setgid_group='maildrop'
-    elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+    elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         export command_directory='/usr/local/sbin'
         export daemon_directory='/usr/local/libexec/postfix'
         export mail_owner='_postfix'
@@ -60,6 +60,9 @@ postfix_config_basic()
     # Copy sample main.cf and update values.
     backup_file ${POSTFIX_FILE_MAIN_CF} ${POSTFIX_FILE_MASTER_CF}
     cp ${SAMPLE_DIR}/postfix/main.cf ${POSTFIX_FILE_MAIN_CF}
+
+    ECHO_DEBUG "Enable submission and additional transports required by Amavisd and Dovecot."
+    cat ${SAMPLE_DIR}/postfix/master.cf >> ${POSTFIX_FILE_MASTER_CF}
 
     perl -pi -e 's#PH_QUEUE_DIRECTORY#$ENV{queue_directory}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_COMMAND_DIRECTORY#$ENV{command_directory}#g' ${POSTFIX_FILE_MAIN_CF}
@@ -151,34 +154,7 @@ postfix_config_basic()
         postconf -e compatibility_level=3.6
     fi
 
-    #
-    # master.cf
-    #
-    _postfix_version="$(postconf -d mail_version | awk '{print $NF}')"
-    if echo ${_postfix_version} | grep '^3' &>/dev/null; then
-        # Postfix v3
-        if [[ X"${DISTRO}" == X'OPENBSD' ]]; then
-            postconf -e compatibility_level=3.6
-        else
-            postconf -e compatibility_level=2
-        fi
-
-        # The master.cf chroot default value has changed from "y" (yes) to "n" (no).
-        for i in $(postconf -Mf | grep '^[0-9a-zA-Z]' | awk '{print $1"/"$2"/chroot=n"}'); do
-            postconf -F $i
-        done
-
-        # Disable smtputf8 if EAI support is not compiled in.
-        if postconf -m 2>&1 |grep 'warning: smtputf8_enable' &>/dev/null; then
-            postconf -e smtputf8_enable=no
-        fi
-    fi
-
-    ECHO_DEBUG "Enable chroot."
     perl -pi -e 's/^(smtp.*inet)(.*)(n)(.*)(n)(.*smtpd)$/${1}${2}${3}${4}-${6}/' ${POSTFIX_FILE_MASTER_CF}
-
-    ECHO_DEBUG "Enable submission and additional transports required by Amavisd and Dovecot."
-    cat ${SAMPLE_DIR}/postfix/master.cf >> ${POSTFIX_FILE_MASTER_CF}
 
     # set smtp server
     perl -pi -e 's#PH_SMTP_SERVER#$ENV{SMTP_SERVER}#g' ${POSTFIX_FILE_MASTER_CF}
@@ -206,6 +182,20 @@ postfix_config_basic()
         postconf -P "pickup/unix/content_filter=${AMAVISD_CONTENT_FILTER_ORIGINATING}"
     fi
 
+    _postfix_version="$(postconf -d mail_version | awk '{print $NF}')"
+    if echo ${_postfix_version} | grep '^3' &>/dev/null; then
+        # The master.cf chroot default value has changed from "y" (yes) to "n" (no).
+        for i in $(postconf -Mf | grep '^[0-9a-zA-Z]' | awk '{print $1"/"$2"/chroot=n"}'); do
+            postconf -F $i
+        done
+
+        # Disable smtputf8 if EAI support is not compiled in.
+        if postconf -m 2>&1 |grep 'warning: smtputf8_enable' &>/dev/null; then
+            postconf -e smtputf8_enable=no
+        fi
+    fi
+
+    ECHO_DEBUG "Enable chroot."
     # mlmmj integration.
     perl -pi -e 's#PH_POSTFIX_MLMMJ_REINJECT_PORT#$ENV{POSTFIX_MLMMJ_REINJECT_PORT}#g' ${POSTFIX_FILE_MASTER_CF}
 
