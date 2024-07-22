@@ -207,7 +207,7 @@ CREATE TABLE msgs (
   spam_level float,                     -- SA spam level (no boosts)
   message_id varchar(255)  DEFAULT '',  -- mail Message-ID header field
   from_addr  VARBINARY(255) NOT NULL DEFAULT '', -- mail From header field, UTF8
-  subject    VARBINARY(255) NOT NULL DEFAULT '', -- mail Subject header field, UTF8
+  subject    VARBINARY(1024) NOT NULL DEFAULT '', -- mail Subject header field, UTF8
   host       varchar(255)  NOT NULL,    -- hostname where amavisd is running
   PRIMARY KEY (partition_tag,mail_id)
 -- FOREIGN KEY (sid) REFERENCES maddr(id) ON DELETE RESTRICT
