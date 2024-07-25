@@ -25,7 +25,6 @@ export SYS_GROUP_CLAMAV='clamav'
 export CLAMAV_CLAMD_SERVICE_NAME='clamd'
 export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclamd'
 
-export CLAMD_CONF='/etc/clamd.conf'
 export CLAMD_LOG_DIR='/var/log/clamav'
 export CLAMD_LOGFILE="${CLAMD_LOG_DIR}/clamd.log"
 # CLAMD_BIND_HOST is configured in conf/global
@@ -63,6 +62,7 @@ elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export CLAMD_LOCAL_SOCKET='/var/run/clamav/clamd.sock'
 
 elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export CLAMD_CONF='/etc/clamd.conf'
     export SYS_USER_CLAMAV='_clamav'
     export SYS_GROUP_CLAMAV='_clamav'
     export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclam'
