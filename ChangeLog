@@ -1,6 +1,10 @@
 iRedMail-1.7.1:
+
 * Fixed issues:
     - Amavisd cannot save mail subject longer than 255 characters in MariaDB.
+
+* Updated packages:
+    + netdata -> 1.46.3
 
 iRedMail-1.7.0:
 
