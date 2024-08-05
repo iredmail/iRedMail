@@ -6,7 +6,7 @@ iRedMail-1.7.1:
 * Updated packages:
     + netdata -> 1.46.3
     + Roundcube webmail -> 1.6.8. It fixes 3 security vulnerabilities.
-      https://github.com/roundcube/roundcubemail/releases/tag/1.6.8
+      FYI https://roundcube.net/news/2024/08/04/security-updates-1.6.8-and-1.5.8
 
 iRedMail-1.7.0:
 
