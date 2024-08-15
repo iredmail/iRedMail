@@ -198,12 +198,12 @@ CREATE INDEX msgs_idx_sid      ON msgs (sid);
 CREATE INDEX msgs_idx_mess_id  ON msgs (message_id); -- useful with pen pals
 CREATE INDEX msgs_idx_time_iso ON msgs (time_iso);
 CREATE INDEX msgs_idx_time_num ON msgs (time_num);   -- optional
-
 CREATE INDEX msgs_idx_mail_id   ON msgs (mail_id);
 CREATE INDEX msgs_idx_content   ON msgs (content);
 CREATE INDEX msgs_idx_quar_type ON msgs (quar_type);
 -- CREATE INDEX msgs_idx_content_time_num ON msgs (content, time_num);
 CREATE INDEX msgs_idx_spam_level ON msgs (spam_level);
+CREATE INDEX msgs_idx_policy     ON msgs (policy);
 
 -- used in @storage_sql_dsn
 -- per-recipient information related to each processed message;
