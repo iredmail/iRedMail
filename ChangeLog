@@ -1,3 +1,8 @@
+iRedMail-1.7.2:
+
+* Fixed issues:
+    - Incorrect SOGo SQL table name.
+
 iRedMail-1.7.1:
 
 * Fixed issues:
