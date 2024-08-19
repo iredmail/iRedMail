@@ -145,6 +145,7 @@ sogo_config() {
     perl -pi -e 's#PH_SOGO_DB_TABLE_STORE#$ENV{SOGO_DB_TABLE_STORE}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_TABLE_ACL#$ENV{SOGO_DB_TABLE_ACL}#g' ${SOGO_CONF}
     perl -pi -e 's#PH_SOGO_DB_TABLE_CACHE_FOLDER#$ENV{SOGO_DB_TABLE_CACHE_FOLDER}#g' ${SOGO_CONF}
+    perl -pi -e 's#PH_SOGO_DB_TABLE_ADMIN#$ENV{SOGO_DB_TABLE_ADMIN}#g' ${SOGO_CONF}
 
     perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#g' ${SOGO_CONF}
     if [ X"${SQL_SERVER_ADDRESS_IS_IPV6}" == X'YES' ]; then
