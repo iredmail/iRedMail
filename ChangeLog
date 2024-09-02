@@ -3,6 +3,9 @@ iRedMail-1.7.2:
 * Fixed issues:
     - Incorrect SOGo SQL table name.
 
+* Updated packages:
+    + Roundcube webmail -> 1.6.9
+
 iRedMail-1.7.1:
 
 * Fixed issues:
