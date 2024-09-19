@@ -41,11 +41,15 @@ DIALOG="dialog --colors --no-collapse --insecure --ok-label Next \
 
 # Welcome message.
 ${DIALOG} \
-    --title "Welcome and thanks for your use" \
+    --title "Welcome" \
     --yesno "\
 Welcome to the iRedMail setup wizard, we will ask you some simple questions required to setup a mail server. If you encounter any trouble or issues, please report to our support forum: https://forum.iredmail.org/
 
-NOTE: You can abort this installation wizard by pressing key Ctrl-C.
+---------------------------- WARNING ----------------------------
+iRedMail is designed to be deployed on a __FRESH__ server, which means your server should __NOT__ have mail related components installed, e.g. Nginix / Apache, MySQL / MariaDB / PostgreSQL / OpenLDAP, Postfix, Dovecot, Amavisd, etc. iRedMail will install and configure required softwares automatically. Otherwise it may mess up your server by overriding existing config files without asking.
+-----------------------------------------------------------------
+
+NOTE: You can abort this setup wizard by pressing key Ctrl-C.
 " 20 76
 
 # Exit when user choose 'exit'.

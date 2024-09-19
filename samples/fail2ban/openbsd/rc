@@ -20,7 +20,7 @@ rc_check() {
 }
  
 rc_stop() {
-    ${rcexec} ${daemon} stop
+    ${rcexec} ${daemon} -x stop
 }
  
 rc_cmd $1
