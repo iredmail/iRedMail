@@ -231,7 +231,7 @@ elif [[ X"${_action}" == X'stop' ]] || [[ X"${_action}" == X"cleanup" ]]; then
     if [[ X"${_jail}" != X'' ]]; then
         ${CMD_SQL} >/dev/null <<EOF
 DELETE FROM ${DB_TABLE_BANNED} WHERE jail='${_jail}';
-DELETE FROM ${DB_TABLE_JAILS} WHERE jail='${_jail}';
+DELETE FROM ${DB_TABLE_JAILS} WHERE name='${_jail}';
 EOF
     fi
 
