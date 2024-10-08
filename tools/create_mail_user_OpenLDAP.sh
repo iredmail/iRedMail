@@ -201,9 +201,7 @@ objectClass: amavisAccount
 objectClass: mailUser
 objectClass: top
 accountStatus: active
-storageBaseDirectory: ${STORAGE_BASE}
 homeDirectory: ${STORAGE_BASE_DIRECTORY}/${maildir}
-mailMessageStore: ${STORAGE_NODE}/${maildir}
 mail: ${MAIL}
 mailQuota: ${QUOTA}
 userPassword: ${PASSWD}

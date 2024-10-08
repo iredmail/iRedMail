@@ -79,8 +79,6 @@ uid: ${DOMAIN_ADMIN_NAME}
 givenName: ${DOMAIN_ADMIN_NAME}
 mail: ${DOMAIN_ADMIN_EMAIL}
 accountStatus: active
-storageBaseDirectory: ${STORAGE_BASE_DIR}
-mailMessageStore: ${STORAGE_NODE}/${DOMAIN_ADMIN_MAILDIR_HASH_PART}
 homeDirectory: ${DOMAIN_ADMIN_MAILDIR_FULL_PATH}
 mailQuota: 104857600
 userPassword: ${DOMAIN_ADMIN_PASSWD_HASH}

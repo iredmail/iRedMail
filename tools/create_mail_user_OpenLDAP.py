@@ -38,7 +38,6 @@ APPEND_TIMESTAMP_IN_MAILDIR = True
 # Get base directory and storage node.
 std = STORAGE_BASE_DIRECTORY.rstrip('/').split('/')
 STORAGE_NODE = std.pop()
-STORAGE_BASE = '/'.join(std)
 
 # Hashed maildir: True, False.
 # Example:
@@ -250,7 +249,6 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         mailMessageStore = "%s/%s%s/" % (domain, username, TIMESTAMP_IN_MAILDIR)
 
     homeDirectory = STORAGE_BASE_DIRECTORY + '/' + mailMessageStore
-    mailMessageStore = STORAGE_NODE + '/' + mailMessageStore
 
     _ldif = __attrs_ldif({
         'objectClass': ['inetOrgPerson', 'mailUser', 'shadowAccount', 'amavisAccount'],
@@ -260,8 +258,6 @@ def ldif_mailuser(domain, username, passwd, cn, quota, groups=''):
         'cn': cn,
         'sn': username,
         'uid': username,
-        'storageBaseDirectory': STORAGE_BASE,
-        'mailMessageStore': mailMessageStore,
         'homeDirectory': homeDirectory,
         'accountStatus': 'active',
         'enabledService': ['internal', 'doveadm', 'lib-storage',
