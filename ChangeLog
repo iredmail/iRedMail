@@ -1,6 +1,8 @@
 iRedMail-1.7.2:
 
 * Fixed issues:
+    - Incorrect SQL column name in Fail2ban script
+      (/usr/local/bin/fail2ban_banned_db). #266
     - Incorrect SOGo SQL table name.
 
 * Updated packages:
