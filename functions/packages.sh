@@ -52,8 +52,8 @@ install_all()
         fi
 
         OB_PKG_PHP_VER="%${OB_PHP_VERSION}"
-        OB_PKG_OPENLDAP_SERVER_VER='-2.6.7v0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.7v0'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.6.8v0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.8v0'
         OB_UWSGI_VERSION='2.0.25.1'
     fi
 
@@ -272,7 +272,7 @@ install_all()
         PKG_SCRIPTS="${PKG_SCRIPTS} ${DOVECOT_RC_SCRIPT_NAME}"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot-pigeonhole--ldap dovecot-ldap dovecot-mysql--"
+            ALL_PKGS="${ALL_PKGS} dovecot-pigeonhole--ldap dovecot--ldap dovecot-mysql--"
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-mysql-- dovecot-pigeonhole--"
         elif [ X"${BACKEND}" == X'PGSQL' ]; then

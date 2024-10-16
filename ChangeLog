@@ -1,5 +1,15 @@
 iRedMail-1.7.2:
 
++ Supports new distribution release:
+    + OpenBSD 7.6
+
+* Dropped distribution release:
+    - OpenBSD 7.5
+
+* Improvements:
+    - OpenLDAP schema: mail alias account can use 2 more attributes:
+      accessPolicy, listModerator.
+
 * Fixed issues:
     - Incorrect SQL column name in Fail2ban script
       (/usr/local/bin/fail2ban_banned_db). #266
