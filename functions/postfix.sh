@@ -109,6 +109,7 @@ postfix_config_basic()
 
     if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
         perl -pi -e 's#^(smtpd_tls_CApath=).*#${1}#g' ${POSTFIX_FILE_MAIN_CF}
+        perl -pi -e 's#^(smtpd_tls_dh1024_param_file.*)##g' ${POSTFIX_FILE_MAIN_CF}
     fi
 
     # Replace deprecated parameters on newer Postfix.
