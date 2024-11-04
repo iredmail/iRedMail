@@ -2,4 +2,4 @@ hosts       = PH_SQL_SERVER_ADDRESS:PH_SQL_SERVER_PORT
 user        = PH_VMAIL_DB_BIND_USER
 password    = PH_VMAIL_DB_BIND_PASSWD
 dbname      = PH_VMAIL_DB_NAME
-query       = SELECT bcc_address FROM recipient_bcc_domain WHERE domain='%d' AND active=1
+query       = SELECT recipient_bcc_domain.bcc_address FROM recipient_bcc_domain, domain WHERE recipient_bcc_domain.domain='%d' AND recipient_bcc_domain.domain=domain.domain AND domain.active=1

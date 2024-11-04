@@ -11,6 +11,7 @@ iRedMail-1.7.2:
       accessPolicy, listModerator.
 
 * Fixed issues:
+    - [SQL] Not check domain status while querying per-domain BCC.
     - Incorrect SQL column name in Fail2ban script
       (/usr/local/bin/fail2ban_banned_db). #266
     - Incorrect SOGo SQL table name.
