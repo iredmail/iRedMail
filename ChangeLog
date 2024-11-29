@@ -20,7 +20,7 @@ iRedMail-1.7.2:
     + Roundcube webmail -> 1.6.9
     + netdata -> 2.0.3
     + mlmmjadmin -> 3.2.2
-    + iRedAPD -> 5.7.0
+    + iRedAPD -> 5.8.1
     + uwsgi -> 2.0.28 (OpenBSD only)
 
 iRedMail-1.7.1:
