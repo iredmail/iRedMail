@@ -37,8 +37,7 @@ install_all()
     export PREFERRED_OPENLDAP_VER='26'
     export PREFERRED_MARIADB_VER='106'
     export PREFERRED_BDB_VER='5'
-    # Stick to php 8.1 temporarily since Roundcube 1.6.1 doesn't support 8.2 yet.
-    export PREFERRED_PHP_VER='81'
+    export PREFERRED_PHP_VER='83'
     export PREFERRED_PY3_VER='3.11'
     export PREFERRED_PY_FLAVOR='py311'
     export PREFERRED_PERL_VER='5.40'
