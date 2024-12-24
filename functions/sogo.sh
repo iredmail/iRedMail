@@ -31,7 +31,7 @@ sogo_initialize_db()
         tmp_sql="${ROOTDIR}/sogo_init.sql"
 
         cat > ${tmp_sql} <<EOF
-CREATE DATABASE ${SOGO_DB_NAME} CHARSET='UTF8';
+CREATE DATABASE IF NOT EXISTS ${SOGO_DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 EOF
 
         cat >> ${tmp_sql} <<EOF

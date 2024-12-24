@@ -67,7 +67,7 @@ iredadmin_initialize_db() {
 
         ${MYSQL_CLIENT_ROOT} <<EOF
 -- Create databases.
-CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Import SQL template.
 USE ${IREDADMIN_DB_NAME};

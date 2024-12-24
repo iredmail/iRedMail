@@ -486,7 +486,7 @@ dovecot_initialize_db_for_ldap() {
         # If iRedAdmin is not used, create database and import table here.
         ${MYSQL_CLIENT_ROOT} >> ${INSTALL_LOG} 2>&1 <<EOF
 -- Create databases.
-CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS ${IREDADMIN_DB_NAME} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Import SQL template.
 USE ${IREDADMIN_DB_NAME};

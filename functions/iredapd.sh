@@ -85,7 +85,7 @@ iredapd_initialize_db()
     if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
         ${MYSQL_CLIENT_ROOT} <<EOF
 -- Create databases and user.
-CREATE DATABASE IF NOT EXISTS ${IREDAPD_DB_NAME} DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS ${IREDAPD_DB_NAME} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- Import SQL template.
 USE ${IREDAPD_DB_NAME};

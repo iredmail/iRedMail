@@ -336,7 +336,7 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export DIR_RC_SCRIPTS='/etc/rc.d'
     export RC_CONF_LOCAL='/etc/rc.conf.local'
     export SHELL_BASH='/usr/local/bin/bash'
-    export PYTHON_VERSION='3.10'
+    export PYTHON_VERSION='3.11'
     export CMD_PYTHON3='/usr/local/bin/python3'
     export CMD_PIP3="pip${PYTHON_VERSION}"
 
