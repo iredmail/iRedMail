@@ -37,11 +37,11 @@ install_all()
     export PREFERRED_OPENLDAP_VER='26'
     export PREFERRED_MARIADB_VER='106'
     export PREFERRED_BDB_VER='5'
-    export PREFERRED_PHP_VER='83'
+    export PREFERRED_PHP_VER='84'
     export PREFERRED_PY3_VER='3.11'
     export PREFERRED_PY_FLAVOR='py311'
     export PREFERRED_PERL_VER='5.40'
-    export PREFERRED_LLVM_VER='17'
+    export PREFERRED_LLVM_VER='19'
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         export IREDMAIL_USE_PHP='YES'
@@ -51,7 +51,7 @@ install_all()
     freebsd_make_conf_add 'WANT_OPENLDAP_SASL' "YES"
     freebsd_make_conf_add 'WANT_PGSQL_VER' "${PGSQL_VERSION}"
     freebsd_make_conf_add 'WANT_BDB_VER' "${PREFERRED_BDB_VER}"
-    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=openssl python=${PREFERRED_PY3_VER} python3=${PREFERRED_PY3_VER} pgsql=${PGSQL_VERSION} php=8.1 mysql=10.6m perl5=${PREFERRED_PERL_VER} llvm=${PREFERRED_LLVM_VER}"
+    freebsd_make_conf_add 'DEFAULT_VERSIONS' "ssl=openssl python=${PREFERRED_PY3_VER} python3=${PREFERRED_PY3_VER} pgsql=${PGSQL_VERSION} php=8.4 mysql=10.6m perl5=${PREFERRED_PERL_VER} llvm=${PREFERRED_LLVM_VER}"
 
     freebsd_make_conf_plus_option 'OPTIONS_SET' 'SASL'
     freebsd_make_conf_plus_option 'OPTIONS_UNSET' 'X11'
@@ -85,6 +85,7 @@ install_all()
         lang_perl${PREFERRED_PERL_VER} \
         lang_php${PREFERRED_PHP_VER} \
         lang_php${PREFERRED_PHP_VER}-extensions \
+        mail/pecl-imap \
         www_mod_php${PREFERRED_PHP_VER} \
         graphics_php${PREFERRED_PHP_VER}-gd \
         graphics_cairo \
@@ -846,7 +847,7 @@ EOF
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         ALL_PORTS="${ALL_PORTS} lang/php${PREFERRED_PHP_VER}"
 
-        ALL_PORTS="${ALL_PORTS} mail/php${PREFERRED_PHP_VER}-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext www/php${PREFERRED_PHP_VER}-session converters/php${PREFERRED_PHP_VER}-iconv textproc/php${PREFERRED_PHP_VER}-pspell textproc/php${PREFERRED_PHP_VER}-dom"
+        ALL_PORTS="${ALL_PORTS} mail/pecl-imap archivers/php${PREFERRED_PHP_VER}-zip archivers/php${PREFERRED_PHP_VER}-bz2 archivers/php${PREFERRED_PHP_VER}-zlib devel/php${PREFERRED_PHP_VER}-gettext www/php${PREFERRED_PHP_VER}-session converters/php${PREFERRED_PHP_VER}-iconv textproc/pecl-pspell textproc/php${PREFERRED_PHP_VER}-dom"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ALL_PORTS="${ALL_PORTS} net/php${PREFERRED_PHP_VER}-ldap databases/php${PREFERRED_PHP_VER}-mysqli"

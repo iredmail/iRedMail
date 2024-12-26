@@ -278,7 +278,7 @@ iredapd_syslog_setup()
         #
         # modular newsyslog (log rotate) config file
         #
-        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/iredapd ${IREDAPD_LOGROTATE_FILE}
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/iredapd.conf ${IREDAPD_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_IREDAPD_LOG_FILE#$ENV{IREDAPD_LOG_FILE}#g' ${IREDAPD_LOGROTATE_FILE}
         perl -pi -e 's#PH_IREDAPD_PID_FILE#$ENV{IREDAPD_PID_FILE}#g' ${IREDAPD_LOGROTATE_FILE}

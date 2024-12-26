@@ -220,7 +220,7 @@ nginx_config()
             #
             # modular newsyslog (log rotate) config file
             #
-            cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/php-fpm ${PHP_FPM_LOGROTATE_CONF}
+            cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/php-fpm.conf ${PHP_FPM_LOGROTATE_CONF}
 
             perl -pi -e 's#PH_PHP_FPM_LOG_MAIN#$ENV{PHP_FPM_LOG_MAIN}#g' ${PHP_FPM_LOGROTATE_CONF}
             perl -pi -e 's#PH_PHP_FPM_LOG_SLOW#$ENV{PHP_FPM_LOG_SLOW}#g' ${PHP_FPM_LOGROTATE_CONF}

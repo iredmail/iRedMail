@@ -433,7 +433,7 @@ dovecot_log() {
         #
         # modular log rotate config file
         #
-        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/dovecot ${DOVECOT_LOGROTATE_FILE}
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/dovecot.conf ${DOVECOT_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_DOVECOT_MASTER_PID#$ENV{DOVECOT_MASTER_PID}#g' ${DOVECOT_LOGROTATE_FILE}
         perl -pi -e 's#PH_DOVECOT_LOG_FILE#$ENV{DOVECOT_LOG_FILE}#g' ${DOVECOT_LOGROTATE_FILE}

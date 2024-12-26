@@ -164,7 +164,7 @@ EOF
         #
         # modular newsyslog (log rotate) config file
         #
-        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/mlmmjadmin ${MLMMJADMIN_LOGROTATE_FILE}
+        cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/mlmmjadmin.conf ${MLMMJADMIN_LOGROTATE_FILE}
 
         perl -pi -e 's#PH_MLMMJADMIN_LOG_FILE#$ENV{MLMMJADMIN_LOG_FILE}#g' ${MLMMJADMIN_LOGROTATE_FILE}
         perl -pi -e 's#PH_MLMMJADMIN_PID_FILE#$ENV{MLMMJADMIN_PID_FILE}#g' ${MLMMJADMIN_LOGROTATE_FILE}

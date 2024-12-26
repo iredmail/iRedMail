@@ -45,3 +45,8 @@ export IREDAPD_LOGROTATE_FILE="${LOGROTATE_DIR}/iredapd"
 # IREDAPD_DB_PASSWD is generated in dialog/optional_components.sh.
 export IREDAPD_DB_NAME='iredapd'
 export IREDAPD_DB_USER='iredapd'
+
+
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export IREDAPD_LOGROTATE_FILE="${LOGROTATE_DIR}/iredapd.conf"
+fi

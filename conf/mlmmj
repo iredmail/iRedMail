@@ -65,3 +65,7 @@ export MLMMJADMIN_CONF="${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/settings.py"
 export MLMMJADMIN_LOG_DIR='/var/log/mlmmjadmin'
 export MLMMJADMIN_LOG_FILE="${MLMMJADMIN_LOG_DIR}/mlmmjadmin.log"
 export MLMMJADMIN_LOGROTATE_FILE="${LOGROTATE_DIR}/mlmmjadmin"
+
+if [ X"${DISTRO}" == X'FREEBSD' ]; then
+    export MLMMJADMIN_LOGROTATE_FILE="${LOGROTATE_DIR}/mlmmjadmin.conf"
+fi
