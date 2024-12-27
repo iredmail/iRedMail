@@ -943,7 +943,7 @@ OPTIONS_FILE_SET+=UNRAR
 OPTIONS_FILE_SET+=UNZOO
 EOF
 
-    ALL_PORTS="${ALL_PORTS} security/clamav"
+    ALL_PORTS="${ALL_PORTS} security/ca_root_nss security/clamav"
 
     # mlmmj: mailing list manager
     ALL_PORTS="${ALL_PORTS} mail/mlmmj"
