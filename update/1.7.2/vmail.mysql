@@ -1,6 +1,9 @@
 --
 -- Requires MySQL 5.5.3 (released in early 2010) or later releases.
 --
+-- Run command to show all columns of a table:
+-- SHOW FULL COLUMNS FROM <table>;
+
 ALTER DATABASE vmail
     DEFAULT CHARACTER SET utf8mb4
     DEFAULT COLLATE utf8mb4_general_ci;
