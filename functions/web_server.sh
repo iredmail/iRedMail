@@ -48,8 +48,12 @@ EOF
 web_server_config()
 {
     # Create required directories
-    [ -d ${HTTPD_SERVERROOT} ] || mkdir -p ${HTTPD_SERVERROOT} >> ${INSTALL_LOG} 2>&1
-    [ -d ${HTTPD_DOCUMENTROOT} ] || mkdir -p ${HTTPD_DOCUMENTROOT} >> ${INSTALL_LOG} 2>&1
+    [[ -d ${HTTPD_SERVERROOT} ]] || mkdir -p ${HTTPD_SERVERROOT} >> ${INSTALL_LOG} 2>&1
+    [[ -d ${HTTPD_DOCUMENTROOT} ]] || mkdir -p ${HTTPD_DOCUMENTROOT} >> ${INSTALL_LOG} 2>&1
+
+    [[ -d ${HTTPD_WELL_KNOWN_DIR} ]] || mkdir -p ${HTTPD_WELL_KNOWN_DIR} >> ${INSTALL_LOG} 2>&1
+    chown ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${HTTPD_WELL_KNOWN_DIR}
+    chmod 0755 ${HTTPD_WELL_KNOWN_DIR}
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         . ${FUNCTIONS_DIR}/nginx.sh

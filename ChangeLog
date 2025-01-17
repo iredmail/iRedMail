@@ -11,6 +11,9 @@ iRedMail-1.7.2:
       accessPolicy, listModerator.
 
 * Fixed issues:
+    - Not serve ACME challenge over HTTP directly.
+      Let's Encrypt cert renewal may fail with error `Connection refused` if
+      the HTTP request is redirected to HTTPS.
     - [SQL] Not check domain status while querying per-domain BCC.
     - Incorrect SQL column name in Fail2ban script
       (/usr/local/bin/fail2ban_banned_db). #266

@@ -58,6 +58,8 @@ elif [ X"${DISTRO}" == X'OPENBSD' ]; then
 
 fi
 
+export HTTPD_WELL_KNOWN_DIR="${HTTPD_SERVERROOT}/well_known"
+
 [ X"${WEB_SERVER}" == X'NGINX' ] && . ${CONF_DIR}/nginx
 
 . ${CONF_DIR}/php

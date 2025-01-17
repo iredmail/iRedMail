@@ -106,6 +106,7 @@ nginx_config()
     # Ports
     perl -pi -e 's#PH_HTTPS_PORT#$ENV{HTTPS_PORT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
     perl -pi -e 's#PH_PORT_HTTP#$ENV{PORT_HTTP}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
+    perl -pi -e 's#PH_HTTPD_WELL_KNOWN_DIR#$ENV{HTTPD_WELL_KNOWN_DIR}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
 
     # Enable IPv6.
     if [[ X"${IREDMAIL_HAS_IPV6}" == X'YES' ]]; then
@@ -116,6 +117,8 @@ nginx_config()
     # web sites
     #
     perl -pi -e 's#PH_HTTPD_DOCUMENTROOT#$ENV{HTTPD_DOCUMENTROOT}#g' ${HTTPD_CONF_DIR_AVAILABLE_SITES}/*.conf
+
+    perl -pi -e 's#PH_HTTPD_WELL_KNOWN_DIR#$ENV{HTTPD_WELL_KNOWN_DIR}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl
 
     # ssl
     perl -pi -e 's#PH_SSL_CERT_FILE#$ENV{SSL_CERT_FILE}#g' ${NGINX_CONF_TMPL_DIR}/*.tmpl

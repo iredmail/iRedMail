@@ -1,10 +1,8 @@
 # Allow access to '^/.well-known/'
 location ~ ^/.well-known/ {
+    root PH_HTTPD_WELL_KNOWN_DIR;
     allow all;
-    access_log off;
-    log_not_found off;
     autoindex off;
-    #root /var/www/html;
 }
 
 # Deny all attempts to access hidden files such as .htaccess.
