@@ -1,6 +1,6 @@
 #!/bin/ksh
  
-daemon="/usr/local/bin/fail2ban-client"
+daemon="/usr/local/bin/fail2ban-server"
  
 . /etc/rc.d/rc.subr
  
@@ -12,7 +12,8 @@ rc_pre() {
 }
  
 rc_start() {
-    ${rcexec} ${daemon} -x start ${daemon_flags} ${_bg}
+    # FYI https://github.com/fail2ban/fail2ban/issues/3923
+    nohup ${daemon} -xf start ${daemon_flags} &
 }
  
 rc_check() {
