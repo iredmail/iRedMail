@@ -99,8 +99,7 @@ install_all()
     fi
 
     pkg install -y mail/mlmmj
-    pkg install -y mail/dovecot
-    pkg install -y mail/dovecot-pigeonhole
+    pkg install -y mail/dovecot-pgsql
     pkg install -y mail/postfix
     pkg install -y postfix-pgsql
 
