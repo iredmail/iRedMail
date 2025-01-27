@@ -65,8 +65,8 @@ install_all()
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             pkg install -y net/php${PREFERRED_PHP_VER}-ldap
             pkg install -y databases/php${PREFERRED_PHP_VER}-mysqli 
-        elif [ X"${BACKEND}" == X'MYSQL' ]; then
-            pkg install -y databases/php${PREFERRED_PHP_VER}-mysqli
+        #elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        #    pkg install -y databases/php${PREFERRED_PHP_VER}-mysqli
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
             pkg install -y databases/php${PREFERRED_PHP_VER}-pgsql
         fi
