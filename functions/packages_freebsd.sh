@@ -86,13 +86,12 @@ install_all()
         pkg install -y php${PREFERRED_PHP_VER}-pecl-apcu
     fi
 
-    pkg install -y mail/mlmmj
-    pkg install -y mail/postfix
-
      if [ X"${BACKEND}" == X'OPENLDAP' ]; then
          pkg install -y ${PREFERRED_PY_FLAVOR}-python-ldap
          pkg install -y net/openldap${PREFERRED_OPENLDAP_VER}-server
          pkg install -y mail/dovecot
+         pkg install -y dovecot-pigeonhole
+         pkg install -y mail/postfix
      #elif [ X"${BACKEND}" == X'MYSQL' ]; then
          #pkg install -y databases/mariadb${PREFERRED_MARIADB_VER}-server
          # NO PACKAGE FOR POSTFIX WITH MARIADB FOR BACKEND
@@ -113,6 +112,7 @@ install_all()
     #fi
 
     # Misc
+    pkg install -y mail/mlmmj
     pkg install -y sysutils/logwatch
 
     if [ X"${USE_NETDATA}" == X'YES' ]; then
