@@ -20,7 +20,7 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-
+# ASSUMTION - user changed pkg source to latest from quarterly
 # ASSUMTION - user ran pkg update and then pkg install bash
 # OBSERVATION - it is better if we loose the Mariadb option for FreeBSD
 install_all()
@@ -117,8 +117,6 @@ install_all()
     if [ X"${USE_NETDATA}" == X'YES' ]; then
         pkg install -y net-mgmt/netdata
     fi
-
-    ECHO_DEBUG "Post-install cleanup."
 
     ECHO_DEBUG "Create symbol links for python3."
     ln -sf /usr/local/bin/python${PREFERRED_PY3_VER} /usr/local/bin/python3
