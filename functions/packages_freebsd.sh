@@ -102,6 +102,7 @@ install_all()
          pkg install -y ${PREFERRED_PY_FLAVOR}-psycopg2
          pkg install -y mail/dovecot-pgsql
          pkg install -y postfix-pgsql
+         pkg install -y p5-Class-DBI-Pg # for amavisd-new
     fi
 
     # Fail2ban.
