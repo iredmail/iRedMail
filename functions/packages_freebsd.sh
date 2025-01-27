@@ -32,8 +32,6 @@ install_all()
     export PREFERRED_PY_FLAVOR='py311'
     export PREFERRED_PGSQL_VER='16'
 
-    export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
-
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         export IREDMAIL_USE_PHP='YES'
     fi
