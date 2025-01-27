@@ -102,6 +102,7 @@ install_all()
     pkg install -y mail/dovecot
     pkg install -y mail/dovecot-pigeonhole
     pkg install -y mail/postfix
+    pkg install -y postfix-pgsql
 
     # Fail2ban.
     #if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
