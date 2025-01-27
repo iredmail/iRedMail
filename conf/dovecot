@@ -106,7 +106,7 @@ export DOVECOT_AUTH_MASTER_PATH="${DOVECOT_BASE_DIR}/auth-master"
 export DOVECOT_MASTER_PID="${DOVECOT_BASE_DIR}/master.pid"
 
 # Protocols.
-export DOVECOT_PROTOCOLS="pop3 imap sieve lmtp"
+export DOVECOT_PROTOCOLS="pop3 imap lmtp" # sieve
 
 # Plugin: Expire.
 # NOTE: dict process currently runs as root, so this file will be owned as root.
