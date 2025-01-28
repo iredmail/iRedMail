@@ -36,13 +36,13 @@ install_all()
         export IREDMAIL_USE_PHP='YES'
     fi
 
-    pkg install -y p5-Archive-Tar p5-Authen-SASL www/sogo archivers/arj archivers/rar net/openslp security/gnupg security/ca_root_nss security/clamav security/amavisd-new
+    pkg install -y p5-Archive-Tar p5-Authen-SASL sogo arj rar openslp gnupg ca_root_nss clamav amavisd-new
     pkg install -y ${PY_FLAVOR}-sqlalchemy14 ${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-dnspython ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-netifaces ${PY_FLAVOR}-requests ${PY_FLAVOR}-pymysql uwsgi-${PY_FLAVOR} ${PY_FLAVOR}-simplejson
 
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
-        pkg install -y lang/php${PHP_VER}-extensions
+        pkg install -y php${PHP_VER}-extensions
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            pkg install -y net/php${PHP_VER}-ldap php${PHP_VER}-mysqli mariadb${MARIADB_VER}-server
+            pkg install -y php${PHP_VER}-ldap php${PHP_VER}-mysqli mariadb${MARIADB_VER}-server
         #elif [ X"${BACKEND}" == X'MYSQL' ]; then
         #    pkg install -y php${PHP_VER}-mysqli
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
@@ -51,19 +51,19 @@ install_all()
     fi
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
-        pkg install -y www/nginx
+        pkg install -y nginx
     fi
 
     # Roundcube webmail.
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
         [ X"${BACKEND}" == X'OPENLDAP' ] &&  pkg install -y php${PHP_VER}-pear-Net_LDAP2
-        pkg install -y roundcube-php${PHP_VER} www/mod_php${PHP_VER} php${PHP_VER}-pecl-apcu
+        pkg install -y roundcube-php${PHP_VER} mod_php${PHP_VER} php${PHP_VER}-pecl-apcu
     fi
 
      if [ X"${BACKEND}" == X'OPENLDAP' ]; then
          pkg install -y ${PY_FLAVOR}-python-ldap openldap${OPENLDAP_VER}-server dovecot dovecot-pigeonhole postfix-ldap
      #elif [ X"${BACKEND}" == X'MYSQL' ]; then
-         #pkg install -y databases/mariadb${MARIADB_VER}-server
+         #pkg install -y dmariadb${MARIADB_VER}-server
          # NO PACKAGE FOR POSTFIX WITH MARIADB FOR BACKEND
      elif [ X"${BACKEND}" == X'PGSQL' ]; then
          pkg install -y postgresql${PGSQL_VER}-server postgresql${PGSQL_VER}-contrib ${PY_FLAVOR}-psycopg2 dovecot-pgsql dovecot-pigeonhole-pgsql postfix-pgsql p5-Class-DBI-Pg
@@ -72,11 +72,11 @@ install_all()
     # Fail2ban.
     #if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
     #    # python-ldap.
-    #     pkg install -y security/${PY_FLAVOR}-fail2ban"
+    #     pkg install -y ${PY_FLAVOR}-fail2ban"
     #fi
 
     # Misc
-    pkg install -y mail/mlmmj sysutils/logwatch
+    pkg install -y mlmmj logwatch
 
     if [ X"${USE_NETDATA}" == X'YES' ]; then
         pkg install -y netdata
