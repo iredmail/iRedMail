@@ -61,12 +61,12 @@ install_all()
     fi
 
      if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-         pkg install -y ${PY_FLAVOR}-python-ldap net/openldap${OPENLDAP_VER}-server mail/dovecot dovecot-pigeonhole mail/postfix-ldap
+         pkg install -y ${PY_FLAVOR}-python-ldap net/openldap${OPENLDAP_VER}-server mail/dovecot dovecot-pigeonhole postfix-ldap
      #elif [ X"${BACKEND}" == X'MYSQL' ]; then
          #pkg install -y databases/mariadb${MARIADB_VER}-server
          # NO PACKAGE FOR POSTFIX WITH MARIADB FOR BACKEND
      elif [ X"${BACKEND}" == X'PGSQL' ]; then
-         pkg install -y databases/postgresql${PGSQL_VER}-server databases/postgresql${PGSQL_VER}-contrib ${PY_FLAVOR}-psycopg2 mail/dovecot-pgsql dovecot-pigeonhole-pgsql postfix-pgsql p5-Class-DBI-Pg
+         pkg install -y databases/postgresql${PGSQL_VER}-server databases/postgresql${PGSQL_VER}-contrib ${PY_FLAVOR}-psycopg2 dovecot-pgsql dovecot-pigeonhole-pgsql postfix-pgsql p5-Class-DBI-Pg
     fi
 
     # Fail2ban.
