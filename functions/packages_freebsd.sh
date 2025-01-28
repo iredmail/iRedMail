@@ -36,17 +36,17 @@ install_all()
         export IREDMAIL_USE_PHP='YES'
     fi
 
-    pkg install -y archivers/p5-Archive-Tar p5-Authen-SASL www/sogo archivers/arj archivers/rar net/openslp security/gnupg security/ca_root_nss security/clamav security/amavisd-new
+    pkg install -y p5-Archive-Tar p5-Authen-SASL www/sogo archivers/arj archivers/rar net/openslp security/gnupg security/ca_root_nss security/clamav security/amavisd-new
     pkg install -y ${PY_FLAVOR}-sqlalchemy14 ${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-dnspython ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-netifaces ${PY_FLAVOR}-requests ${PY_FLAVOR}-pymysql uwsgi-${PY_FLAVOR} ${PY_FLAVOR}-simplejson
 
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
         pkg install -y lang/php${PHP_VER}-extensions
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            pkg install -y net/php${PHP_VER}-ldap databases/php${PHP_VER}-mysqli databases/mariadb${MARIADB_VER}-server
+            pkg install -y net/php${PHP_VER}-ldap php${PHP_VER}-mysqli mariadb${MARIADB_VER}-server
         #elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        #    pkg install -y databases/php${PHP_VER}-mysqli
+        #    pkg install -y php${PHP_VER}-mysqli
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            pkg install -y databases/php${PHP_VER}-pgsql
+            pkg install -y php${PHP_VER}-pgsql
         fi
     fi
 
@@ -61,12 +61,12 @@ install_all()
     fi
 
      if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-         pkg install -y ${PY_FLAVOR}-python-ldap net/openldap${OPENLDAP_VER}-server mail/dovecot dovecot-pigeonhole postfix-ldap
+         pkg install -y ${PY_FLAVOR}-python-ldap openldap${OPENLDAP_VER}-server dovecot dovecot-pigeonhole postfix-ldap
      #elif [ X"${BACKEND}" == X'MYSQL' ]; then
          #pkg install -y databases/mariadb${MARIADB_VER}-server
          # NO PACKAGE FOR POSTFIX WITH MARIADB FOR BACKEND
      elif [ X"${BACKEND}" == X'PGSQL' ]; then
-         pkg install -y databases/postgresql${PGSQL_VER}-server databases/postgresql${PGSQL_VER}-contrib ${PY_FLAVOR}-psycopg2 dovecot-pgsql dovecot-pigeonhole-pgsql postfix-pgsql p5-Class-DBI-Pg
+         pkg install -y postgresql${PGSQL_VER}-server postgresql${PGSQL_VER}-contrib ${PY_FLAVOR}-psycopg2 dovecot-pgsql dovecot-pigeonhole-pgsql postfix-pgsql p5-Class-DBI-Pg
     fi
 
     # Fail2ban.
@@ -79,7 +79,7 @@ install_all()
     pkg install -y mail/mlmmj sysutils/logwatch
 
     if [ X"${USE_NETDATA}" == X'YES' ]; then
-        pkg install -y net-mgmt/netdata
+        pkg install -y netdata
     fi
 
     ECHO_DEBUG "Create symbol links for python3."
