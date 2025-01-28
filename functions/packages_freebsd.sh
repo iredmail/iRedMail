@@ -61,7 +61,7 @@ install_all()
     fi
 
      if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-         pkg install -y ${PY_FLAVOR}-python-ldap net/openldap${OPENLDAP_VER}-server mail/dovecot dovecot-pigeonhole mail/postfix
+         pkg install -y ${PY_FLAVOR}-python-ldap net/openldap${OPENLDAP_VER}-server mail/dovecot dovecot-pigeonhole mail/postfix-ldap
      #elif [ X"${BACKEND}" == X'MYSQL' ]; then
          #pkg install -y databases/mariadb${MARIADB_VER}-server
          # NO PACKAGE FOR POSTFIX WITH MARIADB FOR BACKEND
