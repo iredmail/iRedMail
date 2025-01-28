@@ -63,7 +63,7 @@ install_all()
      if [ X"${BACKEND}" == X'OPENLDAP' ]; then
          pkg install -y ${PY_FLAVOR}-python-ldap openldap${OPENLDAP_VER}-server dovecot dovecot-pigeonhole postfix-ldap
      #elif [ X"${BACKEND}" == X'MYSQL' ]; then
-         #pkg install -y dmariadb${MARIADB_VER}-server
+         #pkg install -y mariadb${MARIADB_VER}-server
          # NO PACKAGE FOR POSTFIX WITH MARIADB FOR BACKEND
      elif [ X"${BACKEND}" == X'PGSQL' ]; then
          pkg install -y postgresql${PGSQL_VER}-server postgresql${PGSQL_VER}-contrib ${PY_FLAVOR}-psycopg2 dovecot-pgsql dovecot-pigeonhole-pgsql postfix-pgsql p5-Class-DBI-Pg
