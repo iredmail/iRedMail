@@ -25,51 +25,28 @@
 # OBSERVATION - it is better if we loose the Mariadb option for FreeBSD
 install_all()
 {
-    export PREFERRED_OPENLDAP_VER='26'
-    export PREFERRED_MARIADB_VER='106'
-    export PREFERRED_PHP_VER='82'
-    export PREFERRED_PY3_VER='3.11'
-    export PREFERRED_PY_FLAVOR='py311'
-    export PREFERRED_PGSQL_VER='16'
+    export OPENLDAP_VER='26'
+    export MARIADB_VER='106'
+    export PHP_VER='82'
+    export PY3_VER='3.11'
+    export PY_FLAVOR='py311'
+    export PGSQL_VER='16'
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         export IREDMAIL_USE_PHP='YES'
     fi
 
-    pkg install -y archivers/p5-Archive-Tar
-    pkg install -y p5-Authen-SASL
-    pkg install -y www/sogo
-
-    pkg install -y ${PREFERRED_PY_FLAVOR}-sqlalchemy14
-    pkg install -y ${PREFERRED_PY_FLAVOR}-Jinja2
-    pkg install -y ${PREFERRED_PY_FLAVOR}-dnspython
-    pkg install -y ${PREFERRED_PY_FLAVOR}-bcrypt
-    pkg install -y ${PREFERRED_PY_FLAVOR}-netifaces
-    pkg install -y ${PREFERRED_PY_FLAVOR}-requests
-    pkg install -y ${PREFERRED_PY_FLAVOR}-pymysql
-    pkg install -y uwsgi-${PREFERRED_PY_FLAVOR}
-    pkg install -y ${PREFERRED_PY_FLAVOR}-simplejson
-
-    # probably not needed
-    pkg install -y archivers/arj
-    pkg install -y archivers/rar
-
-    pkg install -y net/openslp
-    pkg install -y security/gnupg
-    pkg install -y security/ca_root_nss
-    pkg install -y security/clamav
-    pkg install -y security/amavisd-new
+    pkg install -y archivers/p5-Archive-Tar p5-Authen-SASL www/sogo archivers/arj archivers/rar net/openslp security/gnupg security/ca_root_nss security/clamav security/amavisd-new
+    pkg install -y ${PY_FLAVOR}-sqlalchemy14 ${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-dnspython ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-netifaces ${PY_FLAVOR}-requests ${PY_FLAVOR}-pymysql uwsgi-${PY_FLAVOR} ${PY_FLAVOR}-simplejson
 
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
-        pkg install -y lang/php${PREFERRED_PHP_VER}-extensions
+        pkg install -y lang/php${PHP_VER}-extensions
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            pkg install -y net/php${PREFERRED_PHP_VER}-ldap
-            pkg install -y databases/php${PREFERRED_PHP_VER}-mysqli 
-            pkg install -y databases/mariadb${PREFERRED_MARIADB_VER}-server
+            pkg install -y net/php${PHP_VER}-ldap databases/php${PHP_VER}-mysqli databases/mariadb${MARIADB_VER}-server
         #elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        #    pkg install -y databases/php${PREFERRED_PHP_VER}-mysqli
+        #    pkg install -y databases/php${PHP_VER}-mysqli
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            pkg install -y databases/php${PREFERRED_PHP_VER}-pgsql
+            pkg install -y databases/php${PHP_VER}-pgsql
         fi
     fi
 
@@ -79,47 +56,34 @@ install_all()
 
     # Roundcube webmail.
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
-        [ X"${BACKEND}" == X'OPENLDAP' ] &&  pkg install -y php${PREFERRED_PHP_VER}-pear-Net_LDAP2
-        pkg install -y roundcube-php${PREFERRED_PHP_VER}
-        pkg install -y www/mod_php${PREFERRED_PHP_VER}
-        pkg install -y php${PREFERRED_PHP_VER}-pecl-apcu
+        [ X"${BACKEND}" == X'OPENLDAP' ] &&  pkg install -y php${PHP_VER}-pear-Net_LDAP2
+        pkg install -y roundcube-php${PHP_VER} www/mod_php${PHP_VER} php${PHP_VER}-pecl-apcu
     fi
 
      if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-         pkg install -y ${PREFERRED_PY_FLAVOR}-python-ldap
-         pkg install -y net/openldap${PREFERRED_OPENLDAP_VER}-server
-         pkg install -y mail/dovecot
-         pkg install -y dovecot-pigeonhole
-         pkg install -y mail/postfix
+         pkg install -y ${PY_FLAVOR}-python-ldap net/openldap${OPENLDAP_VER}-server mail/dovecot dovecot-pigeonhole mail/postfix
      #elif [ X"${BACKEND}" == X'MYSQL' ]; then
-         #pkg install -y databases/mariadb${PREFERRED_MARIADB_VER}-server
+         #pkg install -y databases/mariadb${MARIADB_VER}-server
          # NO PACKAGE FOR POSTFIX WITH MARIADB FOR BACKEND
      elif [ X"${BACKEND}" == X'PGSQL' ]; then
-         pkg install -y databases/postgresql${PREFERRED_PGSQL_VER}-server
-         pkg install -y databases/postgresql${PREFERRED_PGSQL_VER}-contrib
-         pkg install -y ${PREFERRED_PY_FLAVOR}-psycopg2
-         pkg install -y mail/dovecot-pgsql
-         pkg install -y dovecot-pigeonhole-pgsql
-         pkg install -y postfix-pgsql
-         pkg install -y p5-Class-DBI-Pg # for amavisd-new
+         pkg install -y databases/postgresql${PGSQL_VER}-server databases/postgresql${PGSQL_VER}-contrib ${PY_FLAVOR}-psycopg2 mail/dovecot-pgsql dovecot-pigeonhole-pgsql postfix-pgsql p5-Class-DBI-Pg
     fi
 
     # Fail2ban.
     #if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
     #    # python-ldap.
-    #     pkg install -y security/${PREFERRED_PY_FLAVOR}-fail2ban"
+    #     pkg install -y security/${PY_FLAVOR}-fail2ban"
     #fi
 
     # Misc
-    pkg install -y mail/mlmmj
-    pkg install -y sysutils/logwatch
+    pkg install -y mail/mlmmj sysutils/logwatch
 
     if [ X"${USE_NETDATA}" == X'YES' ]; then
         pkg install -y net-mgmt/netdata
     fi
 
     ECHO_DEBUG "Create symbol links for python3."
-    ln -sf /usr/local/bin/python${PREFERRED_PY3_VER} /usr/local/bin/python3
+    ln -sf /usr/local/bin/python${PY3_VER} /usr/local/bin/python3
 
     # Create syslog.d and logrotate.d
     mkdir -p ${SYSLOG_CONF_DIR} >> ${INSTALL_LOG} 2>&1
