@@ -75,7 +75,7 @@ install_all()
     fi
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
-        ALL_PKGS="${ALL_PKGS} nginx uwsgi"
+        ALL_PKGS="${ALL_PKGS} nginx uwsgi-${PY_FLAVOR}"
     fi
 
     # PHP and extensions
@@ -131,7 +131,8 @@ install_all()
     ALL_PKGS="${ALL_PKGS} logwatch"
 
     # Install all packages.
-    pkg install -y ${ALL_PKGS}
+    ECHO_INFO "Install packages: pkg install -y ${ALL_PKGS}"
+    pkg install -y ${ALL_PKGS} || exit 255
 
     ECHO_DEBUG "Create symbol links for python3."
     ln -sf /usr/local/bin/python${PY3_VER} /usr/local/bin/python3
