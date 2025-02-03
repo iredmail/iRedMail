@@ -24,7 +24,6 @@ install_all()
 {
     export OPENLDAP_VER='26'
     export MARIADB_VER='106'
-    export PERL_VER='5.40'
     export PHP_VER='82'
     export PY3_VER='3.11'
     export PY_FLAVOR='py311'
@@ -34,11 +33,17 @@ install_all()
         export IREDMAIL_USE_PHP='YES'
     fi
 
-    ALL_PKGS="perl${PERL_VER} ${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-netifaces ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-requests"
+    ALL_PKGS=""
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-        ALL_PKGS="${ALL_PKGS} openldap${OPENLDAP_VER}-server ${PY_FLAVOR}-python-ldap"
+        ALL_PKGS="${ALL_PKGS} openldap${OPENLDAP_VER}-server"
         ALL_PKGS="${ALL_PKGS} mariadb${MARIADB_VER}-server"
+
+        # Python modules.
+        ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-python-ldap ${PY_FLAVOR}-pymysql"
+
+        # Perl modules.
+        ALL_PKGS="${ALL_PKGS} p5-DBD-LDAP p5-DBD-MariaDB"
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         ALL_PKGS="${ALL_PKGS} mariadb${MARIADB_VER}-client"
@@ -47,12 +52,23 @@ install_all()
             ALL_PKGS="${ALL_PKGS} mariadb${MARIADB_VER}-server"
         fi
 
+        # Python modules.
+        ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-pymysql"
+
+        # Perl modules.
+        ALL_PKGS="${ALL_PKGS} p5-DBD-MariaDB"
+
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ALL_PKGS="${ALL_PKGS} postgresql${PGSQL_VER}-server postgresql${PGSQL_VER}-contrib"
+
+        # Python modules.
+        ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-psycopg2"
+
+        # Perl modules.
+        ALL_PKGS="${ALL_PKGS} p5-DBD-Pg"
     fi
 
     # Dovecot
-    ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
     if [[ "${BACKEND}" == "OPENLDAP" ]]; then
         ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
     elif [[ "${BACKEND}" == "MYSQL" ]]; then
@@ -70,6 +86,8 @@ install_all()
     # Postfix.
     if [[ "${BACKEND}" == 'OPENLDAP' ]]; then
         ALL_PKGS="${ALL_PKGS} postfix-ldap"
+    elif [[ "${BACKEND}" == 'MYSQL' ]]; then
+        ALL_PKGS="${ALL_PKGS} postfix-mysql"
     elif [[ "${BACKEND}" == 'PGSQL' ]]; then
         ALL_PKGS="${ALL_PKGS} postfix-pgsql p5-Class-DBI-Pg"
     fi
@@ -104,18 +122,14 @@ install_all()
 
     # SOGo groupware.
     if [ X"${USE_SOGO}" == X'YES' ]; then
-        ALL_PKGS="${ALL_PKGS} sope sogo"
-
-        if [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-psycopg2 dovecot-pgsql dovecot-pigeonhole-pgsql p5-Class-DBI-Pg"
-        fi
+        ALL_PKGS="${ALL_PKGS} sope sogo sogo-activesync"
     fi
 
     # iRedAPD
     ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-dnspython"
 
-    # iRedAdmin dependencies: Jinja2, bcrypt
-    ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-simplejson"
+    # iRedAdmin dependencies.
+    ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-simplejson ${PY_FLAVOR}-requests ${PY_FLAVOR}-netifaces"
 
     # Fail2ban.
     if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
@@ -129,6 +143,14 @@ install_all()
 
     # Misc
     ALL_PKGS="${ALL_PKGS} logwatch"
+
+    ECHO_INFO "Switch to Latest packages."
+    [[ -d /usr/local/etc/pkg/repos ]] || mkdir -p /usr/local/etc/pkg/repos
+    # FIXME Use a variable to define preferred mirror site.
+    echo 'FreeBSD: { url: "pkg+http://pkg.FreeBSD.org/${ABI}/latest" }' > /usr/local/etc/pkg/repos/FreeBSD.conf
+
+    ECHO_INFO "Run: pkg update"
+    pkg update || exit 255
 
     # Install all packages.
     ECHO_INFO "Install packages: pkg install -y ${ALL_PKGS}"
