@@ -95,6 +95,7 @@ nginx_config()
 
     if [[ "${DISTRO}" == 'OpenBSD' ]] || [[ "${DISTRO}" == 'FreeBSD' ]]; then
         perl -pi -e 's/#http2 on;/http2 on;/g' ${NGINX_CONF}
+        perl -pi -e 's/ http2;/;/g' ${NGINX_CONF_SITE_DEFAULT_SSL}
     fi
 
     #
