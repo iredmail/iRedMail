@@ -24,6 +24,7 @@ install_all()
 {
     export OPENLDAP_VER='26'
     export MARIADB_VER='106'
+    export PERL_VER='5.40'
     export PHP_VER='82'
     export PY3_VER='3.11'
     export PY_FLAVOR='py311'
@@ -33,7 +34,7 @@ install_all()
         export IREDMAIL_USE_PHP='YES'
     fi
 
-    ALL_PKGS="${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-netifaces ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-requests"
+    ALL_PKGS="perl${PERL_VER} ${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-netifaces ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-requests"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PKGS="${ALL_PKGS} openldap${OPENLDAP_VER}-server ${PY_FLAVOR}-python-ldap"
@@ -130,7 +131,7 @@ install_all()
     ALL_PKGS="${ALL_PKGS} logwatch"
 
     # Install all packages.
-    pkg -y install ${ALL_PKGS}
+    pkg install -y ${ALL_PKGS}
 
     ECHO_DEBUG "Create symbol links for python3."
     ln -sf /usr/local/bin/python${PY3_VER} /usr/local/bin/python3
