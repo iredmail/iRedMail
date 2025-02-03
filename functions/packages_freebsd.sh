@@ -52,6 +52,13 @@ install_all()
 
     # Dovecot
     ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
+    if [[ "${BACKEND}" == "OPENLDAP" ]]; then
+        ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
+    elif [[ "${BACKEND}" == "MYSQL" ]]; then
+        ALL_PKGS="${ALL_PKGS} dovecot-mysql dovecot-pigeonhole-mysql"
+    elif [[ "${BACKEND}" == "PGSQL" ]]; then
+        ALL_PKGS="${ALL_PKGS} dovecot-pgsql dovecot-pigeonhole-pgsql"
+    fi
 
     # SpamAssassin
     ALL_PKGS="${ALL_PKGS} spamassassin"
@@ -60,7 +67,11 @@ install_all()
     ALL_PKGS="${ALL_PKGS} amavisd-new"
 
     # Postfix.
-    ALL_PKGS="${ALL_PKGS} postfix"
+    if [[ "${BACKEND}" == 'OPENLDAP' ]]; then
+        ALL_PKGS="${ALL_PKGS} postfix-ldap"
+    elif [[ "${BACKEND}" == 'PGSQL' ]]; then
+        ALL_PKGS="${ALL_PKGS} postfix-pgsql p5-Class-DBI-Pg"
+    fi
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         ALL_PKGS="${ALL_PKGS} nginx uwsgi"
@@ -68,7 +79,7 @@ install_all()
 
     # PHP and extensions
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
-        ALL_PKGS="${ALL_PKGS} php${PHP_VER}-extensions"
+        ALL_PKGS="${ALL_PKGS} php${PHP_VER} php${PHP_VER}-extensions"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ALL_PKGS="${ALL_PKGS} php${PHP_VER}-ldap php${PHP_VER}-mysqli"
@@ -79,8 +90,7 @@ install_all()
         fi
     fi
 
-    ALL_PKGS="${ALL_PKGS} p5-Exporter-Tiny"
-    ALL_PKGS="${ALL_PKGS} ca_root_nss clamav"
+    ALL_PKGS="${ALL_PKGS} p5-Exporter-Tiny ca_root_nss clamav"
 
     # mlmmj: mailing list manager
     ALL_PKGS="${ALL_PKGS} mlmmj"
@@ -96,7 +106,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} sope sogo"
 
         if [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-psycopg2 dovecot-pgsql dovecot-pigeonhole-pgsql postfix-pgsql p5-Class-DBI-Pg"
+            ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-psycopg2 dovecot-pgsql dovecot-pigeonhole-pgsql p5-Class-DBI-Pg"
         fi
     fi
 
