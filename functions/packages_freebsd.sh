@@ -20,9 +20,6 @@
 # along with iRedMail.  If not, see <http://www.gnu.org/licenses/>.
 #---------------------------------------------------------------------
 
-# ASSUMTION - user changed pkg source to latest from quarterly
-# ASSUMTION - user ran pkg update and then pkg install bash
-# OBSERVATION - it is better if we loose the Mariadb option for FreeBSD
 install_all()
 {
     export OPENLDAP_VER='26'
@@ -36,51 +33,94 @@ install_all()
         export IREDMAIL_USE_PHP='YES'
     fi
 
-    pkg install -y p5-Archive-Tar p5-Authen-SASL sogo arj rar openslp gnupg ca_root_nss clamav amavisd-new
-    pkg install -y ${PY_FLAVOR}-sqlalchemy14 ${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-dnspython ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-netifaces ${PY_FLAVOR}-requests ${PY_FLAVOR}-pymysql uwsgi-${PY_FLAVOR} ${PY_FLAVOR}-simplejson
+    ALL_PKGS="${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-netifaces ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-requests"
 
+    if [ X"${BACKEND}" == X'OPENLDAP' ]; then
+        ALL_PKGS="${ALL_PKGS} openldap${OPENLDAP_VER}-server ${PY_FLAVOR}-python-ldap"
+        ALL_PKGS="${ALL_PKGS} mariadb${MARIADB_VER}-server"
+
+    elif [ X"${BACKEND}" == X'MYSQL' ]; then
+        ALL_PKGS="${ALL_PKGS} mariadb${MARIADB_VER}-client"
+
+        if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
+            ALL_PKGS="${ALL_PKGS} mariadb${MARIADB_VER}-server"
+        fi
+
+    elif [ X"${BACKEND}" == X'PGSQL' ]; then
+        ALL_PKGS="${ALL_PKGS} postgresql${PGSQL_VER}-server postgresql${PGSQL_VER}-contrib"
+    fi
+
+    # Dovecot
+    ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
+
+    # SpamAssassin
+    ALL_PKGS="${ALL_PKGS} spamassassin"
+
+    # Amavisd-new.
+    ALL_PKGS="${ALL_PKGS} amavisd-new"
+
+    # Postfix.
+    ALL_PKGS="${ALL_PKGS} postfix"
+
+    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
+        ALL_PKGS="${ALL_PKGS} nginx uwsgi"
+    fi
+
+    # PHP and extensions
     if [ X"${IREDMAIL_USE_PHP}" == X'YES' ]; then
-        pkg install -y php${PHP_VER}-extensions
+        ALL_PKGS="${ALL_PKGS} php${PHP_VER}-extensions"
+
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            pkg install -y php${PHP_VER}-ldap php${PHP_VER}-mysqli mariadb${MARIADB_VER}-server
-        #elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        #    pkg install -y php${PHP_VER}-mysqli
+            ALL_PKGS="${ALL_PKGS} php${PHP_VER}-ldap php${PHP_VER}-mysqli"
+        elif [ X"${BACKEND}" == X'MYSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} php${PHP_VER}-mysqli"
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            pkg install -y php${PHP_VER}-pgsql
+            ALL_PKGS="${ALL_PKGS} php${PHP_VER}-pgsql"
         fi
     fi
 
-    if [ X"${WEB_SERVER}" == X'NGINX' ]; then
-        pkg install -y nginx
-    fi
+    ALL_PKGS="${ALL_PKGS} p5-Exporter-Tiny"
+    ALL_PKGS="${ALL_PKGS} ca_root_nss clamav"
+
+    # mlmmj: mailing list manager
+    ALL_PKGS="${ALL_PKGS} mlmmj"
 
     # Roundcube webmail.
     if [ X"${USE_ROUNDCUBE}" == X'YES' ]; then
-        [ X"${BACKEND}" == X'OPENLDAP' ] &&  pkg install -y php${PHP_VER}-pear-Net_LDAP2
-        pkg install -y roundcube-php${PHP_VER} mod_php${PHP_VER} php${PHP_VER}-pecl-apcu
+        [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php${PHP_VER}-pear-Net_LDAP2"
+        ALL_PKGS="${ALL_PKGS} roundcube-php${PHP_VER} mod_php${PHP_VER}"
     fi
 
-     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-         pkg install -y ${PY_FLAVOR}-python-ldap openldap${OPENLDAP_VER}-server dovecot dovecot-pigeonhole postfix-ldap
-     #elif [ X"${BACKEND}" == X'MYSQL' ]; then
-         #pkg install -y mariadb${MARIADB_VER}-server
-         # NO PACKAGE FOR POSTFIX WITH MARIADB FOR BACKEND
-     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-         pkg install -y postgresql${PGSQL_VER}-server postgresql${PGSQL_VER}-contrib ${PY_FLAVOR}-psycopg2 dovecot-pgsql dovecot-pigeonhole-pgsql postfix-pgsql p5-Class-DBI-Pg
+    # SOGo groupware.
+    if [ X"${USE_SOGO}" == X'YES' ]; then
+        ALL_PKGS="${ALL_PKGS} sope sogo"
+
+        if [ X"${BACKEND}" == X'PGSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-psycopg2 dovecot-pgsql dovecot-pigeonhole-pgsql postfix-pgsql p5-Class-DBI-Pg"
+        fi
     fi
+
+    # iRedAPD
+    ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-dnspython"
+
+    # iRedAdmin dependencies: Jinja2, bcrypt
+    ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-simplejson"
 
     # Fail2ban.
-    #if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
-    #    # python-ldap.
-    #     pkg install -y ${PY_FLAVOR}-fail2ban"
-    #fi
+    if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
+        ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-fail2ban"
+    fi
+
+    # netdata
+    if [ X"${USE_NETDATA}" == X'YES' ]; then
+        ALL_PKGS="${ALL_PKGS} netdata"
+    fi
 
     # Misc
-    pkg install -y mlmmj logwatch
+    ALL_PKGS="${ALL_PKGS} logwatch"
 
-    if [ X"${USE_NETDATA}" == X'YES' ]; then
-        pkg install -y netdata
-    fi
+    # Install all packages.
+    pkg -y install ${ALL_PKGS}
 
     ECHO_DEBUG "Create symbol links for python3."
     ln -sf /usr/local/bin/python${PY3_VER} /usr/local/bin/python3
