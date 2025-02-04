@@ -24,7 +24,7 @@ install_all()
 {
     export OPENLDAP_VER='26'
     export MYSQL_VER='80'
-    export PHP_VER='84'
+    export PHP_VER='83'
     export PY3_VER='3.11'
     export PY_FLAVOR='py311'
     export PGSQL_VER='16'
@@ -33,7 +33,7 @@ install_all()
         export IREDMAIL_USE_PHP='YES'
     fi
 
-    ALL_PKGS=""
+    ALL_PKGS="${PY_FLAVOR}-sqlalchemy14"
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PKGS="${ALL_PKGS} openldap${OPENLDAP_VER}-server"
