@@ -23,8 +23,8 @@
 install_all()
 {
     export OPENLDAP_VER='26'
-    export MARIADB_VER='106'
-    export PHP_VER='82'
+    export MYSQL_VER='80'
+    export PHP_VER='84'
     export PY3_VER='3.11'
     export PY_FLAVOR='py311'
     export PGSQL_VER='16'
@@ -37,7 +37,7 @@ install_all()
 
     if [ X"${BACKEND}" == X'OPENLDAP' ]; then
         ALL_PKGS="${ALL_PKGS} openldap${OPENLDAP_VER}-server"
-        ALL_PKGS="${ALL_PKGS} mariadb${MARIADB_VER}-server"
+        ALL_PKGS="${ALL_PKGS} mysql${MYSQL_VER}-server"
 
         # Python modules.
         ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-python-ldap ${PY_FLAVOR}-pymysql"
@@ -46,10 +46,10 @@ install_all()
         ALL_PKGS="${ALL_PKGS} p5-DBD-LDAP p5-DBD-MariaDB"
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
-        ALL_PKGS="${ALL_PKGS} mariadb${MARIADB_VER}-client"
+        ALL_PKGS="${ALL_PKGS} mysql${MYSQL_VER}-client"
 
         if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-            ALL_PKGS="${ALL_PKGS} mariadb${MARIADB_VER}-server"
+            ALL_PKGS="${ALL_PKGS} mysql${MYSQL_VER}-server"
         fi
 
         # Python modules.
@@ -122,7 +122,7 @@ install_all()
 
     # SOGo groupware.
     if [ X"${USE_SOGO}" == X'YES' ]; then
-        ALL_PKGS="${ALL_PKGS} sope sogo sogo-activesync"
+        ALL_PKGS="${ALL_PKGS} sope sogo-activesync"
     fi
 
     # iRedAPD
