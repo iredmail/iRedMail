@@ -43,7 +43,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-python-ldap ${PY_FLAVOR}-pymysql"
 
         # Perl modules.
-        ALL_PKGS="${ALL_PKGS} p5-DBD-LDAP p5-DBD-MariaDB"
+        ALL_PKGS="${ALL_PKGS} p5-DBD-LDAP p5-DBD-mysql"
 
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
         ALL_PKGS="${ALL_PKGS} mysql${MYSQL_VER}-client"
@@ -56,7 +56,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-pymysql"
 
         # Perl modules.
-        ALL_PKGS="${ALL_PKGS} p5-DBD-MariaDB"
+        ALL_PKGS="${ALL_PKGS} p5-DBD-mysql"
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
         ALL_PKGS="${ALL_PKGS} postgresql${PGSQL_VER}-server postgresql${PGSQL_VER}-contrib"
