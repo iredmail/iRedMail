@@ -105,7 +105,7 @@ install_all()
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
             ALL_PKGS="${ALL_PKGS} php${PHP_VER}-mysqli"
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} php${PHP_VER}-pgsql"
+            ALL_PKGS="${ALL_PKGS} php${PHP_VER}-pdo_pgsql"
         fi
     fi
 
