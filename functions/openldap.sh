@@ -165,9 +165,9 @@ EOF
         # modular newsyslog (log rotate) config file
         #
         cp -f ${SAMPLE_DIR}/freebsd/newsyslog.conf.d/slapd.conf ${LOGROTATE_DIR}
-        perl -pi -e 's#PH_OPENLDAP_LOG_FILE#$ENV{OPENLDAP_LOG_FILE}#g' ${LOGROTATE_DIR}/slapd
-        perl -pi -e 's#PH_SYS_USER_SYSLOG#$ENV{SYS_USER_SYSLOG}#g' ${LOGROTATE_DIR}/slapd
-        perl -pi -e 's#PH_SYS_GROUP_SYSLOG#$ENV{SYS_GROUP_SYSLOG}#g' ${LOGROTATE_DIR}/slapd
+        perl -pi -e 's#PH_OPENLDAP_LOG_FILE#$ENV{OPENLDAP_LOG_FILE}#g' ${LOGROTATE_DIR}/slapd.conf
+        perl -pi -e 's#PH_SYS_USER_SYSLOG#$ENV{SYS_USER_SYSLOG}#g' ${LOGROTATE_DIR}/slapd.conf
+        perl -pi -e 's#PH_SYS_GROUP_SYSLOG#$ENV{SYS_GROUP_SYSLOG}#g' ${LOGROTATE_DIR}/slapd.conf
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # '!!' means abort further evaluation after first match
