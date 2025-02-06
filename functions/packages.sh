@@ -272,7 +272,7 @@ install_all()
         PKG_SCRIPTS="${PKG_SCRIPTS} ${DOVECOT_RC_SCRIPT_NAME}"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot-pigeonhole--ldap dovecot--ldap dovecot-mysql--"
+            ALL_PKGS="${ALL_PKGS} dovecot-pigeonhole--ldap dovecot-ldap-- dovecot-mysql--"
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
             ALL_PKGS="${ALL_PKGS} dovecot-mysql-- dovecot-pigeonhole--"
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
