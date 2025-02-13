@@ -2,7 +2,7 @@ iRedMail-1.7.3:
 
 * Updated packages:
     + mlmmjadmin 3.3.1
-    + netdata -> 2.2.4
+    + netdata -> 2.2.5
     + roundcube -> 1.6.10
 
 iRedMail-1.7.2:
