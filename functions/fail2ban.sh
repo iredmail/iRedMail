@@ -77,6 +77,8 @@ ALTER DATABASE ${FAIL2BAN_DB_NAME} SET bytea_output TO 'escape';
 EOF
     fi
 
+    write_iredmail_kv "sql_user_${FAIL2BAN_DB_USER}" "${FAIL2BAN_DB_PASSWD}"
+
     # Copy action config file.
     cp -f ${SAMPLE_DIR}/fail2ban/action.d/banned_db.conf ${FAIL2BAN_ACTION_DIR}/
     chmod 0755 ${FAIL2BAN_ACTION_DIR}/banned_db.conf
