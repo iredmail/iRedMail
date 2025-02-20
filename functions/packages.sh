@@ -268,15 +268,15 @@ install_all()
         fi
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} dovecot--"
+        ALL_PKGS="${ALL_PKGS} dovecot-- dovecot-pigeonhole--"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${DOVECOT_RC_SCRIPT_NAME}"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot-pigeonhole--ldap dovecot--ldap dovecot-mysql--"
+            ALL_PKGS="${ALL_PKGS} dovecot-ldap-- dovecot-mysql--"
         elif [ X"${BACKEND}" == X'MYSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot-mysql-- dovecot-pigeonhole--"
+            ALL_PKGS="${ALL_PKGS} dovecot-mysql--"
         elif [ X"${BACKEND}" == X'PGSQL' ]; then
-            ALL_PKGS="${ALL_PKGS} dovecot-postgresql-- dovecot-pigeonhole--"
+            ALL_PKGS="${ALL_PKGS} dovecot-postgresql--"
         fi
 
         DISABLED_SERVICES="${DISABLED_SERVICES} saslauthd"
