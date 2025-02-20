@@ -70,7 +70,8 @@ install_all()
 
     # Dovecot
     if [[ "${BACKEND}" == "OPENLDAP" ]]; then
-        ALL_PKGS="${ALL_PKGS} dovecot dovecot-pigeonhole"
+        # We need both LDAP and MySQL support.
+        ALL_PKGS="${ALL_PKGS} dovecot-mysql dovecot-pigeonhole-mysql"
     elif [[ "${BACKEND}" == "MYSQL" ]]; then
         ALL_PKGS="${ALL_PKGS} dovecot-mysql dovecot-pigeonhole-mysql"
     elif [[ "${BACKEND}" == "PGSQL" ]]; then
