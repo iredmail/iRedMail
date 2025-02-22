@@ -246,7 +246,7 @@ postfix_config_basic()
 
         # Start service when system start up.
         service_control enable 'postfix_enable' 'YES'
-        service_control enable 'sendmail_enable' 'NO'
+        service_control enable 'sendmail_enable' 'NONE'
         service_control enable 'sendmail_submit_enable' 'NO'
         service_control enable 'sendmail_outbound_enable' 'NO'
         service_control enable 'sendmail_msp_queue_enable' 'NO'
