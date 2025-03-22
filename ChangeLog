@@ -1,5 +1,14 @@
 iRedMail-1.7.3:
 
+* Improvements:
+    - [OpenLDAP] Allow mail user account to use 2 new attributes
+      `recoveryEmail`, `birthday`.
+    - [SQL backends] 6 new columns in `vmail.mailbox` talbe to store more user
+      information: `first_name`, `last_name`, `mobile`, `telephone`,
+      `birthday`, `recovery_email`.
+    - [SQL backends] 2 new columns in `vmail.deleted_mailboxes`: `bytes`,
+      `messages`.
+
 * Updated packages:
     + iRedAPD 5.9.0
     + mlmmjadmin 3.3.1
@@ -316,7 +325,7 @@ iRedMail-1.4.1:
         + iRedAPD -> 5.0.3
         + netdata -> 1.31.0
         + mlmmjadmin -> 3.1.2
-    
+
 iRedMail-1.4.0:
     * Supports new distribution releases:
         + CentOS 8 Stream. All backends are supported: MariaDB, PostgreSQL, OpenLDAP.

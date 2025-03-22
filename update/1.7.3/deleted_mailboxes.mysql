@@ -1,0 +1,43 @@
+--
+-- MariaDB 5.5 on CentOS 7 does not support `ADD COLUMN IF EXISTS`, so here is
+-- an alternative way to add it without error.
+--
+-- Add columns in `vmail.deleted_mailboxes` (MariaDB) or
+-- `iredadmin.deleted_mailboxes` (OpenLDAP):
+--
+--  - birthday
+--  - recovery_email
+--
+drop procedure if exists irm173_schema_change;
+
+delimiter ';;'
+create procedure irm173_schema_change() begin
+    if not exists (select * from information_schema.columns where table_schema = 'vmail' and table_name = 'mailbox' and column_name = 'first_name') then
+         ALTER TABLE mailbox ADD COLUMN `first_name` VARCHAR(255) NOT NULL DEFAULT '';
+     end if;
+
+     if not exists (select * from information_schema.columns where table_schema = 'vmail' and table_name = 'mailbox' and column_name = 'last_name') then
+         ALTER TABLE mailbox ADD COLUMN `last_name` VARCHAR(255) NOT NULL DEFAULT '';
+     end if;
+
+     if not exists (select * from information_schema.columns where table_schema = 'vmail' and table_name = 'mailbox' and column_name = 'mobile') then
+         ALTER TABLE mailbox ADD COLUMN `mobile` VARCHAR(255) NOT NULL DEFAULT '';
+     end if;
+
+     if not exists (select * from information_schema.columns where table_schema = 'vmail' and table_name = 'mailbox' and column_name = 'telephone') then
+         ALTER TABLE mailbox ADD COLUMN `telephone` VARCHAR(255) NOT NULL DEFAULT '';
+     end if;
+
+     if not exists (select * from information_schema.columns where table_schema = 'vmail' and table_name = 'mailbox' and column_name = 'birthday') then
+         ALTER TABLE mailbox ADD COLUMN `birthday` DATE NOT NULL DEFAULT '0001-01-01';
+     end if;
+
+    if not exists (select * from information_schema.columns where table_schema = 'vmail' and table_name = 'mailbox' and column_name = 'recovery_email') then
+        ALTER TABLE mailbox ADD COLUMN `recovery_email` VARCHAR(255) NOT NULL DEFAULT '';
+    end if;
+end;;
+
+delimiter ';'
+call irm173_schema_change();
+
+drop procedure if exists irm173_schema_change;
