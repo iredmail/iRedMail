@@ -131,6 +131,12 @@ amavisd_config()
     # Main config file
     #
     cp -f ${SAMPLE_DIR}/amavisd/amavisd.conf ${AMAVISD_CONF} >> ${INSTALL_LOG} 2>&1
+
+    if [[ X"${DISTRO}" == X'RHEL' ]]; then
+        # `amavisd` command reads `/etc/amavisd.conf` by default.
+        ln -sf ${AMAVISD_CONF} /etc/amavisd.conf
+    fi
+
     perl -pi -e 's#PH_SYS_USER_AMAVISD#$ENV{SYS_USER_AMAVISD}#g' ${AMAVISD_CONF}
     perl -pi -e 's#PH_SYS_GROUP_AMAVISD#$ENV{SYS_GROUP_AMAVISD}#g' ${AMAVISD_CONF}
     perl -pi -e 's#PH_HOSTNAME#$ENV{HOSTNAME}#g' ${AMAVISD_CONF}

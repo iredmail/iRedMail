@@ -1,0 +1,26 @@
+--
+-- MariaDB 5.5 on CentOS 7 does not support `ADD COLUMN IF EXISTS`, so here is
+-- an alternative way to add it without error.
+--
+-- Add columns in `iredadmin.deleted_mailboxes` for OpenLDAP backend:
+--
+--  - bytes
+--  - messages
+
+drop procedure if exists irm173_schema_change;
+
+delimiter ';;'
+create procedure irm173_schema_change() begin
+    if not exists (select * from information_schema.columns where table_schema = 'iredadmin' and table_name = 'deleted_mailboxes' and column_name = 'bytes') then
+        ALTER TABLE deleted_mailboxes ADD COLUMN `bytes` BIGINT NOT NULL DEFAULT 0;
+    end if;
+
+    if not exists (select * from information_schema.columns where table_schema = 'iredadmin' and table_name = 'deleted_mailboxes' and column_name = 'messages') then
+        ALTER TABLE deleted_mailboxes ADD COLUMN `messages` BIGINT NOT NULL DEFAULT 0;
+    end if;
+end;;
+
+delimiter ';'
+call irm173_schema_change();
+
+drop procedure if exists irm173_schema_change;

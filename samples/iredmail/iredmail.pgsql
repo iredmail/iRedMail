@@ -23,7 +23,7 @@
 -- CREATE LANGUAGE plpgsql;
 
 -- Used to store domain admin accounts
-CREATE TABLE admin (
+CREATE TABLE IF NOT EXISTS admin (
     username VARCHAR(255) NOT NULL DEFAULT '',
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
@@ -31,18 +31,19 @@ CREATE TABLE admin (
     passwordlastchange TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
     -- Store per-admin settings. Used in iRedAdmin-Pro.
     settings TEXT NOT NULL DEFAULT '',
+
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
     modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
     expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 01:01:01',
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (username)
 );
-CREATE INDEX idx_admin_passwordlastchange ON admin (passwordlastchange);
-CREATE INDEX idx_admin_expired ON admin (expired);
-CREATE INDEX idx_admin_active ON admin (active);
+CREATE INDEX IF NOT EXISTS idx_admin_passwordlastchange ON admin (passwordlastchange);
+CREATE INDEX IF NOT EXISTS idx_admin_expired ON admin (expired);
+CREATE INDEX IF NOT EXISTS idx_admin_active ON admin (active);
 
 -- Used to store mail alias accounts
-CREATE TABLE alias (
+CREATE TABLE IF NOT EXISTS alias (
     address VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
     accesspolicy VARCHAR(30) NOT NULL DEFAULT '',
@@ -53,12 +54,12 @@ CREATE TABLE alias (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (address)
 );
-CREATE INDEX idx_alias_domain ON alias (domain);
-CREATE INDEX idx_alias_expired ON alias (expired);
-CREATE INDEX idx_alias_active ON alias (active);
+CREATE INDEX IF NOT EXISTS idx_alias_domain ON alias (domain);
+CREATE INDEX IF NOT EXISTS idx_alias_expired ON alias (expired);
+CREATE INDEX IF NOT EXISTS idx_alias_active ON alias (active);
 
 -- Alias and mailing list moderators.
-CREATE TABLE moderators (
+CREATE TABLE IF NOT EXISTS moderators (
     id SERIAL PRIMARY KEY,
     address VARCHAR(255) NOT NULL DEFAULT '',
     moderator VARCHAR(255) NOT NULL DEFAULT '',
@@ -66,29 +67,29 @@ CREATE TABLE moderators (
     dest_domain VARCHAR(255) NOT NULL DEFAULT ''
 );
 
-CREATE INDEX idx_moderators_address ON moderators (address);
-CREATE INDEX idx_moderators_moderator ON moderators (moderator);
-CREATE UNIQUE INDEX idx_moderators_address_moderator ON moderators (address, moderator);
-CREATE INDEX idx_moderators_domain ON moderators (domain);
-CREATE INDEX idx_moderators_dest_domain ON moderators (dest_domain);
+CREATE INDEX        IF NOT EXISTS idx_moderators_address ON moderators (address);
+CREATE INDEX        IF NOT EXISTS idx_moderators_moderator ON moderators (moderator);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_moderators_address_moderator ON moderators (address, moderator);
+CREATE INDEX        IF NOT EXISTS idx_moderators_domain ON moderators (domain);
+CREATE INDEX        IF NOT EXISTS idx_moderators_dest_domain ON moderators (dest_domain);
 
-CREATE TABLE maillist_owners (
+CREATE TABLE IF NOT EXISTS maillist_owners (
     id SERIAL PRIMARY KEY,
     address VARCHAR(255) NOT NULL DEFAULT '',
     owner VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     dest_domain VARCHAR(255) NOT NULL DEFAULT ''
 );
-CREATE UNIQUE INDEX idx_maillist_owners_address_owner ON maillist_owners (address, owner);
-CREATE INDEX idx_maillist_owners_owner ON maillist_owners (owner);
-CREATE INDEX idx_maillist_owners_domain ON maillist_owners (domain);
-CREATE INDEX idx_maillist_owners_dest_domain ON maillist_owners (dest_domain);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_maillist_owners_address_owner ON maillist_owners (address, owner);
+CREATE INDEX        IF NOT EXISTS idx_maillist_owners_owner ON maillist_owners (owner);
+CREATE INDEX        IF NOT EXISTS idx_maillist_owners_domain ON maillist_owners (domain);
+CREATE INDEX        IF NOT EXISTS idx_maillist_owners_dest_domain ON maillist_owners (dest_domain);
 
 -- Forwardings. it contains
 --  - members of mail alias account
 --  - per-account alias addresses
 --  - per-user mail forwarding addresses
-CREATE TABLE forwardings (
+CREATE TABLE IF NOT EXISTS forwardings (
     id SERIAL PRIMARY KEY,
     address VARCHAR(255) NOT NULL DEFAULT '',
     forwarding VARCHAR(255) NOT NULL DEFAULT '',
@@ -104,18 +105,18 @@ CREATE TABLE forwardings (
     is_alias INT2 NOT NULL DEFAULT 0,
     active INT2 NOT NULL DEFAULT 1
 );
-CREATE UNIQUE INDEX idx_forwardings_address_forwarding ON forwardings (address, forwarding);
-CREATE INDEX idx_forwardings_address ON forwardings (address);
-CREATE INDEX idx_forwardings_forwarding ON forwardings (forwarding);
-CREATE INDEX idx_forwardings_domain ON forwardings (domain);
-CREATE INDEX idx_forwardings_dest_domain ON forwardings (dest_domain);
-CREATE INDEX idx_forwardings_is_maillist ON forwardings (is_maillist);
-CREATE INDEX idx_forwardings_is_list ON forwardings (is_list);
-CREATE INDEX idx_forwardings_is_forwarding ON forwardings (is_forwarding);
-CREATE INDEX idx_forwardings_is_alias ON forwardings (is_alias);
+CREATE INDEX IF NOT EXISTS idx_forwardings_address ON forwardings (address);
+CREATE INDEX IF NOT EXISTS idx_forwardings_forwarding ON forwardings (forwarding);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_forwardings_address_forwarding ON forwardings (address, forwarding);
+CREATE INDEX IF NOT EXISTS idx_forwardings_domain ON forwardings (domain);
+CREATE INDEX IF NOT EXISTS idx_forwardings_dest_domain ON forwardings (dest_domain);
+CREATE INDEX IF NOT EXISTS idx_forwardings_is_maillist ON forwardings (is_maillist);
+CREATE INDEX IF NOT EXISTS idx_forwardings_is_list ON forwardings (is_list);
+CREATE INDEX IF NOT EXISTS idx_forwardings_is_forwarding ON forwardings (is_forwarding);
+CREATE INDEX IF NOT EXISTS idx_forwardings_is_alias ON forwardings (is_alias);
 
 -- Used to store virtual mail domains
-CREATE TABLE domain (
+CREATE TABLE IF NOT EXISTS domain (
     -- mail domain name. e.g. iredmail.org.
     domain VARCHAR(255) NOT NULL DEFAULT '',
     description TEXT NOT NULL DEFAULT '',
@@ -142,12 +143,12 @@ CREATE TABLE domain (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (domain)
 );
-CREATE INDEX idx_domain_backupmx ON domain (backupmx);
-CREATE INDEX idx_domain_expired ON domain (expired);
-CREATE INDEX idx_domain_active ON domain (active);
+CREATE INDEX IF NOT EXISTS idx_domain_backupmx ON domain (backupmx);
+CREATE INDEX IF NOT EXISTS idx_domain_expired ON domain (expired);
+CREATE INDEX IF NOT EXISTS idx_domain_active ON domain (active);
 
 -- Used to store alias domains
-CREATE TABLE alias_domain (
+CREATE TABLE IF NOT EXISTS alias_domain (
     alias_domain VARCHAR(255) NOT NULL,
     target_domain VARCHAR(255) NOT NULL,
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
@@ -155,11 +156,11 @@ CREATE TABLE alias_domain (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (alias_domain)
 );
-CREATE INDEX idx_alias_domain_target_domain ON alias_domain (target_domain);
-CREATE INDEX idx_alias_domain_active ON alias_domain (active);
+CREATE INDEX IF NOT EXISTS idx_alias_domain_target_domain ON alias_domain (target_domain);
+CREATE INDEX IF NOT EXISTS idx_alias_domain_active ON alias_domain (active);
 
 -- Used to store domain <=> admin relationship
-CREATE TABLE domain_admins (
+CREATE TABLE IF NOT EXISTS domain_admins (
     username VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
@@ -168,16 +169,22 @@ CREATE TABLE domain_admins (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (username,domain)
 );
-CREATE INDEX idx_domain_admins_username ON domain_admins (username);
-CREATE INDEX idx_domain_admins_domain ON domain_admins (domain);
-CREATE INDEX idx_domain_admins_active ON domain_admins (active);
+CREATE INDEX IF NOT EXISTS idx_domain_admins_username ON domain_admins (username);
+CREATE INDEX IF NOT EXISTS idx_domain_admins_domain ON domain_admins (domain);
+CREATE INDEX IF NOT EXISTS idx_domain_admins_active ON domain_admins (active);
 
 -- Used to store virtual mail accounts
-CREATE TABLE mailbox (
+CREATE TABLE IF NOT EXISTS mailbox (
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
     language VARCHAR(5) NOT NULL DEFAULT '',
+    first_name VARCHAR(255) NOT NULL DEFAULT '',
+    last_name VARCHAR(255) NOT NULL DEFAULT '',
+    mobile VARCHAR(255) NOT NULL DEFAULT '',
+    telephone VARCHAR(255) NOT NULL DEFAULT '',
+    recovery_email VARCHAR(255) NOT NULL DEFAULT '',
+    birthday DATE NOT NULL DEFAULT '0001-01-01',
     -- Mailbox format.
     -- All formats supported by Dovecot are ok. e.g. maildir, mdbox.
     -- FYI: https://wiki2.dovecot.org/MailboxFormat
@@ -232,46 +239,47 @@ CREATE TABLE mailbox (
     -- Store per-user settings. Used in iRedAdmin-Pro.
     settings TEXT NOT NULL DEFAULT '',
     passwordlastchange TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
+
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
     modified TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
     expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 01:01:01',
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (username)
 );
-CREATE INDEX idx_mailbox_domain ON mailbox (domain);
-CREATE INDEX idx_mailbox_department ON mailbox (department);
-CREATE INDEX idx_mailbox_employeeid ON mailbox (employeeid);
-CREATE INDEX idx_mailbox_isadmin ON mailbox (isadmin);
-CREATE INDEX idx_mailbox_isglobaladmin ON mailbox (isglobaladmin);
-CREATE INDEX idx_mailbox_enablesmtp ON mailbox (enablesmtp);
-CREATE INDEX idx_mailbox_enablesmtpsecured ON mailbox (enablesmtpsecured);
-CREATE INDEX idx_mailbox_enablepop3 ON mailbox (enablepop3);
-CREATE INDEX idx_mailbox_enablepop3secured ON mailbox (enablepop3secured);
-CREATE INDEX idx_mailbox_enableimap ON mailbox (enableimap);
-CREATE INDEX idx_mailbox_enableimapsecured ON mailbox (enableimapsecured);
-CREATE INDEX idx_mailbox_enableimaptls ON mailbox (enableimaptls);
-CREATE INDEX idx_mailbox_enablepop3tls ON mailbox (enablepop3tls);
-CREATE INDEX idx_mailbox_enablesievetls ON mailbox (enablesievetls);
-CREATE INDEX idx_mailbox_enabledeliver ON mailbox (enabledeliver);
-CREATE INDEX idx_mailbox_enablelda ON mailbox (enablelda);
-CREATE INDEX idx_mailbox_enablemanagesieve ON mailbox (enablemanagesieve);
-CREATE INDEX idx_mailbox_enablemanagesievesecured ON mailbox (enablemanagesievesecured);
-CREATE INDEX idx_mailbox_enablesieve ON mailbox (enablesieve);
-CREATE INDEX idx_mailbox_enablesievesecured ON mailbox (enablesievesecured);
-CREATE INDEX idx_mailbox_enablelmtp ON mailbox (enablelmtp);
-CREATE INDEX idx_mailbox_enabledsync ON mailbox (enabledsync);
-CREATE INDEX idx_mailbox_enableinternal ON mailbox (enableinternal);
-CREATE INDEX idx_mailbox_enabledoveadm ON mailbox (enabledoveadm);
-CREATE INDEX idx_mailbox_enablelib_storage ON mailbox ("enablelib-storage");
-CREATE INDEX idx_mailbox_enablequota_status ON mailbox ("enablequota-status");
-CREATE INDEX idx_mailbox_enableindexer_worker ON mailbox ("enableindexer-worker");
-CREATE INDEX idx_mailbox_enablesogo ON mailbox (enablesogo);
-CREATE INDEX idx_mailbox_passwordlastchange ON mailbox (passwordlastchange);
-CREATE INDEX idx_mailbox_expired ON mailbox (expired);
-CREATE INDEX idx_mailbox_active ON mailbox (active);
+CREATE INDEX IF NOT EXISTS idx_mailbox_domain ON mailbox (domain);
+CREATE INDEX IF NOT EXISTS idx_mailbox_department ON mailbox (department);
+CREATE INDEX IF NOT EXISTS idx_mailbox_employeeid ON mailbox (employeeid);
+CREATE INDEX IF NOT EXISTS idx_mailbox_isadmin ON mailbox (isadmin);
+CREATE INDEX IF NOT EXISTS idx_mailbox_isglobaladmin ON mailbox (isglobaladmin);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablesmtp ON mailbox (enablesmtp);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablesmtpsecured ON mailbox (enablesmtpsecured);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablepop3 ON mailbox (enablepop3);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablepop3secured ON mailbox (enablepop3secured);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enableimap ON mailbox (enableimap);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enableimapsecured ON mailbox (enableimapsecured);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enableimaptls ON mailbox (enableimaptls);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablepop3tls ON mailbox (enablepop3tls);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablesievetls ON mailbox (enablesievetls);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enabledeliver ON mailbox (enabledeliver);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablelda ON mailbox (enablelda);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablemanagesieve ON mailbox (enablemanagesieve);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablemanagesievesecured ON mailbox (enablemanagesievesecured);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablesieve ON mailbox (enablesieve);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablesievesecured ON mailbox (enablesievesecured);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablelmtp ON mailbox (enablelmtp);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enabledsync ON mailbox (enabledsync);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enableinternal ON mailbox (enableinternal);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enabledoveadm ON mailbox (enabledoveadm);
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablelib_storage ON mailbox ("enablelib-storage");
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablequota_status ON mailbox ("enablequota-status");
+CREATE INDEX IF NOT EXISTS idx_mailbox_enableindexer_worker ON mailbox ("enableindexer-worker");
+CREATE INDEX IF NOT EXISTS idx_mailbox_enablesogo ON mailbox (enablesogo);
+CREATE INDEX IF NOT EXISTS idx_mailbox_passwordlastchange ON mailbox (passwordlastchange);
+CREATE INDEX IF NOT EXISTS idx_mailbox_expired ON mailbox (expired);
+CREATE INDEX IF NOT EXISTS idx_mailbox_active ON mailbox (active);
 
 
-CREATE TABLE maillists (
+CREATE TABLE IF NOT EXISTS maillists (
     id SERIAL PRIMARY KEY,
     address VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
@@ -294,13 +302,13 @@ CREATE TABLE maillists (
     expired TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT '9999-12-31 01:01:01',
     active INT2 NOT NULL DEFAULT 1
 );
-CREATE UNIQUE INDEX idx_maillists_address ON maillists (address);
-CREATE INDEX idx_maillists_domain ON maillists (domain);
-CREATE UNIQUE INDEX idx_maillists_mlid ON maillists (mlid);
-CREATE INDEX idx_maillists_is_newsletter ON maillists (is_newsletter);
-CREATE INDEX idx_maillists_active ON maillists (active);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_maillists_address ON maillists (address);
+CREATE INDEX IF NOT EXISTS idx_maillists_domain ON maillists (domain);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_maillists_mlid ON maillists (mlid);
+CREATE INDEX IF NOT EXISTS idx_maillists_is_newsletter ON maillists (is_newsletter);
+CREATE INDEX IF NOT EXISTS idx_maillists_active ON maillists (active);
 
-CREATE TABLE sender_bcc_domain (
+CREATE TABLE IF NOT EXISTS sender_bcc_domain (
     domain VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
@@ -309,11 +317,11 @@ CREATE TABLE sender_bcc_domain (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (domain)
 );
-CREATE INDEX idx_sender_bcc_domain_bcc_address ON sender_bcc_domain (bcc_address);
-CREATE INDEX idx_sender_bcc_domain_expired ON sender_bcc_domain (expired);
-CREATE INDEX idx_sender_bcc_domain_active ON sender_bcc_domain (active);
+CREATE INDEX IF NOT EXISTS idx_sender_bcc_domain_bcc_address ON sender_bcc_domain (bcc_address);
+CREATE INDEX IF NOT EXISTS idx_sender_bcc_domain_expired ON sender_bcc_domain (expired);
+CREATE INDEX IF NOT EXISTS idx_sender_bcc_domain_active ON sender_bcc_domain (active);
 
-CREATE TABLE sender_bcc_user (
+CREATE TABLE IF NOT EXISTS sender_bcc_user (
     username VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
@@ -323,15 +331,15 @@ CREATE TABLE sender_bcc_user (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (username)
 );
-CREATE INDEX idx_sender_bcc_user_bcc_address ON sender_bcc_user (bcc_address);
-CREATE INDEX idx_sender_bcc_user_domain ON sender_bcc_user (domain);
-CREATE INDEX idx_sender_bcc_user_expired ON sender_bcc_user (expired);
-CREATE INDEX idx_sender_bcc_user_active ON sender_bcc_user (active);
+CREATE INDEX IF NOT EXISTS idx_sender_bcc_user_bcc_address ON sender_bcc_user (bcc_address);
+CREATE INDEX IF NOT EXISTS idx_sender_bcc_user_domain ON sender_bcc_user (domain);
+CREATE INDEX IF NOT EXISTS idx_sender_bcc_user_expired ON sender_bcc_user (expired);
+CREATE INDEX IF NOT EXISTS idx_sender_bcc_user_active ON sender_bcc_user (active);
 
 --
 -- Table structure for table recipient_bcc_domain
 --
-CREATE TABLE recipient_bcc_domain (
+CREATE TABLE IF NOT EXISTS recipient_bcc_domain (
     domain VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
     created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW()::TIMESTAMP WITHOUT TIME ZONE,
@@ -340,14 +348,14 @@ CREATE TABLE recipient_bcc_domain (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (domain)
 );
-CREATE INDEX idx_recipient_bcc_domain_bcc_address ON recipient_bcc_domain (bcc_address);
-CREATE INDEX idx_recipient_bcc_domain_expired ON recipient_bcc_domain (expired);
-CREATE INDEX idx_recipient_bcc_domain_active ON recipient_bcc_domain (active);
+CREATE INDEX IF NOT EXISTS idx_recipient_bcc_domain_bcc_address ON recipient_bcc_domain (bcc_address);
+CREATE INDEX IF NOT EXISTS idx_recipient_bcc_domain_expired ON recipient_bcc_domain (expired);
+CREATE INDEX IF NOT EXISTS idx_recipient_bcc_domain_active ON recipient_bcc_domain (active);
 
 --
 -- Table structure for table recipient_bcc_user
 --
-CREATE TABLE recipient_bcc_user (
+CREATE TABLE IF NOT EXISTS recipient_bcc_user (
     username VARCHAR(255) NOT NULL DEFAULT '',
     bcc_address VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
@@ -357,9 +365,9 @@ CREATE TABLE recipient_bcc_user (
     active INT2 NOT NULL DEFAULT 1,
     PRIMARY KEY (username)
 );
-CREATE INDEX idx_recipient_bcc_user_bcc_address ON recipient_bcc_user (bcc_address);
-CREATE INDEX idx_recipient_bcc_user_expired ON recipient_bcc_user (expired);
-CREATE INDEX idx_recipient_bcc_user_active ON recipient_bcc_user (active);
+CREATE INDEX IF NOT EXISTS idx_recipient_bcc_user_bcc_address ON recipient_bcc_user (bcc_address);
+CREATE INDEX IF NOT EXISTS idx_recipient_bcc_user_expired ON recipient_bcc_user (expired);
+CREATE INDEX IF NOT EXISTS idx_recipient_bcc_user_active ON recipient_bcc_user (active);
 
 -- Sender dependent relayhost.
 --  - per-user: account='user@domain.com'
@@ -367,15 +375,15 @@ CREATE INDEX idx_recipient_bcc_user_active ON recipient_bcc_user (active);
 -- References:
 --  - http://www.postfix.org/postconf.5.html#sender_dependent_relayhost_maps
 --  - http://www.postfix.org/transport.5.html
-CREATE TABLE sender_relayhost (
+CREATE TABLE IF NOT EXISTS sender_relayhost (
     id SERIAL PRIMARY KEY,
     account VARCHAR(255) NOT NULL DEFAULT '',
     relayhost VARCHAR(255) NOT NULL DEFAULT ''
 );
-CREATE UNIQUE INDEX idx_sender_relayhost_account ON sender_relayhost (account);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_sender_relayhost_account ON sender_relayhost (account);
 
 -- Used to store basic info of deleted mailboxes.
-CREATE TABLE deleted_mailboxes (
+CREATE TABLE IF NOT EXISTS deleted_mailboxes (
     id SERIAL PRIMARY KEY,
     timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -388,6 +396,12 @@ CREATE TABLE deleted_mailboxes (
     -- Absolute path of user's mailbox
     maildir VARCHAR(255) NOT NULL DEFAULT '',
 
+    -- Mailbox size.
+    bytes INT8 NOT NULL DEFAULT 0,
+
+    -- Amount messages.
+    messages INT8 NOT NULL DEFAULT 0,
+
     -- Deleted by which domain admin
     admin VARCHAR(255) NOT NULL DEFAULT '',
 
@@ -396,26 +410,26 @@ CREATE TABLE deleted_mailboxes (
     delete_date DATE DEFAULT NULL
 );
 
-CREATE INDEX idx_deleted_mailboxes_timestamp ON deleted_mailboxes (timestamp);
-CREATE INDEX idx_deleted_mailboxes_username ON deleted_mailboxes (username);
-CREATE INDEX idx_deleted_mailboxes_domain ON deleted_mailboxes (domain);
-CREATE INDEX idx_deleted_mailboxes_admin ON deleted_mailboxes (admin);
-CREATE INDEX idx_delete_date ON deleted_mailboxes (delete_date);
+CREATE INDEX IF NOT EXISTS idx_deleted_mailboxes_timestamp ON deleted_mailboxes (timestamp);
+CREATE INDEX IF NOT EXISTS idx_deleted_mailboxes_username ON deleted_mailboxes (username);
+CREATE INDEX IF NOT EXISTS idx_deleted_mailboxes_domain ON deleted_mailboxes (domain);
+CREATE INDEX IF NOT EXISTS idx_deleted_mailboxes_admin ON deleted_mailboxes (admin);
+CREATE INDEX IF NOT EXISTS idx_delete_date ON deleted_mailboxes (delete_date);
 
 --
 -- IMAP shared folders. User 'from_user' shares folders to user 'to_user'.
 -- WARNING: Works only with Dovecot 1.2+.
 --
-CREATE TABLE share_folder (
+CREATE TABLE IF NOT EXISTS share_folder (
     from_user VARCHAR(255) NOT NULL,
     to_user VARCHAR(255) NOT NULL,
     dummy CHAR(1),
     PRIMARY KEY (from_user, to_user)
 );
-CREATE INDEX idx_share_folder_from_user ON share_folder (from_user);
-CREATE INDEX idx_share_folder_to_user ON share_folder (to_user);
+CREATE INDEX IF NOT EXISTS idx_share_folder_from_user ON share_folder (from_user);
+CREATE INDEX IF NOT EXISTS idx_share_folder_to_user ON share_folder (to_user);
 
-CREATE TABLE anyone_shares (
+CREATE TABLE IF NOT EXISTS anyone_shares (
     from_user VARCHAR(255) NOT NULL,
     dummy CHAR(1),
     PRIMARY KEY (from_user)
@@ -423,7 +437,7 @@ CREATE TABLE anyone_shares (
 
 -- We need Dovecot inserts both `username` and `domain`, but it uses them
 -- as unique index, so we create them as primary key instead of using a trigger.
-CREATE TABLE last_login (
+CREATE TABLE IF NOT EXISTS last_login (
     username VARCHAR(255) NOT NULL DEFAULT '',
     domain VARCHAR(255) NOT NULL DEFAULT '',
     imap BIGINT DEFAULT NULL,
@@ -431,24 +445,24 @@ CREATE TABLE last_login (
     lda  BIGINT DEFAULT NULL,
     PRIMARY KEY (username, domain)
 );
-CREATE INDEX idx_last_login_domain ON last_login (domain);
-CREATE INDEX idx_last_login_imap   ON last_login (imap);
-CREATE INDEX idx_last_login_pop3   ON last_login (pop3);
-CREATE INDEX idx_last_login_lda    ON last_login (lda);
+CREATE INDEX IF NOT EXISTS idx_last_login_domain ON last_login (domain);
+CREATE INDEX IF NOT EXISTS idx_last_login_imap   ON last_login (imap);
+CREATE INDEX IF NOT EXISTS idx_last_login_pop3   ON last_login (pop3);
+CREATE INDEX IF NOT EXISTS idx_last_login_lda    ON last_login (lda);
 
 -- used_quota
 -- Used to store realtime mailbox quota in Dovecot.
 -- WARNING: Works only with Dovecot 1.2+.
 --
 -- Note: Don't touch this table, it will be updated by Dovecot automatically.
-CREATE TABLE used_quota (
+CREATE TABLE IF NOT EXISTS used_quota (
     username VARCHAR(255) NOT NULL,
     bytes INT8 NOT NULL DEFAULT 0,
     messages INT8 NOT NULL DEFAULT 0,
     domain VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (username)
 );
-CREATE INDEX idx_used_quota_domain ON used_quota (domain);
+CREATE INDEX IF NOT EXISTS idx_used_quota_domain ON used_quota (domain);
 
 -- Trigger required by quota dict
 CREATE OR REPLACE FUNCTION merge_quota() RETURNS TRIGGER AS $$

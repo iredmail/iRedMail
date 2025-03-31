@@ -190,6 +190,12 @@ CREATE TABLE IF NOT EXISTS mailbox (
     password VARCHAR(255) NOT NULL DEFAULT '',
     name VARCHAR(255) NOT NULL DEFAULT '',
     language VARCHAR(5) NOT NULL DEFAULT '',
+    first_name VARCHAR(255) NOT NULL DEFAULT '',
+    last_name VARCHAR(255) NOT NULL DEFAULT '',
+    mobile VARCHAR(255) NOT NULL DEFAULT '',
+    telephone VARCHAR(255) NOT NULL DEFAULT '',
+    recovery_email VARCHAR(255) NOT NULL DEFAULT '',
+    birthday DATE NOT NULL DEFAULT '0001-01-01',
     -- Mailbox format.
     -- All formats supported by Dovecot are ok. e.g. maildir, mdbox.
     -- FYI: https://wiki2.dovecot.org/MailboxFormat
@@ -407,6 +413,10 @@ CREATE TABLE IF NOT EXISTS deleted_mailboxes (
     domain VARCHAR(255) NOT NULL DEFAULT '',
     -- Absolute path of user's mailbox
     maildir VARCHAR(255) NOT NULL DEFAULT '',
+    -- Mailbox size.
+    bytes BIGINT NOT NULL DEFAULT 0,
+    -- Amount messages.
+    messages BIGINT NOT NULL DEFAULT 0,
     -- Deleted by which domain admin
     admin VARCHAR(255) NOT NULL DEFAULT '',
     -- The time scheduled to delete this mailbox.
