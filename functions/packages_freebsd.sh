@@ -123,7 +123,11 @@ install_all()
 
     # SOGo groupware.
     if [ X"${USE_SOGO}" == X'YES' ]; then
-        ALL_PKGS="${ALL_PKGS} sope sogo-activesync"
+        if [ X"${BACKEND}" == X'OPENLDAP' -o X"${BACKEND}" == X'MYSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} sope-mysql sogo-mysqlactivesync"
+        elif [ X"${BACKEND}" == X'PGSQL' ]; then
+            ALL_PKGS="${ALL_PKGS} sope-pgsql sogo-pgsqlactivesync"
+        fi
     fi
 
     # iRedAPD
@@ -147,8 +151,7 @@ install_all()
 
     ECHO_INFO "Switch to Latest packages."
     [[ -d /usr/local/etc/pkg/repos ]] || mkdir -p /usr/local/etc/pkg/repos
-    # FIXME Use a variable to define preferred mirror site.
-    echo 'FreeBSD: { url: "pkg+http://pkg.FreeBSD.org/${ABI}/latest" }' > /usr/local/etc/pkg/repos/FreeBSD.conf
+    echo "FreeBSD: {url: '${FREEBSD_PKG_MIRROR_URL}'}" > /usr/local/etc/pkg/repos/FreeBSD.conf
 
     ECHO_INFO "Run: pkg update"
     pkg update || exit 255
