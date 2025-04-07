@@ -151,10 +151,15 @@ install_all()
 
     ECHO_INFO "Switch to Latest packages."
     [[ -d /usr/local/etc/pkg/repos ]] || mkdir -p /usr/local/etc/pkg/repos
-    echo "FreeBSD: {url: '${FREEBSD_PKG_MIRROR_URL}'}" > /usr/local/etc/pkg/repos/FreeBSD.conf
+    cat > /usr/local/etc/pkg/repos/FreeBSD.conf <<EOF
+FreeBSD: {
+  url: "${FREEBSD_PKG_MIRROR_URL}",
+  mirror_type: "${FREEBSD_PKG_MIRROR_TYPE}",
+}
+EOF
 
-    ECHO_INFO "Run: pkg update"
-    pkg update || exit 255
+    ECHO_INFO "Run: pkg update -f"
+    pkg update -f || exit 255
 
     # Install all packages.
     ECHO_INFO "Install packages: pkg install -y ${ALL_PKGS}"
