@@ -61,11 +61,8 @@ export NETDATA_GO_D_CONF_DIR="${NETDATA_CONF_DIR}/go.d"
 export NETDATA_GO_D_CONF_PHPFPM="${NETDATA_GO_D_CONF_DIR}/phpfpm.conf"
 export NETDATA_GO_D_CONF_NGINX="${NETDATA_GO_D_CONF_DIR}/nginx.conf"
 export NETDATA_GO_D_CONF_MYSQL="${NETDATA_GO_D_CONF_DIR}/mysql.conf"
-
-# Plugin config files.
-export NETDATA_PYTHON_D_CONF_DIR="${NETDATA_CONF_DIR}/python.d"
-export NETDATA_PYTHON_D_CONF_PGSQL="${NETDATA_PYTHON_D_CONF_DIR}/postgres.conf"
-export NETDATA_PYTHON_D_CONF_OPENLDAP="${NETDATA_PYTHON_D_CONF_DIR}/openldap.conf"
+export NETDATA_GO_D_CONF_OPENLDAP="${NETDATA_GO_D_CONF_DIR}/openldap.conf"
+export NETDATA_GO_D_CONF_PGSQL="${NETDATA_GO_D_CONF_DIR}/postgres.conf"
 
 # Database
 # NETDATA_DB_PASSWD is generated in dialog/optional_components.sh.
