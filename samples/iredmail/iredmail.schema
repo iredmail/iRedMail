@@ -333,6 +333,20 @@ attributetype ( 1.3.6.1.4.1.32349.1.2.2.29 NAME 'mailboxFolder'
     SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{50}
     SINGLE-VALUE )
 
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.30 NAME 'recoveryEmail'
+    DESC 'Address used to receive email to recover password.'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{320}
+    SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.32349.1.2.2.31 NAME 'birthday'
+    DESC 'Birthday (in YYYY-MM-DD format).'
+    EQUALITY caseIgnoreIA5Match
+    SUBSTR caseIgnoreSubstringsMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{10}
+    SINGLE-VALUE )
+
 #
 # Mail Service: Mail List related attributes.
 #
@@ -412,7 +426,8 @@ objectclass ( 1.3.6.1.4.1.32349.1.2.4.3 NAME 'mailUser'
         title $ userManager $
         mailWhitelistRecipient $ mailBlacklistRecipient $
         domainGlobalAdmin $ allowNets $ senderRelayHost $
-        domainStatus $ maxMessageSize $ mailboxFormat $ mailboxFolder ) )
+        domainStatus $ maxMessageSize $ mailboxFormat $ mailboxFolder $
+        recoveryEmail $ birthday ) )
 objectclass ( 1.3.6.1.4.1.32349.1.2.4.4 NAME 'mailAlias'
     DESC 'Mail Alias Account' SUP top STRUCTURAL
     MUST ( mail )

@@ -383,6 +383,7 @@ install_all()
                 ECHO_ERROR "Failed in import GPG key for SOGo yum repository."
                 ECHO_ERROR "Please try to import it manually with command below:"
                 ECHO_ERROR "wget -O /etc/pki/rpm-gpg/sogo-nightly https://keys.openpgp.org/vks/v1/by-fingerprint/74FFC6D72B925A34B5D356BDF8A27B36A6E2EAE9"
+                exit 255
             fi
 
             # Copy yum repo file
