@@ -154,9 +154,15 @@ install_all()
     cat > /usr/local/etc/pkg/repos/FreeBSD.conf <<EOF
 FreeBSD: {
   url: "${FREEBSD_PKG_MIRROR_URL}",
-  mirror_type: "${FREEBSD_PKG_MIRROR_TYPE}",
-}
 EOF
+
+    if [[ ${FREEBSD_PKG_MIRROR_TYPE} != "" ]]; then
+        cat >> /usr/local/etc/pkg/repos/FreeBSD.conf <<EOF
+  mirror_type: "${FREEBSD_PKG_MIRROR_TYPE}",
+EOF
+    fi
+
+echo "}" >> /usr/local/etc/pkg/repos/FreeBSD.conf
 
     ECHO_INFO "Run: pkg update -f"
     pkg update -f || exit 255
