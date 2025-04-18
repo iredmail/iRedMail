@@ -256,7 +256,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # RedHat has minor version number in `VERSION_ID` line, e.g. `VERSION_ID="8.3"`.
         export DISTRO_VERSION="$(echo ${DISTRO_VERSION} | awk -F'.' '{print $1}')"
 
-        if [[ X"${DISTRO_VERSION}" != X'8' ]] && [[ X"${DISTRO_VERSION}" != X'9' ]]; then
+        if [[ X"${DISTRO_VERSION}" != X'9' ]]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
 
