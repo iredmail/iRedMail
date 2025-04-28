@@ -441,7 +441,7 @@ add_postfix_alias()
     # Add new alias
     echo "${alias_src}: ${alias_dest}" >> ${POSTFIX_FILE_ALIASES}
 
-    postalias hash:${POSTFIX_FILE_ALIASES} &>/dev/null
+    postalias ${POSTFIX_DEFAULT_DB_TYPE}:${POSTFIX_FILE_ALIASES} &>/dev/null
     unset alias_src
     unset alias_dest
 }

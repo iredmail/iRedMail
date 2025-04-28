@@ -64,6 +64,7 @@ postfix_config_basic()
     ECHO_DEBUG "Enable submission and additional transports required by Amavisd and Dovecot."
     cat ${SAMPLE_DIR}/postfix/master.cf >> ${POSTFIX_FILE_MASTER_CF}
 
+    perl -pi -e 's#PH_POSTFIX_DEFAULT_DB_TYPE#$ENV{POSTFIX_DEFAULT_DB_TYPE}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_QUEUE_DIRECTORY#$ENV{queue_directory}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_COMMAND_DIRECTORY#$ENV{command_directory}#g' ${POSTFIX_FILE_MAIN_CF}
     perl -pi -e 's#PH_DAEMON_DIRECTORY#$ENV{daemon_directory}#g' ${POSTFIX_FILE_MAIN_CF}
@@ -149,8 +150,14 @@ postfix_config_basic()
     #   - OpenBSD
     #   - FreeBSD
     if [[ X"${DISTRO}" == X'RHEL' ]]; then
-        # Postfix 3.5.x
-        postconf -e compatibility_level=2
+        if [[ X"${DISTRO_VERSION}" == X'10' ]]; then
+            # Postfix 3.8.5
+            postconf -e compatibility_level=3.6
+            postconf -e default_database_type=${POSTFIX_DEFAULT_DB_TYPE}
+        else
+            # Postfix 3.5.x
+            postconf -e compatibility_level=2
+        fi
     else
         postconf -e compatibility_level=3.6
     fi
@@ -382,10 +389,10 @@ postfix_config_postscreen()
         # Create db file.
         cd ${_chrooted_data_directory}
         touch postscreen_cache
-        postmap btree:postscreen_cache
+        postmap ${POSTFIX_DEFAULT_DB_TYPE}:postscreen_cache
         rm postscreen_cache
-        chown ${SYS_USER_POSTFIX}:${SYS_GROUP_POSTFIX} postscreen_cache.db
-        chmod 0700 postscreen_cache.db
+        chown ${SYS_USER_POSTFIX}:${SYS_GROUP_POSTFIX} postscreen_cache.*
+        chmod 0700 postscreen_cache.*
     fi
 
     echo 'export status_postfix_config_postscreen="DONE"' >> ${STATUS_FILE}

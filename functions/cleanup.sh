@@ -116,9 +116,11 @@ cleanup_replace_firewall_rules()
                     cp -f ${SAMPLE_DIR}/firewall/firewalld/services/ssh.xml ${FIREWALLD_CONF_DIR}/services/
 
                     if [ X"${DISTRO}" == X'RHEL' ]; then
-                        cd ${ETC_SYSCONFIG_DIR}/network-scripts/
-                        if ls | grep -E '[0-9a-zA-Z]' &>/dev/null; then
-                            perl -pi -e 's#ZONE=public#ZONE=iredmail#g' *
+                        if [[ -d ${ETC_SYSCONFIG_DIR}/network-scripts ]]; then
+                            cd ${ETC_SYSCONFIG_DIR}/network-scripts/
+                            if ls | grep -E '[0-9a-zA-Z]' &>/dev/null; then
+                                perl -pi -e 's#ZONE=public#ZONE=iredmail#g' *
+                            fi
                         fi
                     fi
 

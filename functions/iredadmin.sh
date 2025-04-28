@@ -228,10 +228,10 @@ EOF
 iredadmin_rc_setup()
 {
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        _ini_file="${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel${DISTRO_VERSION}.ini"
+        _ini_file="${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/rhel9.ini"
         _systemd_file="${SYSTEMD_SERVICE_DIR}/iredadmin.service"
 
-        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/rhel${DISTRO_VERSION}.service ${_systemd_file}
+        cp -f ${IREDADMIN_HTTPD_ROOT}/rc_scripts/systemd/rhel9.service ${_systemd_file}
         chmod 0644 ${_systemd_file}
 
         perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${_ini_file}

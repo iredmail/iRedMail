@@ -260,8 +260,8 @@ mynetworks = 127.0.0.1
 # Accepted local emails
 mydestination = $myhostname, localhost, localhost.localdomain
 
-alias_maps = hash:PH_POSTFIX_FILE_ALIASES
-alias_database = hash:PH_POSTFIX_FILE_ALIASES
+alias_maps = PH_POSTFIX_DEFAULT_DB_TYPE:PH_POSTFIX_FILE_ALIASES
+alias_database = PH_POSTFIX_DEFAULT_DB_TYPE:PH_POSTFIX_FILE_ALIASES
 
 # Default message_size_limit.
 message_size_limit = PH_MESSAGE_SIZE_LIMIT_BYTES
