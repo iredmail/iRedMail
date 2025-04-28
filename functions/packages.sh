@@ -52,8 +52,8 @@ install_all()
         fi
 
         OB_PKG_PHP_VER="%${OB_PHP_VERSION}"
-        OB_PKG_OPENLDAP_SERVER_VER='-2.6.8v0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.8v0'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.6.9p0v0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.9p0v0'
         OB_UWSGI_VERSION='2.0.28'
     fi
 

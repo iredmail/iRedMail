@@ -1,5 +1,8 @@
 iRedMail-1.7.4:
 
++ Supports new distribution release:
+    + OpenBSD 7.7. OpenBSD 7.6 has been dropped.
+
 * Updated packages:
     + netdata 2.4.0
 
