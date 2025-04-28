@@ -2,6 +2,8 @@ iRedMail-1.7.4:
 
 + Supports new distribution release:
     + OpenBSD 7.7. OpenBSD 7.6 has been dropped.
+    + CentOS Stream 10. Note: SOGo is not available because SOGo team doesn't
+      build binary packages for CentOS 10.
 
 * Updated packages:
     + netdata 2.4.0
