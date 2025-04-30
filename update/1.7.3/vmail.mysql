@@ -15,6 +15,26 @@
 --
 --  - bytes
 --  - messages
+--
+-- Old MariaDB may use `COMPAT` row format, it causes error like
+--
+-- "Row size too large. The maximum row size for the used table type, not counting BLOBs,
+-- is 8126. This includes storage overhead, check the manual. You have to change some
+-- columns to TEXT or BLOBs"
+--
+-- DYNAMIC is default innodb row format in MariaDB for years, it is safe to
+-- switch.
+
+SET @row_format = (SELECT ROW_FORMAT FROM INFORMATION_SCHEMA.TABLES
+                  WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'mailbox');
+
+SET @sql = IF(@row_format != 'Dynamic',
+             CONCAT('ALTER TABLE mailbox ROW_FORMAT=DYNAMIC;'),
+             'SELECT "Row format is already Dynamic" AS Message;');
+
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 
 drop procedure if exists irm173_schema_change;
 
