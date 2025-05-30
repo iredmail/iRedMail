@@ -6,6 +6,7 @@ iRedMail-1.7.4:
       build binary packages for CentOS 10.
 
 * Updated packages:
+    + iRedAPD 5.9.1
     + netdata 2.5.1
     + mlmmjadmin 3.4.0
 
