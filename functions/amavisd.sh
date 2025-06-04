@@ -124,7 +124,7 @@ amavisd_config()
     if [ X"${BACKEND}" == X'PGSQL' ]; then
         export AMAVISD_PERL_SQL_DBI='Pg'
     else
-        if [ X"${DISTRO}" == X'FREEBSD' ]; then
+        if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' -o X"${DISTRO}" == X'FREEBSD' ]; then
             export AMAVISD_PERL_SQL_DBI='mysql'
         else
             export AMAVISD_PERL_SQL_DBI='MariaDB'

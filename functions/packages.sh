@@ -139,7 +139,7 @@ install_all()
             # Python driver.
             ALL_PKGS="${ALL_PKGS} python3-ldap"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} slapd ldap-utils postfix-ldap libnet-ldap-perl libdbd-mariadb-perl mariadb-server mariadb-client"
+            ALL_PKGS="${ALL_PKGS} slapd ldap-utils postfix-ldap libnet-ldap-perl mariadb-server mariadb-client"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_SERVER_VER}"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
@@ -169,7 +169,7 @@ install_all()
                 ALL_PKGS="${ALL_PKGS} mariadb-server"
             fi
 
-            ALL_PKGS="${ALL_PKGS} postfix-mysql libdbd-mariadb-perl"
+            ALL_PKGS="${ALL_PKGS} postfix-mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} mariadb-client"
@@ -281,10 +281,11 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} clamd spamassassin"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm libmail-spf-perl unrar-free pax lrzip gpg-agent"
+        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm libmail-spf-perl unrar-free pax lrzip gpg-agent libdbd-mysql-perl"
 
         # Ubuntu 22.04
         [[ X"${DISTRO_CODENAME}" == X'jammy' ]] && ALL_PKGS="${ALL_PKGS} libclamunrar9"
+
         # Ubuntu 24.04
         [[ X"${DISTRO_CODENAME}" == X'noble' ]] && ALL_PKGS="${ALL_PKGS} libclamunrar11"
 
@@ -295,6 +296,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-libwww p5-Mail-SpamAssassin clamav unrar altermime"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_SERVICE_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
+
 
     # mlmmj: mailing list manager
     ALL_PKGS="${ALL_PKGS} mlmmj"
