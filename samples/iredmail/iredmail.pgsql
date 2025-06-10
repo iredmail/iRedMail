@@ -200,7 +200,7 @@ CREATE TABLE IF NOT EXISTS mailbox (
     transport VARCHAR(255) NOT NULL DEFAULT '',
     department VARCHAR(255) NOT NULL DEFAULT '',
     rank VARCHAR(255) NOT NULL DEFAULT 'normal',
-    employeeid VARCHAR(255) DEFAULT '',
+    employeeid VARCHAR(255) NOT NULL DEFAULT '',
     isadmin INT2 NOT NULL DEFAULT 0,
     isglobaladmin INT2 NOT NULL DEFAULT 0,
     enablesmtp INT2 NOT NULL DEFAULT 1,

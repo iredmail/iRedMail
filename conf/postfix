@@ -35,7 +35,13 @@ export POSTFIX_RC_SCRIPT_NAME='postfix'
 # Log file
 export MAILLOG='/var/log/maillog'
 
-if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
+# Default database type.
+export POSTFIX_DEFAULT_DB_TYPE="hash"
+
+if [ X"${DISTRO}" == X'RHEL' ]; then
+    # CentOS Stream 10 replaces `btree` and `hash` by `lmdb`.
+    [[ X"${DISTRO_VERSION}" == X"10" ]] && export POSTFIX_DEFAULT_DB_TYPE='lmdb'
+elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export MAILLOG='/var/log/mail.log'
     export MAILLOG_INFO='/var/log/mail.info'
     export MAILLOG_ERROR='/var/log/mail.err'

@@ -244,7 +244,7 @@ elif [[ X"${_action}" == X"unban_db" ]]; then
     (${CMD_SQL} <<EOF
 SELECT jail, ip FROM ${DB_TABLE_BANNED} WHERE remove=1;
 EOF
-) | grep -Ev '(jail.*ip|\--|\(|^$)' | tr -d '|' >> ${tmp_file}
+) | grep -Ev '(jail.*ip|--|\(|^$)' | tr -d '|' >> ${tmp_file}
 
     while read jail ip; do
         # Avoid SQL injection: don't allow whitespace, ';', quotes in

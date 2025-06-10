@@ -1,8 +1,9 @@
 # Running netdata as a subfolder to an existing virtual host
 # FYI: https://github.com/firehol/netdata/wiki/Running-behind-nginx
 
-location = /netdata {
-    return 301 /netdata/;
+# Skip the splash and cloud login screen.
+location ~* /netdata/*$ {
+    return 301 /netdata/v3;
 }
 
 location ~ /netdata/(?<ndpath>.*) {

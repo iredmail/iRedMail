@@ -52,8 +52,8 @@ install_all()
         fi
 
         OB_PKG_PHP_VER="%${OB_PHP_VERSION}"
-        OB_PKG_OPENLDAP_SERVER_VER='-2.6.8v0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.8v0'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.6.9p0v0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.9p0v0'
         OB_UWSGI_VERSION='2.0.28'
     fi
 
@@ -129,32 +129,22 @@ install_all()
         ENABLED_SERVICES="${ENABLED_SERVICES} ${OPENLDAP_RC_SCRIPT_NAME} ${MYSQL_RC_SCRIPT_NAME}"
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
-            if [ X"${DISTRO_VERSION}" == X'8' ]; then
-                # Install packages from Symas yum repo.
-                ALL_PKGS="${ALL_PKGS} symas-openldap-servers symas-openldap-clients mariadb-server"
-
-                if [ ! -f ${YUM_REPOS_DIR}/symas-openldap.repo ]; then
-                    cp -f ${SAMPLE_DIR}/yum/symas-openldap.repo ${YUM_REPOS_DIR}/
-                fi
-            else
-                # openldap-servers is available in EPEL.
-                # openldap-clients is available in BaseOS repo.
-                ALL_PKGS="${ALL_PKGS} openldap-servers openldap-clients mariadb-server"
-            fi
+            # openldap-servers is available in EPEL.
+            # openldap-clients is available in BaseOS repo.
+            ALL_PKGS="${ALL_PKGS} openldap-servers openldap-clients mariadb-server"
 
             # Perl module
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} perl-DBD-MySQL"
-            [[ X"${DISTRO_VERSION}" == X'9' ]] && ALL_PKGS="${ALL_PKGS} perl-DBD-mysql"
+            ALL_PKGS="${ALL_PKGS} perl-DBD-MariaDB"
 
             # Python driver.
             ALL_PKGS="${ALL_PKGS} python3-ldap"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} slapd ldap-utils postfix-ldap libnet-ldap-perl libdbd-mysql-perl mariadb-server mariadb-client"
+            ALL_PKGS="${ALL_PKGS} slapd ldap-utils postfix-ldap libnet-ldap-perl mariadb-server mariadb-client"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} openldap-server${OB_PKG_OPENLDAP_SERVER_VER}"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${OPENLDAP_RC_SCRIPT_NAME}"
 
-            ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client p5-ldap p5-DBD-mysql"
+            ALL_PKGS="${ALL_PKGS} mariadb-server mariadb-client p5-ldap p5-DBD-MariaDB"
             PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
         fi
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
@@ -169,8 +159,7 @@ install_all()
             fi
 
             # Perl module
-            [[ X"${DISTRO_VERSION}" == X'8' ]] && ALL_PKGS="${ALL_PKGS} perl-DBD-MySQL"
-            [[ X"${DISTRO_VERSION}" == X'9' ]] && ALL_PKGS="${ALL_PKGS} perl-DBD-mysql"
+            ALL_PKGS="${ALL_PKGS} perl-DBD-MariaDB"
 
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             # MySQL server and client.
@@ -180,13 +169,13 @@ install_all()
                 ALL_PKGS="${ALL_PKGS} mariadb-server"
             fi
 
-            ALL_PKGS="${ALL_PKGS} postfix-mysql libdbd-mysql-perl"
+            ALL_PKGS="${ALL_PKGS} postfix-mysql"
 
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             ALL_PKGS="${ALL_PKGS} mariadb-client"
 
             if [ X"${USE_EXISTING_MYSQL}" != X'YES' ]; then
-                ALL_PKGS="${ALL_PKGS} mariadb-server p5-DBD-mysql"
+                ALL_PKGS="${ALL_PKGS} mariadb-server p5-DBD-MariaDB"
                 PKG_SCRIPTS="${PKG_SCRIPTS} ${MYSQL_RC_SCRIPT_NAME}"
             fi
         fi
@@ -292,10 +281,11 @@ install_all()
         DISABLED_SERVICES="${DISABLED_SERVICES} clamd spamassassin"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm libmail-spf-perl unrar-free pax lrzip gpg-agent"
+        ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm libmail-spf-perl unrar-free pax lrzip gpg-agent libdbd-mysql-perl"
 
         # Ubuntu 22.04
         [[ X"${DISTRO_CODENAME}" == X'jammy' ]] && ALL_PKGS="${ALL_PKGS} libclamunrar9"
+
         # Ubuntu 24.04
         [[ X"${DISTRO_CODENAME}" == X'noble' ]] && ALL_PKGS="${ALL_PKGS} libclamunrar11"
 
@@ -306,6 +296,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} rpm2cpio amavisd-new amavisd-new-utils p5-Mail-SPF p5-libwww p5-Mail-SpamAssassin clamav unrar altermime"
         PKG_SCRIPTS="${PKG_SCRIPTS} ${CLAMAV_CLAMD_SERVICE_NAME} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME} ${AMAVISD_RC_SCRIPT_NAME}"
     fi
+
 
     # mlmmj: mailing list manager
     ALL_PKGS="${ALL_PKGS} mlmmj"
@@ -383,6 +374,7 @@ install_all()
                 ECHO_ERROR "Failed in import GPG key for SOGo yum repository."
                 ECHO_ERROR "Please try to import it manually with command below:"
                 ECHO_ERROR "wget -O /etc/pki/rpm-gpg/sogo-nightly https://keys.openpgp.org/vks/v1/by-fingerprint/74FFC6D72B925A34B5D356BDF8A27B36A6E2EAE9"
+                exit 255
             fi
 
             # Copy yum repo file
