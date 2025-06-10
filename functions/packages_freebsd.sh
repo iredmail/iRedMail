@@ -27,7 +27,7 @@ install_all()
     export PHP_VER='83'
     export PY3_VER='3.11'
     export PY_FLAVOR='py311'
-    export PGSQL_VER='16'
+    export PGSQL_VER='17'
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         export IREDMAIL_USE_PHP='YES'
