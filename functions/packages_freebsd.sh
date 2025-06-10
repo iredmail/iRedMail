@@ -27,7 +27,6 @@ install_all()
     export PHP_VER='83'
     export PY3_VER='3.11'
     export PY_FLAVOR='py311'
-    export PGSQL_VER='17'
 
     if [ X"${WEB_SERVER}" == X'NGINX' ]; then
         export IREDMAIL_USE_PHP='YES'
@@ -59,7 +58,7 @@ install_all()
         ALL_PKGS="${ALL_PKGS} p5-DBD-mysql"
 
     elif [ X"${BACKEND}" == X'PGSQL' ]; then
-        ALL_PKGS="${ALL_PKGS} postgresql${PGSQL_VER}-server postgresql${PGSQL_VER}-contrib"
+        ALL_PKGS="${ALL_PKGS} postgresql${PGSQL_VERSION}-server postgresql${PGSQL_VERSION}-contrib"
 
         # Python modules.
         ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-psycopg2"
