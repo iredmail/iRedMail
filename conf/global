@@ -310,7 +310,7 @@ elif [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
     export DISTRO_VERSION="$(uname -r |awk -F'[.-]' '{print $1}')"
 
     # pkg mirror site.
-    export FREEBSD_PKG_MIRROR_URL='pkg+https://pkg.FreeBSD.org/${ABI}/latest'
+    export FREEBSD_PKG_MIRROR_URL='pkg+https://pkg.FreeBSD.org/${ABI}/quarterly'
     export FREEBSD_PKG_MIRROR_TYPE=''
 
     # Directory of RC scripts.
