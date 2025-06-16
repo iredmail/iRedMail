@@ -59,6 +59,14 @@ export ENABLE_BACKEND_MARIADB='YES'
 # IP address of localhost.
 # Usually it's 127.0.0.1, but not in FreeBSD Jail.
 export LOCAL_ADDRESS="${LOCAL_ADDRESS:=127.0.0.1}"
+if [ X"${KERNEL_NAME}" == X'FREEBSD' ]; then
+    if [ (ps -ax -o state | grep "J$" | wc -l) > 0 ]; then
+    # Script is running inside a jail
+    if [ X"${LOCAL_ADDRESS}" == X'127.0.0.1' ]; then
+        # It is better if we stop here, otherwise iRedmail will not function properly
+        echo "Error: You need to explicitly specify the LOCAL_ADDRESS to be used when in jail."
+        exit 255
+fi
 
 # LDAP server
 export LDAP_SERVER_HOST="${LDAP_SERVER_HOST:=${LOCAL_ADDRESS}}"
