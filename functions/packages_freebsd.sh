@@ -148,7 +148,7 @@ install_all()
     # Misc
     ALL_PKGS="${ALL_PKGS} logwatch"
 
-    ECHO_INFO "Switch to Latest packages."
+    ECHO_INFO "Set pkg repo to: ${FREEBSD_PKG_MIRROR_URL}."
     [[ -d /usr/local/etc/pkg/repos ]] || mkdir -p /usr/local/etc/pkg/repos
     cat > /usr/local/etc/pkg/repos/FreeBSD.conf <<EOF
 FreeBSD: {
