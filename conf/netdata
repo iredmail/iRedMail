@@ -24,7 +24,12 @@
 # netdata: https://my-netdata.io
 #
 export NETDATA_VERSION='2.5.3'
-export NETDATA_PKG_NAME="netdata-v${NETDATA_VERSION}.gz.run"
+
+if [[ X"${OS_ARCH}" == X'aarch64' ]]; then
+    export NETDATA_PKG_NAME="netdata-aarch64-v${NETDATA_VERSION}.gz.run"
+else
+    export NETDATA_PKG_NAME="netdata-v${NETDATA_VERSION}.gz.run"
+fi
 
 # iRedMail install netdata with the '.bin' package on Linux, it installs
 # netdata application files under '/opt/netdata' by default.
