@@ -86,7 +86,10 @@ EOF
     # Copy script used to handle sql data.
     cp -f ${SAMPLE_DIR}/fail2ban/bin/fail2ban_banned_db /usr/local/bin/
     chmod 0550 /usr/local/bin/fail2ban_banned_db
-    perl -pi -e 's#/usr/bin/env bash#/usr/local/bin/bash#g' /usr/local/bin/fail2ban_banned_db
+
+    if [ X"${DISTRO}" == X'FREEBSD' -o X"${DISTRO}" == X'OPENBSD' ]; then
+        perl -pi -e 's#/usr/bin/env bash#/usr/local/bin/bash#g' /usr/local/bin/fail2ban_banned_db
+    fi
 
     cat >> ${CRON_FILE_ROOT} <<EOF
 # Fail2ban: Unban IP addresses pending for removal (stored in SQL db).
