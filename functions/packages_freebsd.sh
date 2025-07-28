@@ -148,20 +148,20 @@ install_all()
     # Misc
     ALL_PKGS="${ALL_PKGS} logwatch"
 
-    ECHO_INFO "Set pkg repo to: ${FREEBSD_PKG_MIRROR_URL}."
-    [[ -d /usr/local/etc/pkg/repos ]] || mkdir -p /usr/local/etc/pkg/repos
-    cat > /usr/local/etc/pkg/repos/FreeBSD.conf <<EOF
-FreeBSD: {
-  url: "${FREEBSD_PKG_MIRROR_URL}",
-EOF
-
-    if [[ ${FREEBSD_PKG_MIRROR_TYPE} != "" ]]; then
-        cat >> /usr/local/etc/pkg/repos/FreeBSD.conf <<EOF
-  mirror_type: "${FREEBSD_PKG_MIRROR_TYPE}",
-EOF
-    fi
-
-echo "}" >> /usr/local/etc/pkg/repos/FreeBSD.conf
+#    ECHO_INFO "Set pkg repo to: ${FREEBSD_PKG_MIRROR_URL}."
+#    [[ -d /usr/local/etc/pkg/repos ]] || mkdir -p /usr/local/etc/pkg/repos
+#    cat > /usr/local/etc/pkg/repos/FreeBSD.conf <<EOF
+#FreeBSD: {
+#  url: "${FREEBSD_PKG_MIRROR_URL}",
+#EOF
+#
+#    if [[ ${FREEBSD_PKG_MIRROR_TYPE} != "" ]]; then
+#        cat >> /usr/local/etc/pkg/repos/FreeBSD.conf <<EOF
+#  mirror_type: "${FREEBSD_PKG_MIRROR_TYPE}",
+#EOF
+#    fi
+#
+#echo "}" >> /usr/local/etc/pkg/repos/FreeBSD.conf
 
     ECHO_INFO "Run: pkg update -f"
     pkg update -f || exit 255
