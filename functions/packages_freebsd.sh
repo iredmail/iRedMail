@@ -130,7 +130,7 @@ install_all()
     fi
 
     # iRedAPD
-    ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-dnspython"
+    ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-dnspython ${PY_FLAVOR}-multipart"
 
     # iRedAdmin dependencies.
     ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-simplejson ${PY_FLAVOR}-requests ${PY_FLAVOR}-netifaces"
