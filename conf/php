@@ -42,7 +42,9 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Debian 12
-    [[ X"${DISTRO_CODENAME}" == X'bookworm' ]] && export PHP_VERSION='8.2' 
+    [[ X"${DISTRO_CODENAME}" == X'bookworm' ]] && export PHP_VERSION='8.2'
+    # Debian 13
+    [[ X"${DISTRO_CODENAME}" == X'trixie' ]] && export PHP_VERSION='8.4'
 
     # Ubuntu 22.04
     [[ X"${DISTRO_CODENAME}" == X'jammy' ]] && export PHP_VERSION='8.1'

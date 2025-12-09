@@ -52,8 +52,8 @@ install_all()
         fi
 
         OB_PKG_PHP_VER="%${OB_PHP_VERSION}"
-        OB_PKG_OPENLDAP_SERVER_VER='-2.6.9p0v0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.9p0v0'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.6.10v0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.10v0'
         OB_UWSGI_VERSION='2.0.28'
     fi
 
@@ -426,7 +426,7 @@ EOF
     # Don't append service name 'iredapd' to ${ENABLED_SERVICES} since we don't
     # have RC script ready in this stage.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} python3-sqlalchemy python3-setuptools python3-dns python3-six"
+        ALL_PKGS="${ALL_PKGS} python3-sqlalchemy python3-setuptools python3-dns python3-six python3-python-multipart"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             ALL_PKGS="${ALL_PKGS} python3-ldap python3-PyMySQL"
@@ -439,7 +439,7 @@ EOF
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python3-sqlalchemy python3-dnspython"
+        ALL_PKGS="${ALL_PKGS} python3-sqlalchemy python3-dnspython python3-multipart"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             if [ X"${DISTRO}" == X'DEBIAN' -a X"${DISTRO_VERSION}" == X'9' ]; then
@@ -455,7 +455,7 @@ EOF
         [ X"${BACKEND}" == X'PGSQL' ]    && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython"
+        ALL_PKGS="${ALL_PKGS} py3-sqlalchemy py3-dnspython py3-multipart"
         [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"
         [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} py3-psycopg2"
@@ -526,15 +526,7 @@ EOF
 
             ALL_PKGS="${ALL_PKGS} python3-pyyaml"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-            ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors"
-
-            # Debian 12
-            # Ubuntu 24.04
-            if [ X"${DISTRO_CODENAME}" == X'bookworm' -o X"${DISTRO_CODENAME}" == X'noble' ]; then
-                ALL_PKGS="${ALL_PKGS} netcat-openbsd"
-            else
-                ALL_PKGS="${ALL_PKGS} netcat"
-            fi
+            ALL_PKGS="${ALL_PKGS} zlib1g libuuid1 libmnl0 curl lm-sensors netcat-openbsd"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # netdata doesn't work on OpenBSD
             :
@@ -548,7 +540,7 @@ EOF
 
         [[ ${DISTRO_VERSION} == X'9' ]] && ALL_PKGS="${ALL_PKGS} rsyslog rsyslog-logrotate"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch unzip bsdutils liblz4-tool rsyslog"
+        ALL_PKGS="${ALL_PKGS} bzip2 acl patch cron tofrodos logwatch unzip bsdutils rsyslog"
         ENABLED_SERVICES="${ENABLED_SERVICES} cron"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         ALL_PKGS="${ALL_PKGS} bzip2 lz4 unzip--"

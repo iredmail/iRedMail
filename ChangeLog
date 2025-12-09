@@ -1,7 +1,15 @@
 iRedMail-1.7.5:
 
++ Supports new distribution release:
+    + Debian 13 (trixie)
+    + OpenBSD 7.8.
+
+* Dropped distribution release:
+    - OpenBSD 7.7
+
 * Updated packages:
-    + netdata 2.6.1
+    + netdata 2.8.1
+    + iRedAPD 5.9.3
 
 iRedMail-1.7.4:
 

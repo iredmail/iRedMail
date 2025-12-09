@@ -36,6 +36,9 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
     if [[ X"${DISTRO}" == X'RHEL' ]] && [[ X"${DISTRO_VERSION}" == X'10' ]]; then
         # SOGo team doesn't offer binary packages for RHEL 10 yet.
         export DIALOG_SELECTABLE_SOGO='NO'
+    elif [[ X"${DISTRO}" == X'DEBIAN' ]] && [[ X"${DISTRO_VERSION}" == X'13' ]]; then
+        # SOGo team doesn't offer binary packages for Debian 13 yet.
+        export DIALOG_SELECTABLE_SOGO='NO'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
         # OpenBSD doesn't have 'libuuid' which required by netdata
         export DIALOG_SELECTABLE_NETDATA='NO'

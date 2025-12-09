@@ -41,6 +41,8 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Debian 12
     [[ X"${DISTRO_CODENAME}" == X'bookworm' ]] && export PGSQL_VERSION='15'
+    # Debian 13
+    [[ X"${DISTRO_CODENAME}" == X'trixie' ]] && export PGSQL_VERSION='17'
     # Ubuntu 22.04 (jammy)
     [[ X"${DISTRO_CODENAME}" == X'jammy' ]] && export PGSQL_VERSION='14'
     # Ubuntu 24.04 (noble)
