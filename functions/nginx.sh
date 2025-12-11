@@ -93,6 +93,11 @@ nginx_config()
     perl -pi -e 's#PH_HTTPD_CONF_DIR_ENABLED_SITES#$ENV{HTTPD_CONF_DIR_ENABLED_SITES}#g' ${NGINX_CONF}
     perl -pi -e 's#PH_HTTPD_CONF_DIR_ENABLED_CONF#$ENV{HTTPD_CONF_DIR_ENABLED_CONF}#g' ${NGINX_CONF}
 
+    if [[ "${DISTRO}" == 'OpenBSD' ]] || [[ "${DISTRO}" == 'FREEBSD' ]]; then
+        perl -pi -e 's/#http2 on;/http2 on;/g' ${NGINX_CONF}
+        perl -pi -e 's/ http2;/;/g' ${NGINX_CONF_SITE_DEFAULT_SSL}
+    fi
+
     #
     # conf-available/*.conf
     #
