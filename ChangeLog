@@ -8,7 +8,8 @@ iRedMail-1.7.5:
     - OpenBSD 7.7
 
 * Updated packages:
-    + netdata 2.8.1
+    + Roundcube 1.6.12 (addresses 2 security issues)
+    + netdata 2.8.3
     + iRedAPD 5.9.4
     + iRedAdmin 2.7
 
