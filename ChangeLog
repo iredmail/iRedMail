@@ -10,7 +10,7 @@ iRedMail-1.7.5:
 * Updated packages:
     + Roundcube 1.6.12 (addresses 2 security issues)
     + netdata 2.8.3
-    + iRedAPD 5.9.4
+    + iRedAPD 6.0
     + mlmmjadmin 3.5.0
     + iRedAdmin 2.7
 
