@@ -117,6 +117,7 @@ EOF
         cat >> ${MLMMJADMIN_CONF} <<EOF
 iredmail_sql_db_server = '${SQL_SERVER_ADDRESS}'
 iredmail_sql_db_port = ${SQL_SERVER_PORT}
+iredmail_sql_db_use_ssl = False
 iredmail_sql_db_name = '${VMAIL_DB_NAME}'
 iredmail_sql_db_user = '${VMAIL_DB_ADMIN_USER}'
 iredmail_sql_db_password = '${VMAIL_DB_ADMIN_PASSWD}'
