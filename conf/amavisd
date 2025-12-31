@@ -55,12 +55,7 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
     export AMAVISD_CONF='/etc/amavisd/amavisd.conf'
 
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-    if [[ X"${DISTRO_CODENAME}" == X"bookworm" ]] || [[ X"${DISTRO_CODENAME}" == X'noble' ]]; then
-        export AMAVISD_BIN='/usr/sbin/amavisd'
-    else
-        export AMAVISD_BIN='/usr/sbin/amavisd-new'
-    fi
-
+    export AMAVISD_BIN='/usr/sbin/amavisd'
     export AMAVISD_CONF_DIR='/etc/amavis/conf.d'
     export AMAVISD_CONF='/etc/amavis/conf.d/50-user'
     export AMAVISD_RC_SCRIPT_NAME='amavis'

@@ -23,7 +23,7 @@
 #
 # netdata: https://my-netdata.io
 #
-export NETDATA_VERSION='2.6.1'
+export NETDATA_VERSION='2.8.4'
 
 if [[ X"${OS_ARCH}" == X'aarch64' ]]; then
     export NETDATA_PKG_NAME="netdata-aarch64-v${NETDATA_VERSION}.gz.run"

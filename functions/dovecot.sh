@@ -37,7 +37,13 @@ dovecot_config()
     # FreeBSD:      Dovecot-2.3.0+
     # OpenBSD 7.0:  Dovecot-2.3.16+
     ECHO_DEBUG "Copy sample Dovecot config file to ${DOVECOT_CONF}."
-    cp ${SAMPLE_DIR}/dovecot/dovecot.conf ${DOVECOT_CONF}
+    if [[ ${DOVECOT_VERSION} == "2.3" ]]; then
+        cp ${SAMPLE_DIR}/dovecot/dovecot.conf ${DOVECOT_CONF}
+    elif [[ ${DOVECOT_VERSION} == "2.4" ]]; then
+        [[ ${BACKEND} == "MYSQL" ]] && cp ${SAMPLE_DIR}/dovecot/dovecot-2.4-mariadb.conf ${DOVECOT_CONF}
+        [[ ${BACKEND} == "PGSQL" ]] && cp ${SAMPLE_DIR}/dovecot/dovecot-2.4-pgsql.conf ${DOVECOT_CONF}
+        [[ ${BACKEND} == "OPENLDAP" ]] && cp ${SAMPLE_DIR}/dovecot/dovecot-2.4-openldap.conf ${DOVECOT_CONF}
+    fi
 
     chmod 0664 ${DOVECOT_CONF}
 
@@ -217,7 +223,6 @@ dovecot_config()
 
         # Set file permission.
         chmod 0500 ${DOVECOT_LDAP_CONF}
-
     elif [ X"${BACKEND}" == X'MYSQL' ]; then
 
         backup_file ${DOVECOT_MYSQL_CONF}
@@ -225,9 +230,9 @@ dovecot_config()
         perl -pi -e 's/^#(iterate_.*)/${1}/' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#(.*mailbox.)(enable.*Lc)(=1)#${1}`${2}`${3}#' ${DOVECOT_MYSQL_CONF}
 
+        perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#' ${DOVECOT_MYSQL_CONF}
-        perl -pi -e 's#PH_SQL_DRIVER#mysql#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#' ${DOVECOT_MYSQL_CONF}
         perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#' ${DOVECOT_MYSQL_CONF}
@@ -252,6 +257,30 @@ dovecot_config()
         chmod 0550 ${DOVECOT_PGSQL_CONF}
     fi
 
+    if [[ X"${DOVECOT_VERSION}" == X'2.4' ]]; then
+        perl -pi -e 's#PH_SYS_USER_VMAIL#$ENV{SYS_USER_VMAIL}#' ${DOVECOT_CONF}
+        perl -pi -e 's#PH_SYS_GROUP_VMAIL#$ENV{SYS_GROUP_VMAIL}#' ${DOVECOT_CONF}
+
+        perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_CONF}
+        perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#' ${DOVECOT_CONF}
+
+        if [ X"${BACKEND}" == X'MYSQL' -o X"${BACKEND}" == X'PGSQL' ]; then
+            perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#' ${DOVECOT_CONF}
+            perl -pi -e 's#PH_VMAIL_DB_ADMIN_USER#$ENV{VMAIL_DB_ADMIN_USER}#' ${DOVECOT_CONF}
+            perl -pi -e 's#PH_VMAIL_DB_ADMIN_PASSWD#$ENV{VMAIL_DB_ADMIN_PASSWD}#' ${DOVECOT_CONF}
+        elif [ X"${BACKEND}" == X'OPENLDAP' ]; then
+            perl -pi -e 's#PH_IREDADMIN_DB_NAME#$ENV{IREDADMIN_DB_NAME}#' ${DOVECOT_CONF}
+            perl -pi -e 's#PH_IREDADMIN_DB_USER#$ENV{IREDADMIN_DB_USER}#' ${DOVECOT_CONF}
+            perl -pi -e 's#PH_IREDADMIN_DB_PASSWD#$ENV{IREDADMIN_DB_PASSWD}#' ${DOVECOT_CONF}
+
+            perl -pi -e 's#PH_LDAP_SERVER_HOST#$ENV{LDAP_SERVER_HOST}#' ${DOVECOT_CONF}
+            perl -pi -e 's#PH_LDAP_SERVER_PORT#$ENV{LDAP_SERVER_PORT}#' ${DOVECOT_CONF}
+            perl -pi -e 's#PH_LDAP_BASEDN#$ENV{LDAP_BASEDN}#' ${DOVECOT_CONF}
+            perl -pi -e 's#PH_LDAP_BINDDN#$ENV{LDAP_BINDDN}#' ${DOVECOT_CONF}
+            perl -pi -e 's#PH_LDAP_BINDPW#$ENV{LDAP_BINDPW}#' ${DOVECOT_CONF}
+        fi
+    fi
+
     backup_file ${DOVECOT_LAST_LOGIN_CONF} ${DOVECOT_SHARE_FOLDER_CONF}
 
     # Track last login.
@@ -272,10 +301,13 @@ dovecot_config()
     perl -pi -e 's#PH_DOVECOT_LAST_LOGIN_CONF#$ENV{DOVECOT_LAST_LOGIN_CONF}#' ${DOVECOT_CONF}
 
     # Replace place holders in sample config file
-    perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_REALTIME_QUOTA_CONF} \
+    perl -pi -e 's#PH_SQL_SERVER_ADDRESS#$ENV{SQL_SERVER_ADDRESS}#' ${DOVECOT_CONF} \
+        ${DOVECOT_REALTIME_QUOTA_CONF} \
         ${DOVECOT_REALTIME_QUOTA_CONF} \
         ${DOVECOT_LAST_LOGIN_CONF}
-    perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#' ${DOVECOT_REALTIME_QUOTA_CONF} \
+
+    perl -pi -e 's#PH_SQL_SERVER_PORT#$ENV{SQL_SERVER_PORT}#' ${DOVECOT_CONF} \
+        ${DOVECOT_REALTIME_QUOTA_CONF} \
         ${DOVECOT_REALTIME_QUOTA_CONF} \
         ${DOVECOT_LAST_LOGIN_CONF}
 

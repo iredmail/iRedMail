@@ -298,7 +298,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Debian
         export DISTRO='DEBIAN'
 
-        echo "${DISTRO_VERSION}" | grep -E '^(12)' &>/dev/null
+        echo "${DISTRO_VERSION}" | grep -E '^(12|13)' &>/dev/null
         if [[ $? != 0 ]]; then
             export UNSUPPORTED_RELEASE='YES'
         fi
@@ -344,8 +344,8 @@ elif [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
     export CMD_PYTHON3='/usr/local/bin/python3'
     export CMD_PIP3="pip${PYTHON_VERSION}"
 
-    # Supported release: 7.7
-    echo "${DISTRO_VERSION}" | grep '^7\.7$' &>/dev/null
+    # Supported release: 7.8
+    echo "${DISTRO_VERSION}" | grep '^7\.8$' &>/dev/null
     if [[ X"$?" != X"0" ]]; then
         export UNSUPPORTED_RELEASE='YES'
     fi

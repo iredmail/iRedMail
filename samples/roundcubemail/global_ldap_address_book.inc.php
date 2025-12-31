@@ -1,8 +1,7 @@
 // Global LDAP address book.
 $config['ldap_public']["global_ldap_abook"] = array(
     'name'              => 'Global LDAP Address Book',
-    'hosts'             => array('PH_LDAP_SERVER_HOST'),
-    'port'              => PH_LDAP_SERVER_PORT,
+    'hosts'             => array('PH_LDAP_SERVER_HOST:PH_LDAP_SERVER_PORT'),
     'use_tls'           => false,
     'ldap_version'      => '3',
     'network_timeout'   => 10,

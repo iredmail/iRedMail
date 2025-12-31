@@ -1,7 +1,18 @@
 iRedMail-1.7.5:
 
++ Supports new distribution release:
+    + Debian 13 (trixie)
+    + OpenBSD 7.8.
+
+* Dropped distribution release:
+    - OpenBSD 7.7
+
 * Updated packages:
-    + netdata 2.6.1
+    + Roundcube 1.6.12 (addresses 2 security issues)
+    + netdata 2.8.4
+    + iRedAPD 6.0, supports secure (ssl) sql connection.
+    + mlmmjadmin 3.6.0, supports secure (ssl) sql connection.
+    + iRedAdmin 2.7
 
 iRedMail-1.7.4:
 

@@ -222,13 +222,8 @@ iredapd_config()
     perl -pi -e 's#^(mlmmjadmin_api_auth_token).*#${1} = "$ENV{MLMMJADMIN_API_AUTH_TOKEN}"#' ${IREDAPD_CONF}
 
     if [ X"${BACKEND}" == X"OPENLDAP" -o X"${BACKEND}" == X'MYSQL' ]; then
-        # Set correct SQL driver for SQLAlchemy. Defaults to `MySQLdb`.
-        # OpenBSD 6.8 uses `py3-mysqlclient`, its module name is `MySQLdb`.
-        if [ X"${DISTRO}" == X'OPENBSD' ] && [ X"${DISTRO_VERSION}" == X'6.8' ]; then
-            :
-        else
-            export SQL_DB_DRIVER='pymysql'
-        fi
+        # Set correct SQL driver for SQLAlchemy. Defaults to `pymysql`.
+        export SQL_DB_DRIVER='pymysql'
 
         if [ X"${SQL_DB_DRIVER}" != X'' ]; then
             echo "SQL_DB_DRIVER = '${SQL_DB_DRIVER}'" >> ${IREDAPD_CONF}

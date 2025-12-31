@@ -74,6 +74,11 @@ export DOVECOT_LOGROTATE_FILE="${LOGROTATE_DIR}/dovecot"
 
 if [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export DOVECOT_DELIVER_BIN='/usr/lib/dovecot/deliver'
+
+    if [ X"${DISTRO}" == X'DEBIAN' -a X"${DISTRO_VERSION}" == X'13' ]; then
+        export DOVECOT_VERSION='2.4'
+    fi
+
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export DOVECOT_CONF_DIR='/usr/local/etc/dovecot'
     export DOVECOT_DELIVER_BIN='/usr/local/libexec/dovecot/deliver'
