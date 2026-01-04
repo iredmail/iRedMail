@@ -54,7 +54,7 @@ install_all()
         OB_PKG_PHP_VER="%${OB_PHP_VERSION}"
         OB_PKG_OPENLDAP_SERVER_VER='-2.6.10v0'
         OB_PKG_OPENLDAP_CLIENT_VER='-2.6.10v0'
-        OB_UWSGI_VERSION='2.0.28'
+        OB_UWSGI_VERSION='2.0.31'
     fi
 
     # Install PHP if there's a web server running -- php is too popular.

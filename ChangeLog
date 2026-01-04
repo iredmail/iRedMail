@@ -13,6 +13,7 @@ iRedMail-1.7.5:
     + iRedAPD 6.1, supports secure (ssl) sql connection.
     + mlmmjadmin 3.6.1, supports secure (ssl) sql connection.
     + iRedAdmin 2.7
+    + uwsgi 2.0.31 (OpenBSD only)
 
 iRedMail-1.7.4:
 
