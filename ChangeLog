@@ -10,8 +10,8 @@ iRedMail-1.7.5:
 * Updated packages:
     + Roundcube 1.6.12 (addresses 2 security issues)
     + netdata 2.8.4
-    + iRedAPD 6.0, supports secure (ssl) sql connection.
-    + mlmmjadmin 3.6.0, supports secure (ssl) sql connection.
+    + iRedAPD 6.1, supports secure (ssl) sql connection.
+    + mlmmjadmin 3.6.1, supports secure (ssl) sql connection.
     + iRedAdmin 2.7
 
 iRedMail-1.7.4:
