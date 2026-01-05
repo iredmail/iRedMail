@@ -133,7 +133,7 @@ install_all()
     ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-dnspython ${PY_FLAVOR}-multipart"
 
     # iRedAdmin dependencies.
-    ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-simplejson ${PY_FLAVOR}-requests ${PY_FLAVOR}-netifaces"
+    ALL_PKGS="${ALL_PKGS} ${PY_FLAVOR}-Jinja2 ${PY_FLAVOR}-bcrypt ${PY_FLAVOR}-simplejson ${PY_FLAVOR}-requests ${PY_FLAVOR}-netifaces ${PY_FLAVOR}-more-itertools"
 
     # Fail2ban.
     if [ X"${USE_FAIL2BAN}" == X'YES' ]; then
