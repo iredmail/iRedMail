@@ -11,7 +11,7 @@ iRedMail-1.7.5:
     + Roundcube 1.6.12 (addresses 2 security issues)
     + netdata 2.8.4
     + iRedAPD 6.1, supports secure (ssl) sql connection.
-    + mlmmjadmin 3.6.1, supports secure (ssl) sql connection.
+    + mlmmjadmin 3.6.2, supports secure (ssl) sql connection.
     + iRedAdmin 2.7
     + uwsgi 2.0.31 (OpenBSD only)
 
