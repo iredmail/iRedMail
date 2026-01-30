@@ -471,7 +471,7 @@ EOF
     if [ X"${DISTRO}" == X'RHEL' ]; then
         ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-simplejson"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-netifaces python3-bcrypt python3-dnspython python3-simplejson"
+        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-netifaces python3-bcrypt python3-dnspython python3-simplejson python3-more-itertools"
 
         if [ X"${BACKEND}" == X'OPENLDAP' ]; then
             if [ X"${DISTRO}" == X'DEBIAN' -a X"${DISTRO_VERSION}" == X'9' ]; then
