@@ -7,6 +7,10 @@ iRedMail-1.7.5:
 * Dropped distribution release:
     - OpenBSD 7.7
 
+* Improvements:
+    - Install SOGo on Debian 13 (trixie) from SOGo nightly build apt repository.
+    - Disable quota status service (port `12340`) in Dovecot and Postfix.
+
 * Updated packages:
     + Roundcube 1.6.13 (addresses 2 security issues)
     + netdata 2.8.4

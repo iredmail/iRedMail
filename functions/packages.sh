@@ -395,11 +395,11 @@ EOF
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} sope4.9-gdl1-postgresql"
 
-            ECHO_INFO "Add apt repo for SOGo: ${SOGO_PKG_MIRROR}"
+            ECHO_INFO "Add apt repo for SOGo."
             if [ X"${DISTRO}" == X'DEBIAN' ]; then
-                echo "deb ${SOGO_PKG_MIRROR}/nightly/${SOGO_VERSION}/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
+                echo "${SOGO_DEBIAN_APT_REPO}" > /etc/apt/sources.list.d/sogo-nightly.list
             elif [ X"${DISTRO}" == X'UBUNTU' ]; then
-                echo "deb ${SOGO_PKG_MIRROR}/nightly/${SOGO_VERSION}/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}" > /etc/apt/sources.list.d/sogo-nightly.list
+                echo "${SOGO_UBUNTU_APT_REPO}" > /etc/apt/sources.list.d/sogo-nightly.list
             fi
 
             ECHO_DEBUG "Add GPG key for SOGo apt repo."

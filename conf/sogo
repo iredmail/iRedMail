@@ -26,6 +26,13 @@ export SOGO_PKG_MIRROR="${SOGO_PKG_MIRROR:=https://packages.sogo.nu}"
 # Version number of SOGo major release.
 export SOGO_VERSION='5'
 
+export SOGO_DEBIAN_APT_REPO="deb ${SOGO_PKG_MIRROR}/nightly/${SOGO_VERSION}/debian ${DISTRO_CODENAME} ${DISTRO_CODENAME}"
+export SOGO_UBUNTU_APT_REPO="deb ${SOGO_PKG_MIRROR}/nightly/${SOGO_VERSION}/ubuntu ${DISTRO_CODENAME} ${DISTRO_CODENAME}"
+if [[ X"${DISTRO_CODENAME}" == X'trixie' ]]; then
+    # Debian 13 (trixie)
+    export SOGO_DEBIAN_APT_REPO="deb https://packagingv2.sogo.nu/sogo-nightly-debian ${DISTRO_CODENAME} main"
+fi
+
 export SYS_USER_SOGO='sogo'
 export SYS_GROUP_SOGO='sogo'
 
