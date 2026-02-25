@@ -85,6 +85,8 @@ if [ X"${DISTRO}" == X'RHEL' ]; then
 elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     export SOGO_RC_SCRIPT_NAME='sogo'
 
+    [[ X"${DISTRO_CODENAME}" == X'trixie' ]] && export SOGO_GNUSTEP_DIR='/usr/lib/x86_64-linux-gnu/GNUstep/SOGo/'
+
 elif [ X"${DISTRO}" == X'FREEBSD' ]; then
     export SYS_USER_SOGO='sogod'
     export SYS_GROUP_SOGO='sogod'
