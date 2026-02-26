@@ -134,6 +134,9 @@ fi
 export DOVECOT_SERVICE_STATS_USER="${SYS_USER_VMAIL}"
 export DOVECOT_SERVICE_STATS_GROUP="${SYS_GROUP_VMAIL}"
 export DOVECOT_SERVICE_STATS_PORT='24242'
+# Dovecot 2.3: https://doc.dovecot.org/2.3/configuration_manual/quota_plugin/#quota-plugin
+# Dovecot 2.4: https://doc.dovecot.org/main/core/plugins/quota.html
+export DOVECOT_SERVICE_QUOTA_STATUS_PORT='12340'
 
 # Local (Mail) Delivery Agent
 #   - dovecot
