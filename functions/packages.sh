@@ -283,11 +283,8 @@ install_all()
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} amavisd-new libcrypt-openssl-rsa-perl libmail-dkim-perl clamav-freshclam clamav-daemon spamassassin altermime arj nomarch cpio lzop cabextract p7zip-full rpm libmail-spf-perl unrar-free pax lrzip gpg-agent libdbd-mysql-perl"
 
-        # Ubuntu 22.04
-        [[ X"${DISTRO_CODENAME}" == X'jammy' ]] && ALL_PKGS="${ALL_PKGS} libclamunrar9"
-
-        # Ubuntu 24.04
-        [[ X"${DISTRO_CODENAME}" == X'noble' ]] && ALL_PKGS="${ALL_PKGS} libclamunrar11"
+        # Ubuntu 24.04, 26.04
+        [[ X"${DISTRO}" == X'UBUNTU' ]] && ALL_PKGS="${ALL_PKGS} libclamunrar12"
 
         ENABLED_SERVICES="${ENABLED_SERVICES} ${CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME}"
         DISABLED_SERVICES="${DISABLED_SERVICES} spamassassin spamd clamav-clamonacc"

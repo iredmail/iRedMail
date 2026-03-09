@@ -33,6 +33,12 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
         export DIALOG_SELECTABLE_SOGO='NO'
     fi
 
+    if [ X"${DISTRO_CODENAME}" == X'resolute' ]; then
+        # netdata / sogo team don't have apt repo for resolute yet.
+        export DIALOG_SELECTABLE_NETDATA='NO'
+        export DIALOG_SELECTABLE_SOGO='NO'
+    fi
+
     if [[ X"${DISTRO}" == X'RHEL' ]] && [[ X"${DISTRO_VERSION}" == X'10' ]]; then
         # SOGo team doesn't offer binary packages for RHEL 10 yet.
         export DIALOG_SELECTABLE_SOGO='NO'

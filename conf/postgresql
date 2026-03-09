@@ -43,10 +43,10 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     [[ X"${DISTRO_CODENAME}" == X'bookworm' ]] && export PGSQL_VERSION='15'
     # Debian 13
     [[ X"${DISTRO_CODENAME}" == X'trixie' ]] && export PGSQL_VERSION='17'
-    # Ubuntu 22.04 (jammy)
-    [[ X"${DISTRO_CODENAME}" == X'jammy' ]] && export PGSQL_VERSION='14'
     # Ubuntu 24.04 (noble)
     [[ X"${DISTRO_CODENAME}" == X'noble' ]] && export PGSQL_VERSION='16'
+    # Ubuntu 26.04 (resolute)
+    [[ X"${DISTRO_CODENAME}" == X'resolute' ]] && export PGSQL_VERSION='18'
 
     export PGSQL_USER_HOMEDIR='/var/lib/postgresql'
     export PGSQL_DATA_DIR="/var/lib/postgresql/${PGSQL_VERSION}/main"

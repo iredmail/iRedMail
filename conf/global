@@ -241,9 +241,10 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
 
     # Debian:
     #   - 12: bookworm
+    #   - 13: trixie
     # Ubuntu:
-    #   - 22.04: jammy
     #   - 24.04: noble
+    #   - 26.04: noble
     export DISTRO_CODENAME=$(awk -F'=' '/^VERSION_CODENAME=/ {print $2}' /etc/os-release)
 
     # Directory of RC scripts.
@@ -288,8 +289,8 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Ubuntu
         export DISTRO='UBUNTU'
 
-        # Supported releases: 22.04, 24.04.
-        if echo "${DISTRO_VERSION}" | grep -E '^(22.04|24.04)' &>/dev/null ; then
+        # Supported releases: 24.04, 26.04.
+        if echo "${DISTRO_VERSION}" | grep -E '^(24.04|26.04)' &>/dev/null ; then
             :
         else
             export UNSUPPORTED_RELEASE='YES'
@@ -298,6 +299,7 @@ if [ X"${KERNEL_NAME}" == X'LINUX' ]; then
         # Debian
         export DISTRO='DEBIAN'
 
+        # Supported releases: 12 (bookworm), 13 (trixie).
         echo "${DISTRO_VERSION}" | grep -E '^(12|13)' &>/dev/null
         if [[ $? != 0 ]]; then
             export UNSUPPORTED_RELEASE='YES'

@@ -46,10 +46,10 @@ elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
     # Debian 13
     [[ X"${DISTRO_CODENAME}" == X'trixie' ]] && export PHP_VERSION='8.4'
 
-    # Ubuntu 22.04
-    [[ X"${DISTRO_CODENAME}" == X'jammy' ]] && export PHP_VERSION='8.1'
     # Ubuntu 24.04
     [[ X"${DISTRO_CODENAME}" == X'noble' ]] && export PHP_VERSION='8.3'
+    # Ubuntu 26.04
+    [[ X"${DISTRO_CODENAME}" == X'resolute' ]] && export PHP_VERSION='8.5'
 
     export PHP_INI="/etc/php/${PHP_VERSION}/fpm/php.ini"
     export PHP_FPM_CONF="/etc/php/${PHP_VERSION}/fpm/php-fpm.conf"

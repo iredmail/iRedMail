@@ -114,7 +114,7 @@ postfix_config_basic()
     fi
 
     # Replace deprecated parameters on newer Postfix.
-    if [ X"${DISTRO}" == X'DEBIAN' -a X"${DISTRO_CODENAME}" == X'trixie' ]; then
+    if [ X"${DISTRO_CODENAME}" == X'trixie' -o X"${DISTRO_CODENAME}" == X'resolute' ]; then
         # main.cf
         perl -pi -e 's#^(smtpd_tls_dh1024_param_file.*)##g' ${POSTFIX_FILE_MAIN_CF}
     elif [[ X"${DISTRO}" == X'FREEBSD' ]]; then
