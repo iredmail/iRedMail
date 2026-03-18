@@ -2,14 +2,12 @@ iRedMail-1.7.5:
 
 + Supports new distribution release:
     + Debian 13 (trixie)
+    + Ubuntu 26.04 LTS (tested with nightly build)
     + OpenBSD 7.8.
 
 * Dropped distribution release:
     - Ubuntu 22.04
     - OpenBSD 7.7
-
-* Improvements:
-    - Install SOGo on Debian 13 (trixie) from SOGo nightly build apt repository.
 
 * Updated packages:
     + Roundcube 1.6.13 (addresses 2 security issues)
