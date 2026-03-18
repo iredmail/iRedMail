@@ -113,7 +113,7 @@ postfix_config_basic()
         perl -pi -e 's#^(smtpd_tls_dh1024_param_file.*)##g' ${POSTFIX_FILE_MAIN_CF}
     fi
 
-    # Replace deprecated parameters on newer Postfix.
+    # Replace deprecated parameters on Postfix >= 3.7.
     if [ X"${DISTRO_CODENAME}" == X'trixie' -o X"${DISTRO_CODENAME}" == X'resolute' ]; then
         # main.cf
         perl -pi -e 's#^(smtpd_tls_dh1024_param_file.*)##g' ${POSTFIX_FILE_MAIN_CF}

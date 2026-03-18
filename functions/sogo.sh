@@ -290,7 +290,7 @@ memcached_setup()
 
 sogo_setup()
 {
-    ECHO_INFO "Configure SOGo Groupware (Webmail, Calendar, Address Book, ActiveSync)."
+    ECHO_INFO "Configure SOGo Groupware (Webmail, Calendars, Contacts, ActiveSync)."
 
     if [ X"${INITIALIZE_SQL_DATA}" == X'YES' ]; then
         check_status_before_run sogo_initialize_db
