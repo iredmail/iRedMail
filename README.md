@@ -5,12 +5,12 @@ iRedMail is a full-featured mail server solution: https://www.iredmail.org/
 It supports few mainstream Linux/BSD distributions:
 
 - CentOS Steam 9, 10.
-- Rocky Linux 9
-- AlmaLinux 9
-- Debian 12
-- Ubuntu 22.04, 24.04 (Recommend)
+- Rocky Linux 9, 10
+- AlmaLinux 9, 10
+- Debian 12, 13
+- Ubuntu 22.04, 24.04 (Recommend), 26.04
 - FreeBSD 14.x
-- OpenBSD 7.7
+- OpenBSD 7.8
 
 More info:
 
