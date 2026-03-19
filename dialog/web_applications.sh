@@ -29,10 +29,11 @@ if [ X"${DISABLE_WEB_SERVER}" != X'YES' ]; then
     export DIALOG_SELECTABLE_SOGO='YES'
 
     # SOGo team doesn't offer binary packages for arm platform.
-    if [[ X"${OS_ARCH}" != X'i386' ]] && [[ X"${OS_ARCH}" != X'x86_64' ]]; then
+    if [[ X"${OS_ARCH}" != X'x86_64' ]]; then
         export DIALOG_SELECTABLE_SOGO='NO'
     fi
 
+    # Ubuntu 26.04 (resolute)
     if [ X"${DISTRO_CODENAME}" == X'resolute' ]; then
         # netdata / sogo team don't have apt repo for resolute yet.
         export DIALOG_SELECTABLE_NETDATA='NO'
