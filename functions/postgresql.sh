@@ -144,6 +144,11 @@ pgsql_import_vmail_users()
     cp -f ${SAMPLE_DIR}/postgresql/sql/add_first_domain_and_user.sql ${PGSQL_DATA_DIR}/
     cp -f ${SAMPLE_DIR}/postgresql/sql/grant_permissions.sql ${PGSQL_DATA_DIR}/
 
+    # Create triggers for different Dovecot versions.
+    if [[ "${BACKEND}" == "PGSQL" ]]; then
+        cp -f ${SAMPLE_DIR}/iredmail/used_quota_triggers_dovecot_${DOVECOT_VERSION}.pgsql ${PGSQL_DATA_DIR}/used_quota_trigger.pgsql
+    fi
+
     perl -pi -e 's#PH_VMAIL_DB_NAME#$ENV{VMAIL_DB_NAME}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_VMAIL_DB_BIND_USER#$ENV{VMAIL_DB_BIND_USER}#g' ${PGSQL_DATA_DIR}/*.sql
     perl -pi -e 's#PH_VMAIL_DB_BIND_PASSWD#$ENV{VMAIL_DB_BIND_PASSWD}#g' ${PGSQL_DATA_DIR}/*.sql
@@ -171,6 +176,9 @@ pgsql_import_vmail_users()
     ECHO_DEBUG "Create tables in ${VMAIL_DB_NAME} database."
     export PGPASSFILE="${PGSQL_DOT_PGPASS}"
     su - ${SYS_USER_PGSQL} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/iredmail.sql" >> ${INSTALL_LOG} 2>&1
+
+    # Create triggers for different Dovecot versions.
+    su - ${SYS_USER_PGSQL} -c "psql -d ${VMAIL_DB_NAME} -f ${PGSQL_DATA_DIR}/used_quota_trigger.pgsql" >> ${INSTALL_LOG} 2>&1
 
     ECHO_DEBUG "Grant permissions."
     su - ${SYS_USER_PGSQL} -c "psql -d template1 -f ${PGSQL_DATA_DIR}/grant_permissions.sql" >> ${INSTALL_LOG} 2>&1
