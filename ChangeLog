@@ -10,7 +10,7 @@ iRedMail-1.7.5:
     - OpenBSD 7.7
 
 * Updated packages:
-    + Roundcube 1.6.14 (security fixes)
+    + Roundcube 1.6.15 (security fixes)
     + netdata 2.9.0
     + iRedAPD 6.1, supports secure (ssl) sql connection.
     + mlmmjadmin 3.6.2, supports secure (ssl) sql connection.
