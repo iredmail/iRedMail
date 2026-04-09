@@ -9,6 +9,7 @@ USER=${2}
 cat << EOF | PH_DOVECOT_DELIVER_BIN -d ${USER} -o "plugin/quota=dict:User quota::noenforcing:proxy::quotadict"
 From: no-reply@$(hostname -f)
 Subject: Warning: Your mailbox is now ${PERCENT}% full.
+Date: $(date -R)
 
 Your mailbox is now ${PERCENT}% full, please clean up some mails for further incoming mails.
 EOF
@@ -19,6 +20,7 @@ if [ ${PERCENT} -ge 95 ]; then
     cat << EOF | PH_DOVECOT_DELIVER_BIN -d postmaster@${DOMAIN} -o "plugin/quota=dict:User quota::noenforcing:proxy::quotadict"
 From: no-reply@$(hostname -f)
 Subject: Mailbox Quota Warning: ${PERCENT}% full, ${USER}
+Date: $(date -R)
 
 Mailbox (${USER}) is now ${PERCENT}% full, please clean up some mails for
 further incoming mails.
