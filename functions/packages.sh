@@ -94,10 +94,11 @@ install_all()
     # uwsgi.
     # Required by mlmmjadmin, iredadmin.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} uwsgi-logger-syslog uwsgi-plugin-python3"
+        ALL_PKGS="${ALL_PKGS} uwsgi-logger-syslog uwsgi-plugin-python3 python3-passlib"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
-        ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python3"
+        ALL_PKGS="${ALL_PKGS} uwsgi uwsgi-plugin-python3 python3-passlib"
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
+        ALL_PKGS="${ALL_PKGS} py3-passlib"
         PIP3_MODULES="${PIP3_MODULES} ${PKG_MISC_DIR}/uwsgi-${OB_UWSGI_VERSION}.tar.gz"
     fi
 
