@@ -162,6 +162,8 @@ postfix_config_basic()
             # Postfix 3.5.x
             postconf -e compatibility_level=2
         fi
+    elif [[ X"${DISTRO}" == X'FREEBSD' ]]; then
+        postconf -e compatibility_level=3.11
     else
         postconf -e compatibility_level=3.6
     fi
@@ -360,6 +362,11 @@ postfix_config_postscreen()
         #
         # main.cf
         #
+        if [[ X"${DISTRO}" == X'FREEBSD' ]]; then
+            perl -pi -e 's#postscreen_blacklist_action#postscreen_denylist_action#g' ${SAMPLE_DIR}/postfix/main.cf.postscreen
+            perl -pi -e 's#postscreen_dnsbl_whitelist_threshold#postscreen_dnsbl_allowlist_threshold#g' ${SAMPLE_DIR}/postfix/main.cf.postscreen
+        fi
+
         ECHO_DEBUG "Update ${POSTFIX_FILE_MAIN_CF} to enable postscreen."
         cat ${SAMPLE_DIR}/postfix/main.cf.postscreen >> ${POSTFIX_FILE_MAIN_CF}
 

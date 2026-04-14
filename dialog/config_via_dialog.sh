@@ -36,7 +36,7 @@ echo '' > ${IREDMAIL_CONFIG_FILE}
 chown ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${IREDMAIL_CONFIG_FILE}
 chmod 0400 ${IREDMAIL_CONFIG_FILE}
 
-DIALOG="dialog --colors --no-collapse --insecure --ok-label Next \
+DIALOG="${BIN_DIALOG} --colors --no-collapse --insecure --ok-label Next \
         --no-cancel --backtitle ${PROG_NAME}:_Open_Source_Mail_Server_Solution"
 
 # Welcome message.

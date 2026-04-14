@@ -467,7 +467,7 @@ EOF
     # Force install all dependent packages to help customers install iRedAdmin-Pro.
     # web.py, dnspython, requests, jinja2, mysqldb or pymysql, simplejson.
     if [ X"${DISTRO}" == X'RHEL' ]; then
-        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-simplejson"
+        ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-PyMySQL python3-dns python3-simplejson python3-more-itertools"
     elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
         ALL_PKGS="${ALL_PKGS} python3-jinja2 python3-netifaces python3-bcrypt python3-dnspython python3-simplejson python3-more-itertools"
 
@@ -486,7 +486,7 @@ EOF
         [ X"${BACKEND}" == X'PGSQL' ]   && ALL_PKGS="${ALL_PKGS} python3-psycopg2"
 
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-        ALL_PKGS="${ALL_PKGS} py3-jinja2 py3-flup py3-bcrypt py3-curl py3-netifaces py3-dnspython py3-simplejson"
+        ALL_PKGS="${ALL_PKGS} py3-jinja2 py3-flup py3-bcrypt py3-curl py3-netifaces py3-dnspython py3-simplejson py3-more-itertools"
 
         [ X"${BACKEND}" == X'OPENLDAP' ]    && ALL_PKGS="${ALL_PKGS} py3-ldap py3-mysqlclient"
         [ X"${BACKEND}" == X'MYSQL' ]       && ALL_PKGS="${ALL_PKGS} py3-mysqlclient"

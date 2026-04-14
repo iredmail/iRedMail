@@ -23,7 +23,7 @@
 install_all()
 {
     export OPENLDAP_VER='26'
-    export MYSQL_VER='80'
+    export MYSQL_VER='84'
     export PHP_VER='83'
     export PY3_VER='3.11'
     export PY_FLAVOR='py311'
