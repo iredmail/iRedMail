@@ -8,6 +8,7 @@ USER=${2}
 # Use "plugin/quota=maildir:User quota:noenforcing" for maildir quota.
 cat << EOF | PH_DOVECOT_DELIVER_BIN -d ${USER} -o "plugin/quota=dict:User quota::noenforcing:proxy::quotadict"
 From: no-reply@$(hostname -f)
+To: ${USER}
 Subject: Warning: Your mailbox is now ${PERCENT}% full.
 Date: $(date -R)
 
@@ -19,6 +20,7 @@ if [ ${PERCENT} -ge 95 ]; then
     DOMAIN="$(echo ${USER} | awk -F'@' '{print $2}')"
     cat << EOF | PH_DOVECOT_DELIVER_BIN -d postmaster@${DOMAIN} -o "plugin/quota=dict:User quota::noenforcing:proxy::quotadict"
 From: no-reply@$(hostname -f)
+To: postmaster@${DOMAIN}
 Subject: Mailbox Quota Warning: ${PERCENT}% full, ${USER}
 Date: $(date -R)
 
