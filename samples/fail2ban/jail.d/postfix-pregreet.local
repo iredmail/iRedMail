@@ -4,6 +4,6 @@ journalmatch=
 enabled     = true
 maxretry    = 1
 filter      = postfix-pregreet.iredmail
-logpath     = PH_MAILLOG
+logpath     = PH_MAILLOG tail
 action      = PH_FAIL2BAN_ACTION[name=pregreet, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]
               banned_db[name=pregreet, port="PH_FAIL2BAN_DISABLED_SERVICES", protocol=tcp]

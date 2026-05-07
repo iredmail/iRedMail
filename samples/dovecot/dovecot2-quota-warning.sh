@@ -15,6 +15,7 @@ Subject: Warning: Your mailbox is now ${PERCENT}% full.
 Date: $(date -R)
 Message-ID: <$(date +%Y%m%d%H%M%S)-${RANDOM}@${hostname}>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 
 Your mailbox is now ${PERCENT}% full, please clean up some mails for further incoming mails.
 EOF
@@ -29,6 +30,7 @@ Subject: Mailbox Quota Warning: ${PERCENT}% full, ${USER}
 Date: $(date -R)
 Message-ID: <$(date +%Y%m%d%H%M%S)-${RANDOM}@${hostname}>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 
 Mailbox (${USER}) is now ${PERCENT}% full, please clean up some mails for
 further incoming mails.
