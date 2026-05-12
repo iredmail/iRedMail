@@ -1,26 +1,31 @@
 #
 # Run Roundcube as a sub-domain virtual host.
 #
-# Block access to default directories and files under these directories
-location ~ ^/(bin|config|installer|logs|SQL|temp|vendor)/.* { deny all; }
-
-# Block access to default files under top-directory and files start with same name.
-location ~ ^/(CHANGELOG|composer.json|INSTALL|jsdeps.json|LICENSE|README|UPGRADING)$ { deny all; }
-
-# Block plugin config files and sample config files.
+# Block direct access to directories and files.
+location ~ ^/(SQL|bin|config|installer|logs|temp|vendor)/ { deny all; }
+location ~ ^/(.*\.md|composer\.*|INSTALL|LICENSE|Makefile|UPGRADING)$ { deny all; }
 location ~ ^/plugins/.*/config.inc.php.* { deny all; }
-
-# Block access to plugin data
 location ~ ^/plugins/enigma/home($|/.*) { deny all; }
 
+# Block access to directories and files via `public_html/static.php`.
+location ~ ^/static.php/(SQL|bin|config|installer|logs|temp|vendor)/ { deny all; }
+location ~ ^/static.php/(.*\.md|composer\.*|INSTALL|LICENSE|Makefile|UPGRADING)$ { deny all; }
+location ~ ^/static.php/plugins/.*/config.inc.php.* { deny all; }
+location ~ ^/static.php/plugins/enigma/home($|/.*) { deny all; }
+
 location / {
-    root    PH_RCM_HTTPD_ROOT_SYMBOL_LINK;
+    root    PH_RCM_HTTPD_ROOT_SYMBOL_LINK/public_html;
     index   index.php index.html;
     include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
 }
 
-location ~ \.php$ {
-    root PH_RCM_HTTPD_ROOT_SYMBOL_LINK;
+location ~ ^/static.php/(.*) {
+    include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
+    alias PH_RCM_HTTPD_ROOT_SYMBOL_LINK/$1;
+}
+
+location ~ ^/(.*\.php)$ {
+    include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
     include PH_NGINX_CONF_TMPL_DIR/fastcgi_php.tmpl;
-    fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK$fastcgi_script_name;
+    fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK/public_html/$1;
 }
