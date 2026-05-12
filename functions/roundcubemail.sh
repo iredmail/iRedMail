@@ -22,7 +22,7 @@ rcm_install()
         ECHO_DEBUG "Set correct permission for Roundcubemail: ${RCM_HTTPD_ROOT}."
         chown -R ${SYS_USER_ROOT}:${SYS_GROUP_ROOT} ${RCM_HTTPD_ROOT}
         chown -R ${HTTPD_USER}:${HTTPD_GROUP} ${RCM_HTTPD_ROOT}/{temp,logs}
-        chmod 0000 ${RCM_HTTPD_ROOT}/{CHANGELOG.md,README.md,composer.json,composer.lock,installer,SQL}
+        chmod 0000 ${RCM_HTTPD_ROOT}/{*.md,Makefile,SQL,composer.*,installer}
     fi
 
     # Copy sample config files.
