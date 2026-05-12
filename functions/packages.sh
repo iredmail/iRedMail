@@ -73,12 +73,12 @@ install_all()
         fi
     fi
 
-    # Enable php:8.0 module on CentOS/Rocky/Alma 8.
-    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'8' ]; then
+    # Switch to php:8.2 on CentOS/Rocky/Alma 9.
+    if [ X"${DISTRO}" == X'RHEL' -a X"${DISTRO_VERSION}" == X'9' ]; then
         # If `dnf module enable` failed, please follow command output to
         # remove installed php and reset module 'php'.
-        dnf module enable -y php:8.0
-        dnf module switch-to -y php:8.0
+        dnf module enable -y php:8.2
+        dnf module switch-to -y php:8.2
     fi
 
     # Python 3.
@@ -499,12 +499,6 @@ EOF
 
         if [ X"${DISTRO}" == X'RHEL' ]; then
             ALL_PKGS="${ALL_PKGS} fail2ban"
-
-            if [ X"${DISTRO_VERSION}" == X'8' ]; then
-                # GeoIP is available on CentOS 8.
-                ALL_PKGS="${ALL_PKGS} GeoIP GeoIP-GeoLite-data"
-            fi
-
             DISABLED_SERVICES="${DISABLED_SERVICES} shorewall gamin gamin-python"
         elif [ X"${DISTRO}" == X'DEBIAN' -o X"${DISTRO}" == X'UBUNTU' ]; then
             ALL_PKGS="${ALL_PKGS} fail2ban geoip-bin geoip-database"
