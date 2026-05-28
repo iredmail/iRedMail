@@ -253,7 +253,6 @@ iredadmin_rc_setup()
             if [[ ${_has_plugins_line} == "NO" ]]; then
                 # add the `plugins =` line
                 echo "plugins = python3, syslog" >> ${_ini_file}
-                echo "single-interpreter = true" >> ${_ini_file}
              else
                 perl -pi -e 's#^(plugins).*#${1} = python3, syslog#g' ${_ini_file}
             fi
@@ -274,6 +273,9 @@ iredadmin_rc_setup()
 
         perl -pi -e 's#^(uwsgi-socket).*#${1} = $ENV{IREDADMIN_BIND_ADDRESS}:$ENV{IREDADMIN_LISTEN_PORT}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/freebsd.ini
         perl -pi -e 's#^(chdir).*#${1} = $ENV{IREDADMIN_HTTPD_ROOT_SYMBOL_LINK}#g' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/freebsd.ini
+        if ! grep -q '^single-interpreter' ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/freebsd.ini; then
+            echo "single-interpreter = true" >> ${IREDADMIN_HTTPD_ROOT}/rc_scripts/uwsgi/freebsd.ini
+        fi
 
         service_control enable 'iredadmin_enable' 'YES'
     elif [ X"${DISTRO}" == X'OPENBSD' ]; then
