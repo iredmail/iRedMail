@@ -253,6 +253,7 @@ iredadmin_rc_setup()
             if [[ ${_has_plugins_line} == "NO" ]]; then
                 # add the `plugins =` line
                 echo "plugins = python3, syslog" >> ${_ini_file}
+                echo "single-interpreter = true" >> ${_ini_file}
              else
                 perl -pi -e 's#^(plugins).*#${1} = python3, syslog#g' ${_ini_file}
             fi
