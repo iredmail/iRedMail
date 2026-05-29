@@ -43,6 +43,7 @@ mysql_initialize_db()
         # 'mysql_enable=YES' is required to start service immediately.
         ECHO_DEBUG "Enable mysql service when system start up."
         service_control enable 'mysql_enable' 'YES'
+        service_control enable 'mysql_args' '--mysql-native-password=ON'
 
         # rc script `mysql-server` doesn't create required directory.
         mkdir -p /var/run/mysql &>/dev/null
