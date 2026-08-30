@@ -1,3 +1,9 @@
+iRedMail-1.8.7:
+
+* Fixed issues:
+    - Incorrect sieve directory for Dovecot 2.4 on Debian 13 and Ubuntu 26.04.
+      Thanks to willougr@forum for the feedback.
+
 iRedMail-1.8.6:
 
 * Updated packages:
