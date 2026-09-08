@@ -1,3 +1,9 @@
+iRedMail-1.8.8:
+
+* Updated packages:
+    + Roundcube webmail 1.7.4 (addressed 12 security vulnerabilities)
+      https://roundcube.net/news/2026/09/06/security-updates-1.6.19-and-1.7.4
+
 iRedMail-1.8.7:
 
 * Fixed issues:
