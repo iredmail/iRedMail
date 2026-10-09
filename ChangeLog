@@ -1,5 +1,10 @@
 iRedMail-1.8.9:
 
+* Fixed issues:
+    - Fail2ban script (/usr/local/bin/fail2ban_banned_db) failed to store
+      banned IP address if the country name or reverse DNS name contains a
+      single quote, e.g. "Lao People's Democratic Republic". #307
+
 * Updated packages:
     - iRedAPD 6.4
     + netdata v2.12.1

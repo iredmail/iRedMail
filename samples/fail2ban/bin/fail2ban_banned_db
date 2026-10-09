@@ -54,6 +54,32 @@
 
 export PATH="/usr/bin:/usr/local/bin:$PATH"
 
+# Escape a string for safe use inside a single-quoted SQL literal.
+#
+# - Single quote is doubled, this is the standard SQL escape and it works on
+#   both MySQL/MariaDB and PostgreSQL.
+# - Backslash must also be escaped on MySQL/MariaDB, because by default
+#   backslash is an escape character inside string literals there (iRedMail
+#   doesn't set `NO_BACKSLASH_ESCAPES`). A backslash right before a quote would
+#   otherwise escape the quote and defeat the doubling above, which breaks the
+#   statement or allows SQL injection. PostgreSQL treats backslash literally
+#   (unless `standard_conforming_strings` is off), so it needs no handling
+#   there, and doubling the quote alone is already correct.
+#
+# Values passed in are data only (IP address, port, protocol, jail name,
+# hostname, country name, reverse DNS name), a country name or a PTR record
+# may contain arbitrary characters.
+sql_escape() {
+    if [[ X"${DB_TYPE}" == X'pgsql' ]]; then
+        printf '%s' "$1" | perl -pe "s/'/''/g"
+    else
+        # Note: no `\0`, `\n`, `\r`, `\Z` (Ctrl-Z) handling is required here.
+        # Bash variables can not contain a NUL byte, and a raw newline or
+        # carriage return inside a quoted SQL literal is legal on MySQL.
+        printf '%s' "$1" | perl -pe "s/\\\\/\\\\\\\\/g; s/'/''/g"
+    fi
+}
+
 export DB_NAME="fail2ban"
 export DB_TABLE_BANNED="banned"
 export DB_TABLE_JAILS="jails"
@@ -102,7 +128,7 @@ fi
 export _action="$1"
 
 if [[ X"${_action}" == X'start' ]]; then
-    _jail="${2}"
+    _jail="$(sql_escape "${2}")"
 
     if [[ X"${DB_TYPE}" == X'pgsql' ]]; then
         # CentOS 7 ships PostgreSQL-9.2 which doesn't support `ON CONFLICT DO NOTHING`,
@@ -150,7 +176,15 @@ elif [[ X"${_action}" == X"ban" ]]; then
         exit 255
     fi
 
+    # Escape values before they are interpolated into SQL statements.
+    _ip="$(sql_escape "${_ip}")"
+    _ports="$(sql_escape "${_ports}")"
+    _protocol="$(sql_escape "${_protocol}")"
+    _jail="$(sql_escape "${_jail}")"
+    _failures="$(sql_escape "${_failures}")"
+
     _hostname="$(hostname)"
+    _hostname="$(sql_escape "${_hostname}")"
 
     # Lookup for country name.
     _country=''
@@ -168,9 +202,17 @@ elif [[ X"${_action}" == X"ban" ]]; then
     _rdns=''
     if [[ -x "${CMD_DIG}" ]]; then
         _rdns_orig="$(${CMD_DIG} +short +timeout=3 -x ${_ip} 2>/dev/null)"
-        _rdns_strip="${_rdns_orig%\.}"
-        printf -v _rdns "${_rdns_strip}"
+        # Note: pass an explicit '%s' format, otherwise the PTR record is used
+        # as a printf format string and backslash sequences (or '%s') in it
+        # would be interpreted instead of being stored verbatim.
+        printf -v _rdns '%s' "${_rdns_orig%\.}"
     fi
+
+    # Country name and reverse DNS name are not under our control (a country
+    # name may contain a single quote, and a PTR record is set by the IP
+    # owner), escape them too.
+    _country="$(sql_escape "${_country}")"
+    _rdns="$(sql_escape "${_rdns}")"
 
     if [ X"${DB_TYPE}" == X'mysql' ]; then
         # MySQL stores local time with time zone info, we expect UTC time.
@@ -217,6 +259,7 @@ elif [[ X"${_action}" == X"unban" ]]; then
         echo "No IP address(es) specified."
     else
         for _ip in ${_ips}; do
+            _ip="$(sql_escape "${_ip}")"
             ${CMD_SQL} >/dev/null <<EOF
 DELETE FROM ${DB_TABLE_BANNED} WHERE ip='${_ip}';
 EOF
@@ -226,7 +269,7 @@ EOF
     fi
 
 elif [[ X"${_action}" == X'stop' ]] || [[ X"${_action}" == X"cleanup" ]]; then
-    _jail="$2"
+    _jail="$(sql_escape "$2")"
 
     if [[ X"${_jail}" != X'' ]]; then
         ${CMD_SQL} >/dev/null <<EOF
