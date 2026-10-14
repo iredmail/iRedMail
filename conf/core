@@ -130,18 +130,17 @@ check_openbsd_install_url()
 check_pkg() {
     # Usage: check_pkg <command> <package>
     # It means: <package> owns <command>
-    cmd="$1"
-    pkg="$2"
+    local cmd="$1"
+    local pkg="$2"
 
     for i in $(echo $PATH|sed 's/:/ /g'); do
-        [ -x $i/${cmd} ] && export HAS_CMD='YES' && break
+        if [ -x $i/${cmd} ]; then
+            # Command found, no need to install any package for it.
+            return 0
+        fi
     done
 
-    if [ X"${HAS_CMD}" != X'YES' ]; then
-        export MISSING_PKGS="${MISSING_PKGS} ${pkg}"
-    fi
-
-    unset HAS_CMD
+    export MISSING_PKGS="${MISSING_PKGS} ${pkg}"
 }
 
 install_missing_pkg() {

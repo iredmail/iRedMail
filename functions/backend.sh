@@ -38,9 +38,9 @@ backend_install()
     fi
 
     # Check whether remote MySQL server is an IPv6 address.
-    SQL_SERVER_ADDRESS_IS_IPV6='NO'
+    export SQL_SERVER_ADDRESS_IS_IPV6='NO'
     if echo ${SQL_SERVER_ADDRESS} | grep ':' &>/dev/null; then
-        SQL_SERVER_ADDRESS_IS_IPV6='YES'
+        export SQL_SERVER_ADDRESS_IS_IPV6='YES'
     fi
 
     if [ X"${DISTRO}" == X'FREEBSD' ]; then
