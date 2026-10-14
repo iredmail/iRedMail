@@ -135,7 +135,7 @@ if ls ${BACKUP_DIR} | grep -i '[a-z0-9]' &>/dev/null; then
         rm -rf ${base_name}
 
     compressed_size="$(${CMD_DU} ${base_name}.tar.bz2 | awk '{print $1}')"
-    if [ -n X"${MYSQL_USER}" -a -f ${MYSQL_DOT_MY_CNF} ]; then
+    if [ -n "${MYSQL_USER}" ] && [ -f "${MYSQL_DOT_MY_CNF}" ]; then
         sql_log_msg="INSERT INTO log (event, loglevel, msg, admin, ip, timestamp) VALUES ('backup', 'info', 'SOGo data. size: ${compressed_size} (original: ${original_size})', 'cron_backup_sogo', '127.0.0.1', UTC_TIMESTAMP());"
         ${CMD_MYSQL} iredadmin -e "${sql_log_msg}"
     fi

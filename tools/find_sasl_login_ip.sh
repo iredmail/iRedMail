@@ -13,7 +13,7 @@ fi
 tmpfile="/tmp/sasl_username_${RANDOM}"
 
 # extract 'client=xxx[__IP__]' lines
-grep "sasl_username=${USER}" ${MAIL_LOG} | awk '{print $7}' | sort | uniq -c | sort -n > sort > ${tmpfile}
+grep "sasl_username=${USER}" ${MAIL_LOG} | awk '{print $7}' | sort | uniq -c | sort -n > ${tmpfile}
 
 cat ${tmpfile}
 
