@@ -6,6 +6,8 @@ iRedMail-1.8.9:
       single quote, e.g. "Lao People's Democratic Republic". #307
 
 * Updated packages:
+    - Roundcube 1.7.5, fixes 20 security vulnerabilities.
+      https://roundcube.net/news/2026/10/19/security-updates-1.6.20-and-1.7.5
     - iRedAPD 6.4
     + netdata v2.12.1
 
