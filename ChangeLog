@@ -9,7 +9,7 @@ iRedMail-1.8.9:
     - Roundcube 1.7.5, fixes 20 security vulnerabilities.
       https://roundcube.net/news/2026/10/19/security-updates-1.6.20-and-1.7.5
     - iRedAPD 6.4
-    + netdata v2.12.1
+    - netdata v2.12.2
 
 iRedMail-1.8.8:
 
