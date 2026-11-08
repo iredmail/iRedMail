@@ -401,7 +401,7 @@ postfix_config_postscreen()
         # Create db file.
         cd ${_chrooted_data_directory}
         touch postscreen_cache
-        postmap ${POSTFIX_DEFAULT_DB_TYPE}:postscreen_cache
+        postmap ${POSTFIX_DEFAULT_DB_TYPE}:postscreen_cache &>/dev/null
         rm postscreen_cache
         chown ${SYS_USER_POSTFIX}:${SYS_GROUP_POSTFIX} postscreen_cache.*
         chmod 0700 postscreen_cache.*
