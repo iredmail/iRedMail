@@ -151,8 +151,6 @@ postfix_config_basic()
     # Distro releases ship Postfix 3.6+.
     #   - Ubuntu 22.04
     #   - Debian 12
-    #   - OpenBSD
-    #   - FreeBSD
     if [[ X"${DISTRO}" == X'RHEL' ]]; then
         if [[ X"${DISTRO_VERSION}" == X'10' ]]; then
             # Postfix 3.8.5
@@ -162,7 +160,8 @@ postfix_config_basic()
             # Postfix 3.5.x
             postconf -e compatibility_level=2
         fi
-    elif [[ X"${DISTRO}" == X'FREEBSD' ]]; then
+    elif [[ X"${DISTRO}" == X'FREEBSD' ]] || [[ X"${DISTRO}" == X'OPENBSD' ]]; then
+        # Postfix 3.11.x
         postconf -e compatibility_level=3.11
     else
         postconf -e compatibility_level=3.6
@@ -362,7 +361,7 @@ postfix_config_postscreen()
         #
         # main.cf
         #
-        if [[ X"${DISTRO}" == X'FREEBSD' ]]; then
+        if [[ X"${DISTRO}" == X'FREEBSD' ]] || [[ X"${DISTRO}" == X'OPENBSD' ]]; then
             perl -pi -e 's#postscreen_blacklist_action#postscreen_denylist_action#g' ${SAMPLE_DIR}/postfix/main.cf.postscreen
             perl -pi -e 's#postscreen_dnsbl_whitelist_threshold#postscreen_dnsbl_allowlist_threshold#g' ${SAMPLE_DIR}/postfix/main.cf.postscreen
         fi
@@ -378,7 +377,9 @@ postfix_config_postscreen()
 
         # Require Postfix-2.11+
         if echo ${POSTFIX_VERSION} | egrep '(^3|^2\.[123456789][123456789])' &>/dev/null; then
-            perl -pi -e 's/^#(postscreen_dnsbl_whitelist_threshold.*)/${1}/g' ${POSTFIX_FILE_MAIN_CF}
+            # Match both the old and new parameter names, because the name was
+            # changed in Postfix 3.6 and the old name is deprecated since 3.11.
+            perl -pi -e 's/^#(postscreen_dnsbl_(whitelist|allowlist)_threshold.*)/${1}/g' ${POSTFIX_FILE_MAIN_CF}
         fi
 
         # Set a not existing directory as default value, if we cannot get

@@ -52,8 +52,8 @@ install_all()
         fi
 
         OB_PKG_PHP_VER="%${OB_PHP_VERSION}"
-        OB_PKG_OPENLDAP_SERVER_VER='-2.6.10v0'
-        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.10v0'
+        OB_PKG_OPENLDAP_SERVER_VER='-2.6.15v0'
+        OB_PKG_OPENLDAP_CLIENT_VER='-2.6.15v0'
         OB_UWSGI_VERSION='2.0.31'
     fi
 
@@ -210,7 +210,8 @@ install_all()
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-mysql"
             [ X"${BACKEND}" == X'PGSQL' ] && ALL_PKGS="${ALL_PKGS} php-pgsql"
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} php${OB_PKG_PHP_VER} php-bz2${OB_PKG_PHP_VER} php-curl${OB_PKG_PHP_VER} php-imap${OB_PKG_PHP_VER} php-gd${OB_PKG_PHP_VER} php-intl${OB_PKG_PHP_VER} php-zip${OB_PKG_PHP_VER}"
+            # php-imap and php-pspell are not available for PHP 8.5.
+            ALL_PKGS="${ALL_PKGS} php${OB_PKG_PHP_VER} php-bz2${OB_PKG_PHP_VER} php-curl${OB_PKG_PHP_VER} php-gd${OB_PKG_PHP_VER} php-intl${OB_PKG_PHP_VER} php-zip${OB_PKG_PHP_VER}"
 
             [ X"${BACKEND}" == X'OPENLDAP' ] && ALL_PKGS="${ALL_PKGS} php-ldap${OB_PKG_PHP_VER} php-pdo_mysql${OB_PKG_PHP_VER}"
             [ X"${BACKEND}" == X'MYSQL' ] && ALL_PKGS="${ALL_PKGS} php-pdo_mysql${OB_PKG_PHP_VER}"
@@ -345,7 +346,8 @@ install_all()
                 ALL_PKGS="${ALL_PKGS} php-ldap"
             fi
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
-            ALL_PKGS="${ALL_PKGS} php-pspell${OB_PKG_PHP_VER} php-intl${OB_PKG_PHP_VER}"
+            # php-pspell is not available for PHP 8.5.
+            ALL_PKGS="${ALL_PKGS} php-intl${OB_PKG_PHP_VER}"
         fi
     fi
 
@@ -505,7 +507,7 @@ EOF
         elif [ X"${DISTRO}" == X'OPENBSD' ]; then
             # No port for fail2ban. Install from source tarball with pip later.
             # rc script will be generated from sample file later.
-            ALL_PKGS="${ALL_PKGS} py3-pip geolite2-country geolite2-city"
+            ALL_PKGS="${ALL_PKGS} py3-pip dbip-country-lite dbip-city-lite"
         fi
     fi
 

@@ -10,7 +10,7 @@ It supports few mainstream Linux/BSD distributions:
 - Debian 12, 13
 - Ubuntu 22.04, 24.04 (Recommend), 26.04
 - FreeBSD 14.x
-- OpenBSD 7.8
+- OpenBSD 8.0
 
 More info:
 
