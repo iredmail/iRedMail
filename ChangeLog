@@ -1,7 +1,11 @@
-iRedMail-1.x:
+iRedMail-1.8.10:
 
 + Supports new distribution release:
-    + OpenBSD 8.0. OpenBSD 7.8 has been dropped.
+    + OpenBSD 8.0. OpenBSD 7.9 and earlier releases have been dropped.
+
+* Updated packages:
+    - Roundcube 1.7.6, fixes 17 security vulnerabilities.
+      https://roundcube.net/news/2026/11/09/security-updates-1.6.21-and-1.7.6
 
 iRedMail-1.8.9:
 
