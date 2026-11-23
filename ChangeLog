@@ -1,4 +1,4 @@
-iRedMail-1.9.0:
+iRedMail-1.8.11:
 
 * Updated packages:
     - Roundcube 1.7.7, fixes 12 security vulnerabilities.
