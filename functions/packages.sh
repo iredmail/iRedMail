@@ -591,6 +591,7 @@ EOF
         fi
 
         cat >> ${TIP_FILE} <<EOF
+* Backend: ${BACKEND}
 * Enabled services: ${ENABLED_SERVICES}
 
 EOF
