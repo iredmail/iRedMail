@@ -5,6 +5,9 @@ iRedMail-1.8.12:
       allowed downloading arbitrary files (including PHP source code) via
       `/mail/static.php/<path>`. Static files are now served through
       Roundcube's `static.php` instead of being served by Nginx directly.
+      The `composer.*` deny rule was also fixed to match `composer.json` and
+      `composer.lock`.
+      Thanks to Florian Klug-Göri (florian.st.klug@) for the report.
 
 iRedMail-1.8.11:
 

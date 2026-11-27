@@ -3,13 +3,13 @@
 #
 # Block direct access to directories and files.
 location ~ ^/mail/(SQL|bin|config|installer|logs|temp|vendor)/ { deny all; }
-location ~ ^/mail/(.*\.md|composer\.*|INSTALL|LICENSE|Makefile|UPGRADING)$ { deny all; }
+location ~ ^/mail/(.*\.md|composer\..*|INSTALL|LICENSE|Makefile|UPGRADING)$ { deny all; }
 location ~ ^/mail/plugins/.*/config.inc.php.* { deny all; }
 location ~ ^/mail/plugins/enigma/home($|/.*) { deny all; }
 
 # Block access to directories and files via `public_html/static.php`.
 location ~ ^/mail/static.php/(SQL|bin|config|installer|logs|temp|vendor)/ { deny all; }
-location ~ ^/mail/static.php/(.*\.md|composer\.*|INSTALL|LICENSE|Makefile|UPGRADING)$ { deny all; }
+location ~ ^/mail/static.php/(.*\.md|composer\..*|INSTALL|LICENSE|Makefile|UPGRADING)$ { deny all; }
 location ~ ^/mail/static.php/plugins/.*/config.inc.php.* { deny all; }
 location ~ ^/mail/static.php/plugins/enigma/home($|/.*) { deny all; }
 
