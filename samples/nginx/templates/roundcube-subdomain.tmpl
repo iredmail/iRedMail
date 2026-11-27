@@ -19,9 +19,15 @@ location / {
     include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
 }
 
-location ~ ^/static.php/(.*) {
+# Serve static content through PHP: `static.php` validates requested paths, files
+# under the installation directory must not be served by Nginx directly.
+location ~ ^/static\.php(/|$) {
     include PH_NGINX_CONF_TMPL_DIR/hsts.tmpl;
-    alias PH_RCM_HTTPD_ROOT_SYMBOL_LINK/$1;
+    include PH_NGINX_CONF_TMPL_DIR/fastcgi_php.tmpl;
+
+    fastcgi_split_path_info ^(.+?\.php)(/.+)$;
+    fastcgi_param SCRIPT_FILENAME PH_RCM_HTTPD_ROOT_SYMBOL_LINK/public_html/static.php;
+    fastcgi_param PATH_INFO $fastcgi_path_info;
 }
 
 location ~ ^/(.*\.php)$ {
